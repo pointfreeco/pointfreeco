@@ -46,10 +46,8 @@ _ conn: Conn<StatusLineOpen, Void>
         usePrismJs: false
       )
     ) {
-      Home(
-        allFreeEpisodeCount: 0,
-        creditCount: 0,
-        clips: []
+      Episodes(
+        listType: listType
       )
     }
 }

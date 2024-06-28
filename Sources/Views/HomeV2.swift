@@ -41,7 +41,7 @@ private struct LoggedIn: HTML {
   let clips: [Clip]
 
   var body: some HTML {
-    MinimalHero(title: "Welcome back") {
+    PageHeader(title: "Welcome back") {
       HTMLGroup {
         span { "Want to see what’s coming up next? " }
         Link("Follow us on Twitter", href: "http://www.twitter.com/pointfreeco")
@@ -63,10 +63,10 @@ private struct LoggedIn: HTML {
       Divider()
     }
 
-    Episodes()
+    EpisodesModule()
 
     if !subscriberState.isActive {
-      Upgrade()
+      UpgradeModule()
     } else {
       Divider()
     }
@@ -122,13 +122,11 @@ private struct LoggedOut: HTML {
 
     Companies()
     WhatToExpect()
-
     if !subscriberState.isActiveSubscriber {
       FreeEpisodes()
       Divider()
     }
-
-    Episodes()
+    EpisodesModule()
     Divider()
     Collections()
     if !clips.isEmpty {
@@ -253,11 +251,12 @@ private struct WhatToExpect: HTML {
   }
 }
 
-private struct Episodes: HTML {
+private struct EpisodesModule: HTML {
   @Dependency(\.episodes) var episodes
+  @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(seeAllRoute: .homeV2, theme: .content) {
+    HomeModule(seeAllURL: siteRouter.path(for: .episodes(.list(.all))), theme: .content) {
       Grid {
         let episodes = episodes()
           .suffix(3)
@@ -277,9 +276,10 @@ private struct Episodes: HTML {
 private struct FreeEpisodes: HTML {
   @Dependency(\.episodes) var episodes
   @Dependency(\.date.now) var now
+  @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(seeAllRoute: .episodes(.list(.free)), theme: .content) {
+    HomeModule(seeAllURL: siteRouter.path(for: .episodes(.list(.free))), theme: .content) {
       Grid {
         let episodes = episodes()
           .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: false/*TODO*/) }
@@ -299,8 +299,10 @@ private struct FreeEpisodes: HTML {
 private struct InProgressEpisodes: HTML {
   let episodes: [Episode]
 
+  @Dependency(\.siteRouter) var siteRouter
+
   var body: some HTML {
-    HomeModule(seeAllRoute: .episodes(.list(.history)), theme: .content) {
+    HomeModule(seeAllURL: siteRouter.path(for: .episodes(.list(.history))), theme: .content) {
       Grid {
         for episode in episodes {
           EpisodeCard(episode, emergencyMode: false)  // TODO
@@ -316,8 +318,10 @@ private struct InProgressEpisodes: HTML {
 private struct Clips: HTML {
   let clips: [Clip]
 
+  @Dependency(\.siteRouter) var siteRouter
+
   var body: some HTML {
-    HomeModule(seeAllRoute: .clips(.clips), theme: .content) {
+    HomeModule(seeAllURL: siteRouter.path(for: .clips(.clips)), theme: .content) {
       Grid {
         for clip in clips.prefix(3) {
           ClipCard(clip)
@@ -333,9 +337,10 @@ private struct Clips: HTML {
 private struct BlogPosts: HTML {
   @Dependency(\.blogPosts) var blogPosts
   @Dependency(\.date.now) var now
+  @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(seeAllRoute: .blog(.index), theme: .content) {
+    HomeModule(seeAllURL: siteRouter.path(for: .blog(.index)), theme: .content) {
       let posts = blogPosts().filter { !$0.hidden.isCurrentlyHidden(date: now) }.suffix(3).reversed()
       ul {
         for post in posts {
@@ -381,9 +386,10 @@ private struct BlogPosts: HTML {
 
 private struct Collections: HTML {
   @Dependency(\.collections) var collections
+  @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(seeAllRoute: .collections(.index), theme: .content) {
+    HomeModule(seeAllURL: siteRouter.path(for: .collections(.index)), theme: .content) {
       Grid {
         for (index, collection) in collections.prefix(3).enumerated() {
           CollectionCard(collection, index: index)
@@ -392,28 +398,6 @@ private struct Collections: HTML {
       .grid(alignment: .stretch)
     } title: {
       Header(2) { "Collections" }
-    }
-  }
-}
-
-private struct Upgrade: HTML {
-  @Dependency(\.siteRouter) var siteRouter
-
-  var body: some HTML {
-    HomeModule(theme: .callout) {
-      Button(color: .purple, size: .regular, style: .normal) {
-        "See plans and pricing"
-      }
-      .attribute("href", siteRouter.path(for: .pricingLanding))
-      .inlineStyle("margin", "0 auto")
-    } title: {
-      Header(2) { "Upgrade your plan" }
-        .color(.gray150)
-
-      Paragraph(.big) { "Access all past and future episodes." }
-        .fontStyle(.body(.regular))
-        .color(.gray300)
-        .inlineStyle("margin", "0 6rem", media: .desktop)
     }
   }
 }
@@ -589,33 +573,6 @@ private struct Divider: HTML {
   }
 }
 
-private struct MinimalHero<Blurb: HTML>: HTML {
-  var title: String
-  @HTMLBuilder var blurb: Blurb
-
-  var body: some HTML {
-    Grid {
-      GridColumn {
-        Header(2) { HTMLText(title) }
-          .color(.white)
-
-        Paragraph(.big) { blurb }
-          .fontStyle(.body(.regular))
-          .color(.gray800)
-          .inlineStyle("margin", "0 6rem", media: .desktop)
-      }
-      .column(count: 12)
-      .column(alignment: .start)
-      .column(alignment: .center, media: .desktop)
-      .inlineStyle("margin", "0 auto")
-    }
-    .grid(alignment: .center)
-    .padding(topBottom: .large, leftRight: .medium)
-    .padding(.extraLarge, .desktop)
-    .inlineStyle("background", "linear-gradient(#121212, #242424)")
-  }
-}
-
 private struct MaximalHero<PrimaryCTA: HTML>: HTML {
   var title: String
   var blurb: String
@@ -695,95 +652,7 @@ private struct MaximalHero<PrimaryCTA: HTML>: HTML {
   }
 }
 
-private struct HomeModule<Title: HTML, Content: HTML>: HTML {
-  @Dependency(\.siteRouter) var siteRouter
-
-  let title: Title?
-  var seeAllRoute: SiteRoute?
-  var theme: Theme
-  let content: Content
-
-  init(
-    seeAllRoute: SiteRoute? = nil,
-    theme: Theme,
-    @HTMLBuilder content: () -> Content,
-    @HTMLBuilder title: () -> Title
-  ) {
-    self.title = title()
-    self.seeAllRoute = seeAllRoute
-    self.theme = theme
-    self.content = content()
-  }
-  init(
-    seeAllRoute: SiteRoute? = nil,
-    theme: Theme,
-    @HTMLBuilder content: () -> Content
-  ) where Title == Never {
-    self.title = nil
-    self.seeAllRoute = seeAllRoute
-    self.theme = theme
-    self.content = content()
-  }
-
-  var body: some HTML {
-    div {
-      Grid {
-        HTMLGroup {
-          if let title {
-            GridColumn {
-              title
-                .color(theme.color)
-            }
-            .column(count: seeAllRoute == nil ? 12 : 10)
-            .column(alignment: seeAllRoute == nil ? .center : .start)
-            .inlineStyle(
-              "padding-bottom",
-              seeAllRoute == nil
-              ? "\(theme.titleMarginBottom)rem"
-              : "\(theme.titleMarginBottom/2)rem"
-            )
-          }
-
-          if let seeAllRoute {
-            GridColumn {
-              Link("See all →", href: siteRouter.path(for: seeAllRoute))
-                .linkColor(.purple)
-            }
-            .column(count: 2)
-            .column(alignment: .end )
-          }
-        }
-
-        content
-      }
-      .grid(alignment: .center)
-      .inlineStyle("max-width", "1280px")
-      .inlineStyle("margin", "0 auto")
-      .inlineStyle(
-        "padding",
-        "\(theme.topMargin)rem \(theme.leftRightMargin)rem \(theme.bottomMargin)rem"
-      )
-      .inlineStyle(
-        "padding",
-        "\(theme.topMargin)rem \(theme.leftRightMarginDesktop)rem \(theme.bottomMargin)rem",
-        media: .desktop
-      )
-      .backgroundColor(theme.contentBackgroundColor)
-    }
-    .backgroundColor(theme.backgroundColor)
-  }
-}
-
-struct Theme {
-  var backgroundColor: PointFreeColor?
-  var contentBackgroundColor: PointFreeColor?
-  var color: PointFreeColor
-  let topMargin: Double
-  let bottomMargin: Double
-  let leftRightMargin: Double
-  let leftRightMarginDesktop: Double
-  let titleMarginBottom: Double
-
+extension PageModuleTheme {
   static let credits = Self(
     backgroundColor: .white.dark(.black),
     color: .black.dark(.offWhite),
@@ -834,6 +703,7 @@ struct Theme {
     leftRightMarginDesktop: 3,
     titleMarginBottom: 2
   )
+
 }
 
 extension Collection {
