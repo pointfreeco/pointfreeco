@@ -55,11 +55,7 @@ private struct LoggedIn: HTML {
     }
 
     if !inProgressEpisodes.isEmpty {
-      HomeModule(seeAllRoute: .episodes(.list(.history)), theme: .content) {
-        InProgressEpisodes(episodes: Array(inProgressEpisodes))
-      } title: {
-        Header(2) { "Continue watching" }
-      }
+      InProgressEpisodes(episodes: Array(inProgressEpisodes))
     }
 
     if !subscriberState.isActiveSubscriber {
@@ -67,11 +63,7 @@ private struct LoggedIn: HTML {
       Divider()
     }
 
-    HomeModule(seeAllRoute: .episodes(.list(.all)), theme: .content) {
-      Episodes()
-    } title: {
-      Header(2) { "All episodes" }
-    }
+    Episodes()
 
     if !subscriberState.isActive {
       Upgrade()
@@ -79,11 +71,7 @@ private struct LoggedIn: HTML {
       Divider()
     }
 
-    HomeModule(seeAllRoute: .collections(.index), theme: .content) {
-      Collections()
-    } title: {
-      Header(2) { "Collections" }
-    }
+    Collections()
 
     if subscriberState.isActive {
       Gifts()
@@ -91,19 +79,9 @@ private struct LoggedIn: HTML {
       Divider()
     }
 
-    HomeModule(seeAllRoute: .clips(.clips), theme: .content) {
-      Clips(clips: clips)
-    } title: {
-      Header(2) { "Clips" }
-    }
-
+    Clips(clips: clips)
     Divider()
-
-    HomeModule(seeAllRoute: .blog(.index), theme: .content) {
-      BlogPosts()
-    } title: {
-      Header(2) { "Newsletter" }
-    }
+    BlogPosts()
 
     if subscriberState.isActiveSubscriber {
       ReferAFriend(currentUser: currentUser)
@@ -142,59 +120,22 @@ private struct LoggedOut: HTML {
       ctaURL: siteRouter.loginPath(redirect: .homeV2)
     )
 
-    HomeModule(theme: .companies) {
-      Companies()
-    } title: {
-      Header(6) { "Trusted by teams" }
-        .inlineStyle("font-weight", "700")
-        .inlineStyle("text-transform", "uppercase")
-    }
-
-    HomeModule(theme: .informational) {
-      WhatToExpect()
-    } title: {
-      Header(2) { "What to expect" }
-    }
+    Companies()
+    WhatToExpect()
 
     if !subscriberState.isActiveSubscriber {
-      HomeModule(seeAllRoute: .homeV2/*TODO*/, theme: .content) {
-        FreeEpisodes()
-      } title: {
-        Header(2) { "Free episodes" }
-      }
-
+      FreeEpisodes()
       Divider()
     }
 
-    HomeModule(seeAllRoute: .homeV2, theme: .content) {
-      Episodes()
-    } title: {
-      Header(2) { "All episodes" }
-    }
-
+    Episodes()
     Divider()
-
-    HomeModule(seeAllRoute: .collections(), theme: .content) {
-      Collections()
-    } title: {
-      Header(2) { "Collections" }
-    }
-
+    Collections()
     if !clips.isEmpty {
       Divider()
-
-      HomeModule(seeAllRoute: .clips(.clips), theme: .content) {
-        Clips(clips: clips)
-      } title: {
-        Header(2) { "Clips" }
-      }
+      Clips(clips: clips)
     }
-
-    HomeModule(theme: .informational) {
-      WhatPeopleAreSaying()
-    } title: {
-      Header(2) { "What people are saying" }
-    }
+    WhatPeopleAreSaying()
 
     MaximalHero(
       title: "Get started with our free&nbsp;plan",
@@ -252,8 +193,14 @@ private struct EpisodeCredits: HTML {
 
 private struct Companies: HTML {
   var body: some HTML {
-    for team in [nytLogoSvg, spotifyLogoSvg, venmoLogoSvg, atlassianLogoSvg] {
-      Company(svg: team)
+    HomeModule(theme: .companies) {
+      for team in [nytLogoSvg, spotifyLogoSvg, venmoLogoSvg, atlassianLogoSvg] {
+        Company(svg: team)
+      }
+    } title: {
+      Header(6) { "Trusted by teams" }
+        .inlineStyle("font-weight", "700")
+        .inlineStyle("text-transform", "uppercase")
     }
   }
 
@@ -273,8 +220,12 @@ private struct Companies: HTML {
 
 private struct WhatToExpect: HTML {
   var body: some HTML {
-    for whatToExpect in WhatToExpectItem.all {
-      WhatToExpectColumn(item: whatToExpect)
+    HomeModule(theme: .informational) {
+      for whatToExpect in WhatToExpectItem.all {
+        WhatToExpectColumn(item: whatToExpect)
+      }
+    } title: {
+      Header(2) { "What to expect" }
     }
   }
 
@@ -306,16 +257,20 @@ private struct Episodes: HTML {
   @Dependency(\.episodes) var episodes
 
   var body: some HTML {
-    Grid {
-      let episodes = episodes()
-        .suffix(3)
-        .reversed()
+    HomeModule(seeAllRoute: .homeV2, theme: .content) {
+      Grid {
+        let episodes = episodes()
+          .suffix(3)
+          .reversed()
 
-      for episode in episodes {
-        EpisodeCard(episode, emergencyMode: false)  // TODO
+        for episode in episodes {
+          EpisodeCard(episode, emergencyMode: false)  // TODO
+        }
       }
+      .grid(alignment: .stretch)
+    } title: {
+      Header(2) { "All episodes" }
     }
-    .grid(alignment: .stretch)
   }
 }
 
@@ -345,12 +300,16 @@ private struct InProgressEpisodes: HTML {
   let episodes: [Episode]
 
   var body: some HTML {
-    Grid {
-      for episode in episodes {
-        EpisodeCard(episode, emergencyMode: false)  // TODO
+    HomeModule(seeAllRoute: .episodes(.list(.history)), theme: .content) {
+      Grid {
+        for episode in episodes {
+          EpisodeCard(episode, emergencyMode: false)  // TODO
+        }
       }
+      .grid(alignment: .stretch)
+    } title: {
+      Header(2) { "Continue watching" }
     }
-    .grid(alignment: .stretch)
   }
 }
 
@@ -358,12 +317,16 @@ private struct Clips: HTML {
   let clips: [Clip]
 
   var body: some HTML {
-    Grid {
-      for clip in clips.prefix(3) {
-        ClipCard(clip)
+    HomeModule(seeAllRoute: .clips(.clips), theme: .content) {
+      Grid {
+        for clip in clips.prefix(3) {
+          ClipCard(clip)
+        }
       }
+      .grid(alignment: .stretch)
+    } title: {
+      Header(2) { "Clips" }
     }
-    .grid(alignment: .stretch)
   }
 }
 
@@ -372,20 +335,24 @@ private struct BlogPosts: HTML {
   @Dependency(\.date.now) var now
 
   var body: some HTML {
-    let posts = blogPosts().filter { !$0.hidden.isCurrentlyHidden(date: now) }.suffix(3).reversed()
-    ul {
-      for post in posts {
-        li {
-          BlogPost(post: post)
+    HomeModule(seeAllRoute: .blog(.index), theme: .content) {
+      let posts = blogPosts().filter { !$0.hidden.isCurrentlyHidden(date: now) }.suffix(3).reversed()
+      ul {
+        for post in posts {
+          li {
+            BlogPost(post: post)
+          }
+          li {
+            Divider()
+          }
+          .inlineStyle("margin", "2rem 0")
+          .inlineStyle("display", "none", pseudo: "last-child")
         }
-        li {
-          Divider()
-        }
-        .inlineStyle("margin", "2rem 0")
-        .inlineStyle("display", "none", pseudo: "last-child")
       }
+      .listStyle(.reset)
+    } title: {
+      Header(2) { "Newsletter" }
     }
-    .listStyle(.reset)
   }
 
   struct BlogPost: HTML {
@@ -416,12 +383,16 @@ private struct Collections: HTML {
   @Dependency(\.collections) var collections
 
   var body: some HTML {
-    Grid {
-      for (index, collection) in collections.prefix(3).enumerated() {
-        CollectionCard(collection, index: index)
+    HomeModule(seeAllRoute: .collections(.index), theme: .content) {
+      Grid {
+        for (index, collection) in collections.prefix(3).enumerated() {
+          CollectionCard(collection, index: index)
+        }
       }
+      .grid(alignment: .stretch)
+    } title: {
+      Header(2) { "Collections" }
     }
-    .grid(alignment: .stretch)
   }
 }
 
@@ -533,29 +504,33 @@ private struct ReferAFriend: HTML {
 
 private struct WhatPeopleAreSaying: HTML {
   var body: some HTML {
-    for (offset, group) in Testimonial.all.shuffled().prefix(9).grouped(into: 3).enumerated() {
-      GridColumn {
-        for testimonial in group {
-          TestimonialCard(testimonial: testimonial)
+    HomeModule(theme: .informational) {
+      for (offset, group) in Testimonial.all.shuffled().prefix(9).grouped(into: 3).enumerated() {
+        GridColumn {
+          for testimonial in group {
+            TestimonialCard(testimonial: testimonial)
+          }
         }
+        .inlineStyle("padding-left", "0.5rem", media: MediaQuery.desktop.rawValue, pseudo: "not(:nth-child(2))")
+        .inlineStyle("padding-right", "0.5rem", media: MediaQuery.desktop.rawValue, pseudo: "not(:last-child)")
+        .column(count: 12)
+        .column(count: 4, media: .desktop)
+        .inlineStyle("display", offset == 0 ? nil : "none")
+        .inlineStyle("display", "block", media: MediaQuery.desktop.rawValue)
       }
-      .inlineStyle("padding-left", "0.5rem", media: MediaQuery.desktop.rawValue, pseudo: "not(:nth-child(2))")
-      .inlineStyle("padding-right", "0.5rem", media: MediaQuery.desktop.rawValue, pseudo: "not(:last-child)")
-      .column(count: 12)
-      .column(count: 4, media: .desktop)
-      .inlineStyle("display", offset == 0 ? nil : "none")
-      .inlineStyle("display", "block", media: MediaQuery.desktop.rawValue)
-    }
 
-    GridColumn {
-      Button(color: .purple, size: .regular, style: .normal) {
-        "Read more testimonials →"
+      GridColumn {
+        Button(color: .purple, size: .regular, style: .normal) {
+          "Read more testimonials →"
+        }
+        .attribute("href", "TODO")
       }
-      .attribute("href", "TODO")
+      .column(count: 12)
+      .column(alignment: .center)
+      .inlineStyle("margin-top", "3rem")
+    } title: {
+      Header(2) { "What people are saying" }
     }
-    .column(count: 12)
-    .column(alignment: .center)
-    .inlineStyle("margin-top", "3rem")
   }
 
   struct TestimonialCard: HTML {
@@ -753,33 +728,35 @@ private struct HomeModule<Title: HTML, Content: HTML>: HTML {
   var body: some HTML {
     div {
       Grid {
-        if let title {
-          GridColumn {
-            title
-              .color(theme.color)
+        HTMLGroup {
+          if let title {
+            GridColumn {
+              title
+                .color(theme.color)
+            }
+            .column(count: seeAllRoute == nil ? 12 : 10)
+            .column(alignment: seeAllRoute == nil ? .center : .start)
+            .inlineStyle(
+              "padding-bottom",
+              seeAllRoute == nil
+              ? "\(theme.titleMarginBottom)rem"
+              : "\(theme.titleMarginBottom/2)rem"
+            )
           }
-          .column(count: seeAllRoute == nil ? 12 : 10)
-          .column(alignment: seeAllRoute == nil ? .center : .start)
-          .inlineStyle(
-            "margin-bottom",
-            seeAllRoute == nil 
-            ? "\(theme.titleMarginBottom)rem"
-            : "\(theme.titleMarginBottom/2)rem"
-          )
-        }
 
-        if let seeAllRoute {
-          GridColumn {
-            Link("See all →", href: siteRouter.path(for: seeAllRoute))
-              .linkColor(.purple)
+          if let seeAllRoute {
+            GridColumn {
+              Link("See all →", href: siteRouter.path(for: seeAllRoute))
+                .linkColor(.purple)
+            }
+            .column(count: 2)
+            .column(alignment: .end )
           }
-          .column(count: 2)
-          .column(alignment: .end )
         }
 
         content
       }
-      .grid(alignment: .baseline)
+      .grid(alignment: .center)
       .inlineStyle("max-width", "1280px")
       .inlineStyle("margin", "0 auto")
       .inlineStyle(
