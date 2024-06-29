@@ -8,7 +8,7 @@ struct ReferAFriendModule: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(theme: .referAFriend) {
+    PageModule(theme: .referAFriend) {
       let url = siteRouter.url(
         for: .subscribeConfirmation(
           lane: .personal,

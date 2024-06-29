@@ -1,4 +1,4 @@
-public struct HomeModule<Title: HTML, Content: HTML>: HTML {
+public struct PageModule<Title: HTML, Content: HTML>: HTML {
   let title: Title?
   var seeAllURL: String?
   var theme: PageModuleTheme
@@ -11,6 +11,18 @@ public struct HomeModule<Title: HTML, Content: HTML>: HTML {
     @HTMLBuilder title: () -> Title
   ) {
     self.title = title()
+    self.seeAllURL = seeAllURL
+    self.theme = theme
+    self.content = content()
+  }
+
+  public init(
+    title: String,
+    seeAllURL: String? = nil,
+    theme: PageModuleTheme,
+    @HTMLBuilder content: () -> Content
+  ) where Title == Header<HTMLText> {
+    self.title = Header(3) { HTMLText(title) }
     self.seeAllURL = seeAllURL
     self.theme = theme
     self.content = content()

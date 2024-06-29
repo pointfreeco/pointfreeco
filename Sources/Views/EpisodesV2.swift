@@ -126,7 +126,7 @@ private struct EpisodesModule<Episodes: Collection<Episode>, CTA: HTML>: HTML {
   }
 
   func module(episodes: some Collection<Episode>) -> some HTML {
-    HomeModule(
+    PageModule(
       seeAllURL: title == nil ? nil : siteRouter.path(for: .episodes(.list(.free))),
       theme: .content
     ) {

@@ -134,7 +134,7 @@ private struct EpisodeCredits: HTML {
 
   let creditCount: Int
   var body: some HTML {
-    HomeModule(theme: .credits) {
+    PageModule(theme: .credits) {
       Grid {
         GridColumn {
           SVG.info
@@ -170,7 +170,7 @@ private struct EpisodeCredits: HTML {
 
 private struct Companies: HTML {
   var body: some HTML {
-    HomeModule(theme: .companies) {
+    PageModule(theme: .companies) {
       for team in [nytLogoSvg, spotifyLogoSvg, venmoLogoSvg, atlassianLogoSvg] {
         Company(svg: team)
       }
@@ -197,12 +197,10 @@ private struct Companies: HTML {
 
 private struct WhatToExpect: HTML {
   var body: some HTML {
-    HomeModule(theme: .informational) {
+    PageModule(title: "What to expect", theme: .informational) {
       for whatToExpect in WhatToExpectItem.all {
         WhatToExpectColumn(item: whatToExpect)
       }
-    } title: {
-      Header(3) { "What to expect" }
     }
   }
 
@@ -236,7 +234,11 @@ private struct EpisodesModule: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(seeAllURL: siteRouter.path(for: .episodes(.list(.all))), theme: .content) {
+    PageModule(
+      title: "All episodes",
+      seeAllURL: siteRouter.path(for: .episodes(.list(.all))),
+      theme: .content
+    ) {
       Grid {
         let episodes = episodes()
           .suffix(3)
@@ -247,8 +249,6 @@ private struct EpisodesModule: HTML {
         }
       }
       .grid(alignment: .stretch)
-    } title: {
-      Header(3) { "All episodes" }
     }
   }
 }
@@ -259,7 +259,11 @@ private struct FreeEpisodes: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(seeAllURL: siteRouter.path(for: .episodes(.list(.free))), theme: .content) {
+    PageModule(
+      title: "Free episodes",
+      seeAllURL: siteRouter.path(for: .episodes(.list(.free))),
+      theme: .content
+    ) {
       Grid {
         let episodes = episodes()
           .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: false/*TODO*/) }
@@ -270,8 +274,6 @@ private struct FreeEpisodes: HTML {
         }
       }
       .grid(alignment: .stretch)
-    } title: {
-      Header(3) { "Free episodes" }
     }
   }
 }
@@ -282,15 +284,17 @@ private struct InProgressEpisodes: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(seeAllURL: siteRouter.path(for: .episodes(.list(.history))), theme: .content) {
+    PageModule(
+      title: "Continue watching",
+      seeAllURL: siteRouter.path(for: .episodes(.list(.history))),
+      theme: .content
+    ) {
       Grid {
         for episode in episodes {
           EpisodeCard(episode, emergencyMode: false)  // TODO
         }
       }
       .grid(alignment: .stretch)
-    } title: {
-      Header(3) { "Continue watching" }
     }
   }
 }
@@ -301,15 +305,17 @@ private struct Clips: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(seeAllURL: siteRouter.path(for: .clips(.clips)), theme: .content) {
+    PageModule(
+      title: "Clips",
+      seeAllURL: siteRouter.path(for: .clips(.clips)),
+      theme: .content
+    ) {
       Grid {
         for clip in clips.prefix(3) {
           ClipCard(clip)
         }
       }
       .grid(alignment: .stretch)
-    } title: {
-      Header(3) { "Clips" }
     }
   }
 }
@@ -320,7 +326,11 @@ private struct BlogPosts: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(seeAllURL: siteRouter.path(for: .blog(.index)), theme: .content) {
+    PageModule(
+      title: "Newsletter",
+      seeAllURL: siteRouter.path(for: .blog(.index)),
+      theme: .content
+    ) {
       let posts = blogPosts().filter { !$0.hidden.isCurrentlyHidden(date: now) }.suffix(3).reversed()
       ul {
         for post in posts {
@@ -335,8 +345,6 @@ private struct BlogPosts: HTML {
         }
       }
       .listStyle(.reset)
-    } title: {
-      Header(3) { "Newsletter" }
     }
   }
 
@@ -369,15 +377,17 @@ private struct Collections: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(seeAllURL: siteRouter.path(for: .collections(.index)), theme: .content) {
+    PageModule(
+      title: "Collections",
+      seeAllURL: siteRouter.path(for: .collections(.index)),
+      theme: .content
+    ) {
       Grid {
         for (index, collection) in collections.prefix(3).enumerated() {
           CollectionCard(collection, index: index)
         }
       }
       .grid(alignment: .stretch)
-    } title: {
-      Header(3) { "Collections" }
     }
   }
 }
@@ -386,7 +396,7 @@ private struct Gifts: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(theme: .callout) {
+    PageModule(theme: .callout) {
       Button(color: .purple, size: .regular, style: .normal) {
         "See gifts options"
       }
@@ -469,7 +479,10 @@ private struct ReferAFriend: HTML {
 
 private struct WhatPeopleAreSaying: HTML {
   var body: some HTML {
-    HomeModule(theme: .informational) {
+    PageModule(
+      title: "What people are saying",
+      theme: .informational
+    ) {
       for (offset, group) in Testimonial.all.shuffled().prefix(9).grouped(into: 3).enumerated() {
         GridColumn {
           for testimonial in group {
@@ -493,8 +506,6 @@ private struct WhatPeopleAreSaying: HTML {
       .column(count: 12)
       .column(alignment: .center)
       .inlineStyle("margin-top", "3rem")
-    } title: {
-      Header(3) { "What people are saying" }
     }
   }
 

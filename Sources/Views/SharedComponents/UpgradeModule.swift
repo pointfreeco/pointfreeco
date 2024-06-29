@@ -5,7 +5,7 @@ struct UpgradeModule: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    HomeModule(theme: .callout) {
+    PageModule(theme: .callout) {
       Button(color: .purple, size: .regular, style: .normal) {
         "See plans and pricing"
       }
