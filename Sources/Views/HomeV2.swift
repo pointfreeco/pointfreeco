@@ -49,40 +49,31 @@ private struct LoggedIn: HTML {
       }
       .color(.gray800)
     }
-
     if creditCount > 0 {
       EpisodeCredits(creditCount: creditCount)
     }
-
     if !inProgressEpisodes.isEmpty {
       InProgressEpisodes(episodes: Array(inProgressEpisodes))
     }
-
     if !subscriberState.isActiveSubscriber {
       FreeEpisodes()
       Divider()
     }
-
     EpisodesModule()
-
     if !subscriberState.isActive {
       UpgradeModule()
     } else {
       Divider()
     }
-
     Collections()
-
     if subscriberState.isActive {
       Gifts()
     } else {
       Divider()
     }
-
     Clips(clips: clips)
     Divider()
     BlogPosts()
-
     if subscriberState.isActiveSubscriber {
       ReferAFriend(currentUser: currentUser)
     }
@@ -109,7 +100,7 @@ private struct LoggedOut: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    MaximalHero(
+    CallToActionHeader(
       title: "Explore the wonderful world of advanced&nbsp;Swift.",
       blurb: """
           Point-Free is a video series exploring advanced topics in the \
@@ -117,9 +108,9 @@ private struct LoggedOut: HTML {
           Brandon&nbsp;and&nbsp;Stephen.
           """,
       ctaTitle: "Start with a free episode →",
-      ctaURL: siteRouter.loginPath(redirect: .homeV2)
+      ctaURL: siteRouter.loginPath(redirect: .homeV2),
+      style: .gradient
     )
-
     Companies()
     WhatToExpect()
     if !subscriberState.isActiveSubscriber {
@@ -134,19 +125,7 @@ private struct LoggedOut: HTML {
       Clips(clips: clips)
     }
     WhatPeopleAreSaying()
-
-    MaximalHero(
-      title: "Get started with our free&nbsp;plan",
-      blurb: """
-        Our free plan includes 1 subscriber-only episode of your choice, access to \
-        \(allFreeEpisodeCount) free episodes with transcripts and code samples, and weekly updates \
-        from our newsletter.
-        """,
-      ctaTitle: "Sign up for free →",
-      ctaURL: siteRouter.loginPath(redirect: .homeV2),
-      secondaryCTATitle: "View plans and pricing",
-      secondaryCTAURL: siteRouter.path(for: .pricingLanding)
-    )
+    GetStartedModule(style: .gradient)
   }
 }
 
@@ -436,12 +415,13 @@ private struct ReferAFriend: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    MaximalHero(
+    CallToActionHeader(
       title: "Refer a friend",
       blurb: """
         You'll both get one month free ($18 credit) when they sign up from your personal referral \
         link:
-        """
+        """,
+      style: .gradient
     ) {
       let url = siteRouter.url(
         for: .subscribeConfirmation(
@@ -571,85 +551,6 @@ private struct Divider: HTML {
       .backgroundColor(.gray800.dark(.gray300))
       .inlineStyle("margin", "0 30%")
       .inlineStyle("height", "1px")
-  }
-}
-
-private struct MaximalHero<PrimaryCTA: HTML>: HTML {
-  var title: String
-  var blurb: String
-  let primaryCTA: PrimaryCTA
-  var secondaryCTATitle: String?
-  var secondaryCTAURL: String?
-
-  init(
-    title: String,
-    blurb: String,
-    secondaryCTATitle: String? = nil,
-    secondaryCTAURL: String? = nil,
-    @HTMLBuilder primaryCTA: () -> PrimaryCTA
-  ) {
-    self.title = title
-    self.blurb = blurb
-    self.primaryCTA = primaryCTA()
-    self.secondaryCTATitle = secondaryCTATitle
-    self.secondaryCTAURL = secondaryCTAURL
-  }
-
-  init(
-    title: String,
-    blurb: String,
-    ctaTitle: String,
-    ctaURL: String,
-    secondaryCTATitle: String? = nil,
-    secondaryCTAURL: String? = nil
-  ) where PrimaryCTA == HTMLInlineStyle<_HTMLAttributes<Button<HTMLText>>> {
-    self.title = title
-    self.blurb = blurb
-    self.primaryCTA = Button(color: .purple, size: .regular, style: .normal) {
-      HTMLText(ctaTitle)
-    }
-    .attribute("href", ctaURL)
-    .inlineStyle("display", "inline-block")
-    self.secondaryCTATitle = secondaryCTATitle
-    self.secondaryCTAURL = secondaryCTAURL
-  }
-
-  var body: some HTML {
-    Grid {
-      GridColumn {
-        Header(2) { HTMLRaw(title) }
-          .color(.white)
-
-        Paragraph(.big) { HTMLRaw(blurb) }
-          .fontStyle(.body(.regular))
-          .color(.gray800)
-          .inlineStyle("margin", "0 6rem", media: .desktop)
-
-        primaryCTA
-          .inlineStyle("margin-top", "3rem")
-      }
-      .column(count: 12)
-      .column(alignment: .start)
-      .column(alignment: .center, media: .desktop)
-      .inlineStyle("margin", "0 auto")
-
-      GridColumn {
-        if let secondaryCTAURL, let secondaryCTATitle {
-          Link(secondaryCTATitle, href: secondaryCTAURL)
-        }
-      }
-      .column(count: 12)
-      .column(alignment: .start)
-      .column(alignment: .center, media: .desktop)
-      .linkColor(.gray400)
-      .fontStyle(.body(.small))
-      .inlineStyle("margin-top", "1rem")
-      .inlineStyle("text-decoration-line", "underline")
-    }
-    .grid(alignment: .center)
-    .padding(topBottom: .large, leftRight: .medium)
-    .padding(.extraLarge, .desktop)
-    .inlineStyle("background", "linear-gradient(#121212, #291a40)")
   }
 }
 

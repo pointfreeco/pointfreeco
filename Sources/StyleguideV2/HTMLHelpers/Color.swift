@@ -4,6 +4,11 @@ extension HTML {
       .inlineStyle("background-color", color?.darkValue, media: .dark)
   }
 
+  public func background(_ color: PointFreeColor?) -> some HTML {
+    inlineStyle("background", color?.rawValue)
+      .inlineStyle("background", color?.darkValue, media: .dark)
+  }
+
   public func color(
     _ color: PointFreeColor?,
     _ pseudo: Pseudo? = nil

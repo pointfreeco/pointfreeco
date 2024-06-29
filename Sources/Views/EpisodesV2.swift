@@ -5,19 +5,23 @@ import StyleguideV2
 
 public struct Episodes: HTML {
   let freeEpisodes: [Episode]
+  let allFreeEpisodeCount: Int
   let mainEpisodes: [Episode]
   let listType: SiteRoute.EpisodesRoute.ListType
 
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
+  @Dependency(\.siteRouter) var siteRouter
 
   public init(
+    allFreeEpisodeCount: Int,
     listType: SiteRoute.EpisodesRoute.ListType
   ) {
     @Dependency(\.date.now) var now
     @Dependency(\.episodeProgresses) var episodeProgresses
     @Dependency(\.episodes) var episodes
 
+    self.allFreeEpisodeCount = allFreeEpisodeCount
     self.listType = listType
     switch listType {
     case .all:
@@ -70,6 +74,15 @@ public struct Episodes: HTML {
     case .all:
       if subscriberState.isNonSubscriber {
         EpisodesModule(episodes: freeEpisodes, title: "Free episodes")
+        if currentUser == nil {
+          GetStartedModule(style: .solid)
+        } else {
+          UpgradeModule()
+        }
+      }
+
+      if subscriberState.isNonSubscriber {
+        EpisodesModule(episodes: freeEpisodes, title: "Free episodes")
         UpgradeModule()
       }
       
@@ -88,7 +101,19 @@ public struct Episodes: HTML {
       }
 
     case .free:
-      EpisodesModule(episodes: mainEpisodes)
+      if subscriberState.isNonSubscriber {
+        EpisodesModule(
+          episodes: mainEpisodes.prefix(3)
+        )
+        if currentUser == nil {
+          GetStartedModule(style: .solid)
+        } else {
+          UpgradeModule()
+        }
+        EpisodesModule(episodes: mainEpisodes.dropFirst(3))
+      } else {
+        EpisodesModule(episodes: mainEpisodes)
+      }
 
     case .history:
       EpisodesModule(episodes: mainEpisodes)

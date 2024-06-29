@@ -36,97 +36,17 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
 
   public var head: some HTML {
     // TODO: Is this needed? `layoutData.extraHead.rawValue`
-
-    link()
-      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")
-      .rel("apple-touch-icon")
-      .attribute("sizes", "180x180")
-    link()
-      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")
-      .rel("icon")
-      .attribute("sizes", "32x32")
-      .attribute("type", "image/png")
-    link()
-      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")
-      .rel("icon")
-      .attribute("sizes", "16x16")
-      .attribute("type", "image/png")
-    link()
-      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest")
-      .rel("manifest")
-    link()
-      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg")
-      .rel("mask-icon")
-
-    if layoutData.usePrismJs {
-      PrismJSHead()
-    }
-
-    meta().attribute("charset", "UTF-8")
+    tag("title") { HTMLText(layoutData.title) }
+    meta()
+      .attribute("charset", "UTF-8")
     meta()
       .attribute("name", "theme-color")
       .attribute("content", "#121212")
     meta()
       .attribute("name", "viewport")
       .attribute("content", "width=device-width, initial-scale=1")
-
-    tag("title") { HTMLText(layoutData.title) }
-
-    style { "\(renderedNormalizeCss)" }
-    style {
-      """
-      html {
-        font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
-        line-height: 1.5;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        -ms-box-sizing: border-box;
-        -o-box-sizing: border-box;
-        box-sizing: border-box;
-      }
-      body {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        -ms-box-sizing: border-box;
-        -o-box-sizing: border-box;
-        box-sizing:border-box
-      }
-      *, * ::before, * ::after {
-        -webkit-box-sizing: inherit;
-        -moz-box-sizing: inherit;
-        -ms-box-sizing: inherit;
-        -o-box-sizing: inherit;
-        box-sizing:inherit
-      }
-      body, html {
-        height:100%;
-        background: #fff;
-      }
-      .markdown *:link, .markdown *:visited { color: inherit; }
-      @media only screen and (min-width: 832px) {
-        html {
-          font-size: 16px;
-        }
-      }
-      @media only screen and (max-width: 831px) {
-        html {
-          font-size: 14px;
-        }
-      }
-      @media (prefers-color-scheme: dark) {
-        body, html {
-          height:100%;
-          background: #121212;
-        }
-      }
-      @keyframes Pulse {
-        from { opacity: 1; }
-        50% { opacity: 0; }
-        to { opacity: 1; }
-      }
-      """
-    }
-
+    BaseStyles()
+    Favicons()
     link()
       .href(siteRouter.url(for: .feed(.episodes)))
       .attribute("rel", "alternate")
@@ -138,6 +58,9 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
       .attribute("rel", "alternate")
       .title("Point-Free Blog")
       .attribute("type", "application/atom+xml")
+    if layoutData.usePrismJs {
+      PrismJSHead()
+    }
   }
 
   public var body: some HTML {
@@ -568,5 +491,89 @@ struct NavListItem: HTML {
     }
     .padding(left: .medium)
     .inlineStyle("display", "inline")
+  }
+}
+
+private struct Favicons: HTML {
+  var body: some HTML {
+    link()
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")
+      .rel("apple-touch-icon")
+      .attribute("sizes", "180x180")
+    link()
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")
+      .rel("icon")
+      .attribute("sizes", "32x32")
+      .attribute("type", "image/png")
+    link()
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")
+      .rel("icon")
+      .attribute("sizes", "16x16")
+      .attribute("type", "image/png")
+    link()
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest")
+      .rel("manifest")
+    link()
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg")
+      .rel("mask-icon")
+  }
+}
+
+private struct BaseStyles: HTML {
+  var body: some HTML {
+    style { "\(renderedNormalizeCss)" }
+    style {
+      """
+      html {
+        font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
+        line-height: 1.5;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        -o-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      body {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        -o-box-sizing: border-box;
+        box-sizing:border-box
+      }
+      *, * ::before, * ::after {
+        -webkit-box-sizing: inherit;
+        -moz-box-sizing: inherit;
+        -ms-box-sizing: inherit;
+        -o-box-sizing: inherit;
+        box-sizing:inherit
+      }
+      body, html {
+        height:100%;
+        background: #fff;
+      }
+      .markdown *:link, .markdown *:visited { color: inherit; }
+      @media only screen and (min-width: 832px) {
+        html {
+          font-size: 16px;
+        }
+      }
+      @media only screen and (max-width: 831px) {
+        html {
+          font-size: 14px;
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        body, html {
+          height:100%;
+          background: #121212;
+        }
+      }
+      @keyframes Pulse {
+        from { opacity: 1; }
+        50% { opacity: 0; }
+        to { opacity: 1; }
+      }
+      """
+    }
   }
 }
