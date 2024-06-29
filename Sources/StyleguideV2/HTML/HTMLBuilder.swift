@@ -111,8 +111,13 @@ public struct _HTMLPair<First: HTML, Second: HTML>: HTML {
   let first: First
   let second: Second
   public static func _render(_ html: _HTMLPair<First, Second>, into printer: inout HTMLPrinter) {
-    First._render(html.first, into: &printer)
-    Second._render(html.second, into: &printer)
+    func render<T: HTML>(_ html: T) {
+      let oldAttributes = printer.attributes
+      defer { printer.attributes = oldAttributes }
+      T._render(html, into: &printer)
+    }
+    render(html.first)
+    render(html.second)
   }
   public var body: Never { fatalError() }
 }
