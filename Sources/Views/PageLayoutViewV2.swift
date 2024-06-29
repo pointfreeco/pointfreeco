@@ -45,8 +45,6 @@ public struct PageLayout<Content: HTML>: NodeView {
           prismJsHead.rawValue
         }
 
-        ChildOf.style(markdownBlockStyles, config: cssConfig).rawValue
-
         Node {
           meta().attribute("charset", "utf8")
           meta()
@@ -61,6 +59,34 @@ public struct PageLayout<Content: HTML>: NodeView {
           tag("style") { HTMLRaw("\(renderedNormalizeCss)") }
           tag("style") {
             """
+            html {
+              font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
+              line-height: 1.5;
+              -webkit-box-sizing: border-box;
+              -moz-box-sizing: border-box;
+              -ms-box-sizing: border-box;
+              -o-box-sizing: border-box;
+              box-sizing: border-box;
+            }
+            body {
+              -webkit-box-sizing: border-box;
+              -moz-box-sizing: border-box;
+              -ms-box-sizing: border-box;
+              -o-box-sizing: border-box;
+              box-sizing:border-box
+            }
+            *, * ::before, * ::after {
+              -webkit-box-sizing: inherit;
+              -moz-box-sizing: inherit;
+              -ms-box-sizing: inherit;
+              -o-box-sizing: inherit;
+              box-sizing:inherit
+            }
+            body, html {
+              height:100%;
+              background: #fff;
+            }
+            .markdown *:link, .markdown *:visited { color: inherit; }
             @media only screen and (min-width: 832px) {
               html {
                 font-size: 16px;
@@ -71,51 +97,17 @@ public struct PageLayout<Content: HTML>: NodeView {
                 font-size: 14px;
               }
             }
-
-            html {
-              font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
-              line-height: 1.5;
-              -webkit-box-sizing: border-box;
-              -moz-box-sizing: border-box;
-              -ms-box-sizing: border-box;
-              -o-box-sizing: border-box;
-              box-sizing: border-box;
-            }
-
-            body {
-              -webkit-box-sizing: border-box;
-              -moz-box-sizing: border-box;
-              -ms-box-sizing: border-box;
-              -o-box-sizing: border-box;
-              box-sizing:border-box
-            }
-
-            *, * ::before, * ::after {
-              -webkit-box-sizing: inherit;
-              -moz-box-sizing: inherit;
-              -ms-box-sizing: inherit;
-              -o-box-sizing: inherit;
-              box-sizing:inherit
-            }
-
-            body, html {
-              height:100%;
-              background: #fff;
-            }
             @media (prefers-color-scheme: dark) {
               body, html {
                 height:100%;
                 background: #121212;
               }
             }
-
             @keyframes Pulse {
               from { opacity: 1; }
               50% { opacity: 0; }
               to { opacity: 1; }
             }
-
-            .markdown *:link, .markdown *:visited { color: inherit; }
             """
           }
 
@@ -139,9 +131,17 @@ public struct PageLayout<Content: HTML>: NodeView {
           flashView(flash)
         }
         announcementBanner(.wwdc24)
-        liveStreamBanner
-        emergencyModeBanner(emergencyMode, layoutData)
         Node {
+          if emergencyMode {
+            TopBanner(style: .warning) {
+              """
+              Temporary service disruption. We’re operating with reduced features and will be \
+              back soon!
+              """
+            }
+          }
+          LiveStreamBanner()
+
           NavView()
           content
           if !layoutData.style.isMinimal {
@@ -151,6 +151,81 @@ public struct PageLayout<Content: HTML>: NodeView {
       }
     }
     .attribute("lang", "en")
+  }
+}
+
+public struct LiveStreamBanner: HTML {
+  @Dependency(\.currentRoute) var currentRoute
+  @Dependency(\.livestreams) var livestreams
+  @Dependency(\.siteRouter) var siteRouter
+
+  public var body: some HTML {
+    if !currentRoute.is(\.live), livestreams.first(where: \.isLive) != nil {
+      TopBanner(style: .notice) {
+        span {
+          "●"
+        }
+        .color(.red)
+        .inlineStyle("animation", "Pulse 3s linear infinite")
+        .inlineStyle("margin-right", "0.5rem")
+
+        "We’re live! "
+        Link("Watch the stream →", href: siteRouter.path(for: .live(.current)))
+          .linkStyle(LinkStyle(color: .white, underline: nil))
+      }
+    }
+  }
+}
+
+struct TopBanner<Content: HTML>: HTML {
+  enum Style {
+    case error
+    case notice
+    case warning
+
+    var color: PointFreeColor {
+      switch self {
+      case .error:
+        return .white.dark(.red)
+      case .notice:
+        return .gray800
+      case .warning:
+        return .black.dark(.yellow)
+      }
+    }
+
+    var backgroundColor: PointFreeColor {
+      switch self {
+      case .error:
+        return .red.dark(.black)
+      case .notice:
+        return .offBlack
+      case .warning:
+        return .yellow.dark(.black)
+      }
+    }
+  }
+
+  let style: Style
+  let content: Content
+
+  init(style: Style, @HTMLBuilder content: () -> Content) {
+    self.style = style
+    self.content = content()
+  }
+
+  var body: some HTML {
+    div {
+      content
+    }
+    .backgroundColor(style.backgroundColor)
+    .color(style.color)
+    .linkStyle(LinkStyle(color: style.color, underline: true))
+    .inlineStyle("margin", "0 auto")
+    .inlineStyle("max-width", "1280px")
+    .inlineStyle("padding", "1rem 3rem 1rem")
+    .inlineStyle("text-align", "center")
+    .fontStyle(.body(.small))
   }
 }
 
