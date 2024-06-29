@@ -32,12 +32,12 @@ public struct HTMLTextTag: ExpressibleByStringLiteral {
     self.init(value)
   }
 
-  public func callAsFunction(_ content: String) -> HTMLElement<HTMLText> {
+  public func callAsFunction(_ content: String = "") -> HTMLElement<HTMLText> {
     tag(self.rawValue) { HTMLText(content) }
   }
 
-  public func callAsFunction(_ content: () -> HTMLText) -> HTMLElement<HTMLText> {
-    tag(self.rawValue) { content() }
+  public func callAsFunction(_ content: () -> String) -> HTMLElement<HTMLText> {
+    tag(self.rawValue) { HTMLText(content()) }
   }
 }
 

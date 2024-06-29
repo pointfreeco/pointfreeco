@@ -9,7 +9,7 @@ import Prelude
 import Styleguide
 import StyleguideV2
 
-public struct PageLayout<Content: HTML>: NodeView {
+public struct PageLayout<Content: HTML>: HTMLDocument {
   let content: Content
   let layoutData: SimplePageLayoutData<Void>
   let metadata: Metadata<Void>
@@ -34,128 +34,187 @@ public struct PageLayout<Content: HTML>: NodeView {
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
-  public var body: Node {
-    Node.doctype
+  public var head: some HTML {
+    // TODO: Is this needed? `layoutData.extraHead.rawValue`
 
-    html {
-      head {
-        layoutData.extraHead.rawValue
-        favicons.rawValue
-        if layoutData.usePrismJs {
-          prismJsHead.rawValue
-        }
+    link()
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")
+      .rel("apple-touch-icon")
+      .attribute("sizes", "180x180")
+    link()
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")
+      .rel("icon")
+      .attribute("sizes", "32x32")
+      .attribute("type", "image/png")
+    link()
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")
+      .rel("icon")
+      .attribute("sizes", "16x16")
+      .attribute("type", "image/png")
+    link()
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest")
+      .rel("manifest")
+    link()
+      .href("https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg")
+      .rel("mask-icon")
 
-        Node {
-          meta().attribute("charset", "utf8")
-          meta()
-            .attribute("theme-color")
-            .attribute("#121212")
-          meta()
-            .attribute("name", "viewport")
-            .attribute("content", "width=device-width, initial-scale=1")
+    if layoutData.usePrismJs {
+      PrismJSHead()
+    }
 
-          title { HTMLText(layoutData.title) }
+    meta().attribute("charset", "utf8")
+    meta()
+      .attribute("theme-color")
+      .attribute("#121212")
+    meta()
+      .attribute("name", "viewport")
+      .attribute("content", "width=device-width, initial-scale=1")
 
-          tag("style") { HTMLRaw("\(renderedNormalizeCss)") }
-          tag("style") {
-            """
-            html {
-              font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
-              line-height: 1.5;
-              -webkit-box-sizing: border-box;
-              -moz-box-sizing: border-box;
-              -ms-box-sizing: border-box;
-              -o-box-sizing: border-box;
-              box-sizing: border-box;
-            }
-            body {
-              -webkit-box-sizing: border-box;
-              -moz-box-sizing: border-box;
-              -ms-box-sizing: border-box;
-              -o-box-sizing: border-box;
-              box-sizing:border-box
-            }
-            *, * ::before, * ::after {
-              -webkit-box-sizing: inherit;
-              -moz-box-sizing: inherit;
-              -ms-box-sizing: inherit;
-              -o-box-sizing: inherit;
-              box-sizing:inherit
-            }
-            body, html {
-              height:100%;
-              background: #fff;
-            }
-            .markdown *:link, .markdown *:visited { color: inherit; }
-            @media only screen and (min-width: 832px) {
-              html {
-                font-size: 16px;
-              }
-            }
-            @media only screen and (max-width: 831px) {
-              html {
-                font-size: 14px;
-              }
-            }
-            @media (prefers-color-scheme: dark) {
-              body, html {
-                height:100%;
-                background: #121212;
-              }
-            }
-            @keyframes Pulse {
-              from { opacity: 1; }
-              50% { opacity: 0; }
-              to { opacity: 1; }
-            }
-            """
-          }
+    tag("title") { HTMLText(layoutData.title) }
 
-          link()
-            .href(siteRouter.url(for: .feed(.episodes)))
-            .attribute("rel", "alternate")
-            .title("Point-Free Episodes")
-            .attribute("type", "application/atom+xml")
-
-          link()
-            .href(siteRouter.url(for: .blog(.feed)))
-            .attribute("rel", "alternate")
-            .title("Point-Free Blog")
-            .attribute("type", "application/atom+xml")
+    style { "\(renderedNormalizeCss)" }
+    style {
+      """
+      html {
+        font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
+        line-height: 1.5;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        -o-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      body {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        -o-box-sizing: border-box;
+        box-sizing:border-box
+      }
+      *, * ::before, * ::after {
+        -webkit-box-sizing: inherit;
+        -moz-box-sizing: inherit;
+        -ms-box-sizing: inherit;
+        -o-box-sizing: inherit;
+        box-sizing:inherit
+      }
+      body, html {
+        height:100%;
+        background: #fff;
+      }
+      .markdown *:link, .markdown *:visited { color: inherit; }
+      @media only screen and (min-width: 832px) {
+        html {
+          font-size: 16px;
         }
       }
-      Node {
-        tag("body") {
-          if let flash = layoutData.flash {
-            TopBanner(flash: flash)
-          }
-          if layoutData.isGhosting {
-            TopBanner(style: .notice) {
-              "👻 You’re a ghost! "
-              Link("Stop ghosting", href: siteRouter.path(for: .endGhosting))
-            }
-          }
-          PastDueBanner()
-          if emergencyMode {
-            TopBanner(style: .warning) {
-              """
-              Temporary service disruption. We’re operating with reduced features and will be \
-              back soon!
-              """
-            }
-          }
-          LiveStreamBanner()
-          // TODO: Announcement banner
-
-          NavView()
-          content
-          if !layoutData.style.isMinimal {
-            Footer()
-          }
+      @media only screen and (max-width: 831px) {
+        html {
+          font-size: 14px;
         }
+      }
+      @media (prefers-color-scheme: dark) {
+        body, html {
+          height:100%;
+          background: #121212;
+        }
+      }
+      @keyframes Pulse {
+        from { opacity: 1; }
+        50% { opacity: 0; }
+        to { opacity: 1; }
+      }
+      """
+    }
+
+    link()
+      .href(siteRouter.url(for: .feed(.episodes)))
+      .attribute("rel", "alternate")
+      .title("Point-Free Episodes")
+      .attribute("type", "application/atom+xml")
+
+    link()
+      .href(siteRouter.url(for: .blog(.feed)))
+      .attribute("rel", "alternate")
+      .title("Point-Free Blog")
+      .attribute("type", "application/atom+xml")
+  }
+
+  public var body: some HTML {
+    if let flash = layoutData.flash {
+      TopBanner(flash: flash)
+    }
+    if layoutData.isGhosting {
+      TopBanner(style: .notice) {
+        "👻 You’re a ghost! "
+        Link("Stop ghosting", href: siteRouter.path(for: .endGhosting))
       }
     }
-    .attribute("lang", "en")
+    PastDueBanner()
+    if emergencyMode {
+      TopBanner(style: .warning) {
+        """
+        Temporary service disruption. We’re operating with reduced features and will be \
+        back soon!
+        """
+      }
+    }
+    LiveStreamBanner()
+    // TODO: Announcement banner
+
+    NavView()
+    content
+    if !layoutData.style.isMinimal {
+      Footer()
+    }
+  }
+}
+
+public struct PrismJSHead: HTML {
+  public var body: some HTML {
+    style {
+      """
+      .language-diff .token.inserted {
+        background-color: #f0fff4;
+        color: #22863a;
+      }
+
+      .language-diff .token.deleted {
+        background-color: #ffeef0;
+        color: #b31d28;
+      }
+      """
+    }
+    script().src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js")
+    HTMLForEach(["swift", "clike", "css", "diff", "javascript", "ruby"]) { lang in
+      script().src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-\(lang).min.js")
+    }
+    script {
+      #"""
+      Prism.languages.swift.keyword = [
+        /\b(any|macro)\b/,
+        Prism.languages.swift.keyword
+      ];
+      Prism.languages.insertBefore('swift', 'operator', {
+        'code-fold': {
+          pattern: /…/
+        },
+      });
+      Prism.languages.insertBefore('swift', 'string-literal', {
+        'placeholder': {
+          pattern: /<#.+?#>/,
+          inside: {
+            'placeholder-open': {
+              pattern: /<#/
+            },
+            'placeholder-close': {
+              pattern: /#>/
+            },
+          }
+        },
+      });
+      """#
+    }
   }
 }
 

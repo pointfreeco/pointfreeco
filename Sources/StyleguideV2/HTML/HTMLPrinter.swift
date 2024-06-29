@@ -2,11 +2,13 @@ import OrderedCollections
 
 public struct HTMLPrinter {
   public typealias Content = Never
-  var attributes: OrderedDictionary<String, String?> = [:]
-  var bytes: ContiguousArray<UInt8> = []
-  var styles: OrderedDictionary<MediaQuery?, OrderedDictionary<String, String>> = [:]
+  public var attributes: OrderedDictionary<String, String?> = [:]
+  public var bytes: ContiguousArray<UInt8> = []
+  public var styles: OrderedDictionary<MediaQuery?, OrderedDictionary<String, String>> = [:]
 
-  var stylesheet: String {
+  public init() {}
+
+  public var stylesheet: String {
     var sheet = ""
     for (mediaQuery, styles) in styles.sorted(by: { $0.key == nil ? $1.key != nil : false }) {
       if let mediaQuery {

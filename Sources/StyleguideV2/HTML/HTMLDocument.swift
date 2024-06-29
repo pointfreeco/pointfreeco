@@ -23,16 +23,18 @@ private struct Document<Head: HTML>: HTML {
   let bodyBytes: ContiguousArray<UInt8>
 
   var body: some HTML {
+    Doctype()
     html {
       tag("head") {
         head
         style {
-          HTMLText(stylesheet)
+          stylesheet
         }
       }
       tag("body") {
         HTMLRaw(bodyBytes)
       }
     }
+    .attribute("lang", "en")
   }
 }

@@ -31,19 +31,21 @@ extension Conn where Step == HeadersOpen {
 //    >>> metaLayout(simplePageLayout(view))
 //    >>> addPlausibleAnalytics
 
+    var printer = HTMLPrinter()
+    PageLayout._render(
+      PageLayout(
+        layoutData: layoutData,
+        metadata: metadata,
+        cssConfig: .pretty, // TODO
+        emergencyMode: false, // TODO,
+        content: view
+      ),
+      into: &printer
+    )
     return self
       .writeSessionCookie { $0.flash = nil }
       .respond(
-        body: renderHtml(
-          PageLayout(
-            layoutData: layoutData,
-            metadata: metadata,
-            cssConfig: .pretty, // TODO
-            emergencyMode: false, // TODO,
-            content: view
-          )
-          .body
-        ),
+        body: String(decoding: printer.bytes, as: UTF8.self),  // TODO: Render bytes directly
         contentType: .html
       )
   }

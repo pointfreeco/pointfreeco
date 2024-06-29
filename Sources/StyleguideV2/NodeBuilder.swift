@@ -74,19 +74,6 @@ public struct TextNode: NodeView {
   }
 }
 
-public struct Raw: NodeView {
-  let raw: String
-  public init(_ raw: String) {
-    self.raw = raw
-  }
-  public init(_ text: StaticString) {
-    self.raw = String(describing: text)
-  }
-  public var body: Node {
-    Node.raw(raw)
-  }
-}
-
 @resultBuilder
 public enum NodeBuilder {
   public static func buildBlock() -> Node {
