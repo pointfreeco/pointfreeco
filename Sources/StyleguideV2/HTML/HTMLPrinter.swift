@@ -20,7 +20,7 @@ public struct HTMLPrinter {
         }
       }
       for (className, style) in styles {
-        sheet.append(".\(className){\(style)}")
+        sheet.append("\(className){\(style)}")
       }
     }
     return sheet

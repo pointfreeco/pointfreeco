@@ -6,42 +6,71 @@ extension HTML {
     _ property: String,
     _ value: String?,
     media mediaQuery: MediaQuery? = nil,
-    pseudo: Pseudo? = nil
+    pre: String? = nil,
+    pseudo: Pseudo? = nil,
+    post: String? = nil
   ) -> HTMLInlineStyle<Self> {
     HTMLInlineStyle(
       content: self,
       property: property,
       value: value,
       mediaQuery: mediaQuery,
-      pseudo: pseudo
+      pre: pre,
+      pseudo: pseudo,
+      post: post
     )
   }
 }
 
 public struct HTMLInlineStyle<Content: HTML>: HTML {
-  let content: Content
-  var styles: [(String, String, MediaQuery?, Pseudo?)]
+  private let content: Content
+  private var styles: [Style]
 
   init(
     content: Content,
     property: String,
     value: String?,
     mediaQuery: MediaQuery?,
-    pseudo: Pseudo?
+    pre: String? = nil,
+    pseudo: Pseudo?,
+    post: String? = nil
   ) {
     self.content = content
-    self.styles = value.map { [(property, $0, mediaQuery, pseudo)] } ?? []
+    self.styles = value.map {
+      [
+        Style(
+          property: property,
+          value: $0,
+          media: mediaQuery,
+          preSelector: pre,
+          pseudo: pseudo,
+          postSelector: post
+        )
+      ]
+    }
+    ?? []
   }
 
   public func inlineStyle(
     _ property: String,
     _ value: String?,
     media mediaQuery: MediaQuery? = nil,
-    pseudo: Pseudo? = nil
+    pre: String? = nil,
+    pseudo: Pseudo? = nil,
+    post: String? = nil
   ) -> HTMLInlineStyle {
     var copy = self
     if let value {
-      copy.styles.append((property, value, mediaQuery, pseudo))
+      copy.styles.append(
+        Style(
+          property: property,
+          value: value,
+          media: mediaQuery,
+          preSelector: pre,
+          pseudo: pseudo,
+          postSelector: post
+        )
+      )
     }
     return copy
   }
@@ -53,26 +82,29 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
       printer.attributes["class"] = previousClass
     }
 
-    for (property, value, mediaQuery, pseudo) in html.styles {
-      let uniqueID = "\(property)\(value)\(mediaQuery?.rawValue ?? "")\(pseudo?.rawValue ?? "")"
-      let id = classes.withValue { classes in
-        guard let index = classes.firstIndex(of: uniqueID)
+    for style in html.styles {
+      let index = classes.withValue { classes in
+        guard let index = classes.firstIndex(of: style)
         else {
-          classes.append(uniqueID)
+          classes.append(style)
           return classes.count - 1
         }
         return index
       }
 
       #if DEBUG
-        let className = "\(property)-\(id)"
+        let className = "\(style.property)-\(index)"
       #else
-        let className = "c\(id)"
+        let className = "c\(index)"
       #endif
-      let pseudo = "\(className)\(pseudo?.rawValue ?? "")"
+      let selector = """
+        \(style.preSelector ?? "") \
+        .\(className)\(style.pseudo?.rawValue ?? "") \
+        \(style.postSelector ?? "")
+        """
 
-      if printer.styles[mediaQuery, default: [:]][pseudo] == nil {
-        printer.styles[mediaQuery, default: [:]][pseudo] = "\(property):\(value)"
+      if printer.styles[style.media, default: [:]][selector] == nil {
+        printer.styles[style.media, default: [:]][selector] = "\(style.property):\(style.value)"
       }
       printer.attributes["class", default: ""]!.append("\(className) ")
     }
@@ -80,7 +112,16 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
   public var body: Never { fatalError() }
 }
 
-private let classes = LockIsolated<OrderedSet<String>>([])
+private let classes = LockIsolated<OrderedSet<Style>>([])
+
+private struct Style: Hashable {
+  let property: String
+  let value: String
+  let media: MediaQuery?
+  let preSelector: String?
+  let pseudo: Pseudo?
+  let postSelector: String?
+}
 
 public struct MediaQuery: RawRepresentable, Hashable {
   public init(rawValue: String) {
@@ -89,7 +130,7 @@ public struct MediaQuery: RawRepresentable, Hashable {
   public var rawValue: String
 }
 
-public struct Pseudo: RawRepresentable {
+public struct Pseudo: RawRepresentable, Hashable {
   public var rawValue: String
   public init(rawValue: String) {
     self.rawValue = rawValue

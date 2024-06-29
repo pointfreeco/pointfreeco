@@ -21,7 +21,7 @@ struct ReferAFriendModule: HTML {
           input()
             .attribute("value", url)
             .attribute("type", "text")
-            .attribute("readonly", "true")
+            .attribute("readonly")
             .attribute("onclick", "this.select();")
             .inlineStyle("width", "100%")
             .inlineStyle("border-radius", "0.5rem")

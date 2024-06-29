@@ -52,7 +52,6 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
       .attribute("rel", "alternate")
       .title("Point-Free Episodes")
       .attribute("type", "application/atom+xml")
-
     link()
       .href(siteRouter.url(for: .blog(.feed)))
       .attribute("rel", "alternate")
@@ -64,28 +63,35 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
   }
 
   public var body: some HTML {
-    if let flash = layoutData.flash {
-      TopBanner(flash: flash)
-    }
-    if layoutData.isGhosting {
-      TopBanner(style: .notice) {
-        "👻 You’re a ghost! "
-        Link("Stop ghosting", href: siteRouter.path(for: .endGhosting))
-      }
-    }
-    PastDueBanner()
-    if emergencyMode {
-      TopBanner(style: .warning) {
-        """
-        Temporary service disruption. We’re operating with reduced features and will be \
-        back soon!
-        """
-      }
-    }
-    LiveStreamBanner()
-    // TODO: Announcement banner
+//    if let flash = layoutData.flash {
+//      TopBanner(flash: flash)
+//    }
+//    if layoutData.isGhosting {
+//      TopBanner(style: .notice) {
+//        "👻 You’re a ghost! "
+//        Link("Stop ghosting", href: siteRouter.path(for: .endGhosting))
+//      }
+//    }
+//    PastDueBanner()
+//    if emergencyMode {
+//      TopBanner(style: .warning) {
+//        """
+//        Temporary service disruption. We’re operating with reduced features and will be \
+//        back soon!
+//        """
+//      }
+//    }
+//    LiveStreamBanner()
+//    // TODO: Announcement banner
 
-    NavView()
+
+//    NavBar()
+    NewNavBar()
+
+    Divider()
+      .inlineStyle("padding", "2rem 0")
+
+//    NavView()
     content
     if !layoutData.style.isMinimal {
       Footer()
@@ -93,53 +99,400 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
   }
 }
 
-public struct PrismJSHead: HTML {
-  public var body: some HTML {
-    style {
-      """
-      .language-diff .token.inserted {
-        background-color: #f0fff4;
-        color: #22863a;
-      }
+struct NewNavBar: HTML {
+  @Dependency(\.siteRouter) var siteRouter
 
-      .language-diff .token.deleted {
-        background-color: #ffeef0;
-        color: #b31d28;
+  var body: some HTML {
+    header {
+      Link(href: siteRouter.path(for: .home)) {
+        SVG(
+          base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
+          description: "Point-Free"
+        )
       }
-      """
+      .inlineStyle("display", "block")
+      .inlineStyle("float", "left")
+      .inlineStyle("font-size", "2em")
+      .inlineStyle("padding", "10px 20px")
+
+      MenuButton()
+      MainNavItems()
     }
-    script().src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js")
-    HTMLForEach(["swift", "clike", "css", "diff", "javascript", "ruby"]) { lang in
-      script().src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-\(lang).min.js")
+    .inlineStyle("background-color", "#000")
+    .inlineStyle("position", "fixed")
+    .inlineStyle("width", "100%")
+    .inlineStyle("z-index", "3")
+  }
+}
+
+struct MenuButton: HTML {
+  var body: some HTML {
+    input()
+      .attribute("id", "menu-btn")
+      .attribute("type", "checkbox")
+      .inlineStyle("display", "none")
+
+    Bars()
+      .attribute("id", "menu-icon")
+      .attribute("for", "menu-btn")
+      .color(.white)
+      .inlineStyle("cursor", "pointer")
+      .inlineStyle("display", "inline-block")
+      .inlineStyle("float", "right")
+      .inlineStyle("padding", "28px 20px")
+      .inlineStyle("position", "relative")
+      .inlineStyle("user-select", "none")
+  }
+
+  struct Bars: HTML {
+    var body: some HTML {
+      label {
+        HTMLForEach(-1...1) { index in
+          Bar(index: index)
+        }
+        .size(width: .px(24), height: .px(3))
+        .inlineStyle("background", "#333")
+        .inlineStyle("display", "block")
+        .inlineStyle("border-radius", "1.5px")
+        .inlineStyle("transition", "background .2s ease-out")
+        .inlineStyle("position", "relative")
+      }
     }
-    script {
-      #"""
-      Prism.languages.swift.keyword = [
-        /\b(any|macro)\b/,
-        Prism.languages.swift.keyword
-      ];
-      Prism.languages.insertBefore('swift', 'operator', {
-        'code-fold': {
-          pattern: /…/
-        },
-      });
-      Prism.languages.insertBefore('swift', 'string-literal', {
-        'placeholder': {
-          pattern: /<#.+?#>/,
-          inside: {
-            'placeholder-open': {
-              pattern: /<#/
-            },
-            'placeholder-close': {
-              pattern: /#>/
-            },
-          }
-        },
-      });
-      """#
+  }
+
+  struct Bar: HTML {
+    let index: Int
+    var body: some HTML {
+      span {}
+        .inlineStyle("transition", "all .2s ease-out, background .2s ease-out")
+        .inlineStyle("top", index == 0 ? nil : "\(index * 5)px")
+        .inlineStyle("top", index == 0 ? nil : index == 1 ? "-5px" : "0", pre: "input:checked ~ #menu-icon")
+        .inlineStyle("transform", "rotate(\(index * 45)deg)", pre: "input:checked ~ #menu-icon")
+        .inlineStyle("background", index == 0 ? "transparent" : nil, pre: "input:checked ~ #menu-icon")
     }
   }
 }
+
+struct MainNavItems: HTML {
+  var body: some HTML {
+    ul {
+      HTMLGroup {
+        li { "One" }
+        li { "Two" }
+        li { "Three" }
+        li { "Four" }
+      }
+      .color(.white)
+      .inlineStyle("display", "block")
+      .inlineStyle("padding", "20px 20px")
+      .inlineStyle("border-right", "1px solid #f4f4f4")
+      .inlineStyle("text-decoration", "none")
+      .inlineStyle("background-color", "#555", pseudo: .hover)
+    }
+    .inlineStyle("margin", "0")
+    .inlineStyle("padding", "0")
+    .inlineStyle("list-style", "none")
+    .inlineStyle("overflow", "hidden")
+    .inlineStyle("background-color", "#000")
+    .inlineStyle("clear", "both")
+    .inlineStyle("max-height", "0")
+    .inlineStyle("transition", "max-height 300ms ease-out")
+    .inlineStyle("max-height", "20rem", media: .mobile, pre: "input:checked ~")
+  }
+}
+
+
+struct NavBar: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    nav {
+//      Link(href: siteRouter.path(for: .home)) {
+//        SVG(
+//          base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
+//          description: "Point-Free"
+//        )
+//      }
+//      .inlineStyle("flex-grow", "0")
+//      .inlineStyle("flex-shrink", "0")
+//      .inlineStyle("flex-basis", "auto")
+
+      label {
+        "HAM"
+      }
+      .attribute("for", "hamburger")
+      .inlineStyle("display", "none", media: .desktop)
+      .color(.white)
+
+      input()
+        .attribute("type", "checkbox")
+        .attribute("id", "hamburger")
+        .inlineStyle("display", "none")
+
+      ul {
+        HTMLGroup {
+          li { "One" }
+          li { "Two" }
+          li { "Three" }
+          li { "Four" }
+        }
+        .inlineStyle("flex-grow", "1")
+        .inlineStyle("flex-basis", "0")
+        .inlineStyle("padding", "10px")
+        .inlineStyle("text-align", "center")
+        .color(.white)
+        .inlineStyle("box-sizing", "border-box", media: .mobile)
+        .inlineStyle("display", "block", media: .mobile)
+        .inlineStyle("width", "100%", media: .mobile)
+        .inlineStyle("border-top", "1 px solid #333", media: .mobile)
+      }
+      .listStyle(.reset)
+      .attribute("id", "hamitems")
+      .inlineStyle("display", "flex")
+      .inlineStyle("display", "none", media: .mobile)
+      .inlineStyle("display", "block", media: .mobile, pre: "input:checked ~")
+      .inlineStyle("transition", "300ms")
+    }
+    .attribute("id", "hamnav")
+    .inlineStyle("width", "100%")
+//    .inlineStyle("position", "fixed", media: .mobile)
+//    .inlineStyle("top", "0")
+    .inlineStyle("display", "flex")
+    .background(.black)
+  }
+}
+
+
+
+// ========================
+
+struct NavView: HTML {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
+  @Dependency(\.currentRoute) var siteRoute
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    div {
+      nav {
+        Link(href: siteRouter.path(for: .home)) {
+          SVG(
+            base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
+            description: "Point-Free"
+          )
+        }
+        .column(alignment: .end)
+        .inlineStyle("max-width", "100%")
+        .inlineStyle("box-sizing", "border-box")
+
+        label {
+          "HAM"
+        }
+        .inlineStyle("max-width", "100%")
+        .inlineStyle("box-sizing", "border-box")
+        .attribute("for", "menu-checkbox")
+        .inlineStyle("display", "none", media: .desktop)
+        .inlineStyle("display", "block", media: .mobile, pre: "input:checked ~")
+        .color(.white)
+        .flexible()
+        .column(alignment: .end)
+        .attribute("for", "hamburger")
+
+        input()
+          .attribute("type", "checkbox")
+          .attribute("id", "menu-checkbox")
+          .inlineStyle("display", "none")
+
+        ul {
+          HTMLGroup {
+            li { "One" }
+            li { "Two" }
+            li { "Three" }
+            li { "Four" }
+          }
+          .inlineStyle("flex-grow", "1")
+          .inlineStyle("flex-basis", "0")
+          .inlineStyle("padding", "10px")
+          .inlineStyle("text-align", "center")
+          .color(.white)
+          .inlineStyle("box-sizing", "border-box", media: .mobile)
+          .inlineStyle("display", "block", media: .mobile)
+          .inlineStyle("width", "100%", media: .mobile)
+          .inlineStyle("border-top", "1 px solid #333", media: .mobile)
+        }
+        .listStyle(.reset)
+        .attribute("id", "hamitems")
+        .inlineStyle("display", "flex")
+        .inlineStyle("display", "none", media: .mobile)
+        .inlineStyle("display", "block", media: .mobile, pre: "input:checked ~")
+        .inlineStyle("transition", "300ms")
+
+//        Grid {
+//          GridColumn {
+//            Link(href: siteRouter.path(for: .home)) {
+//              SVG(
+//                base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
+//                description: "Point-Free"
+//              )
+//            }
+//          }
+//          .inflexible()
+//
+//          label {
+//            "MENU"
+//          }
+//          .inlineStyle("max-width", "100%")
+//          .inlineStyle("box-sizing", "border-box")
+//          .attribute("for", "menu-checkbox")
+//          .inlineStyle("display", "none", media: .desktop)
+//          .inlineStyle("display", "block", media: .mobile, pre: "input:checked ~")
+//          .color(.white)
+//          .flexible()
+//          .column(alignment: .end)
+//
+//          input()
+//            .attribute("type", "checkbox")
+//            .attribute("id", "menu-checkbox")
+//            .inlineStyle("display", "none")
+//
+////          GridColumn {
+//            CenteredNavItems()
+////          }
+//            .inlineStyle("max-width", "100%")
+//            .inlineStyle("box-sizing", "border-box")
+//          .column(alignment: .center)
+//          .inlineStyle("display", "none", media: .mobile)
+//          .flexible()
+//
+//          GridColumn {
+//            TrailingNavItems()
+//          }
+//          .column(alignment: .end)
+//          .inlineStyle("display", "none", media: .mobile)
+//          .inflexible()
+//        }
+//        .grid(alignment: .center)
+      }
+      .inlineStyle("max-width", "1280px")
+      .inlineStyle("margin-left", "auto")
+      .inlineStyle("margin-right", "auto")
+      .background(.gray300)
+      .attribute("id", "hamnav")
+      .inlineStyle("width", "100%")
+//      .inlineStyle("position", "fixed", media: .mobile)
+//      .inlineStyle("top", "0")
+      .inlineStyle("display", "flex")
+      .grid(alignment: .center)
+    }
+    .backgroundColor(.black)
+    .padding(topBottom: .small, leftRight: .small)
+  }
+}
+
+struct CenteredNavItems: HTML {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    ul {
+      HTMLGroup {
+        if currentUser != nil {
+          NavListItem("Episodes", route: .episodes(.list(.all)))
+        }
+        NavListItem("Collections", route: .collections())
+        if subscriberState.isNonSubscriber {
+          NavListItem("Pricing", route: .pricingLanding)
+        }
+        NavListItem("Blog", route: .blog())
+        NavListItem("Gifts", route: .gifts(.index))
+
+        HTMLGroup {
+          if currentUser != nil {
+            li {
+              Button(color: .purple, size: .small) { "Account" }
+                .attribute("href", siteRouter.path(for: .account(.index)))
+            }
+          } else {
+            li {
+              Button(color: .purple, size: .small, style: .outline) { "Login" }
+                .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+            }
+            li {
+              Button(color: .purple, size: .small) { "Sign up" }
+                .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+            }
+          }
+        }
+        .inlineStyle("display", "none", media: .desktop)
+      }
+      .inlineStyle("box-sizing", "border-box", media: .mobile)
+      .inlineStyle("display", "block", media: .mobile)
+      .inlineStyle("width", "100%", media: .mobile)
+      .inlineStyle("border-top", "1 px solid #333", media: .mobile)
+    }
+    .linkColor(.gray650)
+    .listStyle(.reset)
+    .fontStyle(.body(.small))
+  }
+}
+
+struct TrailingNavItems: HTML {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    ul {
+      HTMLGroup {
+        if currentUser != nil {
+          li {
+            Button(color: .purple, size: .small) {
+              "Account"
+            }
+            .attribute("href", siteRouter.path(for: .account(.index)))
+          }
+        } else {
+          li {
+            Button(color: .purple, size: .small, style: .outline) {
+              "Login"
+            }
+            .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+          }
+          li {
+            Button(color: .purple, size: .small) {
+              "Sign up"
+            }
+            .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+          }
+        }
+      }
+      .padding(left: .small)
+      .attribute("display", "inline")
+    }
+    .fontStyle(.body(.small))
+    .listStyle(.reset)
+  }
+}
+
+struct NavListItem: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+  let title: String
+  let route: SiteRoute
+  init(_ title: String, route: SiteRoute) {
+    self.title = title
+    self.route = route
+  }
+  var body: some HTML {
+    li {
+      Link(title, href: siteRouter.path(for: route))
+    }
+    .inlineStyle("padding-left", "2rem", pseudo: .not(.firstChild))
+    .inlineStyle("display", "inline")
+  }
+}
+
+
+// ========================
 
 public struct PastDueBanner: HTML {
   @Dependency(\.siteRouter) var siteRouter
@@ -323,177 +676,6 @@ struct TopBanner<Content: HTML>: HTML {
   }
 }
 
-struct NavView: HTML {
-  @Dependency(\.currentUser) var currentUser
-  @Dependency(\.subscriberState) var subscriberState
-  @Dependency(\.currentRoute) var siteRoute
-  @Dependency(\.siteRouter) var siteRouter
-
-  var body: some HTML {
-    div {
-      div {
-        Grid {
-          GridColumn {
-            Link(href: siteRouter.path(for: .home)) {
-              SVG(
-                base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
-                description: "Point-Free"
-              )
-            }
-          }
-          .column(count: 2)
-
-          GridColumn {
-            CenteredNavItems()
-          }
-          .column(alignment: .center)
-          .column(count: 8, media: .desktop)
-          .inlineStyle("display", "none", media: .mobile)
-
-          GridColumn {
-            TrailingNavItems()
-          }
-          .column(alignment: .end)
-          .column(count: 2, media: .desktop)
-          .inlineStyle("display", "none", media: .mobile)
-
-          GridColumn {
-            MobileMenu()
-          }
-          .column(alignment: .end)
-          .column(count: 10)
-          .inlineStyle("display", "none", media: .desktop)
-        }
-        .grid(alignment: .center)
-      }
-      .inlineStyle("max-width", "1280px")
-      .inlineStyle("margin-left", "auto")
-      .inlineStyle("margin-right", "auto")
-    }
-    .backgroundColor(.black)
-    .padding(topBottom: .small, leftRight: .small)
-  }
-}
-
-struct MobileMenu: HTML {
-  var body: some HTML {
-    div {
-      label {
-        for index in -1...1 {
-          MenuBar(index: index)
-        }
-      }
-      .attribute("class", "menu-checkbox-container")
-      .attribute("for", "menu-checkbox")
-      .inlineStyle("align-items", "center")
-      .inlineStyle("cursor", "pointer")
-      .inlineStyle("display", "flex")
-      .inlineStyle("flex-direction", "column")
-      .inlineStyle("height", "100%")
-      .inlineStyle("width", "30px")
-      .inlineStyle("justify-content", "center")
-    }
-
-    input()
-      .hidden()
-      .attribute("id", "menu-checkbox")
-      .attribute("type", "checkbox")
-  }
-
-  private struct MenuBar: HTML {
-    let index: Int
-    var body: some HTML {
-      div {}
-        .attribute("class", "menu-bar-\(index)")
-        .backgroundColor(.white)
-        .inlineStyle("border-radius", "2px")
-        .inlineStyle("content", "''")
-        .inlineStyle("display", "block")
-        .inlineStyle("height", "4px")
-        .inlineStyle("margin-top", "\(index * 8)px")
-        .inlineStyle("position", "absolute")
-        .inlineStyle("transition", "transform 400ms cubic-bezier(0.23, 1, 0.32, 1)")
-        .inlineStyle("width", "30px")
-    }
-  }
-}
-
-struct TrailingNavItems: HTML {
-  @Dependency(\.currentUser) var currentUser
-  @Dependency(\.siteRouter) var siteRouter
-
-  var body: some HTML {
-    ul {
-      HTMLGroup {
-        if currentUser != nil {
-          li {
-            Button(color: .purple, size: .small) {
-              "Account"
-            }
-            .attribute("href", siteRouter.path(for: .account(.index)))
-          }
-        } else {
-          li {
-            Button(color: .purple, size: .small, style: .outline) {
-              "Login"
-            }
-            .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
-          }
-          li {
-            Button(color: .purple, size: .small) {
-              "Sign up"
-            }
-            .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
-          }
-        }
-      }
-      .padding(left: .small)
-      .attribute("display", "inline")
-    }
-    .fontStyle(.body(.small))
-    .listStyle(.reset)
-  }
-}
-
-struct CenteredNavItems: HTML {
-  @Dependency(\.currentUser) var currentUser
-  @Dependency(\.subscriberState) var subscriberState
-
-  var body: some HTML {
-    ul {
-      if currentUser != nil {
-        NavListItem("Episodes", route: .episodes(.list(.all)))
-      }
-      NavListItem("Collections", route: .collections())
-      if subscriberState.isNonSubscriber {
-        NavListItem("Pricing", route: .pricingLanding)
-      }
-      NavListItem("Blog", route: .blog())
-      NavListItem("Gifts", route: .gifts(.index))
-    }
-    .linkColor(.gray650)
-    .listStyle(.reset)
-    .fontStyle(.body(.small))
-  }
-}
-
-struct NavListItem: HTML {
-  @Dependency(\.siteRouter) var siteRouter
-  let title: String
-  let route: SiteRoute
-  init(_ title: String, route: SiteRoute) {
-    self.title = title
-    self.route = route
-  }
-  var body: some HTML {
-    li {
-      Link(title, href: siteRouter.path(for: route))
-    }
-    .padding(left: .medium)
-    .inlineStyle("display", "inline")
-  }
-}
-
 private struct Favicons: HTML {
   var body: some HTML {
     link()
@@ -577,3 +759,95 @@ private struct BaseStyles: HTML {
     }
   }
 }
+
+public struct PrismJSHead: HTML {
+  public var body: some HTML {
+    style {
+      """
+      .language-diff .token.inserted {
+        background-color: #f0fff4;
+        color: #22863a;
+      }
+
+      .language-diff .token.deleted {
+        background-color: #ffeef0;
+        color: #b31d28;
+      }
+      """
+    }
+    script().src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js")
+    HTMLForEach(["swift", "clike", "css", "diff", "javascript", "ruby"]) { lang in
+      script().src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-\(lang).min.js")
+    }
+    script {
+      #"""
+      Prism.languages.swift.keyword = [
+        /\b(any|macro)\b/,
+        Prism.languages.swift.keyword
+      ];
+      Prism.languages.insertBefore('swift', 'operator', {
+        'code-fold': {
+          pattern: /…/
+        },
+      });
+      Prism.languages.insertBefore('swift', 'string-literal', {
+        'placeholder': {
+          pattern: /<#.+?#>/,
+          inside: {
+            'placeholder-open': {
+              pattern: /<#/
+            },
+            'placeholder-close': {
+              pattern: /#>/
+            },
+          }
+        },
+      });
+      """#
+    }
+  }
+}
+
+
+//struct MobileMenu: HTML {
+//  var body: some HTML {
+//    div {
+//      label {
+//        for index in -1...1 {
+//          MenuBar(index: index)
+//        }
+//      }
+//      .attribute("class", "menu-checkbox-container")
+//      .attribute("for", "menu-checkbox")
+//      .inlineStyle("align-items", "center")
+//      .inlineStyle("cursor", "pointer")
+//      .inlineStyle("display", "flex")
+//      .inlineStyle("flex-direction", "column")
+//      .inlineStyle("height", "100%")
+//      .inlineStyle("width", "30px")
+//      .inlineStyle("justify-content", "center")
+//    }
+//
+//    input()
+//      .hidden()
+//      .attribute("id", "menu-checkbox")
+//      .attribute("type", "checkbox")
+//  }
+//
+//  private struct MenuBar: HTML {
+//    let index: Int
+//    var body: some HTML {
+//      div {}
+//        .attribute("class", "menu-bar-\(index)")
+//        .backgroundColor(.white)
+//        .inlineStyle("border-radius", "2px")
+//        .inlineStyle("content", "''")
+//        .inlineStyle("display", "block")
+//        .inlineStyle("height", "4px")
+//        .inlineStyle("margin-top", "\(index * 8)px")
+//        .inlineStyle("position", "absolute")
+//        .inlineStyle("transition", "transform 400ms cubic-bezier(0.23, 1, 0.32, 1)")
+//        .inlineStyle("width", "30px")
+//    }
+//  }
+//}

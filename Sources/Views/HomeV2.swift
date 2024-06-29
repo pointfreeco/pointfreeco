@@ -435,7 +435,7 @@ private struct ReferAFriend: HTML {
           input()
             .attribute("value", url)
             .attribute("type", "text")
-            .attribute("readonly", "true")
+            .attribute("readonly")
             .attribute("onclick", "this.select();")
             .inlineStyle("width", "100%")
             .inlineStyle("border-radius", "0.5rem")
@@ -542,15 +542,6 @@ private struct WhatPeopleAreSaying: HTML {
       .inlineStyle("padding", "1.5rem")
       .inlineStyle("margin-bottom", "1rem", pseudo: .not(.lastChild))
     }
-  }
-}
-
-private struct Divider: HTML {
-  var body: some HTML {
-    div {}
-      .backgroundColor(.gray800.dark(.gray300))
-      .inlineStyle("margin", "0 30%")
-      .inlineStyle("height", "1px")
   }
 }
 
