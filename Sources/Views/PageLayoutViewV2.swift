@@ -9,7 +9,7 @@ import Prelude
 import Styleguide
 import StyleguideV2
 
-public struct PageLayout<Content: HTML>: NodeView {
+public struct PageLayout<Content: HTML>: HTMLDocument {
   let content: Content
   let layoutData: SimplePageLayoutData<Void>
   let metadata: Metadata<Void>
@@ -34,123 +34,136 @@ public struct PageLayout<Content: HTML>: NodeView {
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
-  public var body: Node {
-    Node.doctype
+  public var head: some HTML {
+    meta().attribute("charset", "utf8")
+    meta()
+      .attribute("theme-color")
+      .attribute("#121212")
+    meta()
+      .attribute("name", "viewport")
+      .attribute("content", "width=device-width, initial-scale=1")
 
-    html {
-      head {
-        layoutData.extraHead.rawValue
-        favicons.rawValue
-        if layoutData.usePrismJs {
-          prismJsHead.rawValue
-        }
+//    title(layoutData.title)
+  }
 
-        ChildOf.style(markdownBlockStyles, config: cssConfig).rawValue
-
-        Node {
-          meta().attribute("charset", "utf8")
-          meta()
-            .attribute("theme-color")
-            .attribute("#121212")
-          meta()
-            .attribute("name", "viewport")
-            .attribute("content", "width=device-width, initial-scale=1")
-
-          title { HTMLText(layoutData.title) }
-
-          tag("style") { HTMLRaw("\(renderedNormalizeCss)") }
-          tag("style") {
-            """
-            @media only screen and (min-width: 832px) {
-              html {
-                font-size: 16px;
-              }
-            }
-            @media only screen and (max-width: 831px) {
-              html {
-                font-size: 14px;
-              }
-            }
-
-            html {
-              font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
-              line-height: 1.5;
-              -webkit-box-sizing: border-box;
-              -moz-box-sizing: border-box;
-              -ms-box-sizing: border-box;
-              -o-box-sizing: border-box;
-              box-sizing: border-box;
-            }
-
-            body {
-              -webkit-box-sizing: border-box;
-              -moz-box-sizing: border-box;
-              -ms-box-sizing: border-box;
-              -o-box-sizing: border-box;
-              box-sizing:border-box
-            }
-
-            *, * ::before, * ::after {
-              -webkit-box-sizing: inherit;
-              -moz-box-sizing: inherit;
-              -ms-box-sizing: inherit;
-              -o-box-sizing: inherit;
-              box-sizing:inherit
-            }
-
-            body, html {
-              height:100%;
-              background: #fff;
-            }
-            @media (prefers-color-scheme: dark) {
-              body, html {
-                height:100%;
-                background: #121212;
-              }
-            }
-
-            @keyframes Pulse {
-              from { opacity: 1; }
-              50% { opacity: 0; }
-              to { opacity: 1; }
-            }
-
-            .markdown *:link, .markdown *:visited { color: inherit; }
-            """
-          }
-
-          link()
-            .href(siteRouter.url(for: .feed(.episodes)))
-            .attribute("rel", "alternate")
-            .title("Point-Free Episodes")
-            .attribute("type", "application/atom+xml")
-
-          link()
-            .href(siteRouter.url(for: .blog(.feed)))
-            .attribute("rel", "alternate")
-            .title("Point-Free Blog")
-            .attribute("type", "application/atom+xml")
-        }
-      }
-      body {
-        ghosterBanner(isGhosting: layoutData.isGhosting)
-        pastDueBanner
-        if let flash = layoutData.flash {
-          flashView(flash)
-        }
-        announcementBanner(.wwdc24)
-        liveStreamBanner
-        emergencyModeBanner(emergencyMode, layoutData)
-        Node {
-          NavView()
-          content
-          if !layoutData.style.isMinimal {
-            Footer()
-          }
-        }
-      }
-    }
-    .attribute("lang", "en")
+  public var body: some HTML {
+    "Hello!"
+//    Node.doctype
+//
+//    html {
+//      head {
+//        layoutData.extraHead.rawValue
+//        favicons.rawValue
+//        if layoutData.usePrismJs {
+//          prismJsHead.rawValue
+//        }
+//
+//        ChildOf.style(markdownBlockStyles, config: cssConfig).rawValue
+//
+//        Node {
+//          meta().attribute("charset", "utf8")
+//          meta()
+//            .attribute("theme-color")
+//            .attribute("#121212")
+//          meta()
+//            .attribute("name", "viewport")
+//            .attribute("content", "width=device-width, initial-scale=1")
+//
+//          title { HTMLText(layoutData.title) }
+//
+//          tag("style") { HTMLRaw("\(renderedNormalizeCss)") }
+//          tag("style") {
+//            """
+//            @media only screen and (min-width: 832px) {
+//              html {
+//                font-size: 16px;
+//              }
+//            }
+//            @media only screen and (max-width: 831px) {
+//              html {
+//                font-size: 14px;
+//              }
+//            }
+//
+//            html {
+//              font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
+//              line-height: 1.5;
+//              -webkit-box-sizing: border-box;
+//              -moz-box-sizing: border-box;
+//              -ms-box-sizing: border-box;
+//              -o-box-sizing: border-box;
+//              box-sizing: border-box;
+//            }
+//
+//            body {
+//              -webkit-box-sizing: border-box;
+//              -moz-box-sizing: border-box;
+//              -ms-box-sizing: border-box;
+//              -o-box-sizing: border-box;
+//              box-sizing:border-box
+//            }
+//
+//            *, * ::before, * ::after {
+//              -webkit-box-sizing: inherit;
+//              -moz-box-sizing: inherit;
+//              -ms-box-sizing: inherit;
+//              -o-box-sizing: inherit;
+//              box-sizing:inherit
+//            }
+//
+//            body, html {
+//              height:100%;
+//              background: #fff;
+//            }
+//            @media (prefers-color-scheme: dark) {
+//              body, html {
+//                height:100%;
+//                background: #121212;
+//              }
+//            }
+//
+//            @keyframes Pulse {
+//              from { opacity: 1; }
+//              50% { opacity: 0; }
+//              to { opacity: 1; }
+//            }
+//
+//            .markdown *:link, .markdown *:visited { color: inherit; }
+//            """
+//          }
+//
+//          link()
+//            .href(siteRouter.url(for: .feed(.episodes)))
+//            .attribute("rel", "alternate")
+//            .title("Point-Free Episodes")
+//            .attribute("type", "application/atom+xml")
+//
+//          link()
+//            .href(siteRouter.url(for: .blog(.feed)))
+//            .attribute("rel", "alternate")
+//            .title("Point-Free Blog")
+//            .attribute("type", "application/atom+xml")
+//        }
+//      }
+//      body {
+//        ghosterBanner(isGhosting: layoutData.isGhosting)
+//        pastDueBanner
+//        if let flash = layoutData.flash {
+//          flashView(flash)
+//        }
+//        announcementBanner(.wwdc24)
+//        liveStreamBanner
+//        emergencyModeBanner(emergencyMode, layoutData)
+//        Node {
+//          NavView()
+//          content
+//          if !layoutData.style.isMinimal {
+//            Footer()
+//          }
+//        }
+//      }
+//    }
+//    .attribute("lang", "en")
   }
 }
 

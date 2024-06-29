@@ -58,7 +58,7 @@ public struct HomeModule<Title: HTML, Content: HTML>: HTML {
 
         content
       }
-      .grid(alignment: .center)
+      .grid(alignment: .baseline)
       .inlineStyle("max-width", "1280px")
       .inlineStyle("margin", "0 auto")
       .inlineStyle(

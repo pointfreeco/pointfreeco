@@ -3,8 +3,10 @@ import OrderedCollections
 public struct HTMLPrinter {
   public typealias Content = Never
   var attributes: OrderedDictionary<String, String?> = [:]
-  var bytes: ContiguousArray<UInt8> = []
+  public var bytes: ContiguousArray<UInt8> = []
   var styles: OrderedDictionary<MediaQuery?, OrderedDictionary<String, String>> = [:]
+
+  public init() {}
 
   var stylesheet: String {
     var sheet = ""
