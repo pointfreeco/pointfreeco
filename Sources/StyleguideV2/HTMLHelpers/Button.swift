@@ -19,6 +19,16 @@ public struct Button<Label: HTML>: HTML {
     self.label = label()
   }
 
+  public static func input(
+    color: Color,
+    size: Size = .regular,
+    style: Style = .normal
+  ) -> Self where Label == HTMLEmpty {
+    Button(tag: StyleguideV2.input, color: color, size: size, style: style) {
+      HTMLEmpty()
+    }
+  }
+
   public var body: some HTML {
     tag {
       label

@@ -18,7 +18,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
 
   public init(
     layoutData: SimplePageLayoutData<Void>,
-    metadata: Metadata<Void> = Metadata(),
+    metadata: Metadata<Void> = Metadata.create(),
     cssConfig: Css.Config = .compact,
     emergencyMode: Bool = false,
     @HTMLBuilder content: () -> Content
@@ -35,116 +35,101 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
   @Dependency(\.siteRouter) var siteRouter
 
   public var head: some HTML {
-    meta().attribute("charset", "utf8")
-    meta()
-      .attribute("theme-color")
-      .attribute("#121212")
-    meta()
-      .attribute("name", "viewport")
-      .attribute("content", "width=device-width, initial-scale=1")
-
-//    title(layoutData.title)
+    ""
+//    meta().attribute("charset", "utf8")
+//    meta()
+//      .attribute("theme-color")
+//      .attribute("#121212")
+//    meta()
+//      .attribute("name", "viewport")
+//      .attribute("content", "width=device-width, initial-scale=1")
+//
+//    StyleguideV2.title { HTMLText(layoutData.title) }
+//
+//    tag("style") { HTMLRaw("\(renderedNormalizeCss)") }
+//    tag("style") { HTMLRaw("\(render(css: markdownBlockStyles))") }
+//    tag("style") {
+//      """
+//      @media only screen and (min-width: 832px) {
+//        html {
+//          font-size: 16px;
+//        }
+//      }
+//      @media only screen and (max-width: 831px) {
+//        html {
+//          font-size: 14px;
+//        }
+//      }
+//
+//      html {
+//        font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
+//        line-height: 1.5;
+//        -webkit-box-sizing: border-box;
+//        -moz-box-sizing: border-box;
+//        -ms-box-sizing: border-box;
+//        -o-box-sizing: border-box;
+//        box-sizing: border-box;
+//      }
+//
+//      body {
+//        -webkit-box-sizing: border-box;
+//        -moz-box-sizing: border-box;
+//        -ms-box-sizing: border-box;
+//        -o-box-sizing: border-box;
+//        box-sizing:border-box
+//      }
+//
+//      *, * ::before, * ::after {
+//        -webkit-box-sizing: inherit;
+//        -moz-box-sizing: inherit;
+//        -ms-box-sizing: inherit;
+//        -o-box-sizing: inherit;
+//        box-sizing:inherit
+//      }
+//
+//      body, html {
+//        height:100%;
+//        background: #fff;
+//      }
+//      @media (prefers-color-scheme: dark) {
+//        body, html {
+//          height:100%;
+//          background: #121212;
+//        }
+//      }
+//
+//      @keyframes Pulse {
+//        from { opacity: 1; }
+//        50% { opacity: 0; }
+//        to { opacity: 1; }
+//      }
+//
+//      .markdown *:link, .markdown *:visited { color: inherit; }
+//      """
+//    }
+//    link()
+//      .href(siteRouter.url(for: .feed(.episodes)))
+//      .attribute("rel", "alternate")
+//      .title("Point-Free Episodes")
+//      .attribute("type", "application/atom+xml")
+//    link()
+//      .href(siteRouter.url(for: .blog(.feed)))
+//      .attribute("rel", "alternate")
+//      .title("Point-Free Blog")
+//      .attribute("type", "application/atom+xml")
+//    Favicons()
   }
 
   public var body: some HTML {
-    "Hello!"
+    ""
+//    NavView()
+//    content
+//    if !layoutData.style.isMinimal {
+//      Footer()
+//    }
+
 //    Node.doctype
-//
-//    html {
-//      head {
-//        layoutData.extraHead.rawValue
-//        favicons.rawValue
-//        if layoutData.usePrismJs {
-//          prismJsHead.rawValue
-//        }
-//
-//        ChildOf.style(markdownBlockStyles, config: cssConfig).rawValue
-//
-//        Node {
-//          meta().attribute("charset", "utf8")
-//          meta()
-//            .attribute("theme-color")
-//            .attribute("#121212")
-//          meta()
-//            .attribute("name", "viewport")
-//            .attribute("content", "width=device-width, initial-scale=1")
-//
-//          title { HTMLText(layoutData.title) }
-//
-//          tag("style") { HTMLRaw("\(renderedNormalizeCss)") }
-//          tag("style") {
-//            """
-//            @media only screen and (min-width: 832px) {
-//              html {
-//                font-size: 16px;
-//              }
-//            }
-//            @media only screen and (max-width: 831px) {
-//              html {
-//                font-size: 14px;
-//              }
-//            }
-//
-//            html {
-//              font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
-//              line-height: 1.5;
-//              -webkit-box-sizing: border-box;
-//              -moz-box-sizing: border-box;
-//              -ms-box-sizing: border-box;
-//              -o-box-sizing: border-box;
-//              box-sizing: border-box;
-//            }
-//
-//            body {
-//              -webkit-box-sizing: border-box;
-//              -moz-box-sizing: border-box;
-//              -ms-box-sizing: border-box;
-//              -o-box-sizing: border-box;
-//              box-sizing:border-box
-//            }
-//
-//            *, * ::before, * ::after {
-//              -webkit-box-sizing: inherit;
-//              -moz-box-sizing: inherit;
-//              -ms-box-sizing: inherit;
-//              -o-box-sizing: inherit;
-//              box-sizing:inherit
-//            }
-//
-//            body, html {
-//              height:100%;
-//              background: #fff;
-//            }
-//            @media (prefers-color-scheme: dark) {
-//              body, html {
-//                height:100%;
-//                background: #121212;
-//              }
-//            }
-//
-//            @keyframes Pulse {
-//              from { opacity: 1; }
-//              50% { opacity: 0; }
-//              to { opacity: 1; }
-//            }
-//
-//            .markdown *:link, .markdown *:visited { color: inherit; }
-//            """
-//          }
-//
-//          link()
-//            .href(siteRouter.url(for: .feed(.episodes)))
-//            .attribute("rel", "alternate")
-//            .title("Point-Free Episodes")
-//            .attribute("type", "application/atom+xml")
-//
-//          link()
-//            .href(siteRouter.url(for: .blog(.feed)))
-//            .attribute("rel", "alternate")
-//            .title("Point-Free Blog")
-//            .attribute("type", "application/atom+xml")
-//        }
-//      }
+
 //      body {
 //        ghosterBanner(isGhosting: layoutData.isGhosting)
 //        pastDueBanner
@@ -247,7 +232,7 @@ struct MobileMenu: HTML {
   private struct MenuBar: HTML {
     let index: Int
     var body: some HTML {
-      div {}
+      div()
         .attribute("class", "menu-bar-\(index)")
         .backgroundColor(.white)
         .inlineStyle("border-radius", "2px")
@@ -335,5 +320,36 @@ struct NavListItem: HTML {
     }
     .padding(left: .medium)
     .inlineStyle("display", "inline")
+  }
+}
+
+private struct Favicons: HTML {
+  var body: some HTML {
+    link()
+      .attribute("ref", "apple-touch-icon")
+      .attribute("type", "png")
+      .attribute("sizes", "180x180")
+      .attribute("href", "https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png")
+    link()
+      .attribute("ref", "icon")
+      .attribute("type", "png")
+      .attribute("sizes", "32x32")
+      .attribute("href", "https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")
+    link()
+      .attribute("ref", "icon")
+      .attribute("type", "png")
+      .attribute("sizes", "32x32")
+      .attribute("href", "https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png")
+    link()
+      .attribute("ref", "icon")
+      .attribute("type", "png")
+      .attribute("sizes", "16x16")
+      .attribute("href", "https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png")
+    link()
+      .attribute("ref", "manifest")
+      .attribute("href", "https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest")
+    link()
+      .attribute("ref", "mask-icon")
+      .attribute("href", "https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg")
   }
 }

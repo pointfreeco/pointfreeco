@@ -18,7 +18,7 @@ struct ReferAFriendModule: HTML {
 
       Grid {
         GridColumn {
-          input {}
+          input()
             .attribute("value", url)
             .attribute("type", "text")
             .attribute("readonly", "true")
@@ -35,7 +35,7 @@ struct ReferAFriendModule: HTML {
         .inlineStyle("max-width", "60%", media: .desktop)
 
         GridColumn {
-          Button(tag: input, color: .purple, size: .regular, style: .normal) {}
+          Button.input(color: .purple, size: .regular, style: .normal) 
             .attribute("type", "button")
             .attribute("value", "Copy")
             .attribute("onclick", """

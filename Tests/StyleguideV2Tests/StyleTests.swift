@@ -8,7 +8,7 @@
     func orderOfStyles() {
       struct CustomComponent: HTML {
         var body: some HTML {
-          div {}
+          div()
             .inlineStyle("margin", "1rem")
         }
       }

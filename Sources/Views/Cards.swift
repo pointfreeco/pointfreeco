@@ -105,7 +105,7 @@ public struct Progress: HTML {
 
   public var body: some HTML {
     div {
-      div {}
+      div()
         .inlineStyle("background-color", "#363636")
         .inlineStyle("background-color", "#e8e8e8", media: .dark)
         .inlineStyle("height", "100%")

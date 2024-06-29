@@ -452,7 +452,7 @@ private struct ReferAFriend: HTML {
 
       Grid {
         GridColumn {
-          input {}
+          input()
             .attribute("value", url)
             .attribute("type", "text")
             .attribute("readonly", "true")
@@ -469,7 +469,7 @@ private struct ReferAFriend: HTML {
         .inlineStyle("max-width", "60%", media: .desktop)
 
         GridColumn {
-          Button(tag: input, color: .purple, size: .regular, style: .normal) {}
+          Button.input(color: .purple, size: .regular, style: .normal) 
             .attribute("type", "button")
             .attribute("value", "Copy")
             .attribute("onclick", """
@@ -567,7 +567,7 @@ private struct WhatPeopleAreSaying: HTML {
 
 private struct Divider: HTML {
   var body: some HTML {
-    div {}
+    div()
       .backgroundColor(.gray800.dark(.gray300))
       .inlineStyle("margin", "0 30%")
       .inlineStyle("height", "1px")

@@ -114,7 +114,7 @@ public struct Metadata<A> {
 }
 
 extension Metadata<Void> {
-  public init(
+  public static func create(
     description: String? = nil,
     image: String? = nil,
     title: String? = nil,
@@ -122,15 +122,16 @@ extension Metadata<Void> {
     twitterSite: String? = nil,
     type: OpenGraphType? = nil,
     url: String? = nil
-  ) {
-    self.description = description
-    self.image = image
-    self.rest = ()
-    self.title = title
-    self.twitterCard = twitterCard
-    self.twitterSite = twitterSite
-    self.type = type
-    self.url = url
+  ) -> Self {
+    Self(description: description, image: image, rest: (), title: title, twitterCard: twitterCard, twitterSite: twitterSite, type: type, url: url)
+//    self.description = description
+//    self.image = image
+//    self.rest = ()
+//    self.title = title
+//    self.twitterCard = twitterCard
+//    self.twitterSite = twitterSite
+//    self.type = type
+//    self.url = url
   }
 }
 

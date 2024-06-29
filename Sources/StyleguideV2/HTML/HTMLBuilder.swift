@@ -8,11 +8,22 @@ public enum HTMLBuilder {
     content
   }
 
-  public static func buildBlock<each Content: HTML>(
-    _ content: repeat each Content
-  ) -> _HTMLTuple<repeat each Content> {
-    _HTMLTuple(content: repeat each content)
+  public static func buildPartialBlock<First: HTML>(first: First) -> First {
+    first
   }
+
+  public static func buildPartialBlock<Accumulated: HTML, Next: HTML>(
+    accumulated: Accumulated,
+    next: Next
+  ) -> _HTMLPair<Accumulated, Next> {
+    _HTMLPair(first: accumulated, second: next)
+  }
+
+//  public static func buildBlock<each Content: HTML>(
+//    _ content: repeat each Content
+//  ) -> _HTMLTuple<repeat each Content> {
+//    _HTMLTuple(content: repeat each content)
+//  }
 
   public static func buildEither<First: HTML, Second: HTML>(
     first component: First
@@ -96,21 +107,31 @@ extension HTMLText: ExpressibleByStringLiteral {
 
 extension HTMLText: ExpressibleByStringInterpolation {}
 
-public struct _HTMLTuple<each Content: HTML>: HTML {
-  let content: (repeat each Content)
-  public init(content: repeat each Content) {
-    self.content = (repeat each content)
-  }
-  public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
-    func render<T: HTML>(_ html: T) {
-      let oldAttributes = printer.attributes
-      defer { printer.attributes = oldAttributes }
-      T._render(html, into: &printer)
-    }
-    repeat render(each html.content)
+public struct _HTMLPair<First: HTML, Second: HTML>: HTML {
+  let first: First
+  let second: Second
+  public static func _render(_ html: _HTMLPair<First, Second>, into printer: inout HTMLPrinter) {
+    First._render(html.first, into: &printer)
+    Second._render(html.second, into: &printer)
   }
   public var body: Never { fatalError() }
 }
+
+//public struct _HTMLTuple<each Content: HTML>: HTML {
+//  let content: (repeat each Content)
+//  public init(content: repeat each Content) {
+//    self.content = (repeat each content)
+//  }
+//  public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
+//    func render<T: HTML>(_ html: T) {
+//      let oldAttributes = printer.attributes
+//      defer { printer.attributes = oldAttributes }
+//      T._render(html, into: &printer)
+//    }
+//    repeat render(each html.content)
+//  }
+//  public var body: Never { fatalError() }
+//}
 
 extension Optional: HTML where Wrapped: HTML {
   public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
