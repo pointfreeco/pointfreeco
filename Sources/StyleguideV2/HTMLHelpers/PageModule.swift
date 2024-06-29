@@ -36,7 +36,7 @@ public struct HomeModule<Title: HTML, Content: HTML>: HTML {
               title
                 .color(theme.color)
             }
-            .column(count: seeAllURL == nil ? 12 : 10)
+            .flexible()
             .column(alignment: seeAllURL == nil ? .center : .start)
             .inlineStyle(
               "padding-bottom",
@@ -51,8 +51,8 @@ public struct HomeModule<Title: HTML, Content: HTML>: HTML {
               Link("See all →", href: seeAllURL)
                 .linkColor(.purple)
             }
-            .column(count: 2)
-            .column(alignment: .end )
+            .inflexible()
+            .column(alignment: .end)
           }
         }
 

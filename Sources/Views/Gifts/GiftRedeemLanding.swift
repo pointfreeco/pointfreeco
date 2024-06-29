@@ -15,7 +15,7 @@ public func giftRedeemLanding(
   episodeStats: EpisodeStats
 ) -> Node {
   [
-    landingHero(title: "Explore the wonderful world of advanced&nbsp;Swift."),
+    landingHero(title: "Explore the wonderful world of advanced Swift."),
     mainContent(
       gift: gift,
       episodeStats: episodeStats

@@ -101,7 +101,7 @@ private struct LoggedOut: HTML {
 
   var body: some HTML {
     CallToActionHeader(
-      title: "Explore the wonderful world of advanced&nbsp;Swift.",
+      title: "Explore the wonderful world of advanced Swift.",
       blurb: """
           Point-Free is a video series exploring advanced topics in the \
           Swift&nbsp;programming&nbsp;language, hosted by industry experts, \
@@ -202,7 +202,7 @@ private struct WhatToExpect: HTML {
         WhatToExpectColumn(item: whatToExpect)
       }
     } title: {
-      Header(2) { "What to expect" }
+      Header(3) { "What to expect" }
     }
   }
 
@@ -248,7 +248,7 @@ private struct EpisodesModule: HTML {
       }
       .grid(alignment: .stretch)
     } title: {
-      Header(2) { "All episodes" }
+      Header(3) { "All episodes" }
     }
   }
 }
@@ -271,7 +271,7 @@ private struct FreeEpisodes: HTML {
       }
       .grid(alignment: .stretch)
     } title: {
-      Header(2) { "Free episodes" }
+      Header(3) { "Free episodes" }
     }
   }
 }
@@ -290,7 +290,7 @@ private struct InProgressEpisodes: HTML {
       }
       .grid(alignment: .stretch)
     } title: {
-      Header(2) { "Continue watching" }
+      Header(3) { "Continue watching" }
     }
   }
 }
@@ -309,7 +309,7 @@ private struct Clips: HTML {
       }
       .grid(alignment: .stretch)
     } title: {
-      Header(2) { "Clips" }
+      Header(3) { "Clips" }
     }
   }
 }
@@ -336,7 +336,7 @@ private struct BlogPosts: HTML {
       }
       .listStyle(.reset)
     } title: {
-      Header(2) { "Newsletter" }
+      Header(3) { "Newsletter" }
     }
   }
 
@@ -377,7 +377,7 @@ private struct Collections: HTML {
       }
       .grid(alignment: .stretch)
     } title: {
-      Header(2) { "Collections" }
+      Header(3) { "Collections" }
     }
   }
 }
@@ -394,7 +394,7 @@ private struct Gifts: HTML {
       .inlineStyle("margin", "0 auto")
     } title: {
       GridColumn {
-        Header(2) { "Give the gift of Point-Free" }
+        Header(3) { "Give the gift of Point-Free" }
           .color(.gray150.dark(.gray850))
 
         Paragraph(.big) {
@@ -494,7 +494,7 @@ private struct WhatPeopleAreSaying: HTML {
       .column(alignment: .center)
       .inlineStyle("margin-top", "3rem")
     } title: {
-      Header(2) { "What people are saying" }
+      Header(3) { "What people are saying" }
     }
   }
 

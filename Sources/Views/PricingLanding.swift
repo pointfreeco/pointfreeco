@@ -122,7 +122,7 @@ private func titleColumn() -> Node {
           ]),
           .style(lineHeight(1.2)),
         ],
-        .raw("Explore the wonderful world of advanced&nbsp;Swift.")
+        .raw("Explore the wonderful world of advanced Swift.")
       )
     )
 }

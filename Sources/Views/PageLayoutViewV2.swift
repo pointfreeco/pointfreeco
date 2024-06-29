@@ -84,14 +84,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
 //    LiveStreamBanner()
 //    // TODO: Announcement banner
 
-
-//    NavBar()
     NewNavBar()
-
-    Divider()
-      .inlineStyle("padding", "2rem 0")
-
-//    NavView()
     content
     if !layoutData.style.isMinimal {
       Footer()
@@ -100,10 +93,22 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
 }
 
 struct NewNavBar: HTML {
-  @Dependency(\.siteRouter) var siteRouter
-
   var body: some HTML {
-    header {
+    nav {
+      Logo()
+      MenuButton()
+      MainNavItems()
+    }
+    .inlineStyle("background-color", "#000")
+    .inlineStyle("width", "100%")
+    .inlineStyle("position", "sticky", media: .mobile)
+    .inlineStyle("top", "0", media: .mobile)
+  }
+
+  struct Logo: HTML {
+    @Dependency(\.siteRouter) var siteRouter
+    
+    var body: some HTML {
       Link(href: siteRouter.path(for: .home)) {
         SVG(
           base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
@@ -114,27 +119,20 @@ struct NewNavBar: HTML {
       .inlineStyle("float", "left")
       .inlineStyle("font-size", "2em")
       .inlineStyle("padding", "10px 20px")
-
-      MenuButton()
-      MainNavItems()
     }
-    .inlineStyle("background-color", "#000")
-    .inlineStyle("position", "fixed")
-    .inlineStyle("width", "100%")
-    .inlineStyle("z-index", "3")
   }
 }
 
 struct MenuButton: HTML {
   var body: some HTML {
     input()
-      .attribute("id", "menu-btn")
+      .attribute("id", "menu-checkbox")
       .attribute("type", "checkbox")
       .inlineStyle("display", "none")
 
     Bars()
       .attribute("id", "menu-icon")
-      .attribute("for", "menu-btn")
+      .attribute("for", "menu-checkbox")
       .color(.white)
       .inlineStyle("cursor", "pointer")
       .inlineStyle("display", "inline-block")
@@ -151,7 +149,7 @@ struct MenuButton: HTML {
           Bar(index: index)
         }
         .size(width: .px(24), height: .px(3))
-        .inlineStyle("background", "#333")
+        .background(.gray800)
         .inlineStyle("display", "block")
         .inlineStyle("border-radius", "1.5px")
         .inlineStyle("transition", "background .2s ease-out")
@@ -185,7 +183,6 @@ struct MainNavItems: HTML {
       .color(.white)
       .inlineStyle("display", "block")
       .inlineStyle("padding", "20px 20px")
-      .inlineStyle("border-right", "1px solid #f4f4f4")
       .inlineStyle("text-decoration", "none")
       .inlineStyle("background-color", "#555", pseudo: .hover)
     }
@@ -200,6 +197,14 @@ struct MainNavItems: HTML {
     .inlineStyle("max-height", "20rem", media: .mobile, pre: "input:checked ~")
   }
 }
+
+
+// ========================
+
+
+
+
+
 
 
 struct NavBar: HTML {
@@ -262,9 +267,6 @@ struct NavBar: HTML {
   }
 }
 
-
-
-// ========================
 
 struct NavView: HTML {
   @Dependency(\.currentUser) var currentUser
@@ -730,7 +732,6 @@ private struct BaseStyles: HTML {
         box-sizing:inherit
       }
       body, html {
-        height:100%;
         background: #fff;
       }
       .markdown *:link, .markdown *:visited { color: inherit; }
@@ -746,7 +747,6 @@ private struct BaseStyles: HTML {
       }
       @media (prefers-color-scheme: dark) {
         body, html {
-          height:100%;
           background: #121212;
         }
       }
