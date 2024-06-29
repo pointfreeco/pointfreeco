@@ -124,14 +124,18 @@ public struct PageLayout<Content: HTML>: NodeView {
             .attribute("type", "application/atom+xml")
         }
       }
-      body {
-        ghosterBanner(isGhosting: layoutData.isGhosting)
-        pastDueBanner
-        if let flash = layoutData.flash {
-          flashView(flash)
-        }
-        announcementBanner(.wwdc24)
-        Node {
+      Node {
+        tag("body") {
+          if let flash = layoutData.flash {
+            TopBanner(flash: flash)
+          }
+          if layoutData.isGhosting {
+            TopBanner(style: .notice) {
+              "👻 You’re a ghost! "
+              Link("Stop ghosting", href: siteRouter.path(for: .endGhosting))
+            }
+          }
+          PastDueBanner()
           if emergencyMode {
             TopBanner(style: .warning) {
               """
@@ -141,6 +145,7 @@ public struct PageLayout<Content: HTML>: NodeView {
             }
           }
           LiveStreamBanner()
+          // TODO: Announcement banner
 
           NavView()
           content
@@ -151,6 +156,101 @@ public struct PageLayout<Content: HTML>: NodeView {
       }
     }
     .attribute("lang", "en")
+  }
+}
+
+public struct PastDueBanner: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
+  @Dependency(\.subscriptionOwner) var subscriptionOwner
+
+  public var body: some HTML {
+    switch subscriberState {
+    case .nonSubscriber:
+      HTMLEmpty()
+
+    case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .none, deactivated: _):
+      TopBanner(style: .warning) {
+        "Your subscription is past-due! Please "
+        Link("update your payment info", href: siteRouter.path(for: .account(.paymentInfo())))
+        " to ensure access to Point-Free!"
+      }
+
+    case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .some, deactivated: _):
+      TopBanner(style: .warning) {
+        "Your subscription is past-due! Please contact us at "
+        Link("support@pointfree.co", href: "mailto:support@pointfree.co")
+        " to regain access to Point-Free."
+      }
+
+    case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .none, deactivated: _):
+      TopBanner(style: .warning) {
+        "Your subscription is canceled. To regain access to Point-Free, "
+        Link("resubscribe", href: siteRouter.path(for: .pricingLanding))
+        " anytime!"
+      }
+
+    case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .some, deactivated: _):
+      TopBanner(style: .warning) {
+        "Your subscription is canceled. Please contact us at "
+        Link("support@pointfree.co", href: "mailto:support@pointfree.co")
+        " to regain access to Point-Free."
+      }
+
+    case .owner(hasSeat: _, status: .active, enterpriseAccount: _, deactivated: true),
+        .owner(hasSeat: _, status: .trialing, enterpriseAccount: _, deactivated: true):
+      TopBanner(style: .warning) {
+        "Your subscription has been deactivated. Please contact us at "
+        Link("support@pointfree.co", href: "mailto:support@pointfree.co")
+        " to regain access to Point-Free."
+      }
+
+    case .owner(hasSeat: _, status: _, enterpriseAccount: _, deactivated: _):
+      HTMLEmpty()
+
+    case .teammate(status: .pastDue, enterpriseAccount: _, deactivated: _):
+      TopBanner(style: .warning) {
+        "Your team’s subscription is past-due! Please contact "
+        owner
+        " to regain access to Point-Free."
+      }
+
+    case .teammate(status: .canceled, enterpriseAccount: _, deactivated: _):
+      TopBanner(style: .warning) {
+        "Your team’s subscription is canceled. Please contact "
+        owner
+        " to regain access to Point-Free."
+      }
+
+    case .teammate(status: .active, enterpriseAccount: _, deactivated: true),
+        .teammate(status: .trialing, enterpriseAccount: _, deactivated: true):
+      TopBanner(style: .warning) {
+        "Your team’s subscription is deactivated. Please have "
+        owner
+        " contact us at "
+        Link("support@pointfree.co", href: "mailto:support@pointfree.co")
+        " to regain access to Point-Free."
+      }
+
+    case .teammate(status: _, enterpriseAccount: _, deactivated: _):
+      HTMLEmpty()
+    }
+  }
+
+  @HTMLBuilder
+  private var owner: some HTML {
+    if let subscriptionOwner {
+      if let name = subscriptionOwner.name {
+        HTMLText(name)
+      } else {
+        "the team owner"
+      }
+      " ("
+      Link(subscriptionOwner.email.rawValue, href: "mailto:\(subscriptionOwner.email.rawValue)")
+      ")"
+    } else {
+      "the team owner"
+    }
   }
 }
 
@@ -212,6 +312,18 @@ struct TopBanner<Content: HTML>: HTML {
   init(style: Style, @HTMLBuilder content: () -> Content) {
     self.style = style
     self.content = content()
+  }
+
+  init(flash: Flash) where Content == HTMLText {
+    switch flash.priority {
+    case .error:
+      self.style = .error
+    case .notice:
+      self.style = .notice
+    case .warning:
+      self.style = .warning
+    }
+    self.content = HTMLText(flash.message)
   }
 
   var body: some HTML {
