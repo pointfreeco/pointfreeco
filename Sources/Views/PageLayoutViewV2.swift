@@ -35,98 +35,96 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
   @Dependency(\.siteRouter) var siteRouter
 
   public var head: some HTML {
-    ""
-//    meta().attribute("charset", "utf8")
-//    meta()
-//      .attribute("theme-color")
-//      .attribute("#121212")
-//    meta()
-//      .attribute("name", "viewport")
-//      .attribute("content", "width=device-width, initial-scale=1")
-//
-//    StyleguideV2.title { HTMLText(layoutData.title) }
-//
-//    tag("style") { HTMLRaw("\(renderedNormalizeCss)") }
-//    tag("style") { HTMLRaw("\(render(css: markdownBlockStyles))") }
-//    tag("style") {
-//      """
-//      @media only screen and (min-width: 832px) {
-//        html {
-//          font-size: 16px;
-//        }
-//      }
-//      @media only screen and (max-width: 831px) {
-//        html {
-//          font-size: 14px;
-//        }
-//      }
-//
-//      html {
-//        font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
-//        line-height: 1.5;
-//        -webkit-box-sizing: border-box;
-//        -moz-box-sizing: border-box;
-//        -ms-box-sizing: border-box;
-//        -o-box-sizing: border-box;
-//        box-sizing: border-box;
-//      }
-//
-//      body {
-//        -webkit-box-sizing: border-box;
-//        -moz-box-sizing: border-box;
-//        -ms-box-sizing: border-box;
-//        -o-box-sizing: border-box;
-//        box-sizing:border-box
-//      }
-//
-//      *, * ::before, * ::after {
-//        -webkit-box-sizing: inherit;
-//        -moz-box-sizing: inherit;
-//        -ms-box-sizing: inherit;
-//        -o-box-sizing: inherit;
-//        box-sizing:inherit
-//      }
-//
-//      body, html {
-//        height:100%;
-//        background: #fff;
-//      }
-//      @media (prefers-color-scheme: dark) {
-//        body, html {
-//          height:100%;
-//          background: #121212;
-//        }
-//      }
-//
-//      @keyframes Pulse {
-//        from { opacity: 1; }
-//        50% { opacity: 0; }
-//        to { opacity: 1; }
-//      }
-//
-//      .markdown *:link, .markdown *:visited { color: inherit; }
-//      """
-//    }
-//    link()
-//      .href(siteRouter.url(for: .feed(.episodes)))
-//      .attribute("rel", "alternate")
-//      .title("Point-Free Episodes")
-//      .attribute("type", "application/atom+xml")
-//    link()
-//      .href(siteRouter.url(for: .blog(.feed)))
-//      .attribute("rel", "alternate")
-//      .title("Point-Free Blog")
-//      .attribute("type", "application/atom+xml")
-//    Favicons()
+    meta().attribute("charset", "utf8")
+    meta()
+      .attribute("theme-color")
+      .attribute("#121212")
+    meta()
+      .attribute("name", "viewport")
+      .attribute("content", "width=device-width, initial-scale=1")
+
+    StyleguideV2.title { HTMLText(layoutData.title) }
+
+    tag("style") { HTMLRaw("\(renderedNormalizeCss)") }
+    tag("style") { HTMLRaw("\(render(css: markdownBlockStyles))") }
+    tag("style") {
+      """
+      @media only screen and (min-width: 832px) {
+        html {
+          font-size: 16px;
+        }
+      }
+      @media only screen and (max-width: 831px) {
+        html {
+          font-size: 14px;
+        }
+      }
+
+      html {
+        font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
+        line-height: 1.5;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        -o-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+
+      body {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+        -o-box-sizing: border-box;
+        box-sizing:border-box
+      }
+
+      *, * ::before, * ::after {
+        -webkit-box-sizing: inherit;
+        -moz-box-sizing: inherit;
+        -ms-box-sizing: inherit;
+        -o-box-sizing: inherit;
+        box-sizing:inherit
+      }
+
+      body, html {
+        height:100%;
+        background: #fff;
+      }
+      @media (prefers-color-scheme: dark) {
+        body, html {
+          height:100%;
+          background: #121212;
+        }
+      }
+
+      @keyframes Pulse {
+        from { opacity: 1; }
+        50% { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      .markdown *:link, .markdown *:visited { color: inherit; }
+      """
+    }
+    link()
+      .href(siteRouter.url(for: .feed(.episodes)))
+      .attribute("rel", "alternate")
+      .title("Point-Free Episodes")
+      .attribute("type", "application/atom+xml")
+    link()
+      .href(siteRouter.url(for: .blog(.feed)))
+      .attribute("rel", "alternate")
+      .title("Point-Free Blog")
+      .attribute("type", "application/atom+xml")
+    Favicons()
   }
 
   public var body: some HTML {
-    ""
-//    NavView()
-//    content
-//    if !layoutData.style.isMinimal {
-//      Footer()
-//    }
+    NavView()
+    content
+    if !layoutData.style.isMinimal {
+      Footer()
+    }
 
 //    Node.doctype
 

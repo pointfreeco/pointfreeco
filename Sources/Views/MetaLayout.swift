@@ -114,6 +114,7 @@ public struct Metadata<A> {
 }
 
 extension Metadata<Void> {
+  // NB: We are using a static function here to work around a compiler crash when it is an init.
   public static func create(
     description: String? = nil,
     image: String? = nil,
@@ -123,15 +124,16 @@ extension Metadata<Void> {
     type: OpenGraphType? = nil,
     url: String? = nil
   ) -> Self {
-    Self(description: description, image: image, rest: (), title: title, twitterCard: twitterCard, twitterSite: twitterSite, type: type, url: url)
-//    self.description = description
-//    self.image = image
-//    self.rest = ()
-//    self.title = title
-//    self.twitterCard = twitterCard
-//    self.twitterSite = twitterSite
-//    self.type = type
-//    self.url = url
+    Self(
+      description: description,
+      image: image,
+      rest: (),
+      title: title,
+      twitterCard: twitterCard,
+      twitterSite: twitterSite,
+      type: type,
+      url: url
+    )
   }
 }
 
