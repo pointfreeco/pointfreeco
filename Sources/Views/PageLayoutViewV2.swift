@@ -62,10 +62,10 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
       PrismJSHead()
     }
 
-    meta().attribute("charset", "utf8")
+    meta().attribute("charset", "UTF-8")
     meta()
-      .attribute("theme-color")
-      .attribute("#121212")
+      .attribute("name", "theme-color")
+      .attribute("content", "#121212")
     meta()
       .attribute("name", "viewport")
       .attribute("content", "width=device-width, initial-scale=1")
@@ -471,7 +471,7 @@ struct MobileMenu: HTML {
       .inlineStyle("justify-content", "center")
     }
 
-    input()
+    input {}
       .hidden()
       .attribute("id", "menu-checkbox")
       .attribute("type", "checkbox")

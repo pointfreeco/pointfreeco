@@ -232,6 +232,7 @@ private struct WhatToExpect: HTML {
     var body: some HTML {
       GridColumn {
         Image(source: item.imageSrc, description: "")
+          .inlineStyle("padding", "7.5%")
           .inlineStyle("max-width", "100%")
 
         Header(4) { HTMLText(item.title) }

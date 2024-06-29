@@ -47,12 +47,10 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
   }
 
   public static func _render(_ html: HTMLInlineStyle<Content>, into printer: inout HTMLPrinter) {
-    // let previousClass = printer.attributes["class"]  // TODO: should we optimize this?
-    // defer {
-    //   printer.attributes["class"] = previousClass
-    // }
+    let previousClass = printer.attributes["class"]  // TODO: should we optimize this?
     defer {
       Content._render(html.content, into: &printer)
+      printer.attributes["class"] = previousClass
     }
 
     for (property, value, mediaQuery, pseudo) in html.styles {
