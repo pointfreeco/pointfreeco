@@ -46,53 +46,23 @@ public struct Episodes: HTML {
   }
 
   public var body: some HTML {
-    PageHeader {
-      switch listType {
-      case .all:
-        "Episodes"
-      case .free:
-        "Free Episodes"
-      case .history:
-        "Continue watching"
-      }
-    } blurb: {
-      switch listType {
-      case .all:
-        if subscriberState.isActiveSubscriber {
-          "Watch our entire catalogue of episodes, all \(mainEpisodes.count) of them."
-        } else {
-          "Watch some for free or explore all \(mainEpisodes.count) episodes."
-        }
-      case .free:
-        "All of our free episodes, in one place."
-      case .history:
-        "Your most recently watched episodes."
-      }
-    }
+    EpisodesHeader(
+      episodeCount: mainEpisodes.count,
+      listType: listType
+    )
 
     switch listType {
     case .all:
-      if subscriberState.isNonSubscriber {
-        EpisodesModule(episodes: freeEpisodes, title: "Free episodes")
-        if currentUser == nil {
-          GetStartedModule(style: .solid)
-        } else {
-          UpgradeModule()
-        }
-      }
+      EpisodesModule(episodes: freeEpisodes, title: "Free episodes")
+      InterstitialBanner()
 
-      if subscriberState.isNonSubscriber {
-        EpisodesModule(episodes: freeEpisodes, title: "Free episodes")
-        UpgradeModule()
-      }
-      
       if let user = currentUser {
         EpisodesModule(
-          episodes: mainEpisodes.prefix(3),
+          episodes: mainEpisodes,
           title: subscriberState.isNonSubscriber ? "All episodes" : nil
-        )
-        ReferAFriendModule(user: user)
-        EpisodesModule(episodes: mainEpisodes.dropFirst(3))
+        ) {
+          ReferAFriendModule(user: user)
+        }
       } else {
         EpisodesModule(
           episodes: mainEpisodes,
@@ -103,14 +73,11 @@ public struct Episodes: HTML {
     case .free:
       if subscriberState.isNonSubscriber {
         EpisodesModule(
-          episodes: mainEpisodes.prefix(3)
-        )
-        if currentUser == nil {
-          GetStartedModule(style: .solid)
-        } else {
-          UpgradeModule()
+          episodes: mainEpisodes,
+          title: subscriberState.isNonSubscriber ? "All episodes" : nil
+        ) {
+          InterstitialBanner()
         }
-        EpisodesModule(episodes: mainEpisodes.dropFirst(3))
       } else {
         EpisodesModule(episodes: mainEpisodes)
       }
@@ -121,14 +88,44 @@ public struct Episodes: HTML {
   }
 }
 
-private struct EpisodesModule<Episodes: Collection<Episode>>: HTML {
+private struct EpisodesModule<Episodes: Collection<Episode>, CTA: HTML>: HTML {
   let episodes: Episodes
   var title: String?
+  var cta: CTA?
+
+  init(
+    episodes: Episodes,
+    title: String? = nil,
+    @HTMLBuilder cta: () -> CTA
+  ) {
+    self.episodes = episodes
+    self.title = title
+    self.cta = cta()
+  }
+
+  init(
+    episodes: Episodes,
+    title: String? = nil
+  ) where CTA == HTMLEmpty {
+    self.episodes = episodes
+    self.title = title
+    self.cta = nil
+  }
 
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
+    if let cta = cta {
+      module(episodes: episodes.prefix(3))
+      cta
+      module(episodes: episodes.dropFirst(3))
+    } else {
+      module(episodes: episodes)
+    }
+  }
+
+  func module(episodes: some Collection<Episode>) -> some HTML {
     HomeModule(
       seeAllURL: title == nil ? nil : siteRouter.path(for: .episodes(.list(.free))),
       theme: .content
@@ -143,6 +140,50 @@ private struct EpisodesModule<Episodes: Collection<Episode>>: HTML {
       if let title {
         Header(2) { HTMLText(title) }
       }
+    }
+  }
+}
+
+private struct EpisodesHeader: HTML {
+  let episodeCount: Int
+  let listType: SiteRoute.EpisodesRoute.ListType
+  @Dependency(\.subscriberState) var subscriberState
+  var body: some HTML {
+    PageHeader {
+      switch listType {
+      case .all:
+        "Episodes"
+      case .free:
+        "Free Episodes"
+      case .history:
+        "Continue watching"
+      }
+    } blurb: {
+      switch listType {
+      case .all:
+        if subscriberState.isActiveSubscriber {
+          "Watch our entire catalogue of episodes, all \(episodeCount) of them."
+        } else {
+          "Watch some for free or explore all \(episodeCount) episodes."
+        }
+      case .free:
+        "All of our free episodes, in one place."
+      case .history:
+        "Your most recently watched episodes."
+      }
+    }
+  }
+}
+
+private struct InterstitialBanner: HTML {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
+
+  var body: some HTML {
+    if currentUser == nil {
+      GetStartedModule(style: .solid)
+    } else if subscriberState.isNonSubscriber {
+      UpgradeModule()
     }
   }
 }

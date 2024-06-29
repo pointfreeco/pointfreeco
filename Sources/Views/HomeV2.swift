@@ -432,7 +432,7 @@ private struct ReferAFriend: HTML {
 
       Grid {
         GridColumn {
-          input {}
+          input()
             .attribute("value", url)
             .attribute("type", "text")
             .attribute("readonly", "true")
