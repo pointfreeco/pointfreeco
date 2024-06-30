@@ -82,7 +82,7 @@ public struct EpisodeCard: HTML {
 
             Progress(value: value)
               .inlineStyle("width", "80px")
-              .title("\(Int(minutes)) min to finish")
+              .attribute("title", "\(Int(minutes)) min to finish")
           }
         }
         .column(alignment: .end)

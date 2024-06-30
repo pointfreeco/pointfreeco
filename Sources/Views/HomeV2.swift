@@ -143,7 +143,9 @@ private struct EpisodeCredits: HTML {
         .inflexible()
 
         GridColumn {
-          span { "You have \(creditsLeft) to redeem on any subscriber-only episode of your choice." }
+          span {
+            "You have \(creditsLeft) to redeem on any subscriber-only episode of your choice."
+          }
         }
         .flexible()
         .inlineStyle("padding", "0 1rem")
