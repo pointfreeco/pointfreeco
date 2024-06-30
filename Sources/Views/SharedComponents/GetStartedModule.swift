@@ -21,7 +21,7 @@ struct GetStartedModule: HTML {
         from our newsletter.
         """,
       ctaTitle: "Sign up for free →",
-      ctaURL: siteRouter.loginPath(redirect: .homeV2),
+      ctaURL: siteRouter.gitHubAuthPath(redirect: .homeV2),
       secondaryCTATitle: "View plans and pricing",
       secondaryCTAURL: siteRouter.path(for: .pricingLanding),
       style: style

@@ -3,7 +3,9 @@ extension HTML {
     direction: String? = nil,
     wrap: String? = nil,
     justification: String? = nil,
-    itemAlignment: String? = nil
+    itemAlignment: String? = nil,
+    rowGap: String? = nil,
+    columnGap: String? = nil
   ) -> some HTML {
     self
       .inlineStyle("display", "flex")
@@ -11,6 +13,8 @@ extension HTML {
       .inlineStyle("flex-wrap", wrap)
       .inlineStyle("justify-content", justification)
       .inlineStyle("align-items", itemAlignment)
+      .inlineStyle("row-gap", rowGap)
+      .inlineStyle("column-gap", columnGap)
   }
 
   public func flexItem(

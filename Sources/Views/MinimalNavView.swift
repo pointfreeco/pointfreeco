@@ -174,7 +174,7 @@ private func logInLinkView(style: NavStyle.MinimalStyle, currentRoute: SiteRoute
   return .gitHubLink(
     text: "Log in",
     type: gitHubLinkType(for: style),
-    href: siteRouter.loginPath(redirect: currentRoute),
+    href: siteRouter.gitHubAuthPath(redirect: currentRoute),
     size: .small
   )
 }

@@ -71,7 +71,7 @@ public func liveView() -> Node {
         .gitHubLink(
           text: "Log in to be notified",
           type: .white,
-          href: siteRouter.loginPath(redirect: currentRoute),
+          href: siteRouter.gitHubAuthPath(redirect: currentRoute),
           size: .regular
         )
       )

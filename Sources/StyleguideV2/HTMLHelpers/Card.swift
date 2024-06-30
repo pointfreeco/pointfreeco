@@ -63,15 +63,21 @@ public struct Label: HTML {
   }
 
   public var body: some HTML {
-    Grid {
+    tag("pf-label") {
       icon
-
+        .inflexible()
       span {
         HTMLText(title)
       }
-      .inlineStyle("padding", "0 0.5rem 0 0.25rem")
+      .inflexible()
     }
+    .flexContainer(
+      direction: "row",
+      wrap: "nowrap",
+      justification: "center",
+      itemAlignment: "center",
+      columnGap: "0.5rem"
+    )
     .fontStyle(.body(.small))
-    .grid(alignment: .center)
   }
 }

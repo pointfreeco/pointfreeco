@@ -273,9 +273,16 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
   case let .live(liveRoute):
     return await liveMiddleware(conn.map(const(liveRoute)))
 
-  case let .login(redirect):
+  case let .gitHubAuth(redirect):
     return await loginResponse(conn.map(const(redirect)))
       .performAsync()
+
+  case let .login(redirect):
+    return await loginSignUpMiddleware(
+      redirect: redirect,
+      type: .login,
+      conn.map(const(()))
+    )
 
   case .logout:
     return await logoutResponse(conn.map(const(unit)))
@@ -304,6 +311,13 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
           #User-Agent: GPTBot
           #Disallow: /
           """)
+
+  case let .signUp(redirect):
+    return await loginSignUpMiddleware(
+      redirect: redirect,
+      type: .signUp,
+      conn.map(const(()))
+    )
 
   case .slackInvite:
     @Dependency(\.envVars) var envVars

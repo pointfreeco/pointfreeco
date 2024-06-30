@@ -96,7 +96,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     @Dependency(\.siteRouter) var siteRouter
 
     let login = request(
-      to: .login(redirect: siteRouter.url(for: .episodes(.show(.right(42))))), session: .loggedIn)
+      to: .gitHubAuth(redirect: siteRouter.url(for: .episodes(.show(.right(42))))), session: .loggedIn)
     let conn = connection(from: login)
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -178,7 +178,7 @@ class AuthTests: TestCase {
 
   @MainActor
   func testLogin() async throws {
-    let login = request(to: .login(redirect: nil))
+    let login = request(to: .gitHubAuth(redirect: nil))
     let conn = connection(from: login)
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -186,7 +186,7 @@ class AuthTests: TestCase {
 
   @MainActor
   func testLogin_AlreadyLoggedIn() async throws {
-    let login = request(to: .login(redirect: nil), session: .loggedIn)
+    let login = request(to: .gitHubAuth(redirect: nil), session: .loggedIn)
     let conn = connection(from: login)
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)

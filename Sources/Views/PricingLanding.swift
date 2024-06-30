@@ -72,7 +72,7 @@ func ctaColumn() -> Node {
       text: "Create your account",
       type: .white,
       // TODO: redirect back to home?
-      href: siteRouter.loginPath(redirect: .pricingLanding)
+      href: siteRouter.gitHubAuthPath(redirect: .pricingLanding)
     )
 
   return .gridColumn(
@@ -384,7 +384,7 @@ private func pricingPlanCta(
   } else if plan.isFree && currentUser == nil {
     return .a(
       attributes: [
-        .href(siteRouter.loginPath(redirect: .pricingLanding)),
+        .href(siteRouter.gitHubAuthPath(redirect: .pricingLanding)),
         .class([
           Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
           choosePlanButtonClasses,
@@ -405,7 +405,7 @@ private func pricingPlanCta(
                     lane: $0,
                     useRegionalDiscount: false
                   )
-                  return currentUser == nil ? .login(redirect: siteRouter.url(for: route)) : route
+                  return currentUser == nil ? .gitHubAuth(redirect: siteRouter.url(for: route)) : route
                 }
                 ?? .home
           )
@@ -674,7 +674,7 @@ private func footer(
       text: "Create your account",
       type: .white,
       // TODO: redirect back to home?
-      href: siteRouter.loginPath(redirect: .pricingLanding)
+      href: siteRouter.gitHubAuthPath(redirect: .pricingLanding)
     )
     : .a(
       attributes: [

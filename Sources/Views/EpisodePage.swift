@@ -1116,7 +1116,7 @@ private func subscribeCallout(data: EpisodePageData) -> Node {
             .class([
               Class.pf.colors.link.purple
             ]),
-            .href(siteRouter.loginPath(redirect: data.route)),
+            .href(siteRouter.gitHubAuthPath(redirect: data.route)),
           ],
           "Log in"
         )
@@ -1157,7 +1157,7 @@ private func subscribeFreeCallout(data: EpisodePageData) -> Node {
             .class([
               Class.pf.colors.link.purple
             ]),
-            .href(siteRouter.loginPath(redirect: data.route)),
+            .href(siteRouter.gitHubAuthPath(redirect: data.route)),
           ],
           "Log in"
         )
@@ -1177,7 +1177,7 @@ private func unlockLoggedOutCallout(data: EpisodePageData) -> Node {
     .gitHubLink(
       text: "Sign in with GitHub",
       type: .black,
-      href: siteRouter.loginPath(redirect: data.route)
+      href: siteRouter.gitHubAuthPath(redirect: data.route)
     )
   )
 }
@@ -1496,7 +1496,7 @@ private func questionAndAnswerView(
           : .markdownBlock(
             """
             _Answers can only be viewed by subscribers. Consider [subscribing today](/pricing), or if
-            you already do, you can login [here](\(siteRouter.path(for: .login(redirect: siteRouter.path(for: currentRoute)))))._
+            you already do, you can login [here](\(siteRouter.path(for: .gitHubAuth(redirect: siteRouter.path(for: currentRoute)))))._
             """
           )
       )

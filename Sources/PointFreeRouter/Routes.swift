@@ -30,6 +30,7 @@ public indirect enum SiteRoute: Equatable {
   case expressUnsubscribe(payload: Encrypted<String>)
   case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
+  case gitHubAuth(redirect: String?)
   case gitHubCallback(code: String?, redirect: String?)
   case home
   case homeV2
@@ -41,6 +42,7 @@ public indirect enum SiteRoute: Equatable {
   case privacy
   case resume
   case robots
+  case signUp(redirect: String?)
   case slackInvite
   case subscribe(SubscribeData? = nil)
   case subscribeConfirmation(
@@ -577,6 +579,15 @@ struct SiteRouter: ParserPrinter {
         LiveRouter()
       }
 
+      Route(.case(SiteRoute.gitHubAuth)) {
+        Path { "old-login" }
+        Query {
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
       Route(.case(SiteRoute.login)) {
         Path { "login" }
         Query {
@@ -600,6 +611,15 @@ struct SiteRouter: ParserPrinter {
 
       Route(.case(SiteRoute.resume)) {
         Path { "resume" }
+      }
+
+      Route(.case(SiteRoute.signUp)) {
+        Path { "signup" }
+        Query {
+          Optionally {
+            Field("redirect")
+          }
+        }
       }
 
       Route(.case(SiteRoute.subscribe)) {

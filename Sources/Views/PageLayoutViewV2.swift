@@ -80,7 +80,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     }
     LiveStreamBanner()
     // TODO: Announcement banner
-    NewNewNavBar()
+    NavBar()
     content
     if !layoutData.style.isMinimal {
       Footer()
@@ -89,7 +89,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
 }
 
 
-struct NewNewNavBar: HTML {
+struct NavBar: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
@@ -181,6 +181,7 @@ struct MenuButton: HTML {
 }
 
 struct MobileNavItems: HTML {
+  @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
@@ -209,13 +210,19 @@ struct MobileNavItems: HTML {
             li {
               Button(color: .purple, size: .small, style: .outline) { "Login" }
                 .inlineStyle("text-align", "center")
-                .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+                .attribute(
+                  "href",
+                  siteRouter.loginPath(redirect: currentRoute)
+                )
                 .inlineStyle("display", "block")
             }
             li {
               Button(color: .purple, size: .small) { "Sign up" }
                 .inlineStyle("text-align", "center")
-                .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+                .attribute(
+                  "href",
+                  siteRouter.signUpPath(redirect: currentRoute)
+                )
                 .inlineStyle("display", "block")
             }
           }
@@ -254,6 +261,7 @@ struct MobileNavItems: HTML {
 }
 
 struct TrailingNavItems: HTML {
+  @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
@@ -272,13 +280,16 @@ struct TrailingNavItems: HTML {
             Button(color: .purple, size: .small, style: .outline) {
               "Login"
             }
-            .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+            .attribute("href", siteRouter.loginPath(redirect: currentRoute))
           }
           li {
             Button(color: .purple, size: .small) {
               "Sign up"
             }
-            .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+            .attribute(
+              "href",
+              siteRouter.signUpPath(redirect: currentRoute)
+            )
           }
         }
       }

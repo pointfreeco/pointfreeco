@@ -52,12 +52,12 @@ func logoutResponse(
 
 extension Conn where Step == StatusLineOpen {
   public func loginAndRedirect() -> Conn<ResponseEnded, Data> {
-    self.redirect(to: .login(redirect: self.request.url?.absoluteString))
+    self.redirect(to: .gitHubAuth(redirect: self.request.url?.absoluteString))
   }
 }
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
-  conn |> redirect(to: .login(redirect: conn.request.url?.absoluteString))
+  conn |> redirect(to: .gitHubAuth(redirect: conn.request.url?.absoluteString))
 }
 
 private func requireLoggedOutUser<A>(
@@ -192,7 +192,7 @@ private func requireAccessToken<A>(
         case let .right(.right(token)):
           return conn.map(const(token .*. conn.data.second)) |> middleware
         case let .right(.left(error)) where error.error == .badVerificationCode:
-          return conn |> PointFree.redirect(to: .login(redirect: redirect))
+          return conn |> PointFree.redirect(to: .gitHubAuth(redirect: redirect))
         case .right(.left), .left:
           return conn
             |> PointFree.redirect(

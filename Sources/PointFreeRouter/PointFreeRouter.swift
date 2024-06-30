@@ -27,8 +27,28 @@ public struct PointFreeRouter: ParserPrinter {
     self.url(for: route).absoluteString
   }
 
+  public func gitHubAuthPath(redirect: SiteRoute? = nil) -> String {
+    self.path(for: .gitHubAuth(redirect: redirect.map(self.url(for:))))
+  }
+
   public func loginPath(redirect: SiteRoute? = nil) -> String {
-    self.path(for: .login(redirect: redirect.map(self.url(for:))))
+    guard
+      let redirect,
+      !redirect.is(\.login) && !redirect.is(\.signUp)
+    else {
+      return self.path(for: .login(redirect: nil))
+    }
+    return self.path(for: .login(redirect: url(for: redirect)))
+  }
+
+  public func signUpPath(redirect: SiteRoute? = nil) -> String {
+    guard
+      let redirect,
+      !redirect.is(\.login) && !redirect.is(\.signUp)
+    else {
+      return self.path(for: .signUp(redirect: nil))
+    }
+    return self.path(for: .signUp(redirect: url(for: redirect)))
   }
 }
 
