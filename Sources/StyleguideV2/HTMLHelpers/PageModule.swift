@@ -49,6 +49,7 @@ public struct PageModule<Title: HTML, Content: HTML>: HTML {
                 .color(theme.color)
             }
             .flexible()
+            .column(count: seeAllURL == nil ? 12 : 10)
             .column(alignment: seeAllURL == nil ? .center : .start)
             .inlineStyle(
               "padding-bottom",
