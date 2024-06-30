@@ -44,7 +44,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
       .attribute("content", "#121212")
     meta()
       .attribute("name", "viewport")
-      .attribute("content", "width=device-width, initial-scale=1")
+      .attribute("content", "width=device-width, initial-scale=1.0, viewport-fit=cover")
     BaseStyles()
     Favicons()
     link()
@@ -80,8 +80,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     }
     LiveStreamBanner()
     // TODO: Announcement banner
-
-    NewNavBar()
+    NewNewNavBar()
     content
     if !layoutData.style.isMinimal {
       Footer()
@@ -89,14 +88,32 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
   }
 }
 
-struct NewNavBar: HTML {
+
+struct NewNewNavBar: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+
   var body: some HTML {
-    nav {
-      Logo()
-      MenuButton()
-      MainNavItems()
+    div {
+      nav {
+        Logo()
+        CenteredNavItems()
+        TrailingNavItems()
+        MenuButton()
+        MobileNavItems()
+      }
+      .background(.black)
+      .flexContainer(
+        direction: "row",
+        wrap: "wrap",
+        justification: "space-between",
+        itemAlignment: "center"
+      )
+      .inlineStyle("padding", "2rem")
+      .inlineStyle("padding", "1.5rem", media: .desktop)
+      .inlineStyle("max-width", "1280px")
+      .inlineStyle("margin", "0 auto")
     }
-    .inlineStyle("background-color", "#000")
+    .background(.black)
     .inlineStyle("width", "100%")
     .inlineStyle("position", "sticky", media: .mobile)
     .inlineStyle("top", "0", media: .mobile)
@@ -104,7 +121,7 @@ struct NewNavBar: HTML {
 
   struct Logo: HTML {
     @Dependency(\.siteRouter) var siteRouter
-    
+
     var body: some HTML {
       Link(href: siteRouter.path(for: .home)) {
         SVG(
@@ -112,10 +129,8 @@ struct NewNavBar: HTML {
           description: "Point-Free"
         )
       }
-      .inlineStyle("display", "block")
-      .inlineStyle("float", "left")
-      .inlineStyle("font-size", "2em")
-      .inlineStyle("padding", "10px 20px")
+      .inlineStyle("line-height", "0")
+      .inflexible()
     }
   }
 }
@@ -130,13 +145,11 @@ struct MenuButton: HTML {
     Bars()
       .attribute("id", "menu-icon")
       .attribute("for", "menu-checkbox")
-      .color(.white)
       .inlineStyle("cursor", "pointer")
-      .inlineStyle("display", "inline-block")
-      .inlineStyle("float", "right")
-      .inlineStyle("padding", "28px 20px")
-      .inlineStyle("position", "relative")
+      .inlineStyle("display", "none", media: .desktop)
+      .inlineStyle("cursor", "pointer")
       .inlineStyle("user-select", "none")
+      .inflexible()
   }
 
   struct Bars: HTML {
@@ -146,10 +159,10 @@ struct MenuButton: HTML {
           Bar(index: index)
         }
         .size(width: .px(24), height: .px(3))
-        .background(.gray800)
+        .background(.gray900)
         .inlineStyle("display", "block")
         .inlineStyle("border-radius", "1.5px")
-        .inlineStyle("transition", "background .2s ease-out")
+        .inlineStyle("transition", "all .2s ease-out, background .2s ease-out")
         .inlineStyle("position", "relative")
       }
     }
@@ -159,7 +172,6 @@ struct MenuButton: HTML {
     let index: Int
     var body: some HTML {
       span {}
-        .inlineStyle("transition", "all .2s ease-out, background .2s ease-out")
         .inlineStyle("top", index == 0 ? nil : "\(index * 5)px")
         .inlineStyle("top", index == 0 ? nil : index == 1 ? "-5px" : "0", pre: "input:checked ~ #menu-icon")
         .inlineStyle("transform", "rotate(\(index * 45)deg)", pre: "input:checked ~ #menu-icon")
@@ -168,230 +180,10 @@ struct MenuButton: HTML {
   }
 }
 
-struct MainNavItems: HTML {
-  var body: some HTML {
-    ul {
-      HTMLGroup {
-        li { "One" }
-        li { "Two" }
-        li { "Three" }
-        li { "Four" }
-      }
-      .color(.white)
-      .inlineStyle("display", "block")
-      .inlineStyle("padding", "20px 20px")
-      .inlineStyle("text-decoration", "none")
-      .inlineStyle("background-color", "#555", pseudo: .hover)
-    }
-    .inlineStyle("margin", "0")
-    .inlineStyle("padding", "0")
-    .inlineStyle("list-style", "none")
-    .inlineStyle("overflow", "hidden")
-    .inlineStyle("background-color", "#000")
-    .inlineStyle("clear", "both")
-    .inlineStyle("max-height", "0")
-    .inlineStyle("transition", "max-height 300ms ease-out")
-    .inlineStyle("max-height", "20rem", media: .mobile, pre: "input:checked ~")
-  }
-}
-
-
-// ========================
-
-
-
-
-
-
-
-struct NavBar: HTML {
-  @Dependency(\.siteRouter) var siteRouter
-
-  var body: some HTML {
-    nav {
-//      Link(href: siteRouter.path(for: .home)) {
-//        SVG(
-//          base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
-//          description: "Point-Free"
-//        )
-//      }
-//      .inlineStyle("flex-grow", "0")
-//      .inlineStyle("flex-shrink", "0")
-//      .inlineStyle("flex-basis", "auto")
-
-      label {
-        "HAM"
-      }
-      .attribute("for", "hamburger")
-      .inlineStyle("display", "none", media: .desktop)
-      .color(.white)
-
-      input()
-        .attribute("type", "checkbox")
-        .attribute("id", "hamburger")
-        .inlineStyle("display", "none")
-
-      ul {
-        HTMLGroup {
-          li { "One" }
-          li { "Two" }
-          li { "Three" }
-          li { "Four" }
-        }
-        .inlineStyle("flex-grow", "1")
-        .inlineStyle("flex-basis", "0")
-        .inlineStyle("padding", "10px")
-        .inlineStyle("text-align", "center")
-        .color(.white)
-        .inlineStyle("box-sizing", "border-box", media: .mobile)
-        .inlineStyle("display", "block", media: .mobile)
-        .inlineStyle("width", "100%", media: .mobile)
-        .inlineStyle("border-top", "1 px solid #333", media: .mobile)
-      }
-      .listStyle(.reset)
-      .attribute("id", "hamitems")
-      .inlineStyle("display", "flex")
-      .inlineStyle("display", "none", media: .mobile)
-      .inlineStyle("display", "block", media: .mobile, pre: "input:checked ~")
-      .inlineStyle("transition", "300ms")
-    }
-    .attribute("id", "hamnav")
-    .inlineStyle("width", "100%")
-//    .inlineStyle("position", "fixed", media: .mobile)
-//    .inlineStyle("top", "0")
-    .inlineStyle("display", "flex")
-    .background(.black)
-  }
-}
-
-
-struct NavView: HTML {
+struct MobileNavItems: HTML {
   @Dependency(\.currentUser) var currentUser
-  @Dependency(\.subscriberState) var subscriberState
-  @Dependency(\.currentRoute) var siteRoute
   @Dependency(\.siteRouter) var siteRouter
-
-  var body: some HTML {
-    div {
-      nav {
-        Link(href: siteRouter.path(for: .home)) {
-          SVG(
-            base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
-            description: "Point-Free"
-          )
-        }
-        .column(alignment: .end)
-        .inlineStyle("max-width", "100%")
-        .inlineStyle("box-sizing", "border-box")
-
-        label {
-          "HAM"
-        }
-        .inlineStyle("max-width", "100%")
-        .inlineStyle("box-sizing", "border-box")
-        .attribute("for", "menu-checkbox")
-        .inlineStyle("display", "none", media: .desktop)
-        .inlineStyle("display", "block", media: .mobile, pre: "input:checked ~")
-        .color(.white)
-        .flexible()
-        .column(alignment: .end)
-        .attribute("for", "hamburger")
-
-        input()
-          .attribute("type", "checkbox")
-          .attribute("id", "menu-checkbox")
-          .inlineStyle("display", "none")
-
-        ul {
-          HTMLGroup {
-            li { "One" }
-            li { "Two" }
-            li { "Three" }
-            li { "Four" }
-          }
-          .inlineStyle("flex-grow", "1")
-          .inlineStyle("flex-basis", "0")
-          .inlineStyle("padding", "10px")
-          .inlineStyle("text-align", "center")
-          .color(.white)
-          .inlineStyle("box-sizing", "border-box", media: .mobile)
-          .inlineStyle("display", "block", media: .mobile)
-          .inlineStyle("width", "100%", media: .mobile)
-          .inlineStyle("border-top", "1 px solid #333", media: .mobile)
-        }
-        .listStyle(.reset)
-        .attribute("id", "hamitems")
-        .inlineStyle("display", "flex")
-        .inlineStyle("display", "none", media: .mobile)
-        .inlineStyle("display", "block", media: .mobile, pre: "input:checked ~")
-        .inlineStyle("transition", "300ms")
-
-//        Grid {
-//          GridColumn {
-//            Link(href: siteRouter.path(for: .home)) {
-//              SVG(
-//                base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
-//                description: "Point-Free"
-//              )
-//            }
-//          }
-//          .inflexible()
-//
-//          label {
-//            "MENU"
-//          }
-//          .inlineStyle("max-width", "100%")
-//          .inlineStyle("box-sizing", "border-box")
-//          .attribute("for", "menu-checkbox")
-//          .inlineStyle("display", "none", media: .desktop)
-//          .inlineStyle("display", "block", media: .mobile, pre: "input:checked ~")
-//          .color(.white)
-//          .flexible()
-//          .column(alignment: .end)
-//
-//          input()
-//            .attribute("type", "checkbox")
-//            .attribute("id", "menu-checkbox")
-//            .inlineStyle("display", "none")
-//
-////          GridColumn {
-//            CenteredNavItems()
-////          }
-//            .inlineStyle("max-width", "100%")
-//            .inlineStyle("box-sizing", "border-box")
-//          .column(alignment: .center)
-//          .inlineStyle("display", "none", media: .mobile)
-//          .flexible()
-//
-//          GridColumn {
-//            TrailingNavItems()
-//          }
-//          .column(alignment: .end)
-//          .inlineStyle("display", "none", media: .mobile)
-//          .inflexible()
-//        }
-//        .grid(alignment: .center)
-      }
-      .inlineStyle("max-width", "1280px")
-      .inlineStyle("margin-left", "auto")
-      .inlineStyle("margin-right", "auto")
-      .background(.gray300)
-      .attribute("id", "hamnav")
-      .inlineStyle("width", "100%")
-//      .inlineStyle("position", "fixed", media: .mobile)
-//      .inlineStyle("top", "0")
-      .inlineStyle("display", "flex")
-      .grid(alignment: .center)
-    }
-    .backgroundColor(.black)
-    .padding(topBottom: .small, leftRight: .small)
-  }
-}
-
-struct CenteredNavItems: HTML {
-  @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
-  @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
     ul {
@@ -405,34 +197,59 @@ struct CenteredNavItems: HTML {
         }
         NavListItem("Blog", route: .blog())
         NavListItem("Gifts", route: .gifts(.index))
-
         HTMLGroup {
           if currentUser != nil {
             li {
               Button(color: .purple, size: .small) { "Account" }
+                .inlineStyle("text-align", "center")
                 .attribute("href", siteRouter.path(for: .account(.index)))
+                .inlineStyle("display", "block")
             }
           } else {
             li {
               Button(color: .purple, size: .small, style: .outline) { "Login" }
+                .inlineStyle("text-align", "center")
                 .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+                .inlineStyle("display", "block")
             }
             li {
               Button(color: .purple, size: .small) { "Sign up" }
+                .inlineStyle("text-align", "center")
                 .attribute("href", siteRouter.path(for: .login(redirect: nil /*TODO*/)))
+                .inlineStyle("display", "block")
             }
           }
         }
-        .inlineStyle("display", "none", media: .desktop)
       }
-      .inlineStyle("box-sizing", "border-box", media: .mobile)
-      .inlineStyle("display", "block", media: .mobile)
-      .inlineStyle("width", "100%", media: .mobile)
-      .inlineStyle("border-top", "1 px solid #333", media: .mobile)
+      .inlineStyle("padding-top", "1.5rem")
     }
-    .linkColor(.gray650)
+    .color(.white)
     .listStyle(.reset)
-    .fontStyle(.body(.small))
+    .flexItem(
+      grow: "1",
+      shrink: "1",
+      basis: "100%"
+    )
+    .inlineStyle("margin", "0")
+    .inlineStyle("display", "none")
+    .inlineStyle("display", "block", media: .mobile, pre: "input:checked ~")
+  }
+
+  struct NavListItem: HTML {
+    @Dependency(\.siteRouter) var siteRouter
+    let title: String
+    let route: SiteRoute
+    init(_ title: String, route: SiteRoute) {
+      self.title = title
+      self.route = route
+    }
+    var body: some HTML {
+      li {
+        Link(title, href: siteRouter.path(for: route))
+          .linkColor(.gray650)
+          .inlineStyle("display", "block")
+      }
+    }
   }
 }
 
@@ -465,33 +282,58 @@ struct TrailingNavItems: HTML {
           }
         }
       }
-      .padding(left: .small)
-      .attribute("display", "inline")
+      .inlineStyle("display", "inline")
+      .inlineStyle("padding-left", "1rem", pseudo: .not(.firstChild))
     }
-    .fontStyle(.body(.small))
     .listStyle(.reset)
+    .inlineStyle("display", "none", media: .mobile)
+    .inflexible()
   }
 }
 
-struct NavListItem: HTML {
+struct CenteredNavItems: HTML {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.siteRouter) var siteRouter
-  let title: String
-  let route: SiteRoute
-  init(_ title: String, route: SiteRoute) {
-    self.title = title
-    self.route = route
-  }
+
   var body: some HTML {
-    li {
-      Link(title, href: siteRouter.path(for: route))
+    ul {
+      HTMLGroup {
+        if currentUser != nil {
+          NavListItem("Episodes", route: .episodes(.list(.all)))
+        }
+        NavListItem("Collections", route: .collections())
+        if subscriberState.isNonSubscriber {
+          NavListItem("Pricing", route: .pricingLanding)
+        }
+        NavListItem("Blog", route: .blog())
+        NavListItem("Gifts", route: .gifts(.index))
+      }
+      .inlineStyle("padding-left", "1.5rem", media: .desktop)
     }
-    .inlineStyle("padding-left", "2rem", pseudo: .not(.firstChild))
-    .inlineStyle("display", "inline")
+    .linkColor(.gray650)
+    .listStyle(.reset)
+    .inlineStyle("display", "none", media: .mobile)
+    .inflexible()
+  }
+
+  struct NavListItem: HTML {
+    @Dependency(\.siteRouter) var siteRouter
+    let title: String
+    let route: SiteRoute
+    init(_ title: String, route: SiteRoute) {
+      self.title = title
+      self.route = route
+    }
+    var body: some HTML {
+      li {
+        Link(title, href: siteRouter.path(for: route))
+      }
+      .inlineStyle("padding-left", "2rem", pseudo: .not(.firstChild))
+      .inlineStyle("display", "inline")
+    }
   }
 }
-
-
-// ========================
 
 public struct PastDueBanner: HTML {
   @Dependency(\.siteRouter) var siteRouter
@@ -804,47 +646,3 @@ public struct PrismJSHead: HTML {
     }
   }
 }
-
-
-//struct MobileMenu: HTML {
-//  var body: some HTML {
-//    div {
-//      label {
-//        for index in -1...1 {
-//          MenuBar(index: index)
-//        }
-//      }
-//      .attribute("class", "menu-checkbox-container")
-//      .attribute("for", "menu-checkbox")
-//      .inlineStyle("align-items", "center")
-//      .inlineStyle("cursor", "pointer")
-//      .inlineStyle("display", "flex")
-//      .inlineStyle("flex-direction", "column")
-//      .inlineStyle("height", "100%")
-//      .inlineStyle("width", "30px")
-//      .inlineStyle("justify-content", "center")
-//    }
-//
-//    input()
-//      .hidden()
-//      .attribute("id", "menu-checkbox")
-//      .attribute("type", "checkbox")
-//  }
-//
-//  private struct MenuBar: HTML {
-//    let index: Int
-//    var body: some HTML {
-//      div {}
-//        .attribute("class", "menu-bar-\(index)")
-//        .backgroundColor(.white)
-//        .inlineStyle("border-radius", "2px")
-//        .inlineStyle("content", "''")
-//        .inlineStyle("display", "block")
-//        .inlineStyle("height", "4px")
-//        .inlineStyle("margin-top", "\(index * 8)px")
-//        .inlineStyle("position", "absolute")
-//        .inlineStyle("transition", "transform 400ms cubic-bezier(0.23, 1, 0.32, 1)")
-//        .inlineStyle("width", "30px")
-//    }
-//  }
-//}

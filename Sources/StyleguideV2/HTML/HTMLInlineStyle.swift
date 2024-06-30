@@ -7,8 +7,7 @@ extension HTML {
     _ value: String?,
     media mediaQuery: MediaQuery? = nil,
     pre: String? = nil,
-    pseudo: Pseudo? = nil,
-    post: String? = nil
+    pseudo: Pseudo? = nil
   ) -> HTMLInlineStyle<Self> {
     HTMLInlineStyle(
       content: self,
@@ -16,8 +15,7 @@ extension HTML {
       value: value,
       mediaQuery: mediaQuery,
       pre: pre,
-      pseudo: pseudo,
-      post: post
+      pseudo: pseudo
     )
   }
 }
@@ -32,8 +30,7 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     value: String?,
     mediaQuery: MediaQuery?,
     pre: String? = nil,
-    pseudo: Pseudo?,
-    post: String? = nil
+    pseudo: Pseudo?
   ) {
     self.content = content
     self.styles = value.map {
@@ -43,8 +40,7 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
           value: $0,
           media: mediaQuery,
           preSelector: pre,
-          pseudo: pseudo,
-          postSelector: post
+          pseudo: pseudo
         )
       ]
     }
@@ -56,8 +52,7 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     _ value: String?,
     media mediaQuery: MediaQuery? = nil,
     pre: String? = nil,
-    pseudo: Pseudo? = nil,
-    post: String? = nil
+    pseudo: Pseudo? = nil
   ) -> HTMLInlineStyle {
     var copy = self
     if let value {
@@ -67,8 +62,7 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
           value: value,
           media: mediaQuery,
           preSelector: pre,
-          pseudo: pseudo,
-          postSelector: post
+          pseudo: pseudo
         )
       )
     }
@@ -99,8 +93,7 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
       #endif
       let selector = """
         \(style.preSelector ?? "") \
-        .\(className)\(style.pseudo?.rawValue ?? "") \
-        \(style.postSelector ?? "")
+        .\(className)\(style.pseudo?.rawValue ?? "")
         """
 
       if printer.styles[style.media, default: [:]][selector] == nil {
@@ -122,7 +115,6 @@ private struct Style: Hashable {
   let media: MediaQuery?
   let preSelector: String?
   let pseudo: Pseudo?
-  let postSelector: String?
 }
 
 public struct MediaQuery: RawRepresentable, Hashable {

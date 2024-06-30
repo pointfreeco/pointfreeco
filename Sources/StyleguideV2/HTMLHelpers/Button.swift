@@ -36,21 +36,21 @@ public struct Button<Label: HTML>: HTML {
     tag(tagName) {
       label
     }
-    .inlineStyle("border", style.border)
+    .inlineStyle("border", "\(style.border) \(color.rawValue.rawValue)")
+    .inlineStyle("border-radius", "0.5rem")
     .inlineStyle("box-shadow", "inset 0 0 0 20rem rgba(0,0,0,0.1)", pseudo: .hover)
     .inlineStyle("cursor", "pointer")
     .inlineStyle("font-weight", "500")
     .inlineStyle("text-decoration", style.textDecoration)
     .inlineStyle("text-decoration", style.textDecoration, media: nil, pseudo: .link)
     .inlineStyle("white-space", "nowrap")
+    .inlineStyle("padding", "\(size.topBottomPadding)rem \(size.leftRightPadding)rem")
+    .inlineStyle("transition", "0.3s")
     .backgroundColor(color.backgroundColor(for: style))
     .color(color.foregroundColor(for: style))
     .color(color.foregroundColor(for: style), .link)
     .color(color.foregroundColor(for: style), .visited)
     .fontScale(size.fontScale)
-    .inlineStyle("padding", "\(size.topBottomPadding)rem \(size.leftRightPadding)rem")
-    .inlineStyle("border-radius", "0.5rem")
-    .inlineStyle("transition", "0.3s")
   }
 
   public enum Color {
@@ -121,7 +121,7 @@ public struct Button<Label: HTML>: HTML {
     fileprivate var border: String {
       switch self {
       case .normal, .underline: "none"
-      case .outline: "rounded"
+      case .outline: "1px solid"
       }
     }
 

@@ -53,37 +53,44 @@ public struct Episodes: HTML {
 
     switch listType {
     case .all:
-      EpisodesModule(episodes: freeEpisodes, title: "Free episodes")
+      EpisodesModule(
+        episodes: freeEpisodes,
+        title: "Free episodes",
+        omitSeeAllLink: false
+      )
       InterstitialBanner()
 
       if let user = currentUser {
         EpisodesModule(
           episodes: mainEpisodes,
-          title: subscriberState.isNonSubscriber ? "All episodes" : nil
-        ) {
-          ReferAFriendModule(user: user)
-        }
+          title: "All episodes",
+          omitSeeAllLink: true
+        )
       } else {
         EpisodesModule(
           episodes: mainEpisodes,
-          title: subscriberState.isNonSubscriber ? "All episodes" : nil
+          title: "All episodes",
+          omitSeeAllLink: true
         )
       }
 
     case .free:
-      if subscriberState.isNonSubscriber {
-        EpisodesModule(
-          episodes: mainEpisodes,
-          title: subscriberState.isNonSubscriber ? "All episodes" : nil
-        ) {
-          InterstitialBanner()
-        }
-      } else {
-        EpisodesModule(episodes: mainEpisodes)
+      EpisodesModule(
+        episodes: mainEpisodes,
+        title: nil,
+        omitSeeAllLink: true
+      ) {
+        InterstitialBanner()
       }
 
     case .history:
-      EpisodesModule(episodes: mainEpisodes)
+      EpisodesModule(
+        episodes: mainEpisodes,
+        title: nil,
+        omitSeeAllLink: true
+      ) {
+        InterstitialBanner()
+      }
     }
   }
 }
@@ -92,24 +99,29 @@ private struct EpisodesModule<Episodes: Collection<Episode>, CTA: HTML>: HTML {
   let episodes: Episodes
   var title: String?
   var cta: CTA?
+  var omitSeeAllLink: Bool
 
   init(
     episodes: Episodes,
     title: String? = nil,
+    omitSeeAllLink: Bool,
     @HTMLBuilder cta: () -> CTA
   ) {
     self.episodes = episodes
     self.title = title
     self.cta = cta()
+    self.omitSeeAllLink = omitSeeAllLink
   }
 
   init(
     episodes: Episodes,
-    title: String? = nil
+    title: String? = nil,
+    omitSeeAllLink: Bool
   ) where CTA == HTMLEmpty {
     self.episodes = episodes
     self.title = title
     self.cta = nil
+    self.omitSeeAllLink = omitSeeAllLink
   }
 
   @Dependency(\.date.now) var now
@@ -117,17 +129,22 @@ private struct EpisodesModule<Episodes: Collection<Episode>, CTA: HTML>: HTML {
 
   var body: some HTML {
     if let cta = cta {
-      module(episodes: episodes.prefix(3))
+      module(episodes: episodes.prefix(3), omitSeeAllLink: true)
       cta
-      module(episodes: episodes.dropFirst(3))
+      module(episodes: episodes.dropFirst(3), omitSeeAllLink: true)
     } else {
-      module(episodes: episodes)
+      module(episodes: episodes, omitSeeAllLink: false)
     }
   }
 
-  func module(episodes: some Collection<Episode>) -> some HTML {
+  func module(
+    episodes: some Collection<Episode>,
+    omitSeeAllLink: Bool
+  ) -> some HTML {
     PageModule(
-      seeAllURL: title == nil ? nil : siteRouter.path(for: .episodes(.list(.free))),
+      seeAllURL: omitSeeAllLink || self.omitSeeAllLink || title == nil
+        ? nil
+        : siteRouter.path(for: .episodes(.list(.free))),
       theme: .content
     ) {
       Grid {
@@ -138,7 +155,7 @@ private struct EpisodesModule<Episodes: Collection<Episode>, CTA: HTML>: HTML {
       .grid(alignment: .stretch)
     } title: {
       if let title {
-        Header(2) { HTMLText(title) }
+        Header(3) { HTMLText(title) }
       }
     }
   }
@@ -184,6 +201,8 @@ private struct InterstitialBanner: HTML {
       GetStartedModule(style: .solid)
     } else if subscriberState.isNonSubscriber {
       UpgradeModule()
+    } else if let currentUser {
+      ReferAFriendModule(user: currentUser)
     }
   }
 }
