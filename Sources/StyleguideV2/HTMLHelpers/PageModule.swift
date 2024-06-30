@@ -64,7 +64,7 @@ public struct PageModule<Title: HTML, Content: HTML>: HTML {
               Link("See all →", href: seeAllURL)
                 .linkColor(.purple)
             }
-            .inflexible()
+            .flexible()
             .column(alignment: .end)
           }
         }
