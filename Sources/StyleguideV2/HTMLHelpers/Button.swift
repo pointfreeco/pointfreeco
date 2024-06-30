@@ -1,5 +1,5 @@
 public struct Button<Label: HTML>: HTML {
-  let tag: HTMLTag
+  let tagName: String
   let color: Color
   let size: Size
   let style: Style
@@ -12,15 +12,28 @@ public struct Button<Label: HTML>: HTML {
     style: Style = .normal,
     @HTMLBuilder label: () -> Label
   ) {
-    self.tag = tag
+    self.tagName = tag.rawValue
     self.color = color
     self.size = size
     self.style = style
     self.label = label()
   }
 
+  public init(
+    tag: HTMLVoidTag,
+    color: Color,
+    size: Size = .regular,
+    style: Style = .normal
+  ) where Label == HTMLEmpty {
+    self.tagName = tag.rawValue
+    self.color = color
+    self.size = size
+    self.style = style
+    self.label = HTMLEmpty()
+  }
+
   public var body: some HTML {
-    tag {
+    tag(tagName) {
       label
     }
     .inlineStyle("border", style.border)
