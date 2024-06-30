@@ -72,6 +72,7 @@ public struct PageModule<Title: HTML, Content: HTML>: HTML {
         content
       }
       .grid(alignment: .baseline)
+      .inlineStyle("justify-content", theme.gridJustification)
       .inlineStyle("max-width", "1280px")
       .inlineStyle("margin", "0 auto")
       .inlineStyle(
@@ -98,6 +99,7 @@ public struct PageModuleTheme {
   let leftRightMargin: Double
   let leftRightMarginDesktop: Double
   let titleMarginBottom: Double
+  let gridJustification: String
 
   public init(
     backgroundColor: PointFreeColor? = nil,
@@ -107,7 +109,8 @@ public struct PageModuleTheme {
     bottomMargin: Double,
     leftRightMargin: Double,
     leftRightMarginDesktop: Double,
-    titleMarginBottom: Double
+    titleMarginBottom: Double,
+    gridJustification: String = "baseline"
   ) {
     self.backgroundColor = backgroundColor
     self.contentBackgroundColor = contentBackgroundColor
@@ -117,5 +120,6 @@ public struct PageModuleTheme {
     self.leftRightMargin = leftRightMargin
     self.leftRightMarginDesktop = leftRightMarginDesktop
     self.titleMarginBottom = titleMarginBottom
+    self.gridJustification = gridJustification
   }
 }
