@@ -67,7 +67,7 @@ class PointFreeRouterTests: TestCase {
   func testEpisodeShowRoute() async throws {
     let request = URLRequest(url: URL(string: "http://localhost:8080/episodes/ep10-hello-world")!)
 
-    let route = SiteRoute.episode(.show(.left("ep10-hello-world")))
+    let route = SiteRoute.episodes(.show(.left("ep10-hello-world")))
 
     XCTAssertEqual(
       try siteRouter.match(request: request),
@@ -87,7 +87,7 @@ class PointFreeRouterTests: TestCase {
     )
     request.httpMethod = "POST"
 
-    let route = SiteRoute.episode(.progress(param: .left("ep10-hello-world"), percent: 50))
+    let route = SiteRoute.episodes(.progress(param: .left("ep10-hello-world"), percent: 50))
 
     XCTAssertEqual(
       try siteRouter.match(request: request),

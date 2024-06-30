@@ -201,7 +201,7 @@ public struct CollectionCard: HTML {
       }
       .linkStyle(LinkStyle(color: .black.dark(.white), underline: false))
       .inlineStyle("display", "block")
-      .inlineStyle("padding", "2rem 0.5rem 2rem 0.5rem")
+      .inlineStyle("padding", "2rem 1.5rem")
       .inlineStyle("text-align", "center")
     } footer: {
       Label("\(collection.numberOfEpisodes) episodes", icon: .play)

@@ -4,6 +4,10 @@ public enum HTMLBuilder {
     _HTMLArray(elements: components)
   }
 
+  public static func buildBlock() -> HTMLEmpty {
+    HTMLEmpty()
+  }
+
   public static func buildBlock<Content: HTML>(_ content: Content) -> Content {
     content
   }
@@ -98,7 +102,7 @@ extension HTMLText: ExpressibleByStringInterpolation {}
 
 public struct _HTMLTuple<each Content: HTML>: HTML {
   let content: (repeat each Content)
-  public init(content: repeat each Content) {
+  init(content: repeat each Content) {
     self.content = (repeat each content)
   }
   public static func _render(_ html: Self, into printer: inout HTMLPrinter) {

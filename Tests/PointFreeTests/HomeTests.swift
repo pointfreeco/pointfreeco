@@ -117,7 +117,7 @@ class HomeTests: TestCase {
 
   @MainActor
   func testEpisodesIndex() async throws {
-    let conn = connection(from: request(to: .episode(.index)))
+    let conn = connection(from: request(to: .episodes(.list(.all))))
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }

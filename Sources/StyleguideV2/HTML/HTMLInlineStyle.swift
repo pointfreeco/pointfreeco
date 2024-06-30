@@ -106,7 +106,9 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
       if printer.styles[style.media, default: [:]][selector] == nil {
         printer.styles[style.media, default: [:]][selector] = "\(style.property):\(style.value)"
       }
-      printer.attributes["class", default: ""]!.append("\(className) ")
+      printer
+        .attributes["class", default: ""]
+        .append(printer.attributes.keys.contains("class") ? " \(className)" : className)
     }
   }
   public var body: Never { fatalError() }

@@ -7,7 +7,7 @@ public struct Header<Content: HTML>: HTML {
   }
 
   public var body: some HTML {
-    tag(headerTag) {
+    tag("h\(size)") {
       content
     }
     .inlineStyle("margin", "0")
@@ -18,16 +18,6 @@ public struct Header<Content: HTML>: HTML {
     .inlineStyle("line-height", "\(lineHeight)")
   }
   
-  var headerTag: StaticString {
-    switch size {
-    case 1: "h1"
-    case 2: "h2"
-    case 3: "h3"
-    case 4: "h4"
-    case 5: "h5"
-    default: "h6"
-    }
-  }
   var fontSize: Double {
     switch size {
     case 1: 4

@@ -2,7 +2,7 @@ import OrderedCollections
 
 public struct HTMLPrinter {
   public typealias Content = Never
-  public var attributes: OrderedDictionary<String, String?> = [:]
+  public var attributes: OrderedDictionary<String, String> = [:]
   public var bytes: ContiguousArray<UInt8> = []
   public var styles: OrderedDictionary<MediaQuery?, OrderedDictionary<String, String>> = [:]
 

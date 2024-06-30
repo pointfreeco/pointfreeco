@@ -4,19 +4,19 @@ public struct HTMLElement<Content: HTML>: HTML {
   public var body: Never {
     fatalError()
   }
-  let tag: StaticString
+  let tag: String
   @HTMLBuilder let content: Content?
-  public init(tag: StaticString, @HTMLBuilder content: () -> Content? = { Never?.none }) {
+  public init(tag: String, @HTMLBuilder content: () -> Content? = { Never?.none }) {
     self.tag = tag
     self.content = content()
   }
   public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
     printer.bytes.append(UInt8(ascii: "<"))
-    html.tag.withUTF8Buffer { printer.bytes.append(contentsOf: $0) }
+    printer.bytes.append(contentsOf: html.tag.utf8)
     for (name, value) in printer.attributes {
       printer.bytes.append(UInt8(ascii: " "))
       printer.bytes.append(contentsOf: name.utf8)
-      if let value {
+      if !value.isEmpty {
         printer.bytes.append(contentsOf: "=\"".utf8)
         for byte in value.utf8 {
           guard byte != UInt8(ascii: "\"") else {
@@ -35,10 +35,11 @@ public struct HTMLElement<Content: HTML>: HTML {
 
       printer.attributes.removeAll()
       Content._render(content, into: &printer)
+    }
+    if !HTMLVoidTag.allTags.contains(html.tag) {
       printer.bytes.append(contentsOf: "</".utf8)
-      html.tag.withUTF8Buffer { printer.bytes.append(contentsOf: $0) }
+      printer.bytes.append(contentsOf: html.tag.utf8)
       printer.bytes.append(UInt8(ascii: ">"))
     }
   }
 }
-

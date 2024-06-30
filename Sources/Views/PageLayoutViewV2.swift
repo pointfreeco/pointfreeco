@@ -63,26 +63,23 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
   }
 
   public var body: some HTML {
-//    if let flash = layoutData.flash {
-//      TopBanner(flash: flash)
-//    }
-//    if layoutData.isGhosting {
-//      TopBanner(style: .notice) {
-//        "👻 You’re a ghost! "
-//        Link("Stop ghosting", href: siteRouter.path(for: .endGhosting))
-//      }
-//    }
-//    PastDueBanner()
-//    if emergencyMode {
-//      TopBanner(style: .warning) {
-//        """
-//        Temporary service disruption. We’re operating with reduced features and will be \
-//        back soon!
-//        """
-//      }
-//    }
-//    LiveStreamBanner()
-//    // TODO: Announcement banner
+    if let flash = layoutData.flash {
+      TopBanner(flash: flash)
+    }
+    if layoutData.isGhosting {
+      TopBanner(style: .notice) {
+        "👻 You’re a ghost! "
+        Link("Stop ghosting", href: siteRouter.path(for: .endGhosting))
+      }
+    }
+    PastDueBanner()
+    if emergencyMode {
+      TopBanner(style: .warning) {
+        "Temporary service disruption. We’re operating with reduced features and will be back soon!"
+      }
+    }
+    LiveStreamBanner()
+    // TODO: Announcement banner
 
     NewNavBar()
     content

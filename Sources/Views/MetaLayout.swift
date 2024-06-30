@@ -26,6 +26,26 @@ public struct Metadata<A> {
   public let type: OpenGraphType?
   public let url: String?
 
+  public init(
+    description: String? = nil,
+    image: String? = nil,
+    rest: A = (),
+    title: String? = nil,
+    twitterCard: TwitterCard? = nil,
+    twitterSite: String? = nil,
+    type: OpenGraphType? = nil,
+    url: String? = nil
+  ) {
+    self.description = description
+    self.image = image
+    self.rest = rest
+    self.title = title
+    self.twitterCard = twitterCard
+    self.twitterSite = twitterSite
+    self.type = type
+    self.url = url
+  }
+
   public static func create(
     description: String? = nil,
     image: String? = nil,
@@ -110,27 +130,6 @@ public struct Metadata<A> {
       twitterSite,
       url,
     ]
-  }
-}
-
-extension Metadata<Void> {
-  public init(
-    description: String? = nil,
-    image: String? = nil,
-    title: String? = nil,
-    twitterCard: TwitterCard? = nil,
-    twitterSite: String? = nil,
-    type: OpenGraphType? = nil,
-    url: String? = nil
-  ) {
-    self.description = description
-    self.image = image
-    self.rest = ()
-    self.title = title
-    self.twitterCard = twitterCard
-    self.twitterSite = twitterSite
-    self.type = type
-    self.url = url
   }
 }
 

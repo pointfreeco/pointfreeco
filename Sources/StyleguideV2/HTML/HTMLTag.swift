@@ -1,11 +1,11 @@
 public struct HTMLTag: ExpressibleByStringLiteral {
-  let rawValue: StaticString
+  let rawValue: String
 
-  init(_ rawValue: StaticString) {
+  init(_ rawValue: String) {
     self.rawValue = rawValue
   }
 
-  public init(stringLiteral value: StaticString) {
+  public init(stringLiteral value: String) {
     self.init(value)
   }
 
@@ -16,19 +16,16 @@ public struct HTMLTag: ExpressibleByStringLiteral {
   public func callAsFunction<T: HTML>(@HTMLBuilder _ content: () -> T) -> HTMLElement<T> {
     tag(self.rawValue, content)
   }
-
-  // TODO: Consider how this should work
-  // public var a: HTMLTag { ... }
 }
 
 public struct HTMLTextTag: ExpressibleByStringLiteral {
-  let rawValue: StaticString
+  let rawValue: String
 
-  init(_ rawValue: StaticString) {
+  init(_ rawValue: String) {
     self.rawValue = rawValue
   }
 
-  public init(stringLiteral value: StaticString) {
+  public init(stringLiteral value: String) {
     self.init(value)
   }
 
@@ -41,41 +38,74 @@ public struct HTMLTextTag: ExpressibleByStringLiteral {
   }
 }
 
-// extension HTML {
+public struct HTMLVoidTag: ExpressibleByStringLiteral {
+  public static let allTags: Set<String> = [
+    "area",
+    "base",
+    "br",
+    "col",
+    "command",
+    "embed",
+    "hr",
+    "img",
+    "input",
+    "keygen",
+    "link",
+    "meta",
+    "param",
+    "source",
+    "track",
+    "wbr",
+  ]
+
+  let rawValue: String
+
+  init(_ rawValue: String) {
+    self.rawValue = rawValue
+  }
+
+  public init(stringLiteral value: String) {
+    self.init(value)
+  }
+
+  public func callAsFunction() -> HTMLElement<HTMLEmpty> {
+    tag(self.rawValue) { HTMLEmpty() }
+  }
+}
+
 public func tag<T: HTML>(
-  _ tag: StaticString, @HTMLBuilder _ content: () -> T? = { Never?.none }
+  _ tag: String, @HTMLBuilder _ content: () -> T? = { Never?.none }
 ) -> HTMLElement<T> {
   HTMLElement(tag: tag, content: content)
 }
-
-// TODO: Doing `div` by itself generates "<div>" which is invalid.
 
 public var a: HTMLTag { #function }
 public var abbr: HTMLTag { #function }
 public var acronym: HTMLTag { #function }
 public var address: HTMLTag { #function }
 public var applet: HTMLTag { #function }
-public var area: HTMLTag { #function }
+public var area: HTMLVoidTag { #function }
 public var article: HTMLTag { #function }
 public var aside: HTMLTag { #function }
 public var audio: HTMLTag { #function }
 public var b: HTMLTag { #function }
-public var base: HTMLTag { #function }
+public var base: HTMLVoidTag { #function }
 public var basefront: HTMLTag { #function }
 public var bdi: HTMLTag { #function }
 public var bdo: HTMLTag { #function }
 public var big: HTMLTag { #function }
 public var blockquote: HTMLTag { #function }
 // public var body: HTMLTag { #function }
-public var br: HTMLTag { #function }
+public var br: HTMLVoidTag { #function }
 public var button: HTMLTag { #function }
 public var canvas: HTMLTag { #function }
 public var caption: HTMLTag { #function }
 public var center: HTMLTag { #function }
 public var cite: HTMLTag { #function }
 public var code: HTMLTag { #function }
-public var col: HTMLTag { #function }
+public var col: HTMLVoidTag { #function }
 public var colgroup: HTMLTag { #function }
+public var command: HTMLVoidTag { #function }
 public var data: HTMLTag { #function }
 public var datalist: HTMLTag { #function }
 public var dd: HTMLTag { #function }
@@ -88,7 +118,7 @@ public var div: HTMLTag { #function }
 public var dl: HTMLTag { #function }
 public var dt: HTMLTag { #function }
 public var em: HTMLTag { #function }
-public var embed: HTMLTag { #function }
+public var embed: HTMLVoidTag { #function }
 public var fieldset: HTMLTag { #function }
 public var figcaption: HTMLTag { #function }
 public var figure: HTMLTag { #function }
@@ -105,22 +135,23 @@ public var h5: HTMLTag { #function }
 public var h6: HTMLTag { #function }
 // public var head: HTMLTag { #function }
 public var header: HTMLTag { #function }
-public var hr: HTMLTag { #function }
+public var hr: HTMLVoidTag { #function }
 public var html: HTMLTag { #function }
 public var i: HTMLTag { #function }
 public var iframe: HTMLTag { #function }
-public var img: HTMLTag { #function }
-public var input: HTMLTag { #function }
+public var img: HTMLVoidTag { #function }
+public var input: HTMLVoidTag { #function }
 public var ins: HTMLTag { #function }
 public var kbd: HTMLTag { #function }
+public var keygen: HTMLVoidTag { #function }
 public var label: HTMLTag { #function }
 public var legend: HTMLTag { #function }
 public var li: HTMLTag { #function }
-public var link: HTMLTag { #function }
+public var link: HTMLVoidTag { #function }
 public var main: HTMLTag { #function }
 public var map: HTMLTag { #function }
 public var mark: HTMLTag { #function }
-public var meta: HTMLTag { #function }
+public var meta: HTMLVoidTag { #function }
 public var meter: HTMLTag { #function }
 public var nav: HTMLTag { #function }
 public var noframes: HTMLTag { #function }
@@ -130,7 +161,7 @@ public var ol: HTMLTag { #function }
 public var optgroup: HTMLTag { #function }
 public var option: HTMLTextTag { #function }
 public var p: HTMLTag { #function }
-public var param: HTMLTag { #function }
+public var param: HTMLVoidTag { #function }
 public var picture: HTMLTag { #function }
 public var pre: HTMLTag { #function }
 public var progress: HTMLTag { #function }
@@ -143,7 +174,7 @@ public var script: HTMLTextTag { #function }
 public var section: HTMLTag { #function }
 public var select: HTMLTag { #function }
 public var small: HTMLTag { #function }
-public var source: HTMLTag { #function }
+public var source: HTMLVoidTag { #function }
 public var span: HTMLTag { #function }
 public var strike: HTMLTag { #function }
 public var strong: HTMLTag { #function }
@@ -163,11 +194,10 @@ public var thead: HTMLTag { #function }
 public var time: HTMLTag { #function }
 public var title: HTMLTextTag { #function }
 public var tr: HTMLTag { #function }
-public var track: HTMLTag { #function }
+public var track: HTMLVoidTag { #function }
 public var tt: HTMLTag { #function }
 public var u: HTMLTag { #function }
 public var ul: HTMLTag { #function }
 public var `var`: HTMLTag { #function }
 public var video: HTMLTag { #function }
-public var wbr: HTMLTag { #function }
-// }
+public var wbr: HTMLVoidTag { #function }

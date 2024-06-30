@@ -624,7 +624,7 @@ class EpisodePageTests: TestCase {
       let episode = self.episodes().first!
       let percent = 20
       let progressRequest = request(
-        to: .episode(.progress(param: .left(episode.slug), percent: percent)),
+        to: .episodes(.progress(param: .left(episode.slug), percent: percent)),
         session: .loggedIn
       )
       let conn = connection(from: progressRequest)
@@ -643,7 +643,7 @@ class EpisodePageTests: TestCase {
       let episode = self.episodes().first!
       let percent = 20
       let progressRequest = request(
-        to: .episode(.progress(param: .left(episode.slug), percent: percent)),
+        to: .episodes(.progress(param: .left(episode.slug), percent: percent)),
         session: .loggedOut
       )
       let conn = connection(from: progressRequest)
