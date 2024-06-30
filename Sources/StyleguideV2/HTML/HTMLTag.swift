@@ -95,7 +95,8 @@ public var bdi: HTMLTag { #function }
 public var bdo: HTMLTag { #function }
 public var big: HTMLTag { #function }
 public var blockquote: HTMLTag { #function }
-// public var body: HTMLTag { #function }
+@available(*, unavailable, message: "Use 'HTMLDocument.head', instead.")
+public var body: HTMLTag { #function }
 public var br: HTMLVoidTag { #function }
 public var button: HTMLTag { #function }
 public var canvas: HTMLTag { #function }
@@ -133,7 +134,8 @@ public var h3: HTMLTag { #function }
 public var h4: HTMLTag { #function }
 public var h5: HTMLTag { #function }
 public var h6: HTMLTag { #function }
-// public var head: HTMLTag { #function }
+@available(*, unavailable, message: "Use 'HTMLDocument.head', instead.")
+public var head: HTMLTag { #function }
 public var header: HTMLTag { #function }
 public var hr: HTMLVoidTag { #function }
 public var html: HTMLTag { #function }

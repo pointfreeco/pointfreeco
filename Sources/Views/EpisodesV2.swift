@@ -59,20 +59,11 @@ public struct Episodes: HTML {
         omitSeeAllLink: false
       )
       InterstitialBanner()
-
-      if let user = currentUser {
-        EpisodesModule(
-          episodes: mainEpisodes,
-          title: "All episodes",
-          omitSeeAllLink: true
-        )
-      } else {
-        EpisodesModule(
-          episodes: mainEpisodes,
-          title: "All episodes",
-          omitSeeAllLink: true
-        )
-      }
+      EpisodesModule(
+        episodes: mainEpisodes,
+        title: "All episodes",
+        omitSeeAllLink: true
+      )
 
     case .free:
       EpisodesModule(
@@ -139,10 +130,10 @@ private struct EpisodesModule<Episodes: Collection<Episode>, CTA: HTML>: HTML {
 
   func module(
     episodes: some Collection<Episode>,
-    omitSeeAllLink: Bool
+    omitSeeAllLink overrideOmitSeeAllLink: Bool
   ) -> some HTML {
     PageModule(
-      seeAllURL: omitSeeAllLink || self.omitSeeAllLink || title == nil
+      seeAllURL: overrideOmitSeeAllLink || omitSeeAllLink || title == nil
         ? nil
         : siteRouter.path(for: .episodes(.list(.free))),
       theme: .content
