@@ -408,7 +408,7 @@ private struct Gifts: HTML {
           .color(.gray150.dark(.gray850))
 
         Paragraph(.big) {
-          "Purchase a gift subscsription of 3, 6 or 12 months for a friend, colleague or loved one."
+          "Purchase a gift subscription of 3, 6, or 12 months for a friend, colleague or loved one."
         }
         .fontStyle(.body(.regular))
         .color(.gray300.dark(.gray800))
