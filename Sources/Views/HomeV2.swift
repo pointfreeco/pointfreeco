@@ -108,7 +108,7 @@ private struct LoggedOut: HTML {
           Brandon&nbsp;and&nbsp;Stephen.
           """,
       ctaTitle: "Start with a free episode →",
-      ctaURL: siteRouter.gitHubAuthPath(redirect: .homeV2),
+      ctaURL: siteRouter.path(for: .signUp(redirect: nil)),
       style: .gradient
     )
     Companies()

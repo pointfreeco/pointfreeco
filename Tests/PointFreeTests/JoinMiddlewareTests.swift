@@ -187,7 +187,7 @@ class JoinMiddlewareTests: TestCase {
       } response: {
         """
         302 Found
-        Location: /login?redirect=http://localhost:8080/join/deadbeef/confirm/309df8a272a74d37b902df4f8e7eacc25b064c5c66954cff243a12787dcd45e2b416a8e524eafdcb08a1b82c003867d90807255e3048d8431db6df5aee13a14bfe6b08719418954ebfe54214c9cc3c405a142a74553308da3280ab2cacf8d95e40c913dabe85f929b6238f0b6f27ad41
+        Location: /old-login?redirect=http://localhost:8080/join/deadbeef/confirm/309df8a272a74d37b902df4f8e7eacc25b064c5c66954cff243a12787dcd45e2b416a8e524eafdcb08a1b82c003867d90807255e3048d8431db6df5aee13a14bfe6b08719418954ebfe54214c9cc3c405a142a74553308da3280ab2cacf8d95e40c913dabe85f929b6238f0b6f27ad41
         Referrer-Policy: strict-origin-when-cross-origin
         X-Content-Type-Options: nosniff
         X-Download-Options: noopen

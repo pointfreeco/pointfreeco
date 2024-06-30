@@ -53,7 +53,8 @@ public struct CallToActionHeader<PrimaryCTA: HTML>: HTML {
           Paragraph(.big) { HTMLRaw(blurb) }
             .fontStyle(.body(.regular))
             .color(style.blurbColor)
-            .inlineStyle("margin", "0 6rem", media: .desktop)
+            .inlineStyle("margin", "0 auto", media: .desktop)
+            .inlineStyle("max-width", "40rem")
 
           primaryCTA
             .inlineStyle("margin-top", "3rem")

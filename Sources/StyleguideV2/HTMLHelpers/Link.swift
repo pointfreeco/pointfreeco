@@ -59,6 +59,7 @@ public struct LinkStyle {
 
 private enum LinkStyleKey: DependencyKey {
   static let liveValue = LinkStyle()
+  static let testValue = LinkStyle()
 }
 
 extension DependencyValues {

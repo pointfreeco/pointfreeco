@@ -1,4 +1,5 @@
 import ConcurrencyExtras
+import Dependencies
 import OrderedCollections
 
 extension HTML {
@@ -21,6 +22,8 @@ extension HTML {
 }
 
 public struct HTMLInlineStyle<Content: HTML>: HTML {
+  @Dependency(ClassCount.self) fileprivate var classes
+
   private let content: Content
   private var styles: [Style]
 
@@ -77,7 +80,7 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     }
 
     for style in html.styles {
-      let index = classes.withValue { classes in
+      let index = html.classes.withValue { classes in
         guard let index = classes.firstIndex(of: style)
         else {
           classes.append(style)
@@ -107,7 +110,10 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
   public var body: Never { fatalError() }
 }
 
-private let classes = LockIsolated<OrderedSet<Style>>([])
+fileprivate enum ClassCount: DependencyKey {
+  fileprivate static let liveValue = LockIsolated<OrderedSet<Style>>([])
+  fileprivate static let testValue = LockIsolated<OrderedSet<Style>>([])
+}
 
 private struct Style: Hashable {
   let property: String
