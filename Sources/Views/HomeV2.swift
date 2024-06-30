@@ -462,11 +462,14 @@ private struct ReferAFriend: HTML {
           Button(tag: input, color: .purple, size: .regular, style: .normal)
             .attribute("type", "button")
             .attribute("value", "Copy")
-            .attribute("onclick", """
-                navigator.clipboard.writeText("\(url)");
-                this.value = "Copied!";
-                setTimeout(() => { this.value = "Copy"; }, 3000);
-                """)
+            .attribute(
+              "onclick",
+              """
+              navigator.clipboard.writeText("\(url)");
+              this.value = "Copied!";
+              setTimeout(() => { this.value = "Copy"; }, 3000);
+              """
+            )
         }
         .inflexible()
       }
