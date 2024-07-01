@@ -5,7 +5,6 @@ import StyleguideV2
 
 public struct Episodes: HTML {
   let freeEpisodes: [Episode]
-  let allFreeEpisodeCount: Int
   let mainEpisodes: [Episode]
   let listType: SiteRoute.EpisodesRoute.ListType
 
@@ -14,14 +13,12 @@ public struct Episodes: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   public init(
-    allFreeEpisodeCount: Int,
     listType: SiteRoute.EpisodesRoute.ListType
   ) {
     @Dependency(\.date.now) var now
     @Dependency(\.episodeProgresses) var episodeProgresses
     @Dependency(\.episodes) var episodes
 
-    self.allFreeEpisodeCount = allFreeEpisodeCount
     self.listType = listType
     switch listType {
     case .all:

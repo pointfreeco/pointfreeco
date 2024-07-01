@@ -52,7 +52,7 @@ public struct PageModule<Title: HTML, Content: HTML>: HTML {
         itemAlignment: "baseline"
       )
       .inlineStyle("max-width", "1280px")
-      .inlineStyle("margin", "0 auto")
+      .inlineStyle("margin", "0 auto", media: .desktop)
       .inlineStyle(
         "padding",
         "\(theme.topMargin)rem \(theme.leftRightMargin)rem \(theme.bottomMargin)rem"
@@ -67,32 +67,32 @@ public struct PageModule<Title: HTML, Content: HTML>: HTML {
     .backgroundColor(theme.backgroundColor)
   }
 
+  @HTMLBuilder
   var titleRow: some HTML {
-    div {
-      if let title {
+    if let title {
+      div {
         title
           .color(theme.color)
+        if let seeAllURL {
+          Link("See all →", href: seeAllURL)
+            .linkColor(.purple)
+        }
       }
-      if let seeAllURL {
-        Link("See all →", href: seeAllURL)
-          .linkColor(.purple)
-      }
+      .flexContainer(
+        direction: "row",
+        wrap: "nowrap",
+        justification: seeAllURL == nil ? "center" : "space-between",
+        itemAlignment: "center"
+      )
+      .flexItem(basis: "100%")
+      .inlineStyle(
+        "padding-bottom",
+        seeAllURL == nil
+        ? "\(theme.titleMarginBottom)rem"
+        : "\(theme.titleMarginBottom/2)rem"
+      )
     }
-    .flexContainer(
-      direction: "row",
-      wrap: "nowrap",
-      justification: seeAllURL == nil ? "center" : "space-between",
-      itemAlignment: "center"
-    )
-    .flexItem(basis: "100%")
-    .inlineStyle(
-      "padding-bottom",
-      seeAllURL == nil
-      ? "\(theme.titleMarginBottom)rem"
-      : "\(theme.titleMarginBottom/2)rem"
-    )
   }
-
 }
 
 public struct PageModuleTheme {

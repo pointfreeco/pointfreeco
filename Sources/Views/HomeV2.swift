@@ -61,17 +61,13 @@ private struct LoggedIn: HTML {
       Divider()
     }
     EpisodesModule()
-    if !subscriberState.isActive {
-      UpgradeModule()
+    if subscriberState.isActiveSubscriber {
+      GiveAGiftModule()
     } else {
-      Divider()
+      UpgradeModule()
     }
     Collections()
-    if subscriberState.isActive {
-      Gifts()
-    } else {
-      Divider()
-    }
+    Divider()
     Clips(clips: clips)
     Divider()
     BlogPosts()
@@ -417,33 +413,6 @@ private struct Collections: HTML {
   }
 }
 
-private struct Gifts: HTML {
-  @Dependency(\.siteRouter) var siteRouter
-
-  var body: some HTML {
-    PageModule(theme: .callout) {
-      Button(color: .purple, size: .regular, style: .normal) {
-        "See gifts options"
-      }
-      .attribute("href", siteRouter.path(for: .gifts(.index)))
-      .inlineStyle("margin", "0 auto")
-    } title: {
-      GridColumn {
-        Header(3) { "Give the gift of Point-Free" }
-          .color(.gray150.dark(.gray850))
-
-        Paragraph(.big) {
-          "Purchase a gift subscription of 3, 6, or 12 months for a friend, colleague or loved one."
-        }
-        .fontStyle(.body(.regular))
-        .color(.gray300.dark(.gray800))
-        .inlineStyle("margin", "0 6rem", media: .desktop)
-      }
-      .inlineStyle("text-align", "start", media: .mobile)
-    }
-  }
-}
-
 private struct ReferAFriend: HTML {
   let currentUser: User
 
@@ -598,17 +567,6 @@ extension PageModuleTheme {
   static let content = Self(
     backgroundColor: .white.dark(.black),
     color: .black.dark(.offWhite),
-    topMargin: 4,
-    bottomMargin: 4,
-    leftRightMargin: 2,
-    leftRightMarginDesktop: 3,
-    titleMarginBottom: 3
-  )
-
-  static let callout = Self(
-    backgroundColor: .white.dark(.black),
-    contentBackgroundColor: .init(rawValue: "#fafafa").dark(.init(rawValue: "#050505")),
-    color: .offBlack.dark(.offWhite),
     topMargin: 4,
     bottomMargin: 4,
     leftRightMargin: 2,

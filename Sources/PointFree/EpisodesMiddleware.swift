@@ -30,25 +30,23 @@ private func episodesListMiddleware(
   listType: SiteRoute.EpisodesRoute.ListType,
 _ conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
+  let subtitle = switch listType {
+  case .all:
+    "All episodes"
+  case .free:
+    "Free episodes"
+  case .history:
+    "Continue watching"
+  }
   return conn
     .writeStatus(.ok)
     .respondV2(
       layoutData: SimplePageLayoutData(
         description: "Point-Free: A video series exploring advanced programming topics in Swift.",
-        extraHead: [],
-        extraStyles: .empty,
-        image: "",
         isGhosting: false,
-        openGraphType: .website,
-        style: .base(.minimal(.dark)),
-        title: "Point-Free",
-        twitterCard: .summaryLargeImage,
-        usePrismJs: false
+        title: "Point-Free: \(subtitle)"
       )
     ) {
-      Episodes(
-        allFreeEpisodeCount: 100, // TODO
-        listType: listType
-      )
+      Episodes(listType: listType)
     }
 }

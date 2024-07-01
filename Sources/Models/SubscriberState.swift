@@ -88,8 +88,8 @@ public enum SubscriberState {
 
   public var isActiveSubscriber: Bool {
     switch self {
-    case let .teammate(status: status, _, false),
-      let .owner(hasSeat: true, status: status, _, false):
+    case let .teammate(status: status, _, deactivated: false),
+      let .owner(hasSeat: true, status: status, _, deactivated: false):
       return status.isActive
     default:
       return false

@@ -30,15 +30,8 @@ func homeV2Middleware(
     .respondV2(
       layoutData: SimplePageLayoutData(
         description: "Point-Free: A video series exploring advanced programming topics in Swift.",
-        extraHead: [],
-        extraStyles: .empty,
-        image: "",
         isGhosting: false,
-        openGraphType: .website,
-        style: .base(.minimal(.dark)),
-        title: "Point-Free",
-        twitterCard: .summaryLargeImage,
-        usePrismJs: false
+        title: "Point-Free"
       )
     ) {
       Home(
