@@ -36,7 +36,7 @@ public struct LoginSignUpView: HTML {
             .color(.offWhite)
           }
           Button(color: .purple) {
-            Label("Continue with GitHub", icon: .gitHubIcon)
+            Label("Continue with GitHub", icon: .gitHubIcon, fontStyle: .body(.regular))
           }
           .attribute(
             "href",

@@ -56,14 +56,16 @@ public struct Card<Content: HTML, Header: HTML, Footer: HTML>: HTML {
 public struct Label: HTML {
   let icon: SVG
   let title: String
+  let fontStyle: FontStyle
 
-  public init(_ title: String, icon: SVG) {
+  public init(_ title: String, icon: SVG, fontStyle: FontStyle = .body(.small)) {
     self.icon = icon
     self.title = title
+    self.fontStyle = fontStyle
   }
 
   public var body: some HTML {
-    tag("pf-label") {
+    div {
       icon
         .inflexible()
       span {
@@ -76,8 +78,15 @@ public struct Label: HTML {
       wrap: "nowrap",
       justification: "center",
       itemAlignment: "center",
-      columnGap: "0.5rem"
+      columnGap: columnGap
     )
-    .fontStyle(.body(.small))
+    .fontStyle(fontStyle)
+  }
+
+  var columnGap: String {
+    switch fontStyle {
+    case .body(.small):   "0.25rem"
+    case .body(.regular): "0.25rem"
+    }
   }
 }

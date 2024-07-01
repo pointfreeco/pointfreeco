@@ -71,6 +71,7 @@ public struct EpisodeCard: HTML {
       GridColumn {
         Label(episode.length.formatted(), icon: .clock)
       }
+      .inlineStyle("padding-left", "0.5rem")
 
       if let progress {
         GridColumn {

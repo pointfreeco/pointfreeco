@@ -41,38 +41,16 @@ public struct PageModule<Title: HTML, Content: HTML>: HTML {
 
   public var body: some HTML {
     div {
-      Grid {
-        HTMLGroup {
-          if let title {
-            GridColumn {
-              title
-                .color(theme.color)
-            }
-            .flexible()
-            .column(count: seeAllURL == nil ? 12 : 10)
-            .column(alignment: seeAllURL == nil ? .center : .start)
-            .inlineStyle(
-              "padding-bottom",
-              seeAllURL == nil
-              ? "\(theme.titleMarginBottom)rem"
-              : "\(theme.titleMarginBottom/2)rem"
-            )
-          }
-
-          if let seeAllURL {
-            GridColumn {
-              Link("See all →", href: seeAllURL)
-                .linkColor(.purple)
-            }
-            .flexible()
-            .column(alignment: .end)
-          }
-        }
-
+      div {
+        titleRow
         content
       }
-      .grid(alignment: .baseline)
-      .inlineStyle("justify-content", theme.gridJustification)
+      .flexContainer(
+        direction: "row",
+        wrap: "wrap",
+        justification: theme.gridJustification,
+        itemAlignment: "baseline"
+      )
       .inlineStyle("max-width", "1280px")
       .inlineStyle("margin", "0 auto")
       .inlineStyle(
@@ -88,6 +66,33 @@ public struct PageModule<Title: HTML, Content: HTML>: HTML {
     }
     .backgroundColor(theme.backgroundColor)
   }
+
+  var titleRow: some HTML {
+    div {
+      if let title {
+        title
+          .color(theme.color)
+      }
+      if let seeAllURL {
+        Link("See all →", href: seeAllURL)
+          .linkColor(.purple)
+      }
+    }
+    .flexContainer(
+      direction: "row",
+      wrap: "nowrap",
+      justification: seeAllURL == nil ? "center" : "space-between",
+      itemAlignment: "center"
+    )
+    .flexItem(basis: "100%")
+    .inlineStyle(
+      "padding-bottom",
+      seeAllURL == nil
+      ? "\(theme.titleMarginBottom)rem"
+      : "\(theme.titleMarginBottom/2)rem"
+    )
+  }
+
 }
 
 public struct PageModuleTheme {
