@@ -7,23 +7,19 @@ import StyleguideV2
 public struct Footer: HTML {
   public var body: some HTML {
     footer {
-      Grid {
+      LazyVGrid(columns: [.desktop: [1, 1]]) {
         TaglineColumn()
           .column(count: 12)
           .column(count: 6, media: .desktop)
 
-        HTMLGroup {
+        LazyVGrid(columns: [1, 2]) {
           ContentColumn()
           MoreColumn()
         }
-        .column(count: 4)
-        .column(count: 2, media: .desktop)
 
         LegalColumn()
-          .column(count: 12)
-          .column(count: 6, media: .desktop)
       }
-      .grid(alignment: .baseline)
+      .inlineStyle("align-items", "first baseline")
     }
     .backgroundColor(.black)
     .padding(3, .mobile)
