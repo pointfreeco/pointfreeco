@@ -2,7 +2,7 @@ import StyleguideV2
 import Dependencies
 import Models
 
-public struct EpisodeCardV2: HTML {
+public struct EpisodeCard: HTML {
   @Dependency(\.date.now) var now
   @Dependency(\.episodeProgresses) var episodeProgresses
   @Dependency(\.siteRouter) var siteRouter
@@ -17,7 +17,7 @@ public struct EpisodeCardV2: HTML {
   }
 
   public var body: some HTML {
-    CardV2 {
+    Card {
       div {
         "Episode \(episode.sequence.rawValue) • \(episode.publishedAt.monthDayYear())"
       }
@@ -56,20 +56,20 @@ public struct EpisodeCardV2: HTML {
       if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
         if !subscriberState.isActive {
           Link(href: siteRouter.path(for: .pricingLanding)) {
-            LabelV2("Subscriber-only", icon: .locked)
+            Label("Subscriber-only", icon: .locked)
           }
           .linkColor(.currentColor)
         }
       } else {
-        LabelV2("Free", icon: .unlocked)
+        Label("Free", icon: .unlocked)
       }
 
-      LabelV2(episode.length.formatted(), icon: .clock)
+      Label(episode.length.formatted(), icon: .clock)
         .grow()
 
       if let progress {
         if progress.isFinished {
-          LabelV2("Watched", icon: .checkmark)
+          Label("Watched", icon: .checkmark)
         } else {
           let value = Double(progress.percent) / 100
           let minutes = (episode.length.timeInterval - episode.length.timeInterval * value) / 60
@@ -78,102 +78,6 @@ public struct EpisodeCardV2: HTML {
             .inlineStyle("width", "80px")
             .attribute("title", "\(Int(minutes)) min to finish")
         }
-      }
-    }
-  }
-
-  var progress: EpisodeProgress? {
-    episodeProgresses[episode.sequence]
-  }
-}
-
-
-public struct EpisodeCard: HTML {
-  @Dependency(\.date.now) var now
-  @Dependency(\.episodeProgresses) var episodeProgresses
-  @Dependency(\.siteRouter) var siteRouter
-  @Dependency(\.subscriberState) var subscriberState
-
-  let episode: Episode
-  let emergencyMode: Bool
-
-  public init(_ episode: Episode, emergencyMode: Bool) {
-    self.episode = episode
-    self.emergencyMode = emergencyMode
-  }
-
-  public var body: some HTML {
-    Card {
-      div {
-        "Episode \(episode.sequence.rawValue) • \(episode.publishedAt.monthDayYear())"
-      }
-      .inlineStyle("margin", "1rem 0 0.5rem 0")
-      .color(.gray650.dark(.gray400))
-      .fontStyle(.body(.small))
-
-      div {
-        Header(4) {
-          Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
-            HTMLText(episode.title)
-            if let subtitle = episode.subtitle {
-              ":"
-              br()
-              HTMLText(subtitle)
-            }
-          }
-          .linkColor(.black.dark(.white))
-        }
-      }
-
-      div {
-        HTMLMarkdown(episode.blurb)
-      }
-      .color(.gray400.dark(.gray650))
-    } header: {
-      Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
-        Image(source: episode.image, description: "")
-          .attribute("loading", "lazy")
-          .inlineStyle("width", "100%")
-          .inlineStyle("filter", progress?.isFinished == true ? "grayscale(1)" : nil)
-      }
-      .inlineStyle("display", "block")
-      .inlineStyle("line-height", "0")
-    } footer: {
-      if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
-        if !subscriberState.isActive {
-          GridColumn {
-            Link(href: siteRouter.path(for: .pricingLanding)) {
-              Label("Subscriber-only", icon: .locked)
-            }
-            .linkColor(.currentColor)
-          }
-        }
-      } else {
-        GridColumn {
-          Label("Free", icon: .unlocked)
-        }
-      }
-
-      GridColumn {
-        Label(episode.length.formatted(), icon: .clock)
-      }
-      .inlineStyle("padding-left", "0.5rem")
-
-      if let progress {
-        GridColumn {
-          if progress.isFinished {
-            Label("Watched", icon: .checkmark)
-          } else {
-            let value = Double(progress.percent) / 100
-            let minutes = (episode.length.timeInterval - episode.length.timeInterval * value) / 60
-
-            Progress(value: value)
-              .inlineStyle("width", "80px")
-              .attribute("title", "\(Int(minutes)) min to finish")
-          }
-        }
-        .column(alignment: .end)
-        .flexible()
       }
     }
   }
@@ -223,7 +127,6 @@ public struct ClipCard: HTML {
         }
         .linkColor(.black.dark(.white))
       }
-      .inlineStyle("margin-top", "1rem")
 
       div {
         HTMLMarkdown(clip.blurb)
@@ -267,6 +170,7 @@ public struct CollectionCard: HTML {
       }
       .color(.gray400.dark(.gray650))
       .color(.gray400.dark(.gray650), .link)
+      .inlineStyle("margin-top", "-1rem")  // TODO: Fix with new markdown
     } header: {
       Link(href: siteRouter.path(for: .collections(.collection(collection.slug)))) {
         let (start, stop) = Self.combos[index % Self.combos.count]
@@ -283,8 +187,6 @@ public struct CollectionCard: HTML {
           .color(.gray650.dark(.gray400))
           .fontStyle(.body(.small))
         }
-        .inlineStyle("padding-top", "1rem")
-
       }
       .linkStyle(LinkStyle(color: .black.dark(.white), underline: false))
       .inlineStyle("display", "block")

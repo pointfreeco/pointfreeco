@@ -268,20 +268,15 @@ private struct EpisodesModule: HTML {
       seeAllURL: siteRouter.path(for: .episodes(.list(.all))),
       theme: .content
     ) {
-      // LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
-      //   …
-      // }
-
-      HTMLGroup {
+      LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
         let episodes = episodes()
           .suffix(3)
           .reversed()
 
         for episode in episodes {
-          EpisodeCardV2(episode, emergencyMode: false)  // TODO
+          EpisodeCard(episode, emergencyMode: false)  // TODO
         }
       }
-      .grid(columns: [1, 1, 1], .desktop)
     }
   }
 }
@@ -297,16 +292,16 @@ private struct FreeEpisodes: HTML {
       seeAllURL: siteRouter.path(for: .episodes(.list(.free))),
       theme: .content
     ) {
-      Grid {
+      LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
         let episodes = episodes()
           .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: false/*TODO*/) }
           .suffix(3)
           .reversed()
+
         for episode in episodes {
           EpisodeCard(episode, emergencyMode: false)  // TODO
         }
       }
-      .grid(alignment: .stretch)
     }
   }
 }
@@ -322,12 +317,11 @@ private struct InProgressEpisodes: HTML {
       seeAllURL: siteRouter.path(for: .episodes(.list(.history))),
       theme: .content
     ) {
-      Grid {
+      LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
         for episode in episodes {
           EpisodeCard(episode, emergencyMode: false)  // TODO
         }
       }
-      .grid(alignment: .stretch)
     }
   }
 }
@@ -343,12 +337,11 @@ private struct Clips: HTML {
       seeAllURL: siteRouter.path(for: .clips(.clips)),
       theme: .content
     ) {
-      Grid {
+      LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
         for clip in clips.prefix(3) {
           ClipCard(clip)
         }
       }
-      .grid(alignment: .stretch)
     }
   }
 }
@@ -415,12 +408,11 @@ private struct Collections: HTML {
       seeAllURL: siteRouter.path(for: .collections(.index)),
       theme: .content
     ) {
-      Grid {
+      LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
         for (index, collection) in collections.prefix(3).enumerated() {
           CollectionCard(collection, index: index)
         }
       }
-      .grid(alignment: .stretch)
     }
   }
 }

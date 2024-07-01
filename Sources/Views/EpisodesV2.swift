@@ -138,12 +138,12 @@ private struct EpisodesModule<Episodes: Collection<Episode>, CTA: HTML>: HTML {
         : siteRouter.path(for: .episodes(.list(.free))),
       theme: .content
     ) {
-      Grid {
+      LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
         for episode in episodes {
           EpisodeCard(episode, emergencyMode: false)  // TODO
         }
       }
-      .grid(alignment: .stretch)
+      .inlineStyle("grid-auto-rows", "max-content")
     } title: {
       if let title {
         Header(3) { HTMLText(title) }

@@ -91,70 +91,65 @@ extension HTML {
   }
 }
 
-extension HTML {
-  public func grid(
-    columns: [Int],
-    // TODO: alignment: Alignment = .center,
+public struct LazyVGrid<Content: HTML>: HTML {
+  let columns: [MediaQuery?: [Int]]
+  let content: Content
+  let horizontalSpacing: Double?
+  let verticalSpacing: Double?
+
+  public init(
+    columns: [MediaQuery: [Int]],
+    // TODO: alignment: HorizontalAlignment = .center,
     horizontalSpacing: Double? = nil,
     verticalSpacing: Double? = nil,
-    _ media: MediaQuery? = nil
-  ) -> some HTML {
-    tag("pf-grid") {
-      self
+    @HTMLBuilder content: () -> Content
+  ) {
+    self.columns = columns
+    self.horizontalSpacing = horizontalSpacing
+    self.verticalSpacing = verticalSpacing
+    self.content = content()
+  }
+
+  public init(
+    columns: [Int],
+    // TODO: alignment: HorizontalAlignment = .center,
+    horizontalSpacing: Double? = nil,
+    verticalSpacing: Double? = nil,
+    @HTMLBuilder content: () -> Content
+  ) {
+    self.columns = [nil: columns]
+    self.horizontalSpacing = horizontalSpacing
+    self.verticalSpacing = verticalSpacing
+    self.content = content()
+  }
+
+  public var body: some HTML {
+    columns.reduce(
+      tag("pf-vgrid") {
+        content
+      }
+      .inlineStyle("grid-auto-rows", "1fr")
+    ) { html, columns in
+      html
+        .inlineStyle(
+          "column-gap",
+          horizontalSpacing == 0 ? "0" : "\(horizontalSpacing ?? .defaultSpacing)rem",
+          media: columns.key
+        )
+        .inlineStyle("display", "grid", media: columns.key)
+        .inlineStyle(
+          "grid-template-columns",
+          columns.value.map { "\($0)fr" }.joined(separator: " "),
+          media: columns.key
+        )
+        .inlineStyle(
+          "row-gap",
+          verticalSpacing == 0 ? "0" : "\(verticalSpacing ?? .defaultSpacing)rem",
+          media: columns.key
+        )
     }
-    .inlineStyle("display", "grid", media: media)
-    .inlineStyle(
-      "column-gap",
-      horizontalSpacing == 0 ? "0" : "\(horizontalSpacing ?? .defaultSpacing)rem",
-      media: media
-    )
-    .inlineStyle("grid-auto-rows", "1fr", media: media)
-    .inlineStyle(
-      "grid-template-columns",
-      columns.map { "\($0)fr" }.joined(separator: " "),
-      media: media)
-    .inlineStyle(
-      "row-gap",
-      verticalSpacing == 0 ? "0" : "\(verticalSpacing ?? .defaultSpacing)rem",
-      media: media
-    )
   }
 }
-
-//public struct GridItem {
-//  let fraction: Int
-//
-//  public static func fraction(_ fraction: Int) -> Self {
-//    Self(fraction: fraction)
-//  }
-//}
-//
-//public struct LazyVGrid<Content: HTML>: HTML {
-//  let columns: [GridItem]
-//  let content: Content
-//  let spacing: Double?
-//
-//  public init(
-//    columns: [GridItem],
-//    // TODO: alignment: HorizontalAlignment = .center,
-//    spacing: Double? = nil,
-//    @HTMLBuilder content: () -> Content
-//  ) {
-//    self.columns = columns
-//    self.spacing = spacing
-//    self.content = content()
-//  }
-//
-//  public var body: some HTML {
-//    tag("pf-vgrid") {
-//      content
-//    }
-//    .inlineStyle("display", "grid")
-//    .inlineStyle("gap", spacing == 0 ? "0" : "\(spacing ?? .defaultSpacing)rem")
-//    .inlineStyle("grid-auto-rows", "1fr")
-//    .inlineStyle("grid-template-columns", columns.map { "\($0.fraction)fr" }.joined(separator: " "))
-//  }
-//}
 
 private extension Double {
   static let defaultSpacing: Self = 1
