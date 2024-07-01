@@ -531,7 +531,6 @@ struct SiteRouter: ParserPrinter {
       }
 
       Route(.case(SiteRoute.endGhosting)) {
-        Method.post
         Path {
           "ghosting"
           "end"

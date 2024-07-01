@@ -391,18 +391,11 @@ func ghosterBanner() -> Node {
           attributes: [.class([Class.pf.type.responsiveTitle3])],
           "You are ghosting 👻"
         ),
-        .form(
+        .a(
           attributes: [
-            .method(.post),
-            .action(siteRouter.path(for: .endGhosting)),
+            .href(siteRouter.path(for: .endGhosting))
           ],
-          .input(
-            attributes: [
-              .type(.submit),
-              .value("Stop ghosting"),
-              .class([Class.pf.components.button(color: .white, size: .small)]),
-            ]
-          )
+          "Stop ghosting"
         )
       )
     )
