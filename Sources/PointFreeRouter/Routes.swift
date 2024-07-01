@@ -579,7 +579,7 @@ struct SiteRouter: ParserPrinter {
       }
 
       Route(.case(SiteRoute.gitHubAuth)) {
-        Path { "old-login" }
+        Path { "authenticate" }
         Query {
           Optionally {
             Field("redirect")
