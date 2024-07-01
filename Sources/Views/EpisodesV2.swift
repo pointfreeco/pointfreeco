@@ -37,7 +37,7 @@ public struct Episodes: HTML {
     case .history:
       freeEpisodes = []
       mainEpisodes = episodeProgresses.values
-        .sorted(by: { ($0.updatedAt ?? $0.createdAt) > ($1.updatedAt ?? $0.createdAt) })
+        .sorted(by: { ($0.updatedAt ?? $0.createdAt) > ($1.updatedAt ?? $1.createdAt) })
         .compactMap({ progress in
           episodes().first(where: { $0.sequence == progress.episodeSequence })
         })

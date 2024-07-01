@@ -79,8 +79,9 @@ private struct LoggedIn: HTML {
   var inProgressEpisodes: [Episode] {
     Array(
       episodeProgresses.values
-        .sorted(by: { ($0.updatedAt ?? $0.createdAt) > ($1.updatedAt ?? $0.createdAt) })
-        .prefix(while: { $0.percent < 90 })
+        .sorted(by: { ($0.updatedAt ?? $0.createdAt) > ($1.updatedAt ?? $1.createdAt) })
+        .lazy
+        .filter({ !$0.isFinished })
         .compactMap({ progress in
           episodes().first(where: { $0.sequence == progress.episodeSequence })
         })
@@ -432,11 +433,14 @@ private struct ReferAFriend: HTML {
         """,
       style: .gradient
     ) {
-      let url = siteRouter.url(
-        for: .subscribeConfirmation(
-          lane: .personal,
-          referralCode: currentUser.referralCode
+      let url = String(
+        siteRouter.url(
+          for: .subscribeConfirmation(
+            lane: .personal,
+            referralCode: currentUser.referralCode
+          )
         )
+        .dropFirst(8)
       )
 
       HStack(alignment: .center) {
