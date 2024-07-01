@@ -28,7 +28,7 @@ public struct PointFreeColor {
   }
 
   public func dark(_ other: Self) -> Self { Self(rawValue: rawValue, darkValue: other.rawValue) }
-  public func light(_ other: Self) ->  Self { Self(rawValue: other.rawValue, darkValue: darkValue) }
+  public func light(_ other: Self) -> Self { Self(rawValue: other.rawValue, darkValue: darkValue) }
 
   public static let black = Self(rawValue: "#121212")
   public static let offBlack = Self(rawValue: "#171717")

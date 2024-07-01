@@ -29,7 +29,7 @@ public struct LoginSignUpView: HTML {
           div {
             Header(2) {
               switch type {
-              case .login:  "Log in"
+              case .login: "Log in"
               case .signUp: "Sign up"
               }
             }

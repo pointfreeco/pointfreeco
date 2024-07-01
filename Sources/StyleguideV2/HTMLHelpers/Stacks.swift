@@ -151,6 +151,6 @@ public struct LazyVGrid<Content: HTML>: HTML {
   }
 }
 
-private extension Double {
-  static let defaultSpacing: Self = 1
+extension Double {
+  fileprivate static let defaultSpacing: Self = 1
 }

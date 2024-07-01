@@ -96,7 +96,8 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     @Dependency(\.siteRouter) var siteRouter
 
     let login = request(
-      to: .gitHubAuth(redirect: siteRouter.url(for: .episodes(.show(.right(42))))), session: .loggedIn)
+      to: .gitHubAuth(redirect: siteRouter.url(for: .episodes(.show(.right(42))))),
+      session: .loggedIn)
     let conn = connection(from: login)
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)

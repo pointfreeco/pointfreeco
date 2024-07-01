@@ -116,7 +116,7 @@ var package = Package(
         "Models",
         "Stripe",
         .product(name: "Dependencies", package: "swift-dependencies"),
-        .product(name: "Tagged", package: "swift-tagged")
+        .product(name: "Tagged", package: "swift-tagged"),
       ]
     ),
 
@@ -166,7 +166,7 @@ var package = Package(
     .target(
       name: "Ghosting",
       dependencies: [
-        .product(name: "Dependencies", package: "swift-dependencies"),
+        .product(name: "Dependencies", package: "swift-dependencies")
       ]
     ),
 

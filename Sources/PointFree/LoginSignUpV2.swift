@@ -15,13 +15,15 @@ func loginSignUpMiddleware(
 
   guard currentUser == nil
   else {
-    return conn
+    return
+      conn
       .redirect(to: .home) {
         $0.flash(.notice, "You’re already logged in.")
       }
   }
 
-  return conn
+  return
+    conn
     .writeStatus(.ok)
     .respondV2(
       layoutData: SimplePageLayoutData(

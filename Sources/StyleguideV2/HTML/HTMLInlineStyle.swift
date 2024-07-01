@@ -36,18 +36,19 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     pseudo: Pseudo?
   ) {
     self.content = content
-    self.styles = value.map {
-      [
-        Style(
-          property: property,
-          value: $0,
-          media: mediaQuery,
-          preSelector: pre,
-          pseudo: pseudo
-        )
-      ]
-    }
-    ?? []
+    self.styles =
+      value.map {
+        [
+          Style(
+            property: property,
+            value: $0,
+            media: mediaQuery,
+            preSelector: pre,
+            pseudo: pseudo
+          )
+        ]
+      }
+      ?? []
   }
 
   public func inlineStyle(
@@ -110,7 +111,7 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
   public var body: Never { fatalError() }
 }
 
-fileprivate enum ClassCount: DependencyKey {
+private enum ClassCount: DependencyKey {
   fileprivate static var liveValue: LockIsolated<OrderedSet<Style>> {
     LockIsolated<OrderedSet<Style>>([])
   }

@@ -1,5 +1,5 @@
-import StyleguideV2
 import Dependencies
+import StyleguideV2
 
 struct GetStartedModule: HTML {
   @Dependency(\.date.now) var now
@@ -11,7 +11,7 @@ struct GetStartedModule: HTML {
 
   var body: some HTML {
     let freeEpisodeCount = episodes()
-      .reduce(into: 0) { count, episode in 
+      .reduce(into: 0) { count, episode in
         count += !episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) ? 1 : 0
       }
     CallToActionHeader(
