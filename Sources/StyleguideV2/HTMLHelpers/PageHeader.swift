@@ -19,7 +19,7 @@ public struct PageHeader<Title: HTML, Blurb: HTML>: HTML {
   }
 
   public var body: some HTML {
-    div {
+    VStack(alignment: .center) {
       div {
         Header(2) { title }
           .color(.white)
@@ -36,7 +36,6 @@ public struct PageHeader<Title: HTML, Blurb: HTML>: HTML {
       .inlineStyle("padding", "8rem 3rem", media: .desktop)
     }
     .inlineStyle("box-sizing", "border-box")
-    .grid(alignment: .center)
     .inlineStyle("background", "linear-gradient(#121212, #242424)")
   }
 }

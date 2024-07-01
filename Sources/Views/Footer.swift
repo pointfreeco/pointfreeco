@@ -9,8 +9,6 @@ public struct Footer: HTML {
     footer {
       LazyVGrid(columns: [.desktop: [1, 1]]) {
         TaglineColumn()
-          .column(count: 12)
-          .column(count: 6, media: .desktop)
 
         LazyVGrid(columns: [1, 2]) {
           ContentColumn()

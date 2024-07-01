@@ -132,7 +132,6 @@ struct NavBar: HTML {
         )
       }
       .inlineStyle("line-height", "0")
-      .inflexible()
     }
   }
 }
@@ -151,7 +150,6 @@ struct MenuButton: HTML {
       .inlineStyle("display", "none", media: .desktop)
       .inlineStyle("cursor", "pointer")
       .inlineStyle("user-select", "none")
-      .inflexible()
   }
 
   struct Bars: HTML {
@@ -300,7 +298,6 @@ struct TrailingNavItems: HTML {
     }
     .listStyle(.reset)
     .inlineStyle("display", "none", media: .mobile)
-    .inflexible()
   }
 }
 
@@ -327,7 +324,6 @@ struct CenteredNavItems: HTML {
     .linkColor(.gray650)
     .listStyle(.reset)
     .inlineStyle("display", "none", media: .mobile)
-    .inflexible()
   }
 
   struct NavListItem: HTML {

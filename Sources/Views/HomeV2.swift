@@ -526,7 +526,6 @@ private struct WhatPeopleAreSaying: HTML {
       }
       .color(.black.dark(.white))
       .attribute("href", testimonial.tweetUrl)
-      .grid(alignment: .center)
       .backgroundColor(.white.dark(.gray150))
       .inlineStyle("text-decoration-line", "none")
       .inlineStyle("display", "block")
