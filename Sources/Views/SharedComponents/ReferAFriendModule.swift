@@ -16,39 +16,33 @@ struct ReferAFriendModule: HTML {
         )
       )
 
-      Grid {
-        GridColumn {
-          input()
-            .attribute("value", url)
-            .attribute("type", "text")
-            .attribute("readonly")
-            .attribute("onclick", "this.select();")
-            .inlineStyle("width", "100%")
-            .inlineStyle("border-radius", "0.5rem")
-            .color(.gray500)
-            .inlineStyle("padding", "1rem")
-            .inlineStyle("border", "none")
-            .inlineStyle("outline", "none")
-        }
-        .flexible()
-        .inlineStyle("padding-right", "1rem")
-        .inlineStyle("max-width", "60%", media: .desktop)
+      HStack {
+        input()
+          .color(.gray500)
+          .grow()
+          .attribute("value", url)
+          .attribute("type", "text")
+          .attribute("readonly")
+          .attribute("onclick", "this.select();")
+          .inlineStyle("border", "none")
+          .inlineStyle("border-radius", "0.5rem")
+          .inlineStyle("padding", "1rem")
+          .inlineStyle("outline", "none")
+          .inlineStyle("max-width", "60%", media: .desktop)
+          .inlineStyle("width", "100%")
 
-        GridColumn {
-          Button(tag: input, color: .purple, size: .regular, style: .normal)
-            .attribute("type", "button")
-            .attribute("value", "Copy")
-            .attribute("onclick", """
-                navigator.clipboard.writeText("\(url)");
-                this.value = "Copied!";
-                setTimeout(() => { this.value = "Copy"; }, 3000);
-                """)
-        }
-        .inflexible()
+        Button(tag: input, color: .purple, size: .regular, style: .normal)
+          .attribute("type", "button")
+          .attribute("value", "Copy")
+          .attribute(
+            "onclick",
+            """
+            navigator.clipboard.writeText("\(url)");
+            this.value = "Copied!";
+            setTimeout(() => { this.value = "Copy"; }, 3000);
+            """
+          )
       }
-      .column(count: 12)
-      .grid(alignment: .center)
-      .inlineStyle("justify-content", "center")
       .inlineStyle("margin", "2rem 4rem")
     } title: {
       Header(2) { "Refer a friend" }
