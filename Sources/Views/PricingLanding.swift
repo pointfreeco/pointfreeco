@@ -852,7 +852,7 @@ extension Array where Element == Faq {
   }
 }
 
-private struct WhatToExpectItem {
+struct WhatToExpectItem {
   let imageSrc: String
   let title: String
   let description: String
