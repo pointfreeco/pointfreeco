@@ -340,7 +340,7 @@ class GiftTests: TestCase {
       } response: {
         """
         302 Found
-        Location: /old-login?redirect=http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
+        Location: /authenticate?redirect=http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Referrer-Policy: strict-origin-when-cross-origin
         X-Content-Type-Options: nosniff
         X-Download-Options: noopen

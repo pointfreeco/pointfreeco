@@ -1,4 +1,4 @@
-GET http://localhost:8080/old-login
+GET http://localhost:8080/authenticate
 Cookie: pf_session={}
 
 302 Found
