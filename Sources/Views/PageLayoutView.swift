@@ -131,7 +131,7 @@ public func simplePageLayout<A>(
   }
 }
 
-var liveStreamBanner: Node {
+private var liveStreamBanner: Node {
   @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.livestreams) var livestreams
 
@@ -207,7 +207,7 @@ struct Banner {
   )
 }
 
-func announcementBanner(_ banner: Banner? = nil) -> Node {
+private func announcementBanner(_ banner: Banner? = nil) -> Node {
   @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
@@ -267,7 +267,7 @@ func emergencyModeBanner<A>(_ emergencyMode: Bool, _ data: SimplePageLayoutData<
   )
 }
 
-func navView<A>(style: SimplePageLayoutData<A>.Style) -> Node {
+private func navView<A>(style: SimplePageLayoutData<A>.Style) -> Node {
   switch style {
   case let .base(.some(.mountains(style))):
     return mountainNavView(mountainsStyle: style)
@@ -280,7 +280,7 @@ func navView<A>(style: SimplePageLayoutData<A>.Style) -> Node {
   }
 }
 
-let favicons: ChildOf<Tag.Head> = .fragment([
+private let favicons: ChildOf<Tag.Head> = .fragment([
   .link(
     attributes: [
       .rel(.init(rawValue: "apple-touch-icon")),
@@ -318,7 +318,7 @@ let favicons: ChildOf<Tag.Head> = .fragment([
   ),
 ])
 
-public var prismJsHead: ChildOf<Tag.Head> {
+private var prismJsHead: ChildOf<Tag.Head> {
   let plugins: ChildOf<Tag.Head> = .fragment(
     ["swift", "clike", "css", "diff", "javascript", "ruby"]
       .map {

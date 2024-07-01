@@ -90,7 +90,7 @@ public func minimalNavView(style: NavStyle.MinimalStyle) -> Node {
   )
 }
 
-func loggedInNavItemsView(
+private func loggedInNavItemsView(
   style: NavStyle.MinimalStyle,
   currentUser: User,
   subscriberState: SubscriberState
@@ -113,7 +113,7 @@ func loggedInNavItemsView(
   )
 }
 
-func loggedOutNavItemsView(style: NavStyle.MinimalStyle, currentRoute: SiteRoute?) -> Node {
+private func loggedOutNavItemsView(style: NavStyle.MinimalStyle, currentRoute: SiteRoute?) -> Node {
   return .ul(
     attributes: [.class([navListClass])],
     .li(attributes: [.class([navListItemClass])], subscribeLinkView(style: style)),
@@ -210,7 +210,7 @@ private let navListClass =
   | Class.grid.end(.mobile)
   | Class.pf.type.body.small
 
-func newNavBarClass(for style: NavStyle.MinimalStyle) -> CssSelector {
+private func newNavBarClass(for style: NavStyle.MinimalStyle) -> CssSelector {
   let colorClass: CssSelector
   switch style {
   case .black:
@@ -227,7 +227,7 @@ func newNavBarClass(for style: NavStyle.MinimalStyle) -> CssSelector {
     | Class.grid.between(.mobile)
 }
 
-func fillColor(for minimalStyle: NavStyle.MinimalStyle) -> String {
+private func fillColor(for minimalStyle: NavStyle.MinimalStyle) -> String {
   switch minimalStyle {
   case .black:
     return "#ffffff"

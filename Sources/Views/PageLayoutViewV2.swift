@@ -130,7 +130,7 @@ struct NavBar: HTML {
     var body: some HTML {
       Link(href: siteRouter.path(for: .home)) {
         SVG(
-          base64: pointFreeTextDiamondLogoSvgBase64(fill: fillColor(for: .black)),
+          base64: pointFreeTextDiamondLogoSvgBase64(fill: "#fff"),
           description: "Point-Free"
         )
       }
