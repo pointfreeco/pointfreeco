@@ -16,7 +16,6 @@ extension Conn where Step == HeadersOpen {
 
     var layoutData = layoutData
     layoutData.flash = self.request.session.flash
-    layoutData.isGhosting = self.request.session.ghosteeId != nil
 
     let metadata = Metadata(
       description: layoutData.description,

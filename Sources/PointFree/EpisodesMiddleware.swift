@@ -43,7 +43,6 @@ _ conn: Conn<StatusLineOpen, Void>
     .respondV2(
       layoutData: SimplePageLayoutData(
         description: "Point-Free: A video series exploring advanced programming topics in Swift.",
-        isGhosting: false,
         title: "Point-Free: \(subtitle)"
       )
     ) {

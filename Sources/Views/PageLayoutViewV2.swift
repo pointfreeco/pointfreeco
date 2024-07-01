@@ -3,6 +3,7 @@ import Dependencies
 import EnvVars
 import Foundation
 import FunctionalCss
+import Ghosting
 import Html
 import Models
 import PointFreeRouter
@@ -17,6 +18,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
   let cssConfig: Css.Config
 
   @Dependency(\.envVars.emergencyMode) var emergencyMode
+  @Dependency(\.isGhosting) var isGhosting
 
   public init(
     layoutData: SimplePageLayoutData<Void>,
@@ -66,7 +68,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     if let flash = layoutData.flash {
       TopBanner(flash: flash)
     }
-    if layoutData.isGhosting {
+    if isGhosting {
       TopBanner(style: .notice) {
         "👻 You’re a ghost! "
         Link("Stop ghosting", href: siteRouter.path(for: .endGhosting))

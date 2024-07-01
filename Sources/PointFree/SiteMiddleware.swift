@@ -1,6 +1,7 @@
 import Dependencies
 import Either
 import Foundation
+import Ghosting
 import HttpPipeline
 import Logging
 import LoggingDependencies
@@ -93,6 +94,7 @@ public func siteMiddleware(
       progresses.map { ($0.episodeSequence, $0) },
       uniquingKeysWith: { $1 }
     )
+    $0.isGhosting = conn.request.session.ghosteeId != nil
     $0.livestreams = livestreams
     $0.requestID = requestID
     $0.subscriberState = SubscriberState(

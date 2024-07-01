@@ -18,6 +18,7 @@ var package = Package(
     .library(name: "EnvVars", targets: ["EnvVars"]),
     .library(name: "FoundationPrelude", targets: ["FoundationPrelude"]),
     .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
+    .library(name: "Ghosting", targets: ["Ghosting"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
     .library(name: "LoggingDependencies", targets: ["LoggingDependencies"]),
@@ -163,6 +164,13 @@ var package = Package(
     ),
 
     .target(
+      name: "Ghosting",
+      dependencies: [
+        .product(name: "Dependencies", package: "swift-dependencies"),
+      ]
+    ),
+
+    .target(
       name: "GitHub",
       dependencies: [
         "DecodableRequest",
@@ -278,6 +286,7 @@ var package = Package(
         "Database",
         "EnvVars",
         "EmailAddress",
+        "Ghosting",
         "GitHub",
         "Mailgun",
         "Models",
