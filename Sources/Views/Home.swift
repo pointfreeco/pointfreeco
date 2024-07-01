@@ -236,6 +236,7 @@ private struct WhatToExpect: HTML {
     var body: some HTML {
       VStack(alignment: .center) {
         Image(source: item.imageSrc, description: "")
+          .attribute("loading", "lazy")
           .inlineStyle("padding", "2.5%")
           .inlineStyle("padding", "7.5%", media: .desktop)
           .inlineStyle("max-width", "100%")
@@ -519,6 +520,7 @@ private struct WhatPeopleAreSaying: HTML {
         VStack {
           HStack(alignment: .center) {
             Image(source: testimonial.avatarURL ?? "", description: "")
+              .attribute("loading", "lazy")
               .size(width: .rem(3), height: .rem(3))
               .inlineStyle("border-radius", "1.5rem")
               .backgroundColor(.gray650.dark(.gray300))
