@@ -27,9 +27,6 @@ extension Conn where Step == HeadersOpen {
       url: siteRouter.url(for: siteRoute)  // TODO: should we have @Dependency(\.currentURL)?
     )
 
-//    >>> metaLayout(simplePageLayout(view))
-//    >>> addPlausibleAnalytics
-
     var printer = HTMLPrinter()
     PageLayout._render(
       PageLayout(
@@ -43,8 +40,18 @@ extension Conn where Step == HeadersOpen {
     return self
       .writeSessionCookie { $0.flash = nil }
       .respond(
-        body: String(decoding: printer.bytes, as: UTF8.self),  // TODO: Render bytes directly
+        body: Data(printer.bytes),
         contentType: .html
       )
+  }
+}
+
+extension Conn where Step == HeadersOpen {
+  fileprivate func respond(body: Data, contentType: MediaType) -> Conn<ResponseEnded, Data> {
+    return self.map { _ in body }
+      .writeHeader(.contentType(contentType))
+      .writeHeader(.contentLength(body.count))
+      .closeHeaders()
+      .end()
   }
 }

@@ -62,6 +62,10 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     if layoutData.usePrismJs {
       PrismJSHead()
     }
+    script()
+      .attribute("defer")
+      .attribute("data-domain", "pointfree.co")
+      .src("https://plausible.io/js/script.js")
   }
 
   public var body: some HTML {

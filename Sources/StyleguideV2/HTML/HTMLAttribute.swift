@@ -1,7 +1,7 @@
 import OrderedCollections
 
 extension HTML {
-  public func attribute(_ name: String, _ value: String? = nil) -> _HTMLAttributes<Self> {
+  public func attribute(_ name: String, _ value: String? = "") -> _HTMLAttributes<Self> {
     _HTMLAttributes(content: self, attributes: value.map { [name: $0] } ?? [:])
   }
 
@@ -17,7 +17,7 @@ public struct _HTMLAttributes<Content: HTML>: HTML {
   let content: Content
   var attributes: OrderedDictionary<String, String>
 
-  public func attribute(_ name: String, _ value: String? = nil) -> _HTMLAttributes<Content> {
+  public func attribute(_ name: String, _ value: String? = "") -> _HTMLAttributes<Content> {
     var copy = self
     copy.attributes[name] = value
     return copy
