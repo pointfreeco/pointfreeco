@@ -111,8 +111,12 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
 }
 
 fileprivate enum ClassCount: DependencyKey {
-  fileprivate static let liveValue = LockIsolated<OrderedSet<Style>>([])
-  fileprivate static let testValue = LockIsolated<OrderedSet<Style>>([])
+  fileprivate static var liveValue: LockIsolated<OrderedSet<Style>> {
+    LockIsolated<OrderedSet<Style>>([])
+  }
+  fileprivate static var testValue: LockIsolated<OrderedSet<Style>> {
+    LockIsolated<OrderedSet<Style>>([])
+  }
 }
 
 private struct Style: Hashable {
