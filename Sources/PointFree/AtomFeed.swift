@@ -55,7 +55,7 @@ var freeEpisodeRssChannel: RssChannel {
 
   return RssChannel(
     copyright:
-      "Copyright Point-Free, Inc. \(calendar.component(.year, from: now))",
+      "Copyright Point-Free Inc. \(calendar.component(.year, from: now))",
     description: description,
     image: .init(
       link: siteRouter.url(for: .home),
@@ -86,7 +86,7 @@ var freeEpisodeRssChannel: RssChannel {
       image: .init(
         href: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/pf-avatar-square.jpg"),
       owner: .init(email: "support@pointfree.co", name: "Brandon Williams & Stephen Celis"),
-      subtitle: "Functional programming concepts explained simply.",
+      subtitle: "Advanced programming concepts explained simply.",
       summary: description,
       type: .episodic
     ),
@@ -201,7 +201,7 @@ private func item(episode: Episode) -> RssItem {
       season: 1,
       title: title(episode: episode)
     ),
-    link: siteRouter.url(for: .episode(.show(.left(episode.slug)))),
+    link: siteRouter.url(for: .episodes(.show(.left(episode.slug)))),
     media: .init(
       content: mediaContent(episode: episode),
       title: title(episode: episode)
@@ -230,7 +230,7 @@ private func slackItem(episode: Episode) -> RssItem {
       season: 1,
       title: episode.title
     ),
-    link: siteRouter.url(for: .episode(.show(.left(episode.slug)))),
+    link: siteRouter.url(for: .episodes(.show(.left(episode.slug)))),
     media: nil,
     pubDate: episode.freeSince ?? episode.publishedAt,
     title: episode.title

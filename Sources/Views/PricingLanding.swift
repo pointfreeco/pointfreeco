@@ -72,7 +72,7 @@ func ctaColumn() -> Node {
       text: "Create your account",
       type: .white,
       // TODO: redirect back to home?
-      href: siteRouter.loginPath(redirect: .pricingLanding)
+      href: siteRouter.gitHubAuthPath(redirect: .pricingLanding)
     )
 
   return .gridColumn(
@@ -122,7 +122,7 @@ private func titleColumn() -> Node {
           ]),
           .style(lineHeight(1.2)),
         ],
-        .raw("Explore the wonderful world of&nbsp;functional programming in Swift.")
+        .raw("Explore the wonderful world of advanced Swift.")
       )
     )
 }
@@ -384,7 +384,7 @@ private func pricingPlanCta(
   } else if plan.isFree && currentUser == nil {
     return .a(
       attributes: [
-        .href(siteRouter.loginPath(redirect: .pricingLanding)),
+        .href(siteRouter.gitHubAuthPath(redirect: .pricingLanding)),
         .class([
           Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
           choosePlanButtonClasses,
@@ -405,7 +405,7 @@ private func pricingPlanCta(
                     lane: $0,
                     useRegionalDiscount: false
                   )
-                  return currentUser == nil ? .login(redirect: siteRouter.url(for: route)) : route
+                  return currentUser == nil ? .gitHubAuth(redirect: siteRouter.url(for: route)) : route
                 }
                 ?? .home
           )
@@ -674,7 +674,7 @@ private func footer(
       text: "Create your account",
       type: .white,
       // TODO: redirect back to home?
-      href: siteRouter.loginPath(redirect: .pricingLanding)
+      href: siteRouter.gitHubAuthPath(redirect: .pricingLanding)
     )
     : .a(
       attributes: [
@@ -852,17 +852,19 @@ extension Array where Element == Faq {
   }
 }
 
-private struct WhatToExpectItem {
+struct WhatToExpectItem {
   let imageSrc: String
   let title: String
   let description: String
+
+  static let all: [Self] = [.newContent, .topics, .playgrounds, .transcripts]
 
   static let newContent = WhatToExpectItem(
     imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg",
     title: "New content regularly",
     description: """
-      We dissect some of the most important topics in functional programming frequently, and deliver them straight
-      to your inbox.
+      We dissect some of the most important and interesting topics in Swift programming \
+      frequently, and deliver them straight to your inbox.
       """
   )
 
@@ -870,7 +872,8 @@ private struct WhatToExpectItem {
     imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg",
     title: "Wide variety of topics",
     description: """
-      We cover both abstract ideas and practical concepts you can start using in your code base immediately.
+      We cover both abstract ideas and practical concepts you can start using in your code base \
+      immediately.
       """
   )
 
@@ -878,8 +881,8 @@ private struct WhatToExpectItem {
     imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg",
     title: "Playground downloads",
     description: """
-      Download a fully-functioning Swift playground from the episode so you can experiment with the concepts
-      discussed.
+      Download a fully-functioning Swift playground from the episode so you can experiment with \
+      the concepts discussed.
       """
   )
 
@@ -887,8 +890,8 @@ private struct WhatToExpectItem {
     imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg",
     title: "Video transcripts",
     description: """
-      We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
-      directly to that point in the video.
+      We transcribe each video by hand so you can search and reference easily. Click on a \
+      timestamp to jump directly to that point in the video.
       """
   )
 }

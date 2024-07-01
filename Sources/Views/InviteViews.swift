@@ -46,7 +46,7 @@ private func showInviteLoggedOutView(invite: TeamInvite, inviter: User) -> Node 
           .gitHubLink(
             text: "Login with GitHub",
             type: .black,
-            href: siteRouter.loginPath(redirect: .invite(.invitation(invite.id)))
+            href: siteRouter.gitHubAuthPath(redirect: .invite(.invitation(invite.id)))
           )
         )
       )

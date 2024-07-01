@@ -236,7 +236,7 @@ private func relatedItemContent(_ content: Episode.Collection.Section.Related.Co
           icon: playIconSvgBase64(),
           title: episode.fullTitle,
           length: episode.length,
-          url: siteRouter.path(for: .episode(.show(.left(episode.slug))))
+          url: siteRouter.path(for: .episodes(.show(.left(episode.slug))))
         )
       })
   case let .section(collection, index):

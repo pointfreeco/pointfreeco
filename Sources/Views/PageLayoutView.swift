@@ -28,7 +28,6 @@ public struct SimplePageLayoutData<A> {
   public var extraStyles: Stylesheet
   public var flash: Flash?
   public var image: String?
-  public var isGhosting: Bool  // TODO: move to @Dependency
   public var openGraphType: OpenGraphType
   public var style: Style
   public var title: String
@@ -36,13 +35,12 @@ public struct SimplePageLayoutData<A> {
   public var usePrismJs: Bool
 
   public init(
-    data: A,
+    data: A = (),
     description: String? =
       "Point-Free is a video series exploring advanced programming topics in Swift.",
     extraHead: ChildOf<Tag.Head> = [],
     extraStyles: Stylesheet = .empty,
     image: String? = "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
-    isGhosting: Bool = false,
     openGraphType: OpenGraphType = .website,
     style: Style = .base(.some(.minimal(.light))),
     title: String,
@@ -55,7 +53,6 @@ public struct SimplePageLayoutData<A> {
     self.extraStyles = extraStyles
     self.flash = nil
     self.image = image
-    self.isGhosting = isGhosting
     self.openGraphType = openGraphType
     self.style = style
     self.title = title
@@ -117,20 +114,17 @@ public func simplePageLayout<A>(
           layoutData.extraHead
         ),
         .body(
-          ghosterBanner(isGhosting: layoutData.isGhosting),
+          ghosterBanner(),
           pastDueBanner,
           (layoutData.flash.map(flashView) ?? []),
           announcementBanner(.wwdc24),
           liveStreamBanner,
           emergencyModeBanner(emergencyMode, layoutData),
-          navView(layoutData),
+          navView(style: layoutData.style),
           contentView(layoutData.data),
           layoutData.style.isMinimal
             ? []
-            : footerView(
-              user: currentUser,
-              year: Calendar(identifier: .gregorian).component(.year, from: now)
-            )
+            : Node { Footer() }
         )
       ),
     ]
@@ -273,8 +267,8 @@ func emergencyModeBanner<A>(_ emergencyMode: Bool, _ data: SimplePageLayoutData<
   )
 }
 
-func navView<A>(_ data: SimplePageLayoutData<A>) -> Node {
-  switch data.style {
+private func navView<A>(style: SimplePageLayoutData<A>.Style) -> Node {
+  switch style {
   case let .base(.some(.mountains(style))):
     return mountainNavView(mountainsStyle: style)
 
@@ -378,7 +372,9 @@ private var prismJsHead: ChildOf<Tag.Head> {
   ])
 }
 
-func ghosterBanner(isGhosting: Bool) -> Node {
+func ghosterBanner() -> Node {
+  @Dependency(\.isGhosting) var isGhosting
+
   guard isGhosting else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
@@ -395,18 +391,11 @@ func ghosterBanner(isGhosting: Bool) -> Node {
           attributes: [.class([Class.pf.type.responsiveTitle3])],
           "You are ghosting 👻"
         ),
-        .form(
+        .a(
           attributes: [
-            .method(.post),
-            .action(siteRouter.path(for: .endGhosting)),
+            .href(siteRouter.path(for: .endGhosting))
           ],
-          .input(
-            attributes: [
-              .type(.submit),
-              .value("Stop ghosting"),
-              .class([Class.pf.components.button(color: .white, size: .small)]),
-            ]
-          )
+          "Stop ghosting"
         )
       )
     )

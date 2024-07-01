@@ -13,7 +13,7 @@ public enum EncryptedTag {}
 public typealias Encrypted<A> = Tagged<EncryptedTag, A>
 
 @CasePathable
-public enum SiteRoute: Equatable {
+public indirect enum SiteRoute: Equatable {
   case about
   case account(Account = .index)
   case admin(Admin = .index)
@@ -26,12 +26,14 @@ public enum SiteRoute: Equatable {
   case gifts(Gifts = .index)
   case endGhosting
   case enterprise(EnterpriseAccount.Domain, Enterprise = .landing)
-  case episode(EpisodeRoute = .index)
+  case episodes(EpisodesRoute = .list(.all))
   case expressUnsubscribe(payload: Encrypted<String>)
   case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
+  case gitHubAuth(redirect: String?)
   case gitHubCallback(code: String?, redirect: String?)
   case home
+  case homeV2
   case invite(Invite)
   case live(Live)
   case login(redirect: String?)
@@ -40,6 +42,7 @@ public enum SiteRoute: Equatable {
   case privacy
   case resume
   case robots
+  case signUp(redirect: String?)
   case slackInvite
   case subscribe(SubscribeData? = nil)
   case subscribeConfirmation(
@@ -87,10 +90,20 @@ public enum SiteRoute: Equatable {
     case requestInvite(EnterpriseRequestFormData)
   }
 
-  public enum EpisodeRoute: Equatable {
-    case index
+  public enum EpisodesRoute: Equatable {
+    case list(ListType)
     case progress(param: Either<String, Episode.ID>, percent: Int)
     case show(Either<String, Episode.ID>)
+
+    public static func show(_ episode: Episode) -> Self {
+      .show(.left(episode.slug))
+    }
+
+    public enum ListType: Equatable {
+      case all
+      case free
+      case history
+    }
   }
 
   public enum Feed: Equatable {
@@ -209,16 +222,26 @@ struct CollectionsRouter: ParserPrinter {
   }
 }
 
-struct EpisodeRouter: ParserPrinter {
-  var body: some Router<SiteRoute.EpisodeRoute> {
+struct EpisodesRouter: ParserPrinter {
+  var body: some Router<SiteRoute.EpisodesRoute> {
     OneOf {
-      Route(.case(SiteRoute.EpisodeRoute.index))
+      Route(.case(SiteRoute.EpisodesRoute.list)) {
+        OneOf {
+          Route(.case(SiteRoute.EpisodesRoute.ListType.all))
+          Route(.case(SiteRoute.EpisodesRoute.ListType.free)) {
+            Path { "free" }
+          }
+          Route(.case(SiteRoute.EpisodesRoute.ListType.history)) {
+            Path { "history" }
+          }
+        }
+      }
 
-      Route(.case(SiteRoute.EpisodeRoute.show)) {
+      Route(.case(SiteRoute.EpisodesRoute.show)) {
         Path { SlugOrID<Episode.ID>() }
       }
 
-      Route(.case(SiteRoute.EpisodeRoute.progress)) {
+      Route(.case(SiteRoute.EpisodesRoute.progress)) {
         Method.post
         Path {
           SlugOrID<Episode.ID>()
@@ -415,6 +438,9 @@ struct SiteRouter: ParserPrinter {
   var body: some Router<SiteRoute> {
     OneOf {
       Route(.case(SiteRoute.home))
+      Route(.case(SiteRoute.homeV2)) {
+        Path { "home" }
+      }
 
       Route(.case(SiteRoute.about)) {
         Path { "about" }
@@ -469,9 +495,9 @@ struct SiteRouter: ParserPrinter {
         CollectionsRouter()
       }
 
-      Route(.case(SiteRoute.episode)) {
+      Route(.case(SiteRoute.episodes)) {
         Path { "episodes" }
-        EpisodeRouter()
+        EpisodesRouter()
       }
 
       Route(.case(SiteRoute.enterprise)) {
@@ -505,7 +531,6 @@ struct SiteRouter: ParserPrinter {
       }
 
       Route(.case(SiteRoute.endGhosting)) {
-        Method.post
         Path {
           "ghosting"
           "end"
@@ -553,6 +578,15 @@ struct SiteRouter: ParserPrinter {
         LiveRouter()
       }
 
+      Route(.case(SiteRoute.gitHubAuth)) {
+        Path { "authenticate" }
+        Query {
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
       Route(.case(SiteRoute.login)) {
         Path { "login" }
         Query {
@@ -576,6 +610,15 @@ struct SiteRouter: ParserPrinter {
 
       Route(.case(SiteRoute.resume)) {
         Path { "resume" }
+      }
+
+      Route(.case(SiteRoute.signUp)) {
+        Path { "signup" }
+        Query {
+          Optionally {
+            Field("redirect")
+          }
+        }
       }
 
       Route(.case(SiteRoute.subscribe)) {

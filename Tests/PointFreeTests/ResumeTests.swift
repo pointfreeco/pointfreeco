@@ -31,7 +31,7 @@ class ResumeTests: TestCase {
     } response: {
       """
       302 Found
-      Location: /login?redirect=http://localhost:8080/resume
+      Location: /authenticate?redirect=http://localhost:8080/resume
       Referrer-Policy: strict-origin-when-cross-origin
       X-Content-Type-Options: nosniff
       X-Download-Options: noopen

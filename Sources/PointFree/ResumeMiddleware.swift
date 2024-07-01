@@ -18,7 +18,7 @@ func resumeMiddleware(
 
   guard currentUser != nil
   else {
-    return await redirect(to: .login(redirect: siteRouter.url(for: currentRoute)))(conn)
+    return await redirect(to: .gitHubAuth(redirect: siteRouter.url(for: currentRoute)))(conn)
       .performAsync()
   }
 
@@ -37,7 +37,7 @@ func resumeMiddleware(
   guard latestProgress.isFinished
   else {
     return await redirect(
-      to: .episode(
+      to: .episodes(
         .show(
           .left(
             episodes().first(where: { $0.sequence == latestProgress.episodeSequence })!.slug
@@ -60,7 +60,7 @@ func resumeMiddleware(
   }
 
   return await redirect(
-    to: .episode(.show(.left(nextEpisode.slug))),
+    to: .episodes(.show(.left(nextEpisode.slug))),
     headersMiddleware: flash(.notice, "Starting the next episode.")
   )(conn)
   .performAsync()

@@ -1,4 +1,4 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.9
 
 import Foundation
 import PackageDescription
@@ -6,7 +6,7 @@ import PackageDescription
 var package = Package(
   name: "PointFree",
   platforms: [
-    .macOS(.v13)
+    .macOS(.v14)
   ],
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
@@ -15,8 +15,10 @@ var package = Package(
     .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
     .library(name: "DecodableRequest", targets: ["DecodableRequest"]),
     .library(name: "EmailAddress", targets: ["EmailAddress"]),
+    .library(name: "EnvVars", targets: ["EnvVars"]),
     .library(name: "FoundationPrelude", targets: ["FoundationPrelude"]),
     .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
+    .library(name: "Ghosting", targets: ["Ghosting"]),
     .library(name: "GitHub", targets: ["GitHub"]),
     .library(name: "GitHubTestSupport", targets: ["GitHubTestSupport"]),
     .library(name: "LoggingDependencies", targets: ["LoggingDependencies"]),
@@ -32,6 +34,7 @@ var package = Package(
     .library(name: "Stripe", targets: ["Stripe"]),
     .library(name: "StripeTestSupport", targets: ["StripeTestSupport"]),
     .library(name: "Styleguide", targets: ["Styleguide"]),
+    .library(name: "StyleguideV2", targets: ["StyleguideV2"]),
     .library(name: "Syndication", targets: ["Syndication"]),
     .library(name: "TranscriptParser", targets: ["TranscriptParser"]),
     .library(name: "Transcripts", targets: ["Transcripts"]),
@@ -39,13 +42,14 @@ var package = Package(
     .library(name: "WebPreview", targets: ["WebPreview"]),
   ],
   dependencies: [
+    .package(url: "https://github.com/apple/swift-collections", from: "1.1.0"),
     .package(url: "https://github.com/apple/swift-log", from: "1.5.0"),
     .package(url: "https://github.com/apple/swift-nio", from: "2.61.0"),
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.19.0"),
     .package(url: "https://github.com/vapor/postgres-kit", from: "2.12.0"),
     .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.0.0"),
-    .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.1.0"),
-    .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.1.0"),
+    .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.3.0"),
+    .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.3.1"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
     .package(url: "https://github.com/pointfreeco/swift-overture", revision: "ac1cd0f"),
     .package(url: "https://github.com/pointfreeco/swift-parsing", from: "0.13.0"),
@@ -105,6 +109,18 @@ var package = Package(
     ),
 
     .target(
+      name: "EnvVars",
+      dependencies: [
+        "GitHub",
+        "Mailgun",
+        "Models",
+        "Stripe",
+        .product(name: "Dependencies", package: "swift-dependencies"),
+        .product(name: "Tagged", package: "swift-tagged")
+      ]
+    ),
+
+    .target(
       name: "EmailAddress",
       dependencies: [
         .product(name: "Tagged", package: "swift-tagged")
@@ -144,6 +160,13 @@ var package = Package(
       ],
       exclude: [
         "__Snapshots__"
+      ]
+    ),
+
+    .target(
+      name: "Ghosting",
+      dependencies: [
+        .product(name: "Dependencies", package: "swift-dependencies"),
       ]
     ),
 
@@ -261,7 +284,9 @@ var package = Package(
       name: "PointFree",
       dependencies: [
         "Database",
+        "EnvVars",
         "EmailAddress",
+        "Ghosting",
         "GitHub",
         "Mailgun",
         "Models",
@@ -462,6 +487,23 @@ var package = Package(
     ),
 
     .target(
+      name: "StyleguideV2",
+      dependencies: [
+        "Ccmark",
+        "Styleguide",
+        .product(name: "Html", package: "swift-html"),
+        .product(name: "OrderedCollections", package: "swift-collections"),
+      ]
+    ),
+
+    .testTarget(
+      name: "StyleguideV2Tests",
+      dependencies: [
+        "StyleguideV2"
+      ]
+    ),
+
+    .target(
       name: "Syndication",
       dependencies: [
         "Models",
@@ -502,10 +544,12 @@ var package = Package(
       dependencies: [
         "Ccmark",
         "EmailAddress",
+        "EnvVars",
         "FunctionalCss",
         "PointFreeDependencies",
         "PointFreeRouter",
         "Styleguide",
+        "StyleguideV2",
         "Transcripts",
         "WebPreview",
         .product(name: "Css", package: "swift-web"),

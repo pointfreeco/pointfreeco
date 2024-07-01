@@ -122,7 +122,7 @@ private func episodeLinkView(_ episode: Episode) -> Node {
 
   return .a(
     attributes: [
-      .href(siteRouter.path(for: .episode(.show(.left(episode.slug))))),
+      .href(siteRouter.path(for: .episodes(.show(.left(episode.slug))))),
       .class([Class.pf.colors.link.purple]),
     ],
     .text("#\(episode.sequence): \(episode.fullTitle)")

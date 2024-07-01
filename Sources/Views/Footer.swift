@@ -1,213 +1,167 @@
-import Css
 import Dependencies
-import FunctionalCss
-import Html
+import Foundation
 import Models
 import PointFreeRouter
+import StyleguideV2
 
-public func footerView(user: User?, year: Int) -> Node {
-  return .footer(
-    attributes: [.class([footerClass])],
-    footerInfoColumnsView(user: user, year: year)
-  )
+public struct Footer: HTML {
+  public var body: some HTML {
+    footer {
+      LazyVGrid(columns: [.desktop: [1, 1]]) {
+        TaglineColumn()
+
+        LazyVGrid(columns: [1, 2]) {
+          ContentColumn()
+          MoreColumn()
+        }
+
+        LegalColumn()
+      }
+      .inlineStyle("align-items", "first baseline")
+    }
+    .backgroundColor(.black)
+    .padding(3, .mobile)
+    .padding(4, .desktop)
+  }
 }
 
-private func footerInfoColumnsView(user: User?, year: Int) -> Node {
-  return [
-    .gridColumn(sizes: [.mobile: 12, .desktop: 6], pointFreeView),
-    linksColumnsView(currentUser: user),
-    .gridColumn(sizes: [.mobile: 12, .desktop: 6], legalView(year: year)),
-  ]
+private struct TaglineColumn: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+  let twitterRouter = TwitterRouter()
+
+  var body: some HTML {
+    div {
+      h4 {
+        Link("Point-Free", href: siteRouter.path(for: .home))
+          .linkColor(.white)
+      }
+      .fontScale(.h4)
+      .margin(bottom: 0, .mobile)
+      .inlineStyle("font-size", "1.25rem")
+      .inlineStyle("font-size", "1.5rem", media: .desktop)
+      .inlineStyle("line-height", "1.45")
+
+      p {
+        "A video series exploring advanced topics in the Swift programming language. Hosted by "
+        twitterLink("Brandon&nbsp;Williams", .mbrandonw)
+        " and "
+        twitterLink("Stephen&nbsp;Celis", .stephencelis)
+        "."
+      }
+      .color(.white)
+      .fontStyle(.body(.regular))
+      .linkColor(.green)
+    }
+    .padding(right: 4, .desktop)
+    .padding(bottom: 2, .mobile)
+  }
+
+  func twitterLink(_ name: String, _ route: TwitterRoute) -> some HTML {
+    Link(href: twitterRouter.url(for: route).absoluteString) {
+      HTMLRaw(name)
+    }
+  }
 }
 
-private func linksColumnsView(currentUser: User?) -> Node {
-  return [
-    .gridColumn(sizes: [.mobile: 4, .desktop: 2], contentColumnView(currentUser: currentUser)),
-    .gridColumn(sizes: [.mobile: 4, .desktop: 2], moreColumnView),
-  ]
-}
-
-private func legalView(year: Int) -> Node {
-  return .p(
-    attributes: [.class([legalClass, Class.padding([.mobile: [.top: 2]])])],
-    .text(
-      "© \(year) Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. "
-    ),
-    "All other content is licensed under ",
-    .a(
-      attributes: [
-        .class([Class.pf.colors.link.gray650]),
-        .href("https://creativecommons.org/licenses/by-nc-sa/4.0/"),
-      ],
-      "CC BY-NC-SA 4.0"
-    ),
-    ", and the underlying ",
-    .a(
-      attributes: [
-        .class([Class.pf.colors.link.gray650]),
-        .href(GitHubRouter().url(for: .repo(.pointfreeco)).absoluteString),
-      ],
-      "source code"
-    ),
-    " to run this site is licensed under the ",
-    .a(
-      attributes: [
-        .class([Class.pf.colors.link.gray650]),
-        .href(GitHubRouter().url(for: .license).absoluteString),
-      ],
-      "MIT license"
-    )
-  )
-}
-
-private var pointFreeView: Node {
+private struct ContentColumn: HTML {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
-  return .div(
-    attributes: [.class([Class.padding([.desktop: [.right: 4], .mobile: [.bottom: 2]])])],
-    .h4(
-      attributes: [
-        .class([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.bottom: 0]])])
-      ],
-      .a(
-        attributes: [.href(siteRouter.path(for: .home)), .class([Class.pf.colors.link.white])],
-        "Point-Free"
+  var body: some HTML {
+    Column(title: "Content") {
+      FooterLink("Pricing", href: siteRouter.path(for: .pricingLanding))
+      FooterLink("Gifts", href: siteRouter.path(for: .gifts()))
+      FooterLink("Videos", href: siteRouter.path(for: .home))
+      FooterLink("Collections", href: siteRouter.path(for: .collections()))
+      FooterLink("Clips", href: siteRouter.path(for: .clips(.clips)))
+      FooterLink("Blog", href: siteRouter.path(for: .blog()))
+    }
+  }
+}
+
+private struct MoreColumn: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+  let gitHubRouter = GitHubRouter()
+  let twitterRouter = TwitterRouter()
+
+  var body: some HTML {
+    Column(title: "More") {
+      FooterLink("About Us", href: siteRouter.path(for: .about))
+      FooterLink("Mastodon", href: "https://hachyderm.io/@pointfreeco")
+        .attribute("rel", "me")
+      FooterLink("Twitter", href: twitterRouter.url(for: .pointfreeco).absoluteString)
+      FooterLink("GitHub", href: gitHubRouter.url(for: .organization).absoluteString)
+      FooterLink("Contact Us", href: "mailto:support@pointfree.co")
+      FooterLink("Privacy Policy", href: siteRouter.path(for: .privacy))
+    }
+  }
+}
+
+private struct Column<Links: HTML>: HTML {
+  let title: String
+  @HTMLBuilder let links: Links
+
+  var body: some HTML {
+    div {
+      h5 { HTMLText(title) }
+        .color(.white)
+        .inlineStyle("font-size", "0.75rem")
+        .inlineStyle("font-size", "0.875rem", media: .desktop)
+        .inlineStyle("letter-spacing", "0.54pt")
+        .inlineStyle("line-height", "1.25")
+        .inlineStyle("text-transform", "uppercase")
+
+      ol { links.linkColor(.purple) }
+        .listStyle(.reset)
+    }
+  }
+}
+
+private struct FooterLink: HTML {
+  let href: String
+  let label: String
+
+  init(_ label: String, href: String) {
+    self.href = href
+    self.label = label
+  }
+
+  var body: some HTML {
+    li { Link(label, href: href) }
+  }
+}
+
+private struct LegalColumn: HTML {
+  @Dependency(\.date.now) var now
+  let gitHubRouter = GitHubRouter()
+
+  var body: some HTML {
+    p {
+      let year = Calendar(identifier: .gregorian).component(.year, from: now)
+      """
+      © \(year) Point-Free, Inc. All rights are reserved for the videos and transcripts on this \
+      site. All other content is licensed under \
+
+      """
+      Link(
+        "CC BY-NC-SA 4.0",
+        href: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
       )
-    ),
-    .p(
-      attributes: [.class([Class.pf.type.body.regular, Class.pf.colors.fg.white])],
-      "A video series exploring advanced topics in the Swift programming language. Hosted by ",
-      .a(
-        attributes: [
-          .href(TwitterRouter().url(for: .mbrandonw).absoluteString),
-          .class([Class.type.textDecorationNone, Class.pf.colors.link.green]),
-        ],
-        .raw("Brandon&nbsp;Williams")
-      ),
-      " and ",
-      .a(
-        attributes: [
-          .href(TwitterRouter().url(for: .stephencelis).absoluteString),
-          .class([Class.type.textDecorationNone, Class.pf.colors.link.green]),
-        ],
-        .raw("Stephen&nbsp;Celis")
-      ),
+      ", and the underlying "
+      Link(
+        "source code",
+        href: gitHubRouter.url(for: .repo(.pointfreeco)).absoluteString
+      )
+      " to run this site is licensed under the "
+      Link(
+        "MIT License",
+        href: gitHubRouter.url(for: .license).absoluteString
+      )
       "."
-    )
-  )
+    }
+    .color(.gray400)
+    .fontStyle(.body(.small))
+    .linkColor(.gray650)
+    .padding(top: 2, .mobile)
+  }
 }
-
-private func contentColumnView(currentUser: User?) -> Node {
-  @Dependency(\.siteRouter) var siteRouter
-
-  return .div(
-    .h5(attributes: [.class([columnTitleClass])], "Content"),
-    .ol(
-      attributes: [.class([Class.type.list.reset])],
-      .li(
-        .a(
-          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .pricingLanding))],
-          "Pricing")
-      ),
-      .li(
-        .a(
-          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .gifts()))], "Gifts")
-      ),
-      .li(
-        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .home))], "Videos")
-      ),
-      .li(
-        .a(
-          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .collections()))],
-          "Collections")
-      ),
-      .li(
-        .a(
-          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .clips(.clips)))],
-          "Clips"
-        )
-      ),
-      .li(
-        .a(attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .blog()))], "Blog")
-      )
-    )
-  )
-}
-
-private var moreColumnView: Node {
-  @Dependency(\.siteRouter) var siteRouter
-
-  return .div(
-    .h5(attributes: [.class([columnTitleClass])], "More"),
-    .ol(
-      attributes: [.class([Class.type.list.reset])],
-      .li(
-        .a(
-          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .about))], "About Us")
-      ),
-      .li(
-        .a(
-          attributes: [
-            .class([footerLinkClass]),
-            .href("https://hachyderm.io/@pointfreeco"),
-            .rel(.init(rawValue: "me")),
-          ], "Mastodon")
-      ),
-      .li(
-        attributes: [.class([Class.display.none])],
-        .a(
-          attributes: [
-            .class([footerLinkClass]),
-            .href("https://hachyderm.io/@mbrandonw"),
-            .rel(.init(rawValue: "me")),
-          ], "@mbrandonw")
-      ),
-      .li(
-        attributes: [.class([Class.display.none])],
-        .a(
-          attributes: [
-            .class([footerLinkClass]),
-            .href("https://hachyderm.io/@stephencelis"),
-            .rel(.init(rawValue: "me")),
-          ], "@stephencelis")
-      ),
-      .li(
-        .a(
-          attributes: [
-            .class([footerLinkClass]), .href(TwitterRouter().url(for: .pointfreeco).absoluteString),
-          ], "Twitter")
-      ),
-      .li(
-        .a(
-          attributes: [
-            .class([footerLinkClass]), .href(GitHubRouter().url(for: .organization).absoluteString),
-          ], "GitHub")
-      ),
-      .li(
-        .a(attributes: [.class([footerLinkClass]), .mailto("support@pointfree.co")], "Contact us")
-      ),
-      .li(
-        .a(
-          attributes: [.class([footerLinkClass]), .href(siteRouter.path(for: .privacy))],
-          "Privacy Policy")
-      )
-    )
-  )
-}
-
-private let footerClass =
-  Class.grid.row
-  | Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]])
-  | Class.pf.colors.bg.black
-
-private let footerLinkClass =
-  Class.pf.colors.link.purple
-  | Class.pf.type.body.regular
-
-private let columnTitleClass =
-  Class.pf.type.responsiveTitle7
-  | Class.pf.colors.fg.white
-
-private let legalClass =
-  Class.pf.colors.fg.gray400
-  | Class.pf.type.body.small

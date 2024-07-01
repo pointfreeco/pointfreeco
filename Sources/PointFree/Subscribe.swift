@@ -243,7 +243,7 @@ private func loginAndRedirectToPricing<A>(
   @Dependency(\.siteRouter) var siteRouter
 
   return conn
-    |> redirect(to: .login(redirect: siteRouter.url(for: .pricingLanding)))
+    |> redirect(to: .gitHubAuth(redirect: siteRouter.url(for: .pricingLanding)))
 }
 
 private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bool {

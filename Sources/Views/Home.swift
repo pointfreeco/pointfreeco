@@ -244,7 +244,7 @@ private func episodeImageColumnView(episode: Episode) -> Node {
       ),
     ],
     .a(
-      attributes: [.href(siteRouter.path(for: .episode(.show(.left(episode.slug)))))],
+      attributes: [.href(siteRouter.path(for: .episodes(.show(.left(episode.slug)))))],
       .img(
         attributes: [
           .src(episode.image),
@@ -287,7 +287,7 @@ private func episodeInfoColumnView(episode: Episode, emergencyMode: Bool) -> Nod
       attributes: [.class([Class.margin([.mobile: [.top: 3]])])],
       .a(
         attributes: [
-          .href(siteRouter.path(for: .episode(.show(.left(episode.slug))))),
+          .href(siteRouter.path(for: .episodes(.show(.left(episode.slug))))),
           .class([Class.align.middle, Class.pf.colors.link.purple, Class.pf.type.body.regular]),
         ],
         .text(text),
@@ -319,7 +319,7 @@ public func topLevelEpisodeInfoView(episode: Episode, emergencyMode: Bool) -> No
         .class([Class.pf.type.responsiveTitle4, Class.margin([.mobile: [.top: 2]])])
       ],
       .a(
-        attributes: [.href(siteRouter.path(for: .episode(.show(.left(episode.slug)))))],
+        attributes: [.href(siteRouter.path(for: .episodes(.show(.left(episode.slug)))))],
         .text(episode.fullTitle)
       )
     ),

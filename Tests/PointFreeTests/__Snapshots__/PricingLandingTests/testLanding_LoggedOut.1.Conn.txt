@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 214528
+Content-Length: 184160
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2089,7 +2089,7 @@ personal, team and enterprise subscriptions.">
               </li>
               <li class="m-pl2
                          inline">
-                <a href="/login?redirect=http://localhost:8080/pricing"
+                <a href="/authenticate?redirect=http://localhost:8080/pricing"
                    class="medium
                           cursor-pointer
                           nowrap
@@ -2150,7 +2150,7 @@ personal, team and enterprise subscriptions.">
                      lh-2
                      fg-white"
               style="line-height:1.2">
-            Explore the wonderful world of&nbsp;functional programming in Swift.
+            Explore the wonderful world of advanced Swift.
           </h1>
         </div>
         <div class="center-d
@@ -2163,7 +2163,7 @@ personal, team and enterprise subscriptions.">
                       m-pb2">
               Start with a free episode
             </p>
-            <a href="/login?redirect=http://localhost:8080/pricing"
+            <a href="/authenticate?redirect=http://localhost:8080/pricing"
                class="medium
                       cursor-pointer
                       nowrap
@@ -2324,7 +2324,7 @@ personal, team and enterprise subscriptions.">
               </div>
             </li>
           </ul>
-          <a href="/login?redirect=http://localhost:8080/pricing"
+          <a href="/authenticate?redirect=http://localhost:8080/pricing"
              class="d-mt3
                     m-mt2
                     block
@@ -2445,7 +2445,7 @@ available</p>
               </div>
             </li>
           </ul>
-          <a href="/login?redirect=http://localhost:8080/subscribe/personal?useRegionalDiscount%3Dfalse"
+          <a href="/authenticate?redirect=http://localhost:8080/subscribe/personal?useRegionalDiscount%3Dfalse"
              class="d-mt3
                     m-mt2
                     block
@@ -2558,7 +2558,7 @@ available</p>
               </div>
             </li>
           </ul>
-          <a href="/login?redirect=http://localhost:8080/subscribe/team?useRegionalDiscount%3Dfalse"
+          <a href="/authenticate?redirect=http://localhost:8080/subscribe/team?useRegionalDiscount%3Dfalse"
              class="d-mt3
                     m-mt2
                     block
@@ -2762,8 +2762,7 @@ available</p>
               New content regularly
             </h4>
             <p class="fg-gray400">
-              We dissect some of the most important topics in functional programming frequently, and deliver them straight
-to your inbox.
+              We dissect some of the most important and interesting topics in Swift programming frequently, and deliver them straight to your inbox.
             </p>
           </div>
         </div>
@@ -2823,8 +2822,7 @@ to your inbox.
               Playground downloads
             </h4>
             <p class="fg-gray400">
-              Download a fully-functioning Swift playground from the episode so you can experiment with the concepts
-discussed.
+              Download a fully-functioning Swift playground from the episode so you can experiment with the concepts discussed.
             </p>
           </div>
         </div>
@@ -2849,8 +2847,7 @@ discussed.
               Video transcripts
             </h4>
             <p class="fg-gray400">
-              We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump
-directly to that point in the video.
+              We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump directly to that point in the video.
             </p>
           </div>
         </div>
@@ -3006,92 +3003,6 @@ transcripts and a detailed Q&amp;A section.</p>
                     m-ml2
                     m-mr2
                     testimonial-item">
-          <a href="https://twitter.com/majid_again/status/1208317840966799362"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “The best technical video series I've ever watched.”
-          </a>
-          <a href="https://www.twitter.com/majid_again"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Majid
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
-          <a href="https://twitter.com/alexisgallagher/status/1225949247683477504"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “Hard not to see Point-Free as the "sneak preview" of the deep thinking and exploration that turns into language features down the road.”
-          </a>
-          <a href="https://www.twitter.com/alexisgallagher"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Alexis Gallagher
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
           <a href="https://twitter.com/GeekAndDad/status/1226287417134436353"
              target="_blank"
              rel="noopener noreferrer"
@@ -3103,7 +3014,7 @@ transcripts and a detailed Q&amp;A section.</p>
              style="flex-grow:1;
                     flex-shrink:0;
                     flex-basis:auto">
-            “Three recent @pointfreeco episodes were so interesting I stayed in the treadmill 3x as long as usual and watched them all in a row! Walking may be challenging later/tomorrow…  😮”
+            “Three recent @pointfreeco episodes were so interesting I stayed in the treadmill 3x as long as usual and watched them all in a row! Walking may be challenging later/tomorrow... 😮”
           </a>
           <a href="https://www.twitter.com/GeekAndDad"
              class="fg-black
@@ -3122,49 +3033,6 @@ transcripts and a detailed Q&amp;A section.</p>
             <span class="medium"
                   style="margin-left:3px">
               Dad
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
-          <a href="https://twitter.com/jarrroo/status/1212360251669962752"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “My go-to for #swift functional programming videos. Great content. Well worth paying for <3”
-          </a>
-          <a href="https://www.twitter.com/jarrroo"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Alex Manarpies
             </span>
           </a>
         </div>
@@ -3264,49 +3132,6 @@ transcripts and a detailed Q&amp;A section.</p>
                     m-ml2
                     m-mr2
                     testimonial-item">
-          <a href="https://twitter.com/Palleas/status/978997094408212480"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “Every single episode of @pointfreeco has been mind blowing. I feel like I've grown a lot as a developer since I started learning Swift and this kind of tutorials definitely help. Functional High Five to @mbrandonw and @stephencelis 🙌🏼”
-          </a>
-          <a href="https://www.twitter.com/Palleas"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Romain Pouclet
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
           <a href="https://twitter.com/lucaceppelli/status/1136290297242165249"
              target="_blank"
              rel="noopener noreferrer"
@@ -3337,49 +3162,6 @@ transcripts and a detailed Q&amp;A section.</p>
             <span class="medium"
                   style="margin-left:3px">
               Luca Ceppelli
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
-          <a href="https://twitter.com/_joshburgess/status/971169503890624513"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “I haven't really done much Swift, but watched this out of curiosity, & it's really well done. Perfectly walks through the mindset of a dev w/ an OO background & addresses their concerns one by one with solid info explaining the benefits of taking the FP approach. (The how & why.)”
-          </a>
-          <a href="https://www.twitter.com/_joshburgess"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Josh Burgess
             </span>
           </a>
         </div>
@@ -3466,49 +3248,6 @@ transcripts and a detailed Q&amp;A section.</p>
             <span class="medium"
                   style="margin-left:3px">
               Maxim Smirnov
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
-          <a href="https://twitter.com/Palleas/status/1023976413429260288"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “There clearly was a before and an after @pointfreeco for me. I've always been an FP enthusiast intimidated by the F-word, but they made that accessible to the rest of us. Highly recommended!”
-          </a>
-          <a href="https://www.twitter.com/Palleas"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Romain Pouclet
             </span>
           </a>
         </div>
@@ -3652,49 +3391,6 @@ transcripts and a detailed Q&amp;A section.</p>
                     m-ml2
                     m-mr2
                     testimonial-item">
-          <a href="https://twitter.com/samrayner/status/1136634106618568704"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “@pointfreeco Talk about being ahead of the curve guys… DSLs, Playground Driven Dev, FRP. Great job. I’m sure you inspired many Apple devs. We know who to look to for where to focus next!”
-          </a>
-          <a href="https://www.twitter.com/samrayner"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Sam Rayner
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
           <a href="https://twitter.com/rajivjhoomuck/status/973178777768480771"
              target="_blank"
              rel="noopener noreferrer"
@@ -3725,92 +3421,6 @@ transcripts and a detailed Q&amp;A section.</p>
             <span class="medium"
                   style="margin-left:3px">
               Rajiv Jhoomuck
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
-          <a href="https://twitter.com/tomburns/status/972535717300666368"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “the @pointfreeco videos are fantastic, and such a gentle introduction to important ideas — seriously worth a look regardless of functional experience level”
-          </a>
-          <a href="https://www.twitter.com/tomburns"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              tom burns
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
-          <a href="https://twitter.com/_IronHam/status/967496514506543104"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “Point-Free is really challenging my perspective and approach to Swift. Props to @mbrandonw and @stephencelis for creating an interesting and engaging video series!”
-          </a>
-          <a href="https://www.twitter.com/_IronHam"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Hesham Salman
             </span>
           </a>
         </div>
@@ -4082,49 +3692,6 @@ transcripts and a detailed Q&amp;A section.</p>
                     m-ml2
                     m-mr2
                     testimonial-item">
-          <a href="https://twitter.com/_sa_s/status/1222783515391152129"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “What the Effective C++ series did to my early career, Pointfree does to the, ummmmm, late summer? 😅”
-          </a>
-          <a href="https://www.twitter.com/_sa_s"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Sven A. Schmidt
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
           <a href="https://twitter.com/RunChristinaRun/status/968920979320709120"
              target="_blank"
              rel="noopener noreferrer"
@@ -4241,49 +3808,6 @@ transcripts and a detailed Q&amp;A section.</p>
             <span class="medium"
                   style="margin-left:3px">
               Felipe Espinoza
-            </span>
-          </a>
-        </div>
-        <div class="flex-column
-                    flex
-                    bg-gray900
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    m-ml2
-                    m-mr2
-                    testimonial-item">
-          <a href="https://twitter.com/esttorhe/status/1063420584044965888"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4"
-             style="flex-grow:1;
-                    flex-shrink:0;
-                    flex-basis:auto">
-            “I just watched the episode of @pointfreeco where Brandon and Stephen explain how curry is derived and it ALMOST literally blew my mind. Decomposed things are so simple to grasp ❤ I love how this series decompose and explains things very granular and simple”
-          </a>
-          <a href="https://www.twitter.com/esttorhe"
-             class="fg-black
-                    body-leading
-                    fg-black
-                    normal
-                    lh-4">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MiA3MiI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGg3MnY3MkgweiIvPjxwYXRoIGNsYXNzPSJpY29uIiBmaWxsPSIjMURBMUYzIiBkPSJNNjguODEyIDE1LjE0Yy0yLjM0OCAxLjA0LTQuODcgMS43NDQtNy41MiAyLjA2IDIuNzA0LTEuNjIgNC43OC00LjE4NiA1Ljc1Ny03LjI0My0yLjUzIDEuNS01LjMzIDIuNTkyLTguMzE0IDMuMTc2QzU2LjM1IDEwLjU5IDUyLjk0OCA5IDQ5LjE4MiA5Yy03LjIzIDAtMTMuMDkyIDUuODYtMTMuMDkyIDEzLjA5MyAwIDEuMDI2LjExOCAyLjAyLjMzOCAyLjk4QzI1LjU0MyAyNC41MjcgMTUuOSAxOS4zMTggOS40NCAxMS4zOTZjLTEuMTI1IDEuOTM2LTEuNzcgNC4xODQtMS43NyA2LjU4IDAgNC41NDMgMi4zMTIgOC41NTIgNS44MjQgMTAuOS0yLjE0Ni0uMDctNC4xNjUtLjY1OC01LjkzLTEuNjQtLjAwMi4wNTYtLjAwMi4xMS0uMDAyLjE2MyAwIDYuMzQ1IDQuNTEzIDExLjYzOCAxMC41MDQgMTIuODQtMS4xLjI5OC0yLjI1Ni40NTctMy40NS40NTctLjg0NSAwLTEuNjY2LS4wNzgtMi40NjQtLjIzIDEuNjY3IDUuMiA2LjUgOC45ODUgMTIuMjMgOS4wOS00LjQ4MiAzLjUxLTEwLjEzIDUuNjA1LTE2LjI2IDUuNjA1LTEuMDU1IDAtMi4wOTYtLjA2LTMuMTIyLS4xODQgNS43OTQgMy43MTcgMTIuNjc2IDUuODgyIDIwLjA2NyA1Ljg4MiAyNC4wODMgMCAzNy4yNS0xOS45NSAzNy4yNS0zNy4yNSAwLS41NjUtLjAxMy0xLjEzMy0uMDM4LTEuNjkzIDIuNTU4LTEuODQ3IDQuNzc4LTQuMTUgNi41MzItNi43NzR6Ii8+PC9zdmc+"
-                 alt
-                 style="width:14px;
-                        height:14px;
-                        font-size:16px;
-                        top:1px"
-                 class="relative
-                        inline-block">
-            <span class="medium"
-                  style="margin-left:3px">
-              Esteban Torres
             </span>
           </a>
         </div>
@@ -4540,7 +4064,7 @@ transcripts and a detailed Q&amp;A section.</p>
                 m-pb3">
         Includes a free episode of your choice, plus weekly<br>updates from our newsletter.
       </p>
-      <a href="/login?redirect=http://localhost:8080/pricing"
+      <a href="/authenticate?redirect=http://localhost:8080/pricing"
          class="medium
                 cursor-pointer
                 nowrap
@@ -4564,258 +4088,10 @@ transcripts and a detailed Q&amp;A section.</p>
         </span>
       </a>
     </div>
-    <footer class="row
-                   d-pl4
-                   d-pr4
-                   d-pt4
-                   d-pb4
-                   m-pl3
-                   m-pr3
-                   m-pt3
-                   m-pb3
-                   bg-black">
-      <div class="col-m
-                  col-d-6
-                  col-m-12">
-        <div class="d-pr4
-                    m-pb2">
-          <h4 class="fg-black
-                     bold
-                     ts-d-r1_5
-                     ts-m-r1_25
-                     lh-2
-                     m-mb0">
-            <a href="/"
-               class="pf-link-white">
-              Point-Free
-            </a>
-          </h4>
-          <p class="fg-black
-                    normal
-                    h5
-                    lh-4
-                    fg-white">
-            A video series exploring advanced topics in the Swift programming language. Hosted by 
-            <a href="https://www.twitter.com/mbrandonw"
-               class="text-decoration-none
-                      pf-link-green">
-              Brandon&nbsp;Williams
-            </a>
-             and 
-            <a href="https://www.twitter.com/stephencelis"
-               class="text-decoration-none
-                      pf-link-green">
-              Stephen&nbsp;Celis
-            </a>
-            .
-          </p>
-        </div>
-      </div>
-      <div class="col-m
-                  col-d-2
-                  col-m-4">
-        <div>
-          <h5 class="fg-black
-                     bold
-                     ts-d-r0_875
-                     ts-m-r0_75
-                     lh-1
-                     caps
-                     fg-white">
-            Content
-          </h5>
-          <ol class="list-reset">
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/pricing">
-                Pricing
-              </a>
-            </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/gifts">
-                Gifts
-              </a>
-            </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/">
-                Videos
-              </a>
-            </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/collections">
-                Collections
-              </a>
-            </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/clips">
-                Clips
-              </a>
-            </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/blog">
-                Blog
-              </a>
-            </li>
-          </ol>
-        </div>
-      </div>
-      <div class="col-m
-                  col-d-2
-                  col-m-4">
-        <div>
-          <h5 class="fg-black
-                     bold
-                     ts-d-r0_875
-                     ts-m-r0_75
-                     lh-1
-                     caps
-                     fg-white">
-            More
-          </h5>
-          <ol class="list-reset">
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/about">
-                About Us
-              </a>
-            </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="https://hachyderm.io/@pointfreeco"
-                 rel="me">
-                Mastodon
-              </a>
-            </li>
-            <li class="none">
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="https://hachyderm.io/@mbrandonw"
-                 rel="me">
-                @mbrandonw
-              </a>
-            </li>
-            <li class="none">
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="https://hachyderm.io/@stephencelis"
-                 rel="me">
-                @stephencelis
-              </a>
-            </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="https://www.twitter.com/pointfreeco">
-                Twitter
-              </a>
-            </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="https://github.com/pointfreeco">
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="mailto:support@pointfree.co">
-                Contact us
-              </a>
-            </li>
-            <li>
-              <a class="pf-link-purple
-                        fg-black
-                        normal
-                        h5
-                        lh-4"
-                 href="/privacy">
-                Privacy Policy
-              </a>
-            </li>
-          </ol>
-        </div>
-      </div>
-      <div class="col-m
-                  col-d-6
-                  col-m-12">
-        <p class="fg-gray400
-                  fg-black
-                  normal
-                  h6
-                  lh-4
-                  m-pt2">
-          © 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. 
-          All other content is licensed under 
-          <a class="pf-link-gray650"
-             href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-            CC BY-NC-SA 4.0
-          </a>
-          , and the underlying 
-          <a class="pf-link-gray650"
-             href="https://github.com/pointfreeco/pointfreeco">
-            source code
-          </a>
-           to run this site is licensed under the 
-          <a class="pf-link-gray650"
-             href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">
-            MIT license
-          </a>
-        </p>
-      </div>
-    </footer>
+    <style>
+       .background-color-8{background-color:#121212} .align-items-9{align-items:first baseline} .font-size-15{font-size:1.25rem} .line-height-17{line-height:1.45} .font-size-19{font-size:1.5rem} .text-decoration-20:visited{text-decoration:none} .text-decoration-21:link{text-decoration:none} .text-decoration-22:hover{text-decoration:underline} .color-23:link{color:#fff} .color-24:visited{color:#fff} .font-weight-25{font-weight:normal} .line-height-26{line-height:1.5} .font-size-27{font-size:1.0rem} .color-28{color:#fff} .color-29:link{color:#79f2b0} .color-30:visited{color:#79f2b0} .column-gap-31{column-gap:1.0rem} .display-32{display:grid} .grid-template-columns-33{grid-template-columns:1fr 2fr} .row-gap-34{row-gap:1.0rem} .font-size-35{font-size:0.75rem} .letter-spacing-37{letter-spacing:0.54pt} .line-height-38{line-height:1.25} .text-transform-39{text-transform:uppercase} .padding-left-40{padding-left:0.0rem} .list-style-type-41{list-style-type:none} .color-42:link{color:#974dff} .color-43:visited{color:#974dff} .font-size-45{font-size:0.875rem} .color-46{color:#666666} .color-47:link{color:#a8a8a8} .color-48:visited{color:#a8a8a8}@media only screen and (min-width: 832px){ .padding-top-0{padding-top:4.0rem} .padding-left-1{padding-left:4.0rem} .padding-bottom-2{padding-bottom:4.0rem} .padding-right-3{padding-right:4.0rem} .column-gap-10{column-gap:1.0rem} .display-11{display:grid} .grid-template-columns-12{grid-template-columns:1fr 1fr} .row-gap-13{row-gap:1.0rem} .font-size-16{font-size:1.5rem} .font-size-36{font-size:0.875rem}}@media only screen and (max-width: 831px){ .padding-top-4{padding-top:2.0rem} .padding-left-5{padding-left:2.0rem} .padding-bottom-6{padding-bottom:2.0rem} .padding-right-7{padding-right:2.0rem} .padding-bottom-14{padding-bottom:1.0rem} .margin-bottom-18{margin-bottom:0.0rem} .padding-top-44{padding-top:1.0rem}}
+    </style>
+    <footer class="padding-top-0 padding-left-1 padding-bottom-2 padding-right-3 padding-top-4 padding-left-5 padding-bottom-6 padding-right-7 background-color-8"><pf-vgrid class="align-items-9 column-gap-10 display-11 grid-template-columns-12 row-gap-13"><div class="padding-bottom-14 padding-right-3"><h4 class="font-size-15 font-size-16 line-height-17 margin-bottom-18 font-size-19"><a class="text-decoration-20 text-decoration-21 text-decoration-22 color-23 color-24" href="/">Point-Free</a></h4><p class="font-weight-25 line-height-26 font-size-27 color-28">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-20 text-decoration-21 text-decoration-22 color-29 color-30" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-20 text-decoration-21 text-decoration-22 color-29 color-30" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.</p></div><pf-vgrid class="column-gap-31 display-32 grid-template-columns-33 row-gap-34"><div><h5 class="font-size-35 font-size-36 letter-spacing-37 line-height-38 text-transform-39 color-28">Content</h5><ol class="padding-left-40 list-style-type-41"><li><a class="text-decoration-20 text-decoration-21 text-decoration-22 color-42 color-43" href="/pricing">Pricing</a></li><li><a class="text-decoration-20 text-decoration-21 text-decoration-22 color-42 color-43" href="/gifts">Gifts</a></li><li><a class="text-decoration-20 text-decoration-21 text-decoration-22 color-42 color-43" href="/">Videos</a></li><li><a class="text-decoration-20 text-decoration-21 text-decoration-22 color-42 color-43" href="/collections">Collections</a></li><li><a class="text-decoration-20 text-decoration-21 text-decoration-22 color-42 color-43" href="/clips">Clips</a></li><li><a class="text-decoration-20 text-decoration-21 text-decoration-22 color-42 color-43" href="/blog">Blog</a></li></ol></div><div><h5 class="font-size-35 font-size-36 letter-spacing-37 line-height-38 text-transform-39 color-28">More</h5><ol class="padding-left-40 list-style-type-41"><li><a class="text-decoration-20 text-decoration-21 text-decoration-22 color-42 color-43" href="/about">About Us</a></li><li rel="me"><a class="text-decoration-20 text-decoration-21 text-decoration-22 color-42 color-43" href="https://hachyderm.io/@pointfreeco">Mastodon</a></li><li><a class="text-decoration-20 text-decoration-21 text-decoration-22 color-42 color-43" href="https://www.twitter.com/pointfreeco">Twitter</a></li><li><a class="text-decoration-20 text-decoration-21 text-decoration-22 color-42 color-43" href="https://github.com/pointfreeco">GitHub</a></li><li><a class="text-decoration-20 text-decoration-21 text-decoration-22 color-42 color-43" href="mailto:support@pointfree.co">Contact Us</a></li><li><a class="text-decoration-20 text-decoration-21 text-decoration-22 color-42 color-43" href="/privacy">Privacy Policy</a></li></ol></div></pf-vgrid><p class="padding-top-44 font-weight-25 line-height-26 font-size-45 color-46">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-20 text-decoration-21 text-decoration-22 color-47 color-48" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-20 text-decoration-21 text-decoration-22 color-47 color-48" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-20 text-decoration-21 text-decoration-22 color-47 color-48" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.</p></pf-vgrid></footer>
   </body>
 </html>
 

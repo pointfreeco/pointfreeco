@@ -174,10 +174,10 @@ final class GhostTests: TestCase {
         connection(from: request(to: .endGhosting, session: adminSession))
       ) {
         """
-        POST http://localhost:8080/ghosting/end
+        GET http://localhost:8080/ghosting/end
         Cookie: pf_session={"user":{"ghosteeId":"10101010-DEAD-BEEF-DEAD-BEEFDEADBEEF","ghosterId":"12121212-1212-1212-1212-121212121212"}}
         """
-      } response: {
+      }response: {
         """
         302 Found
         Location: /

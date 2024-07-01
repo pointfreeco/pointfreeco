@@ -1,6 +1,7 @@
 import Dependencies
 import Either
 import Foundation
+import Ghosting
 import HttpPipeline
 import Logging
 import LoggingDependencies
@@ -93,6 +94,7 @@ public func siteMiddleware(
       progresses.map { ($0.episodeSequence, $0) },
       uniquingKeysWith: { $1 }
     )
+    $0.isGhosting = conn.request.session.ghosteeId != nil
     $0.livestreams = livestreams
     $0.requestID = requestID
     $0.subscriberState = SubscriberState(
@@ -186,17 +188,8 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await endGhostingMiddleware(conn.map(const(unit)))
       .performAsync()
 
-  case .episode(.index):
-    return await redirect(to: siteRouter.path(for: .home))(conn)
-      .performAsync()
-
-  case let .episode(.progress(param: param, percent: percent)):
-    return await progressResponse(conn.map(const(param .*. percent .*. unit)))
-      .performAsync()
-
-  case let .episode(.show(param)):
-    return await episodeResponse(conn.map(const(param .*. nil .*. unit)))
-      .performAsync()
+  case .episodes(let route):
+    return await episodesMiddleware(route: route, conn.map(const(())))
 
   case let .enterprise(domain, .acceptInvite(encryptedEmail, encryptedUserId)):
     return await enterpriseAcceptInviteMiddleware(
@@ -249,6 +242,9 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await homeMiddleware(conn.map(const(())))
       .performAsync()
 
+  case .homeV2:
+    return await homeV2Middleware(conn.map(const(())))
+
   case let .invite(.addTeammate(email)):
     return await addTeammateViaInviteMiddleware(conn.map(const(currentUser .*. email .*. unit)))
       .performAsync()
@@ -279,9 +275,16 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
   case let .live(liveRoute):
     return await liveMiddleware(conn.map(const(liveRoute)))
 
-  case let .login(redirect):
+  case let .gitHubAuth(redirect):
     return await loginResponse(conn.map(const(redirect)))
       .performAsync()
+
+  case let .login(redirect):
+    return await loginSignUpMiddleware(
+      redirect: redirect,
+      type: .login,
+      conn.map(const(()))
+    )
 
   case .logout:
     return await logoutResponse(conn.map(const(unit)))
@@ -310,6 +313,13 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
           #User-Agent: GPTBot
           #Disallow: /
           """)
+
+  case let .signUp(redirect):
+    return await loginSignUpMiddleware(
+      redirect: redirect,
+      type: .signUp,
+      conn.map(const(()))
+    )
 
   case .slackInvite:
     @Dependency(\.envVars) var envVars

@@ -49,7 +49,7 @@ private func joinTeamLandingLoggedOut(
           .gitHubLink(
             text: "Login with GitHub",
             type: .black,
-            href: siteRouter.loginPath(redirect: .teamInviteCode(.landing(code: code)))
+            href: siteRouter.gitHubAuthPath(redirect: .teamInviteCode(.landing(code: code)))
           )
         )
       )

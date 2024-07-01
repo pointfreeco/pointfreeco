@@ -163,7 +163,7 @@ private func applyCreditMiddleware<Z>(
   guard user.episodeCreditCount > 0 else {
     return conn
       |> redirect(
-        to: .episode(.show(.left(episode.slug))),
+        to: .episodes(.show(.left(episode.slug))),
         headersMiddleware: flash(.error, "You do not have any credits to use.")
       )
   }
@@ -179,14 +179,14 @@ private func applyCreditMiddleware<Z>(
       const(
         conn
           |> redirect(
-            to: .episode(.show(.left(episode.slug))),
+            to: .episodes(.show(.left(episode.slug))),
             headersMiddleware: flash(.warning, "Something went wrong.")
           )
       ),
       const(
         conn
           |> redirect(
-            to: .episode(.show(.left(episode.slug))),
+            to: .episodes(.show(.left(episode.slug))),
             headersMiddleware: flash(.notice, "You now have access to this episode!")
           )
       )
@@ -206,7 +206,7 @@ private func validateCreditRequest<Z>(
     guard user.episodeCreditCount > 0 else {
       return conn
         |> redirect(
-          to: .episode(.show(.left(episode.slug))),
+          to: .episodes(.show(.left(episode.slug))),
           headersMiddleware: flash(.error, "You do not have any credits to use.")
         )
     }
@@ -217,7 +217,7 @@ private func validateCreditRequest<Z>(
 
     return conn
       |> redirect(
-        to: .episode(.show(.left(episode.slug))),
+        to: .episodes(.show(.left(episode.slug))),
         headersMiddleware: flash(.warning, "This episode is already available to you.")
       )
   }

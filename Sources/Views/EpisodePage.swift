@@ -60,12 +60,12 @@ public struct EpisodePageData {
             $0.episode == self.episode
           })
         })
-      else { return .episode(.show(.left(self.episode.slug))) }
+      else { return .episodes(.show(.left(self.episode.slug))) }
       return .collections(
         .collection(collection.slug, .section(section.slug, .episode(.left(self.episode.slug))))
       )
     case .direct:
-      return .episode(.show(.left(self.episode.slug)))
+      return .episodes(.show(.left(self.episode.slug)))
     }
   }
 }
@@ -193,7 +193,7 @@ private func sequentialEpisodes(
             .class([Class.type.align.center])
           ],
           .a(
-            attributes: [.href(siteRouter.url(for: .episode(.show(.left(episode.slug)))))],
+            attributes: [.href(siteRouter.url(for: .episodes(.show(.left(episode.slug)))))],
             .img(
               base64: playIconSvgBase64(),
               type: .image(.svg),
@@ -414,7 +414,7 @@ private func sequentialEpisodeRow(
           .class([Class.type.align.center])
         ],
         .a(
-          attributes: [.href(siteRouter.url(for: .episode(.show(.left(episode.slug)))))],
+          attributes: [.href(siteRouter.url(for: .episodes(.show(.left(episode.slug)))))],
           .img(
             base64: playIconSvgBase64(),
             type: .image(.svg),
@@ -448,7 +448,7 @@ private func sequentialEpisodeRow(
               Class.padding([.mobile: [.all: 0]]),
               Class.margin([.mobile: [.all: 0]]),
             ]),
-            .href(siteRouter.url(for: .episode(.show(.left(episode.slug))))),
+            .href(siteRouter.url(for: .episodes(.show(.left(episode.slug))))),
           ],
           .text(episode.fullTitle)
         )
@@ -1116,7 +1116,7 @@ private func subscribeCallout(data: EpisodePageData) -> Node {
             .class([
               Class.pf.colors.link.purple
             ]),
-            .href(siteRouter.loginPath(redirect: data.route)),
+            .href(siteRouter.gitHubAuthPath(redirect: data.route)),
           ],
           "Log in"
         )
@@ -1157,7 +1157,7 @@ private func subscribeFreeCallout(data: EpisodePageData) -> Node {
             .class([
               Class.pf.colors.link.purple
             ]),
-            .href(siteRouter.loginPath(redirect: data.route)),
+            .href(siteRouter.gitHubAuthPath(redirect: data.route)),
           ],
           "Log in"
         )
@@ -1177,7 +1177,7 @@ private func unlockLoggedOutCallout(data: EpisodePageData) -> Node {
     .gitHubLink(
       text: "Sign in with GitHub",
       type: .black,
-      href: siteRouter.loginPath(redirect: data.route)
+      href: siteRouter.gitHubAuthPath(redirect: data.route)
     )
   )
 }
@@ -1496,7 +1496,7 @@ private func questionAndAnswerView(
           : .markdownBlock(
             """
             _Answers can only be viewed by subscribers. Consider [subscribing today](/pricing), or if
-            you already do, you can login [here](\(siteRouter.path(for: .login(redirect: siteRouter.path(for: currentRoute)))))._
+            you already do, you can login [here](\(siteRouter.path(for: .gitHubAuth(redirect: siteRouter.path(for: currentRoute)))))._
             """
           )
       )

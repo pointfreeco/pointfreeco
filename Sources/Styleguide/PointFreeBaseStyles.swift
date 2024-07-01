@@ -187,7 +187,7 @@ extension Class.pf {
       case .outline:
         borderStyles =
           Class.border.rounded.all
-          | Class.border.none
+          | Class.border.all
           | Class.type.textDecorationNone
       case .underline:
         borderStyles =
