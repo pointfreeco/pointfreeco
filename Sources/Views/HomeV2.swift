@@ -505,13 +505,16 @@ private struct WhatPeopleAreSaying: HTML {
               .backgroundColor(.gray650.dark(.gray300))
 
             VStack(spacing: 0) {
-              Header(5) {
-                HTMLText(testimonial.subscriber ?? "")
+              div {
+                Header(5) {
+                  HTMLText(testimonial.subscriber ?? "")
+                }
               }
-              .inlineStyle("margin-bottom", "0")
 
-              Header(6) {
-                HTMLText("@" + testimonial.twitterHandle)
+              div {
+                Header(6) {
+                  HTMLText("@" + testimonial.twitterHandle)
+                }
               }
               .inlineStyle("font-weight", "normal")
               .inlineStyle("margin-top", "0")
