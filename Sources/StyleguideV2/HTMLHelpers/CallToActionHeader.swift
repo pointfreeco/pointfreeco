@@ -45,44 +45,45 @@ public struct CallToActionHeader<PrimaryCTA: HTML>: HTML {
 
   public var body: some HTML {
     div {
-      Grid {
-        GridColumn {
-          Header(2) { HTMLRaw(title) }
-            .color(style.titleColor)
+      div {
+        HTMLGroup {
+          div {
+            Header(2) { HTMLRaw(title) }
+              .color(style.titleColor)
+          }
 
-          Paragraph(.big) { HTMLRaw(blurb) }
-            .fontStyle(.body(.regular))
-            .color(style.blurbColor)
-            .inlineStyle("margin", "0 auto", media: .desktop)
-            .inlineStyle("max-width", "40rem")
+          div {
+            Paragraph(.big) { HTMLRaw(blurb) }
+              .fontStyle(.body(.regular))
+              .color(style.blurbColor)
+              .inlineStyle("margin", "0 auto", media: .desktop)
+              .inlineStyle("max-width", "40rem")
+          }
 
-          primaryCTA
-            .inlineStyle("margin-top", "3rem")
-        }
-        .column(count: 12)
-        .column(alignment: .start)
-        .column(alignment: .center, media: .desktop)
-        .inlineStyle("margin", "0 auto")
+          div {
+            primaryCTA
+              .inlineStyle("margin-top", "3rem")
+          }
 
-        GridColumn {
           if let secondaryCTAURL, let secondaryCTATitle {
             Link(secondaryCTATitle, href: secondaryCTAURL)
+              .linkStyle(.init(color: style.secondaryCTAColor, underline: true))
+              .fontStyle(.body(.small))
           }
         }
-        .column(count: 12)
-        .column(alignment: .start)
-        .column(alignment: .center, media: .desktop)
-        .linkColor(style.secondaryCTAColor)
-        .fontStyle(.body(.small))
-        .inlineStyle("margin-top", "1rem")
-        .inlineStyle("text-decoration-line", "underline")
+        .inlineStyle("text-align", "center", media: .desktop)
       }
       .inlineStyle("margin", "0 auto")
       .inlineStyle("max-width", "1280px")
       .background(style.contentBackgroundColor)
       .padding(topBottom: .large, leftRight: .medium)
       .padding(.extraLarge, .desktop)
-      .grid(alignment: .center)
+      .flexContainer(
+        direction: "column",
+        wrap: "wrap",
+        rowGap: "0.5rem"
+      )
+      .inlineStyle("align-items", "center", media: .desktop)
     }
     .background(style.backgroundColor)
   }

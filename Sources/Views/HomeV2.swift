@@ -103,9 +103,8 @@ private struct LoggedOut: HTML {
     CallToActionHeader(
       title: "Explore the wonderful world of advanced Swift.",
       blurb: """
-          Point-Free is a video series exploring advanced topics in the \
-          Swift&nbsp;programming&nbsp;language, hosted by industry experts, \
-          Brandon&nbsp;and&nbsp;Stephen.
+          Point-Free is a video series exploring advanced topics in the Swift programming language, \
+          hosted by industry experts, Brandon and Stephen.
           """,
       ctaTitle: "Start with a free episode →",
       ctaURL: siteRouter.path(for: .signUp(redirect: nil)),

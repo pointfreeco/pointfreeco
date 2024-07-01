@@ -11,7 +11,7 @@ struct GetStartedModule: HTML {
   var body: some HTML {
     let freeEpisodeCount = episodes()
       .reduce(into: 0) { count, episode in 
-        count += episode.isSubscriberOnly(currentDate: now, emergencyMode: false/*TODO*/) ? 1 : 0
+        count += !episode.isSubscriberOnly(currentDate: now, emergencyMode: false/*TODO*/) ? 1 : 0
       }
     CallToActionHeader(
       title: "Get started with our free&nbsp;plan",
