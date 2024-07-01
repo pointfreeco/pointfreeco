@@ -49,6 +49,7 @@ private struct LoggedIn: HTML {
       }
       .color(.gray800)
     }
+
     if creditCount > 0 {
       EpisodeCredits(creditCount: creditCount)
     }
@@ -267,16 +268,20 @@ private struct EpisodesModule: HTML {
       seeAllURL: siteRouter.path(for: .episodes(.list(.all))),
       theme: .content
     ) {
-      Grid {
+      // LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
+      //   …
+      // }
+
+      HTMLGroup {
         let episodes = episodes()
           .suffix(3)
           .reversed()
 
         for episode in episodes {
-          EpisodeCard(episode, emergencyMode: false)  // TODO
+          EpisodeCardV2(episode, emergencyMode: false)  // TODO
         }
       }
-      .grid(alignment: .stretch)
+      .grid(columns: [1, 1, 1], .desktop)
     }
   }
 }
