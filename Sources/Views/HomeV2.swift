@@ -270,7 +270,7 @@ private struct EpisodesModule: HTML {
           .reversed()
 
         for episode in episodes {
-          EpisodeCard(episode, emergencyMode: false)  // TODO
+          EpisodeCard(episode)
         }
       }
     }
@@ -279,6 +279,7 @@ private struct EpisodesModule: HTML {
 
 private struct FreeEpisodes: HTML {
   @Dependency(\.episodes) var episodes
+  @Dependency(\.envVars.emergencyMode) var emergencyMode
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
@@ -290,12 +291,12 @@ private struct FreeEpisodes: HTML {
     ) {
       LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
         let episodes = episodes()
-          .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: false/*TODO*/) }
+          .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
           .suffix(3)
           .reversed()
 
         for episode in episodes {
-          EpisodeCard(episode, emergencyMode: false)  // TODO
+          EpisodeCard(episode)
         }
       }
     }
@@ -315,7 +316,7 @@ private struct InProgressEpisodes: HTML {
     ) {
       LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
         for episode in episodes {
-          EpisodeCard(episode, emergencyMode: false)  // TODO
+          EpisodeCard(episode)
         }
       }
     }

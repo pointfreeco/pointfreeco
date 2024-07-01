@@ -1,4 +1,5 @@
 import Dependencies
+import EnvVars
 import Foundation
 import HttpPipeline
 import Models

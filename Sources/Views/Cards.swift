@@ -4,16 +4,15 @@ import Models
 
 public struct EpisodeCard: HTML {
   @Dependency(\.date.now) var now
+  @Dependency(\.envVars.emergencyMode) var emergencyMode
   @Dependency(\.episodeProgresses) var episodeProgresses
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 
   let episode: Episode
-  let emergencyMode: Bool
 
-  public init(_ episode: Episode, emergencyMode: Bool) {
+  public init(_ episode: Episode) {
     self.episode = episode
-    self.emergencyMode = emergencyMode
   }
 
   public var body: some HTML {

@@ -16,6 +16,7 @@ public struct Episodes: HTML {
     listType: SiteRoute.EpisodesRoute.ListType
   ) {
     @Dependency(\.date.now) var now
+    @Dependency(\.envVars.emergencyMode) var emergencyMode
     @Dependency(\.episodeProgresses) var episodeProgresses
     @Dependency(\.episodes) var episodes
 
@@ -25,11 +26,11 @@ public struct Episodes: HTML {
       mainEpisodes = episodes()
         .sorted { $0.sequence > $1.sequence }
       freeEpisodes = Array(mainEpisodes
-          .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: false/*TODO*/) }
+          .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
           .prefix(3))
     case .free:
       mainEpisodes = episodes()
-        .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: false/*TODO*/) }
+        .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
         .sorted { $0.sequence > $1.sequence }
       freeEpisodes = []
     case .history:
@@ -137,7 +138,7 @@ private struct EpisodesModule<Episodes: Collection<Episode>, CTA: HTML>: HTML {
     ) {
       LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
         for episode in episodes {
-          EpisodeCard(episode, emergencyMode: false)  // TODO
+          EpisodeCard(episode)
         }
       }
     } title: {

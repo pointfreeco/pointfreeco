@@ -3,6 +3,7 @@ import Dependencies
 
 struct GetStartedModule: HTML {
   @Dependency(\.date.now) var now
+  @Dependency(\.envVars.emergencyMode) var emergencyMode
   @Dependency(\.episodes) var episodes
   @Dependency(\.siteRouter) var siteRouter
 
@@ -11,7 +12,7 @@ struct GetStartedModule: HTML {
   var body: some HTML {
     let freeEpisodeCount = episodes()
       .reduce(into: 0) { count, episode in 
-        count += !episode.isSubscriberOnly(currentDate: now, emergencyMode: false/*TODO*/) ? 1 : 0
+        count += !episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) ? 1 : 0
       }
     CallToActionHeader(
       title: "Get started with our free&nbsp;plan",

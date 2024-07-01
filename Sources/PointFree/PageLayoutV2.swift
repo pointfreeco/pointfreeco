@@ -37,7 +37,6 @@ extension Conn where Step == HeadersOpen {
         layoutData: layoutData,
         metadata: metadata,
         cssConfig: .pretty, // TODO
-        emergencyMode: false, // TODO,
         content: view
       ),
       into: &printer

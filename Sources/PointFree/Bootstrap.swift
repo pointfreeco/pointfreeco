@@ -1,4 +1,5 @@
 import Dependencies
+import EnvVars
 import Models
 
 public func bootstrap() async {

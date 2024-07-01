@@ -1,5 +1,6 @@
 import Css
 import Dependencies
+import EnvVars
 import Foundation
 import FunctionalCss
 import Html
@@ -14,20 +15,19 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
   let layoutData: SimplePageLayoutData<Void>
   let metadata: Metadata<Void>
   let cssConfig: Css.Config
-  let emergencyMode: Bool
+
+  @Dependency(\.envVars.emergencyMode) var emergencyMode
 
   public init(
     layoutData: SimplePageLayoutData<Void>,
     metadata: Metadata<Void> = Metadata(),
     cssConfig: Css.Config = .compact,
-    emergencyMode: Bool = false,
     @HTMLBuilder content: () -> Content
   ) {
     self.content = content()
     self.layoutData = layoutData
     self.metadata = metadata
     self.cssConfig = cssConfig
-    self.emergencyMode = emergencyMode
   }
 
   @Dependency(\.currentUser) var currentUser

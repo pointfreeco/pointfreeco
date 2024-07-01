@@ -15,6 +15,7 @@ var package = Package(
     .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
     .library(name: "DecodableRequest", targets: ["DecodableRequest"]),
     .library(name: "EmailAddress", targets: ["EmailAddress"]),
+    .library(name: "EnvVars", targets: ["EnvVars"]),
     .library(name: "FoundationPrelude", targets: ["FoundationPrelude"]),
     .library(name: "FunctionalCss", targets: ["FunctionalCss"]),
     .library(name: "GitHub", targets: ["GitHub"]),
@@ -102,6 +103,18 @@ var package = Package(
     .target(
       name: "DecodableRequest",
       dependencies: [
+        .product(name: "Tagged", package: "swift-tagged")
+      ]
+    ),
+
+    .target(
+      name: "EnvVars",
+      dependencies: [
+        "GitHub",
+        "Mailgun",
+        "Models",
+        "Stripe",
+        .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Tagged", package: "swift-tagged")
       ]
     ),
@@ -263,6 +276,7 @@ var package = Package(
       name: "PointFree",
       dependencies: [
         "Database",
+        "EnvVars",
         "EmailAddress",
         "GitHub",
         "Mailgun",
@@ -521,6 +535,7 @@ var package = Package(
       dependencies: [
         "Ccmark",
         "EmailAddress",
+        "EnvVars",
         "FunctionalCss",
         "PointFreeDependencies",
         "PointFreeRouter",
