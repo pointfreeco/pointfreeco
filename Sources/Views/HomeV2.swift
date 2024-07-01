@@ -497,32 +497,32 @@ private struct WhatPeopleAreSaying: HTML {
 
     var body: some HTML {
       a {
-        Grid {
-          GridColumn {
+        VStack {
+          HStack(alignment: .center) {
             Image(source: testimonial.avatarURL ?? "", description: "")
               .size(width: .rem(3), height: .rem(3))
               .inlineStyle("border-radius", "1.5rem")
               .backgroundColor(.gray650.dark(.gray300))
+
+            VStack(spacing: 0) {
+              Header(5) {
+                HTMLText(testimonial.subscriber ?? "")
+              }
+              .inlineStyle("margin-bottom", "0")
+
+              Header(6) {
+                HTMLText("@" + testimonial.twitterHandle)
+              }
+              .inlineStyle("font-weight", "normal")
+              .inlineStyle("margin-top", "0")
+              .color(.gray400.dark(.gray400))
+            }
           }
 
-          GridColumn {
-            Header(5) {
-              HTMLText(testimonial.subscriber ?? "")
-            }
-            .inlineStyle("margin-bottom", "0")
-            Header(6) {
-              HTMLText("@" + testimonial.twitterHandle)
-            }
-            .inlineStyle("font-weight", "normal")
-            .inlineStyle("margin-top", "0")
-            .color(.gray400.dark(.gray400))
+          Paragraph {
+            HTMLText(testimonial.quote)
           }
-          .inlineStyle("padding-left", "1rem")
         }
-        Paragraph {
-          HTMLText(testimonial.quote)
-        }
-        .inlineStyle("padding-top", "1rem")
       }
       .color(.black.dark(.white))
       .attribute("href", testimonial.tweetUrl)
