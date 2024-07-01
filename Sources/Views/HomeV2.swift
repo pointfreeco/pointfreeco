@@ -131,32 +131,24 @@ private struct EpisodeCredits: HTML {
   let creditCount: Int
   var body: some HTML {
     PageModule(theme: .credits) {
-      Grid {
-        GridColumn {
+      HStack(alignment: .center, spacing: 0) {
+        VStack {
           SVG.info
         }
         .inlineStyle("line-height", "0")
-        .inflexible()
 
-        GridColumn {
-          span {
-            "You have \(creditsLeft) to redeem on any subscriber-only episode of your choice."
-          }
+        span {
+          "You have \(creditsLeft) to redeem on any subscriber-only episode of your choice."
         }
-        .flexible()
+        .grow()
         .inlineStyle("padding", "0 1rem")
 
-        GridColumn {
+        VStack(alignment: .trailing) {
           Link("Browse episodes", href: siteRouter.path(for: .home))
             .linkStyle(LinkStyle(color: .black, underline: true))
         }
-        .column(alignment: .end)
-        .inflexible()
       }
-      .grid(alignment: .center)
-      .inlineStyle("justify-content", "space-evenly")
       .inlineStyle("padding", "1rem")
-      .inlineStyle("flex-wrap", "initial")
       .inlineStyle("border-radius", "0.5rem")
       .inlineStyle("width", "100%")
       .backgroundColor(.yellow)
