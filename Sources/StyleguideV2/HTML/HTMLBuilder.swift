@@ -12,6 +12,16 @@ public enum HTMLBuilder {
     content
   }
 
+//  public static func buildPartialBlock<First: HTML>(first: First) -> First {
+//    first
+//  }
+//
+//  public static func buildPartialBlock<Accumulated: HTML, Next: HTML>(
+//    accumulated: Accumulated, next: Next
+//  ) -> _HTMLTuple<Accumulated, Next> {
+//    _HTMLTuple(content: accumulated, next)
+//  }
+
   public static func buildBlock<each Content: HTML>(
     _ content: repeat each Content
   ) -> _HTMLTuple<repeat each Content> {
@@ -39,6 +49,10 @@ public enum HTMLBuilder {
   }
 
   public static func buildOptional<T: HTML>(_ component: T?) -> T? {
+    component
+  }
+
+  public static func buildFinalResult<T: HTML>(_ component: T) -> T {
     component
   }
 }

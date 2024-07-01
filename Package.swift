@@ -44,6 +44,7 @@ var package = Package(
   dependencies: [
     .package(url: "https://github.com/apple/swift-collections", from: "1.1.0"),
     .package(url: "https://github.com/apple/swift-log", from: "1.5.0"),
+    .package(url: "https://github.com/apple/swift-markdown", from: "0.4.0"),
     .package(url: "https://github.com/apple/swift-nio", from: "2.61.0"),
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.19.0"),
     .package(url: "https://github.com/vapor/postgres-kit", from: "2.12.0"),
@@ -57,7 +58,7 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", branch: "async"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.10.0"),
     .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.6.0"),
-    .package(url: "https://github.com/pointfreeco/swift-web", revision: "2b7ed38"),
+    .package(url: "https://github.com/pointfreeco/swift-web", revision: "a1c1003"),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.0.0"),
   ],
   targets: [
@@ -116,7 +117,7 @@ var package = Package(
         "Models",
         "Stripe",
         .product(name: "Dependencies", package: "swift-dependencies"),
-        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "Tagged", package: "swift-tagged")
       ]
     ),
 
@@ -166,7 +167,7 @@ var package = Package(
     .target(
       name: "Ghosting",
       dependencies: [
-        .product(name: "Dependencies", package: "swift-dependencies")
+        .product(name: "Dependencies", package: "swift-dependencies"),
       ]
     ),
 
@@ -489,9 +490,9 @@ var package = Package(
     .target(
       name: "StyleguideV2",
       dependencies: [
-        "Ccmark",
         "Styleguide",
         .product(name: "Html", package: "swift-html"),
+        .product(name: "Markdown", package: "swift-markdown"),
         .product(name: "OrderedCollections", package: "swift-collections"),
       ]
     ),

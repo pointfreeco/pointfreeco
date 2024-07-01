@@ -25,12 +25,7 @@
 
     public func updateNSView(_ webView: WKWebView, context: Context) {
       var printer = HTMLPrinter()
-      Self._render(
-        Self {
-          body
-        } head: {
-          head
-        }, into: &printer)
+      Self._render(Self { body } head: { head }, into: &printer)
       webView.loadHTMLString(String(decoding: printer.bytes, as: UTF8.self), baseURL: nil)
     }
   }

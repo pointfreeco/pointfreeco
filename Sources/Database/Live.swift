@@ -383,8 +383,8 @@ extension Client {
       },
       fetchUsersToWelcome: { weeksAgo in
         let daysAgo = weeksAgo * 7
-        let startDate: SQLQueryString = "CURRENT_DATE - INTERVAL '\(raw: "\(daysAgo)") DAY'"
-        let endDate: SQLQueryString = "CURRENT_DATE - INTERVAL '\(raw: "\(daysAgo - 1)") DAY'"
+        let startDate: SQLQueryString = "CURRENT_DATE - INTERVAL '\(unsafeRaw: "\(daysAgo)") DAY'"
+        let endDate: SQLQueryString = "CURRENT_DATE - INTERVAL '\(unsafeRaw: "\(daysAgo - 1)") DAY'"
 
         return try await pool.sqlDatabase.all(
           """
@@ -404,7 +404,7 @@ extension Client {
       },
       incrementEpisodeCredits: { userIds in
         let ids: SQLQueryString = """
-          \(raw: userIds.map { "'\($0.rawValue.uuidString)'" }.joined(separator: ", "))
+          \(unsafeRaw: userIds.map { "'\($0.rawValue.uuidString)'" }.joined(separator: ", "))
           """
         return try await pool.sqlDatabase.all(
           """
@@ -430,13 +430,13 @@ extension Client {
           do {
             try await database.run(
               """
-              CREATE EXTENSION IF NOT EXISTS "\(raw: `extension`)" WITH SCHEMA "heroku_ext"
+              CREATE EXTENSION IF NOT EXISTS "\(unsafeRaw: `extension`)" WITH SCHEMA "heroku_ext"
               """
             )
           } catch {
             try await database.run(
               """
-              CREATE EXTENSION IF NOT EXISTS "\(raw: `extension`)"
+              CREATE EXTENSION IF NOT EXISTS "\(unsafeRaw: `extension`)"
               """
             )
           }
@@ -815,7 +815,7 @@ extension Client {
           """
           ALTER TABLE "gifts"
           ADD COLUMN IF NOT EXISTS
-          "stripe_payment_intent_status" character varying NOT NULL DEFAULT '\(raw: PaymentIntent.Status.requiresPaymentMethod.rawValue)'
+          "stripe_payment_intent_status" character varying NOT NULL DEFAULT '\(unsafeRaw: PaymentIntent.Status.requiresPaymentMethod.rawValue)'
           """
         )
         try await database.run(

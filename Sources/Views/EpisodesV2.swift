@@ -25,8 +25,7 @@ public struct Episodes: HTML {
     case .all:
       mainEpisodes = episodes()
         .sorted { $0.sequence > $1.sequence }
-      freeEpisodes = Array(
-        mainEpisodes
+      freeEpisodes = Array(mainEpisodes
           .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
           .prefix(3))
     case .free:

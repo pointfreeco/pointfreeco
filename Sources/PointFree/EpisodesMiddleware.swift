@@ -28,19 +28,17 @@ public func episodesMiddleware(
 
 private func episodesListMiddleware(
   listType: SiteRoute.EpisodesRoute.ListType,
-  _ conn: Conn<StatusLineOpen, Void>
+_ conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
-  let subtitle =
-    switch listType {
-    case .all:
-      "All episodes"
-    case .free:
-      "Free episodes"
-    case .history:
-      "Continue watching"
-    }
-  return
-    conn
+  let subtitle = switch listType {
+  case .all:
+    "All episodes"
+  case .free:
+    "Free episodes"
+  case .history:
+    "Continue watching"
+  }
+  return conn
     .writeStatus(.ok)
     .respondV2(
       layoutData: SimplePageLayoutData(

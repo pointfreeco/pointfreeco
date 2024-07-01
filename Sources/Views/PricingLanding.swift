@@ -405,8 +405,7 @@ private func pricingPlanCta(
                     lane: $0,
                     useRegionalDiscount: false
                   )
-                  return currentUser == nil
-                    ? .gitHubAuth(redirect: siteRouter.url(for: route)) : route
+                  return currentUser == nil ? .gitHubAuth(redirect: siteRouter.url(for: route)) : route
                 }
                 ?? .home
           )

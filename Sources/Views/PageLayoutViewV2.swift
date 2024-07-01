@@ -93,6 +93,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
   }
 }
 
+
 struct NavBar: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
@@ -175,12 +176,9 @@ struct MenuButton: HTML {
     var body: some HTML {
       span {}
         .inlineStyle("top", index == 0 ? nil : "\(index * 5)px")
-        .inlineStyle(
-          "top", index == 0 ? nil : index == 1 ? "-5px" : "0", pre: "input:checked ~ #menu-icon"
-        )
+        .inlineStyle("top", index == 0 ? nil : index == 1 ? "-5px" : "0", pre: "input:checked ~ #menu-icon")
         .inlineStyle("transform", "rotate(\(index * 45)deg)", pre: "input:checked ~ #menu-icon")
-        .inlineStyle(
-          "background", index == 0 ? "transparent" : nil, pre: "input:checked ~ #menu-icon")
+        .inlineStyle("background", index == 0 ? "transparent" : nil, pre: "input:checked ~ #menu-icon")
     }
   }
 }
@@ -388,7 +386,7 @@ public struct PastDueBanner: HTML {
       }
 
     case .owner(hasSeat: _, status: .active, enterpriseAccount: _, deactivated: true),
-      .owner(hasSeat: _, status: .trialing, enterpriseAccount: _, deactivated: true):
+        .owner(hasSeat: _, status: .trialing, enterpriseAccount: _, deactivated: true):
       TopBanner(style: .warning) {
         "Your subscription has been deactivated. Please contact us at "
         Link("support@pointfree.co", href: "mailto:support@pointfree.co")
@@ -413,7 +411,7 @@ public struct PastDueBanner: HTML {
       }
 
     case .teammate(status: .active, enterpriseAccount: _, deactivated: true),
-      .teammate(status: .trialing, enterpriseAccount: _, deactivated: true):
+        .teammate(status: .trialing, enterpriseAccount: _, deactivated: true):
       TopBanner(style: .warning) {
         "Your team’s subscription is deactivated. Please have "
         owner

@@ -31,8 +31,7 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, TeamInviteCode>) async -> Conn<
       return
         await conn
         .redirect(
-          to: siteRouter.gitHubAuthPath(
-            redirect: .teamInviteCode(.confirm(code: code, secret: secret))))
+          to: siteRouter.gitHubAuthPath(redirect: .teamInviteCode(.confirm(code: code, secret: secret))))
     }
 
     guard
