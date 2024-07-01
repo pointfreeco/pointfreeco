@@ -1,6 +1,6 @@
 import Dependencies
-import PointFreeRouter
 import StyleguideV2
+import PointFreeRouter
 
 struct GiveAGiftModule: HTML {
   @Dependency(\.siteRouter) var siteRouter

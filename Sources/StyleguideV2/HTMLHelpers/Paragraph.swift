@@ -24,16 +24,16 @@ public struct Paragraph<Content: HTML>: HTML {
     case small
     var fontSize: Double {
       switch self {
-      case .big: 19 / 16
-      case .regular: 16 / 16
-      case .small: 14 / 16
+      case .big: 19/16
+      case .regular: 16/16
+      case .small: 14/16
       }
     }
     var lineHeight: Double {
       switch self {
-      case .big: 28 / 16
-      case .regular: 24 / 16
-      case .small: 21 / 16
+      case .big: 28/16
+      case .regular: 24/16
+      case .small: 21/16
       }
     }
   }

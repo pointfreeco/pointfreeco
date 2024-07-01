@@ -25,8 +25,7 @@ func homeV2Middleware(
 
   let clips = (try? await database.fetchClips()) ?? []
 
-  return
-    conn
+  return conn
     .writeStatus(.ok)
     .respondV2(
       layoutData: SimplePageLayoutData(
