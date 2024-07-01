@@ -1,3 +1,5 @@
+import StyleguideV2
+
 public struct PageModule<Title: HTML, Content: HTML>: HTML {
   let title: Title?
   var seeAllURL: String?

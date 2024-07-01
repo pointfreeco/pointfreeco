@@ -29,12 +29,7 @@ extension Conn where Step == HeadersOpen {
 
     var printer = HTMLPrinter()
     PageLayout._render(
-      PageLayout(
-        layoutData: layoutData,
-        metadata: metadata,
-        cssConfig: .pretty, // TODO
-        content: view
-      ),
+      PageLayout(layoutData: layoutData, metadata: metadata, content: view),
       into: &printer
     )
     return self

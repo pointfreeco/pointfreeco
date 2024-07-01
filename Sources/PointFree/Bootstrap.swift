@@ -8,7 +8,7 @@ public func bootstrap() async {
   print("⚠️ Bootstrapping PointFree...")
   defer { print("✅ PointFree Bootstrapped!") }
 
-  #if DEBUG
+  #if !DEBUG
     print("  ⚠️ Bootstrapping transcripts")
     Episode.bootstrapPrivateEpisodes()
     print("  ✅ \(Episode.all.count) transcripts loaded")

@@ -37,7 +37,6 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
   @Dependency(\.siteRouter) var siteRouter
 
   public var head: some HTML {
-    // TODO: Is this needed? `layoutData.extraHead.rawValue`
     tag("title") { HTMLText(layoutData.title) }
     meta()
       .attribute("charset", "UTF-8")

@@ -1,3 +1,5 @@
+import StyleguideV2
+
 public struct CallToActionHeader<PrimaryCTA: HTML>: HTML {
   var title: String
   var blurb: String

@@ -51,17 +51,26 @@ public struct Episodes: HTML {
 
     switch listType {
     case .all:
-      EpisodesModule(
-        episodes: freeEpisodes,
-        title: "Free episodes",
-        omitSeeAllLink: false
-      )
-      InterstitialBanner()
-      EpisodesModule(
-        episodes: mainEpisodes,
-        title: "All episodes",
-        omitSeeAllLink: true
-      )
+      if subscriberState.isActiveSubscriber {
+        EpisodesModule(
+          episodes: mainEpisodes,
+          omitSeeAllLink: true
+        ) {
+          InterstitialBanner()
+        }
+      } else {
+        EpisodesModule(
+          episodes: freeEpisodes,
+          title: "Free episodes",
+          omitSeeAllLink: false
+        )
+        InterstitialBanner()
+        EpisodesModule(
+          episodes: mainEpisodes,
+          title: "All episodes",
+          omitSeeAllLink: true
+        )
+      }
 
     case .free:
       EpisodesModule(

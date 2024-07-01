@@ -27,7 +27,6 @@ public struct _HTMLAttributes<Content: HTML>: HTML {
     let previousValue = printer.attributes  // TODO: should we optimize this?
     defer { printer.attributes = previousValue }
     printer.attributes.merge(html.attributes, uniquingKeysWith: { $1 })
-    // TODO: append, replace, etc...
     Content._render(html.content, into: &printer)
   }
   public var body: Never { fatalError() }

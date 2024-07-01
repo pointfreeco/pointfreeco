@@ -1,3 +1,5 @@
+import StyleguideV2
+
 public struct PageHeader<Title: HTML, Blurb: HTML>: HTML {
   var title: Title
   @HTMLBuilder var blurb: Blurb
