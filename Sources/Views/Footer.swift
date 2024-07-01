@@ -32,32 +32,30 @@ private struct TaglineColumn: HTML {
   let twitterRouter = TwitterRouter()
 
   var body: some HTML {
-    GridColumn {
-      div {
-        h4 {
-          Link("Point-Free", href: siteRouter.path(for: .home))
-            .linkColor(.white)
-        }
-        .fontScale(.h4)
-        .margin(bottom: 0, .mobile)
-        .inlineStyle("font-size", "1.25rem")
-        .inlineStyle("font-size", "1.5rem", media: .desktop)
-        .inlineStyle("line-height", "1.45")
-
-        p {
-          "A video series exploring advanced topics in the Swift programming language. Hosted by "
-          twitterLink("Brandon&nbsp;Williams", .mbrandonw)
-          " and "
-          twitterLink("Stephen&nbsp;Celis", .stephencelis)
-          "."
-        }
-        .color(.white)
-        .fontStyle(.body(.regular))
-        .linkColor(.green)
+    div {
+      h4 {
+        Link("Point-Free", href: siteRouter.path(for: .home))
+          .linkColor(.white)
       }
-      .padding(right: 4, .desktop)
-      .padding(bottom: 2, .mobile)
+      .fontScale(.h4)
+      .margin(bottom: 0, .mobile)
+      .inlineStyle("font-size", "1.25rem")
+      .inlineStyle("font-size", "1.5rem", media: .desktop)
+      .inlineStyle("line-height", "1.45")
+
+      p {
+        "A video series exploring advanced topics in the Swift programming language. Hosted by "
+        twitterLink("Brandon&nbsp;Williams", .mbrandonw)
+        " and "
+        twitterLink("Stephen&nbsp;Celis", .stephencelis)
+        "."
+      }
+      .color(.white)
+      .fontStyle(.body(.regular))
+      .linkColor(.green)
     }
+    .padding(right: 4, .desktop)
+    .padding(bottom: 2, .mobile)
   }
 
   func twitterLink(_ name: String, _ route: TwitterRoute) -> some HTML {
@@ -106,19 +104,17 @@ private struct Column<Links: HTML>: HTML {
   @HTMLBuilder let links: Links
 
   var body: some HTML {
-    GridColumn {
-      div {
-        h5 { HTMLText(title) }
-          .color(.white)
-          .inlineStyle("font-size", "0.75rem")
-          .inlineStyle("font-size", "0.875rem", media: .desktop)
-          .inlineStyle("letter-spacing", "0.54pt")
-          .inlineStyle("line-height", "1.25")
-          .inlineStyle("text-transform", "uppercase")
+    div {
+      h5 { HTMLText(title) }
+        .color(.white)
+        .inlineStyle("font-size", "0.75rem")
+        .inlineStyle("font-size", "0.875rem", media: .desktop)
+        .inlineStyle("letter-spacing", "0.54pt")
+        .inlineStyle("line-height", "1.25")
+        .inlineStyle("text-transform", "uppercase")
 
-        ol { links.linkColor(.purple) }
-          .listStyle(.reset)
-      }
+      ol { links.linkColor(.purple) }
+        .listStyle(.reset)
     }
   }
 }
@@ -142,36 +138,32 @@ private struct LegalColumn: HTML {
   let gitHubRouter = GitHubRouter()
 
   var body: some HTML {
-    GridColumn {
-      p {
-        let year = Calendar(identifier: .gregorian).component(.year, from: now)
-        """
-        © \(year) Point-Free, Inc. All rights are reserved for the videos and transcripts on this \
-        site. All other content is licensed under \
+    p {
+      let year = Calendar(identifier: .gregorian).component(.year, from: now)
+      """
+      © \(year) Point-Free, Inc. All rights are reserved for the videos and transcripts on this \
+      site. All other content is licensed under \
 
-        """
-        Link(
-          "CC BY-NC-SA 4.0",
-          href: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
-        )
-        ", and the underlying "
-        Link(
-          "source code",
-          href: gitHubRouter.url(for: .repo(.pointfreeco)).absoluteString
-        )
-        " to run this site is licensed under the "
-        Link(
-          "MIT License",
-          href: gitHubRouter.url(for: .license).absoluteString
-        )
-        "."
-      }
-      .color(.gray400)
-      .fontStyle(.body(.small))
-      .linkColor(.gray650)
-      .padding(top: 2, .mobile)
+      """
+      Link(
+        "CC BY-NC-SA 4.0",
+        href: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+      )
+      ", and the underlying "
+      Link(
+        "source code",
+        href: gitHubRouter.url(for: .repo(.pointfreeco)).absoluteString
+      )
+      " to run this site is licensed under the "
+      Link(
+        "MIT License",
+        href: gitHubRouter.url(for: .license).absoluteString
+      )
+      "."
     }
-    .column(count: 12)
-    .column(count: 6, media: .desktop)
+    .color(.gray400)
+    .fontStyle(.body(.small))
+    .linkColor(.gray650)
+    .padding(top: 2, .mobile)
   }
 }

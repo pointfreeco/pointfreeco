@@ -140,7 +140,6 @@ private struct EpisodesModule<Episodes: Collection<Episode>, CTA: HTML>: HTML {
           EpisodeCard(episode, emergencyMode: false)  // TODO
         }
       }
-      .inlineStyle("grid-auto-rows", "max-content")
     } title: {
       if let title {
         Header(3) { HTMLText(title) }
