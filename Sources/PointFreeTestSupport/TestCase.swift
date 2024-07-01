@@ -27,6 +27,7 @@ open class TestCase: XCTestCase {
         $0.mailgun = .mock
         $0.stripe = .mock
         $0.uuid = .incrementing
+        $0.withRandomNumberGenerator = WithRandomNumberGenerator(Xoshiro(seed: 0))
       }
     } operation: {
       super.invokeTest()
@@ -97,5 +98,26 @@ open class LiveDatabaseTestCase: XCTestCase {
 
   public var isScreenshotTestingAvailable: Bool {
     ProcessInfo.processInfo.environment["CI"] == nil
+  }
+}
+
+// http://xoshiro.di.unimi.it.
+private struct Xoshiro: RandomNumberGenerator {
+  var state: (UInt64, UInt64, UInt64, UInt64)
+  init(seed: UInt64) {
+    self.state = (seed, 18_446_744, 073_709, 551_615)
+    for _ in 1...10 { _ = self.next() }  // perturb
+  }
+  mutating func next() -> UInt64 {
+    let x = self.state.1 &* 5
+    let result = ((x &<< 7) | (x &>> 57)) &* 9
+    let t = self.state.1 &<< 17
+    self.state.2 ^= self.state.0
+    self.state.3 ^= self.state.1
+    self.state.1 ^= self.state.2
+    self.state.0 ^= self.state.3
+    self.state.2 ^= t
+    self.state.3 = (self.state.3 &<< 45) | (self.state.3 &>> 19)
+    return result
   }
 }

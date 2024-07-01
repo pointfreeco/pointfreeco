@@ -15,12 +15,8 @@ import XCTest
 #endif
 
 class HomeTests: TestCase {
-  override func setUp() async throws {
-    try await super.setUp()
-    //    SnapshotTesting.isRecording=true
-  }
-
   override func invokeTest() {
+    //SnapshotTesting.isRecording=true
     withDependencies {
       var e1 = Episode.ep10_aTaleOfTwoFlatMaps
       e1.permission = .subscriberOnly
@@ -52,7 +48,7 @@ class HomeTests: TestCase {
     #if !os(Linux)
       if self.isScreenshotTestingAvailable {
         await assertSnapshots(
-          matching: await siteMiddleware(conn),
+          matching: result,
           as: [
             "desktop": .connWebView(size: .init(width: 1080, height: 3000)),
             "mobile": .connWebView(size: .init(width: 400, height: 3500)),
@@ -99,12 +95,13 @@ class HomeTests: TestCase {
     } operation: {
       let conn = connection(from: request(to: .home, session: .loggedIn))
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      let result = await siteMiddleware(conn)
+      await assertSnapshot(matching: result, as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: result,
             as: [
               "desktop": .connWebView(size: .init(width: 1080, height: 2300)),
               "mobile": .connWebView(size: .init(width: 400, height: 2800)),

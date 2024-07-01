@@ -45,7 +45,7 @@ private func oldBlogPostsView(_ posts: some Collection<BlogPost>) -> Node {
   guard !posts.isEmpty else { return [] }
 
   return [
-    homeSubscriberCalloutView,
+    subscriberCalloutView,
     .div(
       attributes: [.class([Class.padding([.mobile: [.top: 4, .bottom: 2]])])],
       .h5(attributes: [.class([Class.pf.type.responsiveTitle5])], ["Older blog posts"])
@@ -53,6 +53,56 @@ private func oldBlogPostsView(_ posts: some Collection<BlogPost>) -> Node {
     .div(
       attributes: [.class([Class.padding([.mobile: [.bottom: 3]])])],
       .fragment(posts.map(oldBlogPostView))
+    ),
+  ]
+}
+
+var subscriberCalloutView: Node {
+  @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
+
+  guard subscriberState.isNonSubscriber else { return [] }
+
+  return [
+    divider,
+    .gridRow(
+      .gridColumn(
+        sizes: [.desktop: 9, .mobile: 12],
+        attributes: [.style(margin(leftRight: .auto))],
+        .div(
+          attributes: [
+            .class(
+              [
+                Class.margin([.mobile: [.all: 4]]),
+                Class.padding([.mobile: [.all: 3]]),
+                Class.pf.colors.bg.gray900,
+              ]
+            )
+          ],
+          .h4(
+            attributes: [
+              .class(
+                [
+                  Class.pf.type.responsiveTitle4,
+                  Class.padding([.mobile: [.bottom: 2]]),
+                ]
+              )
+            ],
+            "Subscribe to Point-Free"
+          ),
+          .p(
+            "👋 Hey there! See anything you like? You may be interested in ",
+            .a(
+              attributes: [
+                .href(siteRouter.path(for: .pricingLanding)),
+                .class([Class.pf.type.underlineLink]),
+              ],
+              "subscribing"
+            ),
+            " so that you get access to these episodes and all future ones."
+          )
+        )
+      )
     ),
   ]
 }

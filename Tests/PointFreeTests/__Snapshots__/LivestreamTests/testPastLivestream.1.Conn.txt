@@ -2,7 +2,7 @@ GET http://localhost:8080/live/streams/42
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 51712
+Content-Length: 52027
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2156,29 +2156,39 @@ html {
                    m-mr0
                    m-mt0
                    m-mb0
-                   bg-white
-                   m-mt4
-                   m-mb4">
-        <div class="m-ml3
-                    m-mr3
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    bg-gray900">
-          <h4 class="fg-black
-                     bold
-                     ts-d-r1_5
-                     ts-m-r1_25
-                     lh-2
-                     m-pb2">
-            Subscribe to Point-Free
-          </h4>
-          <div class="md-ctn">
-            <p>👋 Hey there! If you got this far, then you must have enjoyed this post. You may want to
-also check out <a href="/">Point-Free</a>, a video series covering advanced programming topics in
-Swift. Consider <a href="/pricing">subscribing</a> today!</p>
-
+                   bg-white">
+        <div class="row">
+          <div style="margin-right:auto;
+                      margin-left:auto"
+               class="col-m
+                      col-d-9
+                      col-m-12">
+            <div class="m-ml4
+                        m-mr4
+                        m-mt4
+                        m-mb4
+                        m-pl3
+                        m-pr3
+                        m-pt3
+                        m-pb3
+                        bg-gray900">
+              <h4 class="fg-black
+                         bold
+                         ts-d-r1_5
+                         ts-m-r1_25
+                         lh-2
+                         m-pb2">
+                Subscribe to Point-Free
+              </h4>
+              <p>
+                👋 Hey there! See anything you like? You may be interested in 
+                <a href="/pricing"
+                   class="underline-link">
+                  subscribing
+                </a>
+                 so that you get access to these episodes and all future ones.
+              </p>
+            </div>
           </div>
         </div>
       </div>
