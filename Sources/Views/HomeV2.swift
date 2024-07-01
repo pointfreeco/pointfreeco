@@ -426,11 +426,14 @@ private struct ReferAFriend: HTML {
         """,
       style: .gradient
     ) {
-      let url = siteRouter.url(
-        for: .subscribeConfirmation(
-          lane: .personal,
-          referralCode: currentUser.referralCode
+      let url = String(
+        siteRouter.url(
+          for: .subscribeConfirmation(
+            lane: .personal,
+            referralCode: currentUser.referralCode
+          )
         )
+        .dropFirst(8)
       )
 
       HStack(alignment: .center) {

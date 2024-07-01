@@ -34,7 +34,7 @@ struct ReferAFriendModule: HTML {
               referralCode: user.referralCode
             )
           )
-          .dropFirst(7)
+          .dropFirst(8)
         )
 
         HStack(alignment: .center) {
