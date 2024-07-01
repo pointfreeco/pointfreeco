@@ -9,7 +9,7 @@ public struct HTMLTag: ExpressibleByStringLiteral {
     self.init(value)
   }
 
-  public func callAsFunction() -> HTMLElement<Never> {
+  public func callAsFunction() -> HTMLElement<HTMLEmpty> {
     tag(self.rawValue)
   }
 
@@ -74,7 +74,7 @@ public struct HTMLVoidTag: ExpressibleByStringLiteral {
 }
 
 public func tag<T: HTML>(
-  _ tag: String, @HTMLBuilder _ content: () -> T? = { Never?.none }
+  _ tag: String, @HTMLBuilder _ content: () -> T = { HTMLEmpty() }
 ) -> HTMLElement<T> {
   HTMLElement(tag: tag, content: content)
 }

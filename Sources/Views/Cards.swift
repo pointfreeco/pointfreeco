@@ -2,6 +2,92 @@ import StyleguideV2
 import Dependencies
 import Models
 
+public struct EpisodeCardV2: HTML {
+  @Dependency(\.date.now) var now
+  @Dependency(\.episodeProgresses) var episodeProgresses
+  @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
+
+  let episode: Episode
+  let emergencyMode: Bool
+
+  public init(_ episode: Episode, emergencyMode: Bool) {
+    self.episode = episode
+    self.emergencyMode = emergencyMode
+  }
+
+  public var body: some HTML {
+    CardV2 {
+      div {
+        "Episode \(episode.sequence.rawValue) • \(episode.publishedAt.monthDayYear())"
+      }
+      .color(.gray650.dark(.gray400))
+      .fontStyle(.body(.small))
+
+      div {
+        Header(4) {
+          Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
+            HTMLText(episode.title)
+            if let subtitle = episode.subtitle {
+              ":"
+              br()
+              HTMLText(subtitle)
+            }
+          }
+          .linkColor(.black.dark(.white))
+        }
+      }
+      .inlineStyle("margin-top", "0.5rem")
+
+      div {
+        HTMLMarkdown(episode.blurb)
+      }
+      .color(.gray400.dark(.gray650))
+    } header: {
+      Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
+        Image(source: episode.image, description: "")
+          .attribute("loading", "lazy")
+          .inlineStyle("width", "100%")
+          .inlineStyle("filter", progress?.isFinished == true ? "grayscale(1)" : nil)
+      }
+      .inlineStyle("display", "block")
+      .inlineStyle("line-height", "0")
+    } footer: {
+      if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
+        if !subscriberState.isActive {
+          Link(href: siteRouter.path(for: .pricingLanding)) {
+            LabelV2("Subscriber-only", icon: .locked)
+          }
+          .linkColor(.currentColor)
+        }
+      } else {
+        LabelV2("Free", icon: .unlocked)
+      }
+
+      LabelV2(episode.length.formatted(), icon: .clock)
+        .grow()
+
+      if let progress {
+        if progress.isFinished {
+          LabelV2("Watched", icon: .checkmark)
+        } else {
+          let value = Double(progress.percent) / 100
+          let minutes = (episode.length.timeInterval - episode.length.timeInterval * value) / 60
+
+          Progress(value: value)
+            .inlineStyle("width", "80px")
+            .attribute("title", "\(Int(minutes)) min to finish")
+        }
+      }
+    }
+  }
+
+  var progress: EpisodeProgress? {
+    episodeProgresses[episode.sequence]
+  }
+}
+
+
 public struct EpisodeCard: HTML {
   @Dependency(\.date.now) var now
   @Dependency(\.episodeProgresses) var episodeProgresses
