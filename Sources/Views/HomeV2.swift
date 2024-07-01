@@ -162,31 +162,34 @@ private struct EpisodeCredits: HTML {
 private struct Companies: HTML {
   var body: some HTML {
     PageModule(theme: .companies) {
-      for team in [
-        bookingLogoSVG,
-        jpMorganLogoSVG,
-        insuletLogoSVG,
-        noomLogoSVG,
-        shutterflyLogoSVG,
-        targetLogoSVG,
-        nytLogoSVG,
-        spotifyLogoSVG,
-        venmoLogoSVG,
-        atlassianLogoSVG,
-        hyundaiLogoSVG,
-        twitchLogoSVG,
-        appleLogoSVG,
-        fordLogoSVG,
-        squarespaceLogoSVG,
-        doximityLogoSVG,
-        foxLogoSVG,
-      ]
-        .shuffled()
-        .prefix(7)
-      {
-        Company(svg: team)
-          .inlineStyle("display", "none", media: .mobile, pseudo: .lastChild)
+      div {
+        for team in [
+          bookingLogoSVG,
+          jpMorganLogoSVG,
+          insuletLogoSVG,
+          noomLogoSVG,
+          shutterflyLogoSVG,
+          targetLogoSVG,
+          nytLogoSVG,
+          spotifyLogoSVG,
+          venmoLogoSVG,
+          atlassianLogoSVG,
+          hyundaiLogoSVG,
+          twitchLogoSVG,
+          appleLogoSVG,
+          fordLogoSVG,
+          squarespaceLogoSVG,
+          doximityLogoSVG,
+          foxLogoSVG,
+        ]
+          .shuffled()
+          .prefix(7)
+        {
+          Company(svg: team)
+            .inlineStyle("display", "none", media: .mobile, pseudo: .lastChild)
+        }
       }
+      .flexContainer(wrap: "wrap", justification: "center", itemAlignment: "center")
     } title: {
       Header(6) { "Trusted by teams" }
         .inlineStyle("font-weight", "700")
@@ -197,15 +200,14 @@ private struct Companies: HTML {
   struct Company: HTML {
     let svg: String
     var body: some HTML {
-      GridColumn {
+      VStack(alignment: .center) {
         SVG(base64: svg, description: "")
           .inlineStyle("width", "140px")
           .inlineStyle("height", "60px")
           .inlineStyle("object-fit", "contain")
       }
-      .column(alignment: .center)
-      .column(count: 6)
-      .column(count: 3, media: .desktop)
+      .flexItem(basis: "50%")
+      .flexItem(basis: "25%", media: .desktop)
       .inlineStyle("padding", "1rem")
     }
   }
