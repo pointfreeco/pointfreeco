@@ -484,8 +484,7 @@ private struct WhatPeopleAreSaying: HTML {
     ) {
       VStack(alignment: .center, spacing: 3) {
         LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
-          for (offset, group) in shuffledTestimonials.prefix(9).grouped(into: 3).enumerated()
-          {
+          for (offset, group) in shuffledTestimonials.prefix(9).grouped(into: 3).enumerated() {
             VStack {
               for testimonial in group {
                 TestimonialCard(testimonial: testimonial)
