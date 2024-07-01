@@ -21,6 +21,11 @@ import XCTest
 #endif
 
 class LivestreamTests: TestCase {
+  override func setUp() {
+    super.setUp()
+    //sisRecording = true
+  }
+
   @MainActor
   func testCurrent() async {
     await withDependencies {
@@ -38,13 +43,14 @@ class LivestreamTests: TestCase {
       let episode = request(to: .live(.current))
 
       let conn = connection(from: episode)
+      let result = await siteMiddleware(conn)
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: result, as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: result,
             as: [
               "desktop": .connWebView(size: .init(width: 1100, height: 1000)),
               "mobile": .connWebView(size: .init(width: 500, height: 1000)),
@@ -83,13 +89,14 @@ class LivestreamTests: TestCase {
       let episode = request(to: .live(.stream(id: 42)))
 
       let conn = connection(from: episode)
+      let result = await siteMiddleware(conn)
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: result, as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: result,
             as: [
               "desktop": .connWebView(size: .init(width: 1100, height: 1600)),
               "mobile": .connWebView(size: .init(width: 500, height: 1000)),
@@ -117,13 +124,14 @@ class LivestreamTests: TestCase {
       let episode = request(to: .home)
 
       let conn = connection(from: episode)
+      let result = await siteMiddleware(conn)
 
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertSnapshot(matching: result, as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
           await assertSnapshots(
-            matching: await siteMiddleware(conn),
+            matching: result,
             as: [
               "desktop": .connWebView(size: .init(width: 1100, height: 400)),
               "mobile": .connWebView(size: .init(width: 500, height: 400)),
