@@ -432,41 +432,33 @@ private struct ReferAFriend: HTML {
         )
       )
 
-      Grid {
-        GridColumn {
-          input()
-            .attribute("value", url)
-            .attribute("type", "text")
-            .attribute("readonly")
-            .attribute("onclick", "this.select();")
-            .inlineStyle("width", "100%")
-            .inlineStyle("border-radius", "0.5rem")
-            .color(.gray500)
-            .inlineStyle("padding", "1rem")
-            .inlineStyle("border", "none")
-            .inlineStyle("outline", "none")
-        }
-        .flexible()
-        .inlineStyle("padding-right", "1rem")
-        .inlineStyle("max-width", "60%", media: .desktop)
+      HStack(alignment: .center) {
+        input()
+          .color(.gray500)
+          .grow()
+          .attribute("onclick", "this.select();")
+          .attribute("readonly")
+          .attribute("type", "text")
+          .attribute("value", url)
+          .inlineStyle("border", "none")
+          .inlineStyle("border-radius", "0.5rem")
+          .inlineStyle("outline", "none")
+          .inlineStyle("padding", "1rem")
+          .inlineStyle("max-width", "60%", media: .desktop)
+          .inlineStyle("width", "100%")
 
-        GridColumn {
-          Button(tag: input, color: .purple, size: .regular, style: .normal)
-            .attribute("type", "button")
-            .attribute("value", "Copy")
-            .attribute(
-              "onclick",
-              """
-              navigator.clipboard.writeText("\(url)");
-              this.value = "Copied!";
-              setTimeout(() => { this.value = "Copy"; }, 3000);
-              """
-            )
-        }
-        .inflexible()
+        Button(tag: input, color: .purple, size: .regular, style: .normal)
+          .attribute("type", "button")
+          .attribute("value", "Copy")
+          .attribute(
+            "onclick",
+            """
+            navigator.clipboard.writeText("\(url)");
+            this.value = "Copied!";
+            setTimeout(() => { this.value = "Copy"; }, 3000);
+            """
+          )
       }
-      .grid(alignment: .center)
-      .inlineStyle("justify-content", "center")
       .inlineStyle("margin", "2rem 4rem")
     }
   }
@@ -478,29 +470,25 @@ private struct WhatPeopleAreSaying: HTML {
       title: "What people are saying",
       theme: .informational
     ) {
-      for (offset, group) in Testimonial.all.shuffled().prefix(9).grouped(into: 3).enumerated() {
-        GridColumn {
-          for testimonial in group {
-            TestimonialCard(testimonial: testimonial)
+      VStack(alignment: .center, spacing: 3) {
+        LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
+          for (offset, group) in Testimonial.all.shuffled().prefix(9).grouped(into: 3).enumerated()
+          {
+            VStack {
+              for testimonial in group {
+                TestimonialCard(testimonial: testimonial)
+              }
+            }
+            .inlineStyle("display", offset == 0 ? nil : "none")
+            .inlineStyle("display", "block", media: .desktop)
           }
         }
-        .inlineStyle("padding-left", "0.5rem", media: .desktop, pseudo: .not(.nthChild("2")))
-        .inlineStyle("padding-right", "0.5rem", media: .desktop, pseudo: .not(.lastChild))
-        .column(count: 12)
-        .column(count: 4, media: .desktop)
-        .inlineStyle("display", offset == 0 ? nil : "none")
-        .inlineStyle("display", "block", media: .desktop)
-      }
 
-      GridColumn {
-        Button(color: .purple, size: .regular, style: .normal) {
-          "Read more testimonials →"
-        }
-        .attribute("href", "TODO")
+        // Button(color: .purple, size: .regular, style: .normal) {
+        //   "Read more testimonials →"
+        // }
+        // .attribute("href", "TODO")
       }
-      .column(count: 12)
-      .column(alignment: .center)
-      .inlineStyle("margin-top", "3rem")
     }
   }
 
