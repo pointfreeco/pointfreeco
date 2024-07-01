@@ -27,6 +27,7 @@ open class TestCase: XCTestCase {
         $0.mailgun = .mock
         $0.stripe = .mock
         $0.uuid = .incrementing
+        $0.withRandomNumberGenerator = WithRandomNumberGenerator(LCRNG(seed: 0))
       }
     } operation: {
       super.invokeTest()
@@ -97,5 +98,18 @@ open class LiveDatabaseTestCase: XCTestCase {
 
   public var isScreenshotTestingAvailable: Bool {
     ProcessInfo.processInfo.environment["CI"] == nil
+  }
+}
+
+struct LCRNG: RandomNumberGenerator {
+  var seed: UInt64
+
+  init(seed: UInt64) {
+    self.seed = seed
+  }
+
+  mutating func next() -> UInt64 {
+    seed = 2862933555777941757 &* seed &+ 3037000493
+    return seed
   }
 }
