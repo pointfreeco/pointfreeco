@@ -216,8 +216,10 @@ private struct Companies: HTML {
 private struct WhatToExpect: HTML {
   var body: some HTML {
     PageModule(title: "What to expect", theme: .informational) {
-      for whatToExpect in WhatToExpectItem.all {
-        WhatToExpectColumn(item: whatToExpect)
+      LazyVGrid(columns: [.desktop: [1, 1]]) {
+        for whatToExpect in WhatToExpectItem.all {
+          WhatToExpectColumn(item: whatToExpect)
+        }
       }
     }
   }
@@ -225,15 +227,17 @@ private struct WhatToExpect: HTML {
   struct WhatToExpectColumn: HTML {
     let item: WhatToExpectItem
     var body: some HTML {
-      GridColumn {
+      VStack(alignment: .center) {
         Image(source: item.imageSrc, description: "")
           .inlineStyle("padding", "2.5%")
           .inlineStyle("padding", "7.5%", media: .desktop)
           .inlineStyle("max-width", "100%")
 
-        Header(4) { HTMLText(item.title) }
-          .color(.black.dark(.offWhite))
-          .inlineStyle("text-align", "center", media: .desktop)
+        div {
+          Header(4) { HTMLText(item.title) }
+            .color(.black.dark(.offWhite))
+            .inlineStyle("text-align", "center", media: .desktop)
+        }
 
         Paragraph {
           HTMLText(item.description)
@@ -241,7 +245,6 @@ private struct WhatToExpect: HTML {
         .color(.gray300.dark(.gray850))
         .inlineStyle("text-align", "center", media: .desktop)
       }
-      .column(count: 6, media: .desktop)
       .inlineStyle("padding", "0rem 1.5rem 4rem 0", media: .desktop, pseudo: .nthChild("even"))
       .inlineStyle("padding", "0rem 0 4rem 1.5rem", media: .desktop, pseudo: .nthChild("odd"))
     }
