@@ -8,68 +8,72 @@ struct ReferAFriendModule: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    PageModule(theme: .referAFriend) {
-      let url = siteRouter.url(
-        for: .subscribeConfirmation(
-          lane: .personal,
-          referralCode: user.referralCode
-        )
-      )
+    div {
+      VStack(alignment: .leading, spacing: 1) {
+        div {
+          Header(3) { HTMLText("Refer a friend") }
+            .color(.gray150.dark(.gray850))
+        }
 
-      HStack {
-        input()
-          .color(.gray500)
-          .grow()
-          .attribute("value", url)
-          .attribute("type", "text")
-          .attribute("readonly")
-          .attribute("onclick", "this.select();")
-          .inlineStyle("border", "none")
-          .inlineStyle("border-radius", "0.5rem")
-          .inlineStyle("padding", "1rem")
-          .inlineStyle("outline", "none")
-          .inlineStyle("max-width", "60%", media: .desktop)
-          .inlineStyle("width", "100%")
+        div {
+          Paragraph(.big) {
+            """
+            You'll both get one month free ($18 credit) when they sign up from your personal \
+            referral link:
+            """
+          }
+          .color(.gray300.dark(.gray800))
+          .inlineStyle("max-width", "40rem", media: .desktop)
+          .inlineStyle("text-align", "center", media: .desktop)
+        }
 
-        Button(tag: input, color: .purple, size: .regular, style: .normal)
-          .attribute("type", "button")
-          .attribute("value", "Copy")
-          .attribute(
-            "onclick",
-            """
-            navigator.clipboard.writeText("\(url)");
-            this.value = "Copied!";
-            setTimeout(() => { this.value = "Copy"; }, 3000);
-            """
+        let url = String(
+          siteRouter.url(
+            for: .subscribeConfirmation(
+              lane: .personal,
+              referralCode: user.referralCode
+            )
           )
-      }
-      .inlineStyle("margin", "2rem 4rem")
-    } title: {
-      Header(2) { "Refer a friend" }
-        .color(.gray150)
+          .dropFirst(7)
+        )
 
-      Paragraph(.big) {
-        """
-        You'll both get one month free ($18 credit) when they sign up from your personal \
-        referral link:
-        """
+        HStack(alignment: .center) {
+          input()
+            .color(.gray500)
+            .grow()
+            .attribute("value", url)
+            .attribute("type", "text")
+            .attribute("readonly")
+            .attribute("onclick", "this.select();")
+            .inlineStyle("border", "1px solid #eee")
+            .inlineStyle("border-radius", "0.5rem")
+            .inlineStyle("padding", "1rem")
+            .inlineStyle("outline", "none")
+            .inlineStyle("width", "100%")
+
+          Button(tag: input, color: .purple, size: .regular, style: .normal)
+            .attribute("type", "button")
+            .attribute("value", "Copy")
+            .attribute(
+              "onclick",
+              """
+              navigator.clipboard.writeText("\(url)");
+              this.value = "Copied!";
+              setTimeout(() => { this.value = "Copy"; }, 3000);
+              """
+            )
+        }
+        .inlineStyle("margin-top", "1rem")
       }
-      .fontStyle(.body(.regular))
-      .color(.gray300)
-      .inlineStyle("margin", "0 6rem", media: .desktop)
+      .inlineStyle("max-width", "1280px")
+      .inlineStyle("margin", "0 auto")
+      .inlineStyle("align-items", "center", media: .desktop)
+      .backgroundColor(.init(rawValue: "#fafafa").dark(.init(rawValue: "#050505")))
+      .inlineStyle("padding", "4rem 2rem")
+      .inlineStyle("padding", "4rem 3rem", media: .desktop)
     }
+    .inlineStyle("padding", "0 2rem", media: .desktop)
+    .inlineStyle("max-width", "100%")
+    .backgroundColor(.white.dark(.black))
   }
-}
-
-extension PageModuleTheme {
-  static let referAFriend = Self(
-    backgroundColor: .white.dark(.black),
-    contentBackgroundColor: .init(rawValue: "#fafafa").dark(.init(rawValue: "#050505")),
-    color: .offBlack.dark(.offWhite),
-    topMargin: 4,
-    bottomMargin: 4,
-    leftRightMargin: 2,
-    leftRightMarginDesktop: 3,
-    titleMarginBottom: 0
-  )
 }

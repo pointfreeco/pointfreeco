@@ -31,6 +31,7 @@ public struct PageHeader<Title: HTML, Blurb: HTML>: HTML {
       .inlineStyle("box-sizing", "border-box")
       .inlineStyle("flex-basis", "100%")
       .inlineStyle("max-width", "1280px")
+      .inlineStyle("width", "100%")
       .inlineStyle("margin", "0 auto")
       .inlineStyle("padding", "6rem 2rem")
       .inlineStyle("padding", "8rem 3rem", media: .desktop)
