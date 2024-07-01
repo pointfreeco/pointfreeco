@@ -134,6 +134,7 @@ public struct ClipCard: HTML {
     } header: {
       Link(href: siteRouter.path(for: .clips(.clip(videoID: clip.vimeoVideoID)))) {
         Image(source: clip.posterURL, description: "")
+          .attribute("loading", "lazy")
           .inlineStyle("width", "100%")
       }
       .inlineStyle("display", "block")
