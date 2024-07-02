@@ -22,8 +22,6 @@ extension HTML {
 }
 
 public struct HTMLInlineStyle<Content: HTML>: HTML {
-  @Dependency(ClassCount.self) fileprivate var classes
-
   private let content: Content
   private var styles: [Style]
 
@@ -81,14 +79,10 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     }
 
     for style in html.styles {
-      let index = html.classes.withValue { classes in
-        guard let index = classes.firstIndex(of: style)
-        else {
-          classes.append(style)
-          return classes.count - 1
-        }
-        return index
-      }
+      let index: Int = printer.classes.firstIndex(of: style) ?? {
+        defer { printer.classes.append(style) }
+        return printer.classes.count
+      }()
 
       #if DEBUG
         let className = "\(style.property)-\(index)"
@@ -108,15 +102,6 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     }
   }
   public var body: Never { fatalError() }
-}
-
-private enum ClassCount: DependencyKey {
-  fileprivate static var liveValue: LockIsolated<OrderedSet<Style>> {
-    LockIsolated<OrderedSet<Style>>([])
-  }
-  fileprivate static var testValue: LockIsolated<OrderedSet<Style>> {
-    LockIsolated<OrderedSet<Style>>([])
-  }
 }
 
 private struct Style: Hashable {
