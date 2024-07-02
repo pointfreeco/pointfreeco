@@ -22,7 +22,7 @@ extension Episode {
       .swiftPerception,
     ],
     sequence: 286,
-    subtitle: "Unified Navigation",
+    subtitle: "Tree-based Navigation",
     title: "Modern UIKit",
     trailerVideo: .init(
       bytesLength: 22_400_000,
