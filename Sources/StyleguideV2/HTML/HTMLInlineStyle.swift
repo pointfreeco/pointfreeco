@@ -96,8 +96,7 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
         let className = "c\(index)"
       #endif
       let selector = """
-        \(style.preSelector ?? "") \
-        .\(className)\(style.pseudo?.rawValue ?? "")
+        \(style.preSelector.map { "\($0) " } ?? "").\(className)\(style.pseudo?.rawValue ?? "")
         """
 
       if printer.styles[style.media, default: [:]][selector] == nil {
