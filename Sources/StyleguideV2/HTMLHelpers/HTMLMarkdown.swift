@@ -34,11 +34,11 @@ private struct HTMLConverter: MarkupVisitor {
   // TODO: Support `@Custom { … }` directives (`@Timestamp(00:00:00)`, `@Speaker(Brandon) { … }`)
   // TODO: `Document(parsing: …, options: .parseBlockDirectives)`
   // @HTMLBuilder
-  // mutating func visitBlockDirective(_ blockDirective: BlockDirective) -> AnyHTML {
+  // mutating func visitBlockDirective(_ blockDirective: Markdown.BlockDirective) -> AnyHTML {
   // }
 
   @HTMLBuilder
-  mutating func visitBlockQuote(_ blockQuote: BlockQuote) -> AnyHTML {
+  mutating func visitBlockQuote(_ blockQuote: Markdown.BlockQuote) -> AnyHTML {
     // TODO: `let aside = Aside(blockQuote)`
     blockquote {
       for child in blockQuote.children {
@@ -48,13 +48,13 @@ private struct HTMLConverter: MarkupVisitor {
   }
 
   @HTMLBuilder
-  mutating func visitCodeBlock(_ codeBlock: CodeBlock) -> AnyHTML {
-    code {
-      pre {
+  mutating func visitCodeBlock(_ codeBlock: Markdown.CodeBlock) -> AnyHTML {
+    pre {
+      code {
         HTMLText(codeBlock.code)
       }
+      .attribute("class", codeBlock.language.map { "language-\($0)" })
     }
-    .attribute("class", codeBlock.language.map { "lang-\($0)" })
   }
 
   @HTMLBuilder

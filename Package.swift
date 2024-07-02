@@ -63,15 +63,6 @@ var package = Package(
   ],
   targets: [
 
-    .systemLibrary(
-      name: "Ccmark",
-      pkgConfig: "libcmark",
-      providers: [
-        .apt(["cmark"]),
-        .brew(["cmark"]),
-      ]
-    ),
-
     .target(
       name: "Database",
       dependencies: [
@@ -543,7 +534,6 @@ var package = Package(
     .target(
       name: "Views",
       dependencies: [
-        "Ccmark",
         "EmailAddress",
         "EnvVars",
         "FunctionalCss",
@@ -557,6 +547,7 @@ var package = Package(
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Html", package: "swift-html"),
         .product(name: "HttpPipeline", package: "swift-web"),
+        .product(name: "Markdown", package: "swift-markdown"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedTime", package: "swift-tagged"),

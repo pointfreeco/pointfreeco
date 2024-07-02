@@ -12,12 +12,6 @@ COPY Package.swift .
 COPY Sources ./Sources
 COPY Tests ./Tests
 
-RUN git clone https://github.com/commonmark/cmark \
-  && cd cmark \
-  && git checkout 1880e6535e335f143f9547494def01c13f2f331b
-RUN make -C cmark INSTALL_PREFIX=/usr
-RUN make -C cmark install
-
 RUN swift build --build-tests --jobs 1
 
 CMD .build/debug/Server
