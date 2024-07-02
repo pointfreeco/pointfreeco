@@ -433,15 +433,13 @@ private struct ReferAFriend: HTML {
         """,
       style: .gradient
     ) {
-      let url = String(
-        siteRouter.url(
-          for: .subscribeConfirmation(
-            lane: .personal,
-            referralCode: currentUser.referralCode
-          )
+      let url = siteRouter.url(
+        for: .subscribeConfirmation(
+          lane: .personal,
+          referralCode: currentUser.referralCode
         )
-        .dropFirst(8)
       )
+      .dropHTTPWWW
 
       HStack(alignment: .center) {
         input()
@@ -470,8 +468,24 @@ private struct ReferAFriend: HTML {
             """
           )
       }
+      .inlineStyle("justify-content", "center")
       .inlineStyle("margin", "2rem 4rem")
     }
+  }
+}
+
+extension String {
+  var dropHTTPWWW: String {
+    var copy = self
+    if copy.hasPrefix("https://") {
+      copy.removeFirst(8)
+    } else if copy.hasPrefix("http://") {
+      copy.removeFirst(7)
+    }
+    if copy.hasPrefix("www.") {
+      copy.removeFirst(4)
+    }
+    return copy
   }
 }
 
