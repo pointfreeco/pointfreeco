@@ -148,8 +148,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await clipsMiddleware(conn.map(const(clipsRoute)))
 
   case .collections(.index):
-    return await collectionsIndexMiddleware(conn.map(const(())))
-      .performAsync()
+    return await collectionsIndexMiddleware(conn.map { _ in })
 
   case let .collections(.collection(slug, .show)):
     return await collectionMiddleware(conn.map(const(slug)))
@@ -240,10 +239,6 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
 
   case .home:
     return await homeMiddleware(conn.map(const(())))
-      .performAsync()
-
-  case .homeV2:
-    return await homeV2Middleware(conn.map(const(())))
 
   case let .invite(.addTeammate(email)):
     return await addTeammateViaInviteMiddleware(conn.map(const(currentUser .*. email .*. unit)))

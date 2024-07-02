@@ -90,8 +90,8 @@ public struct PageModule<Title: HTML, Content: HTML>: HTML {
       .inlineStyle(
         "padding-bottom",
         seeAllURL == nil
-        ? "\(theme.titleMarginBottom)rem"
-        : "\(theme.titleMarginBottom/2)rem"
+          ? "\(theme.titleMarginBottom)rem"
+          : "\(theme.titleMarginBottom/2)rem"
       )
     }
   }

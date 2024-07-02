@@ -17,7 +17,7 @@ public struct Header<Content: HTML>: HTML {
     .inlineStyle("font-weight", "700")
     .inlineStyle("line-height", "\(lineHeight)")
   }
-  
+
   var fontSize: Double {
     switch size {
     case 1: 4

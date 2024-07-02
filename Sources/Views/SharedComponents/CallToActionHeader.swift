@@ -66,6 +66,7 @@ public struct CallToActionHeader<PrimaryCTA: HTML>: HTML {
             primaryCTA
               .inlineStyle("margin-top", "3rem")
           }
+          .inlineStyle("width", "100%")
 
           if let secondaryCTAURL, let secondaryCTATitle {
             Link(secondaryCTATitle, href: secondaryCTAURL)

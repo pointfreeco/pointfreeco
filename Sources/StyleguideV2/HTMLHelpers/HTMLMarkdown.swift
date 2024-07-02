@@ -20,7 +20,7 @@ public struct HTMLMarkdown: HTML {
   }
 }
 
-fileprivate struct HTMLConverter: MarkupVisitor {
+private struct HTMLConverter: MarkupVisitor {
   typealias Result = AnyHTML
 
   @HTMLBuilder
@@ -54,7 +54,7 @@ fileprivate struct HTMLConverter: MarkupVisitor {
         HTMLText(codeBlock.code)
       }
     }
-    .attribute("class", codeBlock.language.map { "lang-\($0)"} )
+    .attribute("class", codeBlock.language.map { "lang-\($0)" })
   }
 
   @HTMLBuilder
@@ -203,7 +203,7 @@ fileprivate struct HTMLConverter: MarkupVisitor {
         .attribute("align", columnAlignments[column]?.attributeValue)
         .attribute("colspan", cell.colspan == 1 ? nil : "\(cell.colspan)")
         .attribute("rowspan", cell.rowspan == 1 ? nil : "\(cell.rowspan)")
-        
+
         let _ = column += Int(cell.colspan)
       }
     }
@@ -229,8 +229,8 @@ fileprivate struct HTMLConverter: MarkupVisitor {
   }
 }
 
-fileprivate extension Table.ColumnAlignment {
-  var attributeValue: String {
+extension Table.ColumnAlignment {
+  fileprivate var attributeValue: String {
     switch self {
     case .center: "center"
     case .left: "left"
@@ -239,19 +239,19 @@ fileprivate extension Table.ColumnAlignment {
   }
 }
 
-fileprivate extension HTMLBuilder {
+extension HTMLBuilder {
   @_disfavoredOverload
-  static func buildExpression(_ expression: any HTML) -> AnyHTML {
+  fileprivate static func buildExpression(_ expression: any HTML) -> AnyHTML {
     AnyHTML(expression)
   }
 
   @_disfavoredOverload
-  static func buildFinalResult(_ component: some HTML) -> AnyHTML {
+  fileprivate static func buildFinalResult(_ component: some HTML) -> AnyHTML {
     AnyHTML(component)
   }
 }
 
-fileprivate struct AnyHTML: HTML {
+private struct AnyHTML: HTML {
   let base: any HTML
   init(_ base: any HTML) {
     self.base = base

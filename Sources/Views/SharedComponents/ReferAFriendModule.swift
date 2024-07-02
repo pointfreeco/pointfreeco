@@ -27,15 +27,13 @@ struct ReferAFriendModule: HTML {
           .inlineStyle("text-align", "center", media: .desktop)
         }
 
-        let url = String(
-          siteRouter.url(
-            for: .subscribeConfirmation(
-              lane: .personal,
-              referralCode: user.referralCode
-            )
+        let url = siteRouter.url(
+          for: .subscribeConfirmation(
+            lane: .personal,
+            referralCode: user.referralCode
           )
-          .dropFirst(7)
         )
+        .dropHTTPWWW
 
         HStack(alignment: .center) {
           input()
@@ -63,6 +61,8 @@ struct ReferAFriendModule: HTML {
               """
             )
         }
+        .inlineStyle("width", "100%")
+        .inlineStyle("max-width", "60%", media: .desktop)
         .inlineStyle("margin-top", "1rem")
       }
       .inlineStyle("max-width", "1280px")

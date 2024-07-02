@@ -229,7 +229,7 @@ func regenerateTeamInviteCode(
   guard
     let currentUser = currentUser,
     let subscriptionID = currentUser.subscriptionId,
-    let _ = try? await database.regenerateTeamInviteCode(subscriptionID: subscriptionID)
+    (try? await database.regenerateTeamInviteCode(subscriptionID: subscriptionID)) != nil
   else {
     return
       conn

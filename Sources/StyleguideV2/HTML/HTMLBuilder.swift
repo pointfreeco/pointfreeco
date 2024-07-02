@@ -12,15 +12,15 @@ public enum HTMLBuilder {
     content
   }
 
-//  public static func buildPartialBlock<First: HTML>(first: First) -> First {
-//    first
-//  }
-//
-//  public static func buildPartialBlock<Accumulated: HTML, Next: HTML>(
-//    accumulated: Accumulated, next: Next
-//  ) -> _HTMLTuple<Accumulated, Next> {
-//    _HTMLTuple(content: accumulated, next)
-//  }
+  //  public static func buildPartialBlock<First: HTML>(first: First) -> First {
+  //    first
+  //  }
+  //
+  //  public static func buildPartialBlock<Accumulated: HTML, Next: HTML>(
+  //    accumulated: Accumulated, next: Next
+  //  ) -> _HTMLTuple<Accumulated, Next> {
+  //    _HTMLTuple(content: accumulated, next)
+  //  }
 
   public static func buildBlock<each Content: HTML>(
     _ content: repeat each Content

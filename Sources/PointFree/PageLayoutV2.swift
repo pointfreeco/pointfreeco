@@ -32,7 +32,8 @@ extension Conn where Step == HeadersOpen {
       PageLayout(layoutData: layoutData, metadata: metadata, content: view),
       into: &printer
     )
-    return self
+    return
+      self
       .writeSessionCookie { $0.flash = nil }
       .respond(
         body: Data(printer.bytes),

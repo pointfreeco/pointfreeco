@@ -16,7 +16,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 
   override func setUp() async throws {
     try await super.setUp()
-    //SnapshotTesting.record = true
+    //SnapshotTesting.isRecording = true
   }
 
   @MainActor
@@ -96,7 +96,8 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     @Dependency(\.siteRouter) var siteRouter
 
     let login = request(
-      to: .gitHubAuth(redirect: siteRouter.url(for: .episodes(.show(.right(42))))), session: .loggedIn)
+      to: .gitHubAuth(redirect: siteRouter.url(for: .episodes(.show(.right(42))))),
+      session: .loggedIn)
     let conn = connection(from: login)
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -107,7 +108,7 @@ class AuthTests: TestCase {
 
   override func setUp() async throws {
     try await super.setUp()
-    //SnapshotTesting.record = true
+    //SnapshotTesting.isRecording = true
   }
 
   @MainActor

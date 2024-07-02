@@ -61,6 +61,59 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     if layoutData.usePrismJs {
       PrismJSHead()
     }
+    if let title = metadata.title {
+      meta()
+        .attribute("name", "title")
+        .attribute("content", title)
+      meta()
+        .attribute("property", "og:title")
+        .attribute("content", title)
+      meta()
+        .attribute("name", "twitter:title")
+        .attribute("content", title)
+    }
+    if let description = metadata.description {
+      meta()
+        .attribute("name", "description")
+        .attribute("content", description)
+      meta()
+        .attribute("property", "og:description")
+        .attribute("content", description)
+      meta()
+        .attribute("name", "twitter:description")
+        .attribute("content", description)
+    }
+    if let image = metadata.image {
+      meta()
+        .attribute("property", "og:image")
+        .attribute("content", image)
+      meta()
+        .attribute("name", "twitter:image")
+        .attribute("content", image)
+    }
+    if let type = metadata.type {
+      meta()
+        .attribute("property", "og:type")
+        .attribute("content", type.rawValue)
+    }
+    if let twitterCard = metadata.twitterCard {
+      meta()
+        .attribute("name", "twitter:card")
+        .attribute("content", twitterCard.rawValue)
+    }
+    if let twitterSite = metadata.twitterSite {
+      meta()
+        .attribute("name", "twitter:site")
+        .attribute("content", twitterSite)
+    }
+    if let url = metadata.url {
+      meta()
+        .attribute("property", "og:url")
+        .attribute("content", url)
+      meta()
+        .attribute("name", "twitter:url")
+        .attribute("content", url)
+    }
     script()
       .attribute("defer")
       .attribute("data-domain", "pointfree.co")
@@ -92,7 +145,6 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     }
   }
 }
-
 
 struct NavBar: HTML {
   @Dependency(\.siteRouter) var siteRouter
@@ -176,9 +228,12 @@ struct MenuButton: HTML {
     var body: some HTML {
       span {}
         .inlineStyle("top", index == 0 ? nil : "\(index * 5)px")
-        .inlineStyle("top", index == 0 ? nil : index == 1 ? "-5px" : "0", pre: "input:checked ~ #menu-icon")
+        .inlineStyle(
+          "top", index == 0 ? nil : index == 1 ? "-5px" : "0", pre: "input:checked ~ #menu-icon"
+        )
         .inlineStyle("transform", "rotate(\(index * 45)deg)", pre: "input:checked ~ #menu-icon")
-        .inlineStyle("background", index == 0 ? "transparent" : nil, pre: "input:checked ~ #menu-icon")
+        .inlineStyle(
+          "background", index == 0 ? "transparent" : nil, pre: "input:checked ~ #menu-icon")
     }
   }
 }
@@ -386,7 +441,7 @@ public struct PastDueBanner: HTML {
       }
 
     case .owner(hasSeat: _, status: .active, enterpriseAccount: _, deactivated: true),
-        .owner(hasSeat: _, status: .trialing, enterpriseAccount: _, deactivated: true):
+      .owner(hasSeat: _, status: .trialing, enterpriseAccount: _, deactivated: true):
       TopBanner(style: .warning) {
         "Your subscription has been deactivated. Please contact us at "
         Link("support@pointfree.co", href: "mailto:support@pointfree.co")
@@ -411,7 +466,7 @@ public struct PastDueBanner: HTML {
       }
 
     case .teammate(status: .active, enterpriseAccount: _, deactivated: true),
-        .teammate(status: .trialing, enterpriseAccount: _, deactivated: true):
+      .teammate(status: .trialing, enterpriseAccount: _, deactivated: true):
       TopBanner(style: .warning) {
         "Your team’s subscription is deactivated. Please have "
         owner

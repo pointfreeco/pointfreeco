@@ -25,7 +25,8 @@ public struct Episodes: HTML {
     case .all:
       mainEpisodes = episodes()
         .sorted { $0.sequence > $1.sequence }
-      freeEpisodes = Array(mainEpisodes
+      freeEpisodes = Array(
+        mainEpisodes
           .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
           .prefix(3))
     case .free:
@@ -36,7 +37,7 @@ public struct Episodes: HTML {
     case .history:
       freeEpisodes = []
       mainEpisodes = episodeProgresses.values
-        .sorted(by: { ($0.updatedAt ?? $0.createdAt) > ($1.updatedAt ?? $0.createdAt) })
+        .sorted(by: { ($0.updatedAt ?? $0.createdAt) > ($1.updatedAt ?? $1.createdAt) })
         .compactMap({ progress in
           episodes().first(where: { $0.sequence == progress.episodeSequence })
         })

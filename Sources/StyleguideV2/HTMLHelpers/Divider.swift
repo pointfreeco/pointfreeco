@@ -1,5 +1,5 @@
 public struct Divider: HTML {
-  public init () {}
+  public init() {}
   public var body: some HTML {
     hr()
       .inlineStyle("border", "none")
