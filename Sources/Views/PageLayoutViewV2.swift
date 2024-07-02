@@ -61,6 +61,59 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     if layoutData.usePrismJs {
       PrismJSHead()
     }
+    if let title = metadata.title {
+      meta()
+        .attribute("name", "title")
+        .attribute("content", title)
+      meta()
+        .attribute("property", "og:title")
+        .attribute("content", title)
+      meta()
+        .attribute("name", "twitter:title")
+        .attribute("content", title)
+    }
+    if let description = metadata.description {
+      meta()
+        .attribute("name", "description")
+        .attribute("content", description)
+      meta()
+        .attribute("property", "og:description")
+        .attribute("content", description)
+      meta()
+        .attribute("name", "twitter:description")
+        .attribute("content", description)
+    }
+    if let image = metadata.image {
+      meta()
+        .attribute("property", "og:image")
+        .attribute("content", image)
+      meta()
+        .attribute("name", "twitter:image")
+        .attribute("content", image)
+    }
+    if let type = metadata.type {
+      meta()
+        .attribute("property", "og:type")
+        .attribute("content", type.rawValue)
+    }
+    if let twitterCard = metadata.twitterCard {
+      meta()
+        .attribute("name", "twitter:card")
+        .attribute("content", twitterCard.rawValue)
+    }
+    if let twitterSite = metadata.twitterSite {
+      meta()
+        .attribute("name", "twitter:site")
+        .attribute("content", twitterSite)
+    }
+    if let url = metadata.url {
+      meta()
+        .attribute("property", "og:url")
+        .attribute("content", url)
+      meta()
+        .attribute("name", "twitter:url")
+        .attribute("content", url)
+    }
     script()
       .attribute("defer")
       .attribute("data-domain", "pointfree.co")
