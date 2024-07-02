@@ -209,8 +209,10 @@ private struct Companies: HTML {
     var body: some HTML {
       VStack(alignment: .center) {
         SVG(base64: svg, description: "")
-          .inlineStyle("width", "140px")
+          .inlineStyle("width", "100px")
           .inlineStyle("height", "60px")
+          .inlineStyle("width", "140px", media: .desktop)
+          .inlineStyle("height", "60px", media: .desktop)
           .inlineStyle("object-fit", "contain")
       }
       .flexItem(basis: "50%")
