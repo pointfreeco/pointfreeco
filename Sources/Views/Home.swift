@@ -66,7 +66,7 @@ private struct LoggedIn: HTML {
     } else {
       UpgradeModule()
     }
-    Collections()
+    CollectionsModule()
     Divider()
     Clips(clips: clips)
     Divider()
@@ -94,7 +94,6 @@ private struct LoggedOut: HTML {
   let allFreeEpisodeCount: Int
   let clips: [Clip]
 
-  @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
@@ -110,13 +109,11 @@ private struct LoggedOut: HTML {
     )
     Companies()
     WhatToExpect()
-    if !subscriberState.isActiveSubscriber {
-      FreeEpisodes()
-      Divider()
-    }
+    FreeEpisodes()
+    Divider()
     EpisodesModule()
     Divider()
-    Collections()
+    CollectionsModule()
     if !clips.isEmpty {
       Divider()
       Clips(clips: clips)
@@ -401,7 +398,7 @@ private struct BlogPosts: HTML {
   }
 }
 
-private struct Collections: HTML {
+private struct CollectionsModule: HTML {
   @Dependency(\.collections) var collections
   @Dependency(\.siteRouter) var siteRouter
 

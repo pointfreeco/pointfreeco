@@ -1,4 +1,5 @@
 import Dependencies
+import Foundation
 import HttpPipeline
 import Models
 import PointFreePrelude
@@ -7,17 +8,17 @@ import Prelude
 import Tuple
 import Views
 
-let collectionsIndexMiddleware: M<Void> =
-  writeStatus(.ok)
-  >=> respond(
-    view: collectionIndex(collections:),
-    layoutData: {
-      @Dependency(\.collections) var collections
-      return SimplePageLayoutData(
-        data: Array(collections),
-        extraStyles: collectionIndexStyles,
-        style: .base(.some(.minimal(.black))),
-        title: "Point-Free Collections"
+func collectionsIndexMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  conn
+    .writeStatus(.ok)
+    .respondV2(
+      layoutData: SimplePageLayoutData(
+        description: "Point-Free: A video series exploring advanced programming topics in Swift.",
+        title: "Point-Free: Collections"
       )
+    ) {
+      Collections()
     }
-  )
+}

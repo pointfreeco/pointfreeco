@@ -148,8 +148,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await clipsMiddleware(conn.map(const(clipsRoute)))
 
   case .collections(.index):
-    return await collectionsIndexMiddleware(conn.map(const(())))
-      .performAsync()
+    return await collectionsIndexMiddleware(conn.map { _ in })
 
   case let .collections(.collection(slug, .show)):
     return await collectionMiddleware(conn.map(const(slug)))
