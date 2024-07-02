@@ -286,8 +286,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
       .performAsync()
 
   case .pricingLanding:
-    return await pricingLanding(conn.map(const(())))
-      .performAsync()
+    return await pricingMiddleware(conn.map { _ in })
 
   case .privacy:
     return await privacyResponse(conn.map(const(())))

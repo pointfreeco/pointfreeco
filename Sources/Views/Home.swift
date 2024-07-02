@@ -157,7 +157,7 @@ private struct EpisodeCredits: HTML {
   }
 }
 
-private struct Companies: HTML {
+struct Companies: HTML {
   var body: some HTML {
     PageModule(theme: .companies) {
       div {
@@ -219,7 +219,7 @@ private struct Companies: HTML {
   }
 }
 
-private struct WhatToExpect: HTML {
+struct WhatToExpect: HTML {
   var body: some HTML {
     PageModule(title: "What to expect", theme: .informational) {
       LazyVGrid(columns: [.desktop: [1, 1]]) {
@@ -475,7 +475,7 @@ private struct ReferAFriend: HTML {
   }
 }
 
-private struct WhatPeopleAreSaying: HTML {
+struct WhatPeopleAreSaying: HTML {
   var body: some HTML {
     PageModule(
       title: "What people are saying",

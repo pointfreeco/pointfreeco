@@ -19,15 +19,11 @@ public struct Card<Content: HTML, Header: HTML, Footer: HTML>: HTML {
         .inlineStyle("border-bottom", "1px solid #e8e8e8")
         .inlineStyle("border-bottom", "1px solid #3d3d3d", media: .dark)
 
-      VStack(spacing: 0) {
-        div { content }
+      VStack {
+        VStack(spacing: 0) { content }
           .grow()
 
-        HStack(alignment: .center) {
-          footer
-        }
-        .color(.gray650.dark(.gray400))
-        .linkColor(.gray650.dark(.gray400))
+        footer
       }
       .grow()
       .inlineStyle("padding", "1.5rem")

@@ -801,7 +801,7 @@ struct PricingPlan {
 }
 
 extension Array where Element == Faq {
-  fileprivate static var allFaqs: [Faq] {
+  static var allFaqs: [Faq] {
     @Dependency(\.siteRouter) var siteRouter
     return [
       Faq(
