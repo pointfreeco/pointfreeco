@@ -1,4 +1,3 @@
-
 extension SVG {
   static let error = Self("Error") {
     """
@@ -124,12 +123,12 @@ public struct Diagnostic<Message: HTML>: HTML {
           }
           .inlineStyle(
             "filter",
-          """
-          drop-shadow(1px 0 0 white) \
-          drop-shadow(-1px 0 0 white) \
-          drop-shadow(0 1px 0 white) \
-          drop-shadow(0 -1px 0 white)
-          """
+            """
+            drop-shadow(1px 0 0 white) \
+            drop-shadow(-1px 0 0 white) \
+            drop-shadow(0 1px 0 white) \
+            drop-shadow(0 -1px 0 white)
+            """
           )
           .inlineStyle("width", "14px")
         }
@@ -173,12 +172,12 @@ public struct InlineDiagnostic: HTML {
           }
           .inlineStyle(
             "filter",
-          """
-          drop-shadow(1px 0 0 white) \
-          drop-shadow(-1px 0 0 white) \
-          drop-shadow(0 1px 0 white) \
-          drop-shadow(0 -1px 0 white)
-          """
+            """
+            drop-shadow(1px 0 0 white) \
+            drop-shadow(-1px 0 0 white) \
+            drop-shadow(0 1px 0 white) \
+            drop-shadow(0 -1px 0 white)
+            """
           )
           .inlineStyle("width", "14px")
         }
@@ -214,14 +213,14 @@ public struct InlineDiagnostic: HTML {
       HTMLPreview {
         div {
           style {
-          """
-          html {
-            font-family:-apple-system,Helvetica Neue,Helvetica,Arial,sans-serif;
-          }
-          @media(prefers-color-scheme: dark) {
-            body{background-color:#292A31;}
-          }
-          """
+            """
+            html {
+              font-family:-apple-system,Helvetica Neue,Helvetica,Arial,sans-serif;
+            }
+            @media(prefers-color-scheme: dark) {
+              body{background-color:#292A31;}
+            }
+            """
           }
           VStack {
             InlineDiagnostic(
@@ -264,7 +263,8 @@ public struct InlineDiagnostic: HTML {
 
             Diagnostic(level: .warning) {
               "Constant 'blob' inferred to have type '()', which may be unexpected"
-              br(); br()
+              br()
+              br()
               "Add an explicit type annotation to silence this warning"
             }
 
