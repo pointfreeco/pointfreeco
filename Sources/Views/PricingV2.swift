@@ -14,6 +14,7 @@ public struct PricingV2: HTML {
   public init() {}
 
   public var body: some HTML {
+    // TODO: Recapture "You‘re already a subscriber! [Manage your account]"
     PageHeader {
       "Pricing"
     } blurb: {
