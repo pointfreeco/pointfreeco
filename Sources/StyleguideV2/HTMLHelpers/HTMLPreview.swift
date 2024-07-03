@@ -28,8 +28,11 @@
         body
       } head: {
         head
-      }.render()
-      webView.loadHTMLString(String(decoding: bytes, as: UTF8.self), baseURL: nil)
+      }
+      .render()
+      let htmlString = String(decoding: bytes, as: UTF8.self)
+      print(htmlString)
+      webView.loadHTMLString(htmlString, baseURL: nil)
     }
   }
 #endif

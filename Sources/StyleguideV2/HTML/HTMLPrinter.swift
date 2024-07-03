@@ -75,5 +75,6 @@ extension DependencyValues {
 
 private enum HTMLPrinterKey: DependencyKey {
   static var liveValue: HTMLPrinter { HTMLPrinter() }
+  static var previewValue: HTMLPrinter { HTMLPrinter(.pretty) }
   static var testValue: HTMLPrinter { HTMLPrinter(.pretty) }
 }
