@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 29070
+Content-Length: 29075
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -180,58 +180,55 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
 .margin-102{margin:1rem 0 2rem 0}
 .overflow-103{overflow:hidden}
 .align-items-105{align-items:stretch}
-.row-gap-106{row-gap:0}
-.border-bottom-107{border-bottom:1px solid #e8e8e8}
-.padding-109{padding:2rem 1.5rem}
-.text-decoration-110:hover{text-decoration:none}
-.color-111:link{color:#121212}
-.color-113:visited{color:#121212}
-.margin-top-115:not(:first-child){margin-top:1.5rem}
-.margin-bottom-116:not(:last-child){margin-bottom:0.5rem}
-.font-size-117{font-size:1.5rem}
-.color-118{color:#a8a8a8}
-.padding-120{padding:1.5rem}
-.margin-top-121{margin-top:-1rem}
-.color-122:link{color:#666666}
-.color-124{color:#666666}
-.column-gap-126{column-gap:1.0rem}
-.column-gap-127{column-gap:0.25rem}
-.background-128{background:linear-gradient(#121212, #291a40)}
-.row-gap-130{row-gap:0.5rem}
-.padding-top-135{padding-top:4.0rem}
-.padding-left-136{padding-left:2.0rem}
-.padding-bottom-137{padding-bottom:4.0rem}
-.padding-right-138{padding-right:2.0rem}
-.max-width-140{max-width:40rem}
-.margin-top-141{margin-top:3rem}
-.display-142{display:inline-block}
-.padding-143{padding:1.0rem 1.25rem}
-.text-decoration-144:visited{text-decoration:underline}
-.text-decoration-145:link{text-decoration:underline}
-.background-color-154{background-color:#121212}
-.align-items-155{align-items:first baseline}
-.font-size-158{font-size:1.25rem}
-.line-height-160{line-height:1.45}
-.color-162:link{color:#79f2b0}
-.color-163:visited{color:#79f2b0}
-.display-164{display:grid}
-.grid-template-columns-165{grid-template-columns:1fr 2fr}
-.font-size-166{font-size:0.75rem}
-.letter-spacing-168{letter-spacing:0.54pt}
-.line-height-169{line-height:1.25}
-.text-transform-170{text-transform:uppercase}
+.border-bottom-106{border-bottom:1px solid #e8e8e8}
+.padding-108{padding:2rem 1.5rem}
+.text-decoration-109:hover{text-decoration:none}
+.color-110:link{color:#121212}
+.color-112:visited{color:#121212}
+.margin-top-114:not(:first-child){margin-top:1.5rem}
+.margin-bottom-115:not(:last-child){margin-bottom:0.5rem}
+.font-size-116{font-size:1.5rem}
+.color-117{color:#a8a8a8}
+.padding-119{padding:0.5rem 1.5rem 1.5rem}
+.color-120{color:#666666}
+.column-gap-122{column-gap:1.0rem}
+.column-gap-123{column-gap:0.25rem}
+.background-124{background:linear-gradient(#121212, #291a40)}
+.row-gap-126{row-gap:0.5rem}
+.padding-top-131{padding-top:4.0rem}
+.padding-left-132{padding-left:2.0rem}
+.padding-bottom-133{padding-bottom:4.0rem}
+.padding-right-134{padding-right:2.0rem}
+.max-width-136{max-width:40rem}
+.margin-top-137{margin-top:3rem}
+.display-138{display:inline-block}
+.padding-139{padding:1.0rem 1.25rem}
+.text-decoration-140:visited{text-decoration:underline}
+.text-decoration-141:link{text-decoration:underline}
+.background-color-150{background-color:#121212}
+.align-items-151{align-items:first baseline}
+.font-size-154{font-size:1.25rem}
+.line-height-156{line-height:1.45}
+.color-158:link{color:#79f2b0}
+.color-159:visited{color:#79f2b0}
+.display-160{display:grid}
+.grid-template-columns-161{grid-template-columns:1fr 2fr}
+.font-size-162{font-size:0.75rem}
+.letter-spacing-164{letter-spacing:0.54pt}
+.line-height-165{line-height:1.25}
+.text-transform-166{text-transform:uppercase}
 @media only screen and (max-width: 831px){
   .position-1{position:sticky}
   .top-2{top:0}
   .display-17{display:none}
   input:checked ~ .display-63{display:block}
-  .padding-top-150{padding-top:2.0rem}
-  .padding-left-151{padding-left:2.0rem}
-  .padding-bottom-152{padding-bottom:2.0rem}
-  .padding-right-153{padding-right:2.0rem}
-  .padding-bottom-157{padding-bottom:1.0rem}
-  .margin-bottom-161{margin-bottom:0.0rem}
-  .padding-top-171{padding-top:1.0rem}
+  .padding-top-146{padding-top:2.0rem}
+  .padding-left-147{padding-left:2.0rem}
+  .padding-bottom-148{padding-bottom:2.0rem}
+  .padding-right-149{padding-right:2.0rem}
+  .padding-bottom-153{padding-bottom:1.0rem}
+  .margin-bottom-157{margin-bottom:0.0rem}
+  .padding-top-167{padding-top:1.0rem}
 }
 @media only screen and (min-width: 832px){
   .padding-5{padding:1.5rem}
@@ -244,30 +241,29 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
   .display-96{display:grid}
   .grid-template-columns-97{grid-template-columns:1fr 1fr 1fr}
   .row-gap-98{row-gap:1.0rem}
-  .align-items-129{align-items:center}
-  .padding-top-131{padding-top:8.0rem}
-  .padding-left-132{padding-left:8.0rem}
-  .padding-bottom-133{padding-bottom:8.0rem}
-  .padding-right-134{padding-right:8.0rem}
-  .text-align-139{text-align:center}
-  .padding-top-146{padding-top:4.0rem}
-  .padding-left-147{padding-left:4.0rem}
-  .padding-bottom-148{padding-bottom:4.0rem}
-  .padding-right-149{padding-right:4.0rem}
-  .grid-template-columns-156{grid-template-columns:1fr 1fr}
-  .font-size-159{font-size:1.5rem}
-  .font-size-167{font-size:0.875rem}
+  .align-items-125{align-items:center}
+  .padding-top-127{padding-top:8.0rem}
+  .padding-left-128{padding-left:8.0rem}
+  .padding-bottom-129{padding-bottom:8.0rem}
+  .padding-right-130{padding-right:8.0rem}
+  .text-align-135{text-align:center}
+  .padding-top-142{padding-top:4.0rem}
+  .padding-left-143{padding-left:4.0rem}
+  .padding-bottom-144{padding-bottom:4.0rem}
+  .padding-right-145{padding-right:4.0rem}
+  .grid-template-columns-152{grid-template-columns:1fr 1fr}
+  .font-size-155{font-size:1.5rem}
+  .font-size-163{font-size:0.875rem}
 }
 @media (prefers-color-scheme: dark){
   .background-color-89{background-color:#121212}
   .border-99{border:1px #353535 solid}
   .background-color-104{background-color:#242424}
-  .border-bottom-108{border-bottom:1px solid #3d3d3d}
-  .color-112:link{color:#fff}
-  .color-114:visited{color:#fff}
-  .color-119{color:#666666}
-  .color-123:link{color:#a8a8a8}
-  .color-125{color:#a8a8a8}
+  .border-bottom-107{border-bottom:1px solid #3d3d3d}
+  .color-111:link{color:#fff}
+  .color-113:visited{color:#fff}
+  .color-118{color:#666666}
+  .color-121{color:#a8a8a8}
 }
 
     </style>
@@ -318,7 +314,7 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
 <div class="background-color-88 background-color-89">
   <div class="max-width-6 margin-90 padding-91 padding-92 display-8 flex-direction-9 flex-wrap-10 justify-content-93 align-items-94">
     <pf-vgrid class="column-gap-95 display-96 grid-template-columns-97 row-gap-98">
-      <pf-vstack class="border-99 box-shadow-100 border-radius-101 margin-102 overflow-103 background-color-88 background-color-104 align-items-105 display-8 flex-direction-71 row-gap-106"><a class="border-bottom-107 border-bottom-108 display-47 padding-109 text-align-68 text-decoration-14 text-decoration-15 text-decoration-110 color-111 color-112 color-113 color-114" href="/collections/functions"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <pf-vstack class="border-99 box-shadow-100 border-radius-101 margin-102 overflow-103 background-color-88 background-color-104 align-items-105 display-8 flex-direction-71 row-gap-72"><a class="border-bottom-106 border-bottom-107 display-47 padding-108 text-align-68 text-decoration-14 text-decoration-15 text-decoration-109 color-110 color-111 color-112 color-113" href="/collections/functions"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="0.5" width="64" height="64" rx="32" fill="url(#paint0_linear_733_2369)"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M35.5 17.0259L50.474 31.9999L35.5 46.9739L20.526 31.9999L35.5 17.0259ZM33.0043 34.4956C34.3178 35.8091 36.5883 35.9029 37.9957 34.4956C39.4218 33.0695 39.3092 30.8177 37.9957 29.5042C36.6822 28.1907 34.4304 28.0781 33.0043 29.5042C31.597 30.9116 31.6908 33.1821 33.0043 34.4956ZM29.5883 17.1141L31.0883 18.6141L17.6143 32.0881L31.0883 45.5622L29.5883 47.0622L14.6143 32.0881L29.5883 17.1141Z" fill="white"/>
 <defs>
@@ -329,25 +325,26 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
 </defs>
 </svg>
         <div>
-          <h4 class="margin-62 margin-top-115 margin-bottom-116 font-size-117 font-weight-78 line-height-79">Functions
+          <h4 class="margin-62 margin-top-114 margin-bottom-115 font-size-116 font-weight-78 line-height-79">Functions
           </h4>
-          <div class="font-weight-81 line-height-82 font-size-26 color-118 color-119">Collection
+          <div class="font-weight-81 line-height-82 font-size-26 color-117 color-118">Collection
           </div>
         </div></a>
-        <pf-vstack class="padding-120 flex-grow-64 align-items-105 display-8 flex-direction-71 row-gap-106">
+        <pf-vstack class="padding-119 flex-grow-64 align-items-105 display-8 flex-direction-71 row-gap-72">
           <div class="flex-grow-64">
-            <div class="margin-top-121 color-122 color-123 color-124 color-125">
-              <div class="markdown"><p>This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.</p>
-
-              </div>
+            <div class="color-120 color-121">
+              <pf-markdown class="display-47">
+                <p class="padding-bottom-84 padding-top-85 padding-left-86 padding-right-87 margin-62 line-height-82">This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.
+                </p>
+              </pf-markdown>
             </div>
           </div>
-          <pf-hstack class="color-118 color-119 align-items-12 display-8 flex-direction-9 column-gap-126">
-            <pf-hstack class="font-weight-81 line-height-82 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-127"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <pf-hstack class="color-117 color-118 align-items-12 display-8 flex-direction-9 column-gap-122">
+            <pf-hstack class="font-weight-81 line-height-82 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-123"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M6.66665 11.4999L10.6666 8.49992L6.66665 5.49992V11.4999ZM7.99998 1.83325C4.31998 1.83325 1.33331 4.81992 1.33331 8.49992C1.33331 12.1799 4.31998 15.1666 7.99998 15.1666C11.68 15.1666 14.6666 12.1799 14.6666 8.49992C14.6666 4.81992 11.68 1.83325 7.99998 1.83325ZM7.99998 13.8333C5.05998 13.8333 2.66665 11.4399 2.66665 8.49992C2.66665 5.55992 5.05998 3.16659 7.99998 3.16659C10.94 3.16659 13.3333 5.55992 13.3333 8.49992C13.3333 11.4399 10.94 13.8333 7.99998 13.8333Z" fill="currentColor"/>
 </svg>6 episodes
             </pf-hstack>
-            <pf-hstack class="font-weight-81 line-height-82 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-127"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <pf-hstack class="font-weight-81 line-height-82 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-123"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
 </svg>2 hr 18 min
             </pf-hstack>
@@ -357,31 +354,31 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
     </pf-vgrid>
   </div>
 </div>
-<div class="background-128">
-  <div class="align-items-129 display-8 flex-direction-71 flex-wrap-10 row-gap-130 padding-top-131 padding-left-132 padding-bottom-133 padding-right-134 padding-top-135 padding-left-136 padding-bottom-137 padding-right-138 margin-7 max-width-6">
-    <div class="text-align-139">
+<div class="background-124">
+  <div class="align-items-125 display-8 flex-direction-71 flex-wrap-10 row-gap-126 padding-top-127 padding-left-128 padding-bottom-129 padding-right-130 padding-top-131 padding-left-132 padding-bottom-133 padding-right-134 margin-7 max-width-6">
+    <div class="text-align-135">
       <h2 class="color-41 margin-62 margin-top-75 margin-bottom-76 font-size-77 font-weight-78 line-height-79">Get started with our free&nbsp;plan
       </h2>
     </div>
-    <div class="text-align-139">
-      <p class="margin-90 max-width-140 color-80 font-weight-81 line-height-82 font-size-83 padding-bottom-84 padding-top-85 padding-left-86 padding-right-87 margin-62 line-height-82">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
+    <div class="text-align-135">
+      <p class="margin-90 max-width-136 color-80 font-weight-81 line-height-82 font-size-83 padding-bottom-84 padding-top-85 padding-left-86 padding-right-87 margin-62 line-height-82">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
       </p>
     </div>
-    <div class="text-align-139 width-0"><a class="margin-top-141 display-142 font-size-83 color-39 color-40 color-41 background-color-42 border-43 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-143 transition-38" href="/signup">Sign up for free →</a>
-    </div><a class="text-align-139 font-weight-81 line-height-82 font-size-26 text-decoration-144 text-decoration-145 text-decoration-16 color-23 color-24" href="/pricing">View plans and pricing</a>
+    <div class="text-align-135 width-0"><a class="margin-top-137 display-138 font-size-83 color-39 color-40 color-41 background-color-42 border-43 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-139 transition-38" href="/signup">Sign up for free →</a>
+    </div><a class="text-align-135 font-weight-81 line-height-82 font-size-26 text-decoration-140 text-decoration-141 text-decoration-16 color-23 color-24" href="/pricing">View plans and pricing</a>
   </div>
 </div>
-<footer class="padding-top-146 padding-left-147 padding-bottom-148 padding-right-149 padding-top-150 padding-left-151 padding-bottom-152 padding-right-153 background-color-154">
-  <pf-vgrid class="align-items-155 column-gap-95 display-96 grid-template-columns-156 row-gap-98">
-    <div class="padding-bottom-157 padding-right-149">
-      <h4 class="font-size-158 font-size-159 line-height-160 margin-bottom-161 font-size-117"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-40 color-39" href="/">Point-Free</a>
+<footer class="padding-top-142 padding-left-143 padding-bottom-144 padding-right-145 padding-top-146 padding-left-147 padding-bottom-148 padding-right-149 background-color-150">
+  <pf-vgrid class="align-items-151 column-gap-95 display-96 grid-template-columns-152 row-gap-98">
+    <div class="padding-bottom-153 padding-right-145">
+      <h4 class="font-size-154 font-size-155 line-height-156 margin-bottom-157 font-size-116"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-40 color-39" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-81 line-height-82 font-size-83 color-41">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-162 color-163" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-162 color-163" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-81 line-height-82 font-size-83 color-41">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-158 color-159" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-158 color-159" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="column-gap-126 display-164 grid-template-columns-165 row-gap-72">
+    <pf-vgrid class="column-gap-122 display-160 grid-template-columns-161 row-gap-72">
       <div>
-        <h5 class="font-size-166 font-size-167 letter-spacing-168 line-height-169 text-transform-170 color-41">Content
+        <h5 class="font-size-162 font-size-163 letter-spacing-164 line-height-165 text-transform-166 color-41">Content
         </h5>
         <ol class="padding-left-18 list-style-type-19">
           <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/pricing">Pricing</a>
@@ -399,7 +396,7 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
         </ol>
       </div>
       <div>
-        <h5 class="font-size-166 font-size-167 letter-spacing-168 line-height-169 text-transform-170 color-41">More
+        <h5 class="font-size-162 font-size-163 letter-spacing-164 line-height-165 text-transform-166 color-41">More
         </h5>
         <ol class="padding-left-18 list-style-type-19">
           <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/about">About Us</a>
@@ -417,7 +414,7 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
         </ol>
       </div>
     </pf-vgrid>
-    <p class="padding-top-171 font-weight-81 line-height-82 font-size-26 color-124">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
+    <p class="padding-top-167 font-weight-81 line-height-82 font-size-26 color-120">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
     </p>
   </pf-vgrid>
 </footer>

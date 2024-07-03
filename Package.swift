@@ -44,9 +44,11 @@ var package = Package(
   dependencies: [
     .package(url: "https://github.com/apple/swift-collections", from: "1.1.0"),
     .package(url: "https://github.com/apple/swift-log", from: "1.5.0"),
+    .package(url: "https://github.com/apple/swift-markdown", from: "0.4.0"),
     .package(url: "https://github.com/apple/swift-nio", from: "2.61.0"),
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.19.0"),
     .package(url: "https://github.com/vapor/postgres-kit", from: "2.12.0"),
+    .package(url: "https://github.com/vapor/sql-kit", exact: "3.28.0"),
     .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.3.0"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.3.1"),
@@ -57,19 +59,10 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", branch: "async"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.10.0"),
     .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.6.0"),
-    .package(url: "https://github.com/pointfreeco/swift-web", revision: "2b7ed38"),
+    .package(url: "https://github.com/pointfreeco/swift-web", revision: "a1c1003"),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.0.0"),
   ],
   targets: [
-
-    .systemLibrary(
-      name: "Ccmark",
-      pkgConfig: "libcmark",
-      providers: [
-        .apt(["cmark"]),
-        .brew(["cmark"]),
-      ]
-    ),
 
     .target(
       name: "Database",
@@ -489,9 +482,9 @@ var package = Package(
     .target(
       name: "StyleguideV2",
       dependencies: [
-        "Ccmark",
         "Styleguide",
         .product(name: "Html", package: "swift-html"),
+        .product(name: "Markdown", package: "swift-markdown"),
         .product(name: "OrderedCollections", package: "swift-collections"),
       ]
     ),
@@ -542,7 +535,6 @@ var package = Package(
     .target(
       name: "Views",
       dependencies: [
-        "Ccmark",
         "EmailAddress",
         "EnvVars",
         "FunctionalCss",
@@ -556,6 +548,7 @@ var package = Package(
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Html", package: "swift-html"),
         .product(name: "HttpPipeline", package: "swift-web"),
+        .product(name: "Markdown", package: "swift-markdown"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedTime", package: "swift-tagged"),

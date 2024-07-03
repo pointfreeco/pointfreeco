@@ -17,31 +17,33 @@ public struct EpisodeCard: HTML {
 
   public var body: some HTML {
     Card {
-      div {
-        "Episode \(episode.sequence.rawValue) • \(episode.publishedAt.monthDayYear())"
-      }
-      .color(.gray650.dark(.gray400))
-      .fontStyle(.body(.small))
+      VStack {
+        VStack(spacing: 0.5) {
+          div {
+            "Episode \(episode.sequence.rawValue) • \(episode.publishedAt.monthDayYear())"
+          }
+          .color(.gray650.dark(.gray400))
+          .fontStyle(.body(.small))
 
-      div {
-        Header(4) {
-          Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
-            HTMLText(episode.title)
-            if let subtitle = episode.subtitle {
-              ":"
-              br()
-              HTMLText(subtitle)
+          div {
+            Header(4) {
+              Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
+                HTMLText(episode.title)
+                if let subtitle = episode.subtitle {
+                  ":"
+                  br()
+                  HTMLText(subtitle)
+                }
+              }
+              .linkColor(.black.dark(.white))
             }
           }
-          .linkColor(.black.dark(.white))
         }
-      }
-      .inlineStyle("margin-top", "0.5rem")
 
-      div {
         HTMLMarkdown(episode.blurb)
+          .color(.gray400.dark(.gray650))
+          .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
       }
-      .color(.gray400.dark(.gray650))
     } header: {
       Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
         Image(source: episode.image, description: "")
@@ -127,10 +129,10 @@ public struct ClipCard: HTML {
         .linkColor(.black.dark(.white))
       }
 
-      div {
-        HTMLMarkdown(clip.blurb)
-      }
-      .color(.gray400.dark(.gray650))
+      HTMLMarkdown(clip.blurb)
+        .color(.gray400.dark(.gray650))
+        .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
+        .inlineStyle("margin-top", "1rem")
     } header: {
       Link(href: siteRouter.path(for: .clips(.clip(videoID: clip.vimeoVideoID)))) {
         Image(source: clip.posterURL, description: "")
@@ -169,8 +171,7 @@ public struct CollectionCard: HTML {
         HTMLMarkdown(collection.blurb)
       }
       .color(.gray400.dark(.gray650))
-      .color(.gray400.dark(.gray650), .link)
-      .inlineStyle("margin-top", "-1rem")  // TODO: Fix with new markdown
+      .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
     } header: {
       Link(href: siteRouter.path(for: .collections(.collection(collection.slug)))) {
         let (start, stop) = Self.combos[index % Self.combos.count]
