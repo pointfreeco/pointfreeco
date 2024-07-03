@@ -85,7 +85,7 @@ public struct HTMLText: HTML {
       case UInt8(ascii: "<"):
         printer.bytes.append(contentsOf: "&lt;".utf8)
       case UInt8(ascii: ">"):
-        printer.bytes.append(contentsOf: "&lt;".utf8)
+        printer.bytes.append(contentsOf: "&rt;".utf8)
       default:
         printer.bytes.append(byte)
       }
