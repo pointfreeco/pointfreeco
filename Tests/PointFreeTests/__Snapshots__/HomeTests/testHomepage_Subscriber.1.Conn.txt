@@ -2,7 +2,7 @@ GET http://localhost:8080/
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 46149
+Content-Length: 50498
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -11,7 +11,17 @@ X-Frame-Options: SAMEORIGIN
 X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
 
-<!doctype html><html lang="en"><head><title>Point-Free</title><meta charset="UTF-8"><meta name="theme-color" content="#121212"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><style>/*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template{display:none}[hidden]{display:none}</style><style>html {
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Point-Free
+    </title>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#121212">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <style>/*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template{display:none}[hidden]{display:none}
+    </style>
+    <style>html {
   font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   -webkit-box-sizing: border-box;
@@ -57,27 +67,453 @@ body, html {
   from { opacity: 1; }
   50% { opacity: 0; }
   to { opacity: 1; }
-}</style><link rel="apple-touch-icon" sizes="180x180" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png"><link rel="icon" sizes="32x32" type="image/png" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png"><link rel="icon" sizes="16x16" type="image/png" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png"><link rel="manifest" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest"><link rel="mask-icon" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg"><link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml"><link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml"><meta name="title" content="Point-Free"><meta property="og:title" content="Point-Free"><meta name="twitter:title" content="Point-Free"><meta name="description" content="Point-Free: A video series exploring advanced programming topics in Swift."><meta property="og:description" content="Point-Free: A video series exploring advanced programming topics in Swift."><meta name="twitter:description" content="Point-Free: A video series exploring advanced programming topics in Swift."><meta property="og:image" content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png"><meta name="twitter:image" content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@pointfreeco"><meta property="og:url" content="http://localhost:8080/"><meta name="twitter:url" content="http://localhost:8080/"><script src="https://plausible.io/js/script.js" defer data-domain="pointfree.co"></script><style> .width-0{width:100%} .background-3{background:#121212} .padding-4{padding:2rem} .max-width-6{max-width:1280px} .margin-7{margin:0 auto} .display-8{display:flex} .flex-direction-9{flex-direction:row} .flex-wrap-10{flex-wrap:wrap} .justify-content-11{justify-content:space-between} .align-items-12{align-items:center} .line-height-13{line-height:0} .text-decoration-14:visited{text-decoration:none} .text-decoration-15:link{text-decoration:none} .text-decoration-16:hover{text-decoration:underline} .padding-left-18{padding-left:0.0rem} .list-style-type-19{list-style-type:none} .padding-left-21:not(:first-child){padding-left:2rem} .display-22{display:inline} .color-23:link{color:#a8a8a8} .color-24:visited{color:#a8a8a8} .padding-left-25:not(:first-child){padding-left:1rem} .font-size-26{font-size:0.875rem} .color-27:visited{color:#fff} .color-28:link{color:#fff} .color-29{color:#fff} .background-color-30{background-color:#974dff} .border-31{border:none #974dff} .border-radius-32{border-radius:0.5rem} .box-shadow-33:hover{box-shadow:inset 0 0 0 20rem rgba(0,0,0,0.1)} .cursor-34{cursor:pointer} .font-weight-35{font-weight:500} .text-decoration-36{text-decoration:none} .white-space-37{white-space:nowrap} .padding-38{padding:0.75rem 1.0rem} .transition-39{transition:0.3s} .display-40{display:none} .user-select-42{user-select:none} .display-43{display:block} .border-radius-44{border-radius:1.5px} .transition-45{transition:all .2s ease-out, background .2s ease-out} .position-46{position:relative} .background-47{background:#f6f6f6} .height-48{height:3px} .width-49{width:24px} .top-50{top:-5px}input:checked ~ #menu-icon .top-51{top:0}input:checked ~ #menu-icon .transform-52{transform:rotate(-45deg)}input:checked ~ #menu-icon .transform-53{transform:rotate(0deg)}input:checked ~ #menu-icon .background-54{background:transparent} .top-55{top:5px}input:checked ~ #menu-icon .top-56{top:-5px}input:checked ~ #menu-icon .transform-57{transform:rotate(45deg)} .margin-58{margin:0} .flex-grow-60{flex-grow:1} .flex-shrink-61{flex-shrink:1} .flex-basis-62{flex-basis:100%} .padding-top-63{padding-top:1.5rem} .text-align-64{text-align:center} .box-sizing-65{box-sizing:border-box} .background-66{background:linear-gradient(#121212, #242424)} .flex-direction-67{flex-direction:column} .row-gap-68{row-gap:1.0rem} .padding-69{padding:6rem 2rem} .margin-top-71:not(:first-child){margin-top:1.75rem} .margin-bottom-72:not(:last-child){margin-bottom:0.75rem} .font-size-73{font-size:3.0rem} .font-weight-74{font-weight:700} .line-height-75{line-height:1.2} .color-76{color:#ccc} .font-weight-77{font-weight:normal} .line-height-78{line-height:1.5} .font-size-79{font-size:1.0rem} .padding-bottom-80:not(:last-child){padding-bottom:0.5rem} .padding-top-81{padding-top:0} .padding-left-82{padding-left:0} .padding-right-83{padding-right:0} .text-decoration-84:visited{text-decoration:underline} .text-decoration-85:link{text-decoration:underline} .background-color-86{background-color:#fff} .padding-89{padding:4.0rem 2.0rem 4.0rem} .justify-content-91{justify-content:baseline} .align-items-92{align-items:baseline} .padding-bottom-93{padding-bottom:1.5rem} .flex-wrap-94{flex-wrap:nowrap} .color-95{color:#121212} .margin-top-97:not(:first-child){margin-top:1.5rem} .margin-bottom-98:not(:last-child){margin-bottom:0.5rem} .font-size-99{font-size:2.0rem} .color-100:link{color:#974dff} .color-101:visited{color:#974dff} .box-shadow-107{box-shadow:0 2px 10px -2px rgba(0,0,0,0.3)} .border-radius-108{border-radius:5px} .margin-109{margin:1rem 0 2rem 0} .overflow-110{overflow:hidden} .align-items-112{align-items:stretch} .row-gap-113{row-gap:0} .border-bottom-114{border-bottom:1px solid #e8e8e8} .padding-116{padding:1.5rem} .color-117{color:#a8a8a8} .margin-top-119{margin-top:0.5rem} .font-size-120{font-size:1.5rem} .color-121:link{color:#121212} .color-123:visited{color:#121212} .color-125{color:#666666} .column-gap-127{column-gap:1.0rem} .column-gap-128{column-gap:0.25rem} .width-129{width:80px} .border-radius-130{border-radius:4px} .display-131{display:inline-block} .height-132{height:8px} .background-color-133{background-color:#d8d8d8} .height-135{height:100%} .width-136{width:30%} .background-color-137{background-color:#555555} .filter-139{filter:grayscale(1)} .max-width-141{max-width:100%} .padding-142{padding:4rem 2rem} .background-color-144{background-color:#fafafa} .align-items-147{align-items:start} .color-148{color:#242424} .color-151{color:#555555} .margin-top-153{margin-top:1rem} .padding-154{padding:1.0rem 1.25rem} .padding-155{padding:2rem 1.5rem} .text-decoration-156:hover{text-decoration:none} .margin-top-157{margin-top:-1rem} .color-158:link{color:#666666} .margin-160{margin:0 30%} .height-161{height:1px} .background-color-162{background-color:#ccc} .color-163{color:#808080} .color-164{color:#171717} .margin-165{margin:2rem 0} .display-166:last-child{display:none} .background-167{background:linear-gradient(#121212, #291a40)} .row-gap-168{row-gap:0.5rem} .padding-top-173{padding-top:4.0rem} .padding-left-174{padding-left:2.0rem} .padding-bottom-175{padding-bottom:4.0rem} .padding-right-176{padding-right:2.0rem} .max-width-178{max-width:40rem} .margin-top-179{margin-top:3rem} .margin-180{margin:2rem 4rem} .border-181{border:none} .outline-182{outline:none} .padding-183{padding:1rem} .background-color-193{background-color:#121212} .align-items-194{align-items:first baseline} .font-size-197{font-size:1.25rem} .line-height-199{line-height:1.45} .color-201:link{color:#79f2b0} .color-202:visited{color:#79f2b0} .display-203{display:grid} .grid-template-columns-204{grid-template-columns:1fr 2fr} .font-size-205{font-size:0.75rem} .letter-spacing-207{letter-spacing:0.54pt} .line-height-208{line-height:1.25} .text-transform-209{text-transform:uppercase}@media only screen and (max-width: 831px){ .position-1{position:sticky} .top-2{top:0} .display-17{display:none}input:checked ~ .display-59{display:block} .padding-top-189{padding-top:2.0rem} .padding-left-190{padding-left:2.0rem} .padding-bottom-191{padding-bottom:2.0rem} .padding-right-192{padding-right:2.0rem} .padding-bottom-196{padding-bottom:1.0rem} .margin-bottom-200{margin-bottom:0.0rem} .padding-top-210{padding-top:1.0rem}}@media only screen and (min-width: 832px){ .padding-5{padding:1.5rem} .padding-left-20{padding-left:1.5rem} .display-41{display:none} .padding-70{padding:8rem 3rem} .margin-88{margin:0 auto} .padding-90{padding:4.0rem 3.0rem 4.0rem} .column-gap-102{column-gap:1.0rem} .display-103{display:grid} .grid-template-columns-104{grid-template-columns:1fr 1fr 1fr} .row-gap-105{row-gap:1.0rem} .padding-140{padding:0 2rem} .padding-143{padding:4rem 3rem} .align-items-146{align-items:center} .max-width-150{max-width:40rem} .padding-top-169{padding-top:8.0rem} .padding-left-170{padding-left:8.0rem} .padding-bottom-171{padding-bottom:8.0rem} .padding-right-172{padding-right:8.0rem} .text-align-177{text-align:center} .max-width-184{max-width:60%} .padding-top-185{padding-top:4.0rem} .padding-left-186{padding-left:4.0rem} .padding-bottom-187{padding-bottom:4.0rem} .padding-right-188{padding-right:4.0rem} .grid-template-columns-195{grid-template-columns:1fr 1fr} .font-size-198{font-size:1.5rem} .font-size-206{font-size:0.875rem}}@media (prefers-color-scheme: dark){ .background-color-87{background-color:#121212} .color-96{color:#fafafa} .border-106{border:1px #353535 solid} .background-color-111{background-color:#242424} .border-bottom-115{border-bottom:1px solid #3d3d3d} .color-118{color:#666666} .color-122:link{color:#fff} .color-124:visited{color:#fff} .color-126{color:#a8a8a8} .background-color-134{background-color:#555555} .background-color-138{background-color:#a8a8a8} .background-color-145{background-color:#050505} .color-149{color:#d8d8d8} .color-152{color:#ccc} .color-159:link{color:#a8a8a8}}</style></head><body><div class="width-0 position-1 top-2 background-3"><nav class="padding-4 padding-5 max-width-6 margin-7 display-8 flex-direction-9 flex-wrap-10 justify-content-11 align-items-12 background-3"><a class="line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/"><img alt="Point-Free" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"></a><ul class="display-17 padding-left-18 list-style-type-19"><li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/episodes">Episodes</a></li><li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/collections">Collections</a></li><li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/blog">Blog</a></li><li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/gifts">Gifts</a></li></ul><ul class="display-17 padding-left-18 list-style-type-19"><li class="display-22 padding-left-25"><a href="/account" class="font-size-26 color-27 color-28 color-29 background-color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-38 transition-39">Account</a></li></ul><input class="display-40" id="menu-checkbox" type="checkbox"><label class="cursor-34 display-41 cursor-34 user-select-42" id="menu-icon" for="menu-checkbox"><span class="display-43 border-radius-44 transition-45 position-46 background-47 height-48 width-49 top-50 top-51 transform-52"></span><span class="display-43 border-radius-44 transition-45 position-46 background-47 height-48 width-49 transform-53 background-54"></span><span class="display-43 border-radius-44 transition-45 position-46 background-47 height-48 width-49 top-55 top-56 transform-57"></span></label><ul class="margin-58 display-40 display-59 flex-grow-60 flex-shrink-61 flex-basis-62 padding-left-18 list-style-type-19 color-29"><li class="padding-top-63"><a class="display-43 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/episodes">Episodes</a></li><li class="padding-top-63"><a class="display-43 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/collections">Collections</a></li><li class="padding-top-63"><a class="display-43 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/blog">Blog</a></li><li class="padding-top-63"><a class="display-43 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/gifts">Gifts</a></li><li class="padding-top-63"><a class="display-43 text-align-64 font-size-26 color-27 color-28 color-29 background-color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-38 transition-39" href="/account">Account</a></li></ul></nav></div><pf-vstack class="box-sizing-65 background-66 align-items-12 display-8 flex-direction-67 row-gap-68"><div class="box-sizing-65 flex-basis-62 max-width-6 width-0 margin-7 padding-69 padding-70"><h2 class="color-29 margin-58 margin-top-71 margin-bottom-72 font-size-73 font-weight-74 line-height-75">Welcome back</h2><p class="color-76 font-weight-77 line-height-78 font-size-79 padding-bottom-80 padding-top-81 padding-left-82 padding-right-83 margin-58 line-height-78"><span class="color-76">Want to see what’s coming up next? </span><a class="color-76 text-decoration-84 text-decoration-85 text-decoration-16" href="http://www.twitter.com/pointfreeco">Follow us on Twitter</a></p></div></pf-vstack><div class="background-color-86 background-color-87"><div class="max-width-6 margin-88 padding-89 padding-90 display-8 flex-direction-9 flex-wrap-10 justify-content-91 align-items-92"><div class="padding-bottom-93 flex-basis-62 display-8 flex-direction-9 flex-wrap-94 justify-content-11 align-items-12"><h3 class="color-95 color-96 margin-58 margin-top-97 margin-bottom-98 font-size-99 font-weight-74 line-height-75">Continue watching</h3><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/episodes/history">See all →</a></div><pf-vgrid class="column-gap-102 display-103 grid-template-columns-104 row-gap-105"><pf-vstack class="border-106 box-shadow-107 border-radius-108 margin-109 overflow-110 background-color-86 background-color-111 align-items-112 display-8 flex-direction-67 row-gap-113"><a class="border-bottom-114 border-bottom-115 display-43 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep2-side-effects"><img class="width-0" loading="lazy" src="http://localhost:8080/images/2.jpg" alt></a><pf-vstack class="padding-116 flex-grow-60 align-items-112 display-8 flex-direction-67 row-gap-113"><div class="flex-grow-60"><div class="font-weight-77 line-height-78 font-size-26 color-117 color-118">Episode 2 • Feb 5, 2018</div><div class="margin-top-119"><h4 class="margin-58 margin-top-97 margin-bottom-98 font-size-120 font-weight-74 line-height-75"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-121 color-122 color-123 color-124" href="/episodes/ep2-side-effects">Side Effects</a></h4></div><div class="color-125 color-126"><div class="markdown"><p>Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.</p>
-</div></div></div><pf-hstack class="color-117 color-118 align-items-12 display-8 flex-direction-9 column-gap-127"><pf-hstack class="font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-128"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+}
+    </style>
+    <link rel="apple-touch-icon" sizes="180x180" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png">
+    <link rel="icon" sizes="32x32" type="image/png" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png">
+    <link rel="icon" sizes="16x16" type="image/png" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png">
+    <link rel="manifest" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
+    <link rel="mask-icon" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
+    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
+    <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
+    <meta name="title" content="Point-Free">
+    <meta property="og:title" content="Point-Free">
+    <meta name="twitter:title" content="Point-Free">
+    <meta name="description" content="Point-Free: A video series exploring advanced programming topics in Swift.">
+    <meta property="og:description" content="Point-Free: A video series exploring advanced programming topics in Swift.">
+    <meta name="twitter:description" content="Point-Free: A video series exploring advanced programming topics in Swift.">
+    <meta property="og:image" content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
+    <meta name="twitter:image" content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@pointfreeco">
+    <meta property="og:url" content="http://localhost:8080/">
+    <meta name="twitter:url" content="http://localhost:8080/"><script src="https://plausible.io/js/script.js" defer data-domain="pointfree.co"></script>
+    <style>
+.width-0{width:100%}
+.background-3{background:#121212}
+.padding-4{padding:2rem}
+.max-width-6{max-width:1280px}
+.margin-7{margin:0 auto}
+.display-8{display:flex}
+.flex-direction-9{flex-direction:row}
+.flex-wrap-10{flex-wrap:wrap}
+.justify-content-11{justify-content:space-between}
+.align-items-12{align-items:center}
+.line-height-13{line-height:0}
+.text-decoration-14:visited{text-decoration:none}
+.text-decoration-15:link{text-decoration:none}
+.text-decoration-16:hover{text-decoration:underline}
+.padding-left-18{padding-left:0.0rem}
+.list-style-type-19{list-style-type:none}
+.padding-left-21:not(:first-child){padding-left:2rem}
+.display-22{display:inline}
+.color-23:link{color:#a8a8a8}
+.color-24:visited{color:#a8a8a8}
+.padding-left-25:not(:first-child){padding-left:1rem}
+.font-size-26{font-size:0.875rem}
+.color-27:visited{color:#fff}
+.color-28:link{color:#fff}
+.color-29{color:#fff}
+.background-color-30{background-color:#974dff}
+.border-31{border:none #974dff}
+.border-radius-32{border-radius:0.5rem}
+.box-shadow-33:hover{box-shadow:inset 0 0 0 20rem rgba(0,0,0,0.1)}
+.cursor-34{cursor:pointer}
+.font-weight-35{font-weight:500}
+.text-decoration-36{text-decoration:none}
+.white-space-37{white-space:nowrap}
+.padding-38{padding:0.75rem 1.0rem}
+.transition-39{transition:0.3s}
+.display-40{display:none}
+.user-select-42{user-select:none}
+.display-43{display:block}
+.border-radius-44{border-radius:1.5px}
+.transition-45{transition:all .2s ease-out, background .2s ease-out}
+.position-46{position:relative}
+.background-47{background:#f6f6f6}
+.height-48{height:3px}
+.width-49{width:24px}
+.top-50{top:-5px}
+input:checked ~ #menu-icon .top-51{top:0}
+input:checked ~ #menu-icon .transform-52{transform:rotate(-45deg)}
+input:checked ~ #menu-icon .transform-53{transform:rotate(0deg)}
+input:checked ~ #menu-icon .background-54{background:transparent}
+.top-55{top:5px}
+input:checked ~ #menu-icon .top-56{top:-5px}
+input:checked ~ #menu-icon .transform-57{transform:rotate(45deg)}
+.margin-58{margin:0}
+.flex-grow-60{flex-grow:1}
+.flex-shrink-61{flex-shrink:1}
+.flex-basis-62{flex-basis:100%}
+.padding-top-63{padding-top:1.5rem}
+.text-align-64{text-align:center}
+.box-sizing-65{box-sizing:border-box}
+.background-66{background:linear-gradient(#121212, #242424)}
+.flex-direction-67{flex-direction:column}
+.row-gap-68{row-gap:1.0rem}
+.padding-69{padding:6rem 2rem}
+.margin-top-71:not(:first-child){margin-top:1.75rem}
+.margin-bottom-72:not(:last-child){margin-bottom:0.75rem}
+.font-size-73{font-size:3.0rem}
+.font-weight-74{font-weight:700}
+.line-height-75{line-height:1.2}
+.color-76{color:#ccc}
+.font-weight-77{font-weight:normal}
+.line-height-78{line-height:1.5}
+.font-size-79{font-size:1.0rem}
+.padding-bottom-80:not(:last-child){padding-bottom:0.5rem}
+.padding-top-81{padding-top:0}
+.padding-left-82{padding-left:0}
+.padding-right-83{padding-right:0}
+.text-decoration-84:visited{text-decoration:underline}
+.text-decoration-85:link{text-decoration:underline}
+.background-color-86{background-color:#fff}
+.padding-89{padding:4.0rem 2.0rem 4.0rem}
+.justify-content-91{justify-content:baseline}
+.align-items-92{align-items:baseline}
+.padding-bottom-93{padding-bottom:1.5rem}
+.flex-wrap-94{flex-wrap:nowrap}
+.color-95{color:#121212}
+.margin-top-97:not(:first-child){margin-top:1.5rem}
+.margin-bottom-98:not(:last-child){margin-bottom:0.5rem}
+.font-size-99{font-size:2.0rem}
+.color-100:link{color:#974dff}
+.color-101:visited{color:#974dff}
+.box-shadow-107{box-shadow:0 2px 10px -2px rgba(0,0,0,0.3)}
+.border-radius-108{border-radius:5px}
+.margin-109{margin:1rem 0 2rem 0}
+.overflow-110{overflow:hidden}
+.align-items-112{align-items:stretch}
+.border-bottom-113{border-bottom:1px solid #e8e8e8}
+.padding-115{padding:0.5rem 1.5rem 1.5rem}
+.row-gap-116{row-gap:0.5rem}
+.color-117{color:#a8a8a8}
+.font-size-119{font-size:1.5rem}
+.color-120:link{color:#121212}
+.color-122:visited{color:#121212}
+.color-124{color:#666666}
+.column-gap-126{column-gap:1.0rem}
+.column-gap-127{column-gap:0.25rem}
+.width-128{width:80px}
+.border-radius-129{border-radius:4px}
+.display-130{display:inline-block}
+.height-131{height:8px}
+.background-color-132{background-color:#d8d8d8}
+.height-134{height:100%}
+.width-135{width:30%}
+.background-color-136{background-color:#555555}
+.filter-138{filter:grayscale(1)}
+.max-width-140{max-width:100%}
+.padding-141{padding:4rem 2rem}
+.background-color-143{background-color:#fafafa}
+.align-items-146{align-items:start}
+.color-147{color:#242424}
+.color-150{color:#555555}
+.margin-top-152{margin-top:1rem}
+.padding-153{padding:1.0rem 1.25rem}
+.padding-154{padding:2rem 1.5rem}
+.text-decoration-155:hover{text-decoration:none}
+.border-156{border:none}
+.border-top-157{border-top:1px solid #ccc}
+.margin-159{margin:0 30%}
+.color-160{color:#808080}
+.margin-top-161{margin-top:0.5rem}
+.color-162{color:#171717}
+.margin-163{margin:2rem 0}
+.display-164:last-child{display:none}
+.background-165{background:linear-gradient(#121212, #291a40)}
+.padding-top-170{padding-top:4.0rem}
+.padding-left-171{padding-left:2.0rem}
+.padding-bottom-172{padding-bottom:4.0rem}
+.padding-right-173{padding-right:2.0rem}
+.max-width-175{max-width:40rem}
+.margin-top-176{margin-top:3rem}
+.justify-content-177{justify-content:center}
+.margin-178{margin:2rem 4rem}
+.outline-179{outline:none}
+.padding-180{padding:1rem}
+.background-color-190{background-color:#121212}
+.align-items-191{align-items:first baseline}
+.font-size-194{font-size:1.25rem}
+.line-height-196{line-height:1.45}
+.color-198:link{color:#79f2b0}
+.color-199:visited{color:#79f2b0}
+.display-200{display:grid}
+.grid-template-columns-201{grid-template-columns:1fr 2fr}
+.font-size-202{font-size:0.75rem}
+.letter-spacing-204{letter-spacing:0.54pt}
+.line-height-205{line-height:1.25}
+.text-transform-206{text-transform:uppercase}
+@media only screen and (max-width: 831px){
+  .position-1{position:sticky}
+  .top-2{top:0}
+  .display-17{display:none}
+  input:checked ~ .display-59{display:block}
+  .padding-top-186{padding-top:2.0rem}
+  .padding-left-187{padding-left:2.0rem}
+  .padding-bottom-188{padding-bottom:2.0rem}
+  .padding-right-189{padding-right:2.0rem}
+  .padding-bottom-193{padding-bottom:1.0rem}
+  .margin-bottom-197{margin-bottom:0.0rem}
+  .padding-top-207{padding-top:1.0rem}
+}
+@media only screen and (min-width: 832px){
+  .padding-5{padding:1.5rem}
+  .padding-left-20{padding-left:1.5rem}
+  .display-41{display:none}
+  .padding-70{padding:8rem 3rem}
+  .margin-88{margin:0 auto}
+  .padding-90{padding:4.0rem 3.0rem 4.0rem}
+  .column-gap-102{column-gap:1.0rem}
+  .display-103{display:grid}
+  .grid-template-columns-104{grid-template-columns:1fr 1fr 1fr}
+  .row-gap-105{row-gap:1.0rem}
+  .padding-139{padding:0 2rem}
+  .padding-142{padding:4rem 3rem}
+  .align-items-145{align-items:center}
+  .max-width-149{max-width:40rem}
+  .padding-top-166{padding-top:8.0rem}
+  .padding-left-167{padding-left:8.0rem}
+  .padding-bottom-168{padding-bottom:8.0rem}
+  .padding-right-169{padding-right:8.0rem}
+  .text-align-174{text-align:center}
+  .max-width-181{max-width:60%}
+  .padding-top-182{padding-top:4.0rem}
+  .padding-left-183{padding-left:4.0rem}
+  .padding-bottom-184{padding-bottom:4.0rem}
+  .padding-right-185{padding-right:4.0rem}
+  .grid-template-columns-192{grid-template-columns:1fr 1fr}
+  .font-size-195{font-size:1.5rem}
+  .font-size-203{font-size:0.875rem}
+}
+@media (prefers-color-scheme: dark){
+  .background-color-87{background-color:#121212}
+  .color-96{color:#fafafa}
+  .border-106{border:1px #353535 solid}
+  .background-color-111{background-color:#242424}
+  .border-bottom-114{border-bottom:1px solid #3d3d3d}
+  .color-118{color:#666666}
+  .color-121:link{color:#fff}
+  .color-123:visited{color:#fff}
+  .color-125{color:#a8a8a8}
+  .background-color-133{background-color:#555555}
+  .background-color-137{background-color:#a8a8a8}
+  .background-color-144{background-color:#050505}
+  .color-148{color:#d8d8d8}
+  .color-151{color:#ccc}
+  .border-top-158{border-top:1px solid #555555}
+}
+
+    </style>
+  </head>
+  <body>
+<div class="width-0 position-1 top-2 background-3">
+  <nav class="padding-4 padding-5 max-width-6 margin-7 display-8 flex-direction-9 flex-wrap-10 justify-content-11 align-items-12 background-3"><a class="line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/"><img alt="Point-Free" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"></a>
+    <ul class="display-17 padding-left-18 list-style-type-19">
+      <li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/episodes">Episodes</a>
+      </li>
+      <li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/collections">Collections</a>
+      </li>
+      <li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/blog">Blog</a>
+      </li>
+      <li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/gifts">Gifts</a>
+      </li>
+    </ul>
+    <ul class="display-17 padding-left-18 list-style-type-19">
+      <li class="display-22 padding-left-25"><a href="/account" class="font-size-26 color-27 color-28 color-29 background-color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-38 transition-39">Account</a>
+      </li>
+    </ul><input class="display-40" id="menu-checkbox" type="checkbox"><label class="cursor-34 display-41 cursor-34 user-select-42" id="menu-icon" for="menu-checkbox"><span class="display-43 border-radius-44 transition-45 position-46 background-47 height-48 width-49 top-50 top-51 transform-52"></span><span class="display-43 border-radius-44 transition-45 position-46 background-47 height-48 width-49 transform-53 background-54"></span><span class="display-43 border-radius-44 transition-45 position-46 background-47 height-48 width-49 top-55 top-56 transform-57"></span></label>
+    <ul class="margin-58 display-40 display-59 flex-grow-60 flex-shrink-61 flex-basis-62 padding-left-18 list-style-type-19 color-29">
+      <li class="padding-top-63"><a class="display-43 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/episodes">Episodes</a>
+      </li>
+      <li class="padding-top-63"><a class="display-43 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/collections">Collections</a>
+      </li>
+      <li class="padding-top-63"><a class="display-43 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/blog">Blog</a>
+      </li>
+      <li class="padding-top-63"><a class="display-43 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/gifts">Gifts</a>
+      </li>
+      <li class="padding-top-63"><a class="display-43 text-align-64 font-size-26 color-27 color-28 color-29 background-color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-38 transition-39" href="/account">Account</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<pf-vstack class="box-sizing-65 background-66 align-items-12 display-8 flex-direction-67 row-gap-68">
+  <div class="box-sizing-65 flex-basis-62 max-width-6 width-0 margin-7 padding-69 padding-70">
+    <h2 class="color-29 margin-58 margin-top-71 margin-bottom-72 font-size-73 font-weight-74 line-height-75">Welcome back
+    </h2>
+    <p class="color-76 font-weight-77 line-height-78 font-size-79 padding-bottom-80 padding-top-81 padding-left-82 padding-right-83 margin-58 line-height-78"><span class="color-76">Want to see what’s coming up next? </span><a class="color-76 text-decoration-84 text-decoration-85 text-decoration-16" href="http://www.twitter.com/pointfreeco">Follow us on Twitter</a>
+    </p>
+  </div>
+</pf-vstack>
+<div class="background-color-86 background-color-87">
+  <div class="max-width-6 margin-88 padding-89 padding-90 display-8 flex-direction-9 flex-wrap-10 justify-content-91 align-items-92">
+    <div class="padding-bottom-93 flex-basis-62 display-8 flex-direction-9 flex-wrap-94 justify-content-11 align-items-12">
+      <h3 class="color-95 color-96 margin-58 margin-top-97 margin-bottom-98 font-size-99 font-weight-74 line-height-75">Continue watching
+      </h3><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/episodes/history">See all →</a>
+    </div>
+    <pf-vgrid class="column-gap-102 display-103 grid-template-columns-104 row-gap-105">
+      <pf-vstack class="border-106 box-shadow-107 border-radius-108 margin-109 overflow-110 background-color-86 background-color-111 align-items-112 display-8 flex-direction-67 row-gap-68"><a class="border-bottom-113 border-bottom-114 display-43 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep2-side-effects"><img class="width-0" loading="lazy" src="http://localhost:8080/images/2.jpg" alt></a>
+        <pf-vstack class="padding-115 flex-grow-60 align-items-112 display-8 flex-direction-67 row-gap-68">
+          <div class="flex-grow-60">
+            <pf-vstack class="align-items-112 display-8 flex-direction-67 row-gap-68">
+              <pf-vstack class="align-items-112 display-8 flex-direction-67 row-gap-116">
+                <div class="font-weight-77 line-height-78 font-size-26 color-117 color-118">Episode 2 • Feb 5, 2018
+                </div>
+                <div>
+                  <h4 class="margin-58 margin-top-97 margin-bottom-98 font-size-119 font-weight-74 line-height-75"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-120 color-121 color-122 color-123" href="/episodes/ep2-side-effects">Side Effects</a>
+                  </h4>
+                </div>
+              </pf-vstack>
+              <pf-markdown class="color-124 color-125 display-43">
+                <p class="padding-bottom-80 padding-top-81 padding-left-82 padding-right-83 margin-58 line-height-78">Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.
+                </p>
+              </pf-markdown>
+            </pf-vstack>
+          </div>
+          <pf-hstack class="color-117 color-118 align-items-12 display-8 flex-direction-9 column-gap-126">
+            <pf-hstack class="font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-127"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M8.49996 11.8333C9.23329 11.8333 9.83329 11.2333 9.83329 10.5C9.83329 9.76666 9.23329 9.16666 8.49996 9.16666C7.76663 9.16666 7.16663 9.76666 7.16663 10.5C7.16663 11.2333 7.76663 11.8333 8.49996 11.8333ZM12.5 5.83332H11.8333V4.49999C11.8333 2.65999 10.34 1.16666 8.49996 1.16666C6.65996 1.16666 5.16663 2.65999 5.16663 4.49999H6.43329C6.43329 3.35999 7.35996 2.43332 8.49996 2.43332C9.63996 2.43332 10.5666 3.35999 10.5666 4.49999V5.83332H4.49996C3.76663 5.83332 3.16663 6.43332 3.16663 7.16666V13.8333C3.16663 14.5667 3.76663 15.1667 4.49996 15.1667H12.5C13.2333 15.1667 13.8333 14.5667 13.8333 13.8333V7.16666C13.8333 6.43332 13.2333 5.83332 12.5 5.83332ZM12.5 13.8333H4.49996V7.16666H12.5V13.8333Z" fill="currentColor"/>
-</svg>Free</pf-hstack><pf-hstack class="flex-grow-60 font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-128"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg>Free
+            </pf-hstack>
+            <pf-hstack class="flex-grow-60 font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-127"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
-</svg>44 min</pf-hstack><div title="31 min to finish" class="width-129 border-radius-130 display-131 height-132 overflow-110 background-color-133 background-color-134"><div class="height-135 width-136 background-color-137 background-color-138"></div></div></pf-hstack></pf-vstack></pf-vstack></pf-vgrid></div></div><div class="background-color-86 background-color-87"><div class="max-width-6 margin-88 padding-89 padding-90 display-8 flex-direction-9 flex-wrap-10 justify-content-91 align-items-92"><div class="padding-bottom-93 flex-basis-62 display-8 flex-direction-9 flex-wrap-94 justify-content-11 align-items-12"><h3 class="color-95 color-96 margin-58 margin-top-97 margin-bottom-98 font-size-99 font-weight-74 line-height-75">All episodes</h3><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/episodes">See all →</a></div><pf-vgrid class="column-gap-102 display-103 grid-template-columns-104 row-gap-105"><pf-vstack class="border-106 box-shadow-107 border-radius-108 margin-109 overflow-110 background-color-86 background-color-111 align-items-112 display-8 flex-direction-67 row-gap-113"><a class="border-bottom-114 border-bottom-115 display-43 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep0-we-launched"><img class="width-0" loading="lazy" src="http://localhost:8080/images/0.jpg" alt></a><pf-vstack class="padding-116 flex-grow-60 align-items-112 display-8 flex-direction-67 row-gap-113"><div class="flex-grow-60"><div class="font-weight-77 line-height-78 font-size-26 color-117 color-118">Episode 0 • Jan 29, 2018</div><div class="margin-top-119"><h4 class="margin-58 margin-top-97 margin-bottom-98 font-size-120 font-weight-74 line-height-75"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-121 color-122 color-123 color-124" href="/episodes/ep0-we-launched">We launched!</a></h4></div><div class="color-125 color-126"><div class="markdown"><p>Point-Free is here, bringing you videos covering functional programming concepts using the Swift language. Take a moment to hear from the hosts about what to expect from this new series.</p>
-</div></div></div><pf-hstack class="color-117 color-118 align-items-12 display-8 flex-direction-9 column-gap-127"><pf-hstack class="font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-128"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg>44 min
+            </pf-hstack>
+            <div title="31 min to finish" class="width-128 border-radius-129 display-130 height-131 overflow-110 background-color-132 background-color-133">
+              <div class="height-134 width-135 background-color-136 background-color-137">
+              </div>
+            </div>
+          </pf-hstack>
+        </pf-vstack>
+      </pf-vstack>
+    </pf-vgrid>
+  </div>
+</div>
+<div class="background-color-86 background-color-87">
+  <div class="max-width-6 margin-88 padding-89 padding-90 display-8 flex-direction-9 flex-wrap-10 justify-content-91 align-items-92">
+    <div class="padding-bottom-93 flex-basis-62 display-8 flex-direction-9 flex-wrap-94 justify-content-11 align-items-12">
+      <h3 class="color-95 color-96 margin-58 margin-top-97 margin-bottom-98 font-size-99 font-weight-74 line-height-75">All episodes
+      </h3><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/episodes">See all →</a>
+    </div>
+    <pf-vgrid class="column-gap-102 display-103 grid-template-columns-104 row-gap-105">
+      <pf-vstack class="border-106 box-shadow-107 border-radius-108 margin-109 overflow-110 background-color-86 background-color-111 align-items-112 display-8 flex-direction-67 row-gap-68"><a class="border-bottom-113 border-bottom-114 display-43 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep0-we-launched"><img class="width-0" loading="lazy" src="http://localhost:8080/images/0.jpg" alt></a>
+        <pf-vstack class="padding-115 flex-grow-60 align-items-112 display-8 flex-direction-67 row-gap-68">
+          <div class="flex-grow-60">
+            <pf-vstack class="align-items-112 display-8 flex-direction-67 row-gap-68">
+              <pf-vstack class="align-items-112 display-8 flex-direction-67 row-gap-116">
+                <div class="font-weight-77 line-height-78 font-size-26 color-117 color-118">Episode 0 • Jan 29, 2018
+                </div>
+                <div>
+                  <h4 class="margin-58 margin-top-97 margin-bottom-98 font-size-119 font-weight-74 line-height-75"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-120 color-121 color-122 color-123" href="/episodes/ep0-we-launched">We launched!</a>
+                  </h4>
+                </div>
+              </pf-vstack>
+              <pf-markdown class="color-124 color-125 display-43">
+                <p class="padding-bottom-80 padding-top-81 padding-left-82 padding-right-83 margin-58 line-height-78">Point-Free is here, bringing you videos covering functional programming concepts using the Swift language. Take a moment to hear from the hosts about what to expect from this new series.
+                </p>
+              </pf-markdown>
+            </pf-vstack>
+          </div>
+          <pf-hstack class="color-117 color-118 align-items-12 display-8 flex-direction-9 column-gap-126">
+            <pf-hstack class="font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-127"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M8.49996 11.8333C9.23329 11.8333 9.83329 11.2333 9.83329 10.5C9.83329 9.76666 9.23329 9.16666 8.49996 9.16666C7.76663 9.16666 7.16663 9.76666 7.16663 10.5C7.16663 11.2333 7.76663 11.8333 8.49996 11.8333ZM12.5 5.83332H11.8333V4.49999C11.8333 2.65999 10.34 1.16666 8.49996 1.16666C6.65996 1.16666 5.16663 2.65999 5.16663 4.49999H6.43329C6.43329 3.35999 7.35996 2.43332 8.49996 2.43332C9.63996 2.43332 10.5666 3.35999 10.5666 4.49999V5.83332H4.49996C3.76663 5.83332 3.16663 6.43332 3.16663 7.16666V13.8333C3.16663 14.5667 3.76663 15.1667 4.49996 15.1667H12.5C13.2333 15.1667 13.8333 14.5667 13.8333 13.8333V7.16666C13.8333 6.43332 13.2333 5.83332 12.5 5.83332ZM12.5 13.8333H4.49996V7.16666H12.5V13.8333Z" fill="currentColor"/>
-</svg>Free</pf-hstack><pf-hstack class="flex-grow-60 font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-128"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg>Free
+            </pf-hstack>
+            <pf-hstack class="flex-grow-60 font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-127"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
-</svg>2 min</pf-hstack></pf-hstack></pf-vstack></pf-vstack><pf-vstack class="border-106 box-shadow-107 border-radius-108 margin-109 overflow-110 background-color-86 background-color-111 align-items-112 display-8 flex-direction-67 row-gap-113"><a class="border-bottom-114 border-bottom-115 display-43 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep1-functions"><img class="width-0 filter-139" loading="lazy" src="http://localhost:8080/images/1.jpg" alt></a><pf-vstack class="padding-116 flex-grow-60 align-items-112 display-8 flex-direction-67 row-gap-113"><div class="flex-grow-60"><div class="font-weight-77 line-height-78 font-size-26 color-117 color-118">Episode 1 • Jan 29, 2018</div><div class="margin-top-119"><h4 class="margin-58 margin-top-97 margin-bottom-98 font-size-120 font-weight-74 line-height-75"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-121 color-122 color-123 color-124" href="/episodes/ep1-functions">Functions</a></h4></div><div class="color-125 color-126"><div class="markdown"><p>Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.</p>
-</div></div></div><pf-hstack class="color-117 color-118 align-items-12 display-8 flex-direction-9 column-gap-127"><pf-hstack class="flex-grow-60 font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-128"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg>2 min
+            </pf-hstack>
+          </pf-hstack>
+        </pf-vstack>
+      </pf-vstack>
+      <pf-vstack class="border-106 box-shadow-107 border-radius-108 margin-109 overflow-110 background-color-86 background-color-111 align-items-112 display-8 flex-direction-67 row-gap-68"><a class="border-bottom-113 border-bottom-114 display-43 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep1-functions"><img class="width-0 filter-138" loading="lazy" src="http://localhost:8080/images/1.jpg" alt></a>
+        <pf-vstack class="padding-115 flex-grow-60 align-items-112 display-8 flex-direction-67 row-gap-68">
+          <div class="flex-grow-60">
+            <pf-vstack class="align-items-112 display-8 flex-direction-67 row-gap-68">
+              <pf-vstack class="align-items-112 display-8 flex-direction-67 row-gap-116">
+                <div class="font-weight-77 line-height-78 font-size-26 color-117 color-118">Episode 1 • Jan 29, 2018
+                </div>
+                <div>
+                  <h4 class="margin-58 margin-top-97 margin-bottom-98 font-size-119 font-weight-74 line-height-75"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-120 color-121 color-122 color-123" href="/episodes/ep1-functions">Functions</a>
+                  </h4>
+                </div>
+              </pf-vstack>
+              <pf-markdown class="color-124 color-125 display-43">
+                <p class="padding-bottom-80 padding-top-81 padding-left-82 padding-right-83 margin-58 line-height-78">Our first episode is all about functions! We talk a bit about what makes functions special, contrasting them with the way we usually write code, and have some exploratory discussions about operators and composition.
+                </p>
+              </pf-markdown>
+            </pf-vstack>
+          </div>
+          <pf-hstack class="color-117 color-118 align-items-12 display-8 flex-direction-9 column-gap-126">
+            <pf-hstack class="flex-grow-60 font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-127"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
-</svg>20 min</pf-hstack><pf-hstack class="font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-128"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+</svg>20 min
+            </pf-hstack>
+            <pf-hstack class="font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-127"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
 <path d="M389-267 195-460l51-52 143 143 325-324 51 51-376 375Z"/>
-</svg>Watched</pf-hstack></pf-hstack></pf-vstack></pf-vstack><pf-vstack class="border-106 box-shadow-107 border-radius-108 margin-109 overflow-110 background-color-86 background-color-111 align-items-112 display-8 flex-direction-67 row-gap-113"><a class="border-bottom-114 border-bottom-115 display-43 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep2-side-effects"><img class="width-0" loading="lazy" src="http://localhost:8080/images/2.jpg" alt></a><pf-vstack class="padding-116 flex-grow-60 align-items-112 display-8 flex-direction-67 row-gap-113"><div class="flex-grow-60"><div class="font-weight-77 line-height-78 font-size-26 color-117 color-118">Episode 2 • Feb 5, 2018</div><div class="margin-top-119"><h4 class="margin-58 margin-top-97 margin-bottom-98 font-size-120 font-weight-74 line-height-75"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-121 color-122 color-123 color-124" href="/episodes/ep2-side-effects">Side Effects</a></h4></div><div class="color-125 color-126"><div class="markdown"><p>Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.</p>
-</div></div></div><pf-hstack class="color-117 color-118 align-items-12 display-8 flex-direction-9 column-gap-127"><pf-hstack class="font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-128"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg>Watched
+            </pf-hstack>
+          </pf-hstack>
+        </pf-vstack>
+      </pf-vstack>
+      <pf-vstack class="border-106 box-shadow-107 border-radius-108 margin-109 overflow-110 background-color-86 background-color-111 align-items-112 display-8 flex-direction-67 row-gap-68"><a class="border-bottom-113 border-bottom-114 display-43 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep2-side-effects"><img class="width-0" loading="lazy" src="http://localhost:8080/images/2.jpg" alt></a>
+        <pf-vstack class="padding-115 flex-grow-60 align-items-112 display-8 flex-direction-67 row-gap-68">
+          <div class="flex-grow-60">
+            <pf-vstack class="align-items-112 display-8 flex-direction-67 row-gap-68">
+              <pf-vstack class="align-items-112 display-8 flex-direction-67 row-gap-116">
+                <div class="font-weight-77 line-height-78 font-size-26 color-117 color-118">Episode 2 • Feb 5, 2018
+                </div>
+                <div>
+                  <h4 class="margin-58 margin-top-97 margin-bottom-98 font-size-119 font-weight-74 line-height-75"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-120 color-121 color-122 color-123" href="/episodes/ep2-side-effects">Side Effects</a>
+                  </h4>
+                </div>
+              </pf-vstack>
+              <pf-markdown class="color-124 color-125 display-43">
+                <p class="padding-bottom-80 padding-top-81 padding-left-82 padding-right-83 margin-58 line-height-78">Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.
+                </p>
+              </pf-markdown>
+            </pf-vstack>
+          </div>
+          <pf-hstack class="color-117 color-118 align-items-12 display-8 flex-direction-9 column-gap-126">
+            <pf-hstack class="font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-127"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M8.49996 11.8333C9.23329 11.8333 9.83329 11.2333 9.83329 10.5C9.83329 9.76666 9.23329 9.16666 8.49996 9.16666C7.76663 9.16666 7.16663 9.76666 7.16663 10.5C7.16663 11.2333 7.76663 11.8333 8.49996 11.8333ZM12.5 5.83332H11.8333V4.49999C11.8333 2.65999 10.34 1.16666 8.49996 1.16666C6.65996 1.16666 5.16663 2.65999 5.16663 4.49999H6.43329C6.43329 3.35999 7.35996 2.43332 8.49996 2.43332C9.63996 2.43332 10.5666 3.35999 10.5666 4.49999V5.83332H4.49996C3.76663 5.83332 3.16663 6.43332 3.16663 7.16666V13.8333C3.16663 14.5667 3.76663 15.1667 4.49996 15.1667H12.5C13.2333 15.1667 13.8333 14.5667 13.8333 13.8333V7.16666C13.8333 6.43332 13.2333 5.83332 12.5 5.83332ZM12.5 13.8333H4.49996V7.16666H12.5V13.8333Z" fill="currentColor"/>
-</svg>Free</pf-hstack><pf-hstack class="flex-grow-60 font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-128"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg>Free
+            </pf-hstack>
+            <pf-hstack class="flex-grow-60 font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-127"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
-</svg>44 min</pf-hstack><div title="31 min to finish" class="width-129 border-radius-130 display-131 height-132 overflow-110 background-color-133 background-color-134"><div class="height-135 width-136 background-color-137 background-color-138"></div></div></pf-hstack></pf-vstack></pf-vstack></pf-vgrid></div></div><div class="background-color-86 background-color-87 padding-140 max-width-141"><pf-vstack class="padding-142 padding-143 background-color-144 background-color-145 max-width-6 margin-7 align-items-146 align-items-147 display-8 flex-direction-67 row-gap-68"><div><h3 class="color-148 color-149 margin-58 margin-top-97 margin-bottom-98 font-size-99 font-weight-74 line-height-75">Give the gift of Point-Free</h3></div><div><p class="max-width-150 color-151 color-152 padding-bottom-80 padding-top-81 padding-left-82 padding-right-83 margin-58 line-height-78">Purchase a gift subscsription of 3, 6 or 12 months for a friend, colleague or loved one.</p></div><a class="margin-top-153 font-size-79 color-27 color-28 color-29 background-color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-154 transition-39" href="/gifts">See gifts options</a></pf-vstack></div><div class="background-color-86 background-color-87"><div class="max-width-6 margin-88 padding-89 padding-90 display-8 flex-direction-9 flex-wrap-10 justify-content-91 align-items-92"><div class="padding-bottom-93 flex-basis-62 display-8 flex-direction-9 flex-wrap-94 justify-content-11 align-items-12"><h3 class="color-95 color-96 margin-58 margin-top-97 margin-bottom-98 font-size-99 font-weight-74 line-height-75">Collections</h3><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/collections">See all →</a></div><pf-vgrid class="column-gap-102 display-103 grid-template-columns-104 row-gap-105"><pf-vstack class="border-106 box-shadow-107 border-radius-108 margin-109 overflow-110 background-color-86 background-color-111 align-items-112 display-8 flex-direction-67 row-gap-113"><a class="border-bottom-114 border-bottom-115 display-43 padding-155 text-align-64 text-decoration-14 text-decoration-15 text-decoration-156 color-121 color-122 color-123 color-124" href="/collections/functions"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg>44 min
+            </pf-hstack>
+            <div title="31 min to finish" class="width-128 border-radius-129 display-130 height-131 overflow-110 background-color-132 background-color-133">
+              <div class="height-134 width-135 background-color-136 background-color-137">
+              </div>
+            </div>
+          </pf-hstack>
+        </pf-vstack>
+      </pf-vstack>
+    </pf-vgrid>
+  </div>
+</div>
+<div class="background-color-86 background-color-87 padding-139 max-width-140">
+  <pf-vstack class="padding-141 padding-142 background-color-143 background-color-144 max-width-6 margin-7 align-items-145 align-items-146 display-8 flex-direction-67 row-gap-68">
+    <div>
+      <h3 class="color-147 color-148 margin-58 margin-top-97 margin-bottom-98 font-size-99 font-weight-74 line-height-75">Give the gift of Point-Free
+      </h3>
+    </div>
+    <div>
+      <p class="max-width-149 color-150 color-151 padding-bottom-80 padding-top-81 padding-left-82 padding-right-83 margin-58 line-height-78">Purchase a gift subscsription of 3, 6 or 12 months for a friend, colleague or loved one.
+      </p>
+    </div><a class="margin-top-152 font-size-79 color-27 color-28 color-29 background-color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-153 transition-39" href="/gifts">See gifts options</a>
+  </pf-vstack>
+</div>
+<div class="background-color-86 background-color-87">
+  <div class="max-width-6 margin-88 padding-89 padding-90 display-8 flex-direction-9 flex-wrap-10 justify-content-91 align-items-92">
+    <div class="padding-bottom-93 flex-basis-62 display-8 flex-direction-9 flex-wrap-94 justify-content-11 align-items-12">
+      <h3 class="color-95 color-96 margin-58 margin-top-97 margin-bottom-98 font-size-99 font-weight-74 line-height-75">Collections
+      </h3><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/collections">See all →</a>
+    </div>
+    <pf-vgrid class="column-gap-102 display-103 grid-template-columns-104 row-gap-105">
+      <pf-vstack class="border-106 box-shadow-107 border-radius-108 margin-109 overflow-110 background-color-86 background-color-111 align-items-112 display-8 flex-direction-67 row-gap-68"><a class="border-bottom-113 border-bottom-114 display-43 padding-154 text-align-64 text-decoration-14 text-decoration-15 text-decoration-155 color-120 color-121 color-122 color-123" href="/collections/functions"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="0.5" width="64" height="64" rx="32" fill="url(#paint0_linear_733_2369)"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M35.5 17.0259L50.474 31.9999L35.5 46.9739L20.526 31.9999L35.5 17.0259ZM33.0043 34.4956C34.3178 35.8091 36.5883 35.9029 37.9957 34.4956C39.4218 33.0695 39.3092 30.8177 37.9957 29.5042C36.6822 28.1907 34.4304 28.0781 33.0043 29.5042C31.597 30.9116 31.6908 33.1821 33.0043 34.4956ZM29.5883 17.1141L31.0883 18.6141L17.6143 32.0881L31.0883 45.5622L29.5883 47.0622L14.6143 32.0881L29.5883 17.1141Z" fill="white"/>
 <defs>
@@ -86,12 +522,143 @@ body, html {
 <stop offset="1" stop-color="#79f2b0"/>
 </linearGradient>
 </defs>
-</svg><div><h4 class="margin-58 margin-top-97 margin-bottom-98 font-size-120 font-weight-74 line-height-75">Functions</h4><div class="font-weight-77 line-height-78 font-size-26 color-117 color-118">Collection</div></div></a><pf-vstack class="padding-116 flex-grow-60 align-items-112 display-8 flex-direction-67 row-gap-113"><div class="flex-grow-60"><div class="margin-top-157 color-158 color-159 color-125 color-126"><div class="markdown"><p>This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.</p>
-</div></div></div><pf-hstack class="color-117 color-118 align-items-12 display-8 flex-direction-9 column-gap-127"><pf-hstack class="font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-128"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg>
+        <div>
+          <h4 class="margin-58 margin-top-97 margin-bottom-98 font-size-119 font-weight-74 line-height-75">Functions
+          </h4>
+          <div class="font-weight-77 line-height-78 font-size-26 color-117 color-118">Collection
+          </div>
+        </div></a>
+        <pf-vstack class="padding-115 flex-grow-60 align-items-112 display-8 flex-direction-67 row-gap-68">
+          <div class="flex-grow-60">
+            <div class="color-124 color-125">
+              <pf-markdown class="display-43">
+                <p class="padding-bottom-80 padding-top-81 padding-left-82 padding-right-83 margin-58 line-height-78">This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.
+                </p>
+              </pf-markdown>
+            </div>
+          </div>
+          <pf-hstack class="color-117 color-118 align-items-12 display-8 flex-direction-9 column-gap-126">
+            <pf-hstack class="font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-127"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M6.66665 11.4999L10.6666 8.49992L6.66665 5.49992V11.4999ZM7.99998 1.83325C4.31998 1.83325 1.33331 4.81992 1.33331 8.49992C1.33331 12.1799 4.31998 15.1666 7.99998 15.1666C11.68 15.1666 14.6666 12.1799 14.6666 8.49992C14.6666 4.81992 11.68 1.83325 7.99998 1.83325ZM7.99998 13.8333C5.05998 13.8333 2.66665 11.4399 2.66665 8.49992C2.66665 5.55992 5.05998 3.16659 7.99998 3.16659C10.94 3.16659 13.3333 5.55992 13.3333 8.49992C13.3333 11.4399 10.94 13.8333 7.99998 13.8333Z" fill="currentColor"/>
-</svg>6 episodes</pf-hstack><pf-hstack class="font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-128"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg>6 episodes
+            </pf-hstack>
+            <pf-hstack class="font-weight-77 line-height-78 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-127"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
-</svg>2 hr 18 min</pf-hstack></pf-hstack></pf-vstack></pf-vstack></pf-vgrid></div></div><div class="margin-160 height-161 background-color-162 background-color-134"></div><div class="background-color-86 background-color-87"><div class="max-width-6 margin-88 padding-89 padding-90 display-8 flex-direction-9 flex-wrap-10 justify-content-91 align-items-92"><div class="padding-bottom-93 flex-basis-62 display-8 flex-direction-9 flex-wrap-94 justify-content-11 align-items-12"><h3 class="color-95 color-96 margin-58 margin-top-97 margin-bottom-98 font-size-99 font-weight-74 line-height-75">Clips</h3><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/clips">See all →</a></div><pf-vgrid class="column-gap-102 display-103 grid-template-columns-104 row-gap-105"></pf-vgrid></div></div><div class="margin-160 height-161 background-color-162 background-color-134"></div><div class="background-color-86 background-color-87"><div class="max-width-6 margin-88 padding-89 padding-90 display-8 flex-direction-9 flex-wrap-10 justify-content-91 align-items-92"><div class="padding-bottom-93 flex-basis-62 display-8 flex-direction-9 flex-wrap-94 justify-content-11 align-items-12"><h3 class="color-95 color-96 margin-58 margin-top-97 margin-bottom-98 font-size-99 font-weight-74 line-height-75">Newsletter</h3><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/blog">See all →</a></div><ul class="padding-left-18 list-style-type-19"><li><div class="color-163 color-126">Apr 16, 2018</div><div class="margin-top-119"><h4 class="margin-58 margin-top-97 margin-bottom-98 font-size-120 font-weight-74 line-height-75"><a class="color-164 color-96 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a></h4></div><div class="color-125 color-126"><div class="markdown"><p>This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.</p>
-</div></div></li><li class="margin-165 display-166"><div class="margin-160 height-161 background-color-162 background-color-134"></div></li></ul></div></div><div class="background-167"><div class="align-items-146 display-8 flex-direction-67 flex-wrap-10 row-gap-168 padding-top-169 padding-left-170 padding-bottom-171 padding-right-172 padding-top-173 padding-left-174 padding-bottom-175 padding-right-176 margin-7 max-width-6"><div class="text-align-177"><h2 class="color-29 margin-58 margin-top-71 margin-bottom-72 font-size-73 font-weight-74 line-height-75">Refer a friend</h2></div><div class="text-align-177"><p class="margin-88 max-width-178 color-76 font-weight-77 line-height-78 font-size-79 padding-bottom-80 padding-top-81 padding-left-82 padding-right-83 margin-58 line-height-78">You'll both get one month free ($18 credit) when they sign up from your personal referral link:</p></div><div class="text-align-177"><pf-hstack class="margin-top-179 margin-180 align-items-12 display-8 flex-direction-9 column-gap-127"><input class="border-181 border-radius-32 outline-182 padding-183 max-width-184 width-0 flex-grow-60 color-163" onclick="this.select();" readonly type="text" value="ocalhost:8080/subscribe/personal?ref=deadbeef"><input type="button" value="Copy" onclick="navigator.clipboard.writeText(&quot;ocalhost:8080/subscribe/personal?ref=deadbeef&quot;);
+</svg>2 hr 18 min
+            </pf-hstack>
+          </pf-hstack>
+        </pf-vstack>
+      </pf-vstack>
+    </pf-vgrid>
+  </div>
+</div>
+<hr class="border-156 border-top-157 border-top-158 margin-159">
+<div class="background-color-86 background-color-87">
+  <div class="max-width-6 margin-88 padding-89 padding-90 display-8 flex-direction-9 flex-wrap-10 justify-content-91 align-items-92">
+    <div class="padding-bottom-93 flex-basis-62 display-8 flex-direction-9 flex-wrap-94 justify-content-11 align-items-12">
+      <h3 class="color-95 color-96 margin-58 margin-top-97 margin-bottom-98 font-size-99 font-weight-74 line-height-75">Clips
+      </h3><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/clips">See all →</a>
+    </div>
+    <pf-vgrid class="column-gap-102 display-103 grid-template-columns-104 row-gap-105">
+    </pf-vgrid>
+  </div>
+</div>
+<hr class="border-156 border-top-157 border-top-158 margin-159">
+<div class="background-color-86 background-color-87">
+  <div class="max-width-6 margin-88 padding-89 padding-90 display-8 flex-direction-9 flex-wrap-10 justify-content-91 align-items-92">
+    <div class="padding-bottom-93 flex-basis-62 display-8 flex-direction-9 flex-wrap-94 justify-content-11 align-items-12">
+      <h3 class="color-95 color-96 margin-58 margin-top-97 margin-bottom-98 font-size-99 font-weight-74 line-height-75">Newsletter
+      </h3><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/blog">See all →</a>
+    </div>
+    <ul class="padding-left-18 list-style-type-19">
+      <li>
+        <div class="color-160 color-125">Apr 16, 2018
+        </div>
+        <div class="margin-top-161">
+          <h4 class="margin-58 margin-top-97 margin-bottom-98 font-size-119 font-weight-74 line-height-75"><a class="color-162 color-96 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
+          </h4>
+        </div>
+        <div class="color-124 color-125">
+          <pf-markdown class="display-43">
+            <p class="padding-bottom-80 padding-top-81 padding-left-82 padding-right-83 margin-58 line-height-78">This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
+            </p>
+          </pf-markdown>
+        </div>
+      </li>
+      <li class="margin-163 display-164">
+        <hr class="border-156 border-top-157 border-top-158 margin-159">
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="background-165">
+  <div class="align-items-145 display-8 flex-direction-67 flex-wrap-10 row-gap-116 padding-top-166 padding-left-167 padding-bottom-168 padding-right-169 padding-top-170 padding-left-171 padding-bottom-172 padding-right-173 margin-7 max-width-6">
+    <div class="text-align-174">
+      <h2 class="color-29 margin-58 margin-top-71 margin-bottom-72 font-size-73 font-weight-74 line-height-75">Refer a friend
+      </h2>
+    </div>
+    <div class="text-align-174">
+      <p class="margin-88 max-width-175 color-76 font-weight-77 line-height-78 font-size-79 padding-bottom-80 padding-top-81 padding-left-82 padding-right-83 margin-58 line-height-78">You'll both get one month free ($18 credit) when they sign up from your personal referral link:
+      </p>
+    </div>
+    <div class="text-align-174 width-0">
+      <pf-hstack class="margin-top-176 justify-content-177 margin-178 align-items-12 display-8 flex-direction-9 column-gap-126"><input class="border-156 border-radius-32 outline-179 padding-180 max-width-181 width-0 flex-grow-60 color-160" onclick="this.select();" readonly type="text" value="localhost:8080/subscribe/personal?ref=deadbeef"><input type="button" value="Copy" onclick="navigator.clipboard.writeText(&quot;localhost:8080/subscribe/personal?ref=deadbeef&quot;);
 this.value = &quot;Copied!&quot;;
-setTimeout(() => { this.value = &quot;Copy&quot;; }, 3000);" class="font-size-79 color-27 color-28 color-29 background-color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-154 transition-39"></pf-hstack></div></div></div><footer class="padding-top-185 padding-left-186 padding-bottom-187 padding-right-188 padding-top-189 padding-left-190 padding-bottom-191 padding-right-192 background-color-193"><pf-vgrid class="align-items-194 column-gap-102 display-103 grid-template-columns-195 row-gap-105"><div class="padding-bottom-196 padding-right-188"><h4 class="font-size-197 font-size-198 line-height-199 margin-bottom-200 font-size-120"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/">Point-Free</a></h4><p class="font-weight-77 line-height-78 font-size-79 color-29">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-201 color-202" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-201 color-202" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.</p></div><pf-vgrid class="column-gap-127 display-203 grid-template-columns-204 row-gap-68"><div><h5 class="font-size-205 font-size-206 letter-spacing-207 line-height-208 text-transform-209 color-29">Content</h5><ol class="padding-left-18 list-style-type-19"><li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/pricing">Pricing</a></li><li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/gifts">Gifts</a></li><li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/">Videos</a></li><li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/collections">Collections</a></li><li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/clips">Clips</a></li><li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/blog">Blog</a></li></ol></div><div><h5 class="font-size-205 font-size-206 letter-spacing-207 line-height-208 text-transform-209 color-29">More</h5><ol class="padding-left-18 list-style-type-19"><li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/about">About Us</a></li><li rel="me"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="https://hachyderm.io/@pointfreeco">Mastodon</a></li><li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="https://www.twitter.com/pointfreeco">Twitter</a></li><li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="https://github.com/pointfreeco">GitHub</a></li><li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="mailto:support@pointfree.co">Contact Us</a></li><li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/privacy">Privacy Policy</a></li></ol></div></pf-vgrid><p class="padding-top-210 font-weight-77 line-height-78 font-size-26 color-125">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.</p></pf-vgrid></footer></body></html>
+setTimeout(() => { this.value = &quot;Copy&quot;; }, 3000);" class="font-size-79 color-27 color-28 color-29 background-color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-153 transition-39">
+      </pf-hstack>
+    </div>
+  </div>
+</div>
+<footer class="padding-top-182 padding-left-183 padding-bottom-184 padding-right-185 padding-top-186 padding-left-187 padding-bottom-188 padding-right-189 background-color-190">
+  <pf-vgrid class="align-items-191 column-gap-102 display-103 grid-template-columns-192 row-gap-105">
+    <div class="padding-bottom-193 padding-right-185">
+      <h4 class="font-size-194 font-size-195 line-height-196 margin-bottom-197 font-size-119"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/">Point-Free</a>
+      </h4>
+      <p class="font-weight-77 line-height-78 font-size-79 color-29">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-198 color-199" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-198 color-199" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      </p>
+    </div>
+    <pf-vgrid class="column-gap-126 display-200 grid-template-columns-201 row-gap-68">
+      <div>
+        <h5 class="font-size-202 font-size-203 letter-spacing-204 line-height-205 text-transform-206 color-29">Content
+        </h5>
+        <ol class="padding-left-18 list-style-type-19">
+          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/pricing">Pricing</a>
+          </li>
+          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/gifts">Gifts</a>
+          </li>
+          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/">Videos</a>
+          </li>
+          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/collections">Collections</a>
+          </li>
+          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/clips">Clips</a>
+          </li>
+          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/blog">Blog</a>
+          </li>
+        </ol>
+      </div>
+      <div>
+        <h5 class="font-size-202 font-size-203 letter-spacing-204 line-height-205 text-transform-206 color-29">More
+        </h5>
+        <ol class="padding-left-18 list-style-type-19">
+          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/about">About Us</a>
+          </li>
+          <li rel="me"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
+          </li>
+          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="https://www.twitter.com/pointfreeco">Twitter</a>
+          </li>
+          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="https://github.com/pointfreeco">GitHub</a>
+          </li>
+          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="mailto:support@pointfree.co">Contact Us</a>
+          </li>
+          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-100 color-101" href="/privacy">Privacy Policy</a>
+          </li>
+        </ol>
+      </div>
+    </pf-vgrid>
+    <p class="padding-top-207 font-weight-77 line-height-78 font-size-26 color-124">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
+    </p>
+  </pf-vgrid>
+</footer>
+  </body>
+</html>

@@ -27,16 +27,11 @@ extension Conn where Step == HeadersOpen {
       url: siteRouter.url(for: siteRoute)  // TODO: should we have @Dependency(\.currentURL)?
     )
 
-    var printer = HTMLPrinter()
-    PageLayout._render(
-      PageLayout(layoutData: layoutData, metadata: metadata, content: view),
-      into: &printer
-    )
     return
       self
       .writeSessionCookie { $0.flash = nil }
       .respond(
-        body: Data(printer.bytes),
+        body: Data(PageLayout(layoutData: layoutData, metadata: metadata, content: view).render()),
         contentType: .html
       )
   }

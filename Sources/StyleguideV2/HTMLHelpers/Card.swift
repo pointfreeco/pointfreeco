@@ -14,7 +14,7 @@ public struct Card<Content: HTML, Header: HTML, Footer: HTML>: HTML {
   }
 
   public var body: some HTML {
-    VStack(spacing: 0) {
+    VStack {
       header
         .inlineStyle("border-bottom", "1px solid #e8e8e8")
         .inlineStyle("border-bottom", "1px solid #3d3d3d", media: .dark)
@@ -26,7 +26,7 @@ public struct Card<Content: HTML, Header: HTML, Footer: HTML>: HTML {
         footer
       }
       .grow()
-      .inlineStyle("padding", "1.5rem")
+      .inlineStyle("padding", "0.5rem 1.5rem 1.5rem")
     }
     .backgroundColor(.white.dark(.gray150))
     .inlineStyle("border", "1px #353535 solid", media: .dark)

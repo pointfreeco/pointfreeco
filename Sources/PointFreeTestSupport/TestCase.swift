@@ -42,7 +42,7 @@ open class TestCase: XCTestCase {
 
   override open func tearDown() {
     super.tearDown()
-    SnapshotTesting.isRecording = false
+    //SnapshotTesting.isRecording = false
   }
 
   public var isScreenshotTestingAvailable: Bool {

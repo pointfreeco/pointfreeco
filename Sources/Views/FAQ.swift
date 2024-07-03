@@ -1,4 +1,3 @@
-import Ccmark
 import Css
 import FunctionalCss
 import Html
@@ -59,8 +58,7 @@ func faqItems(faqs: [Faq]) -> Node {
               Class.padding([.mobile: [.bottom: 2]]),
             ])
           ],
-          faq.answer,
-          options: CMARK_OPT_UNSAFE
+          faq.answer
         ),
       ]
     }

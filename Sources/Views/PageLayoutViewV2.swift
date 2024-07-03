@@ -34,6 +34,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
 
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.date.now) var now
+  @Dependency(\.shouldShowLiveBanner) var shouldShowLiveBanner
   @Dependency(\.siteRouter) var siteRouter
 
   public var head: some HTML {
@@ -136,7 +137,9 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
         "Temporary service disruption. We’re operating with reduced features and will be back soon!"
       }
     }
-    LiveStreamBanner()
+    if shouldShowLiveBanner {
+      LiveStreamBanner()
+    }
     // TODO: Announcement banner
     NavBar()
     content
@@ -498,24 +501,20 @@ public struct PastDueBanner: HTML {
 }
 
 public struct LiveStreamBanner: HTML {
-  @Dependency(\.currentRoute) var currentRoute
-  @Dependency(\.livestreams) var livestreams
   @Dependency(\.siteRouter) var siteRouter
 
   public var body: some HTML {
-    if !currentRoute.is(\.live), livestreams.first(where: \.isLive) != nil {
-      TopBanner(style: .notice) {
-        span {
-          "●"
-        }
-        .color(.red)
-        .inlineStyle("animation", "Pulse 3s linear infinite")
-        .inlineStyle("margin-right", "0.5rem")
-
-        "We’re live! "
-        Link("Watch the stream →", href: siteRouter.path(for: .live(.current)))
-          .linkStyle(LinkStyle(color: .white, underline: nil))
+    TopBanner(style: .live) {
+      span {
+        "●"
       }
+      .color(.red)
+      .inlineStyle("animation", "Pulse 3s linear infinite")
+      .inlineStyle("margin-right", "0.5rem")
+
+      "We’re live! "
+      Link("Watch the stream →", href: siteRouter.path(for: .live(.current)))
+        .linkStyle(LinkStyle(color: .white, underline: nil))
     }
   }
 }
@@ -523,6 +522,7 @@ public struct LiveStreamBanner: HTML {
 struct TopBanner<Content: HTML>: HTML {
   enum Style {
     case error
+    case live
     case notice
     case warning
 
@@ -530,8 +530,10 @@ struct TopBanner<Content: HTML>: HTML {
       switch self {
       case .error:
         return .white.dark(.red)
-      case .notice:
+      case .live:
         return .gray800
+      case .notice:
+        return .black.dark(.green)
       case .warning:
         return .black.dark(.yellow)
       }
@@ -540,11 +542,13 @@ struct TopBanner<Content: HTML>: HTML {
     var backgroundColor: PointFreeColor {
       switch self {
       case .error:
-        return .red.dark(.black)
-      case .notice:
+        return .red.dark(.offBlack)
+      case .live:
         return .offBlack
+      case .notice:
+        return .green.dark(.offBlack)
       case .warning:
-        return .yellow.dark(.black)
+        return .yellow.dark(.offBlack)
       }
     }
   }
@@ -571,16 +575,18 @@ struct TopBanner<Content: HTML>: HTML {
 
   var body: some HTML {
     div {
-      content
+      div {
+        content
+      }
+      .color(style.color)
+      .linkStyle(LinkStyle(color: style.color, underline: true))
+      .inlineStyle("margin", "0 auto")
+      .inlineStyle("max-width", "1280px")
+      .inlineStyle("padding", "1rem 3rem 1rem")
+      .inlineStyle("text-align", "center")
+      .fontStyle(.body(.small))
     }
     .backgroundColor(style.backgroundColor)
-    .color(style.color)
-    .linkStyle(LinkStyle(color: style.color, underline: true))
-    .inlineStyle("margin", "0 auto")
-    .inlineStyle("max-width", "1280px")
-    .inlineStyle("padding", "1rem 3rem 1rem")
-    .inlineStyle("text-align", "center")
-    .fontStyle(.body(.small))
   }
 }
 
@@ -711,5 +717,11 @@ public struct PrismJSHead: HTML {
       });
       """#
     }
+  }
+}
+
+extension DependencyValues {
+  var shouldShowLiveBanner: Bool {
+    !currentRoute.is(\.live) && livestreams.first(where: \.isLive) != nil
   }
 }

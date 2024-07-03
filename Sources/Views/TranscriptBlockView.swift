@@ -1,4 +1,3 @@
-import Ccmark
 import Css
 import FunctionalCss
 import Html
@@ -31,7 +30,7 @@ public func transcriptBlockView(
       } ?? [],
       .div(
         attributes: [.class([Class.pf.type.body.regular])],
-        .markdownBlock(block.content, options: CMARK_OPT_UNSAFE)
+        .markdownBlock(block.content)
       )
     )
 
@@ -118,8 +117,7 @@ public func transcriptBlockView(
       .markdownBlock(
         previousSpeaker != block.speaker
           ? (block.speaker.map { "**\($0):**\n" } ?? "") + block.content
-          : block.content,
-        options: CMARK_OPT_UNSAFE
+          : block.content
       )
     )
 
@@ -128,7 +126,7 @@ public func transcriptBlockView(
       attributes: [.class([Class.pf.type.body.regular])],
       timestampLinkView(block.timestamp),
       .blockquote([.text(question)]),
-      .markdownBlock(block.content, options: CMARK_OPT_UNSAFE)
+      .markdownBlock(block.content)
     )
 
   case .title:

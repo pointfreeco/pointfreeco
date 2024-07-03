@@ -41,6 +41,10 @@ public enum HTMLBuilder {
   public static func buildOptional<T: HTML>(_ component: T?) -> T? {
     component
   }
+
+  public static func buildFinalResult<T: HTML>(_ component: T) -> T {
+    component
+  }
 }
 
 public struct _HTMLArray<Element: HTML>: HTML {
@@ -80,6 +84,8 @@ public struct HTMLText: HTML {
         printer.bytes.append(contentsOf: "&amp;".utf8)
       case UInt8(ascii: "<"):
         printer.bytes.append(contentsOf: "&lt;".utf8)
+      case UInt8(ascii: ">"):
+        printer.bytes.append(contentsOf: "&rt;".utf8)
       default:
         printer.bytes.append(byte)
       }
