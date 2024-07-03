@@ -27,11 +27,41 @@ extension Node {
 private struct UnsafeMark: MarkupWalker {
   var html = ""
   func quoteAttribute(_ string: String) -> String {
-    "\"" + string.replacingOccurrences(of: "\"", with: "&quot;") + "\""
+    var quoted = "\""
+    quoted.unicodeScalars.reserveCapacity(string.unicodeScalars.count)
+    for scalar in string.unicodeScalars {
+      switch scalar {
+      case "\"":
+        quoted.append("&quot;")
+      case "'":
+        quoted.append("&#39;")
+      default:
+        quoted.unicodeScalars.append(scalar)
+      }
+    }
+    quoted.append("\"")
+    return quoted
+  }
+  func escape(_ string: String) -> String {
+    var escaped = ""
+    escaped.unicodeScalars.reserveCapacity(string.unicodeScalars.count)
+    for scalar in string.unicodeScalars {
+      switch scalar {
+      case "&":
+        escaped.append("&amp;")
+      case "<":
+        escaped.append("&lt;")
+      case ">":
+        escaped.append("&gt;")
+      default:
+        escaped.unicodeScalars.append(scalar)
+      }
+    }
+    return escaped
   }
   mutating func visitBlockQuote(_ blockQuote: BlockQuote) {
-    html.append("<blockquote>")
-    defer { html.append("</blockquote>") }
+    html.append("<blockquote>\n")
+    defer { html.append("</blockquote>\n") }
     for child in blockQuote.children { visit(child) }
   }
   mutating func visitCodeBlock(_ codeBlock: Markdown.CodeBlock) {
@@ -40,7 +70,7 @@ private struct UnsafeMark: MarkupWalker {
       html.append(" class=")
       html.append(quoteAttribute("language-\(language)"))
     }
-    html.append(">\(codeBlock.code)</code></pre>")
+    html.append(">\(escape(codeBlock.code))</code></pre>\n")
   }
   mutating func visitEmphasis(_ emphasis: Markdown.Emphasis) {
     html.append("<em>")
@@ -69,7 +99,7 @@ private struct UnsafeMark: MarkupWalker {
   mutating func visitInlineCode(_ inlineCode: Markdown.InlineCode) {
     html.append("<code>")
     defer { html.append("</code>") }
-    html.append(inlineCode.code)
+    html.append(escape(inlineCode.code))
   }
   mutating func visitInlineHTML(_ inlineHTML: Markdown.InlineHTML) {
     html.append(inlineHTML.rawHTML)
@@ -89,22 +119,22 @@ private struct UnsafeMark: MarkupWalker {
     for child in link.children { visit(child) }
   }
   mutating func visitListItem(_ listItem: Markdown.ListItem) {
-    html.append("<li>")
-    defer { html.append("</li>") }
+    html.append("<li>\n")
+    defer { html.append("</li>\n") }
     for child in listItem.children { visit(child) }
   }
   mutating func visitOrderedList(_ orderedList: Markdown.OrderedList) {
-    html.append("<ol>")
-    defer { html.append("</ol>") }
+    html.append("<ol>\n")
+    defer { html.append("</ol>\n") }
     for child in orderedList.children { visit(child) }
   }
   mutating func visitParagraph(_ paragraph: Markdown.Paragraph) {
     html.append("<p>")
-    defer { html.append("</p>") }
+    defer { html.append("</p>\n") }
     for child in paragraph.children { visit(child) }
   }
   mutating func visitSoftBreak(_ softBreak: Markdown.SoftBreak) {
-    html.append(" ")
+    html.append("\n")
   }
   mutating func visitStrikethrough(_ strikethrough: Markdown.Strikethrough) {
     html.append("<s>")
@@ -120,14 +150,14 @@ private struct UnsafeMark: MarkupWalker {
     assertionFailure()
   }
   mutating func visitText(_ text: Markdown.Text) {
-    html.append(text.string)
+    html.append(escape(text.string))
   }
   mutating func visitThematicBreak(_ thematicBreak: Markdown.ThematicBreak) {
     html.append("<hr>")
   }
   mutating func visitUnorderedList(_ unorderedList: Markdown.UnorderedList) {
-    html.append("<ul>")
-    defer { html.append("</ul>") }
+    html.append("<ul>\n")
+    defer { html.append("</ul>\n") }
     for child in unorderedList.children { visit(child) }
   }
 }

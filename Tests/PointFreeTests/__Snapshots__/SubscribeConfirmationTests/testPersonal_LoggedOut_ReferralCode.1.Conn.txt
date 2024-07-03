@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?ref=cafed00d&useRegionalDiscount=fa
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 60998
+Content-Length: 60994
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2206,7 +2206,7 @@ html {
             </li>
             <li class="m-pt1">
               <div class="pricing-plan-feature">
-                <p><a href="/subscribe/personal?ref=cafed00d&amp;useRegionalDiscount=true">Regional</a>
+                <p><a href="/subscribe/personal?ref=cafed00d&useRegionalDiscount=true">Regional</a>
 and <a href="/blog/posts/10-announcing-student-discounts">education</a> discounts
 available</p>
 

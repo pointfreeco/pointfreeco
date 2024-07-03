@@ -23,11 +23,14 @@ public struct HTMLElement<Content: HTML>: HTML {
       if !value.isEmpty {
         printer.bytes.append(contentsOf: "=\"".utf8)
         for byte in value.utf8 {
-          guard byte != UInt8(ascii: "\"") else {
+          switch byte {
+          case UInt8(ascii: "\""):
             printer.bytes.append(contentsOf: "&quot;".utf8)
-            continue
+          case UInt8(ascii: "'"):
+            printer.bytes.append(contentsOf: "&#39;".utf8)
+          default:
+            printer.bytes.append(byte)
           }
-          printer.bytes.append(byte)
         }
         printer.bytes.append(UInt8(ascii: "\""))
       }

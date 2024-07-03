@@ -2,7 +2,7 @@ GET https://www.pointfree.co
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 113560
+Content-Length: 114597
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -212,59 +212,57 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
 .margin-151{margin:1rem 0 2rem 0}
 .overflow-152{overflow:hidden}
 .align-items-154{align-items:stretch}
-.row-gap-155{row-gap:0}
-.border-bottom-156{border-bottom:1px solid #e8e8e8}
-.padding-158{padding:1.5rem}
-.color-159{color:#a8a8a8}
-.margin-top-161{margin-top:0.5rem}
-.color-162:link{color:#121212}
-.color-164:visited{color:#121212}
-.color-166{color:#666666}
-.column-gap-168{column-gap:1.0rem}
-.column-gap-169{column-gap:0.25rem}
-.margin-170{margin:0 30%}
-.height-171{height:1px}
-.background-color-172{background-color:#ccc}
-.color-174:link{color:currentColor}
-.color-175:visited{color:currentColor}
-.padding-176{padding:2rem 1.5rem}
-.text-decoration-177:hover{text-decoration:none}
-.margin-top-178{margin-top:-1rem}
-.color-179:link{color:#666666}
-.row-gap-181{row-gap:3.0rem}
-.text-decoration-line-183{text-decoration-line:none}
-.border-184{border:1px solid #e8e8e8}
-.margin-bottom-186:not(:last-child){margin-bottom:1rem}
-.background-color-188{background-color:#a8a8a8}
-.border-radius-189{border-radius:1.5rem}
-.height-190{height:3.0rem}
-.width-191{width:3.0rem}
-.margin-top-192{margin-top:0}
-.text-decoration-193:visited{text-decoration:underline}
-.text-decoration-194:link{text-decoration:underline}
-.align-items-203{align-items:first baseline}
-.font-size-205{font-size:1.25rem}
-.line-height-207{line-height:1.45}
-.color-209:link{color:#79f2b0}
-.color-210:visited{color:#79f2b0}
-.display-211{display:grid}
-.grid-template-columns-212{grid-template-columns:1fr 2fr}
-.font-size-213{font-size:0.75rem}
-.letter-spacing-215{letter-spacing:0.54pt}
-.line-height-216{line-height:1.25}
+.border-bottom-155{border-bottom:1px solid #e8e8e8}
+.padding-157{padding:0.5rem 1.5rem 1.5rem}
+.color-158{color:#a8a8a8}
+.color-160:link{color:#121212}
+.color-162:visited{color:#121212}
+.color-164{color:#666666}
+.column-gap-166{column-gap:1.0rem}
+.column-gap-167{column-gap:0.25rem}
+.border-168{border:none}
+.border-top-169{border-top:1px solid #ccc}
+.margin-171{margin:0 30%}
+.color-172:link{color:currentColor}
+.color-173:visited{color:currentColor}
+.padding-174{padding:2rem 1.5rem}
+.text-decoration-175:hover{text-decoration:none}
+.row-gap-176{row-gap:3.0rem}
+.text-decoration-line-178{text-decoration-line:none}
+.border-179{border:1px solid #e8e8e8}
+.padding-181{padding:1.5rem}
+.margin-bottom-182:not(:last-child){margin-bottom:1rem}
+.background-color-184{background-color:#a8a8a8}
+.border-radius-186{border-radius:1.5rem}
+.height-187{height:3.0rem}
+.width-188{width:3.0rem}
+.row-gap-189{row-gap:0}
+.margin-top-190{margin-top:0}
+.text-decoration-191:visited{text-decoration:underline}
+.text-decoration-192:link{text-decoration:underline}
+.align-items-201{align-items:first baseline}
+.font-size-203{font-size:1.25rem}
+.line-height-205{line-height:1.45}
+.color-207:link{color:#79f2b0}
+.color-208:visited{color:#79f2b0}
+.display-209{display:grid}
+.grid-template-columns-210{grid-template-columns:1fr 2fr}
+.font-size-211{font-size:0.75rem}
+.letter-spacing-213{letter-spacing:0.54pt}
+.line-height-214{line-height:1.25}
 @media only screen and (max-width: 831px){
   .position-1{position:sticky}
   .top-2{top:0}
   .display-17{display:none}
   input:checked ~ .display-63{display:block}
   .display-112:last-child{display:none}
-  .padding-top-199{padding-top:2.0rem}
-  .padding-left-200{padding-left:2.0rem}
-  .padding-bottom-201{padding-bottom:2.0rem}
-  .padding-right-202{padding-right:2.0rem}
-  .padding-bottom-204{padding-bottom:1.0rem}
-  .margin-bottom-208{margin-bottom:0.0rem}
-  .padding-top-217{padding-top:1.0rem}
+  .padding-top-197{padding-top:2.0rem}
+  .padding-left-198{padding-left:2.0rem}
+  .padding-bottom-199{padding-bottom:2.0rem}
+  .padding-right-200{padding-right:2.0rem}
+  .padding-bottom-202{padding-bottom:1.0rem}
+  .margin-bottom-206{margin-bottom:0.0rem}
+  .padding-top-215{padding-top:1.0rem}
 }
 @media only screen and (min-width: 832px){
   .padding-5{padding:1.5rem}
@@ -289,13 +287,13 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
   .padding-136:nth-child(odd){padding:0rem 0 4rem 1.5rem}
   .padding-138{padding:7.5%}
   .grid-template-columns-147{grid-template-columns:1fr 1fr 1fr}
-  .display-182{display:block}
-  .padding-top-195{padding-top:4.0rem}
-  .padding-left-196{padding-left:4.0rem}
-  .padding-bottom-197{padding-bottom:4.0rem}
-  .padding-right-198{padding-right:4.0rem}
-  .font-size-206{font-size:1.5rem}
-  .font-size-214{font-size:0.875rem}
+  .display-177{display:block}
+  .padding-top-193{padding-top:4.0rem}
+  .padding-left-194{padding-left:4.0rem}
+  .padding-bottom-195{padding-bottom:4.0rem}
+  .padding-right-196{padding-right:4.0rem}
+  .font-size-204{font-size:1.5rem}
+  .font-size-212{font-size:0.875rem}
 }
 @media (prefers-color-scheme: dark){
   .background-color-123{background-color:#171717}
@@ -304,15 +302,15 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
   .background-color-145{background-color:#121212}
   .border-148{border:1px #353535 solid}
   .background-color-153{background-color:#242424}
-  .border-bottom-157{border-bottom:1px solid #3d3d3d}
-  .color-160{color:#666666}
-  .color-163:link{color:#fff}
-  .color-165:visited{color:#fff}
-  .color-167{color:#a8a8a8}
-  .background-color-173{background-color:#555555}
-  .color-180:link{color:#a8a8a8}
-  .border-185{border:1px solid #353535}
-  .color-187{color:#fff}
+  .border-bottom-156{border-bottom:1px solid #3d3d3d}
+  .color-159{color:#666666}
+  .color-161:link{color:#fff}
+  .color-163:visited{color:#fff}
+  .color-165{color:#a8a8a8}
+  .border-top-170{border-top:1px solid #555555}
+  .border-180{border:1px solid #353535}
+  .color-183{color:#fff}
+  .background-color-185{background-color:#555555}
 }
 
     </style>
@@ -439,27 +437,30 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
       </h3><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/episodes/free">See all →</a>
     </div>
     <pf-vgrid class="column-gap-131 display-132 grid-template-columns-147 row-gap-134">
-      <pf-vstack class="border-148 box-shadow-149 border-radius-150 margin-151 overflow-152 background-color-144 background-color-153 align-items-154 display-8 flex-direction-71 row-gap-155"><a class="border-bottom-156 border-bottom-157 display-47 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep1-type-safe-html-in-swift"><img class="width-0" loading="lazy" src alt></a>
-        <pf-vstack class="padding-158 flex-grow-64 align-items-154 display-8 flex-direction-71 row-gap-155">
+      <pf-vstack class="border-148 box-shadow-149 border-radius-150 margin-151 overflow-152 background-color-144 background-color-153 align-items-154 display-8 flex-direction-71 row-gap-116"><a class="border-bottom-155 border-bottom-156 display-47 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep1-type-safe-html-in-swift"><img class="width-0" loading="lazy" src alt></a>
+        <pf-vstack class="padding-157 flex-grow-64 align-items-154 display-8 flex-direction-71 row-gap-116">
           <div class="flex-grow-64">
-            <div class="font-weight-90 line-height-91 font-size-26 color-159 color-160">Episode 1 • Jun 20, 2017
-            </div>
-            <div class="margin-top-161">
-              <h4 class="margin-62 margin-top-128 margin-bottom-129 font-size-141 font-weight-85 line-height-86"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-162 color-163 color-164 color-165" href="/episodes/ep1-type-safe-html-in-swift">Type-Safe HTML in Swift</a>
-              </h4>
-            </div>
-            <div class="color-166 color-167">
-              <div class="markdown"><p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.</p>
-
-              </div>
-            </div>
+            <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-116">
+              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-72">
+                <div class="font-weight-90 line-height-91 font-size-26 color-158 color-159">Episode 1 • Jun 20, 2017
+                </div>
+                <div>
+                  <h4 class="margin-62 margin-top-128 margin-bottom-129 font-size-141 font-weight-85 line-height-86"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-160 color-161 color-162 color-163" href="/episodes/ep1-type-safe-html-in-swift">Type-Safe HTML in Swift</a>
+                  </h4>
+                </div>
+              </pf-vstack>
+              <pf-markdown class="color-164 color-165 display-47">
+                <p class="padding-bottom-93 padding-top-94 padding-left-95 padding-right-96 margin-62 line-height-91">As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
+                </p>
+              </pf-markdown>
+            </pf-vstack>
           </div>
-          <pf-hstack class="color-159 color-160 align-items-12 display-8 flex-direction-9 column-gap-168">
-            <pf-hstack class="font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-169"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <pf-hstack class="color-158 color-159 align-items-12 display-8 flex-direction-9 column-gap-166">
+            <pf-hstack class="font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-167"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M8.49996 11.8333C9.23329 11.8333 9.83329 11.2333 9.83329 10.5C9.83329 9.76666 9.23329 9.16666 8.49996 9.16666C7.76663 9.16666 7.16663 9.76666 7.16663 10.5C7.16663 11.2333 7.76663 11.8333 8.49996 11.8333ZM12.5 5.83332H11.8333V4.49999C11.8333 2.65999 10.34 1.16666 8.49996 1.16666C6.65996 1.16666 5.16663 2.65999 5.16663 4.49999H6.43329C6.43329 3.35999 7.35996 2.43332 8.49996 2.43332C9.63996 2.43332 10.5666 3.35999 10.5666 4.49999V5.83332H4.49996C3.76663 5.83332 3.16663 6.43332 3.16663 7.16666V13.8333C3.16663 14.5667 3.76663 15.1667 4.49996 15.1667H12.5C13.2333 15.1667 13.8333 14.5667 13.8333 13.8333V7.16666C13.8333 6.43332 13.2333 5.83332 12.5 5.83332ZM12.5 13.8333H4.49996V7.16666H12.5V13.8333Z" fill="currentColor"/>
 </svg>Free
             </pf-hstack>
-            <pf-hstack class="flex-grow-64 font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-169"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <pf-hstack class="flex-grow-64 font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-167"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
 </svg>23 min
             </pf-hstack>
@@ -469,8 +470,7 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
     </pf-vgrid>
   </div>
 </div>
-<div class="margin-170 height-171 background-color-172 background-color-173">
-</div>
+<hr class="border-168 border-top-169 border-top-170 margin-171">
 <div class="background-color-144 background-color-145">
   <div class="max-width-6 margin-87 padding-101 padding-102 display-8 flex-direction-9 flex-wrap-10 justify-content-124 align-items-104">
     <div class="padding-bottom-146 flex-basis-66 display-8 flex-direction-9 flex-wrap-106 justify-content-11 align-items-12">
@@ -478,55 +478,60 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
       </h3><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/episodes">See all →</a>
     </div>
     <pf-vgrid class="column-gap-131 display-132 grid-template-columns-147 row-gap-134">
-      <pf-vstack class="border-148 box-shadow-149 border-radius-150 margin-151 overflow-152 background-color-144 background-color-153 align-items-154 display-8 flex-direction-71 row-gap-155"><a class="border-bottom-156 border-bottom-157 display-47 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep1-type-safe-html-in-swift"><img class="width-0" loading="lazy" src alt></a>
-        <pf-vstack class="padding-158 flex-grow-64 align-items-154 display-8 flex-direction-71 row-gap-155">
+      <pf-vstack class="border-148 box-shadow-149 border-radius-150 margin-151 overflow-152 background-color-144 background-color-153 align-items-154 display-8 flex-direction-71 row-gap-116"><a class="border-bottom-155 border-bottom-156 display-47 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep1-type-safe-html-in-swift"><img class="width-0" loading="lazy" src alt></a>
+        <pf-vstack class="padding-157 flex-grow-64 align-items-154 display-8 flex-direction-71 row-gap-116">
           <div class="flex-grow-64">
-            <div class="font-weight-90 line-height-91 font-size-26 color-159 color-160">Episode 1 • Jun 20, 2017
-            </div>
-            <div class="margin-top-161">
-              <h4 class="margin-62 margin-top-128 margin-bottom-129 font-size-141 font-weight-85 line-height-86"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-162 color-163 color-164 color-165" href="/episodes/ep1-type-safe-html-in-swift">Type-Safe HTML in Swift</a>
-              </h4>
-            </div>
-            <div class="color-166 color-167">
-              <div class="markdown"><p>As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.</p>
-
-              </div>
-            </div>
+            <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-116">
+              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-72">
+                <div class="font-weight-90 line-height-91 font-size-26 color-158 color-159">Episode 1 • Jun 20, 2017
+                </div>
+                <div>
+                  <h4 class="margin-62 margin-top-128 margin-bottom-129 font-size-141 font-weight-85 line-height-86"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-160 color-161 color-162 color-163" href="/episodes/ep1-type-safe-html-in-swift">Type-Safe HTML in Swift</a>
+                  </h4>
+                </div>
+              </pf-vstack>
+              <pf-markdown class="color-164 color-165 display-47">
+                <p class="padding-bottom-93 padding-top-94 padding-left-95 padding-right-96 margin-62 line-height-91">As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
+                </p>
+              </pf-markdown>
+            </pf-vstack>
           </div>
-          <pf-hstack class="color-159 color-160 align-items-12 display-8 flex-direction-9 column-gap-168">
-            <pf-hstack class="font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-169"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <pf-hstack class="color-158 color-159 align-items-12 display-8 flex-direction-9 column-gap-166">
+            <pf-hstack class="font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-167"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M8.49996 11.8333C9.23329 11.8333 9.83329 11.2333 9.83329 10.5C9.83329 9.76666 9.23329 9.16666 8.49996 9.16666C7.76663 9.16666 7.16663 9.76666 7.16663 10.5C7.16663 11.2333 7.76663 11.8333 8.49996 11.8333ZM12.5 5.83332H11.8333V4.49999C11.8333 2.65999 10.34 1.16666 8.49996 1.16666C6.65996 1.16666 5.16663 2.65999 5.16663 4.49999H6.43329C6.43329 3.35999 7.35996 2.43332 8.49996 2.43332C9.63996 2.43332 10.5666 3.35999 10.5666 4.49999V5.83332H4.49996C3.76663 5.83332 3.16663 6.43332 3.16663 7.16666V13.8333C3.16663 14.5667 3.76663 15.1667 4.49996 15.1667H12.5C13.2333 15.1667 13.8333 14.5667 13.8333 13.8333V7.16666C13.8333 6.43332 13.2333 5.83332 12.5 5.83332ZM12.5 13.8333H4.49996V7.16666H12.5V13.8333Z" fill="currentColor"/>
 </svg>Free
             </pf-hstack>
-            <pf-hstack class="flex-grow-64 font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-169"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <pf-hstack class="flex-grow-64 font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-167"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
 </svg>23 min
             </pf-hstack>
           </pf-hstack>
         </pf-vstack>
       </pf-vstack>
-      <pf-vstack class="border-148 box-shadow-149 border-radius-150 margin-151 overflow-152 background-color-144 background-color-153 align-items-154 display-8 flex-direction-71 row-gap-155"><a class="border-bottom-156 border-bottom-157 display-47 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep2-proof-in-functions"><img class="width-0" loading="lazy" src alt></a>
-        <pf-vstack class="padding-158 flex-grow-64 align-items-154 display-8 flex-direction-71 row-gap-155">
+      <pf-vstack class="border-148 box-shadow-149 border-radius-150 margin-151 overflow-152 background-color-144 background-color-153 align-items-154 display-8 flex-direction-71 row-gap-116"><a class="border-bottom-155 border-bottom-156 display-47 line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/episodes/ep2-proof-in-functions"><img class="width-0" loading="lazy" src alt></a>
+        <pf-vstack class="padding-157 flex-grow-64 align-items-154 display-8 flex-direction-71 row-gap-116">
           <div class="flex-grow-64">
-            <div class="font-weight-90 line-height-91 font-size-26 color-159 color-160">Episode 2 • Dec 20, 2016
-            </div>
-            <div class="margin-top-161">
-              <h4 class="margin-62 margin-top-128 margin-bottom-129 font-size-141 font-weight-85 line-height-86"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-162 color-163 color-164 color-165" href="/episodes/ep2-proof-in-functions">Proof in Functions</a>
-              </h4>
-            </div>
-            <div class="color-166 color-167">
-              <div class="markdown"><p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain
-text, no markdown allowed. Here is some more text just to have some filler.</p>
-
-              </div>
-            </div>
+            <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-116">
+              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-72">
+                <div class="font-weight-90 line-height-91 font-size-26 color-158 color-159">Episode 2 • Dec 20, 2016
+                </div>
+                <div>
+                  <h4 class="margin-62 margin-top-128 margin-bottom-129 font-size-141 font-weight-85 line-height-86"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-160 color-161 color-162 color-163" href="/episodes/ep2-proof-in-functions">Proof in Functions</a>
+                  </h4>
+                </div>
+              </pf-vstack>
+              <pf-markdown class="color-164 color-165 display-47">
+                <p class="padding-bottom-93 padding-top-94 padding-left-95 padding-right-96 margin-62 line-height-91">This is a short blurb to give a high-level overview of what the episode is about. It can only be plain text, no markdown allowed. Here is some more text just to have some filler.
+                </p>
+              </pf-markdown>
+            </pf-vstack>
           </div>
-          <pf-hstack class="color-159 color-160 align-items-12 display-8 flex-direction-9 column-gap-168"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-174 color-175" href="/pricing">
-            <pf-hstack class="font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-169"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <pf-hstack class="color-158 color-159 align-items-12 display-8 flex-direction-9 column-gap-166"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-172 color-173" href="/pricing">
+            <pf-hstack class="font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-167"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5.83342H11.3334V4.50008C11.3334 2.66008 9.84002 1.16675 8.00002 1.16675C6.16002 1.16675 4.66669 2.66008 4.66669 4.50008V5.83342H4.00002C3.26669 5.83342 2.66669 6.43341 2.66669 7.16675V13.8334C2.66669 14.5667 3.26669 15.1667 4.00002 15.1667H12C12.7334 15.1667 13.3334 14.5667 13.3334 13.8334V7.16675C13.3334 6.43341 12.7334 5.83342 12 5.83342ZM7.99994 11.8335C7.26661 11.8335 6.66661 11.2335 6.66661 10.5001C6.66661 9.76679 7.26661 9.16679 7.99994 9.16679C8.73327 9.16679 9.33327 9.76679 9.33327 10.5001C9.33327 11.2335 8.73327 11.8335 7.99994 11.8335ZM10.0665 5.83347H5.93321V4.50014C5.93321 3.36014 6.85987 2.43347 7.99987 2.43347C9.13987 2.43347 10.0665 3.36014 10.0665 4.50014V5.83347Z" fill="currentColor"/>
 </svg>Subscriber-only
             </pf-hstack></a>
-            <pf-hstack class="flex-grow-64 font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-169"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <pf-hstack class="flex-grow-64 font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-167"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
 </svg>23 min
             </pf-hstack>
@@ -536,8 +541,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
     </pf-vgrid>
   </div>
 </div>
-<div class="margin-170 height-171 background-color-172 background-color-173">
-</div>
+<hr class="border-168 border-top-169 border-top-170 margin-171">
 <div class="background-color-144 background-color-145">
   <div class="max-width-6 margin-87 padding-101 padding-102 display-8 flex-direction-9 flex-wrap-10 justify-content-124 align-items-104">
     <div class="padding-bottom-146 flex-basis-66 display-8 flex-direction-9 flex-wrap-106 justify-content-11 align-items-12">
@@ -545,7 +549,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
       </h3><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/collections">See all →</a>
     </div>
     <pf-vgrid class="column-gap-131 display-132 grid-template-columns-147 row-gap-134">
-      <pf-vstack class="border-148 box-shadow-149 border-radius-150 margin-151 overflow-152 background-color-144 background-color-153 align-items-154 display-8 flex-direction-71 row-gap-155"><a class="border-bottom-156 border-bottom-157 display-47 padding-176 text-align-68 text-decoration-14 text-decoration-15 text-decoration-177 color-162 color-163 color-164 color-165" href="/collections/functions"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <pf-vstack class="border-148 box-shadow-149 border-radius-150 margin-151 overflow-152 background-color-144 background-color-153 align-items-154 display-8 flex-direction-71 row-gap-116"><a class="border-bottom-155 border-bottom-156 display-47 padding-174 text-align-68 text-decoration-14 text-decoration-15 text-decoration-175 color-160 color-161 color-162 color-163" href="/collections/functions"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="0.5" width="64" height="64" rx="32" fill="url(#paint0_linear_733_2369)"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M35.5 17.0259L50.474 31.9999L35.5 46.9739L20.526 31.9999L35.5 17.0259ZM33.0043 34.4956C34.3178 35.8091 36.5883 35.9029 37.9957 34.4956C39.4218 33.0695 39.3092 30.8177 37.9957 29.5042C36.6822 28.1907 34.4304 28.0781 33.0043 29.5042C31.597 30.9116 31.6908 33.1821 33.0043 34.4956ZM29.5883 17.1141L31.0883 18.6141L17.6143 32.0881L31.0883 45.5622L29.5883 47.0622L14.6143 32.0881L29.5883 17.1141Z" fill="white"/>
 <defs>
@@ -558,23 +562,24 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
         <div>
           <h4 class="margin-62 margin-top-128 margin-bottom-129 font-size-141 font-weight-85 line-height-86">Functions
           </h4>
-          <div class="font-weight-90 line-height-91 font-size-26 color-159 color-160">Collection
+          <div class="font-weight-90 line-height-91 font-size-26 color-158 color-159">Collection
           </div>
         </div></a>
-        <pf-vstack class="padding-158 flex-grow-64 align-items-154 display-8 flex-direction-71 row-gap-155">
+        <pf-vstack class="padding-157 flex-grow-64 align-items-154 display-8 flex-direction-71 row-gap-116">
           <div class="flex-grow-64">
-            <div class="margin-top-178 color-179 color-180 color-166 color-167">
-              <div class="markdown"><p>This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.</p>
-
-              </div>
+            <div class="color-164 color-165">
+              <pf-markdown class="display-47">
+                <p class="padding-bottom-93 padding-top-94 padding-left-95 padding-right-96 margin-62 line-height-91">This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.
+                </p>
+              </pf-markdown>
             </div>
           </div>
-          <pf-hstack class="color-159 color-160 align-items-12 display-8 flex-direction-9 column-gap-168">
-            <pf-hstack class="font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-169"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <pf-hstack class="color-158 color-159 align-items-12 display-8 flex-direction-9 column-gap-166">
+            <pf-hstack class="font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-167"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M6.66665 11.4999L10.6666 8.49992L6.66665 5.49992V11.4999ZM7.99998 1.83325C4.31998 1.83325 1.33331 4.81992 1.33331 8.49992C1.33331 12.1799 4.31998 15.1666 7.99998 15.1666C11.68 15.1666 14.6666 12.1799 14.6666 8.49992C14.6666 4.81992 11.68 1.83325 7.99998 1.83325ZM7.99998 13.8333C5.05998 13.8333 2.66665 11.4399 2.66665 8.49992C2.66665 5.55992 5.05998 3.16659 7.99998 3.16659C10.94 3.16659 13.3333 5.55992 13.3333 8.49992C13.3333 11.4399 10.94 13.8333 7.99998 13.8333Z" fill="currentColor"/>
 </svg>6 episodes
             </pf-hstack>
-            <pf-hstack class="font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-169"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <pf-hstack class="font-weight-90 line-height-91 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-167"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
 </svg>2 hr 18 min
             </pf-hstack>
@@ -590,17 +595,17 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
       <h3 class="color-126 color-127 margin-62 margin-top-128 margin-bottom-129 font-size-130 font-weight-85 line-height-86">What people are saying
       </h3>
     </div>
-    <pf-vstack class="align-items-12 display-8 flex-direction-71 row-gap-181">
+    <pf-vstack class="align-items-12 display-8 flex-direction-71 row-gap-176">
       <pf-vgrid class="column-gap-131 display-132 grid-template-columns-147 row-gap-134">
-        <pf-vstack class="display-182 align-items-154 display-8 flex-direction-71 row-gap-116"><a class="text-decoration-line-183 display-47 border-184 border-185 border-radius-31 padding-158 margin-bottom-186 background-color-144 background-color-153 color-140 color-187" href="https://twitter.com/lucaceppelli/status/1136290297242165249">
+        <pf-vstack class="display-177 align-items-154 display-8 flex-direction-71 row-gap-116"><a class="text-decoration-line-178 display-47 border-179 border-180 border-radius-31 padding-181 margin-bottom-182 background-color-144 background-color-153 color-140 color-183" href="https://twitter.com/lucaceppelli/status/1136290297242165249">
           <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-116">
-            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-168"><img class="background-color-188 background-color-173 border-radius-189 height-190 width-191" loading="lazy" src="https://pbs.twimg.com/profile_images/1681590474019151872/JnbVvgVC_400x400.jpg" alt>
-              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-155">
+            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-166"><img class="background-color-184 background-color-185 border-radius-186 height-187 width-188" loading="lazy" src="https://pbs.twimg.com/profile_images/1681590474019151872/JnbVvgVC_400x400.jpg" alt>
+              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-189">
                 <div>
                   <h5 class="margin-62 margin-top-109 margin-bottom-129 font-size-92 font-weight-85 line-height-111">Luca Ceppelli
                   </h5>
                 </div>
-                <div class="color-166 color-160 font-weight-90 margin-top-192">
+                <div class="color-164 color-159 font-weight-90 margin-top-190">
                   <h6 class="margin-62 margin-top-109 margin-bottom-110 font-size-26 font-weight-85 line-height-111">@lucaceppelli
                   </h6>
                 </div>
@@ -608,15 +613,15 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
             </pf-hstack>
             <p class="padding-bottom-93 padding-top-94 padding-left-95 padding-right-96 margin-62 line-height-91">I bought the annual subscription and after I watched all videos and played with the sample code and libraries I can say it was the best money I spent in the last 12 months.
             </p>
-          </pf-vstack></a><a class="text-decoration-line-183 display-47 border-184 border-185 border-radius-31 padding-158 margin-bottom-186 background-color-144 background-color-153 color-140 color-187" href="https://twitter.com/atimca/status/1204399892531228672">
+          </pf-vstack></a><a class="text-decoration-line-178 display-47 border-179 border-180 border-radius-31 padding-181 margin-bottom-182 background-color-144 background-color-153 color-140 color-183" href="https://twitter.com/atimca/status/1204399892531228672">
           <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-116">
-            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-168"><img class="background-color-188 background-color-173 border-radius-189 height-190 width-191" loading="lazy" src="https://pbs.twimg.com/profile_images/1073853658272620544/zCJYVA8i_400x400.jpg" alt>
-              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-155">
+            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-166"><img class="background-color-184 background-color-185 border-radius-186 height-187 width-188" loading="lazy" src="https://pbs.twimg.com/profile_images/1073853658272620544/zCJYVA8i_400x400.jpg" alt>
+              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-189">
                 <div>
                   <h5 class="margin-62 margin-top-109 margin-bottom-129 font-size-92 font-weight-85 line-height-111">Maxim Smirnov
                   </h5>
                 </div>
-                <div class="color-166 color-160 font-weight-90 margin-top-192">
+                <div class="color-164 color-159 font-weight-90 margin-top-190">
                   <h6 class="margin-62 margin-top-109 margin-bottom-110 font-size-26 font-weight-85 line-height-111">@Atimca
                   </h6>
                 </div>
@@ -624,15 +629,15 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
             </pf-hstack>
             <p class="padding-bottom-93 padding-top-94 padding-left-95 padding-right-96 margin-62 line-height-91">The best thing, that happened to me for a while. @mbrandonw and @stephencelis really provide a lot of new information according to #ios development and #functionalprogramming. All info could be used in real production without boring academics.
             </p>
-          </pf-vstack></a><a class="text-decoration-line-183 display-47 border-184 border-185 border-radius-31 padding-158 margin-bottom-186 background-color-144 background-color-153 color-140 color-187" href="https://twitter.com/meghafon/status/978624999866105859">
+          </pf-vstack></a><a class="text-decoration-line-178 display-47 border-179 border-180 border-radius-31 padding-181 margin-bottom-182 background-color-144 background-color-153 color-140 color-183" href="https://twitter.com/meghafon/status/978624999866105859">
           <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-116">
-            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-168"><img class="background-color-188 background-color-173 border-radius-189 height-190 width-191" loading="lazy" src="https://pbs.twimg.com/profile_images/1618745535615176705/knLwgG_O_400x400.jpg" alt>
-              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-155">
+            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-166"><img class="background-color-184 background-color-185 border-radius-186 height-187 width-188" loading="lazy" src="https://pbs.twimg.com/profile_images/1618745535615176705/knLwgG_O_400x400.jpg" alt>
+              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-189">
                 <div>
                   <h5 class="margin-62 margin-top-109 margin-bottom-129 font-size-92 font-weight-85 line-height-111">Meghan Kane
                   </h5>
                 </div>
-                <div class="color-166 color-160 font-weight-90 margin-top-192">
+                <div class="color-164 color-159 font-weight-90 margin-top-190">
                   <h6 class="margin-62 margin-top-109 margin-bottom-110 font-size-26 font-weight-85 line-height-111">@meghafon
                   </h6>
                 </div>
@@ -642,15 +647,15 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
             </p>
           </pf-vstack></a>
         </pf-vstack>
-        <pf-vstack class="display-44 display-182 align-items-154 display-8 flex-direction-71 row-gap-116"><a class="text-decoration-line-183 display-47 border-184 border-185 border-radius-31 padding-158 margin-bottom-186 background-color-144 background-color-153 color-140 color-187" href="https://twitter.com/ferranpujolca/status/1130908056169136130">
+        <pf-vstack class="display-44 display-177 align-items-154 display-8 flex-direction-71 row-gap-116"><a class="text-decoration-line-178 display-47 border-179 border-180 border-radius-31 padding-181 margin-bottom-182 background-color-144 background-color-153 color-140 color-183" href="https://twitter.com/ferranpujolca/status/1130908056169136130">
           <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-116">
-            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-168"><img class="background-color-188 background-color-173 border-radius-189 height-190 width-191" loading="lazy" src="https://pbs.twimg.com/profile_images/1215783878620786691/n1ZTMtRg_400x400.jpg" alt>
-              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-155">
+            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-166"><img class="background-color-184 background-color-185 border-radius-186 height-187 width-188" loading="lazy" src="https://pbs.twimg.com/profile_images/1215783878620786691/n1ZTMtRg_400x400.jpg" alt>
+              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-189">
                 <div>
                   <h5 class="margin-62 margin-top-109 margin-bottom-129 font-size-92 font-weight-85 line-height-111">Ferran Pujol Camins
                   </h5>
                 </div>
-                <div class="color-166 color-160 font-weight-90 margin-top-192">
+                <div class="color-164 color-159 font-weight-90 margin-top-190">
                   <h6 class="margin-62 margin-top-109 margin-bottom-110 font-size-26 font-weight-85 line-height-111">@ferranpujolca
                   </h6>
                 </div>
@@ -658,15 +663,15 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
             </pf-hstack>
             <p class="padding-bottom-93 padding-top-94 padding-left-95 padding-right-96 margin-62 line-height-91">Their content pushes the boundary of my knowledge, and it's fun to watch!
             </p>
-          </pf-vstack></a><a class="text-decoration-line-183 display-47 border-184 border-185 border-radius-31 padding-158 margin-bottom-186 background-color-144 background-color-153 color-140 color-187" href="https://twitter.com/Frankacy/status/1204154907185557507">
+          </pf-vstack></a><a class="text-decoration-line-178 display-47 border-179 border-180 border-radius-31 padding-181 margin-bottom-182 background-color-144 background-color-153 color-140 color-183" href="https://twitter.com/Frankacy/status/1204154907185557507">
           <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-116">
-            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-168"><img class="background-color-188 background-color-173 border-radius-189 height-190 width-191" loading="lazy" src="https://pbs.twimg.com/profile_images/1408444495532892166/nMBLo1XT_400x400.jpg" alt>
-              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-155">
+            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-166"><img class="background-color-184 background-color-185 border-radius-186 height-187 width-188" loading="lazy" src="https://pbs.twimg.com/profile_images/1408444495532892166/nMBLo1XT_400x400.jpg" alt>
+              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-189">
                 <div>
                   <h5 class="margin-62 margin-top-109 margin-bottom-129 font-size-92 font-weight-85 line-height-111">Frank Courville
                   </h5>
                 </div>
-                <div class="color-166 color-160 font-weight-90 margin-top-192">
+                <div class="color-164 color-159 font-weight-90 margin-top-190">
                   <h6 class="margin-62 margin-top-109 margin-bottom-110 font-size-26 font-weight-85 line-height-111">@Frankacy
                   </h6>
                 </div>
@@ -675,15 +680,15 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
             <p class="padding-bottom-93 padding-top-94 padding-left-95 padding-right-96 margin-62 line-height-91">My new favourite morning routine is feeding 👶🏻 while watching
 @pointfreeco
             </p>
-          </pf-vstack></a><a class="text-decoration-line-183 display-47 border-184 border-185 border-radius-31 padding-158 margin-bottom-186 background-color-144 background-color-153 color-140 color-187" href="https://twitter.com/RunChristinaRun/status/968920979320709120">
+          </pf-vstack></a><a class="text-decoration-line-178 display-47 border-179 border-180 border-radius-31 padding-181 margin-bottom-182 background-color-144 background-color-153 color-140 color-183" href="https://twitter.com/RunChristinaRun/status/968920979320709120">
           <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-116">
-            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-168"><img class="background-color-188 background-color-173 border-radius-189 height-190 width-191" loading="lazy" src="https://pbs.twimg.com/profile_images/531922501652070400/xOa-Duws_400x400.jpeg" alt>
-              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-155">
+            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-166"><img class="background-color-184 background-color-185 border-radius-186 height-187 width-188" loading="lazy" src="https://pbs.twimg.com/profile_images/531922501652070400/xOa-Duws_400x400.jpeg" alt>
+              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-189">
                 <div>
                   <h5 class="margin-62 margin-top-109 margin-bottom-129 font-size-92 font-weight-85 line-height-111">Christina Lee
                   </h5>
                 </div>
-                <div class="color-166 color-160 font-weight-90 margin-top-192">
+                <div class="color-164 color-159 font-weight-90 margin-top-190">
                   <h6 class="margin-62 margin-top-109 margin-bottom-110 font-size-26 font-weight-85 line-height-111">@RunChristinaRun
                   </h6>
                 </div>
@@ -693,15 +698,15 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
             </p>
           </pf-vstack></a>
         </pf-vstack>
-        <pf-vstack class="display-44 display-182 align-items-154 display-8 flex-direction-71 row-gap-116"><a class="text-decoration-line-183 display-47 border-184 border-185 border-radius-31 padding-158 margin-bottom-186 background-color-144 background-color-153 color-140 color-187" href="https://twitter.com/fespinozacast/status/978997512500666368">
+        <pf-vstack class="display-44 display-177 align-items-154 display-8 flex-direction-71 row-gap-116"><a class="text-decoration-line-178 display-47 border-179 border-180 border-radius-31 padding-181 margin-bottom-182 background-color-144 background-color-153 color-140 color-183" href="https://twitter.com/fespinozacast/status/978997512500666368">
           <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-116">
-            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-168"><img class="background-color-188 background-color-173 border-radius-189 height-190 width-191" loading="lazy" src="https://pbs.twimg.com/profile_images/1789022009420021761/5jruWdfY_400x400.jpg" alt>
-              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-155">
+            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-166"><img class="background-color-184 background-color-185 border-radius-186 height-187 width-188" loading="lazy" src="https://pbs.twimg.com/profile_images/1789022009420021761/5jruWdfY_400x400.jpg" alt>
+              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-189">
                 <div>
                   <h5 class="margin-62 margin-top-109 margin-bottom-129 font-size-92 font-weight-85 line-height-111">Felipe Espinoza
                   </h5>
                 </div>
-                <div class="color-166 color-160 font-weight-90 margin-top-192">
+                <div class="color-164 color-159 font-weight-90 margin-top-190">
                   <h6 class="margin-62 margin-top-109 margin-bottom-110 font-size-26 font-weight-85 line-height-111">@fespinozacast
                   </h6>
                 </div>
@@ -709,15 +714,15 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
             </pf-hstack>
             <p class="padding-bottom-93 padding-top-94 padding-left-95 padding-right-96 margin-62 line-height-91">Watching the key path @pointfreeco episodes, and I am like 🤯🤯🤯. Super cool
             </p>
-          </pf-vstack></a><a class="text-decoration-line-183 display-47 border-184 border-185 border-radius-31 padding-158 margin-bottom-186 background-color-144 background-color-153 color-140 color-187" href="https://twitter.com/peres/status/1020263301039689733">
+          </pf-vstack></a><a class="text-decoration-line-178 display-47 border-179 border-180 border-radius-31 padding-181 margin-bottom-182 background-color-144 background-color-153 color-140 color-183" href="https://twitter.com/peres/status/1020263301039689733">
           <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-116">
-            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-168"><img class="background-color-188 background-color-173 border-radius-189 height-190 width-191" loading="lazy" src="https://pbs.twimg.com/profile_images/1429153871184777220/BTYTDOvY_400x400.jpg" alt>
-              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-155">
+            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-166"><img class="background-color-184 background-color-185 border-radius-186 height-187 width-188" loading="lazy" src="https://pbs.twimg.com/profile_images/1429153871184777220/BTYTDOvY_400x400.jpg" alt>
+              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-189">
                 <div>
                   <h5 class="margin-62 margin-top-109 margin-bottom-129 font-size-92 font-weight-85 line-height-111">Rui Peres
                   </h5>
                 </div>
-                <div class="color-166 color-160 font-weight-90 margin-top-192">
+                <div class="color-164 color-159 font-weight-90 margin-top-190">
                   <h6 class="margin-62 margin-top-109 margin-bottom-110 font-size-26 font-weight-85 line-height-111">@peres
                   </h6>
                 </div>
@@ -725,15 +730,15 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
             </pf-hstack>
             <p class="padding-bottom-93 padding-top-94 padding-left-95 padding-right-96 margin-62 line-height-91">Due to the amount of discussions that reference @pointfreeco, we added their logo as an emoji in our slack.
             </p>
-          </pf-vstack></a><a class="text-decoration-line-183 display-47 border-184 border-185 border-radius-31 padding-158 margin-bottom-186 background-color-144 background-color-153 color-140 color-187" href="https://twitter.com/NSHumanBeing/status/1043141855884587008">
+          </pf-vstack></a><a class="text-decoration-line-178 display-47 border-179 border-180 border-radius-31 padding-181 margin-bottom-182 background-color-144 background-color-153 color-140 color-183" href="https://twitter.com/NSHumanBeing/status/1043141855884587008">
           <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-116">
-            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-168"><img class="background-color-188 background-color-173 border-radius-189 height-190 width-191" loading="lazy" src="https://pbs.twimg.com/profile_images/978861228394237953/P7xRRANY_400x400.jpg" alt>
-              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-155">
+            <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-166"><img class="background-color-184 background-color-185 border-radius-186 height-187 width-188" loading="lazy" src="https://pbs.twimg.com/profile_images/978861228394237953/P7xRRANY_400x400.jpg" alt>
+              <pf-vstack class="align-items-154 display-8 flex-direction-71 row-gap-189">
                 <div>
                   <h5 class="margin-62 margin-top-109 margin-bottom-129 font-size-92 font-weight-85 line-height-111">William Savary
                   </h5>
                 </div>
-                <div class="color-166 color-160 font-weight-90 margin-top-192">
+                <div class="color-164 color-159 font-weight-90 margin-top-190">
                   <h6 class="margin-62 margin-top-109 margin-bottom-110 font-size-26 font-weight-85 line-height-111">@NSHumanBeing
                   </h6>
                 </div>
@@ -758,20 +763,20 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
       </p>
     </div>
     <div class="text-align-81 width-0"><a class="margin-top-97 display-98 font-size-92 color-39 color-40 color-41 background-color-42 border-43 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-99 transition-38" href="/signup">Sign up for free →</a>
-    </div><a class="text-align-81 font-weight-90 line-height-91 font-size-26 text-decoration-193 text-decoration-194 text-decoration-16 color-23 color-24" href="/pricing">View plans and pricing</a>
+    </div><a class="text-align-81 font-weight-90 line-height-91 font-size-26 text-decoration-191 text-decoration-192 text-decoration-16 color-23 color-24" href="/pricing">View plans and pricing</a>
   </div>
 </div>
-<footer class="padding-top-195 padding-left-196 padding-bottom-197 padding-right-198 padding-top-199 padding-left-200 padding-bottom-201 padding-right-202 background-color-100">
-  <pf-vgrid class="align-items-203 column-gap-131 display-132 grid-template-columns-133 row-gap-134">
-    <div class="padding-bottom-204 padding-right-198">
-      <h4 class="font-size-205 font-size-206 line-height-207 margin-bottom-208 font-size-141"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-40 color-39" href="/">Point-Free</a>
+<footer class="padding-top-193 padding-left-194 padding-bottom-195 padding-right-196 padding-top-197 padding-left-198 padding-bottom-199 padding-right-200 background-color-100">
+  <pf-vgrid class="align-items-201 column-gap-131 display-132 grid-template-columns-133 row-gap-134">
+    <div class="padding-bottom-202 padding-right-196">
+      <h4 class="font-size-203 font-size-204 line-height-205 margin-bottom-206 font-size-141"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-40 color-39" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-90 line-height-91 font-size-92 color-41">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-209 color-210" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-209 color-210" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-90 line-height-91 font-size-92 color-41">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-207 color-208" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-207 color-208" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="column-gap-168 display-211 grid-template-columns-212 row-gap-116">
+    <pf-vgrid class="column-gap-166 display-209 grid-template-columns-210 row-gap-116">
       <div>
-        <h5 class="font-size-213 font-size-214 letter-spacing-215 line-height-216 text-transform-108 color-41">Content
+        <h5 class="font-size-211 font-size-212 letter-spacing-213 line-height-214 text-transform-108 color-41">Content
         </h5>
         <ol class="padding-left-18 list-style-type-19">
           <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/pricing">Pricing</a>
@@ -789,7 +794,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
         </ol>
       </div>
       <div>
-        <h5 class="font-size-213 font-size-214 letter-spacing-215 line-height-216 text-transform-108 color-41">More
+        <h5 class="font-size-211 font-size-212 letter-spacing-213 line-height-214 text-transform-108 color-41">More
         </h5>
         <ol class="padding-left-18 list-style-type-19">
           <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/about">About Us</a>
@@ -807,7 +812,7 @@ text, no markdown allowed. Here is some more text just to have some filler.</p>
         </ol>
       </div>
     </pf-vgrid>
-    <p class="padding-top-217 font-weight-90 line-height-91 font-size-26 color-166">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
+    <p class="padding-top-215 font-weight-90 line-height-91 font-size-26 color-164">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
     </p>
   </pf-vgrid>
 </footer>
