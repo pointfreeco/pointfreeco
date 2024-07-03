@@ -1,5 +1,5 @@
-import OrderedCollections
 import Dependencies
+import OrderedCollections
 
 public struct HTMLPrinter {
   public typealias Content = Never

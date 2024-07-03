@@ -79,10 +79,12 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     }
 
     for style in html.styles {
-      let index: Int = printer.classes.firstIndex(of: style) ?? {
-        defer { printer.classes.append(style) }
-        return printer.classes.count
-      }()
+      let index: Int =
+        printer.classes.firstIndex(of: style)
+        ?? {
+          defer { printer.classes.append(style) }
+          return printer.classes.count
+        }()
 
       #if DEBUG
         let className = "\(style.property)-\(index)"

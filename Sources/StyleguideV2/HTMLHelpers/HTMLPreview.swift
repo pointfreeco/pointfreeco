@@ -24,7 +24,11 @@
     }
 
     public func updateNSView(_ webView: WKWebView, context: Context) {
-      let bytes = Self { body } head: { head }.render()
+      let bytes = Self {
+        body
+      } head: {
+        head
+      }.render()
       webView.loadHTMLString(String(decoding: bytes, as: UTF8.self), baseURL: nil)
     }
   }
