@@ -1,3 +1,5 @@
+import Dependencies
+
 public protocol HTMLDocument: HTML {
   associatedtype Head: HTML
   @HTMLBuilder
@@ -7,7 +9,8 @@ public protocol HTMLDocument: HTML {
 
 extension HTMLDocument {
   public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
-    var bodyPrinter = HTMLPrinter()
+    @Dependency(\.htmlPrinter) var htmlPrinter
+    var bodyPrinter = htmlPrinter
     Content._render(html.body, into: &bodyPrinter)
     Document
       ._render(

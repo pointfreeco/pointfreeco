@@ -15,7 +15,7 @@
 
       let response = CustomComponent()
         .inlineStyle("margin", "2rem")
-        .render()
+        ._render()
 
       print(response.styles)
       print(response.body)
@@ -23,7 +23,7 @@
   }
 
   extension HTML {
-    func render() -> Response {
+    func _render() -> Response {
       var printer = HTMLPrinter()
       Self._render(self, into: &printer)
       return Response(

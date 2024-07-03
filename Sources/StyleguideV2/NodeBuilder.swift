@@ -1,8 +1,10 @@
+import Dependencies
 import Html
 
 extension Node {
   public init<T: HTML>(@HTMLBuilder content: () -> T) {
-    var printer = HTMLPrinter()
+    @Dependency(\.htmlPrinter) var htmlPrinter
+    var printer = htmlPrinter
     T._render(content(), into: &printer)
     self = .fragment([
       .element("style", [], .raw(printer.stylesheet)),
