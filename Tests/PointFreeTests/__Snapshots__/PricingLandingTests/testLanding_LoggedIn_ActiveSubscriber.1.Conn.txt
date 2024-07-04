@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 107003
+Content-Length: 107011
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -468,7 +468,7 @@ input:checked ~ #menu-icon .transform-57{transform:rotate(45deg)}
         </pf-vstack>
       </pf-vstack>
     </pf-vgrid>
-    <pf-vstack class="align-items-12 display-8 flex-direction-68 row-gap-69"><small class="font-size-26 text-align-64 color-124">Prices shown with annual billing. When billed month to month, the <br><strong>Personal</strong> plan is $18, and the <strong>Team</strong> plan is $16 per member per month.</small>
+    <pf-vstack class="width-0 align-items-12 display-8 flex-direction-68 row-gap-69"><small class="font-size-26 text-align-64 color-124">Prices shown with annual billing. When billed month to month, the <br><strong>Personal</strong> plan is $18, and the <strong>Team</strong> plan is $16 per member per month.</small>
     </pf-vstack>
   </div>
 </div>
