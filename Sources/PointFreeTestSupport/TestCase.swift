@@ -75,6 +75,7 @@ open class LiveDatabaseTestCase: XCTestCase {
         $0.mailgun = .mock
         $0.stripe = .mock
         $0.uuid = .incrementing
+        $0.withRandomNumberGenerator = WithRandomNumberGenerator(Xoshiro(seed: 0))
       }
       precondition(!$0.envVars.postgres.databaseUrl.rawValue.contains("amazonaws.com"))
       self.pool = EventLoopGroupConnectionPool(

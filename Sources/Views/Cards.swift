@@ -54,30 +54,32 @@ public struct EpisodeCard: HTML {
       .inlineStyle("display", "block")
       .inlineStyle("line-height", "0")
     } footer: {
-      if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
-        if !subscriberState.isActive {
-          Link(href: siteRouter.path(for: .pricingLanding)) {
-            Label("Subscriber-only", icon: .locked)
+      CardFooter {
+        if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
+          if !subscriberState.isActive {
+            Link(href: siteRouter.path(for: .pricingLanding)) {
+              Label("Subscriber-only", icon: .locked)
+            }
+            .linkColor(.currentColor)
           }
-          .linkColor(.currentColor)
-        }
-      } else {
-        Label("Free", icon: .unlocked)
-      }
-
-      Label(episode.length.formatted(), icon: .clock)
-        .grow()
-
-      if let progress {
-        if progress.isFinished {
-          Label("Watched", icon: .checkmark)
         } else {
-          let value = Double(progress.percent) / 100
-          let minutes = (episode.length.timeInterval - episode.length.timeInterval * value) / 60
-
-          Progress(value: value)
-            .inlineStyle("width", "80px")
-            .attribute("title", "\(Int(minutes)) min to finish")
+          Label("Free", icon: .unlocked)
+        }
+        
+        Label(episode.length.formatted(), icon: .clock)
+          .grow()
+        
+        if let progress {
+          if progress.isFinished {
+            Label("Watched", icon: .checkmark)
+          } else {
+            let value = Double(progress.percent) / 100
+            let minutes = (episode.length.timeInterval - episode.length.timeInterval * value) / 60
+            
+            Progress(value: value)
+              .inlineStyle("width", "80px")
+              .attribute("title", "\(Int(minutes)) min to finish")
+          }
         }
       }
     }
@@ -142,8 +144,10 @@ public struct ClipCard: HTML {
       .inlineStyle("display", "block")
       .inlineStyle("line-height", "0")
     } footer: {
-      Label("Watch", icon: .play)
-      Label(clip.duration.formatted(), icon: .clock)
+      CardFooter {
+        Label("Watch", icon: .play)
+        Label(clip.duration.formatted(), icon: .clock)
+      }
     }
   }
 }
@@ -194,10 +198,23 @@ public struct CollectionCard: HTML {
       .inlineStyle("padding", "2rem 1.5rem")
       .inlineStyle("text-align", "center")
     } footer: {
-      Label("\(collection.numberOfEpisodes) episodes", icon: .play)
+      CardFooter {
+        Label("\(collection.numberOfEpisodes) episodes", icon: .play)
 
-      Label(collection.length.formatted(), icon: .clock)
+        Label(collection.length.formatted(), icon: .clock)
+      }
     }
+  }
+}
+
+private struct CardFooter<Content: HTML>: HTML {
+  @HTMLBuilder let content: Content
+  var body: some HTML {
+    HStack(alignment: .center) {
+      content
+    }
+    .color(.gray650.dark(.gray400))
+    .linkColor(.gray650.dark(.gray400))
   }
 }
 

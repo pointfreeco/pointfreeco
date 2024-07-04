@@ -1,34 +1,47 @@
 import StyleguideV2
 
-public struct PageHeader<Title: HTML, Blurb: HTML>: HTML {
+public struct PageHeader<Title: HTML, Blurb: HTML, CallToAction: HTML>: HTML {
   var title: Title
-  @HTMLBuilder var blurb: Blurb
+  var blurb: Blurb
+  var callToAction: CallToAction?
 
   public init(
     title: String,
-    @HTMLBuilder blurb: () -> Blurb
+    @HTMLBuilder blurb: () -> Blurb,
+    @HTMLBuilder callToAction: () -> CallToAction? = { Never?.none }
   ) where Title == HTMLText {
     self.title = HTMLText(title)
     self.blurb = blurb()
+    self.callToAction = callToAction()
   }
 
   public init(
     @HTMLBuilder title: () -> Title,
-    @HTMLBuilder blurb: () -> Blurb
+    @HTMLBuilder blurb: () -> Blurb,
+    @HTMLBuilder callToAction: () -> CallToAction? = { Never?.none }
   ) {
     self.title = title()
     self.blurb = blurb()
+    self.callToAction = callToAction()
   }
 
   public var body: some HTML {
-    VStack(alignment: .center) {
-      div {
-        Header(2) { title }
-          .color(.white)
+    VStack {
+      HStack(alignment: .center) {
+        div {
+          Header(2) { title }
+            .color(.white)
 
-        Paragraph(.big) { blurb }
-          .fontStyle(.body(.regular))
-          .color(.gray800)
+          Paragraph(.big) { blurb }
+            .fontStyle(.body(.regular))
+            .color(.gray800)
+        }
+        .grow()
+
+        div {
+          callToAction
+        }
+        .color(.offWhite)
       }
       .inlineStyle("box-sizing", "border-box")
       .inlineStyle("flex-basis", "100%")

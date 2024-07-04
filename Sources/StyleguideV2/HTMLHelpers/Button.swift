@@ -36,7 +36,12 @@ public struct Button<Label: HTML>: HTML {
     tag(tagName) {
       label
     }
-    .inlineStyle("border", "\(style.border) \(color.rawValue.rawValue)")
+    .inlineStyle("border", "\(style.border) \(color.foregroundColor(for: style).rawValue)")
+    .inlineStyle(
+      "border",
+      color.foregroundColor(for: style).darkValue.map { "\(style.border) \($0)" },
+      media: .dark
+    )
     .inlineStyle("border-radius", "0.5rem")
     .inlineStyle("box-shadow", "inset 0 0 0 20rem rgba(0,0,0,0.1)", pseudo: .hover)
     .inlineStyle("cursor", "pointer")
@@ -61,10 +66,10 @@ public struct Button<Label: HTML>: HTML {
 
     fileprivate var rawValue: PointFreeColor {
       switch self {
-      case .black: .black
+      case .black: .black.dark(.white)
       case .purple: .purple
       case .red: .red
-      case .white: .white
+      case .white: .white.dark(.black)
       }
     }
 
