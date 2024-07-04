@@ -5,10 +5,6 @@ import Transcripts
 
 public struct GiftsV2: HTML {
   @Dependency(\.currentUser) var currentUser
-  @Dependency(\.currentRoute) var currentRoute
-  @Dependency(\.envVars.emergencyMode) var emergencyMode
-  @Dependency(\.episodes) var episodes
-  @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
   public init() {}
