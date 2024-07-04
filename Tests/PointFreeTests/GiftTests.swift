@@ -452,6 +452,7 @@ class GiftTests: TestCase {
       $0.episodes = { [] }
     } operation: {
       let conn = connection(from: request(to: .gifts()))
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
 
       #if !os(Linux)
         if self.isScreenshotTestingAvailable {
@@ -464,8 +465,6 @@ class GiftTests: TestCase {
           )
         }
       #endif
-
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
   }
 
