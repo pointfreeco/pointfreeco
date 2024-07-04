@@ -3,22 +3,32 @@ import StyleguideV2
 import TaggedMoney
 import Transcripts
 
-public struct PricingV2: HTML {
+public struct PricingLanding: HTML {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.envVars.emergencyMode) var emergencyMode
   @Dependency(\.episodes) var episodes
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
 
   public init() {}
 
   public var body: some HTML {
-    // TODO: Recapture "You‘re already a subscriber! [Manage your account]"
     PageHeader {
       "Pricing"
     } blurb: {
       "Plans for you and your whole team."
+    } callToAction: {
+      if subscriberState.isActiveSubscriber {
+        VStack(alignment: .center) {
+          "You’re already a subscriber!"
+          Button(color: .white) {
+            "Manage your subscription"
+          }
+          .attribute("href", siteRouter.path(for: .account()))
+        }
+      }
     }
 
     let stats = EpisodesStats()
@@ -32,10 +42,17 @@ public struct PricingV2: HTML {
             li { "1 free credit to redeem any subscriber-only episode" }
             li { "Download all episode code samples" }
           } callToAction: {
-            Button(color: .purple) {
-              "Choose plan"
+            if currentUser == nil {
+              Button(color: .purple) {
+                "Choose plan"
+              }
+              .attribute("href", siteRouter.path(for: .signUp(redirect: siteRouter.url(for: currentRoute))))
+            } else if subscriberState.isNonSubscriber {
+              Button(color: .purple, style: .outline) {
+                "Your plan"
+              }
+              .inlineStyle("cursor", "not-allowed")
             }
-            .attribute("href", siteRouter.path(for: .signUp(redirect: siteRouter.url(for: currentRoute))))
           }
           Lane("Individual", annualPricePerMonth: 14) {
             "per month,"
@@ -69,10 +86,12 @@ public struct PricingV2: HTML {
               " discounts available"
             }
           } callToAction: {
-            Button(color: .purple) {
-              "Choose plan"
+            if subscriberState.isNonSubscriber {
+              Button(color: .purple) {
+                "Choose plan"
+              }
+              .attribute("href", siteRouter.path(for: .subscribeConfirmation(lane: .personal)))
             }
-            .attribute("href", siteRouter.path(for: .subscribeConfirmation(lane: .personal)))
           }
           Lane("Team", annualPricePerMonth: 12) {
             "per member, per month,"
@@ -84,10 +103,13 @@ public struct PricingV2: HTML {
             li { "Add teammates at any time with prorated billing" }
             li { "Reassign team mates at any time" }
           } callToAction: {
-            Button(color: .purple) {
-              "Choose plan"
+            // TODO: Would be nice to upsell here for personal subscriptions
+            if subscriberState.isNonSubscriber {
+              Button(color: .purple) {
+                "Choose plan"
+              }
+              .attribute("href", siteRouter.path(for: .subscribeConfirmation(lane: .team)))
             }
-            .attribute("href", siteRouter.path(for: .subscribeConfirmation(lane: .team)))
           }
           Lane("Enterprise") {
             li { "For large teams" }
@@ -96,11 +118,18 @@ public struct PricingV2: HTML {
             li { "Custom sign up landing page for your company" }
             li { "Invoiced billing" }
           } callToAction: {
-            Button(color: .black, style: .outline) {
-              "Contact us"
+            if !subscriberState.isEnterpriseSubscriber {
+              Button(color: .black, style: .outline) {
+                "Contact us"
+              }
+              .attribute("href", "mailto:support@pointfree.co")
+              .linkColor(.black.dark(.white))
+            } else {
+              Button(color: .black, style: .outline) {
+                "Your plan"
+              }
+              .inlineStyle("cursor", "not-allowed")
             }
-            .attribute("href", "mailto:support@pointfree.co")
-            .linkColor(.black.dark(.white))
           }
         }
         .linkUnderline(true)
@@ -189,12 +218,12 @@ private struct Lane<PriceDetails: HTML, Features: HTML, CallToAction: HTML>: HTM
   }
 }
 
-private struct EpisodesStats {
-  var allEpisodes: Int = 0
-  var allHours: Int = 0
-  var freeEpisodes: Int = 0
+public struct EpisodesStats {
+  public var allEpisodes: Int = 0
+  public var allHours: Int = 0
+  public var freeEpisodes: Int = 0
 
-  init() {
+  public init() {
     @Dependency(\.episodes) var episodes
     @Dependency(\.envVars.emergencyMode) var emergencyMode
     @Dependency(\.date.now) var now
