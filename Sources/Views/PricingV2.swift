@@ -103,6 +103,7 @@ public struct PricingV2: HTML {
             .linkColor(.black.dark(.white))
           }
         }
+        .linkUnderline(true)
 
         small {
           "Prices shown with annual billing. When billed month to month, the "
@@ -214,21 +215,23 @@ private struct EpisodesStats {
 private struct PricingFAQ: HTML {
   var body: some HTML {
     PageModule(title: "FAQ", theme: .content) {
-      VStack(spacing: 1.5) {
+      VStack(spacing: 3) {
         HTMLForEach([Faq].allFaqs) { faq in
-          Header(5) {
-            HTMLText(faq.question)
-          }
-          .color(.black.dark(.offWhite))
+          div {
+            Header(4) {
+              HTMLText(faq.question)
+            }
+            .color(.black.dark(.offWhite))
 
-          HTMLMarkdown(faq.answer)
+            HTMLMarkdown(faq.answer)
+          }
         }
       }
       .color(.gray300.dark(.gray850))
       .linkColor(.gray150.dark(.gray900))
       .linkUnderline(true)
       .inlineStyle("margin", "0 auto")
-      .inlineStyle("width", "50%", media: .desktop)
+      .inlineStyle("width", "60%", media: .desktop)
     }
   }
 }
