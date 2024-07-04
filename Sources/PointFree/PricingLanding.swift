@@ -14,7 +14,8 @@ public func pricingMiddleware(
   @Dependency(\.episodes) var episodes
   let stats = EpisodesStats()
 
-  return conn
+  return
+    conn
     .writeStatus(.ok)
     .respondV2(
       layoutData: SimplePageLayoutData(

@@ -65,10 +65,10 @@ public struct EpisodeCard: HTML {
         } else {
           Label("Free", icon: .unlocked)
         }
-        
+
         Label(episode.length.formatted(), icon: .clock)
           .grow()
-        
+
         if let progress {
           if progress.isFinished {
             Label("Watched", icon: .checkmark)
