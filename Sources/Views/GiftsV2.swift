@@ -20,7 +20,7 @@ public struct GiftsV2: HTML {
 
     PageModule(theme: .content) {
       LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
-        Lane("3 months", annualPricePerMonth: 54) {
+        PricingLane("3 months", annualPricePerMonth: 54) {
           "One-time payment"
         } features: {
           baseFeatures
@@ -31,7 +31,7 @@ public struct GiftsV2: HTML {
           .attribute("href", siteRouter.path(for: .gifts(.plan(.threeMonths))))
         }
 
-        Lane("6 momths", annualPricePerMonth: 108) {
+        PricingLane("6 momths", annualPricePerMonth: 108) {
           "One-time payment"
         } features: {
           baseFeatures
@@ -42,7 +42,7 @@ public struct GiftsV2: HTML {
           .attribute("href", siteRouter.path(for: .gifts(.plan(.sixMonths))))
         }
 
-        Lane("1 year", annualPricePerMonth: 168) {
+        PricingLane("1 year", annualPricePerMonth: 168) {
           "One-time payment"
         } features: {
           li { "22% off the 3 and 6 month gift options" }

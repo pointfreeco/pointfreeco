@@ -2,7 +2,7 @@ import StyleguideV2
 import Tagged
 import TaggedMoney
 
-struct Lane<PriceDetails: HTML, Features: HTML, CallToAction: HTML>: HTML {
+struct PricingLane<PriceDetails: HTML, Features: HTML, CallToAction: HTML>: HTML {
   var name: String
   var annualPricePerMonth: Dollars<Int>?
   var priceDetails: PriceDetails?

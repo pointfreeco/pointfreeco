@@ -1,11 +1,11 @@
 import Dependencies
 
-struct EpisodesStats {
-  var allEpisodes: Int = 0
-  var allHours: Int = 0
-  var freeEpisodes: Int = 0
+public struct EpisodesStats {
+  public var allEpisodes: Int = 0
+  public var allHours: Int = 0
+  public var freeEpisodes: Int = 0
 
-  init() {
+  public init() {
     @Dependency(\.episodes) var episodes
     @Dependency(\.envVars.emergencyMode) var emergencyMode
     @Dependency(\.date.now) var now
