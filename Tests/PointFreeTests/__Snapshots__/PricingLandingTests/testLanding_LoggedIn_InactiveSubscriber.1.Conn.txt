@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 108051
+Content-Length: 107827
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -359,119 +359,119 @@ input:checked ~ #menu-icon .transform-57{transform:rotate(45deg)}
 </pf-vstack>
 <div class="background-color-87 background-color-88">
   <div class="max-width-6 margin-89 padding-90 padding-91 display-8 flex-direction-9 flex-wrap-10 justify-content-92 align-items-93">
-    <pf-vstack class="align-items-12 display-8 flex-direction-68 row-gap-69">
-      <pf-vgrid class="width-0 column-gap-94 display-95 grid-template-columns-96 row-gap-97">
-        <pf-vstack class="border-98 box-shadow-99 border-radius-100 margin-101 overflow-102 background-color-87 background-color-103 align-items-67 display-8 flex-direction-68 row-gap-69">
-          <pf-vstack class="padding-106 flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-69">
-            <pf-vstack class="flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-107">
-              <pf-vstack class="color-108 color-109 align-items-67 display-8 flex-direction-68 row-gap-69">
-                <h4 class="margin-top-110 margin-58 margin-top-111 margin-bottom-112 font-size-113 font-weight-76 line-height-77">Free
-                </h4>
-                <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-72">
-                  <div>
-                    <h3 class="font-size-114 font-weight-115 margin-58 margin-top-111 margin-bottom-112 font-size-116 font-weight-76 line-height-77">$0
-                    </h3>
-                  </div>
-                  <div class="font-size-117">
-                  </div>
-                </pf-hstack>
-                <ul class="font-size-26 margin-118 padding-left-18 list-style-type-19 display-8 flex-direction-68 row-gap-119 color-120 color-121">
-                  <li>Weekly newsletter access
-                  </li>
-                  <li>1 free episodes with transcripts
-                  </li>
-                  <li>1 free credit to redeem any subscriber-only episode
-                  </li>
-                  <li>Download all episode code samples
-                  </li>
-                </ul>
-              </pf-vstack>
-            </pf-vstack><a class="display-8 justify-content-122 cursor-123 font-size-81 color-124 color-125 color-126 border-127 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-128 transition-39">Your plan</a>
-          </pf-vstack>
+    <pf-vgrid class="width-0 column-gap-94 display-95 grid-template-columns-96 row-gap-97">
+      <pf-vstack class="border-98 box-shadow-99 border-radius-100 margin-101 overflow-102 background-color-87 background-color-103 align-items-67 display-8 flex-direction-68 row-gap-69">
+        <pf-vstack class="padding-106 flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-69">
+          <pf-vstack class="flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-107">
+            <pf-vstack class="color-108 color-109 align-items-67 display-8 flex-direction-68 row-gap-69">
+              <h4 class="margin-top-110 margin-58 margin-top-111 margin-bottom-112 font-size-113 font-weight-76 line-height-77">Free
+              </h4>
+              <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-72">
+                <div>
+                  <h3 class="font-size-114 font-weight-115 margin-58 margin-top-111 margin-bottom-112 font-size-116 font-weight-76 line-height-77">$0
+                  </h3>
+                </div>
+                <div class="font-size-117">
+                </div>
+              </pf-hstack>
+              <ul class="font-size-26 margin-118 padding-left-18 list-style-type-19 display-8 flex-direction-68 row-gap-119 color-120 color-121">
+                <li>Weekly newsletter access
+                </li>
+                <li>1 free episodes with transcripts
+                </li>
+                <li>1 free credit to redeem any subscriber-only episode
+                </li>
+                <li>Download all episode code samples
+                </li>
+              </ul>
+            </pf-vstack>
+          </pf-vstack><a class="display-8 justify-content-122 cursor-123 font-size-81 color-124 color-125 color-126 border-127 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-128 transition-39">Your plan</a>
         </pf-vstack>
-        <pf-vstack class="border-98 box-shadow-99 border-radius-100 margin-101 overflow-102 background-color-87 background-color-103 align-items-67 display-8 flex-direction-68 row-gap-69">
-          <pf-vstack class="padding-106 flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-69">
-            <pf-vstack class="flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-107">
-              <pf-vstack class="color-108 color-109 align-items-67 display-8 flex-direction-68 row-gap-69">
-                <h4 class="margin-top-110 margin-58 margin-top-111 margin-bottom-112 font-size-113 font-weight-76 line-height-77">Individual
-                </h4>
-                <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-72">
-                  <div>
-                    <h3 class="font-size-114 font-weight-115 margin-58 margin-top-111 margin-bottom-112 font-size-116 font-weight-76 line-height-77">$14
-                    </h3>
-                  </div>
-                  <div class="font-size-117">per month,<br>billed annually
-                  </div>
-                </pf-hstack>
-                <ul class="font-size-26 margin-118 padding-left-18 list-style-type-19 display-8 flex-direction-68 row-gap-119 color-120 color-121">
-                  <li>All 2 episodes with transcripts
-                  </li>
-                  <li>Over 0 hours of video
-                  </li>
-                  <li>Watch past <a class="text-decoration-129 text-decoration-130 text-decoration-16 color-131 color-132 color-133 color-134" href="/live">livestreams</a>
-                  </li>
-                  <li>Personal podcast feed for offline viewing
-                  </li>
-                  <li>Download all episode code samples
-                  </li>
-                  <li><a class="text-decoration-129 text-decoration-130 text-decoration-16 color-131 color-132 color-133 color-134" href="/subscribe/personal?useRegionalDiscount=true">Regional</a> and <a class="text-decoration-129 text-decoration-130 text-decoration-16 color-131 color-132 color-133 color-134" href="/blog/posts/10-announcing-student-discounts">educational</a> discounts available
-                  </li>
-                </ul>
-              </pf-vstack>
-            </pf-vstack><a class="display-8 justify-content-122 font-size-81 color-27 color-28 color-29 background-color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-128 transition-39" href="/subscribe/personal">Choose plan</a>
-          </pf-vstack>
+      </pf-vstack>
+      <pf-vstack class="border-98 box-shadow-99 border-radius-100 margin-101 overflow-102 background-color-87 background-color-103 align-items-67 display-8 flex-direction-68 row-gap-69">
+        <pf-vstack class="padding-106 flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-69">
+          <pf-vstack class="flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-107">
+            <pf-vstack class="color-108 color-109 align-items-67 display-8 flex-direction-68 row-gap-69">
+              <h4 class="margin-top-110 margin-58 margin-top-111 margin-bottom-112 font-size-113 font-weight-76 line-height-77">Individual
+              </h4>
+              <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-72">
+                <div>
+                  <h3 class="font-size-114 font-weight-115 margin-58 margin-top-111 margin-bottom-112 font-size-116 font-weight-76 line-height-77">$14
+                  </h3>
+                </div>
+                <div class="font-size-117">per month,<br>billed annually
+                </div>
+              </pf-hstack>
+              <ul class="font-size-26 margin-118 padding-left-18 list-style-type-19 display-8 flex-direction-68 row-gap-119 color-120 color-121">
+                <li>All 2 episodes with transcripts
+                </li>
+                <li>Over 0 hours of video
+                </li>
+                <li>Watch past <a class="text-decoration-129 text-decoration-130 text-decoration-16 color-131 color-132 color-133 color-134" href="/live">livestreams</a>
+                </li>
+                <li>Personal podcast feed for offline viewing
+                </li>
+                <li>Download all episode code samples
+                </li>
+                <li><a class="text-decoration-129 text-decoration-130 text-decoration-16 color-131 color-132 color-133 color-134" href="/subscribe/personal?useRegionalDiscount=true">Regional</a> and <a class="text-decoration-129 text-decoration-130 text-decoration-16 color-131 color-132 color-133 color-134" href="/blog/posts/10-announcing-student-discounts">educational</a> discounts available
+                </li>
+              </ul>
+            </pf-vstack>
+          </pf-vstack><a class="display-8 justify-content-122 font-size-81 color-27 color-28 color-29 background-color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-128 transition-39" href="/subscribe/personal">Choose plan</a>
         </pf-vstack>
-        <pf-vstack class="border-98 box-shadow-99 border-radius-100 margin-101 overflow-102 background-color-87 background-color-103 align-items-67 display-8 flex-direction-68 row-gap-69">
-          <pf-vstack class="padding-106 flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-69">
-            <pf-vstack class="flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-107">
-              <pf-vstack class="color-108 color-109 align-items-67 display-8 flex-direction-68 row-gap-69">
-                <h4 class="margin-top-110 margin-58 margin-top-111 margin-bottom-112 font-size-113 font-weight-76 line-height-77">Team
-                </h4>
-                <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-72">
-                  <div>
-                    <h3 class="font-size-114 font-weight-115 margin-58 margin-top-111 margin-bottom-112 font-size-116 font-weight-76 line-height-77">$12
-                    </h3>
-                  </div>
-                  <div class="font-size-117">per member, per month,<br>billed annually
-                  </div>
-                </pf-hstack>
-                <ul class="font-size-26 margin-118 padding-left-18 list-style-type-19 display-8 flex-direction-68 row-gap-119 color-120 color-121">
-                  <li>All personal plan features
-                  </li>
-                  <li>For teams of 2 or more
-                  </li>
-                  <li>Add teammates at any time with prorated billing
-                  </li>
-                  <li>Reassign team mates at any time
-                  </li>
-                </ul>
-              </pf-vstack>
-            </pf-vstack><a class="display-8 justify-content-122 font-size-81 color-27 color-28 color-29 background-color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-128 transition-39" href="/subscribe/team">Choose plan</a>
-          </pf-vstack>
+      </pf-vstack>
+      <pf-vstack class="border-98 box-shadow-99 border-radius-100 margin-101 overflow-102 background-color-87 background-color-103 align-items-67 display-8 flex-direction-68 row-gap-69">
+        <pf-vstack class="padding-106 flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-69">
+          <pf-vstack class="flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-107">
+            <pf-vstack class="color-108 color-109 align-items-67 display-8 flex-direction-68 row-gap-69">
+              <h4 class="margin-top-110 margin-58 margin-top-111 margin-bottom-112 font-size-113 font-weight-76 line-height-77">Team
+              </h4>
+              <pf-hstack class="align-items-12 display-8 flex-direction-9 column-gap-72">
+                <div>
+                  <h3 class="font-size-114 font-weight-115 margin-58 margin-top-111 margin-bottom-112 font-size-116 font-weight-76 line-height-77">$12
+                  </h3>
+                </div>
+                <div class="font-size-117">per member, per month,<br>billed annually
+                </div>
+              </pf-hstack>
+              <ul class="font-size-26 margin-118 padding-left-18 list-style-type-19 display-8 flex-direction-68 row-gap-119 color-120 color-121">
+                <li>All personal plan features
+                </li>
+                <li>For teams of 2 or more
+                </li>
+                <li>Add teammates at any time with prorated billing
+                </li>
+                <li>Reassign team mates at any time
+                </li>
+              </ul>
+            </pf-vstack>
+          </pf-vstack><a class="display-8 justify-content-122 font-size-81 color-27 color-28 color-29 background-color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-128 transition-39" href="/subscribe/team">Choose plan</a>
         </pf-vstack>
-        <pf-vstack class="border-98 box-shadow-99 border-radius-100 margin-101 overflow-102 background-color-87 background-color-103 align-items-67 display-8 flex-direction-68 row-gap-69">
-          <pf-vstack class="padding-106 flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-69">
-            <pf-vstack class="flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-107">
-              <pf-vstack class="color-108 color-109 align-items-67 display-8 flex-direction-68 row-gap-69">
-                <h4 class="margin-top-110 margin-58 margin-top-111 margin-bottom-112 font-size-113 font-weight-76 line-height-77">Enterprise
-                </h4>
-                <ul class="font-size-26 margin-118 padding-left-18 list-style-type-19 display-8 flex-direction-68 row-gap-119 color-120 color-121">
-                  <li>For large teams
-                  </li>
-                  <li>Unlimited, company-wide access to all content
-                  </li>
-                  <li>Hassle-free team management
-                  </li>
-                  <li>Custom sign up landing page for your company
-                  </li>
-                  <li>Invoiced billing
-                  </li>
-                </ul>
-              </pf-vstack>
-            </pf-vstack><a class="display-8 justify-content-122 font-size-81 color-135 color-136 color-137 color-138 color-108 color-109 border-139 border-140 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-128 transition-39" href="mailto:support@pointfree.co">Contact us</a>
-          </pf-vstack>
+      </pf-vstack>
+      <pf-vstack class="border-98 box-shadow-99 border-radius-100 margin-101 overflow-102 background-color-87 background-color-103 align-items-67 display-8 flex-direction-68 row-gap-69">
+        <pf-vstack class="padding-106 flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-69">
+          <pf-vstack class="flex-grow-60 align-items-67 display-8 flex-direction-68 row-gap-107">
+            <pf-vstack class="color-108 color-109 align-items-67 display-8 flex-direction-68 row-gap-69">
+              <h4 class="margin-top-110 margin-58 margin-top-111 margin-bottom-112 font-size-113 font-weight-76 line-height-77">Enterprise
+              </h4>
+              <ul class="font-size-26 margin-118 padding-left-18 list-style-type-19 display-8 flex-direction-68 row-gap-119 color-120 color-121">
+                <li>For large teams
+                </li>
+                <li>Unlimited, company-wide access to all content
+                </li>
+                <li>Hassle-free team management
+                </li>
+                <li>Custom sign up landing page for your company
+                </li>
+                <li>Invoiced billing
+                </li>
+              </ul>
+            </pf-vstack>
+          </pf-vstack><a class="display-8 justify-content-122 font-size-81 color-135 color-136 color-137 color-138 color-108 color-109 border-139 border-140 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-128 transition-39" href="mailto:support@pointfree.co">Contact us</a>
         </pf-vstack>
-      </pf-vgrid><small class="font-size-26 text-align-64 color-120">Prices shown with annual billing. When billed month to month, the <br><strong>Personal</strong> plan is $18, and the <strong>Team</strong> plan is $16 per member per month.</small>
+      </pf-vstack>
+    </pf-vgrid>
+    <pf-vstack class="align-items-12 display-8 flex-direction-68 row-gap-69"><small class="font-size-26 text-align-64 color-120">Prices shown with annual billing. When billed month to month, the <br><strong>Personal</strong> plan is $18, and the <strong>Team</strong> plan is $16 per member per month.</small>
     </pf-vstack>
   </div>
 </div>
