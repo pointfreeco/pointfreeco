@@ -414,7 +414,7 @@ input:checked ~ #menu-icon .transform-57{transform:rotate(45deg)}
       </h3>
     </div>
     <div>
-      <p class="max-width-140 color-141 color-142 padding-bottom-82 padding-top-83 padding-left-84 padding-right-85 margin-58 line-height-80">Purchase a gift subscsription of 3, 6 or 12 months for a friend, colleague or loved one.
+      <p class="max-width-140 color-141 color-142 padding-bottom-82 padding-top-83 padding-left-84 padding-right-85 margin-58 line-height-80">Purchase a gift subscription of 3, 6, or 12 months for a friend, colleague or loved one.
       </p>
     </div><a class="margin-top-143 font-size-81 color-27 color-28 color-29 background-color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-15 white-space-37 padding-144 transition-39" href="/gifts">See gifts options</a>
   </pf-vstack>
