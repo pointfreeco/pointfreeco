@@ -1,0 +1,498 @@
+import Css
+import Dependencies
+import FunctionalCss
+import Html
+import HtmlCssSupport
+import Models
+import PointFreeDependencies
+import PointFreeRouter
+import Prelude
+import Styleguide
+import Tagged
+import Transcripts
+
+public struct EpisodeStats {
+  public let allEpisodeCount: AllEpisodeCount
+  public let episodeHourCount: EpisodeHourCount
+  public let freeEpisodeCount: FreeEpisodeCount
+
+  public typealias FreeEpisodeCount = Tagged<(Self, freeEpisodeCount: ()), Int>
+  public typealias AllEpisodeCount = Tagged<(Self, allEpisodeCount: ()), Int>
+  public typealias EpisodeHourCount = Tagged<(Self, episodeHourCount: ()), Int>
+}
+
+public func stats(forEpisodes episodes: [Episode]) -> EpisodeStats {
+  return EpisodeStats(
+    allEpisodeCount: .init(rawValue: episodes.count),
+    episodeHourCount: .init(
+      rawValue: episodes.reduce(into: 0) { $0 += $1.length.rawValue } / 3600
+    ),
+    freeEpisodeCount: .init(
+      rawValue: episodes.lazy.filter { $0.permission == .free }.count
+    )
+  )
+}
+
+let whatToExpect = Node.div(
+  attributes: [.style(backgroundColor(.other("#fafafa")))],
+  .gridRow(
+    attributes: [
+      .class([
+        Class.padding([.mobile: [.leftRight: 2, .topBottom: 3], .desktop: [.all: 4]])
+      ]),
+      .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
+    ],
+    .gridColumn(
+      sizes: [.mobile: 12],
+      attributes: [
+        .class([
+          Class.grid.center(.desktop),
+          Class.padding([.mobile: [.bottom: 2], .desktop: [.bottom: 3]]),
+        ])
+      ],
+      .h3(
+        attributes: [
+          .id("what-to-expect"),
+          .class([Class.pf.type.responsiveTitle2]),
+        ],
+        "What to expect"
+      )
+    ),
+    .gridColumn(
+      sizes: [.mobile: 12, .desktop: 6],
+      attributes: [
+        .class([
+          Class.grid.center(.desktop),
+          Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+          Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+          lightBottomBorder,
+          lightRightBorder,
+        ])
+      ],
+      whatToExpectColumn(item: .newContent)
+    ),
+    .gridColumn(
+      sizes: [.mobile: 12, .desktop: 6],
+      attributes: [
+        .class([
+          Class.grid.center(.desktop),
+          Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+          Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+          lightBottomBorder,
+        ])
+      ],
+      whatToExpectColumn(item: .topics)
+    ),
+    .gridColumn(
+      sizes: [.mobile: 12, .desktop: 6],
+      attributes: [
+        .class([
+          Class.grid.center(.desktop),
+          Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]]),
+          Class.margin([.mobile: [.bottom: 1], .desktop: [.bottom: 0]]),
+          lightRightBorder,
+        ])
+      ],
+      whatToExpectColumn(item: .playgrounds)
+    ),
+    .gridColumn(
+      sizes: [.mobile: 12, .desktop: 6],
+      attributes: [.class([Class.grid.center(.desktop)])],
+      whatToExpectColumn(item: .transcripts)
+    )
+  )
+)
+
+private func whatToExpectColumn(item: WhatToExpectItem) -> Node {
+  return .div(
+    attributes: [.class([Class.padding([.desktop: [.all: 3]])])],
+    .img(
+      src: item.imageSrc,
+      alt: "",
+      attributes: [
+        .class([
+          Class.layout.fit, Class.margin([.mobile: [.bottom: 2]]),
+          Class.pf.colors.bg.white,
+        ])
+      ]
+    ),
+    .h4(
+      attributes: [.class([Class.pf.type.responsiveTitle5])],
+      .text(item.title)
+    ),
+    .p(
+      attributes: [.class([Class.pf.colors.fg.gray400])],
+      .text(item.description)
+    )
+  )
+}
+
+let whatPeopleAreSaying = Node.gridRow(
+  attributes: [
+    .class([Class.grid.between(.desktop)])
+  ],
+  .gridColumn(
+    sizes: [.mobile: 12],
+    attributes: [
+      .class([
+        Class.padding([
+          .mobile: [.leftRight: 2, .top: 0, .bottom: 3],
+          .desktop: [.leftRight: 4, .top: 0, .bottom: 3],
+        ]),
+        Class.grid.center(.desktop),
+      ])
+    ],
+    .div(
+      attributes: [
+        .class([Class.border.top, Class.padding([.mobile: [.top: 3], .desktop: [.top: 4]])]),
+        .style(borderColor(top: Colors.gray850)),
+      ],
+      .h3(
+        attributes: [
+          .id("what-people-are-saying"),
+          .class([Class.pf.type.responsiveTitle2]),
+        ],
+        "What people are saying"
+      )
+    )
+  ),
+  .div(
+    attributes: [
+      .class([
+        Class.flex.flex,
+        Class.flex.none,
+        Class.size.width100pct,
+        Class.margin([.mobile: [.bottom: 4]]),
+        Class.layout.overflowAuto(.x),
+        testimonialContainer,
+      ])
+    ],
+    .fragment(testimonialItems)
+  )
+)
+
+private let testimonialItems: [Node] = Testimonial.all.map { testimonial in
+  .div(
+    attributes: [
+      .class([
+        Class.flex.column,
+        Class.flex.flex,
+        Class.pf.colors.bg.gray900,
+        Class.padding([.mobile: [.all: 3]]),
+        Class.margin([.mobile: [.leftRight: 2]]),
+        testimonialItem,
+      ])
+    ],
+    .a(
+      attributes: [
+        .href(testimonial.tweetUrl),
+        .target(.blank),
+        .rel(.init(rawValue: "noopener noreferrer")),
+        .class([
+          Class.pf.colors.fg.black,
+          Class.pf.type.body.leading,
+        ]),
+        .style(flex(grow: 1, shrink: 0, basis: .auto)),
+      ],
+      .text("“\(testimonial.quote)”")
+    ),
+    .a(
+      attributes: [
+        .href("https://www.twitter.com/\(testimonial.twitterHandle)"),
+        .class([
+          Class.pf.colors.fg.black,
+          Class.pf.type.body.leading,
+        ]),
+      ],
+      .twitterIconImg(fill: "1DA1F3"),
+      .span(
+        attributes: [
+          .class([Class.type.medium]),
+          .style(margin(left: .px(3))),
+        ],
+        .text(testimonial.subscriber ?? "@\(testimonial.twitterHandle)")
+      )
+    )
+  )
+}
+
+let featuredTeams = Node.gridRow(
+  attributes: [
+    .class([
+      Class.pf.colors.bg.gray900,
+      Class.padding([.mobile: [.all: 3], .desktop: [.all: 4]]),
+      Class.grid.middle(.mobile),
+      Class.grid.center(.mobile),
+    ])
+  ],
+  .gridColumn(
+    sizes: [.mobile: 12, .desktop: 12],
+    attributes: [.class([Class.padding([.mobile: [.bottom: 3]])])],
+    .h6(
+      attributes: [
+        .id("featured-teams"),
+        .class([
+          Class.pf.colors.fg.gray400,
+          Class.pf.type.responsiveTitle7,
+          Class.type.align.center,
+        ]),
+      ],
+      "Featured Teams"
+    )
+  ),
+  .gridColumn(
+    sizes: [.mobile: 6, .desktop: 2],
+    attributes: [.class([Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]])])],
+    [.img(base64: nytLogoSvg, type: .image(.svg), alt: "New York Times")]
+  ),
+  .gridColumn(
+    sizes: [.mobile: 6, .desktop: 2],
+    attributes: [.class([Class.padding([.mobile: [.bottom: 3], .desktop: [.bottom: 0]])])],
+    [.img(base64: spotifyLogoSvg, type: .image(.svg), alt: "Spotify")]
+  ),
+  .gridColumn(
+    sizes: [.mobile: 6, .desktop: 2],
+    [.img(base64: venmoLogoSvg, type: .image(.svg), alt: "Venmo")]
+  ),
+  .gridColumn(
+    sizes: [.mobile: 6, .desktop: 2],
+    [.img(base64: atlassianLogoSvg, type: .image(.svg), alt: "Atlassian")]
+  )
+)
+
+struct PricingPlan {
+  let cost: Cost?
+  let lane: Pricing.Lane?
+  let features: [String]
+  let title: String
+
+  struct Cost {
+    let title: String?
+    let value: String
+  }
+
+  var isFree: Bool {
+    return self.cost?.value == "$0" && self.lane == nil
+  }
+
+  static func free(freeEpisodeCount: EpisodeStats.FreeEpisodeCount) -> PricingPlan {
+    return PricingPlan(
+      cost: Cost(title: nil, value: "$0"),
+      lane: nil,
+      features: [
+        "Weekly newsletter access",
+        "\(freeEpisodeCount.rawValue) free episodes with transcripts",
+        "1 free credit to redeem any subscriber-only episode",
+        "Download all episode code samples",
+      ],
+      title: "Free"
+    )
+  }
+
+  static func personal(
+    allEpisodeCount: EpisodeStats.AllEpisodeCount,
+    episodeHourCount: EpisodeStats.EpisodeHourCount,
+    referralCode: User.ReferralCode? = nil,
+    showDiscountOptions: Bool = true
+  ) -> PricingPlan {
+    @Dependency(\.siteRouter) var siteRouter
+
+    return PricingPlan(
+      cost: Cost(title: "per&nbsp;month, billed&nbsp;annually", value: "$14"),
+      lane: .personal,
+      features: [
+        "All \(allEpisodeCount.rawValue) episodes with transcripts",
+        "Over \(episodeHourCount.rawValue) hours of video",
+        "Watch past [livestreams](\(siteRouter.path(for: .live(.current)))) at 1080p",
+        "Private RSS feed for offline viewing in podcast apps",
+      ]
+        + (showDiscountOptions
+          ? [
+            """
+            [Regional](\(siteRouter.path(for: .subscribeConfirmation(lane: .personal, referralCode: referralCode, useRegionalDiscount: true))))
+            and [education](\(siteRouter.path(for: .blog(.show(slug: post0010_studentDiscounts.slug))))) discounts
+            available
+            """
+          ]
+          : []),
+      title: "Personal"
+    )
+  }
+
+  static let team = PricingPlan(
+    cost: Cost(title: "per&nbsp;member, per&nbsp;month, billed&nbsp;annually", value: "$12"),
+    lane: .team,
+    features: [
+      "All personal plan features",
+      "For teams of 2 or more",
+      "Add teammates at any time with prorated billing",
+      "Remove and reassign teammates at any time",
+    ],
+    title: "Team"
+  )
+
+  static let enterprise = PricingPlan(
+    cost: nil,
+    lane: nil,
+    features: [
+      "For large teams",
+      "Unlimited, company-wide access to all content",
+      "Hassle-free team management",
+      "Custom sign up landing page for your company",
+      "Invoiced billing",
+    ],
+    title: "Enterprise"
+  )
+}
+
+extension Array where Element == Faq {
+  static var allFaqs: [Faq] {
+    @Dependency(\.siteRouter) var siteRouter
+    return [
+      Faq(
+        question: "Can I upgrade my subscription from monthly to yearly?",
+        answer: """
+          Yes, you can upgrade at any time. You will be charged immediately with a prorated amount \
+          based on how much time you have left in your current billing period.
+          """
+      ),
+      Faq(
+        question: "How do team subscriptions work?",
+        answer: """
+          A team subscription consists of a number of seats that you pay for, and those seats can \
+          be added, removed and reassigned at any time. Colleagues are invited to your team over \
+          email.
+          """
+      ),
+      Faq(
+        question: "Do you offer student discounts?",
+        answer: """
+          We do! If you [email us](mailto:support@pointfree.co?subject=Student%20Discount) proof \
+          of your student status (e.g. scan of ID card) we will give you a **50% discount** off of \
+          the Personal plan.
+          """
+      ),
+      Faq(
+        question: "Do you offer referral discounts?",
+        answer: """
+          We do! If you know someone that has a Point-Free subscription, ask them to share their \
+          referral link (available on their account page) with you. If you subscribe with that \
+          link you will both receive a month free!
+          """
+      ),
+      Faq(
+        question: "Do you offer country-based discounts?",
+        answer: """
+          Yes! We understand that paying for a subscription in US dollars can be difficult for \
+          certain currencies. So we offer \
+          [regional](\(siteRouter.path(for: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))) \
+          discounts of **50% off** every billing cycle when your credit card has been issued from \
+          certain countries. For more information, \
+          [see here](\(siteRouter.path(for: .subscribeConfirmation(lane: .personal, useRegionalDiscount: true)))).
+          """
+      ),
+      Faq(
+        question: "Can I give a subscription as a gift?",
+        answer: """
+          You can! Check out our dedicated [gifts](\(siteRouter.path(for: .gifts()))) page for \
+          more information.
+          """
+      ),
+      Faq(
+        question: "Are livestreams subscriber-only?",
+        answer: """
+          Anyone can watch our livestreams _live_, but to watch a past livestream you will need to \
+          be a subscriber. Past livestreams are available in 1080p, have chapter markers, \
+          transcripts and a detailed Q&A section.
+          """
+      ),
+    ]
+  }
+}
+
+struct WhatToExpectItem {
+  let imageSrc: String
+  let title: String
+  let description: String
+
+  static let all: [Self] = [.newContent, .topics, .playgrounds, .transcripts]
+
+  static let newContent = WhatToExpectItem(
+    imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg",
+    title: "New content regularly",
+    description: """
+      We dissect some of the most important and interesting topics in Swift programming \
+      frequently, and deliver them straight to your inbox.
+      """
+  )
+
+  static let topics = WhatToExpectItem(
+    imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg",
+    title: "Wide variety of topics",
+    description: """
+      We cover both abstract ideas and practical concepts you can start using in your code base \
+      immediately.
+      """
+  )
+
+  static let playgrounds = WhatToExpectItem(
+    imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg",
+    title: "Playground downloads",
+    description: """
+      Download a fully-functioning Swift playground from the episode so you can experiment with \
+      the concepts discussed.
+      """
+  )
+
+  static let transcripts = WhatToExpectItem(
+    imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg",
+    title: "Video transcripts",
+    description: """
+      We transcribe each video by hand so you can search and reference easily. Click on a \
+      timestamp to jump directly to that point in the video.
+      """
+  )
+}
+
+public let extraSubscriptionLandingStyles =
+  Breakpoint.desktop.query(only: screen) {
+    extraSubscriptionLandingDesktopStyles
+  }
+  <> pricingPlanFeatureStyle
+  <> planItem % width(.pct(100))
+  <> testimonialStyle
+
+private let desktopBorderStyles: Stylesheet = concat([
+  darkRightBorder % key("border-right", "1px solid #333"),
+  lightRightBorder % key("border-right", "1px solid #e8e8e8"),
+  lightBottomBorder % key("border-bottom", "1px solid #e8e8e8"),
+])
+
+private let extraSubscriptionLandingDesktopStyles: Stylesheet =
+  desktopBorderStyles
+  <> planItem % width(.pct(25))
+
+private let darkRightBorder = CssSelector.class("dark-right-border-d")
+private let lightRightBorder = CssSelector.class("light-right-border-d")
+private let lightBottomBorder = CssSelector.class("light-bottom-border-d")
+private let planItem = CssSelector.class("plan-item")
+
+private let testimonialContainer = CssSelector.class("testimonial-container")
+private let testimonialItem = CssSelector.class("testimonial-item")
+public let testimonialStyle: Stylesheet =
+  Breakpoint.desktop.query(only: screen) {
+    testimonialContainer % height(.px(400))
+      <> testimonialItem % width(.px(340))
+      <> testimonialItem % height(.px(380))
+  }
+  <> testimonialContainer
+  % (height(.px(380))
+    <> key("-webkit-overflow-scrolling", "touch"))
+  <> testimonialItem
+  % (flex(grow: 0, shrink: 0, basis: .auto)
+    <> width(.px(260))
+    <> height(.px(380)))
+
+let pricingPlanFeatureClass = CssSelector.class("pricing-plan-feature")
+let pricingPlanFeatureStyle: Stylesheet =
+  (pricingPlanFeatureClass > "p") % margin(all: 0)

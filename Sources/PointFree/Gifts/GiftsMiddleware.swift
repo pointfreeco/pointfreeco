@@ -17,8 +17,9 @@ public func giftsMiddleware(
       |> giftCreateMiddleware
 
   case .index:
-    return conn.map(const(()))
-      |> giftsIndexMiddleware
+    return IO {
+      await giftsIndexMiddleware(conn.map(const(())))
+    }
 
   case let .plan(plan):
     return conn.map(const(plan))

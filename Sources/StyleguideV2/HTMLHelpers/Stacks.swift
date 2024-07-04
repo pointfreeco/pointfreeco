@@ -128,7 +128,7 @@ public struct LazyVGrid<Content: HTML>: HTML {
       tag("pf-vgrid") {
         content
       }
-      .inlineStyle("", nil)  // TODO: Fix
+      .inlineStyle("width", "100%")
     ) { html, columns in
       html
         .inlineStyle(
