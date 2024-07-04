@@ -9,6 +9,37 @@ import Prelude
 import Tuple
 import Views
 
+func newsletterDetail(
+  _ conn: Conn<StatusLineOpen, Void>,
+  _ postParam: Either<String, BlogPost.ID>
+) async -> Conn<ResponseEnded, Data> {
+  guard let post = fetchBlogPost(forParam: postParam)
+  else {
+    return conn
+      .redirect(to: .home) {
+        $0.flash(.error, "Newsletter not found")
+      }
+  }
+
+  @Dependency(\.assets) var assets
+
+  return conn
+    .writeStatus(.ok)
+    .respondV2(
+      layoutData: SimplePageLayoutData(
+        description: post.blurb,
+        image: post.coverImage ?? assets.emailHeaderImgSrc,
+        openGraphType: .website,
+        style: .base(.mountains(.blog)),
+        title: post.title,
+        twitterCard: .summaryLargeImage,
+        usePrismJs: true
+      )
+    ) {
+      NewsletterDetail(blogPost: post)
+    }
+}
+
 let blogPostShowMiddleware =
   fetchBlogPostForParam
   <| writeStatus(.ok)

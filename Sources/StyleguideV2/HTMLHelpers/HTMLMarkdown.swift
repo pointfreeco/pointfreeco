@@ -39,10 +39,21 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitBlockQuote(_ blockQuote: Markdown.BlockQuote) -> AnyHTML {
-    // TODO: `let aside = Aside(blockQuote)`
-    blockquote {
-      for child in blockQuote.children {
-        visit(child)
+    let aside = Aside(blockQuote)
+    switch aside.kind.rawValue {
+    case "Runtime Warning":
+      Diagnostic(level: .runtimeWarning) {
+        for child in aside.content {
+          visit(child)
+        }
+      }
+      .inlineStyle("padding", "0.5rem 1rem 2rem")
+
+    default:
+      blockquote {
+        for child in blockQuote.children {
+          visit(child)
+        }
       }
     }
   }

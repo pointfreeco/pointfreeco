@@ -35,7 +35,8 @@ func blogMiddleware(
       |> blogAtomFeedResponse
 
   case let .show(postParam):
-    return conn.map(const(postParam))
-      |> blogPostShowMiddleware
+    return IO {
+      await newsletterDetail(conn.map { _ in }, postParam)
+    }
   }
 }

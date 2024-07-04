@@ -239,6 +239,9 @@ var package = Package(
         .product(name: "Overture", package: "swift-overture"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedTime", package: "swift-tagged"),
+      ],
+      resources: [
+        .process("Resources"),
       ]
     ),
 
@@ -538,6 +541,7 @@ var package = Package(
         "EmailAddress",
         "EnvVars",
         "FunctionalCss",
+        "Ghosting",
         "PointFreeDependencies",
         "PointFreeRouter",
         "Styleguide",

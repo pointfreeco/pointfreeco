@@ -32,7 +32,7 @@ public struct BlogPost: Equatable, Identifiable {
   public init(
     author: Author?,
     blurb: String,
-    contentBlocks: [Episode.TranscriptBlock],
+    contentBlocks: [Episode.TranscriptBlock] = [],
     coverImage: String?,
     hidden: Hidden = .no,
     hideFromSlackRSS: Bool = false,
@@ -63,6 +63,19 @@ public struct BlogPost: Equatable, Identifiable {
     case brandon
     case pointfree
     case stephen
+  }
+
+  public var content: String? {
+    try? String(
+      decoding: Data(
+        contentsOf: Bundle.module.url(
+          forResource: "\(id.rawValue)",
+          withExtension: "md"
+        )!,
+        options: []
+      ),
+      as: UTF8.self
+    )
   }
 }
 
