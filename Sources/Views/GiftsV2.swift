@@ -48,6 +48,8 @@ public struct GiftsV2: HTML {
           li { "22% off the 3 and 6 month gift options" }
             .color(.black)
             .backgroundColor(.yellow)
+            .inlineStyle("margin", "-2px")
+            .inlineStyle("padding", "2px")
           baseFeatures
         } callToAction: {
           Button(color: .purple) {
