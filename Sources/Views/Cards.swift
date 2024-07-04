@@ -65,17 +65,17 @@ public struct EpisodeCard: HTML {
         } else {
           Label("Free", icon: .unlocked)
         }
-        
+
         Label(episode.length.formatted(), icon: .clock)
           .grow()
-        
+
         if let progress {
           if progress.isFinished {
             Label("Watched", icon: .checkmark)
           } else {
             let value = Double(progress.percent) / 100
             let minutes = (episode.length.timeInterval - episode.length.timeInterval * value) / 60
-            
+
             Progress(value: value)
               .inlineStyle("width", "80px")
               .attribute("title", "\(Int(minutes)) min to finish")

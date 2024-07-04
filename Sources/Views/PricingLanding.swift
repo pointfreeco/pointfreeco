@@ -45,7 +45,8 @@ public struct PricingLanding: HTML {
             Button(color: .purple) {
               "Choose plan"
             }
-            .attribute("href", siteRouter.path(for: .signUp(redirect: siteRouter.url(for: currentRoute))))
+            .attribute(
+              "href", siteRouter.path(for: .signUp(redirect: siteRouter.url(for: currentRoute))))
           } else if subscriberState.isNonSubscriber {
             Button(color: .purple, style: .outline) {
               "Your plan"
@@ -72,7 +73,7 @@ public struct PricingLanding: HTML {
               href: siteRouter.path(
                 for: .subscribeConfirmation(
                   lane: .personal,
-                  referralCode: nil, // TODO?
+                  referralCode: nil,  // TODO?
                   useRegionalDiscount: true
                 )
               )
