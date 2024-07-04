@@ -127,4 +127,3 @@ extension Faq {
       """
   )
 }
-
