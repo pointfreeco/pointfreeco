@@ -75,7 +75,7 @@ public struct EpisodeCard: HTML {
           } else {
             let value = Double(progress.percent) / 100
             let minutes = (episode.length.timeInterval - episode.length.timeInterval * value) / 60
-
+            
             Progress(value: value)
               .inlineStyle("width", "80px")
               .attribute("title", "\(Int(minutes)) min to finish")
