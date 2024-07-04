@@ -8,29 +8,20 @@ import Prelude
 import Tuple
 import Views
 
-public let giftsIndexMiddleware:
-  Middleware<
-    StatusLineOpen,
-    ResponseEnded,
-    Void,
-    Data
-  > =
-    writeStatus(.ok)
-    >=> respond(
-      view: giftsLanding(episodeStats:),
-      layoutData: {
-        @Dependency(\.episodes) var episodes
-
-        let episodeStats = stats(forEpisodes: episodes())
-
-        return SimplePageLayoutData(
-          data: episodeStats,
-          description: """
-            Give the gift of Point-Free! Purchase a 3, 6, or 12 month subscription for a friend, colleague or loved one.
-            """,
-          extraStyles: extraGiftLandingStyles <> testimonialStyle,
-          style: .base(.some(.minimal(.black))),
-          title: "🎁 Point-Free Gift Subscription"
-        )
-      }
-    )
+public func giftsIndexMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  conn
+    .writeStatus(.ok)
+    .respondV2(
+      layoutData: SimplePageLayoutData(
+        description: """
+          Give the gift of Point-Free! Purchase a 3, 6, or 12 month subscription for a friend, \
+          colleague or loved one.
+          """,
+        title: "🎁 Point-Free Gift Subscription"
+      )
+    ) {
+      GiftsV2()
+    }
+}
