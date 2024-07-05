@@ -102,10 +102,14 @@ private struct HTMLConverter: MarkupVisitor {
   @HTMLBuilder
   mutating func visitCodeBlock(_ codeBlock: Markdown.CodeBlock) -> AnyHTML {
     let language: (class: String, dataLine: String?)? = codeBlock.language.map {
-      let languageInfo = $0.split(separator: ":", maxSplits: 1)
+      let languageInfo = $0.split(separator: ":", maxSplits: 2)
       let language = languageInfo[0]
       let dataLine = languageInfo.dropFirst().first
-      return (class: "language-\(language)", dataLine: dataLine.map { String($0) })
+      let highlightColor = languageInfo.dropFirst(2).first
+      return (
+        class: "language-\(language)\(highlightColor.map { " highlight-\($0)" } ?? "")",
+        dataLine: dataLine.map { String($0) }
+      )
     }
     pre {
       code {

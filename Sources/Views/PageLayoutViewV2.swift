@@ -696,6 +696,14 @@ public struct PrismJSHead: HTML {
         position: absolute;
       }
 
+      .highlight-pass .line-highlight {
+        background-color: rgba(0, 255, 50, 0.15);
+      }
+
+      .highlight-fail .line-highlight {
+        background-color: rgba(255, 68, 68, 0.15);
+      }
+
       .language-diff {
         color: #808080;
       }
