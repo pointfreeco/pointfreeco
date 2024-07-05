@@ -66,7 +66,7 @@ This represents a parser that runs each parser from top to bottom, one after ano
 
 We could then `.map` on this parser to bundle the tuple of integer, string and boolean into a `User` struct:
 
-```swift
+```swift:8
 let user = Parse {
   Int.parser()
   ","
@@ -79,7 +79,7 @@ let user = Parse {
 
 Or even better we can move that transform to the `Parse` entry point to make it upfront and clear what we are trying to parse:
 
-```swift
+```swift:1
 let user = Parse(User.init) {
   Int.parser()
   ","

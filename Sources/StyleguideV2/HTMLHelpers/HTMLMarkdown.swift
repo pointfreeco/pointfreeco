@@ -13,8 +13,10 @@ public struct HTMLMarkdown: HTML {
 
   public var body: some HTML {
     tag("pf-markdown") {
-      var converter = HTMLConverter()
-      converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
+      VStack(spacing: 0.5) {
+        var converter = HTMLConverter()
+        converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
+      }
     }
     .inlineStyle("display", "block")
   }
@@ -44,7 +46,7 @@ private struct HTMLConverter: MarkupVisitor {
           }
         }
         .href(blockDirective.argumentText.segments.map { $0.trimmedText }.joined(separator: " "))
-        .inlineStyle("margin", "1rem 0")
+        .inlineStyle("margin", "0.5rem 0")
       }
 
     default:
@@ -64,7 +66,7 @@ private struct HTMLConverter: MarkupVisitor {
           visit(child)
         }
       }
-      .inlineStyle("padding", "0.5rem 1rem 2rem")
+      .inlineStyle("padding", "0 1rem")
 
     case "Expected Failure":
       Diagnostic(level: .knownIssue) {
@@ -72,7 +74,7 @@ private struct HTMLConverter: MarkupVisitor {
           visit(child)
         }
       }
-      .inlineStyle("padding", "0.5rem 1rem 2rem")
+      .inlineStyle("padding", "0 1rem")
 
     case "Failed":
       Diagnostic(level: .issue) {
@@ -80,7 +82,7 @@ private struct HTMLConverter: MarkupVisitor {
           visit(child)
         }
       }
-      .inlineStyle("padding", "0.5rem 1rem 2rem")
+      .inlineStyle("padding", "0 1rem")
 
     case "Runtime Warning":
       Diagnostic(level: .runtimeWarning) {
@@ -88,7 +90,7 @@ private struct HTMLConverter: MarkupVisitor {
           visit(child)
         }
       }
-      .inlineStyle("padding", "0.5rem 1rem 2rem")
+      .inlineStyle("padding", "0 1rem")
 
     default:
       let style = BlockQuoteStyle(blockName: aside.kind.displayName)
@@ -109,7 +111,7 @@ private struct HTMLConverter: MarkupVisitor {
       .inlineStyle("border", "2px solid \(style.borderColor.rawValue)")
       .inlineStyle("border", "2px solid \(style.borderColor.darkValue!)", media: .dark)
       .inlineStyle("border-radius", "6px")
-      .inlineStyle("margin", "1rem 0")
+      .inlineStyle("margin", "0.5rem 0")
       .inlineStyle("padding", "1rem 1.5rem")
     }
   }
@@ -172,7 +174,13 @@ private struct HTMLConverter: MarkupVisitor {
   mutating func visitImage(_ image: Markdown.Image) -> AnyHTML {
     if let source = image.source {
       VStack(alignment: .center) {
-        Image(source: source, description: image.title ?? "")
+        Link(href: source) {
+          Image(source: source, description: image.title ?? "")
+            .inlineStyle("margin", "0 1rem")
+            .inlineStyle("border-radius", "6px")
+            .inlineStyle("border", "1px solid #ccc")
+            .inlineStyle("border", "1px solid #555", media: .dark)
+        }
       }
     }
   }
@@ -221,16 +229,19 @@ private struct HTMLConverter: MarkupVisitor {
         visit(child)
       }
     }
-    .inlineStyle("margin-top", "0.5rem")
+    .inlineStyle("margin-top", "0.5rem", pseudo: .not(.firstChild))
   }
 
   @HTMLBuilder
   mutating func visitParagraph(_ paragraph: Markdown.Paragraph) -> AnyHTML {
-    Paragraph {
+    p {
       for child in paragraph.children {
         visit(child)
       }
     }
+    .inlineStyle("line-height", "1.5")
+    .inlineStyle("padding", "0")
+    .inlineStyle("margin", "0")
   }
 
   @HTMLBuilder
