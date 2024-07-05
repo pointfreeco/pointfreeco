@@ -21,10 +21,10 @@ the world of functional setters:
 import Overture
 
 // ((String) -> String) -> (User) -> User
-let userNameSetter = prop(\\User.name)
+let userNameSetter = prop(\User.name)
 
 // ((Int) -> Int) -> (User) -> User
-let ageSetter = prop(\\User.age)
+let ageSetter = prop(\User.age)
 
 // Transforms a user by incrementing their age.
 let celebrateBirthday = ageSetter { $0 + 1 }
@@ -70,8 +70,8 @@ import Overture
 
 let user = User(age: 20, name: "Blob")
 let newUser = with(user, concat(
-  mver(\\.age) { $0 += 1 },
-  mut(\\.name, "Older Blob")
+  mver(\.age) { $0 += 1 },
+  mut(\.name, "Older Blob")
 ))
 ```
 
@@ -101,9 +101,9 @@ let user = User(
 )
 
 let newUser = with(user, concat(
-  over(\\.age) { $0 + 1 },
-  set(\\.name, "Older Blob"),
-  over(compose(prop(\\.favoriteFoods), map)) {
+  over(\.age) { $0 + 1 },
+  set(\.name, "Older Blob"),
+  over(compose(prop(\.favoriteFoods), map)) {
     $0 + " & Salad"
   }
 ))
@@ -127,9 +127,9 @@ let user = User(
 )
 
 let newUser = with(user, concat(
-  mver(\\.age) { $0 += 1 },
-  mut(\\.name, "Older Blob"),
-  mver(compose(mprop(\\.favoriteFoods), mutEach)) {
+  mver(\.age) { $0 += 1 },
+  mut(\.name, "Older Blob"),
+  mver(compose(mprop(\.favoriteFoods), mutEach)) {
     $0 += " & Salad"
   }
 ))
