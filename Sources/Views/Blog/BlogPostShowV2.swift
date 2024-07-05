@@ -16,7 +16,7 @@ public struct NewsletterDetail: HTML {
   public var body: some HTML {
     style {
       """
-      article pf-markdown > :last-child::after {
+      article > pf-markdown > pf-vstack > :last-child::after {
         margin: 0 0.5rem;
         content: "❖";
       }
