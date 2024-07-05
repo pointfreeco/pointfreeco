@@ -1,7 +1,7 @@
 import Foundation
 
 public let post0014_openSourcingValidated = BlogPost(
-  author: .stephen,
+  author: .pointfree,
   blurb: """
     Today we are open sourcing Validated, a tiny functional Swift library for handling multiple errors: functionality that you don't get from throwing functions and the Result type.
     """,
