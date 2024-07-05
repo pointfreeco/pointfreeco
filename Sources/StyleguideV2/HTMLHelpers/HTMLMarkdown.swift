@@ -66,6 +66,14 @@ private struct HTMLConverter: MarkupVisitor {
       }
       .inlineStyle("padding", "0.5rem 1rem 2rem")
 
+    case "Expected Failure":
+      Diagnostic(level: .knownIssue) {
+        for child in aside.content {
+          visit(child)
+        }
+      }
+      .inlineStyle("padding", "0.5rem 1rem 2rem")
+
     case "Failed":
       Diagnostic(level: .issue) {
         for child in aside.content {
@@ -119,18 +127,17 @@ private struct HTMLConverter: MarkupVisitor {
       )
     }
     div {
-      div {
-        pre {
-          code {
-            HTMLText(codeBlock.code)
-          }
-          .attribute("class", language?.class)
-          .color(.black.dark(.offWhite))
-          .linkUnderline(true)
+      pre {
+        code {
+          HTMLText(codeBlock.code)
         }
-        .attribute("data-line", language?.dataLine)
-        .inlineStyle("margin", "0")
+        .attribute("class", language?.class)
+        .color(.black.dark(.offWhite))
+        .linkUnderline(true)
       }
+      .attribute("data-line", language?.dataLine)
+      .inlineStyle("margin", "0")
+      .inlineStyle("padding-right", "1rem")
     }
     .backgroundColor(.offWhite.dark(.offBlack))
     .inlineStyle("padding", "1rem 0 1rem 1.5rem")

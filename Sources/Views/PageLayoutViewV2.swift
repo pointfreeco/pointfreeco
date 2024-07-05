@@ -653,6 +653,9 @@ private struct BaseStyles: HTML {
       .diagnostic pre {
         text-wrap: auto;
       }
+      .diagnostic > div {
+        background: inherit;
+      }
       @media only screen and (min-width: 832px) {
         html {
           font-size: 16px;
