@@ -12,5 +12,5 @@ public let post0129_Perception = BlogPost(
   hideFromSlackRSS: false,
   id: 129,
   publishedAt: yearMonthDayFormatter.date(from: "2024-01-09")!,
-  title: "Perception: A back-port of @Observable"
+  title: "Perception: A back-port of `@Observable`"
 )

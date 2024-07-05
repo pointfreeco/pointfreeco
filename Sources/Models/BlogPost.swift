@@ -66,16 +66,9 @@ public struct BlogPost: Equatable, Identifiable {
   }
 
   public var content: String? {
-    try? String(
-      decoding: Data(
-        contentsOf: Bundle.module.url(
-          forResource: "\(id.rawValue)",
-          withExtension: "md"
-        )!,
-        options: []
-      ),
-      as: UTF8.self
-    )
+    guard let resource = Bundle.module.url(forResource: "\(id.rawValue)", withExtension: "md")
+    else { return nil }
+    return try? String(decoding: Data(contentsOf: resource), as: UTF8.self)
   }
 }
 

@@ -14,7 +14,7 @@ public struct HTMLMarkdown: HTML {
   public var body: some HTML {
     tag("pf-markdown") {
       var converter = HTMLConverter()
-      converter.visit(Document(parsing: markdown))
+      converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
     }
     .inlineStyle("display", "block")
   }
@@ -33,14 +33,39 @@ private struct HTMLConverter: MarkupVisitor {
   // https://apple.github.io/swift-markdown/documentation/markdown/blockdirectives/
   // TODO: Support `@Custom { … }` directives (`@Timestamp(00:00:00)`, `@Speaker(Brandon) { … }`)
   // TODO: `Document(parsing: …, options: .parseBlockDirectives)`
-  // @HTMLBuilder
-  // mutating func visitBlockDirective(_ blockDirective: Markdown.BlockDirective) -> AnyHTML {
-  // }
+  @HTMLBuilder
+  mutating func visitBlockDirective(_ blockDirective: Markdown.BlockDirective) -> AnyHTML {
+    switch blockDirective.name {
+    case "Button":
+      VStack(alignment: .center) {
+        Button(color: .purple) {
+          for child in blockDirective.children {
+            visit(child)
+          }
+        }
+        .href(blockDirective.argumentText.segments.map { $0.trimmedText }.joined(separator: " "))
+        .inlineStyle("margin", "1rem 0")
+      }
+
+    default:
+      for child in blockDirective.children {
+        visit(child)
+      }
+    }
+  }
 
   @HTMLBuilder
   mutating func visitBlockQuote(_ blockQuote: Markdown.BlockQuote) -> AnyHTML {
     let aside = Aside(blockQuote)
     switch aside.kind.rawValue {
+    case "Failed":
+      Diagnostic(level: .issue) {
+        for child in aside.content {
+          visit(child)
+        }
+      }
+      .inlineStyle("padding", "0.5rem 1rem 2rem")
+
     case "Runtime Warning":
       Diagnostic(level: .runtimeWarning) {
         for child in aside.content {
@@ -51,10 +76,18 @@ private struct HTMLConverter: MarkupVisitor {
 
     default:
       blockquote {
-        for child in blockQuote.children {
+        strong {
+          HTMLText(aside.kind.displayName)
+          ":"
+        }
+        for child in aside.content {
           visit(child)
         }
       }
+      .inlineStyle("border", "1px solid #8883")
+      .inlineStyle("border-radius", "6px")
+      .inlineStyle("margin", "1rem 0")
+      .inlineStyle("padding", "0.75rem 1rem 1rem")
     }
   }
 
@@ -65,6 +98,8 @@ private struct HTMLConverter: MarkupVisitor {
         HTMLText(codeBlock.code)
       }
       .attribute("class", codeBlock.language.map { "language-\($0)" })
+      .color(.black.dark(.offWhite))
+      .linkUnderline(true)
     }
   }
 
@@ -79,11 +114,12 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitHeading(_ heading: Markdown.Heading) -> AnyHTML {
-    Header(heading.level) {
+    Header(heading.level + 2) {
       for child in heading.children {
         visit(child)
       }
     }
+    .color(.offBlack.dark(.offWhite))
   }
 
   @HTMLBuilder
@@ -132,6 +168,7 @@ private struct HTMLConverter: MarkupVisitor {
         visit(child)
       }
     }
+    .inlineStyle("margin-top", "1rem")
   }
 
   @HTMLBuilder
@@ -141,6 +178,7 @@ private struct HTMLConverter: MarkupVisitor {
         visit(child)
       }
     }
+    .inlineStyle("margin-top", "0.5rem")
   }
 
   @HTMLBuilder
@@ -237,6 +275,7 @@ private struct HTMLConverter: MarkupVisitor {
         visit(child)
       }
     }
+    .inlineStyle("margin-top", "0.5rem")
   }
 }
 

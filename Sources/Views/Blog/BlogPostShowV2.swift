@@ -1,28 +1,37 @@
+import Dependencies
 import Models
 import StyleguideV2
 
 public struct NewsletterDetail: HTML {
-  let blogPost: BlogPost
+  @Dependency(\.currentUser) var currentUser
+
+  var blogPost: BlogPost
+  var previousBlogPost: BlogPost?
+  var nextBlogPost: BlogPost?
 
   public init(blogPost: BlogPost) {
     self.blogPost = blogPost
   }
 
   public var body: some HTML {
-    PageModule(
-      title: blogPost.title,
-      theme: .content
-    ) {
-      VStack(spacing: 3) {
-        div {
-          HTMLText(blogPost.publishedAt.weekdayMonthDayYear())
-        }
-        .color(.gray500)
-        .inlineStyle("text-align", "center")
-        .inlineStyle("width", "100%")
+    style {
+      """
+      article pf-markdown > :last-child::after {
+        margin: 0 0.5rem;
+        content: "❖";
+      }
+      """
+    }
 
+    PageModule(theme: .content) {
+      VStack(spacing: 3) {
         if let content = blogPost.content {
-          HTMLMarkdown(content)
+          article {
+            HTMLMarkdown(content)
+              .color(.gray150.dark(.gray800))
+              .linkColor(.black.dark(.white))
+              .linkUnderline(true)
+          }
         }
 
 //        for block in blogPost.contentBlocks {
@@ -50,9 +59,28 @@ public struct NewsletterDetail: HTML {
       }
       .inlineStyle("margin", "0 auto", media: .desktop)
       .inlineStyle("width", "60%", media: .desktop)
+    } title: {
+      VStack {
+        Header(3) {
+          HTMLMarkdown(blogPost.title)
+        }
+
+        div {
+          HTMLText(blogPost.publishedAt.weekdayMonthDayYear())
+        }
+        .color(.gray500)
+      }
+      .inlineStyle("text-align", "center")
+      .inlineStyle("width", "100%")
+    }
+
+    if currentUser == nil {
+      GetStartedModule(style: .gradient)
     }
   }
 }
+
+import Markdown
 
 #if canImport(SwiftUI)
   import SwiftUI

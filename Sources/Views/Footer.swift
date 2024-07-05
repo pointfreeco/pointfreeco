@@ -26,13 +26,12 @@ public struct Footer: HTML {
 }
 
 private struct TaglineColumn: HTML {
-  @Dependency(\.siteRouter) var siteRouter
   let twitterRouter = TwitterRouter()
 
   var body: some HTML {
     div {
       h4 {
-        Link("Point-Free", href: siteRouter.path(for: .home))
+        Link("Point-Free", destination: .home)
           .linkColor(.white)
       }
       .fontScale(.h4)
@@ -69,12 +68,12 @@ private struct ContentColumn: HTML {
 
   var body: some HTML {
     Column(title: "Content") {
-      FooterLink("Pricing", href: siteRouter.path(for: .pricingLanding))
-      FooterLink("Gifts", href: siteRouter.path(for: .gifts()))
-      FooterLink("Videos", href: siteRouter.path(for: .home))
-      FooterLink("Collections", href: siteRouter.path(for: .collections()))
-      FooterLink("Clips", href: siteRouter.path(for: .clips(.clips)))
-      FooterLink("Blog", href: siteRouter.path(for: .blog()))
+      FooterLink("Pricing", destination: .pricingLanding)
+      FooterLink("Gifts", destination: .gifts())
+      FooterLink("Videos", destination: .home)
+      FooterLink("Collections", destination: .collections())
+      FooterLink("Clips", destination: .clips(.clips))
+      FooterLink("Blog", destination: .blog())
     }
   }
 }
@@ -86,13 +85,13 @@ private struct MoreColumn: HTML {
 
   var body: some HTML {
     Column(title: "More") {
-      FooterLink("About Us", href: siteRouter.path(for: .about))
+      FooterLink("About Us", destination: .about)
       FooterLink("Mastodon", href: "https://hachyderm.io/@pointfreeco")
         .attribute("rel", "me")
       FooterLink("Twitter", href: twitterRouter.url(for: .pointfreeco).absoluteString)
       FooterLink("GitHub", href: gitHubRouter.url(for: .organization).absoluteString)
       FooterLink("Contact Us", href: "mailto:support@pointfree.co")
-      FooterLink("Privacy Policy", href: siteRouter.path(for: .privacy))
+      FooterLink("Privacy Policy", destination: .privacy)
     }
   }
 }
@@ -124,6 +123,11 @@ private struct FooterLink: HTML {
   init(_ label: String, href: String) {
     self.href = href
     self.label = label
+  }
+
+  init(_ label: String, destination: SiteRoute) {
+    @Dependency(\.siteRouter) var siteRouter
+    self.init(label, href: siteRouter.path(for: destination))
   }
 
   var body: some HTML {

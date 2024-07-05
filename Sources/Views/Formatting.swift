@@ -28,7 +28,7 @@ extension Date {
 
   private static let newsletterFormatter: DateFormatter = {
     let df = DateFormatter()
-    df.dateFormat = "EEEE MMM d, yyyy"
+    df.dateFormat = "EEEE MMMM d, yyyy"
     df.timeZone = TimeZone(secondsFromGMT: 0)
     return df
   }()

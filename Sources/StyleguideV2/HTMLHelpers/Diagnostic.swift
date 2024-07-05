@@ -137,7 +137,10 @@ public struct Diagnostic<Message: HTML>: HTML {
         .inlineStyle("padding", "8px 8px 7px")
 
         div {
-          message
+          div {
+            message
+          }
+          .attribute("class", "diagnostic")
         }
         .backgroundColor(level.detailBackgroundColor)
         .color(.black.dark(.white))

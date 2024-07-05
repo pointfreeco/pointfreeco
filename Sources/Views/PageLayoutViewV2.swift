@@ -128,7 +128,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     if isGhosting {
       TopBanner(style: .notice) {
         "👻 You’re a ghost! "
-        Link("Stop ghosting", href: siteRouter.path(for: .endGhosting))
+        Link("Stop ghosting", destination: .endGhosting)
       }
     }
     PastDueBanner()
@@ -183,7 +183,7 @@ struct NavBar: HTML {
     @Dependency(\.siteRouter) var siteRouter
 
     var body: some HTML {
-      Link(href: siteRouter.path(for: .home)) {
+      Link(destination: .home) {
         SVG(
           base64: pointFreeTextDiamondLogoSvgBase64(fill: "#fff"),
           description: "Point-Free"
@@ -313,7 +313,7 @@ struct MobileNavItems: HTML {
     }
     var body: some HTML {
       li {
-        Link(title, href: siteRouter.path(for: route))
+        Link(title, destination: route)
           .linkColor(.gray650)
           .inlineStyle("display", "block")
       }
@@ -388,7 +388,6 @@ struct CenteredNavItems: HTML {
   }
 
   struct NavListItem: HTML {
-    @Dependency(\.siteRouter) var siteRouter
     let title: String
     let route: SiteRoute
     init(_ title: String, route: SiteRoute) {
@@ -397,7 +396,7 @@ struct CenteredNavItems: HTML {
     }
     var body: some HTML {
       li {
-        Link(title, href: siteRouter.path(for: route))
+        Link(title, destination: route)
       }
       .inlineStyle("padding-left", "2rem", pseudo: .not(.firstChild))
       .inlineStyle("display", "inline")
@@ -406,7 +405,6 @@ struct CenteredNavItems: HTML {
 }
 
 public struct PastDueBanner: HTML {
-  @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.subscriptionOwner) var subscriptionOwner
 
@@ -418,7 +416,7 @@ public struct PastDueBanner: HTML {
     case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .none, deactivated: _):
       TopBanner(style: .warning) {
         "Your subscription is past-due! Please "
-        Link("update your payment info", href: siteRouter.path(for: .account(.paymentInfo())))
+        Link("update your payment info", destination: .account(.paymentInfo()))
         " to ensure access to Point-Free!"
       }
 
@@ -432,7 +430,7 @@ public struct PastDueBanner: HTML {
     case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .none, deactivated: _):
       TopBanner(style: .warning) {
         "Your subscription is canceled. To regain access to Point-Free, "
-        Link("resubscribe", href: siteRouter.path(for: .pricingLanding))
+        Link("resubscribe", destination: .pricingLanding)
         " anytime!"
       }
 
@@ -501,8 +499,6 @@ public struct PastDueBanner: HTML {
 }
 
 public struct LiveStreamBanner: HTML {
-  @Dependency(\.siteRouter) var siteRouter
-
   public var body: some HTML {
     TopBanner(style: .live) {
       span {
@@ -513,7 +509,7 @@ public struct LiveStreamBanner: HTML {
       .inlineStyle("margin-right", "0.5rem")
 
       "We’re live! "
-      Link("Watch the stream →", href: siteRouter.path(for: .live(.current)))
+      Link("Watch the stream →", destination: .live(.current))
         .linkStyle(LinkStyle(color: .white, underline: nil))
     }
   }
@@ -621,13 +617,16 @@ private struct BaseStyles: HTML {
     style {
       """
       html {
-        font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
+        font-family: ui-sans-serif, -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
         line-height: 1.5;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         -ms-box-sizing: border-box;
         -o-box-sizing: border-box;
         box-sizing: border-box;
+      }
+      code, pre, tt, kbd, samp {
+        font-family: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, monospace;
       }
       body {
         -webkit-box-sizing: border-box;
@@ -647,6 +646,12 @@ private struct BaseStyles: HTML {
         background: #fff;
       }
       .markdown *:link, .markdown *:visited { color: inherit; }
+      .markdown pre { overflow-x: scroll; }
+      .diagnostic * {
+        font: inherit;
+        line-height: 1.25 !important;
+      }
+      .diagnostic pre { margin: 0.5rem 0 1rem 1.125rem; }
       @media only screen and (min-width: 832px) {
         html {
           font-size: 16px;
@@ -667,6 +672,9 @@ private struct BaseStyles: HTML {
         50% { opacity: 0; }
         to { opacity: 1; }
       }
+      pre, pre code {
+        overflow-x: scroll;
+      }
       """
     }
   }
@@ -676,14 +684,102 @@ public struct PrismJSHead: HTML {
   public var body: some HTML {
     style {
       """
+      .language-diff {
+        color: #808080;
+      }
+
       .language-diff .token.inserted {
         background-color: #f0fff4;
         color: #22863a;
+        margin: -4px;
+        padding: 4px;
       }
 
       .language-diff .token.deleted {
         background-color: #ffeef0;
         color: #b31d28;
+        margin: -3px;
+        padding: 3px;
+      }
+
+      .token.atrule, \
+      .token.boolean, \
+      .token.constant, \
+      .token.directive, \
+      .token.directive-name, \
+      .token.keyword, \
+      .token.other-directive {
+        color: #AD3DA4;
+      }
+
+      .token.class-name, \
+      .token.function {
+        color: #4B21B0;
+      }
+
+      .token.comment {
+        color: #707F8C;
+      }
+      .token.todo {
+        font-weight: 700;
+      }
+
+      .token.number, \
+      .token.string {
+        color: #D22E1B;
+      }
+
+      .token.placeholder, .token.code-fold {
+        background-color: #bbb;
+        border-radius: 6px;
+        color: #fff;
+        margin: -2px;
+        padding: 2px;
+      }
+
+      .token.placeholder-open, \
+      .token.placeholder-close {
+        display: none;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .language-diff .token.inserted {
+          background-color: #071c06;
+          color: #6fd574;
+        }
+
+        .language-diff .token.deleted {
+          background-color: #280c0f;
+          color: #f95258;
+        }
+
+        .token.atrule, \
+        .token.boolean, \
+        .token.constant, \
+        .token.directive, \
+        .token.directive-name, \
+        .token.keyword, \
+        .token.other-directive {
+          color: #FF79B2;
+        }
+
+        .token.class-name, \
+        .token.function {
+          color: #DABAFF;
+        }
+
+        .token.comment {
+          color: #7E8C98;
+        }
+
+        .token.number, \
+        .token.string {
+          color: #FF8170;
+        }
+
+        .token.placeholder, .token.code-fold {
+          background-color: #87878A;
+        }
       }
       """
     }
@@ -693,10 +789,20 @@ public struct PrismJSHead: HTML {
     }
     script {
       #"""
+      Prism.languages.swift['class-name'] = [
+        /\b(_[A-Z]\w*)\b/,
+        Prism.languages.swift['class-name']
+      ];
       Prism.languages.swift.keyword = [
         /\b(any|macro)\b/,
+        /\b((iOS|macOS|tvOS|watchOS|visionOS)(|ApplicationExtension)|swift)\b/,
         Prism.languages.swift.keyword
       ];
+      Prism.languages.swift.comment.inside = {
+        todo: {
+          pattern: /(TODO:)/
+        }
+      };
       Prism.languages.insertBefore('swift', 'operator', {
         'code-fold': {
           pattern: /…/

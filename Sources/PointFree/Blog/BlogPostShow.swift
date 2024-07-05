@@ -27,11 +27,11 @@ func newsletterDetail(
     .writeStatus(.ok)
     .respondV2(
       layoutData: SimplePageLayoutData(
-        description: post.blurb,
+        description: String(stripping: post.blurb),
         image: post.coverImage ?? assets.emailHeaderImgSrc,
         openGraphType: .website,
         style: .base(.mountains(.blog)),
-        title: post.title,
+        title: String(stripping: post.title),
         twitterCard: .summaryLargeImage,
         usePrismJs: true
       )
