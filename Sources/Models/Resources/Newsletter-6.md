@@ -1,7 +1,8 @@
 ![](https://d1iqsrac68iyd8.cloudfront.net/posts/0006-tagged-seconds-and-milliseconds/poster.jpg)
 
-> Let's create a type-safe interface for dealing with seconds and milliseconds in our programs.
-> We'll use the `Tagged` type, which allows us to construct all new types in a lightweight way.
+> Preamble: Let's create a type-safe interface for dealing with seconds and milliseconds in our
+> programs. We'll use the `Tagged` type, which allows us to construct all new types in a lightweight
+> way.
 
 The [Tagged](https://github.com/pointfreeco/swift-tagged) type is a powerful way of creating new
 types in a very lightweight way. It's a small package that leverages many advanced features of
@@ -88,7 +89,7 @@ Further, the compiler can prevent us from accidentally misusing time by, say, co
 value to a milliseconds value:
 
 ```swift:3:fail
-let futureTime: Milliseconds = 1528378451000
+let futureTime: Milliseconds = 1_528_378_451_000
 
 breakingBlogPost.publishedAt < futureTime
 ```

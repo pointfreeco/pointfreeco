@@ -142,6 +142,7 @@ private struct HTMLConverter: MarkupVisitor {
       .inlineStyle("padding-right", "1rem")
     }
     .backgroundColor(.offWhite.dark(.offBlack))
+    .inlineStyle("margin-bottom", "0.5rem")
     .inlineStyle("padding", "1rem 0 1rem 1.5rem")
     .inlineStyle("border-radius", "6px")
   }
@@ -319,7 +320,10 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitThematicBreak(_ thematicBreak: Markdown.ThematicBreak) -> AnyHTML {
-    Divider()
+    div {
+      Divider()
+    }
+    .inlineStyle("margin", "1rem 0 2rem")
   }
 
   @HTMLBuilder
