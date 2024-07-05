@@ -646,13 +646,11 @@ private struct BaseStyles: HTML {
         background: #fff;
       }
       .markdown *:link, .markdown *:visited { color: inherit; }
-      .markdown pre { overflow-x: scroll; }
       .diagnostic * {
         font: inherit;
         line-height: 1.25 !important;
       }
       .diagnostic pre {
-        margin: 0.5rem 0 1rem 1.125rem;
         text-wrap: auto;
       }
       @media only screen and (min-width: 832px) {
