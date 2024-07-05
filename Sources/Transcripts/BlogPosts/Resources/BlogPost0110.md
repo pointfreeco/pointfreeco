@@ -148,7 +148,7 @@ pool of threads. It would be completely sufficient to serialize all async work t
 That does not mean that multiple concurrent tasks are not able to interleave. Suspension of async
 tasks can still work as you expect, but all actual work is run serially on a single thread.
 
-And interestingly, there is even a precendent for this in one of Apple's open source Swift 
+And interestingly, there is even a precedent for this in one of Apple's open source Swift 
 libraries! The [Async Algorithms][async-algos-gh] package comes with an 
 [`AsyncSequenceValidation`][async-algos-validate-library] library with tools specifically designed
 to make testing async code a deterministic process. It needs this tool in order to write reliable,

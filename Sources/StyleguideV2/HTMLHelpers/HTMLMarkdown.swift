@@ -58,6 +58,14 @@ private struct HTMLConverter: MarkupVisitor {
   mutating func visitBlockQuote(_ blockQuote: Markdown.BlockQuote) -> AnyHTML {
     let aside = Aside(blockQuote)
     switch aside.kind.rawValue {
+    case "Error":
+      Diagnostic(level: .error) {
+        for child in aside.content {
+          visit(child)
+        }
+      }
+      .inlineStyle("padding", "0.5rem 1rem 2rem")
+
     case "Failed":
       Diagnostic(level: .issue) {
         for child in aside.content {
@@ -93,14 +101,21 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitCodeBlock(_ codeBlock: Markdown.CodeBlock) -> AnyHTML {
+    let language: (class: String, dataLine: String?)? = codeBlock.language.map {
+      let languageInfo = $0.split(separator: ":", maxSplits: 1)
+      let language = languageInfo[0]
+      let dataLine = languageInfo.dropFirst().first
+      return (class: "language-\(language)", dataLine: dataLine.map { String($0) })
+    }
     pre {
       code {
         HTMLText(codeBlock.code)
       }
-      .attribute("class", codeBlock.language.map { "language-\($0)" })
+      .attribute("class", language?.class)
       .color(.black.dark(.offWhite))
       .linkUnderline(true)
     }
+    .attribute("data-line", language?.dataLine)
   }
 
   @HTMLBuilder
@@ -130,7 +145,9 @@ private struct HTMLConverter: MarkupVisitor {
   @HTMLBuilder
   mutating func visitImage(_ image: Markdown.Image) -> AnyHTML {
     if let source = image.source {
-      Image(source: source, description: image.title ?? "")
+      VStack(alignment: .center) {
+        Image(source: source, description: image.title ?? "")
+      }
     }
   }
 

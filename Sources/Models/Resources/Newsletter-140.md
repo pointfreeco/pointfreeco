@@ -21,7 +21,7 @@ becomes: what is the most modern way to do it? SwiftUI completely revolutionized
 about building apps for Apple's platform, but its powers can be broken down into roughly two 
 categories:
 
-* SwiftUI provides a lightweight way to build view heirarchies using value types,
+* SwiftUI provides a lightweight way to build view hierarchies using value types,
 * and SwiftUI provides powerful state management tools that keep models in sync with what is 
 visually on screen.
 

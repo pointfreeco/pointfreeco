@@ -651,7 +651,10 @@ private struct BaseStyles: HTML {
         font: inherit;
         line-height: 1.25 !important;
       }
-      .diagnostic pre { margin: 0.5rem 0 1rem 1.125rem; }
+      .diagnostic pre {
+        margin: 0.5rem 0 1rem 1.125rem;
+        text-wrap: auto;
+      }
       @media only screen and (min-width: 832px) {
         html {
           font-size: 16px;
@@ -684,6 +687,15 @@ public struct PrismJSHead: HTML {
   public var body: some HTML {
     style {
       """
+      pre {
+        position: relative;
+      }
+
+      .line-highlight {
+        background-color: rgba(0, 121, 255, 0.1);
+        position: absolute;
+      }
+
       .language-diff {
         color: #808080;
       }
@@ -743,6 +755,10 @@ public struct PrismJSHead: HTML {
       }
 
       @media (prefers-color-scheme: dark) {
+        .line-highlight {
+          background-color: rgba(255, 255, 255, 0.15);
+        }
+
         .language-diff .token.inserted {
           background-color: #071c06;
           color: #6fd574;
@@ -784,6 +800,7 @@ public struct PrismJSHead: HTML {
       """
     }
     script().src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js")
+    script().src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.js")
     HTMLForEach(["swift", "clike", "css", "diff", "javascript", "ruby"]) { lang in
       script().src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-\(lang).min.js")
     }
