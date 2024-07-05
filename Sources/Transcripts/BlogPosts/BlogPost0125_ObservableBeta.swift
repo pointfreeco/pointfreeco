@@ -8,7 +8,6 @@ public let post0125_ObservableBeta = BlogPost(
     are integrating Swift's Observation framework into the library, and it revolutionizes nearly
     every aspect of the library.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 125),
   coverImage: nil,
   id: 125,
   publishedAt: yearMonthDayFormatter.date(from: "2023-11-27")!,

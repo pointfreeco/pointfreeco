@@ -8,7 +8,6 @@ public let post0120_MacroBonanza = BlogPost(
     boilerplate code can be automatically generated for us, and the ergonomics of our dependencies
     can be greatly improved.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 120),
   coverImage: nil,
   id: 120,
   publishedAt: yearMonthDayFormatter.date(from: "2023-11-16")!,

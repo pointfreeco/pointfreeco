@@ -6,7 +6,6 @@ public let post0107_WWDCSale = BlogPost(
     The year's biggest Apple event is here, and to celebrate we are offering a 25% discount off \
     the first year for first-time subscribers.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 107),
   coverImage: nil,
   hidden: .no,
   id: 107,

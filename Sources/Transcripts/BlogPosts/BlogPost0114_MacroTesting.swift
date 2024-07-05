@@ -7,7 +7,6 @@ public let post0114_MacroTesting = BlogPost(
     new open source library: Macro Testing. It includes powerful tools for writing tests for your \
     macros.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 114),
   coverImage:
     "https://pointfreeco-blog.s3.amazonaws.com/posts/0114-macro-testing/macro-testing.gif",
   id: 114,

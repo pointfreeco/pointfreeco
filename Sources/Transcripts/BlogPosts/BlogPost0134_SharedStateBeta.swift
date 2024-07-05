@@ -7,7 +7,6 @@ public let post0134_SharedStateBeta = BlogPost(
     class tools for sharing state throughout an application, and for persisting state across
     application launches.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 134),
   coverImage: nil,
   hidden: .no,
   hideFromSlackRSS: false,

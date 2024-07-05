@@ -7,7 +7,6 @@ public let post0124_CyberMonday = BlogPost(
     new Point-Free subscription! Get instant access to all past 260 episodes instantly, as well as
     access to everything we have planned for 2024.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 124),
   coverImage: nil,
   hidden: .yes,
   hideFromSlackRSS: true,

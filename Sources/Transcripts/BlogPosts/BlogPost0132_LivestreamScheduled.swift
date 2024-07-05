@@ -7,7 +7,6 @@ public let post0132_LivestreamRescheduled = BlogPost(
     power outages. But things are settled, and we're ready to go live again! Join us on
     February 12th at 9am PST and 5pm GMT.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 132),
   coverImage: nil,
   hidden: .yes,
   hideFromSlackRSS: false,

@@ -7,7 +7,6 @@ public let post0145_UIKitNavBeta = BlogPost(
     UIKit apps, including powerful state management tools and tools to drive navigation in UIKit \
     from state.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 145),
   coverImage: nil,
   hidden: .no,
   hideFromSlackRSS: false,
