@@ -643,7 +643,7 @@ private struct BaseStyles: HTML {
         box-sizing:inherit
       }
       body, html {
-        background: #fff;
+        background: #121212;
       }
       .markdown *:link, .markdown *:visited { color: inherit; }
       .diagnostic * {
@@ -664,11 +664,6 @@ private struct BaseStyles: HTML {
       @media only screen and (max-width: 831px) {
         html {
           font-size: 14px;
-        }
-      }
-      @media (prefers-color-scheme: dark) {
-        body, html {
-          background: #121212;
         }
       }
       @keyframes Pulse {
