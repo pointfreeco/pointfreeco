@@ -179,8 +179,6 @@ private struct HTMLConverter: MarkupVisitor {
           Image(source: source, description: image.title ?? "")
             .inlineStyle("margin", "0 1rem")
             .inlineStyle("border-radius", "6px")
-            .inlineStyle("border", "1px solid #ccc")
-            .inlineStyle("border", "1px solid #555", media: .dark)
         }
       }
     }
