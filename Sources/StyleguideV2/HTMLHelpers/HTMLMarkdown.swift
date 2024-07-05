@@ -83,19 +83,26 @@ private struct HTMLConverter: MarkupVisitor {
       .inlineStyle("padding", "0.5rem 1rem 2rem")
 
     default:
+      let style = BlockQuoteStyle(blockName: aside.kind.displayName)
       blockquote {
         strong {
           HTMLText(aside.kind.displayName)
-          ":"
         }
+        .color(style.borderColor)
+        .inlineStyle("margin-bottom", "0.25rem")
+        .inlineStyle("display", "block")
+
         for child in aside.content {
           visit(child)
         }
       }
-      .inlineStyle("border", "1px solid #8883")
+      .color(.offBlack.dark(.offWhite))
+      .backgroundColor(style.backgroundColor)
+      .inlineStyle("border", "2px solid \(style.borderColor.rawValue)")
+      .inlineStyle("border", "2px solid \(style.borderColor.darkValue!)", media: .dark)
       .inlineStyle("border-radius", "6px")
       .inlineStyle("margin", "1rem 0")
-      .inlineStyle("padding", "0.75rem 1rem 1rem")
+      .inlineStyle("padding", "1rem 1.5rem")
     }
   }
 
@@ -119,6 +126,9 @@ private struct HTMLConverter: MarkupVisitor {
       .color(.black.dark(.offWhite))
       .linkUnderline(true)
     }
+    .backgroundColor(.offWhite.dark(.offBlack))
+    .inlineStyle("padding", "1rem 1.5rem")
+    .inlineStyle("border-radius", "6px")
     .attribute("data-line", language?.dataLine)
   }
 
@@ -334,4 +344,28 @@ private struct AnyHTML: HTML {
     render(html.base)
   }
   var body: Never { fatalError() }
+}
+
+private struct BlockQuoteStyle {
+  var backgroundColor: PointFreeColor
+  var borderColor: PointFreeColor
+  init(blockName: String) {
+    switch blockName {
+    case "Warning", "Correction":
+      self.backgroundColor = PointFreeColor(rawValue: "#FDF2F4").dark(.init(rawValue: "#2E0402"))
+      self.borderColor = PointFreeColor(rawValue: "#D02C1E").dark(.init(rawValue: "#EB4642"))
+    case "Important":
+      self.backgroundColor = PointFreeColor(rawValue: "#FEFBF3").dark(.init(rawValue: "#291F04"))
+      self.borderColor = PointFreeColor(rawValue: "#966922").dark(.init(rawValue: "#F4B842"))
+    case "Tip":
+      self.backgroundColor = PointFreeColor(rawValue: "#FBFFFF").dark(.init(rawValue: "#0F2C2B"))
+      self.borderColor = PointFreeColor(rawValue: "#4B767C").dark(.init(rawValue: "#9FFCE5"))
+    case "Preamble":
+      self.backgroundColor = PointFreeColor(rawValue: "#FBF8FF").dark(.init(rawValue: "#1e1925"))
+      self.borderColor = PointFreeColor(rawValue: "#8D51F6").dark(.init(rawValue: "#8D51F6"))
+    default:
+      self.backgroundColor = PointFreeColor(rawValue: "#f5f5f5").dark(.init(rawValue: "#323232"))
+      self.borderColor = PointFreeColor(rawValue: "#696969").dark(.init(rawValue: "#9a9a9a"))
+    }
+  }
 }
