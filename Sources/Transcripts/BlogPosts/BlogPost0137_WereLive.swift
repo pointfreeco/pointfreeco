@@ -7,7 +7,6 @@ public let post0137_WereLive = BlogPost(
     observation tools in the Composable Architecture, and we will announce some brand new \
     features that have never been discussed before. 🫢
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 137),
   coverImage: nil,
   hidden: .no,
   hideFromSlackRSS: false,

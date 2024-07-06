@@ -6,7 +6,6 @@ public let post0139_FreeSharedState = BlogPost(
     We are making our 4-part series "Shared State in Practice" free for everyone to watch! Watch
     us refactor 2 different, real world code bases to take advantage of these powerful tools.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 139),
   coverImage: nil,
   hidden: .no,
   hideFromSlackRSS: false,

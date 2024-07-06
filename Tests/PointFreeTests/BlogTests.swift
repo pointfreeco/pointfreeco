@@ -46,7 +46,6 @@ class BlogTests: TestCase {
   @MainActor
   func testBlogIndex_WithLotsOfPosts() async throws {
     var shortMock = BlogPost.testValue()[0]
-    shortMock.contentBlocks = [shortMock.contentBlocks[1]]
     var hiddenMock = shortMock
     hiddenMock.hidden = .yes
     let posts = [
