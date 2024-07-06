@@ -2,7 +2,7 @@ GET http://localhost:8080/blog
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 35818
+Content-Length: 37253
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -525,7 +525,13 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
         <div class="color-114 color-142">Apr 16, 2018
         </div>
         <div class="margin-top-143">
-          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
+          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">
+            <pf-markdown class="display-47">
+              <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-112">
+                <p class="line-height-86 padding-113 margin-62">Mock Blog Post
+                </p>
+              </pf-vstack>
+            </pf-markdown></a>
           </h4>
         </div>
         <div class="color-146 color-142">
@@ -544,7 +550,13 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
         <div class="color-114 color-142">Apr 16, 2018
         </div>
         <div class="margin-top-143">
-          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
+          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">
+            <pf-markdown class="display-47">
+              <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-112">
+                <p class="line-height-86 padding-113 margin-62">Mock Blog Post
+                </p>
+              </pf-vstack>
+            </pf-markdown></a>
           </h4>
         </div>
         <div class="color-146 color-142">
@@ -563,7 +575,13 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
         <div class="color-114 color-142">Apr 16, 2018
         </div>
         <div class="margin-top-143">
-          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
+          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">
+            <pf-markdown class="display-47">
+              <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-112">
+                <p class="line-height-86 padding-113 margin-62">Mock Blog Post
+                </p>
+              </pf-vstack>
+            </pf-markdown></a>
           </h4>
         </div>
         <div class="color-146 color-142">
@@ -582,7 +600,13 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
         <div class="color-114 color-142">Apr 16, 2018
         </div>
         <div class="margin-top-143">
-          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
+          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">
+            <pf-markdown class="display-47">
+              <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-112">
+                <p class="line-height-86 padding-113 margin-62">Mock Blog Post
+                </p>
+              </pf-vstack>
+            </pf-markdown></a>
           </h4>
         </div>
         <div class="color-146 color-142">
@@ -601,7 +625,13 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
         <div class="color-114 color-142">Apr 16, 2018
         </div>
         <div class="margin-top-143">
-          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
+          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">
+            <pf-markdown class="display-47">
+              <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-112">
+                <p class="line-height-86 padding-113 margin-62">Mock Blog Post
+                </p>
+              </pf-vstack>
+            </pf-markdown></a>
           </h4>
         </div>
         <div class="color-146 color-142">

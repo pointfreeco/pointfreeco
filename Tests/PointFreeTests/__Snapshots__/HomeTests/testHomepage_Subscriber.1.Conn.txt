@@ -2,7 +2,7 @@ GET http://localhost:8080/
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 52665
+Content-Length: 52952
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -611,7 +611,13 @@ input:checked ~ #menu-icon .transform-57{transform:rotate(45deg)}
         <div class="color-164 color-130">Apr 16, 2018
         </div>
         <div class="margin-top-165">
-          <h4 class="margin-58 margin-top-102 margin-bottom-103 font-size-124 font-weight-78 line-height-79"><a class="color-166 color-101 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
+          <h4 class="margin-58 margin-top-102 margin-bottom-103 font-size-124 font-weight-78 line-height-79"><a class="color-166 color-101 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">
+            <pf-markdown class="display-43">
+              <pf-vstack class="align-items-67 display-8 flex-direction-68 max-width-69 row-gap-121">
+                <p class="line-height-82 padding-131 margin-58">Mock Blog Post
+                </p>
+              </pf-vstack>
+            </pf-markdown></a>
           </h4>
         </div>
         <div class="color-129 color-130">

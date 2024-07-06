@@ -144,11 +144,11 @@ private struct HTMLConverter: MarkupVisitor {
         HTMLText(codeBlock.code)
       }
       .attribute("class", language?.class)
-      .color(.black.dark(.offWhite))
       .linkUnderline(true)
     }
     .attribute("data-line", language?.dataLine)
     .backgroundColor(.offWhite.dark(.offBlack))
+    .color(.black.dark(.gray900))
     .inlineStyle("margin", "0")
     .inlineStyle("margin-bottom", "0.5rem")
     .inlineStyle("overflow-x", "scroll")

@@ -55,8 +55,10 @@ struct BlogPostEntry: HTML {
     .color(.gray500.dark(.gray650))
     div {
       Header(4) {
-        Link(post.title, href: siteRouter.path(for: .blog(.show(.left(post.slug)))))
-          .color(.offBlack.dark(.offWhite))
+        Link(href: siteRouter.path(for: .blog(.show(.left(post.slug))))) {
+          HTMLMarkdown(post.title)
+        }
+        .color(.offBlack.dark(.offWhite))
       }
     }
     .inlineStyle("margin-top", "0.5rem")
