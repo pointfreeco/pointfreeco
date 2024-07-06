@@ -2,7 +2,7 @@ GET http://localhost:8080/subscribe/personal?useRegionalDiscount=false
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 62578
+Content-Length: 63338
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2630,110 +2630,110 @@ window.addEventListener("load", function() {
     </form>
     <style>
       
-.background-color-8{background-color:#121212}
-.align-items-9{align-items:first baseline}
-.width-10{width:100%}
-.font-size-16{font-size:1.25rem}
-.line-height-18{line-height:1.45}
-.font-size-20{font-size:1.5rem}
-.text-decoration-21:visited{text-decoration:none}
-.text-decoration-22:link{text-decoration:none}
-.text-decoration-23:hover{text-decoration:underline}
-.color-24:link{color:#fff}
-.color-25:visited{color:#fff}
-.font-weight-26{font-weight:normal}
-.line-height-27{line-height:1.5}
-.font-size-28{font-size:1.0rem}
-.color-29{color:#fff}
-.color-30:link{color:#79f2b0}
-.color-31:visited{color:#79f2b0}
-.column-gap-32{column-gap:1.0rem}
-.display-33{display:grid}
-.grid-template-columns-34{grid-template-columns:1fr 2fr}
-.row-gap-35{row-gap:1.0rem}
-.font-size-36{font-size:0.75rem}
-.letter-spacing-38{letter-spacing:0.54pt}
-.line-height-39{line-height:1.25}
-.text-transform-40{text-transform:uppercase}
-.padding-left-41{padding-left:0.0rem}
-.list-style-type-42{list-style-type:none}
-.color-43:link{color:#974dff}
-.color-44:visited{color:#974dff}
-.font-size-46{font-size:0.875rem}
-.color-47{color:#666666}
-.color-48:link{color:#a8a8a8}
-.color-49:visited{color:#a8a8a8}
+.background-color-K2J0r1{background-color:#121212}
+.align-items-Dq4Oc4{align-items:first baseline}
+.width-C8uWv{width:100%}
+.font-size-yLOVS3{font-size:1.25rem}
+.line-height-B6FIc2{line-height:1.45}
+.font-size-Xin5E2{font-size:1.5rem}
+.text-decoration-Mif7n4:visited{text-decoration:none}
+.text-decoration-Q5Er64:link{text-decoration:none}
+.text-decoration-Zf0gY:hover{text-decoration:underline}
+.color-rNSFg1:link{color:#fff}
+.color-QZ6Yg3:visited{color:#fff}
+.font-weight-evfWi1{font-weight:normal}
+.line-height-9Qkso4{line-height:1.5}
+.font-size-83zzS1{font-size:1.0rem}
+.color-nbn0i3{color:#fff}
+.color-H59Xg3:link{color:#79f2b0}
+.color-tgLLb3:visited{color:#79f2b0}
+.column-gap-83zzS1{column-gap:1.0rem}
+.display-mqllb2{display:grid}
+.grid-template-columns-x1B8x4{grid-template-columns:1fr 2fr}
+.row-gap-83zzS1{row-gap:1.0rem}
+.font-size-xlo1p4{font-size:0.75rem}
+.letter-spacing-fGWfX2{letter-spacing:0.54pt}
+.line-height-9Xzre{line-height:1.25}
+.text-transform-RqT8X1{text-transform:uppercase}
+.padding-left-E4tBw4{padding-left:0.0rem}
+.list-style-type-Wl0y44{list-style-type:none}
+.color-d8fIz1:link{color:#974dff}
+.color-C4SO14:visited{color:#974dff}
+.font-size-RTPM71{font-size:0.875rem}
+.color-OpZD03{color:#666666}
+.color-dwzNH2:link{color:#a8a8a8}
+.color-hzlcf:visited{color:#a8a8a8}
 @media only screen and (min-width: 832px){
-  .padding-top-0{padding-top:4.0rem}
-  .padding-left-1{padding-left:4.0rem}
-  .padding-bottom-2{padding-bottom:4.0rem}
-  .padding-right-3{padding-right:4.0rem}
-  .column-gap-11{column-gap:1.0rem}
-  .display-12{display:grid}
-  .grid-template-columns-13{grid-template-columns:1fr 1fr}
-  .row-gap-14{row-gap:1.0rem}
-  .font-size-17{font-size:1.5rem}
-  .font-size-37{font-size:0.875rem}
+  .padding-top-ujLNr4{padding-top:4.0rem}
+  .padding-left-ujLNr4{padding-left:4.0rem}
+  .padding-bottom-ujLNr4{padding-bottom:4.0rem}
+  .padding-right-ujLNr4{padding-right:4.0rem}
+  .column-gap-ZNGkd1{column-gap:1.0rem}
+  .display-jdJkm4{display:grid}
+  .grid-template-columns-V2CuF3{grid-template-columns:1fr 1fr}
+  .row-gap-ZNGkd1{row-gap:1.0rem}
+  .font-size-dR5Tt4{font-size:1.5rem}
+  .font-size-Fb6s54{font-size:0.875rem}
 }
 @media only screen and (max-width: 831px){
-  .padding-top-4{padding-top:2.0rem}
-  .padding-left-5{padding-left:2.0rem}
-  .padding-bottom-6{padding-bottom:2.0rem}
-  .padding-right-7{padding-right:2.0rem}
-  .padding-bottom-15{padding-bottom:1.0rem}
-  .margin-bottom-19{margin-bottom:0.0rem}
-  .padding-top-45{padding-top:1.0rem}
+  .padding-top-bS1Ay3{padding-top:2.0rem}
+  .padding-left-bS1Ay3{padding-left:2.0rem}
+  .padding-bottom-bS1Ay3{padding-bottom:2.0rem}
+  .padding-right-bS1Ay3{padding-right:2.0rem}
+  .padding-bottom-GuM2x3{padding-bottom:1.0rem}
+  .margin-bottom-IGAQh1{margin-bottom:0.0rem}
+  .padding-top-GuM2x3{padding-top:1.0rem}
 }
 
     </style>
     
-<footer class="padding-top-0 padding-left-1 padding-bottom-2 padding-right-3 padding-top-4 padding-left-5 padding-bottom-6 padding-right-7 background-color-8">
-  <pf-vgrid class="align-items-9 width-10 column-gap-11 display-12 grid-template-columns-13 row-gap-14">
-    <div class="padding-bottom-15 padding-right-3">
-      <h4 class="font-size-16 font-size-17 line-height-18 margin-bottom-19 font-size-20"><a class="text-decoration-21 text-decoration-22 text-decoration-23 color-24 color-25" href="/">Point-Free</a>
+<footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
+  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-V2CuF3 row-gap-ZNGkd1">
+    <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
+      <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-26 line-height-27 font-size-28 color-29">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-21 text-decoration-22 text-decoration-23 color-30 color-31" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-21 text-decoration-22 text-decoration-23 color-30 color-31" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="width-10 column-gap-32 display-33 grid-template-columns-34 row-gap-35">
+    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-x1B8x4 row-gap-83zzS1">
       <div>
-        <h5 class="font-size-36 font-size-37 letter-spacing-38 line-height-39 text-transform-40 color-29">Content
+        <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>
-        <ol class="padding-left-41 list-style-type-42">
-          <li><a class="text-decoration-21 text-decoration-22 text-decoration-23 color-43 color-44" href="/pricing">Pricing</a>
+        <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/pricing">Pricing</a>
           </li>
-          <li><a class="text-decoration-21 text-decoration-22 text-decoration-23 color-43 color-44" href="/gifts">Gifts</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-21 text-decoration-22 text-decoration-23 color-43 color-44" href="/">Videos</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/">Videos</a>
           </li>
-          <li><a class="text-decoration-21 text-decoration-22 text-decoration-23 color-43 color-44" href="/collections">Collections</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/collections">Collections</a>
           </li>
-          <li><a class="text-decoration-21 text-decoration-22 text-decoration-23 color-43 color-44" href="/clips">Clips</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/clips">Clips</a>
           </li>
-          <li><a class="text-decoration-21 text-decoration-22 text-decoration-23 color-43 color-44" href="/blog">Blog</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/blog">Blog</a>
           </li>
         </ol>
       </div>
       <div>
-        <h5 class="font-size-36 font-size-37 letter-spacing-38 line-height-39 text-transform-40 color-29">More
+        <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">More
         </h5>
-        <ol class="padding-left-41 list-style-type-42">
-          <li><a class="text-decoration-21 text-decoration-22 text-decoration-23 color-43 color-44" href="/about">About Us</a>
+        <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/about">About Us</a>
           </li>
-          <li rel="me"><a class="text-decoration-21 text-decoration-22 text-decoration-23 color-43 color-44" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
+          <li rel="me"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
           </li>
-          <li><a class="text-decoration-21 text-decoration-22 text-decoration-23 color-43 color-44" href="https://www.twitter.com/pointfreeco">Twitter</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://www.twitter.com/pointfreeco">Twitter</a>
           </li>
-          <li><a class="text-decoration-21 text-decoration-22 text-decoration-23 color-43 color-44" href="https://github.com/pointfreeco">GitHub</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://github.com/pointfreeco">GitHub</a>
           </li>
-          <li><a class="text-decoration-21 text-decoration-22 text-decoration-23 color-43 color-44" href="mailto:support@pointfree.co">Contact Us</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="mailto:support@pointfree.co">Contact Us</a>
           </li>
-          <li><a class="text-decoration-21 text-decoration-22 text-decoration-23 color-43 color-44" href="/privacy">Privacy Policy</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/privacy">Privacy Policy</a>
           </li>
         </ol>
       </div>
     </pf-vgrid>
-    <p class="padding-top-45 font-weight-26 line-height-27 font-size-46 color-47">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-21 text-decoration-22 text-decoration-23 color-48 color-49" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-21 text-decoration-22 text-decoration-23 color-48 color-49" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-21 text-decoration-22 text-decoration-23 color-48 color-49" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
+    <p class="padding-top-GuM2x3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
     </p>
   </pf-vgrid>
 </footer>

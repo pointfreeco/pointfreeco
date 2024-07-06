@@ -1,5 +1,6 @@
 import ConcurrencyExtras
 import Dependencies
+import Foundation
 import OrderedCollections
 
 extension HTML {
@@ -24,6 +25,8 @@ extension HTML {
 public struct HTMLInlineStyle<Content: HTML>: HTML {
   private let content: Content
   private var styles: [Style]
+
+  @Dependency(ClassNameGenerator.self) fileprivate var classNameGenerator
 
   init(
     content: Content,
@@ -79,18 +82,7 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     }
 
     for style in html.styles {
-      let index: Int =
-        printer.classes.firstIndex(of: style)
-        ?? {
-          defer { printer.classes.append(style) }
-          return printer.classes.count
-        }()
-
-      #if DEBUG
-        let className = "\(style.property)-\(index)"
-      #else
-        let className = "c\(index)"
-      #endif
+      let className = html.classNameGenerator.generate(style)
       let selector = """
         \(style.preSelector.map { "\($0) " } ?? "").\(className)\(style.pseudo?.rawValue ?? "")
         """
@@ -104,6 +96,41 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     }
   }
   public var body: Never { fatalError() }
+}
+
+private struct ClassNameGenerator: DependencyKey {
+  var generate: @Sendable (Style) -> String
+
+  static var liveValue: ClassNameGenerator {
+    let seenStyles = LockIsolated<OrderedSet<Style>>([])
+    return Self { style in
+      seenStyles.withValue { seenStyles in
+        let index =
+          seenStyles.firstIndex(of: style)
+          ?? {
+            seenStyles.append(style)
+            return seenStyles.count
+          }()
+        #if DEBUG
+        return "\(style.property)-\(index)"
+        #else
+        return "c\(index)"
+        #endif
+      }
+    }
+  }
+
+  static var testValue: ClassNameGenerator {
+    Self { style in
+      let hash = classID(
+        style.value
+        + (style.media?.rawValue ?? "")
+        + (style.preSelector ?? "")
+        + (style.pseudo?.rawValue ?? "")
+      )
+      return "\(style.property)-\(hash)"
+    }
+  }
 }
 
 private struct Style: Hashable {
@@ -161,3 +188,85 @@ public struct Pseudo: RawRepresentable, Hashable {
   public static let visited = Self(rawValue: ":visited")
   public static func not(_ other: Self) -> Self { Self(rawValue: ":not(\(other.rawValue))") }
 }
+
+private func classID(_ value: String) -> String {
+  return encode(murmurHash(value))
+
+  func encode(_ value: UInt32) -> String {
+    guard value > 0
+    else { return "" }
+    var number = value
+    var encoded = ""
+    encoded.reserveCapacity(Int(log(Double(number)) / log(64)) + 1)
+    while number > 0 {
+      let index = Int(number % baseCount)
+      number /= baseCount
+      encoded.append(baseChars[index])
+    }
+
+    return encoded
+  }
+  func murmurHash(_ string: String) -> UInt32 {
+    let data = [UInt8](string.utf8)
+    let length = data.count
+    let c1: UInt32 = 0xcc9e_2d51
+    let c2: UInt32 = 0x1b87_3593
+    let r1: UInt32 = 15
+    let r2: UInt32 = 13
+    let m: UInt32 = 5
+    let n: UInt32 = 0xe654_6b64
+
+    var hash: UInt32 = 0
+
+    let chunkSize = MemoryLayout<UInt32>.size
+    let chunks = length / chunkSize
+
+    for i in 0..<chunks {
+      var k: UInt32 = 0
+      let offset = i * chunkSize
+
+      for j in 0..<chunkSize {
+        k |= UInt32(data[offset + j]) << (j * 8)
+      }
+
+      k &*= c1
+      k = (k << r1) | (k >> (32 - r1))
+      k &*= c2
+
+      hash ^= k
+      hash = (hash << r2) | (hash >> (32 - r2))
+      hash = hash &* m &+ n
+    }
+
+    var k1: UInt32 = 0
+    let tailStart = chunks * chunkSize
+
+    switch length & 3 {
+    case 3:
+      k1 ^= UInt32(data[tailStart + 2]) << 16
+      fallthrough
+    case 2:
+      k1 ^= UInt32(data[tailStart + 1]) << 8
+      fallthrough
+    case 1:
+      k1 ^= UInt32(data[tailStart])
+      k1 &*= c1
+      k1 = (k1 << r1) | (k1 >> (32 - r1))
+      k1 &*= c2
+      hash ^= k1
+    default:
+      break
+    }
+
+    hash ^= UInt32(length)
+    hash ^= (hash >> 16)
+    hash &*= 0x85eb_ca6b
+    hash ^= (hash >> 13)
+    hash &*= 0xc2b2_ae35
+    hash ^= (hash >> 16)
+
+    return hash
+  }
+}
+private let baseChars = Array("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+private let baseCount = UInt32(baseChars.count)

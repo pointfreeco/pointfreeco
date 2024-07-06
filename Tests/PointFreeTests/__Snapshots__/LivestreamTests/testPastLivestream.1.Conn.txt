@@ -2,7 +2,7 @@ GET http://localhost:8080/live/streams/42
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 26590
+Content-Length: 28863
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -107,301 +107,301 @@ article > pf-markdown > pf-vstack > p:last-of-type::after {
     <meta property="og:url" content="http://localhost:8080/live/streams/42">
     <meta name="twitter:url" content="http://localhost:8080/live/streams/42"><script src="https://plausible.io/js/script.js" defer data-domain="pointfree.co"></script>
     <style>
-.width-0{width:100%}
-.z-index-3{z-index:9999}
-.background-4{background:#121212}
-.padding-5{padding:2rem}
-.max-width-7{max-width:1280px}
-.margin-8{margin:0 auto}
-.display-9{display:flex}
-.flex-direction-10{flex-direction:row}
-.flex-wrap-11{flex-wrap:wrap}
-.justify-content-12{justify-content:space-between}
-.align-items-13{align-items:center}
-.line-height-14{line-height:0}
-.text-decoration-15:visited{text-decoration:none}
-.text-decoration-16:link{text-decoration:none}
-.text-decoration-17:hover{text-decoration:underline}
-.padding-left-19{padding-left:0.0rem}
-.list-style-type-20{list-style-type:none}
-.padding-left-22:not(:first-child){padding-left:2rem}
-.display-23{display:inline}
-.color-24:link{color:#a8a8a8}
-.color-25:visited{color:#a8a8a8}
-.padding-left-26:not(:first-child){padding-left:1rem}
-.font-size-27{font-size:0.875rem}
-.color-28:visited{color:#974dff}
-.color-29:link{color:#974dff}
-.color-30{color:#974dff}
-.border-31{border:1px solid #974dff}
-.border-radius-32{border-radius:0.5rem}
-.box-shadow-33:hover{box-shadow:inset 0 0 0 20rem rgba(0,0,0,0.1)}
-.cursor-34{cursor:pointer}
-.font-weight-35{font-weight:500}
-.text-decoration-36{text-decoration:none}
-.white-space-37{white-space:nowrap}
-.padding-38{padding:0.75rem 1.0rem}
-.transition-39{transition:0.3s}
-.color-40:visited{color:#fff}
-.color-41:link{color:#fff}
-.color-42{color:#fff}
-.background-color-43{background-color:#974dff}
-.border-44{border:none #fff}
-.display-45{display:none}
-.user-select-47{user-select:none}
-.display-48{display:block}
-.border-radius-49{border-radius:1.5px}
-.transition-50{transition:all .2s ease-out, background .2s ease-out}
-.position-51{position:relative}
-.background-52{background:#f6f6f6}
-.height-53{height:3px}
-.width-54{width:24px}
-.top-55{top:-5px}
-input:checked ~ #menu-icon .top-56{top:0}
-input:checked ~ #menu-icon .transform-57{transform:rotate(-45deg)}
-input:checked ~ #menu-icon .transform-58{transform:rotate(0deg)}
-input:checked ~ #menu-icon .background-59{background:transparent}
-.top-60{top:5px}
-input:checked ~ #menu-icon .top-61{top:-5px}
-input:checked ~ #menu-icon .transform-62{transform:rotate(45deg)}
-.margin-63{margin:0}
-.flex-grow-65{flex-grow:1}
-.flex-shrink-66{flex-shrink:1}
-.flex-basis-67{flex-basis:100%}
-.padding-top-68{padding-top:1.5rem}
-.text-align-69{text-align:center}
-.background-70{background:linear-gradient(#121212, #242424)}
-.padding-bottom-71{padding-bottom:2rem}
-.box-sizing-72{box-sizing:border-box}
-.padding-73{padding:6rem 2rem}
-.flex-direction-75{flex-direction:column}
-.max-width-76{max-width:100%}
-.row-gap-77{row-gap:1.0rem}
-.color-78{color:#fafafa}
-.margin-top-79:not(:first-child){margin-top:1.5rem}
-.margin-bottom-80:not(:last-child){margin-bottom:0.5rem}
-.font-size-81{font-size:2.0rem}
-.font-weight-82{font-weight:700}
-.line-height-83{line-height:1.2}
-.color-84{color:#ccc}
-.max-width-85{max-width:768px}
-.color-86{color:#f6f6f6}
-.align-items-87{align-items:stretch}
-.row-gap-88{row-gap:0.5rem}
-.line-height-89{line-height:1.5}
-.padding-90{padding:0}
-.margin-top-91{margin-top:-4rem}
-.padding-bottom-92{padding-bottom:4rem}
-.box-shadow-93{box-shadow:0rem 1rem 20px rgba(0,0,0,0.2)}
-.padding-bottom-95{padding-bottom:56.25%}
-.height-96{height:100%}
-.position-97{position:absolute}
-.background-98{background:#fff}
-.padding-top-105{padding-top:4.0rem}
-.padding-left-106{padding-left:2.0rem}
-.padding-bottom-107{padding-bottom:4.0rem}
-.padding-right-108{padding-right:2.0rem}
-.background-109{background:#fafafa}
-.color-112{color:#121212}
-.margin-top-114:not(:first-child){margin-top:1.75rem}
-.margin-bottom-115:not(:last-child){margin-bottom:0.75rem}
-.font-size-116{font-size:3.0rem}
-.max-width-118{max-width:40rem}
-.color-119{color:#555555}
-.font-weight-121{font-weight:normal}
-.font-size-122{font-size:1.0rem}
-.padding-bottom-123:not(:last-child){padding-bottom:0.5rem}
-.padding-top-124{padding-top:0}
-.padding-left-125{padding-left:0}
-.padding-right-126{padding-right:0}
-.margin-top-127{margin-top:3rem}
-.display-128{display:inline-block}
-.padding-129{padding:1.0rem 1.25rem}
-.text-decoration-130:visited{text-decoration:underline}
-.text-decoration-131:link{text-decoration:underline}
-.background-color-142{background-color:#121212}
-.align-items-143{align-items:first baseline}
-.font-size-149{font-size:1.25rem}
-.line-height-151{line-height:1.45}
-.font-size-153{font-size:1.5rem}
-.color-154:link{color:#79f2b0}
-.color-155:visited{color:#79f2b0}
-.column-gap-156{column-gap:1.0rem}
-.display-157{display:grid}
-.grid-template-columns-158{grid-template-columns:1fr 2fr}
-.font-size-159{font-size:0.75rem}
-.letter-spacing-161{letter-spacing:0.54pt}
-.line-height-162{line-height:1.25}
-.text-transform-163{text-transform:uppercase}
-.color-165{color:#666666}
+.width-C8uWv{width:100%}
+.z-index-yn1UK1{z-index:9999}
+.background-K2J0r1{background:#121212}
+.padding-hS6a7{padding:2rem}
+.max-width-P6HnV{max-width:1280px}
+.margin-gEzmi{margin:0 auto}
+.display-BvS8W3{display:flex}
+.flex-direction-jlten2{flex-direction:row}
+.flex-wrap-6YEaQ3{flex-wrap:wrap}
+.justify-content-ymXQt{justify-content:space-between}
+.align-items-CdPBO2{align-items:center}
+.line-height-FBkWQ3{line-height:0}
+.text-decoration-Mif7n4:visited{text-decoration:none}
+.text-decoration-Q5Er64:link{text-decoration:none}
+.text-decoration-Zf0gY:hover{text-decoration:underline}
+.padding-left-E4tBw4{padding-left:0.0rem}
+.list-style-type-Wl0y44{list-style-type:none}
+.padding-left-dzKEp:not(:first-child){padding-left:2rem}
+.display-mFpu24{display:inline}
+.color-dwzNH2:link{color:#a8a8a8}
+.color-hzlcf:visited{color:#a8a8a8}
+.padding-left-IOMPq3:not(:first-child){padding-left:1rem}
+.font-size-RTPM71{font-size:0.875rem}
+.color-C4SO14:visited{color:#974dff}
+.color-d8fIz1:link{color:#974dff}
+.color-cemJK2{color:#974dff}
+.border-8Hnfa1{border:1px solid #974dff}
+.border-radius-NKv2f3{border-radius:0.5rem}
+.box-shadow-dyray:hover{box-shadow:inset 0 0 0 20rem rgba(0,0,0,0.1)}
+.cursor-xmR5l{cursor:pointer}
+.font-weight-aG4U6{font-weight:500}
+.text-decoration-Wl0y44{text-decoration:none}
+.white-space-RLKFg3{white-space:nowrap}
+.padding-inc4S2{padding:0.75rem 1.0rem}
+.transition-DjHPg{transition:0.3s}
+.color-QZ6Yg3:visited{color:#fff}
+.color-rNSFg1:link{color:#fff}
+.color-nbn0i3{color:#fff}
+.background-color-cemJK2{background-color:#974dff}
+.border-i8QWz2{border:none #fff}
+.display-Wl0y44{display:none}
+.user-select-Wl0y44{user-select:none}
+.display-ix08W2{display:block}
+.border-radius-Oi9xr3{border-radius:1.5px}
+.transition-BVnrT{transition:all .2s ease-out, background .2s ease-out}
+.position-Pjz1G2{position:relative}
+.background-4kuW21{background:#f6f6f6}
+.height-BOHcc4{height:3px}
+.width-t6pNK3{width:24px}
+.top-SUDJi1{top:-5px}
+input:checked ~ #menu-icon .top-xEdC7{top:0}
+input:checked ~ #menu-icon .transform-0hcgW2{transform:rotate(-45deg)}
+input:checked ~ #menu-icon .transform-kZtH24{transform:rotate(0deg)}
+input:checked ~ #menu-icon .background-WytRx3{background:transparent}
+.top-YwIIn{top:5px}
+input:checked ~ #menu-icon .top-i3LWY2{top:-5px}
+input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
+.margin-FBkWQ3{margin:0}
+.flex-grow-tzL8I2{flex-grow:1}
+.flex-shrink-tzL8I2{flex-shrink:1}
+.flex-basis-C8uWv{flex-basis:100%}
+.padding-top-Xin5E2{padding-top:1.5rem}
+.text-align-CdPBO2{text-align:center}
+.background-RMpfJ3{background:linear-gradient(#121212, #242424)}
+.padding-bottom-hS6a7{padding-bottom:2rem}
+.box-sizing-otfSh{box-sizing:border-box}
+.padding-jNK411{padding:6rem 2rem}
+.flex-direction-7gclL{flex-direction:column}
+.max-width-C8uWv{max-width:100%}
+.row-gap-83zzS1{row-gap:1.0rem}
+.color-c5ixr2{color:#fafafa}
+.margin-top-EvtWd3:not(:first-child){margin-top:1.5rem}
+.margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
+.font-size-QgYLk2{font-size:2.0rem}
+.font-weight-SywJI1{font-weight:700}
+.line-height-auF6B{line-height:1.2}
+.color-KmPrN{color:#ccc}
+.max-width-iVA1Q1{max-width:768px}
+.color-4kuW21{color:#f6f6f6}
+.align-items-msN8p3{align-items:stretch}
+.row-gap-NKv2f3{row-gap:0.5rem}
+.line-height-9Qkso4{line-height:1.5}
+.padding-FBkWQ3{padding:0}
+.margin-top-NLtLD2{margin-top:-4rem}
+.padding-bottom-1VZj64{padding-bottom:4rem}
+.box-shadow-yJzQS2{box-shadow:0rem 1rem 20px rgba(0,0,0,0.2)}
+.padding-bottom-MI04k{padding-bottom:56.25%}
+.height-C8uWv{height:100%}
+.position-X8qzJ{position:absolute}
+.background-nbn0i3{background:#fff}
+.padding-top-P1piO2{padding-top:4.0rem}
+.padding-left-QgYLk2{padding-left:2.0rem}
+.padding-bottom-P1piO2{padding-bottom:4.0rem}
+.padding-right-QgYLk2{padding-right:2.0rem}
+.background-c5ixr2{background:#fafafa}
+.color-K2J0r1{color:#121212}
+.margin-top-rmfs01:not(:first-child){margin-top:1.75rem}
+.margin-bottom-1rcXs4:not(:last-child){margin-bottom:0.75rem}
+.font-size-NBsge3{font-size:3.0rem}
+.max-width-3zifi{max-width:40rem}
+.color-GPfER1{color:#555555}
+.font-weight-evfWi1{font-weight:normal}
+.font-size-83zzS1{font-size:1.0rem}
+.padding-bottom-yQEjs3:not(:last-child){padding-bottom:0.5rem}
+.padding-top-FBkWQ3{padding-top:0}
+.padding-left-FBkWQ3{padding-left:0}
+.padding-right-FBkWQ3{padding-right:0}
+.margin-top-H64QF2{margin-top:3rem}
+.display-qrAHi{display:inline-block}
+.padding-8K2qP3{padding:1.0rem 1.25rem}
+.text-decoration-gUV393:visited{text-decoration:underline}
+.text-decoration-tfb0F1:link{text-decoration:underline}
+.background-color-K2J0r1{background-color:#121212}
+.align-items-Dq4Oc4{align-items:first baseline}
+.font-size-yLOVS3{font-size:1.25rem}
+.line-height-B6FIc2{line-height:1.45}
+.font-size-Xin5E2{font-size:1.5rem}
+.color-H59Xg3:link{color:#79f2b0}
+.color-tgLLb3:visited{color:#79f2b0}
+.column-gap-83zzS1{column-gap:1.0rem}
+.display-mqllb2{display:grid}
+.grid-template-columns-x1B8x4{grid-template-columns:1fr 2fr}
+.font-size-xlo1p4{font-size:0.75rem}
+.letter-spacing-fGWfX2{letter-spacing:0.54pt}
+.line-height-9Xzre{line-height:1.25}
+.text-transform-RqT8X1{text-transform:uppercase}
+.color-OpZD03{color:#666666}
 @media only screen and (max-width: 831px){
-  .position-1{position:sticky}
-  .top-2{top:0}
-  .display-18{display:none}
-  input:checked ~ .display-64{display:block}
-  .padding-top-138{padding-top:2.0rem}
-  .padding-left-139{padding-left:2.0rem}
-  .padding-bottom-140{padding-bottom:2.0rem}
-  .padding-right-141{padding-right:2.0rem}
-  .padding-bottom-148{padding-bottom:1.0rem}
-  .margin-bottom-152{margin-bottom:0.0rem}
-  .padding-top-164{padding-top:1.0rem}
+  .position-0RTpx2{position:sticky}
+  .top-dcqqP{top:0}
+  .display-mScdO2{display:none}
+  input:checked ~ .display-sAbis3{display:block}
+  .padding-top-bS1Ay3{padding-top:2.0rem}
+  .padding-left-bS1Ay3{padding-left:2.0rem}
+  .padding-bottom-bS1Ay3{padding-bottom:2.0rem}
+  .padding-right-bS1Ay3{padding-right:2.0rem}
+  .padding-bottom-GuM2x3{padding-bottom:1.0rem}
+  .margin-bottom-IGAQh1{margin-bottom:0.0rem}
+  .padding-top-GuM2x3{padding-top:1.0rem}
 }
 @media only screen and (min-width: 832px){
-  .padding-6{padding:1.5rem}
-  .padding-left-21{padding-left:1.5rem}
-  .display-46{display:none}
-  .padding-74{padding:8rem 3rem}
-  .margin-94{margin:0 4rem}
-  .align-items-100{align-items:center}
-  .padding-top-101{padding-top:8.0rem}
-  .padding-left-102{padding-left:8.0rem}
-  .padding-bottom-103{padding-bottom:8.0rem}
-  .padding-right-104{padding-right:8.0rem}
-  .text-align-111{text-align:center}
-  .margin-117{margin:0 auto}
-  .padding-top-134{padding-top:4.0rem}
-  .padding-left-135{padding-left:4.0rem}
-  .padding-bottom-136{padding-bottom:4.0rem}
-  .padding-right-137{padding-right:4.0rem}
-  .column-gap-144{column-gap:1.0rem}
-  .display-145{display:grid}
-  .grid-template-columns-146{grid-template-columns:1fr 1fr}
-  .row-gap-147{row-gap:1.0rem}
-  .font-size-150{font-size:1.5rem}
-  .font-size-160{font-size:0.875rem}
+  .padding-dR5Tt4{padding:1.5rem}
+  .padding-left-dR5Tt4{padding-left:1.5rem}
+  .display-Nvbu41{display:none}
+  .padding-jFt024{padding:8rem 3rem}
+  .margin-JRgcV{margin:0 4rem}
+  .align-items-GE99b{align-items:center}
+  .padding-top-OzbZs1{padding-top:8.0rem}
+  .padding-left-OzbZs1{padding-left:8.0rem}
+  .padding-bottom-OzbZs1{padding-bottom:8.0rem}
+  .padding-right-OzbZs1{padding-right:8.0rem}
+  .text-align-GE99b{text-align:center}
+  .margin-mBI0f2{margin:0 auto}
+  .padding-top-ujLNr4{padding-top:4.0rem}
+  .padding-left-ujLNr4{padding-left:4.0rem}
+  .padding-bottom-ujLNr4{padding-bottom:4.0rem}
+  .padding-right-ujLNr4{padding-right:4.0rem}
+  .column-gap-ZNGkd1{column-gap:1.0rem}
+  .display-jdJkm4{display:grid}
+  .grid-template-columns-V2CuF3{grid-template-columns:1fr 1fr}
+  .row-gap-ZNGkd1{row-gap:1.0rem}
+  .font-size-dR5Tt4{font-size:1.5rem}
+  .font-size-Fb6s54{font-size:0.875rem}
 }
 @media (prefers-color-scheme: dark){
-  .background-99{background:#121212}
-  .background-110{background:#171717}
-  .color-113{color:#fff}
-  .color-120{color:#ccc}
-  .color-132:link{color:#666666}
-  .color-133:visited{color:#666666}
+  .background-dMv2U1{background:#121212}
+  .background-xnERS1{background:#171717}
+  .color-wVkSF3{color:#fff}
+  .color-VoDZ9{color:#ccc}
+  .color-0sCqm2:link{color:#666666}
+  .color-8PEWD2:visited{color:#666666}
 }
 
     </style>
   </head>
   <body>
-<nav class="width-0 position-1 top-2 z-index-3 background-4">
-  <div class="padding-5 padding-6 max-width-7 margin-8 display-9 flex-direction-10 flex-wrap-11 justify-content-12 align-items-13 background-4"><a class="line-height-14 text-decoration-15 text-decoration-16 text-decoration-17" href="/"><img alt="Point-Free" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"></a>
-    <ul class="display-18 padding-left-19 list-style-type-20">
-      <li class="padding-left-21 padding-left-22 display-23"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/collections">Collections</a>
+<nav class="width-C8uWv position-0RTpx2 top-dcqqP z-index-yn1UK1 background-K2J0r1">
+  <div class="padding-hS6a7 padding-dR5Tt4 max-width-P6HnV margin-gEzmi display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-ymXQt align-items-CdPBO2 background-K2J0r1"><a class="line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/"><img alt="Point-Free" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"></a>
+    <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/collections">Collections</a>
       </li>
-      <li class="padding-left-21 padding-left-22 display-23"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/pricing">Pricing</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/pricing">Pricing</a>
       </li>
-      <li class="padding-left-21 padding-left-22 display-23"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/blog">Blog</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/blog">Blog</a>
       </li>
-      <li class="padding-left-21 padding-left-22 display-23"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/gifts">Gifts</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/gifts">Gifts</a>
       </li>
     </ul>
-    <ul class="display-18 padding-left-19 list-style-type-20">
-      <li class="display-23 padding-left-26"><a href="/login?redirect=http://localhost:8080/live/streams/42" class="font-size-27 color-28 color-29 color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-16 white-space-37 padding-38 transition-39">Login</a>
+    <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
+      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/login?redirect=http://localhost:8080/live/streams/42" class="font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Login</a>
       </li>
-      <li class="display-23 padding-left-26"><a href="/signup?redirect=http://localhost:8080/live/streams/42" class="font-size-27 color-40 color-41 color-42 background-color-43 border-44 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-16 white-space-37 padding-38 transition-39">Sign up</a>
+      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/signup?redirect=http://localhost:8080/live/streams/42" class="font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Sign up</a>
       </li>
-    </ul><input class="display-45" id="menu-checkbox" type="checkbox"><label class="cursor-34 display-46 cursor-34 user-select-47" id="menu-icon" for="menu-checkbox"><span class="display-48 border-radius-49 transition-50 position-51 background-52 height-53 width-54 top-55 top-56 transform-57"></span><span class="display-48 border-radius-49 transition-50 position-51 background-52 height-53 width-54 transform-58 background-59"></span><span class="display-48 border-radius-49 transition-50 position-51 background-52 height-53 width-54 top-60 top-61 transform-62"></span></label>
-    <ul class="margin-63 display-45 display-64 flex-grow-65 flex-shrink-66 flex-basis-67 padding-left-19 list-style-type-20 color-42">
-      <li class="padding-top-68"><a class="display-48 text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/collections">Collections</a>
+    </ul><input class="display-Wl0y44" id="menu-checkbox" type="checkbox"><label class="cursor-xmR5l display-Nvbu41 cursor-xmR5l user-select-Wl0y44" id="menu-icon" for="menu-checkbox"><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-SUDJi1 top-xEdC7 transform-0hcgW2"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 transform-kZtH24 background-WytRx3"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-YwIIn top-i3LWY2 transform-BHskb"></span></label>
+    <ul class="margin-FBkWQ3 display-Wl0y44 display-sAbis3 flex-grow-tzL8I2 flex-shrink-tzL8I2 flex-basis-C8uWv padding-left-E4tBw4 list-style-type-Wl0y44 color-nbn0i3">
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/collections">Collections</a>
       </li>
-      <li class="padding-top-68"><a class="display-48 text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/pricing">Pricing</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/pricing">Pricing</a>
       </li>
-      <li class="padding-top-68"><a class="display-48 text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/blog">Blog</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/blog">Blog</a>
       </li>
-      <li class="padding-top-68"><a class="display-48 text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/gifts">Gifts</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/gifts">Gifts</a>
       </li>
-      <li class="padding-top-68"><a class="display-48 text-align-69 font-size-27 color-28 color-29 color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-16 white-space-37 padding-38 transition-39" href="/login?redirect=http://localhost:8080/live/streams/42">Login</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/login?redirect=http://localhost:8080/live/streams/42">Login</a>
       </li>
-      <li class="padding-top-68"><a class="display-48 text-align-69 font-size-27 color-40 color-41 color-42 background-color-43 border-44 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-16 white-space-37 padding-38 transition-39" href="/signup?redirect=http://localhost:8080/live/streams/42">Sign up</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/signup?redirect=http://localhost:8080/live/streams/42">Sign up</a>
       </li>
     </ul>
   </div>
 </nav>
-<pf-center-column class="background-70 padding-bottom-71 width-0 box-sizing-72 display-48">
-  <pf-vstack class="max-width-7 width-0 margin-8 padding-73 padding-74 align-items-13 display-9 flex-direction-75 max-width-76 row-gap-77">
-    <h3 class="text-align-69 color-78 margin-63 margin-top-79 margin-bottom-80 font-size-81 font-weight-82 line-height-83">Video Title
-    </h3><span class="color-84">Episode Clip • Jan 31, 2018</span>
-    <pf-markdown class="max-width-85 color-86 display-48">
-      <pf-vstack class="align-items-87 display-9 flex-direction-75 max-width-76 row-gap-88">
-        <p class="line-height-89 padding-90 margin-63">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+<pf-center-column class="background-RMpfJ3 padding-bottom-hS6a7 width-C8uWv box-sizing-otfSh display-ix08W2">
+  <pf-vstack class="max-width-P6HnV width-C8uWv margin-gEzmi padding-jNK411 padding-jFt024 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+    <h3 class="text-align-CdPBO2 color-c5ixr2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Video Title
+    </h3><span class="color-KmPrN">Episode Clip • Jan 31, 2018</span>
+    <pf-markdown class="max-width-iVA1Q1 color-4kuW21 display-ix08W2">
+      <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
         </p>
       </pf-vstack>
     </pf-markdown>
   </pf-vstack>
 </pf-center-column>
-<pf-center-column class="margin-top-91 padding-bottom-92 width-0 box-sizing-72 display-48">
-  <div class="max-width-7 width-0 margin-8">
-    <div class="box-shadow-93 margin-94">
-      <div class="width-0 position-51 padding-bottom-95">
-        <iframe class="width-0 height-96 position-97" src="https://player.vimeo.com/video/42?pip=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen>
+<pf-center-column class="margin-top-NLtLD2 padding-bottom-1VZj64 width-C8uWv box-sizing-otfSh display-ix08W2">
+  <div class="max-width-P6HnV width-C8uWv margin-gEzmi">
+    <div class="box-shadow-yJzQS2 margin-JRgcV">
+      <div class="width-C8uWv position-Pjz1G2 padding-bottom-MI04k">
+        <iframe class="width-C8uWv height-C8uWv position-X8qzJ" src="https://player.vimeo.com/video/42?pip=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen>
         </iframe><script src="https://player.vimeo.com/api/player.js"></script>
       </div>
     </div>
   </div>
 </pf-center-column>
-<pf-center-column class="padding-bottom-92 width-0 box-sizing-72 display-48">
-  <div class="max-width-7 width-0 margin-8 background-98 background-99">
-    <div class="align-items-100 display-9 flex-direction-75 flex-wrap-11 row-gap-88 padding-top-101 padding-left-102 padding-bottom-103 padding-right-104 padding-top-105 padding-left-106 padding-bottom-107 padding-right-108 background-109 background-110 margin-8 max-width-7">
-      <div class="text-align-111">
-        <h2 class="color-112 color-113 margin-63 margin-top-114 margin-bottom-115 font-size-116 font-weight-82 line-height-83">Get started with our free&nbsp;plan
+<pf-center-column class="padding-bottom-1VZj64 width-C8uWv box-sizing-otfSh display-ix08W2">
+  <div class="max-width-P6HnV width-C8uWv margin-gEzmi background-nbn0i3 background-dMv2U1">
+    <div class="align-items-GE99b display-BvS8W3 flex-direction-7gclL flex-wrap-6YEaQ3 row-gap-NKv2f3 padding-top-OzbZs1 padding-left-OzbZs1 padding-bottom-OzbZs1 padding-right-OzbZs1 padding-top-P1piO2 padding-left-QgYLk2 padding-bottom-P1piO2 padding-right-QgYLk2 background-c5ixr2 background-xnERS1 margin-gEzmi max-width-P6HnV">
+      <div class="text-align-GE99b">
+        <h2 class="color-K2J0r1 color-wVkSF3 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">Get started with our free&nbsp;plan
         </h2>
       </div>
-      <div class="text-align-111">
-        <p class="margin-117 max-width-118 color-119 color-120 font-weight-121 line-height-89 font-size-122 padding-bottom-123 padding-top-124 padding-left-125 padding-right-126 margin-63 line-height-89">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
+      <div class="text-align-GE99b">
+        <p class="margin-mBI0f2 max-width-3zifi color-GPfER1 color-VoDZ9 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
         </p>
       </div>
-      <div class="text-align-111 width-0"><a class="margin-top-127 display-128 font-size-122 color-40 color-41 color-42 background-color-43 border-44 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-16 white-space-37 padding-129 transition-39" href="/signup">Sign up for free →</a>
-      </div><a class="text-align-111 font-weight-121 line-height-89 font-size-27 text-decoration-130 text-decoration-131 text-decoration-17 color-24 color-132 color-25 color-133" href="/pricing">View plans and pricing</a>
+      <div class="text-align-GE99b width-C8uWv"><a class="margin-top-H64QF2 display-qrAHi font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/signup">Sign up for free →</a>
+      </div><a class="text-align-GE99b font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-dwzNH2 color-0sCqm2 color-hzlcf color-8PEWD2" href="/pricing">View plans and pricing</a>
     </div>
   </div>
 </pf-center-column>
-<footer class="padding-top-134 padding-left-135 padding-bottom-136 padding-right-137 padding-top-138 padding-left-139 padding-bottom-140 padding-right-141 background-color-142">
-  <pf-vgrid class="align-items-143 width-0 column-gap-144 display-145 grid-template-columns-146 row-gap-147">
-    <div class="padding-bottom-148 padding-right-137">
-      <h4 class="font-size-149 font-size-150 line-height-151 margin-bottom-152 font-size-153"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-41 color-40" href="/">Point-Free</a>
+<footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
+  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-V2CuF3 row-gap-ZNGkd1">
+    <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
+      <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-121 line-height-89 font-size-122 color-42">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-154 color-155" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-154 color-155" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="width-0 column-gap-156 display-157 grid-template-columns-158 row-gap-77">
+    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-x1B8x4 row-gap-83zzS1">
       <div>
-        <h5 class="font-size-159 font-size-160 letter-spacing-161 line-height-162 text-transform-163 color-42">Content
+        <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>
-        <ol class="padding-left-19 list-style-type-20">
-          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/pricing">Pricing</a>
+        <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/pricing">Pricing</a>
           </li>
-          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/gifts">Gifts</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/">Videos</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/">Videos</a>
           </li>
-          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/collections">Collections</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/collections">Collections</a>
           </li>
-          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/clips">Clips</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/clips">Clips</a>
           </li>
-          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/blog">Blog</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/blog">Blog</a>
           </li>
         </ol>
       </div>
       <div>
-        <h5 class="font-size-159 font-size-160 letter-spacing-161 line-height-162 text-transform-163 color-42">More
+        <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">More
         </h5>
-        <ol class="padding-left-19 list-style-type-20">
-          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/about">About Us</a>
+        <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/about">About Us</a>
           </li>
-          <li rel="me"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
+          <li rel="me"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
           </li>
-          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="https://www.twitter.com/pointfreeco">Twitter</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://www.twitter.com/pointfreeco">Twitter</a>
           </li>
-          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="https://github.com/pointfreeco">GitHub</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://github.com/pointfreeco">GitHub</a>
           </li>
-          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="mailto:support@pointfree.co">Contact Us</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="mailto:support@pointfree.co">Contact Us</a>
           </li>
-          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/privacy">Privacy Policy</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/privacy">Privacy Policy</a>
           </li>
         </ol>
       </div>
     </pf-vgrid>
-    <p class="padding-top-164 font-weight-121 line-height-89 font-size-27 color-165">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
+    <p class="padding-top-GuM2x3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
     </p>
   </pf-vgrid>
 </footer>

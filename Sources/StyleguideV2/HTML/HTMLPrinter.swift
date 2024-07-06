@@ -7,7 +7,6 @@ public struct HTMLPrinter {
   public var bytes: ContiguousArray<UInt8> = []
   public var styles: OrderedDictionary<MediaQuery?, OrderedDictionary<String, String>> = [:]
 
-  var classes: OrderedSet<AnyHashable> = []
   let configuration: Configuration
   var currentIndentation = ""
 
