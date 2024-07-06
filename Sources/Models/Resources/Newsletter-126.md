@@ -8,7 +8,7 @@ been on the fence on whether or not to subscribe, now is the time!
 
 [[Subscribe today!]](/discounts/2023-eoy)
 
-## Highlights
+# Highlights
 
 2023 was our biggest year yet:
 
@@ -46,7 +46,7 @@ But these high-level stats don’t even scratch the surface of what we covered i
 
 <div id="episodes"></div>
 
-## Episodes
+# Episodes
 
 This year's episodes were action-packed, to say the least. We made use of many new, advanced
 features of Swift 5.8 and 5.9, including concurrency tools, executors, observation, macros (and 
@@ -54,7 +54,7 @@ more…) in order to push the Swift language and SwiftUI to the limit of what th
 
 <div id="modern-swiftui"></div>
 
-### [Modern SwiftUI][modern-swiftui-collection]
+## [Modern SwiftUI][modern-swiftui-collection]
 
 We began the year with a [7-part series][modern-swiftui-collection] discussing modern SwiftUI 
 techniques. This includes proper domain modeling for navigation, properly handling side effects,
@@ -110,7 +110,7 @@ share with the world.
 
 <div id="first-ever-live-stream"></div>
 
-### [First ever live stream][live-stream]
+## [First ever live stream][live-stream]
 
 This year we also had our first ever [live stream][live-stream] where we discussed our newly
 released [dependencies library][dependencies-gh], and we live-refactored how navigation was 
@@ -134,7 +134,7 @@ stack-based navigation, so we did it [live][nav-live-stream]!
 
 <div id="composable-architecture-navigation"></div>
 
-### [Composable Architecture navigation][tca-nav-collection]
+## [Composable Architecture navigation][tca-nav-collection]
 
 Early in the year we embarked on a [very long series][tca-nav-collection] of episodes to build
 first class navigation tools into the Composable Architecture. We didn't plan on it being that long
@@ -158,7 +158,7 @@ be sure to checkout our [SwiftUINavigation][swiftui-nav-gh] library.
 
 <div id="reliably-testing-async"></div>
 
-### [Reliably testing async][testing-async-code-collection]
+## [Reliably testing async][testing-async-code-collection]
 
 In 2022 we posted a seemingly innocent question about [how to reliably test async code in 
 Swift][reliably-testing-async-forums]. Well, 1.5 years later, 126 replies and 20k views later… there
@@ -201,7 +201,7 @@ deep dive into concurrency, as well as clocks and time-based asynchrony.
 
 <div id="tour-of-the-composable-architecture-1.0"></div>
 
-### [Tour of the Composable Architecture 1.0][tca-1.0-collection]
+## [Tour of the Composable Architecture 1.0][tca-1.0-collection]
 
 It's hard to believe, but it was only this year that we finally released 1.0 of our popular library,
 the [Composable Architecture][tca-gh]. To celebrate we released a brand new
@@ -227,7 +227,7 @@ such as:
 
 <div id="testing-debugging-macros"></div>
 
-### [Testing & Debugging Macros][testing-debugging-macros-1]
+## [Testing & Debugging Macros][testing-debugging-macros-1]
 
 Macros were by far the biggest new feature in Swift 5.9, and we devoted two full episodes 
 ([here][testing-debugging-macros-1] and [here][testing-debugging-macros-2]) to understanding
@@ -263,7 +263,7 @@ assert how your macro expands, as well as how its diagnostics and fix-its are em
 
 <div id="deep-dive-into-swifts-observation-tools"></div>
 
-### [Deep dive into Swift's observation tools][observation-collection]
+## [Deep dive into Swift's observation tools][observation-collection]
 
 We released a [collection][observation-collection] of episodes that dive deep into Swift 5.9's 
 observation tools, including the new `@Observable` macro and the `withObservationTracking` function. 
@@ -292,7 +292,7 @@ We broke the series up into 5 major parts:
 
 <div id="case-paths-revolution"></div>
 
-### Case paths revolution
+## Case paths revolution
 
 Key paths are an amazing feature of Swift. They allow you to abstractly isolate a particular field
 from the whole of a struct, and they unlock a lot of amazing capabilities that we all probably take
@@ -321,7 +321,7 @@ any enum, and we dedicated 2 episodes ([part 1][macro-case-paths-1] and
 
 <div id="observable-architecture"></div>
 
-### [Observable Architecture][obs-arch-collection]
+## [Observable Architecture][obs-arch-collection]
 
 We finished the year with a bang! 💥
 
@@ -342,7 +342,7 @@ to use value types for our domains, concise domain modeling tools, easy testing,
 
 <div id="open-source"></div>
 
-## Open source
+# Open source
 
 On average, our [open source libraries][pf-gh] are cloned over **120,000 times** per day! They are
 used by thousands of developers and companies all across the globe. It's a lot of work to maintain them,
@@ -362,7 +362,7 @@ existing libraries:
 
 <div id="dependencies"></div>
 
-### [Dependencies][dependencies-gh]
+## [Dependencies][dependencies-gh]
 
 In October of last year we released a [large update][reducer-protocol-blog] to the Composable 
 Architecture, introducing the `Reducer` protocol to the library. That simple change to the library
@@ -465,7 +465,7 @@ func testAdd() async throws {
 
 <div id="concurrency-extras"></div>
 
-### [Concurrency extras][concurrency-extras-gh]
+## [Concurrency extras][concurrency-extras-gh]
 
 After finishing our series of episodes on [testing async code][testing-async-code-collection], we
 [open sourced][concurrency-extras-gh] the tool we built during that series, as well as a few other 
@@ -491,7 +491,7 @@ of the time.
 
 <div id="inline-snapshot-testing"></div>
 
-### [Inline snapshot testing][inline-snapshot-testing-blog]
+## [Inline snapshot testing][inline-snapshot-testing-blog]
 
 We released our popular [snapshot testing][snapshot-testing-gh] library over 5 years ago, but this
 year we added a huge new feature: [inline snapshot testing][inline-snapshot-testing-blog]. It
@@ -539,7 +539,7 @@ testing tools on top of it. And in fact, that's exactly what we did for
 
 <div id="swift-macro-testing"></div>
 
-### [Swift macro testing][swift-macro-testing-blog-1]
+## [Swift macro testing][swift-macro-testing-blog-1]
 
 One of the major new features of Swift 5.9 is macros. They are compiler plugins that can generate
 code to be inserted into your code during the compilation process. It's an incredibly powerful tool
@@ -619,7 +619,7 @@ macro.
 
 <div id="observable-architecture-beta"></div>
 
-### [Observable architecture beta][obs-arch-beta-blog]
+## [Observable architecture beta][obs-arch-beta-blog]
 
 In unison with the beginning of our new [Observable Architecture][obs-arch-collection] series (and
 coincidentally the same day the library hit 10,000 stars on GitHub) we launched a [public 
@@ -644,14 +644,14 @@ even if you are targeting an older version of iOS, going all the way back to iOS
 
 <div id="blog-posts"></div>
 
-## Blog posts
+# Blog posts
 
 This year we published 27 blog posts, most of which cover things already discussed above, but 
 there were 3 specific posts we wanted to call out.
 
 <div id="modern-swiftui-blog"></div>
 
-### [Modern SwiftUI][modern-swiftui-blog-summary]
+## [Modern SwiftUI][modern-swiftui-blog-summary]
 
 When we finished our [Modern SwiftUI][modern-swiftui-collection] series of episodes we released
 a [blog-post-a-day][modern-swiftui-blog-summary] for an entire week to highlight some of the 
@@ -672,7 +672,7 @@ Be sure to check out the blog series if you do have time to watch all of the vid
 
 <div id="being-a-good-citizen-in-the-land-of-swift-syntax"></div>
 
-### [Being a good citizen in the land of Swift Syntax][swift-syntax-citizen]
+## [Being a good citizen in the land of Swift Syntax][swift-syntax-citizen]
 
 When Swift macros were officially released we jumped into the head first. But we quickly noticed a
 few big issues with doing so, primarily due to [using SwiftSyntax][swift-syntax-concerns-forums].
@@ -686,7 +686,7 @@ to help everyone be a better citizen in the land of Swift Syntax.
 
 <div id="macro-bonanza"></div>
 
-### [Macro bonanza][macro-bonanza]
+## [Macro bonanza][macro-bonanza]
 
 When macros were released in Swift 5.9 we kinda went bonanza with them. We released big updates to
 4 of our libraries to bring all new capabilities with macros, and we released a brand new library
@@ -706,7 +706,7 @@ including their diagnostics and fix-its.
 
 <div id="point-free-community"></div>
 
-## Point-Free community
+# Point-Free community
 
 This year we launched our first big community initiative: the [Point-Free Slack][pf-slack]. In
 the 10 months since then over **2,000 people** have joined and over **42k messages** have been sent.
@@ -719,7 +719,7 @@ libraries, and we are thankful to all the community members that spend their tim
 
 <div id="see-you-in-2024"></div>
 
-## See you in 2024! 🥳
+# See you in 2024! 🥳
 
 We're thankful to all of our subscribers for [supporting us](/pricing) and helping us create our 
 episodes and support our open source libraries. We could not do it without you!
