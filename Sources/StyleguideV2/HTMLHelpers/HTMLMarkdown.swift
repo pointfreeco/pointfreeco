@@ -49,6 +49,17 @@ private struct HTMLConverter: MarkupVisitor {
         .inlineStyle("margin", "0.5rem 0")
       }
 
+    case "Video":
+      video {
+        tag("source")
+          .attribute("src", value(forArgument: "source", block: blockDirective))
+      }
+      .attribute("poster", value(forArgument: "poster", block: blockDirective))
+      .attribute("controls")
+      .attribute("playsinline")
+      .inlineStyle("object-fit", "cover")
+      .inlineStyle("margin-bottom", "1rem")
+
     default:
       for child in blockDirective.children {
         visit(child)
@@ -393,4 +404,16 @@ private struct BlockQuoteStyle {
       self.borderColor = PointFreeColor(rawValue: "#696969").dark(.init(rawValue: "#9a9a9a"))
     }
   }
+}
+
+private func value(forArgument argument: String, block: BlockDirective) -> String? {
+  block.argumentText.segments
+    .compactMap {
+      let text = $0.trimmedText.drop(while: { $0 == " " })
+      return text .hasPrefix("\(argument): \"")
+      ? text.dropFirst("\(argument): \"".count).prefix(while: { $0 != "\"" })
+      : nil
+    }
+    .first
+    .map(String.init)
 }
