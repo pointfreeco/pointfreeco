@@ -242,7 +242,7 @@ var package = Package(
         .product(name: "TaggedTime", package: "swift-tagged"),
       ],
       resources: [
-        .process("Resources"),
+        .process("Resources")
       ]
     ),
 

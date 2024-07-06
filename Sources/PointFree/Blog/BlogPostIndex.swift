@@ -12,7 +12,8 @@ func newsletterIndex(
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.assets) var assets
 
-  return conn
+  return
+    conn
     .writeStatus(.ok)
     .respondV2(
       layoutData: SimplePageLayoutData(

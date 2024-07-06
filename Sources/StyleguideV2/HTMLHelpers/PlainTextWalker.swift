@@ -29,7 +29,7 @@ private struct PlainTextWalker: MarkupWalker {
   mutating func visitLink(_ link: Markdown.Link) {
     text.append(link.plainText)
   }
-  mutating func visitListItem(_ listItem: ListItem) -> () {
+  mutating func visitListItem(_ listItem: ListItem) {
     for child in listItem.children { visit(child) }
   }
   mutating func visitSoftBreak(_ softBreak: Markdown.SoftBreak) {
@@ -41,7 +41,7 @@ private struct PlainTextWalker: MarkupWalker {
   mutating func visitText(_ text: Markdown.Text) {
     self.text.append(text.plainText)
   }
-  mutating func visitUnorderedList(_ unorderedList: UnorderedList) -> () {
+  mutating func visitUnorderedList(_ unorderedList: UnorderedList) {
     for child in unorderedList.children { visit(child) }
   }
 }
