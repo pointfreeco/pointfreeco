@@ -36,6 +36,9 @@ public struct ClipsIndex: HTML {
 
 public struct ClipView: HTML {
   let clip: Models.Clip
+
+  @Dependency(\.subscriberState) var subscriberState
+
   public init(clip: Models.Clip) {
     self.clip = clip
   }
@@ -59,6 +62,7 @@ public struct ClipView: HTML {
         HTMLMarkdown(clip.description)
           .color(.gray900)
           .inlineStyle("max-width", "768px")
+          .linkStyle(.init(color: .offWhite, underline: true))
       }
       .inlineStyle("padding", "6rem 2rem")
       .inlineStyle("padding", "8rem 3rem", media: .desktop)
@@ -91,6 +95,13 @@ public struct ClipView: HTML {
     }
     .inlineStyle("margin-top", "-4rem")
     .inlineStyle("padding-bottom", "4rem")
+
+    if !subscriberState.isActiveSubscriber {
+      CenterColumn {
+        GetStartedModule(style: .solid)
+      }
+      .inlineStyle("padding-bottom", "4rem")
+    }
   }
 }
 
