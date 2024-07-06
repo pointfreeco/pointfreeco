@@ -21,8 +21,7 @@ public func episodesMiddleware(
       .performAsync()
 
   case let .show(param):
-    return await episodeResponse(conn.map(const(param .*. nil .*. unit)))
-      .performAsync()
+    return await showEpisode(conn, param: param, collectionSlug: nil)
   }
 }
 

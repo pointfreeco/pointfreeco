@@ -50,6 +50,23 @@ private struct HTMLConverter: MarkupVisitor {
       }
 
     case "T":
+      /*
+       TODO: Find/replace transcripts
+
+       FIND:
+       \[(\d{2}:\d{2}:\d{2})\] \*\*([^:]+):\*\*
+
+       REPLACE:
+       @T($1, $2)
+
+       ---
+
+       FIND:
+       \[(\d{2}:\d{2}:\d{2})\]
+
+       REPLACE:
+       @T($1)
+       */
       let segments = blockDirective.argumentText.segments
         .map(\.trimmedText)
         .joined()
