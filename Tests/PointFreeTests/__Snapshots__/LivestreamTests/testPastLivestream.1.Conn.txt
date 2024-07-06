@@ -2,7 +2,7 @@ GET http://localhost:8080/live/streams/42
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 23574
+Content-Length: 26590
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -196,35 +196,56 @@ input:checked ~ #menu-icon .transform-62{transform:rotate(45deg)}
 .padding-bottom-95{padding-bottom:56.25%}
 .height-96{height:100%}
 .position-97{position:absolute}
-.background-color-106{background-color:#121212}
-.align-items-107{align-items:first baseline}
-.font-size-113{font-size:1.25rem}
-.line-height-115{line-height:1.45}
-.font-size-117{font-size:1.5rem}
-.font-weight-118{font-weight:normal}
-.font-size-119{font-size:1.0rem}
-.color-120:link{color:#79f2b0}
-.color-121:visited{color:#79f2b0}
-.column-gap-122{column-gap:1.0rem}
-.display-123{display:grid}
-.grid-template-columns-124{grid-template-columns:1fr 2fr}
-.font-size-125{font-size:0.75rem}
-.letter-spacing-127{letter-spacing:0.54pt}
-.line-height-128{line-height:1.25}
-.text-transform-129{text-transform:uppercase}
-.color-131{color:#666666}
+.background-98{background:#fff}
+.padding-top-105{padding-top:4.0rem}
+.padding-left-106{padding-left:2.0rem}
+.padding-bottom-107{padding-bottom:4.0rem}
+.padding-right-108{padding-right:2.0rem}
+.background-109{background:#fafafa}
+.color-112{color:#121212}
+.margin-top-114:not(:first-child){margin-top:1.75rem}
+.margin-bottom-115:not(:last-child){margin-bottom:0.75rem}
+.font-size-116{font-size:3.0rem}
+.max-width-118{max-width:40rem}
+.color-119{color:#555555}
+.font-weight-121{font-weight:normal}
+.font-size-122{font-size:1.0rem}
+.padding-bottom-123:not(:last-child){padding-bottom:0.5rem}
+.padding-top-124{padding-top:0}
+.padding-left-125{padding-left:0}
+.padding-right-126{padding-right:0}
+.margin-top-127{margin-top:3rem}
+.display-128{display:inline-block}
+.padding-129{padding:1.0rem 1.25rem}
+.text-decoration-130:visited{text-decoration:underline}
+.text-decoration-131:link{text-decoration:underline}
+.background-color-142{background-color:#121212}
+.align-items-143{align-items:first baseline}
+.font-size-149{font-size:1.25rem}
+.line-height-151{line-height:1.45}
+.font-size-153{font-size:1.5rem}
+.color-154:link{color:#79f2b0}
+.color-155:visited{color:#79f2b0}
+.column-gap-156{column-gap:1.0rem}
+.display-157{display:grid}
+.grid-template-columns-158{grid-template-columns:1fr 2fr}
+.font-size-159{font-size:0.75rem}
+.letter-spacing-161{letter-spacing:0.54pt}
+.line-height-162{line-height:1.25}
+.text-transform-163{text-transform:uppercase}
+.color-165{color:#666666}
 @media only screen and (max-width: 831px){
   .position-1{position:sticky}
   .top-2{top:0}
   .display-18{display:none}
   input:checked ~ .display-64{display:block}
-  .padding-top-102{padding-top:2.0rem}
-  .padding-left-103{padding-left:2.0rem}
-  .padding-bottom-104{padding-bottom:2.0rem}
-  .padding-right-105{padding-right:2.0rem}
-  .padding-bottom-112{padding-bottom:1.0rem}
-  .margin-bottom-116{margin-bottom:0.0rem}
-  .padding-top-130{padding-top:1.0rem}
+  .padding-top-138{padding-top:2.0rem}
+  .padding-left-139{padding-left:2.0rem}
+  .padding-bottom-140{padding-bottom:2.0rem}
+  .padding-right-141{padding-right:2.0rem}
+  .padding-bottom-148{padding-bottom:1.0rem}
+  .margin-bottom-152{margin-bottom:0.0rem}
+  .padding-top-164{padding-top:1.0rem}
 }
 @media only screen and (min-width: 832px){
   .padding-6{padding:1.5rem}
@@ -232,16 +253,31 @@ input:checked ~ #menu-icon .transform-62{transform:rotate(45deg)}
   .display-46{display:none}
   .padding-74{padding:8rem 3rem}
   .margin-94{margin:0 4rem}
-  .padding-top-98{padding-top:4.0rem}
-  .padding-left-99{padding-left:4.0rem}
-  .padding-bottom-100{padding-bottom:4.0rem}
-  .padding-right-101{padding-right:4.0rem}
-  .column-gap-108{column-gap:1.0rem}
-  .display-109{display:grid}
-  .grid-template-columns-110{grid-template-columns:1fr 1fr}
-  .row-gap-111{row-gap:1.0rem}
-  .font-size-114{font-size:1.5rem}
-  .font-size-126{font-size:0.875rem}
+  .align-items-100{align-items:center}
+  .padding-top-101{padding-top:8.0rem}
+  .padding-left-102{padding-left:8.0rem}
+  .padding-bottom-103{padding-bottom:8.0rem}
+  .padding-right-104{padding-right:8.0rem}
+  .text-align-111{text-align:center}
+  .margin-117{margin:0 auto}
+  .padding-top-134{padding-top:4.0rem}
+  .padding-left-135{padding-left:4.0rem}
+  .padding-bottom-136{padding-bottom:4.0rem}
+  .padding-right-137{padding-right:4.0rem}
+  .column-gap-144{column-gap:1.0rem}
+  .display-145{display:grid}
+  .grid-template-columns-146{grid-template-columns:1fr 1fr}
+  .row-gap-147{row-gap:1.0rem}
+  .font-size-150{font-size:1.5rem}
+  .font-size-160{font-size:0.875rem}
+}
+@media (prefers-color-scheme: dark){
+  .background-99{background:#121212}
+  .background-110{background:#171717}
+  .color-113{color:#fff}
+  .color-120{color:#ccc}
+  .color-132:link{color:#666666}
+  .color-133:visited{color:#666666}
 }
 
     </style>
@@ -303,17 +339,33 @@ input:checked ~ #menu-icon .transform-62{transform:rotate(45deg)}
     </div>
   </div>
 </pf-center-column>
-<footer class="padding-top-98 padding-left-99 padding-bottom-100 padding-right-101 padding-top-102 padding-left-103 padding-bottom-104 padding-right-105 background-color-106">
-  <pf-vgrid class="align-items-107 width-0 column-gap-108 display-109 grid-template-columns-110 row-gap-111">
-    <div class="padding-bottom-112 padding-right-101">
-      <h4 class="font-size-113 font-size-114 line-height-115 margin-bottom-116 font-size-117"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-41 color-40" href="/">Point-Free</a>
+<pf-center-column class="padding-bottom-92 width-0 box-sizing-72 display-48">
+  <div class="max-width-7 width-0 margin-8 background-98 background-99">
+    <div class="align-items-100 display-9 flex-direction-75 flex-wrap-11 row-gap-88 padding-top-101 padding-left-102 padding-bottom-103 padding-right-104 padding-top-105 padding-left-106 padding-bottom-107 padding-right-108 background-109 background-110 margin-8 max-width-7">
+      <div class="text-align-111">
+        <h2 class="color-112 color-113 margin-63 margin-top-114 margin-bottom-115 font-size-116 font-weight-82 line-height-83">Get started with our free&nbsp;plan
+        </h2>
+      </div>
+      <div class="text-align-111">
+        <p class="margin-117 max-width-118 color-119 color-120 font-weight-121 line-height-89 font-size-122 padding-bottom-123 padding-top-124 padding-left-125 padding-right-126 margin-63 line-height-89">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
+        </p>
+      </div>
+      <div class="text-align-111 width-0"><a class="margin-top-127 display-128 font-size-122 color-40 color-41 color-42 background-color-43 border-44 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-16 white-space-37 padding-129 transition-39" href="/signup">Sign up for free →</a>
+      </div><a class="text-align-111 font-weight-121 line-height-89 font-size-27 text-decoration-130 text-decoration-131 text-decoration-17 color-24 color-132 color-25 color-133" href="/pricing">View plans and pricing</a>
+    </div>
+  </div>
+</pf-center-column>
+<footer class="padding-top-134 padding-left-135 padding-bottom-136 padding-right-137 padding-top-138 padding-left-139 padding-bottom-140 padding-right-141 background-color-142">
+  <pf-vgrid class="align-items-143 width-0 column-gap-144 display-145 grid-template-columns-146 row-gap-147">
+    <div class="padding-bottom-148 padding-right-137">
+      <h4 class="font-size-149 font-size-150 line-height-151 margin-bottom-152 font-size-153"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-41 color-40" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-118 line-height-89 font-size-119 color-42">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-120 color-121" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-120 color-121" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-121 line-height-89 font-size-122 color-42">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-154 color-155" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-154 color-155" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="width-0 column-gap-122 display-123 grid-template-columns-124 row-gap-77">
+    <pf-vgrid class="width-0 column-gap-156 display-157 grid-template-columns-158 row-gap-77">
       <div>
-        <h5 class="font-size-125 font-size-126 letter-spacing-127 line-height-128 text-transform-129 color-42">Content
+        <h5 class="font-size-159 font-size-160 letter-spacing-161 line-height-162 text-transform-163 color-42">Content
         </h5>
         <ol class="padding-left-19 list-style-type-20">
           <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/pricing">Pricing</a>
@@ -331,7 +383,7 @@ input:checked ~ #menu-icon .transform-62{transform:rotate(45deg)}
         </ol>
       </div>
       <div>
-        <h5 class="font-size-125 font-size-126 letter-spacing-127 line-height-128 text-transform-129 color-42">More
+        <h5 class="font-size-159 font-size-160 letter-spacing-161 line-height-162 text-transform-163 color-42">More
         </h5>
         <ol class="padding-left-19 list-style-type-20">
           <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/about">About Us</a>
@@ -349,7 +401,7 @@ input:checked ~ #menu-icon .transform-62{transform:rotate(45deg)}
         </ol>
       </div>
     </pf-vgrid>
-    <p class="padding-top-130 font-weight-118 line-height-89 font-size-27 color-131">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
+    <p class="padding-top-164 font-weight-121 line-height-89 font-size-27 color-165">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
     </p>
   </pf-vgrid>
 </footer>
