@@ -650,6 +650,10 @@ private struct BaseStyles: HTML {
           background: #121212;
         }
       }
+      article > pf-markdown > pf-vstack > p:last-of-type::after {
+        margin: 0 0.5rem;
+        content: "❖";
+      }
       .markdown *:link, .markdown *:visited { color: inherit; }
       .diagnostic * {
         font: inherit;

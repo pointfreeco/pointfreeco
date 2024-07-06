@@ -29,10 +29,7 @@ func newsletterDetail(
       layoutData: SimplePageLayoutData(
         description: String(stripping: post.blurb),
         image: post.coverImage ?? assets.emailHeaderImgSrc,
-        openGraphType: .website,
-        style: .base(.mountains(.blog)),
         title: String(stripping: post.title),
-        twitterCard: .summaryLargeImage,
         usePrismJs: true
       )
     ) {

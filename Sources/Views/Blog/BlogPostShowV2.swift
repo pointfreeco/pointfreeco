@@ -6,6 +6,7 @@ public struct NewsletterDetail: HTML {
   @Dependency(\.currentUser) var currentUser
 
   var blogPost: BlogPost
+  // TODO: Link to previous/next posts
   var previousBlogPost: BlogPost?
   var nextBlogPost: BlogPost?
 
@@ -14,15 +15,18 @@ public struct NewsletterDetail: HTML {
   }
 
   public var body: some HTML {
-    style {
-      """
-      article > pf-markdown > pf-vstack > p:last-of-type::after {
-        margin: 0 0.5rem;
-        content: "❖";
-      }
-      """
-    }
+    NewsletterDetailModule(blogPost: blogPost)
 
+    if currentUser == nil {
+      GetStartedModule(style: .gradient)
+    }
+  }
+}
+
+struct NewsletterDetailModule: HTML {
+  var blogPost: BlogPost
+
+  var body: some HTML {
     PageModule(theme: .content) {
       VStack(spacing: 3) {
         if let content = blogPost.content {
@@ -33,29 +37,6 @@ public struct NewsletterDetail: HTML {
               .linkUnderline(true)
           }
         }
-
-//        for block in blogPost.contentBlocks {
-//          switch block.type {
-//          case .box(let box):
-//            HTMLEmpty()
-//          case .button(let href):
-//            HTMLEmpty()
-//          case .code(let lang):
-//            HTMLEmpty()
-//          case .image(let src, let sizing):
-//            HTMLEmpty()
-//          case .paragraph:
-//            HTMLMarkdown(block.content)
-//          case .question(let string):
-//            HTMLEmpty()
-//          case .title:
-//            Header(1) {
-//              HTMLText(block.content)
-//            }
-//          case .video(let poster, let sources):
-//            HTMLEmpty()
-//          }
-//        }
       }
       .inlineStyle("margin", "0 auto", media: .desktop)
       .inlineStyle("width", "60%", media: .desktop)
@@ -73,14 +54,8 @@ public struct NewsletterDetail: HTML {
       .inlineStyle("text-align", "center")
       .inlineStyle("width", "100%")
     }
-
-    if currentUser == nil {
-      GetStartedModule(style: .gradient)
-    }
   }
 }
-
-import Markdown
 
 #if canImport(SwiftUI)
   import SwiftUI
