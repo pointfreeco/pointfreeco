@@ -30,17 +30,14 @@ private func clipMiddleware(
     return
       conn
       .writeStatus(.ok)
-      .respond(
-        view: clipView(clip:),
-        layoutData: {
-          SimplePageLayoutData(
-            data: clip,
-            description: clip.description,
-            style: .base(.minimal(.black)),
-            title: clip.title
-          )
-        }
-      )
+      .respondV2(
+        layoutData: SimplePageLayoutData(
+          description: clip.blurb,
+          title: clip.title
+        )
+      ) {
+        ClipView(clip: clip)
+      }
   } catch {
     return await routeNotFoundMiddleware(conn).performAsync()
   }
@@ -56,20 +53,16 @@ private func clipsMiddleware(
     return
       conn
       .writeStatus(.ok)
-      .respond(
-        view: clipsView(clips:),
-        layoutData: {
-          SimplePageLayoutData(
-            data: clips,
-            description: """
-              A collection of some of our favorite moments from Point-Free episodes.
-              """,
-            extraStyles: cardStyles,
-            style: .base(.minimal(.black)),
-            title: "Point-Free clips"
-          )
-        }
-      )
+      .respondV2(
+        layoutData: SimplePageLayoutData(
+          description: """
+            A collection of some of our favorite moments from Point-Free episodes.
+            """,
+          title: "Point-Free Clips"
+        )
+      ) {
+        ClipsIndex(clips: clips)
+      }
   } catch {
     return await routeNotFoundMiddleware(conn).performAsync()
   }

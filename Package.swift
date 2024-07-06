@@ -538,6 +538,7 @@ var package = Package(
         "EmailAddress",
         "EnvVars",
         "FunctionalCss",
+        "Ghosting",
         "PointFreeDependencies",
         "PointFreeRouter",
         "Styleguide",
