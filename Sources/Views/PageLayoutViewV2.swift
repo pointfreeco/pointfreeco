@@ -656,10 +656,10 @@ private struct BaseStyles: HTML {
         line-height: 1.25 !important;
       }
       .diagnostic pre {
-        text-wrap: auto;
-      }
-      .diagnostic > div {
         background: inherit;
+        margin: 0 1.125rem;
+        padding: 0;
+        text-wrap: auto;
       }
       @media only screen and (min-width: 832px) {
         html {

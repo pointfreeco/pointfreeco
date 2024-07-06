@@ -139,23 +139,20 @@ private struct HTMLConverter: MarkupVisitor {
         dataLine: dataLine.map { String($0) }
       )
     }
-//    div {
-      pre {
-        code {
-          HTMLText(codeBlock.code)
-        }
-        .attribute("class", language?.class)
-        .color(.black.dark(.offWhite))
-        .linkUnderline(true)
+    pre {
+      code {
+        HTMLText(codeBlock.code)
       }
-      .attribute("data-line", language?.dataLine)
-      .inlineStyle("margin", "0")
-      .inlineStyle("padding-right", "1rem")
-//    }
+      .attribute("class", language?.class)
+      .color(.black.dark(.offWhite))
+      .linkUnderline(true)
+    }
+    .attribute("data-line", language?.dataLine)
     .backgroundColor(.offWhite.dark(.offBlack))
+    .inlineStyle("margin", "0")
     .inlineStyle("margin-bottom", "0.5rem")
     .inlineStyle("overflow-x", "scroll")
-    .inlineStyle("padding", "1rem 0 1rem 1.5rem")
+    .inlineStyle("padding", "1rem 1.5rem")
     .inlineStyle("border-radius", "6px")
   }
 

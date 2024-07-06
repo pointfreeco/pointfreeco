@@ -43,8 +43,8 @@ class FeatureModel: ObservableObject {
   @Published var fact: String?
   @Published var isLoadingFact = false
   
-  // Can hide this closure behind an interface and use some sort of dependency
-  // injection to provide it.
+  // Can hide this closure behind an interface and use
+  // some sort of dependency injection to provide it.
   let numberFact: (Int) async throws -> String
   
   init(numberFact: @escaping (Int) async throws -> String) {

@@ -137,7 +137,7 @@ public struct Diagnostic<Message: HTML>: HTML {
         .inlineStyle("padding", "8px 8px 7px")
 
         div {
-          div {
+          VStack(spacing: 0.5) {
             message
           }
           .attribute("class", "diagnostic")
