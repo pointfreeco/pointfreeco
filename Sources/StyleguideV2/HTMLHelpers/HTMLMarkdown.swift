@@ -57,9 +57,13 @@ private struct HTMLConverter: MarkupVisitor {
       if !name.isEmpty {
         strong {
           HTMLText(name)
-          ": "
         }
-        .inlineStyle("display", "inline-block")
+        .color(.gray500)
+        .inlineStyle("font-size", "0.875rem")
+        .inlineStyle("line-height", "1")
+        .inlineStyle("position", "relative")
+        .inlineStyle("text-transform", "uppercase")
+        .inlineStyle("top", "0.75rem")
       }
 
     case "Video":
@@ -447,17 +451,21 @@ struct Timestamp: HTML {
   var body: some HTML {
     let duration = self.duration
     div {
-      Link(href: "#t\(duration)") {
-        HTMLText(formatted())
+      div {
+        Link(href: "#t\(duration)") {
+          HTMLText(formatted())
+        }
       }
       .fontStyle(.body(.small))
-      .linkStyle(LinkStyle(color: .gray650.dark(.gray400), underline: nil))
+      .linkStyle(LinkStyle(color: .gray800.dark(.gray300), underline: nil))
       .attribute("data-timestamp", "\(duration)")
       .attribute("id", "t\(duration)")
-      .inlineStyle("display", "inline-block")
-      // .inlineStyle("left", "")
-      // .inlineStyle("position", "absolute")
-      .inlineStyle("line-height", "1rem")
+      .inlineStyle("font-variant-numeric", "tabular-nums")
+      .inlineStyle("margin-left", "-4rem")
+      .inlineStyle("line-height", "3")
+      .inlineStyle("position", "absolute")
+      .inlineStyle("text-align", "right")
+      .inlineStyle("width", "3.25rem")
     }
   }
 }
