@@ -12,5 +12,5 @@ public let post0134_SharedStateBeta = BlogPost(
   hideFromSlackRSS: false,
   id: 134,
   publishedAt: yearMonthDayFormatter.date(from: "2024-02-26")!,
-  title: "Shared state beta"
+  title: "Sharing state in the Composable Architecture"
 )
