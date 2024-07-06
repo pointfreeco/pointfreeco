@@ -50,20 +50,16 @@ private struct HTMLConverter: MarkupVisitor {
       }
 
     case "T":
-      Timestamp(format: blockDirective.argumentText.segments.map(\.trimmedText).joined())
+      let segments = blockDirective.argumentText.segments
+        .map(\.trimmedText)
+        .joined()
+        .split(separator: ", ")
 
-    case "Speaker":
-      let name = blockDirective.argumentText.segments.map(\.trimmedText).joined()
-      if !name.isEmpty {
-        strong {
-          HTMLText(name)
-        }
-        .color(.gray500)
-        .inlineStyle("font-size", "0.875rem")
-        .inlineStyle("line-height", "1")
-        .inlineStyle("position", "relative")
-        .inlineStyle("text-transform", "uppercase")
-        .inlineStyle("top", "0.75rem")
+      if let segment = segments.first {
+        Timestamp(
+          format: String(segment),
+          speaker: segments.dropFirst().first.map { String($0) }
+        )
       }
 
     case "Video":
@@ -425,13 +421,15 @@ struct Timestamp: HTML {
   var hour: Int
   var minute: Int
   var second: Int
+  var speaker: String?
 
-  init?(format: String) {
+  init?(format: String, speaker: String?) {
     let components = format.split(separator: ":")
     guard let second = components.last.flatMap({ Int($0) }) else { return nil }
     self.hour = components.dropLast(2).last.flatMap { Int($0) } ?? 0
     self.minute = components.dropLast().last.flatMap { Int($0) } ?? 0
     self.second = second
+    self.speaker = speaker
   }
 
   var duration: Int {
@@ -449,6 +447,18 @@ struct Timestamp: HTML {
   }
 
   var body: some HTML {
+    if let speaker {
+      strong {
+        HTMLText(speaker)
+      }
+      .color(.gray500)
+      .inlineStyle("font-size", "0.875rem")
+      .inlineStyle("line-height", "1", media: .desktop)
+      .inlineStyle("position", "relative", media: .desktop)
+      .inlineStyle("text-transform", "uppercase")
+      .inlineStyle("top", "0.625rem", media: .desktop)
+    }
+
     let duration = self.duration
     div {
       div {
@@ -461,11 +471,11 @@ struct Timestamp: HTML {
       .attribute("data-timestamp", "\(duration)")
       .attribute("id", "t\(duration)")
       .inlineStyle("font-variant-numeric", "tabular-nums")
-      .inlineStyle("margin-left", "-4rem")
-      .inlineStyle("line-height", "3")
-      .inlineStyle("position", "absolute")
-      .inlineStyle("text-align", "right")
-      .inlineStyle("width", "3.25rem")
+      .inlineStyle("margin-left", "-4rem", media: .desktop)
+      .inlineStyle("line-height", "3", media: .desktop)
+      .inlineStyle("position", "absolute", media: .desktop)
+      .inlineStyle("text-align", "right", media: .desktop)
+      .inlineStyle("width", "3.25rem", media: .desktop)
     }
   }
 }
