@@ -7,14 +7,16 @@ import Prelude
 import Tuple
 import Views
 
-let privacyResponse: Middleware<StatusLineOpen, ResponseEnded, Void, Data> =
-  writeStatus(.ok)
-  >=> respond(
-    view: { _ in privacyView },
-    layoutData: {
-      SimplePageLayoutData(
-        data: unit,
-        title: "Privacy Policy"
+func privacyMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  conn
+    .writeStatus(.ok)
+    .respondV2(
+      layoutData: SimplePageLayoutData(
+        title: "Privacy Policy & Terms"
       )
+    ) {
+      PrivacyAndTerms()
     }
-  )
+}
