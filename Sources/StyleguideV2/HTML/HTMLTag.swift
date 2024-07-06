@@ -172,7 +172,26 @@ public var rp: HTMLTag { #function }
 public var rt: HTMLTag { #function }
 public var s: HTMLTag { #function }
 public var samp: HTMLTag { #function }
-public var script: HTMLTextTag { #function }
+public func script(_ text: () -> String = { "" }) -> HTMLElement<HTMLRaw> {
+  let text = text()
+  var escaped = ""
+  escaped.unicodeScalars.reserveCapacity(text.unicodeScalars.count)
+  for index in text.unicodeScalars.indices {
+    let scalar = text.unicodeScalars[index]
+    if scalar == "<",
+      text.unicodeScalars[index...].starts(with: "<!--".unicodeScalars)
+        || text.unicodeScalars[index...].starts(with: "<script".unicodeScalars)
+        || text.unicodeScalars[index...].starts(with: "</script".unicodeScalars)
+    {
+      escaped.unicodeScalars.append(contentsOf: #"\x3C"#.unicodeScalars)
+    } else {
+      escaped.unicodeScalars.append(scalar)
+    }
+  }
+  return tag("script") {
+    HTMLRaw(escaped)
+  }
+}
 public var section: HTMLTag { #function }
 public var select: HTMLTag { #function }
 public var small: HTMLTag { #function }

@@ -7,7 +7,6 @@ public let post0123_BlackFriday = BlogPost(
     new Point-Free subscription! Get instant access to all past 259 episodes instantly, as well as
     access to everything we have planned for 2024.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 123),
   coverImage: nil,
   hidden: .yes,
   hideFromSlackRSS: true,

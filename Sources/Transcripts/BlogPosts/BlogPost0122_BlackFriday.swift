@@ -7,7 +7,6 @@ public let post0122_BlackFriday = BlogPost(
     access to all past 259 episodes instantly, as well as access to everything we have planned
     for 2024.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 122),
   coverImage: nil,
   hidden: .yes,
   hideFromSlackRSS: true,

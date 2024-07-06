@@ -10,32 +10,30 @@ import Tuple
 
 func blogMiddleware(
   conn: Conn<StatusLineOpen, SiteRoute.Blog>
-) -> IO<Conn<ResponseEnded, Data>> {
+) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.blogPosts) var blogPosts
 
   let subRoute = conn.data
 
   switch subRoute {
   case .feed:
-    return conn.map(const(blogPosts()))
-      |> blogAtomFeedResponse
+    return await blogAtomFeedResponse(conn.map(const(blogPosts()))).performAsync()
 
   case .index:
-    @Dependency(\.blogPosts) var blogPosts
-    return conn.map(const(blogPosts()))
-      |> blogIndexMiddleware
+    return await newsletterIndex(conn.map { _ in })
 
   case .slackFeed:
-    return conn.map(
-      const(
-        blogPosts()
-          .filter { !$0.hideFromSlackRSS }
+    return await blogAtomFeedResponse(
+      conn.map(
+        const(
+          blogPosts()
+            .filter { !$0.hideFromSlackRSS }
+        )
       )
     )
-      |> blogAtomFeedResponse
+    .performAsync()
 
   case let .show(postParam):
-    return conn.map(const(postParam))
-      |> blogPostShowMiddleware
+    return await newsletterDetail(conn.map { _ in }, postParam)
   }
 }

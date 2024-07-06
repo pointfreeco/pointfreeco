@@ -7,7 +7,6 @@ public let post0138_SyncUpsTutorial = BlogPost(
     application from scratch with a focus on domain modeling, navigation, dependencies and
     testing.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 138),
   coverImage: nil,
   hidden: .no,
   hideFromSlackRSS: false,

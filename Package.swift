@@ -76,6 +76,7 @@ var package = Package(
         .product(name: "DependenciesMacros", package: "swift-dependencies"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "PostgresKit", package: "postgres-kit"),
+        .product(name: "SQLKit", package: "sql-kit"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
       ]
@@ -239,6 +240,9 @@ var package = Package(
         .product(name: "Overture", package: "swift-overture"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedTime", package: "swift-tagged"),
+      ],
+      resources: [
+        .process("Resources"),
       ]
     ),
 
@@ -526,7 +530,6 @@ var package = Package(
         "TranscriptParser"
       ],
       resources: [
-        .process("BlogPosts/Resources"),
         .process("Resources"),
         .process("PrivateTranscripts/Resources"),
       ]
@@ -538,6 +541,7 @@ var package = Package(
         "EmailAddress",
         "EnvVars",
         "FunctionalCss",
+        "Ghosting",
         "PointFreeDependencies",
         "PointFreeRouter",
         "Styleguide",

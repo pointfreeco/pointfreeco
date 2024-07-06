@@ -20,6 +20,7 @@ public struct HStack<Content: HTML>: HTML {
     .inlineStyle("align-items", alignment.rawValue)
     .inlineStyle("display", "flex")
     .inlineStyle("flex-direction", "row")
+    .inlineStyle("max-height", "100%")
     .inlineStyle("column-gap", spacing == 0 ? "0" : "\(spacing ?? .defaultSpacing)rem")
   }
 }
@@ -46,6 +47,7 @@ public struct VStack<Content: HTML>: HTML {
     .inlineStyle("align-items", alignment.rawValue)
     .inlineStyle("display", "flex")
     .inlineStyle("flex-direction", "column")
+    .inlineStyle("max-width", "100%")
     .inlineStyle("row-gap", spacing == 0 ? "0" : "\(spacing ?? .defaultSpacing)rem")
   }
 }

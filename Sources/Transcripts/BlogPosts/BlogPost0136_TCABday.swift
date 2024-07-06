@@ -5,7 +5,6 @@ public let post0136_TCABDay = BlogPost(
   blurb: """
     The Composable Architecture turns 4 today! 🎉
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 136),
   coverImage: nil,
   hidden: .no,
   hideFromSlackRSS: false,

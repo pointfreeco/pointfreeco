@@ -63,25 +63,23 @@ public struct PricingLanding: HTML {
           li { "Over \(stats.allHours) hours of video" }
           li {
             "Watch past "
-            Link("livestreams", href: siteRouter.path(for: .live(.current)))
+            Link("livestreams", destination: .live(.current))
           }
           li { "Personal podcast feed for offline viewing" }
           li { "Download all episode code samples" }
           li {
             Link(
               "Regional",
-              href: siteRouter.path(
-                for: .subscribeConfirmation(
-                  lane: .personal,
-                  referralCode: nil,  // TODO?
-                  useRegionalDiscount: true
-                )
+              destination: .subscribeConfirmation(
+                lane: .personal,
+                referralCode: nil,  // TODO?
+                useRegionalDiscount: true
               )
             )
             " and "
             Link(
               "educational",
-              href: siteRouter.path(for: .blog(.show(slug: post0010_studentDiscounts.slug)))
+              destination: .blog(.show(slug: post0010_studentDiscounts.slug))
             )
             " discounts available"
           }

@@ -1578,6 +1578,13 @@ private func referenceView(index: Int, reference: Episode.Reference) -> Node {
   ]
 }
 
+let episodeDateFormatter: DateFormatter = {
+  let df = DateFormatter()
+  df.dateFormat = "EEEE MMM d, yyyy"
+  df.timeZone = TimeZone(secondsFromGMT: 0)
+  return df
+}()
+
 private func topLevelReferenceMetadata(_ reference: Episode.Reference) -> String {
   return [
     reference.author,
