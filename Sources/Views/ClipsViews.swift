@@ -14,6 +14,9 @@ import StyleguideV2
 
 public struct ClipsIndex: HTML {
   let clips: [Models.Clip]
+
+  @Dependency(\.subscriberState) var subscriberState
+
   public init(clips: [Models.Clip]) {
     self.clips = clips
   }
@@ -31,10 +34,12 @@ public struct ClipsIndex: HTML {
         }
       }
 
-      CenterColumn {
-        GetStartedModule(style: .solid)
+      if !subscriberState.isActiveSubscriber {
+        CenterColumn {
+          GetStartedModule(style: .solid)
+        }
+        .inlineStyle("margin", "2rem 0")
       }
-      .inlineStyle("margin", "2rem 0")
 
       LazyVGrid(columns: [1, 1, 1]) {
         HTMLForEach(clips.dropFirst(3)) { clip in
