@@ -2,7 +2,7 @@ GET http://localhost:8080/live/streams/42
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 25491
+Content-Length: 28863
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -196,13 +196,34 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .padding-bottom-MI04k{padding-bottom:56.25%}
 .height-C8uWv{height:100%}
 .position-X8qzJ{position:absolute}
+.background-nbn0i3{background:#fff}
+.padding-top-P1piO2{padding-top:4.0rem}
+.padding-left-QgYLk2{padding-left:2.0rem}
+.padding-bottom-P1piO2{padding-bottom:4.0rem}
+.padding-right-QgYLk2{padding-right:2.0rem}
+.background-c5ixr2{background:#fafafa}
+.color-K2J0r1{color:#121212}
+.margin-top-rmfs01:not(:first-child){margin-top:1.75rem}
+.margin-bottom-1rcXs4:not(:last-child){margin-bottom:0.75rem}
+.font-size-NBsge3{font-size:3.0rem}
+.max-width-3zifi{max-width:40rem}
+.color-GPfER1{color:#555555}
+.font-weight-evfWi1{font-weight:normal}
+.font-size-83zzS1{font-size:1.0rem}
+.padding-bottom-yQEjs3:not(:last-child){padding-bottom:0.5rem}
+.padding-top-FBkWQ3{padding-top:0}
+.padding-left-FBkWQ3{padding-left:0}
+.padding-right-FBkWQ3{padding-right:0}
+.margin-top-H64QF2{margin-top:3rem}
+.display-qrAHi{display:inline-block}
+.padding-8K2qP3{padding:1.0rem 1.25rem}
+.text-decoration-gUV393:visited{text-decoration:underline}
+.text-decoration-tfb0F1:link{text-decoration:underline}
 .background-color-K2J0r1{background-color:#121212}
 .align-items-Dq4Oc4{align-items:first baseline}
 .font-size-yLOVS3{font-size:1.25rem}
 .line-height-B6FIc2{line-height:1.45}
 .font-size-Xin5E2{font-size:1.5rem}
-.font-weight-evfWi1{font-weight:normal}
-.font-size-83zzS1{font-size:1.0rem}
 .color-H59Xg3:link{color:#79f2b0}
 .color-tgLLb3:visited{color:#79f2b0}
 .column-gap-83zzS1{column-gap:1.0rem}
@@ -232,6 +253,13 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   .display-Nvbu41{display:none}
   .padding-jFt024{padding:8rem 3rem}
   .margin-JRgcV{margin:0 4rem}
+  .align-items-GE99b{align-items:center}
+  .padding-top-OzbZs1{padding-top:8.0rem}
+  .padding-left-OzbZs1{padding-left:8.0rem}
+  .padding-bottom-OzbZs1{padding-bottom:8.0rem}
+  .padding-right-OzbZs1{padding-right:8.0rem}
+  .text-align-GE99b{text-align:center}
+  .margin-mBI0f2{margin:0 auto}
   .padding-top-ujLNr4{padding-top:4.0rem}
   .padding-left-ujLNr4{padding-left:4.0rem}
   .padding-bottom-ujLNr4{padding-bottom:4.0rem}
@@ -242,6 +270,14 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   .row-gap-ZNGkd1{row-gap:1.0rem}
   .font-size-dR5Tt4{font-size:1.5rem}
   .font-size-Fb6s54{font-size:0.875rem}
+}
+@media (prefers-color-scheme: dark){
+  .background-dMv2U1{background:#121212}
+  .background-xnERS1{background:#171717}
+  .color-wVkSF3{color:#fff}
+  .color-VoDZ9{color:#ccc}
+  .color-0sCqm2:link{color:#666666}
+  .color-8PEWD2:visited{color:#666666}
 }
 
     </style>
@@ -300,6 +336,22 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
         <iframe class="width-C8uWv height-C8uWv position-X8qzJ" src="https://player.vimeo.com/video/42?pip=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen>
         </iframe><script src="https://player.vimeo.com/api/player.js"></script>
       </div>
+    </div>
+  </div>
+</pf-center-column>
+<pf-center-column class="padding-bottom-1VZj64 width-C8uWv box-sizing-otfSh display-ix08W2">
+  <div class="max-width-P6HnV width-C8uWv margin-gEzmi background-nbn0i3 background-dMv2U1">
+    <div class="align-items-GE99b display-BvS8W3 flex-direction-7gclL flex-wrap-6YEaQ3 row-gap-NKv2f3 padding-top-OzbZs1 padding-left-OzbZs1 padding-bottom-OzbZs1 padding-right-OzbZs1 padding-top-P1piO2 padding-left-QgYLk2 padding-bottom-P1piO2 padding-right-QgYLk2 background-c5ixr2 background-xnERS1 margin-gEzmi max-width-P6HnV">
+      <div class="text-align-GE99b">
+        <h2 class="color-K2J0r1 color-wVkSF3 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">Get started with our free&nbsp;plan
+        </h2>
+      </div>
+      <div class="text-align-GE99b">
+        <p class="margin-mBI0f2 max-width-3zifi color-GPfER1 color-VoDZ9 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
+        </p>
+      </div>
+      <div class="text-align-GE99b width-C8uWv"><a class="margin-top-H64QF2 display-qrAHi font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/signup">Sign up for free →</a>
+      </div><a class="text-align-GE99b font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-dwzNH2 color-0sCqm2 color-hzlcf color-8PEWD2" href="/pricing">View plans and pricing</a>
     </div>
   </div>
 </pf-center-column>
