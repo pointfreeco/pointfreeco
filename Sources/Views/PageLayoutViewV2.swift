@@ -153,8 +153,8 @@ struct NavBar: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    div {
-      nav {
+    nav {
+      div {
         Logo()
         CenteredNavItems()
         TrailingNavItems()
@@ -177,6 +177,7 @@ struct NavBar: HTML {
     .inlineStyle("width", "100%")
     .inlineStyle("position", "sticky", media: .mobile)
     .inlineStyle("top", "0", media: .mobile)
+    .inlineStyle("z-index", "9999")
   }
 
   struct Logo: HTML {
