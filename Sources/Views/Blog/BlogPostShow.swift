@@ -67,7 +67,7 @@ struct NewsletterDetailModule: HTML {
   #Preview {
     HTMLPreview {
       PageLayout(layoutData: SimplePageLayoutData(title: "")) {
-        NewsletterDetail(blogPost: post0129_Perception)
+        NewsletterDetail(blogPost: .post0129_Perception)
       }
     }
     .frame(width: 1280)

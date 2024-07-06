@@ -65,6 +65,7 @@ public indirect enum SiteRoute: Equatable {
 
     public static func show(slug: String) -> Blog { .show(.left(slug)) }
     public static func show(id: BlogPost.ID) -> Blog { .show(.right(id)) }
+    public static func show(_ post: BlogPost) -> Blog { .show(slug: post.slug) }
   }
 
   public enum Collections: Equatable {

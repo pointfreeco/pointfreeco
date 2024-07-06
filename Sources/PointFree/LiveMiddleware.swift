@@ -58,17 +58,14 @@ private func stream(
     return
       conn
       .writeStatus(.ok)
-      .respond(
-        view: clipView(clip:),
-        layoutData: { videoID in
-          SimplePageLayoutData(
-            data: clip,
-            description: clip.description,
-            style: .base(.minimal(.black)),
-            title: clip.title
-          )
-        }
-      )
+      .respondV2(
+        layoutData: SimplePageLayoutData(
+          description: clip.blurb,
+          title: clip.title
+        )
+      ) {
+        ClipView(clip: clip)
+      }
   } catch {
     return await routeNotFoundMiddleware(conn).performAsync()
   }

@@ -310,7 +310,7 @@ struct PricingPlan {
           ? [
             """
             [Regional](\(siteRouter.path(for: .subscribeConfirmation(lane: .personal, referralCode: referralCode, useRegionalDiscount: true))))
-            and [education](\(siteRouter.path(for: .blog(.show(slug: post0010_studentDiscounts.slug))))) discounts
+            and [education](\(siteRouter.path(for: .blog(.show(.post0010_studentDiscounts))))) discounts
             available
             """
           ]

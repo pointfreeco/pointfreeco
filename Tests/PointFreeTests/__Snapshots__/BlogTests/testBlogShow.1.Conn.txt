@@ -2,7 +2,7 @@ GET http://localhost:8080/blog/posts/0-mock-blog-post
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 28873
+Content-Length: 28914
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -243,289 +243,290 @@ Prism.languages.insertBefore('swift', 'string-literal', {
     <meta name="twitter:url" content="http://localhost:8080/blog/posts/0-mock-blog-post"><script src="https://plausible.io/js/script.js" defer data-domain="pointfree.co"></script>
     <style>
 .width-0{width:100%}
-.background-3{background:#121212}
-.padding-4{padding:2rem}
-.max-width-6{max-width:1280px}
-.margin-7{margin:0 auto}
-.display-8{display:flex}
-.flex-direction-9{flex-direction:row}
-.flex-wrap-10{flex-wrap:wrap}
-.justify-content-11{justify-content:space-between}
-.align-items-12{align-items:center}
-.line-height-13{line-height:0}
-.text-decoration-14:visited{text-decoration:none}
-.text-decoration-15:link{text-decoration:none}
-.text-decoration-16:hover{text-decoration:underline}
-.padding-left-18{padding-left:0.0rem}
-.list-style-type-19{list-style-type:none}
-.padding-left-21:not(:first-child){padding-left:2rem}
-.display-22{display:inline}
-.color-23:link{color:#a8a8a8}
-.color-24:visited{color:#a8a8a8}
-.padding-left-25:not(:first-child){padding-left:1rem}
-.font-size-26{font-size:0.875rem}
-.color-27:visited{color:#974dff}
-.color-28:link{color:#974dff}
-.color-29{color:#974dff}
-.border-30{border:1px solid #974dff}
-.border-radius-31{border-radius:0.5rem}
-.box-shadow-32:hover{box-shadow:inset 0 0 0 20rem rgba(0,0,0,0.1)}
-.cursor-33{cursor:pointer}
-.font-weight-34{font-weight:500}
-.text-decoration-35{text-decoration:none}
-.white-space-36{white-space:nowrap}
-.padding-37{padding:0.75rem 1.0rem}
-.transition-38{transition:0.3s}
-.color-39:visited{color:#fff}
-.color-40:link{color:#fff}
-.color-41{color:#fff}
-.background-color-42{background-color:#974dff}
-.border-43{border:none #fff}
-.display-44{display:none}
-.user-select-46{user-select:none}
-.display-47{display:block}
-.border-radius-48{border-radius:1.5px}
-.transition-49{transition:all .2s ease-out, background .2s ease-out}
-.position-50{position:relative}
-.background-51{background:#f6f6f6}
-.height-52{height:3px}
-.width-53{width:24px}
-.top-54{top:-5px}
-input:checked ~ #menu-icon .top-55{top:0}
-input:checked ~ #menu-icon .transform-56{transform:rotate(-45deg)}
-input:checked ~ #menu-icon .transform-57{transform:rotate(0deg)}
-input:checked ~ #menu-icon .background-58{background:transparent}
-.top-59{top:5px}
-input:checked ~ #menu-icon .top-60{top:-5px}
-input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
-.margin-62{margin:0}
-.flex-grow-64{flex-grow:1}
-.flex-shrink-65{flex-shrink:1}
-.flex-basis-66{flex-basis:100%}
-.padding-top-67{padding-top:1.5rem}
-.text-align-68{text-align:center}
-.background-color-69{background-color:#fff}
-.padding-72{padding:4.0rem 2.0rem 4.0rem}
-.justify-content-74{justify-content:flex-start}
-.align-items-75{align-items:baseline}
-.padding-bottom-76{padding-bottom:3.0rem}
-.flex-wrap-77{flex-wrap:nowrap}
-.justify-content-78{justify-content:center}
-.color-79{color:#121212}
-.align-items-81{align-items:stretch}
-.flex-direction-82{flex-direction:column}
-.max-width-83{max-width:100%}
-.row-gap-84{row-gap:1.0rem}
-.color-85:link{color:#171717}
-.color-87:visited{color:#171717}
-.margin-top-89:not(:first-child){margin-top:1.5rem}
-.margin-bottom-90:not(:last-child){margin-bottom:0.5rem}
-.font-size-91{font-size:2.0rem}
-.font-weight-92{font-weight:700}
-.line-height-93{line-height:1.2}
-.row-gap-94{row-gap:0.5rem}
-.line-height-95{line-height:1.5}
-.padding-96{padding:0}
-.color-97{color:#808080}
-.row-gap-99{row-gap:3.0rem}
-.background-100{background:linear-gradient(#121212, #291a40)}
-.padding-top-106{padding-top:4.0rem}
-.padding-left-107{padding-left:2.0rem}
-.padding-bottom-108{padding-bottom:4.0rem}
-.padding-right-109{padding-right:2.0rem}
-.margin-top-111:not(:first-child){margin-top:1.75rem}
-.margin-bottom-112:not(:last-child){margin-bottom:0.75rem}
-.font-size-113{font-size:3.0rem}
-.max-width-114{max-width:40rem}
-.color-115{color:#ccc}
-.font-weight-116{font-weight:normal}
-.font-size-117{font-size:1.0rem}
-.padding-bottom-118:not(:last-child){padding-bottom:0.5rem}
-.padding-top-119{padding-top:0}
-.padding-left-120{padding-left:0}
-.padding-right-121{padding-right:0}
-.margin-top-122{margin-top:3rem}
-.display-123{display:inline-block}
-.padding-124{padding:1.0rem 1.25rem}
-.text-decoration-125:visited{text-decoration:underline}
-.text-decoration-126:link{text-decoration:underline}
-.background-color-135{background-color:#121212}
-.align-items-136{align-items:first baseline}
-.font-size-142{font-size:1.25rem}
-.line-height-144{line-height:1.45}
-.font-size-146{font-size:1.5rem}
-.color-147:link{color:#79f2b0}
-.color-148:visited{color:#79f2b0}
-.column-gap-149{column-gap:1.0rem}
-.display-150{display:grid}
-.grid-template-columns-151{grid-template-columns:1fr 2fr}
-.font-size-152{font-size:0.75rem}
-.letter-spacing-154{letter-spacing:0.54pt}
-.line-height-155{line-height:1.25}
-.text-transform-156{text-transform:uppercase}
-.color-158{color:#666666}
+.z-index-3{z-index:9999}
+.background-4{background:#121212}
+.padding-5{padding:2rem}
+.max-width-7{max-width:1280px}
+.margin-8{margin:0 auto}
+.display-9{display:flex}
+.flex-direction-10{flex-direction:row}
+.flex-wrap-11{flex-wrap:wrap}
+.justify-content-12{justify-content:space-between}
+.align-items-13{align-items:center}
+.line-height-14{line-height:0}
+.text-decoration-15:visited{text-decoration:none}
+.text-decoration-16:link{text-decoration:none}
+.text-decoration-17:hover{text-decoration:underline}
+.padding-left-19{padding-left:0.0rem}
+.list-style-type-20{list-style-type:none}
+.padding-left-22:not(:first-child){padding-left:2rem}
+.display-23{display:inline}
+.color-24:link{color:#a8a8a8}
+.color-25:visited{color:#a8a8a8}
+.padding-left-26:not(:first-child){padding-left:1rem}
+.font-size-27{font-size:0.875rem}
+.color-28:visited{color:#974dff}
+.color-29:link{color:#974dff}
+.color-30{color:#974dff}
+.border-31{border:1px solid #974dff}
+.border-radius-32{border-radius:0.5rem}
+.box-shadow-33:hover{box-shadow:inset 0 0 0 20rem rgba(0,0,0,0.1)}
+.cursor-34{cursor:pointer}
+.font-weight-35{font-weight:500}
+.text-decoration-36{text-decoration:none}
+.white-space-37{white-space:nowrap}
+.padding-38{padding:0.75rem 1.0rem}
+.transition-39{transition:0.3s}
+.color-40:visited{color:#fff}
+.color-41:link{color:#fff}
+.color-42{color:#fff}
+.background-color-43{background-color:#974dff}
+.border-44{border:none #fff}
+.display-45{display:none}
+.user-select-47{user-select:none}
+.display-48{display:block}
+.border-radius-49{border-radius:1.5px}
+.transition-50{transition:all .2s ease-out, background .2s ease-out}
+.position-51{position:relative}
+.background-52{background:#f6f6f6}
+.height-53{height:3px}
+.width-54{width:24px}
+.top-55{top:-5px}
+input:checked ~ #menu-icon .top-56{top:0}
+input:checked ~ #menu-icon .transform-57{transform:rotate(-45deg)}
+input:checked ~ #menu-icon .transform-58{transform:rotate(0deg)}
+input:checked ~ #menu-icon .background-59{background:transparent}
+.top-60{top:5px}
+input:checked ~ #menu-icon .top-61{top:-5px}
+input:checked ~ #menu-icon .transform-62{transform:rotate(45deg)}
+.margin-63{margin:0}
+.flex-grow-65{flex-grow:1}
+.flex-shrink-66{flex-shrink:1}
+.flex-basis-67{flex-basis:100%}
+.padding-top-68{padding-top:1.5rem}
+.text-align-69{text-align:center}
+.background-color-70{background-color:#fff}
+.padding-73{padding:4.0rem 2.0rem 4.0rem}
+.justify-content-75{justify-content:flex-start}
+.align-items-76{align-items:baseline}
+.padding-bottom-77{padding-bottom:3.0rem}
+.flex-wrap-78{flex-wrap:nowrap}
+.justify-content-79{justify-content:center}
+.color-80{color:#121212}
+.align-items-82{align-items:stretch}
+.flex-direction-83{flex-direction:column}
+.max-width-84{max-width:100%}
+.row-gap-85{row-gap:1.0rem}
+.color-86:link{color:#171717}
+.color-88:visited{color:#171717}
+.margin-top-90:not(:first-child){margin-top:1.5rem}
+.margin-bottom-91:not(:last-child){margin-bottom:0.5rem}
+.font-size-92{font-size:2.0rem}
+.font-weight-93{font-weight:700}
+.line-height-94{line-height:1.2}
+.row-gap-95{row-gap:0.5rem}
+.line-height-96{line-height:1.5}
+.padding-97{padding:0}
+.color-98{color:#808080}
+.row-gap-100{row-gap:3.0rem}
+.background-101{background:linear-gradient(#121212, #291a40)}
+.padding-top-107{padding-top:4.0rem}
+.padding-left-108{padding-left:2.0rem}
+.padding-bottom-109{padding-bottom:4.0rem}
+.padding-right-110{padding-right:2.0rem}
+.margin-top-112:not(:first-child){margin-top:1.75rem}
+.margin-bottom-113:not(:last-child){margin-bottom:0.75rem}
+.font-size-114{font-size:3.0rem}
+.max-width-115{max-width:40rem}
+.color-116{color:#ccc}
+.font-weight-117{font-weight:normal}
+.font-size-118{font-size:1.0rem}
+.padding-bottom-119:not(:last-child){padding-bottom:0.5rem}
+.padding-top-120{padding-top:0}
+.padding-left-121{padding-left:0}
+.padding-right-122{padding-right:0}
+.margin-top-123{margin-top:3rem}
+.display-124{display:inline-block}
+.padding-125{padding:1.0rem 1.25rem}
+.text-decoration-126:visited{text-decoration:underline}
+.text-decoration-127:link{text-decoration:underline}
+.background-color-136{background-color:#121212}
+.align-items-137{align-items:first baseline}
+.font-size-143{font-size:1.25rem}
+.line-height-145{line-height:1.45}
+.font-size-147{font-size:1.5rem}
+.color-148:link{color:#79f2b0}
+.color-149:visited{color:#79f2b0}
+.column-gap-150{column-gap:1.0rem}
+.display-151{display:grid}
+.grid-template-columns-152{grid-template-columns:1fr 2fr}
+.font-size-153{font-size:0.75rem}
+.letter-spacing-155{letter-spacing:0.54pt}
+.line-height-156{line-height:1.25}
+.text-transform-157{text-transform:uppercase}
+.color-159{color:#666666}
 @media only screen and (max-width: 831px){
   .position-1{position:sticky}
   .top-2{top:0}
-  .display-17{display:none}
-  input:checked ~ .display-63{display:block}
-  .padding-top-131{padding-top:2.0rem}
-  .padding-left-132{padding-left:2.0rem}
-  .padding-bottom-133{padding-bottom:2.0rem}
-  .padding-right-134{padding-right:2.0rem}
-  .padding-bottom-141{padding-bottom:1.0rem}
-  .margin-bottom-145{margin-bottom:0.0rem}
-  .padding-top-157{padding-top:1.0rem}
+  .display-18{display:none}
+  input:checked ~ .display-64{display:block}
+  .padding-top-132{padding-top:2.0rem}
+  .padding-left-133{padding-left:2.0rem}
+  .padding-bottom-134{padding-bottom:2.0rem}
+  .padding-right-135{padding-right:2.0rem}
+  .padding-bottom-142{padding-bottom:1.0rem}
+  .margin-bottom-146{margin-bottom:0.0rem}
+  .padding-top-158{padding-top:1.0rem}
 }
 @media only screen and (min-width: 832px){
-  .padding-5{padding:1.5rem}
-  .padding-left-20{padding-left:1.5rem}
-  .display-45{display:none}
-  .margin-71{margin:0 auto}
-  .padding-73{padding:4.0rem 3.0rem 4.0rem}
-  .width-98{width:60%}
-  .align-items-101{align-items:center}
-  .padding-top-102{padding-top:8.0rem}
-  .padding-left-103{padding-left:8.0rem}
-  .padding-bottom-104{padding-bottom:8.0rem}
-  .padding-right-105{padding-right:8.0rem}
-  .text-align-110{text-align:center}
-  .padding-top-127{padding-top:4.0rem}
-  .padding-left-128{padding-left:4.0rem}
-  .padding-bottom-129{padding-bottom:4.0rem}
-  .padding-right-130{padding-right:4.0rem}
-  .column-gap-137{column-gap:1.0rem}
-  .display-138{display:grid}
-  .grid-template-columns-139{grid-template-columns:1fr 1fr}
-  .row-gap-140{row-gap:1.0rem}
-  .font-size-143{font-size:1.5rem}
-  .font-size-153{font-size:0.875rem}
+  .padding-6{padding:1.5rem}
+  .padding-left-21{padding-left:1.5rem}
+  .display-46{display:none}
+  .margin-72{margin:0 auto}
+  .padding-74{padding:4.0rem 3.0rem 4.0rem}
+  .width-99{width:60%}
+  .align-items-102{align-items:center}
+  .padding-top-103{padding-top:8.0rem}
+  .padding-left-104{padding-left:8.0rem}
+  .padding-bottom-105{padding-bottom:8.0rem}
+  .padding-right-106{padding-right:8.0rem}
+  .text-align-111{text-align:center}
+  .padding-top-128{padding-top:4.0rem}
+  .padding-left-129{padding-left:4.0rem}
+  .padding-bottom-130{padding-bottom:4.0rem}
+  .padding-right-131{padding-right:4.0rem}
+  .column-gap-138{column-gap:1.0rem}
+  .display-139{display:grid}
+  .grid-template-columns-140{grid-template-columns:1fr 1fr}
+  .row-gap-141{row-gap:1.0rem}
+  .font-size-144{font-size:1.5rem}
+  .font-size-154{font-size:0.875rem}
 }
 @media (prefers-color-scheme: dark){
-  .background-color-70{background-color:#121212}
-  .color-80{color:#fafafa}
-  .color-86:link{color:#fafafa}
-  .color-88:visited{color:#fafafa}
+  .background-color-71{background-color:#121212}
+  .color-81{color:#fafafa}
+  .color-87:link{color:#fafafa}
+  .color-89:visited{color:#fafafa}
 }
 
     </style>
   </head>
   <body>
-<div class="width-0 position-1 top-2 background-3">
-  <nav class="padding-4 padding-5 max-width-6 margin-7 display-8 flex-direction-9 flex-wrap-10 justify-content-11 align-items-12 background-3"><a class="line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/"><img alt="Point-Free" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"></a>
-    <ul class="display-17 padding-left-18 list-style-type-19">
-      <li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/collections">Collections</a>
+<nav class="width-0 position-1 top-2 z-index-3 background-4">
+  <div class="padding-5 padding-6 max-width-7 margin-8 display-9 flex-direction-10 flex-wrap-11 justify-content-12 align-items-13 background-4"><a class="line-height-14 text-decoration-15 text-decoration-16 text-decoration-17" href="/"><img alt="Point-Free" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"></a>
+    <ul class="display-18 padding-left-19 list-style-type-20">
+      <li class="padding-left-21 padding-left-22 display-23"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/collections">Collections</a>
       </li>
-      <li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/pricing">Pricing</a>
+      <li class="padding-left-21 padding-left-22 display-23"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/pricing">Pricing</a>
       </li>
-      <li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/blog">Blog</a>
+      <li class="padding-left-21 padding-left-22 display-23"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/blog">Blog</a>
       </li>
-      <li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/gifts">Gifts</a>
-      </li>
-    </ul>
-    <ul class="display-17 padding-left-18 list-style-type-19">
-      <li class="display-22 padding-left-25"><a href="/login?redirect=http://localhost:8080/blog/posts/0-mock-blog-post" class="font-size-26 color-27 color-28 color-29 border-30 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-37 transition-38">Login</a>
-      </li>
-      <li class="display-22 padding-left-25"><a href="/signup?redirect=http://localhost:8080/blog/posts/0-mock-blog-post" class="font-size-26 color-39 color-40 color-41 background-color-42 border-43 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-37 transition-38">Sign up</a>
-      </li>
-    </ul><input class="display-44" id="menu-checkbox" type="checkbox"><label class="cursor-33 display-45 cursor-33 user-select-46" id="menu-icon" for="menu-checkbox"><span class="display-47 border-radius-48 transition-49 position-50 background-51 height-52 width-53 top-54 top-55 transform-56"></span><span class="display-47 border-radius-48 transition-49 position-50 background-51 height-52 width-53 transform-57 background-58"></span><span class="display-47 border-radius-48 transition-49 position-50 background-51 height-52 width-53 top-59 top-60 transform-61"></span></label>
-    <ul class="margin-62 display-44 display-63 flex-grow-64 flex-shrink-65 flex-basis-66 padding-left-18 list-style-type-19 color-41">
-      <li class="padding-top-67"><a class="display-47 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/collections">Collections</a>
-      </li>
-      <li class="padding-top-67"><a class="display-47 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/pricing">Pricing</a>
-      </li>
-      <li class="padding-top-67"><a class="display-47 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/blog">Blog</a>
-      </li>
-      <li class="padding-top-67"><a class="display-47 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/gifts">Gifts</a>
-      </li>
-      <li class="padding-top-67"><a class="display-47 text-align-68 font-size-26 color-27 color-28 color-29 border-30 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-37 transition-38" href="/login?redirect=http://localhost:8080/blog/posts/0-mock-blog-post">Login</a>
-      </li>
-      <li class="padding-top-67"><a class="display-47 text-align-68 font-size-26 color-39 color-40 color-41 background-color-42 border-43 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-37 transition-38" href="/signup?redirect=http://localhost:8080/blog/posts/0-mock-blog-post">Sign up</a>
+      <li class="padding-left-21 padding-left-22 display-23"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/gifts">Gifts</a>
       </li>
     </ul>
-  </nav>
-</div>
-<div class="background-color-69 background-color-70">
-  <div class="max-width-6 margin-71 padding-72 padding-73 display-8 flex-direction-9 flex-wrap-10 justify-content-74 align-items-75">
-    <div class="padding-bottom-76 flex-basis-66 display-8 flex-direction-9 flex-wrap-77 justify-content-78 align-items-12">
-      <pf-vstack class="color-79 color-80 text-align-68 width-0 align-items-81 display-8 flex-direction-82 max-width-83 row-gap-84"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-85 color-86 color-87 color-88" href="/blog/posts/0-mock-blog-post">
-        <h3 class="margin-62 margin-top-89 margin-bottom-90 font-size-91 font-weight-92 line-height-93">
-          <pf-markdown class="display-47">
-            <pf-vstack class="align-items-81 display-8 flex-direction-82 max-width-83 row-gap-94">
-              <p class="line-height-95 padding-96 margin-62">Mock Blog Post
+    <ul class="display-18 padding-left-19 list-style-type-20">
+      <li class="display-23 padding-left-26"><a href="/login?redirect=http://localhost:8080/blog/posts/0-mock-blog-post" class="font-size-27 color-28 color-29 color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-16 white-space-37 padding-38 transition-39">Login</a>
+      </li>
+      <li class="display-23 padding-left-26"><a href="/signup?redirect=http://localhost:8080/blog/posts/0-mock-blog-post" class="font-size-27 color-40 color-41 color-42 background-color-43 border-44 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-16 white-space-37 padding-38 transition-39">Sign up</a>
+      </li>
+    </ul><input class="display-45" id="menu-checkbox" type="checkbox"><label class="cursor-34 display-46 cursor-34 user-select-47" id="menu-icon" for="menu-checkbox"><span class="display-48 border-radius-49 transition-50 position-51 background-52 height-53 width-54 top-55 top-56 transform-57"></span><span class="display-48 border-radius-49 transition-50 position-51 background-52 height-53 width-54 transform-58 background-59"></span><span class="display-48 border-radius-49 transition-50 position-51 background-52 height-53 width-54 top-60 top-61 transform-62"></span></label>
+    <ul class="margin-63 display-45 display-64 flex-grow-65 flex-shrink-66 flex-basis-67 padding-left-19 list-style-type-20 color-42">
+      <li class="padding-top-68"><a class="display-48 text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/collections">Collections</a>
+      </li>
+      <li class="padding-top-68"><a class="display-48 text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/pricing">Pricing</a>
+      </li>
+      <li class="padding-top-68"><a class="display-48 text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/blog">Blog</a>
+      </li>
+      <li class="padding-top-68"><a class="display-48 text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="/gifts">Gifts</a>
+      </li>
+      <li class="padding-top-68"><a class="display-48 text-align-69 font-size-27 color-28 color-29 color-30 border-31 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-16 white-space-37 padding-38 transition-39" href="/login?redirect=http://localhost:8080/blog/posts/0-mock-blog-post">Login</a>
+      </li>
+      <li class="padding-top-68"><a class="display-48 text-align-69 font-size-27 color-40 color-41 color-42 background-color-43 border-44 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-16 white-space-37 padding-38 transition-39" href="/signup?redirect=http://localhost:8080/blog/posts/0-mock-blog-post">Sign up</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="background-color-70 background-color-71">
+  <div class="max-width-7 margin-72 padding-73 padding-74 display-9 flex-direction-10 flex-wrap-11 justify-content-75 align-items-76">
+    <div class="padding-bottom-77 flex-basis-67 display-9 flex-direction-10 flex-wrap-78 justify-content-79 align-items-13">
+      <pf-vstack class="color-80 color-81 text-align-69 width-0 align-items-82 display-9 flex-direction-83 max-width-84 row-gap-85"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-86 color-87 color-88 color-89" href="/blog/posts/0-mock-blog-post">
+        <h3 class="margin-63 margin-top-90 margin-bottom-91 font-size-92 font-weight-93 line-height-94">
+          <pf-markdown class="display-48">
+            <pf-vstack class="align-items-82 display-9 flex-direction-83 max-width-84 row-gap-95">
+              <p class="line-height-96 padding-97 margin-63">Mock Blog Post
               </p>
             </pf-vstack>
           </pf-markdown>
         </h3></a>
-        <div class="color-97">Monday April 16, 2018
+        <div class="color-98">Monday April 16, 2018
         </div>
       </pf-vstack>
     </div>
-    <pf-vstack class="margin-71 width-98 align-items-81 display-8 flex-direction-82 max-width-83 row-gap-99">
+    <pf-vstack class="margin-72 width-99 align-items-82 display-9 flex-direction-83 max-width-84 row-gap-100">
     </pf-vstack>
   </div>
 </div>
-<div class="background-100">
-  <div class="align-items-101 display-8 flex-direction-82 flex-wrap-10 row-gap-94 padding-top-102 padding-left-103 padding-bottom-104 padding-right-105 padding-top-106 padding-left-107 padding-bottom-108 padding-right-109 margin-7 max-width-6">
-    <div class="text-align-110">
-      <h2 class="color-41 margin-62 margin-top-111 margin-bottom-112 font-size-113 font-weight-92 line-height-93">Get started with our free&nbsp;plan
+<div class="background-101">
+  <div class="align-items-102 display-9 flex-direction-83 flex-wrap-11 row-gap-95 padding-top-103 padding-left-104 padding-bottom-105 padding-right-106 padding-top-107 padding-left-108 padding-bottom-109 padding-right-110 margin-8 max-width-7">
+    <div class="text-align-111">
+      <h2 class="color-42 margin-63 margin-top-112 margin-bottom-113 font-size-114 font-weight-93 line-height-94">Get started with our free&nbsp;plan
       </h2>
     </div>
-    <div class="text-align-110">
-      <p class="margin-71 max-width-114 color-115 font-weight-116 line-height-95 font-size-117 padding-bottom-118 padding-top-119 padding-left-120 padding-right-121 margin-62 line-height-95">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
+    <div class="text-align-111">
+      <p class="margin-72 max-width-115 color-116 font-weight-117 line-height-96 font-size-118 padding-bottom-119 padding-top-120 padding-left-121 padding-right-122 margin-63 line-height-96">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
       </p>
     </div>
-    <div class="text-align-110 width-0"><a class="margin-top-122 display-123 font-size-117 color-39 color-40 color-41 background-color-42 border-43 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-124 transition-38" href="/signup">Sign up for free →</a>
-    </div><a class="text-align-110 font-weight-116 line-height-95 font-size-26 text-decoration-125 text-decoration-126 text-decoration-16 color-23 color-24" href="/pricing">View plans and pricing</a>
+    <div class="text-align-111 width-0"><a class="margin-top-123 display-124 font-size-118 color-40 color-41 color-42 background-color-43 border-44 border-radius-32 box-shadow-33 cursor-34 font-weight-35 text-decoration-36 text-decoration-16 white-space-37 padding-125 transition-39" href="/signup">Sign up for free →</a>
+    </div><a class="text-align-111 font-weight-117 line-height-96 font-size-27 text-decoration-126 text-decoration-127 text-decoration-17 color-24 color-25" href="/pricing">View plans and pricing</a>
   </div>
 </div>
-<footer class="padding-top-127 padding-left-128 padding-bottom-129 padding-right-130 padding-top-131 padding-left-132 padding-bottom-133 padding-right-134 background-color-135">
-  <pf-vgrid class="align-items-136 width-0 column-gap-137 display-138 grid-template-columns-139 row-gap-140">
-    <div class="padding-bottom-141 padding-right-130">
-      <h4 class="font-size-142 font-size-143 line-height-144 margin-bottom-145 font-size-146"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-40 color-39" href="/">Point-Free</a>
+<footer class="padding-top-128 padding-left-129 padding-bottom-130 padding-right-131 padding-top-132 padding-left-133 padding-bottom-134 padding-right-135 background-color-136">
+  <pf-vgrid class="align-items-137 width-0 column-gap-138 display-139 grid-template-columns-140 row-gap-141">
+    <div class="padding-bottom-142 padding-right-131">
+      <h4 class="font-size-143 font-size-144 line-height-145 margin-bottom-146 font-size-147"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-41 color-40" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-116 line-height-95 font-size-117 color-41">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-147 color-148" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-147 color-148" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-117 line-height-96 font-size-118 color-42">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-148 color-149" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-148 color-149" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="width-0 column-gap-149 display-150 grid-template-columns-151 row-gap-84">
+    <pf-vgrid class="width-0 column-gap-150 display-151 grid-template-columns-152 row-gap-85">
       <div>
-        <h5 class="font-size-152 font-size-153 letter-spacing-154 line-height-155 text-transform-156 color-41">Content
+        <h5 class="font-size-153 font-size-154 letter-spacing-155 line-height-156 text-transform-157 color-42">Content
         </h5>
-        <ol class="padding-left-18 list-style-type-19">
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/pricing">Pricing</a>
+        <ol class="padding-left-19 list-style-type-20">
+          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/pricing">Pricing</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/gifts">Gifts</a>
+          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/">Videos</a>
+          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/">Videos</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/collections">Collections</a>
+          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/collections">Collections</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/clips">Clips</a>
+          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/clips">Clips</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/blog">Blog</a>
+          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/blog">Blog</a>
           </li>
         </ol>
       </div>
       <div>
-        <h5 class="font-size-152 font-size-153 letter-spacing-154 line-height-155 text-transform-156 color-41">More
+        <h5 class="font-size-153 font-size-154 letter-spacing-155 line-height-156 text-transform-157 color-42">More
         </h5>
-        <ol class="padding-left-18 list-style-type-19">
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/about">About Us</a>
+        <ol class="padding-left-19 list-style-type-20">
+          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/about">About Us</a>
           </li>
-          <li rel="me"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
+          <li rel="me"><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="https://www.twitter.com/pointfreeco">Twitter</a>
+          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="https://www.twitter.com/pointfreeco">Twitter</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="https://github.com/pointfreeco">GitHub</a>
+          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="https://github.com/pointfreeco">GitHub</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="mailto:support@pointfree.co">Contact Us</a>
+          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="mailto:support@pointfree.co">Contact Us</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/privacy">Privacy Policy</a>
+          <li><a class="text-decoration-15 text-decoration-16 text-decoration-17 color-29 color-28" href="/privacy">Privacy Policy</a>
           </li>
         </ol>
       </div>
     </pf-vgrid>
-    <p class="padding-top-157 font-weight-116 line-height-95 font-size-26 color-158">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
+    <p class="padding-top-158 font-weight-117 line-height-96 font-size-27 color-159">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-15 text-decoration-16 text-decoration-17 color-24 color-25" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
     </p>
   </pf-vgrid>
 </footer>
