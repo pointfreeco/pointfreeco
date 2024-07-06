@@ -13,6 +13,6 @@ extension BlogPost {
     hideFromSlackRSS: false,
     id: 134,
     publishedAt: yearMonthDayFormatter.date(from: "2024-02-26")!,
-    title: "Shared state beta"
+    title: "Sharing state in the Composable Architecture"
   )
 }

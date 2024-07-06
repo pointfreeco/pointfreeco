@@ -18,7 +18,7 @@ extension Date {
   public func weekdayMonthDayYear() -> String {
     Self.newsletterFormatter.string(from: self)
   }
-  
+
   private static let episodeFormatter: DateFormatter = {
     let df = DateFormatter()
     df.dateFormat = "MMM d, yyyy"

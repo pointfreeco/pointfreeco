@@ -409,9 +409,9 @@ private func value(forArgument argument: String, block: BlockDirective) -> Strin
   block.argumentText.segments
     .compactMap {
       let text = $0.trimmedText.drop(while: { $0 == " " })
-      return text .hasPrefix("\(argument): \"")
-      ? text.dropFirst("\(argument): \"".count).prefix(while: { $0 != "\"" })
-      : nil
+      return text.hasPrefix("\(argument): \"")
+        ? text.dropFirst("\(argument): \"".count).prefix(while: { $0 != "\"" })
+        : nil
     }
     .first
     .map(String.init)

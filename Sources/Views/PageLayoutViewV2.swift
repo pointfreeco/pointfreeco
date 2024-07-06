@@ -812,7 +812,9 @@ public struct PrismJSHead: HTML {
       """
     }
     script().src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js")
-    script().src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.js")
+    script().src(
+      "//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.js"
+    )
     HTMLForEach(["swift", "clike", "css", "diff", "javascript", "ruby"]) { lang in
       script().src("//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-\(lang).min.js")
     }

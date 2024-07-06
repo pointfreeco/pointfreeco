@@ -15,7 +15,8 @@ func newsletterDetail(
 ) async -> Conn<ResponseEnded, Data> {
   guard let post = fetchBlogPost(forParam: postParam)
   else {
-    return conn
+    return
+      conn
       .redirect(to: .home) {
         $0.flash(.error, "Newsletter not found")
       }
@@ -23,7 +24,8 @@ func newsletterDetail(
 
   @Dependency(\.assets) var assets
 
-  return conn
+  return
+    conn
     .writeStatus(.ok)
     .respondV2(
       layoutData: SimplePageLayoutData(
