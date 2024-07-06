@@ -10,6 +10,14 @@ public struct NewsletterIndex: HTML {
   public init() {}
 
   public var body: some HTML {
+    PageHeader {
+      "Newsletter"
+    } blurb: {
+      """
+      Explore advanced programming topics in Swift.
+      """
+    }
+
     let blogPosts = blogPosts()
       .sorted { $0.id > $1.id }
       .filter { !$0.hidden.isCurrentlyHidden(date: now) }
