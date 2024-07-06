@@ -15,8 +15,8 @@ public func allBlogPosts() -> [BlogPost] {
     }
 }
 
-private extension BlogPost {
-  static let all: [Self] = [
+extension BlogPost {
+  fileprivate static let all: [Self] = [
     .post0001_welcome,
     .post0002_episodeCredits,
     .post0003_ep14Solutions,
