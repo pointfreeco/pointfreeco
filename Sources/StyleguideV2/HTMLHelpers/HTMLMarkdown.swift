@@ -45,8 +45,21 @@ private struct HTMLConverter: MarkupVisitor {
             visit(child)
           }
         }
-        .href(blockDirective.argumentText.segments.map { $0.trimmedText }.joined(separator: " "))
+        .href(blockDirective.argumentText.segments.map(\.trimmedText).joined(separator: " "))
         .inlineStyle("margin", "0.5rem 0")
+      }
+
+    case "T":
+      Timestamp(format: blockDirective.argumentText.segments.map(\.trimmedText).joined())
+
+    case "Speaker":
+      let name = blockDirective.argumentText.segments.map(\.trimmedText).joined()
+      if !name.isEmpty {
+        strong {
+          HTMLText(name)
+          ": "
+        }
+        .inlineStyle("display", "inline-block")
       }
 
     case "Video":
@@ -400,6 +413,51 @@ private extension DiagnosticLevel {
     case "Runtime Warning": self = .runtimeWarning
     case "Warning": self = .warning
     default: return nil
+    }
+  }
+}
+
+struct Timestamp: HTML {
+  var hour: Int
+  var minute: Int
+  var second: Int
+
+  init?(format: String) {
+    let components = format.split(separator: ":")
+    guard let second = components.last.flatMap({ Int($0) }) else { return nil }
+    self.hour = components.dropLast(2).last.flatMap { Int($0) } ?? 0
+    self.minute = components.dropLast().last.flatMap { Int($0) } ?? 0
+    self.second = second
+  }
+
+  var duration: Int {
+    hour * 60 * 60 + minute * 60 + second
+  }
+
+  func formatted() -> String {
+    var formatted = ""
+    if hour > 0 {
+      formatted.append("\(hour < 10 ? "0" : "")\(hour):")
+    }
+    formatted.append("\(hour > 0 && minute < 10 ? "0" : "")\(minute):")
+    formatted.append("\(second < 10 ? "0" : "")\(second)")
+    return formatted
+  }
+
+  var body: some HTML {
+    let duration = self.duration
+    div {
+      Link(href: "#t\(duration)") {
+        HTMLText(formatted())
+      }
+      .fontStyle(.body(.small))
+      .linkStyle(LinkStyle(color: .gray650.dark(.gray400), underline: nil))
+      .attribute("data-timestamp", "\(duration)")
+      .attribute("id", "t\(duration)")
+      .inlineStyle("display", "inline-block")
+      // .inlineStyle("left", "")
+      // .inlineStyle("position", "absolute")
+      .inlineStyle("line-height", "1rem")
     }
   }
 }
