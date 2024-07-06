@@ -1,13 +1,15 @@
 import Foundation
 
-public let post0117_MacroBonanza = BlogPost(
-  author: .pointfree,
-  blurb: """
-    Macros are finally available in Swift, and to celebrate we are releasing updates to 4 of our
-    popular libraries to greatly simplify and enhance their abilities, starting with CasePaths!
-    """,
-  coverImage: nil,
-  id: 117,
-  publishedAt: yearMonthDayFormatter.date(from: "2023-11-13")!,
-  title: "Macro Bonanza: Case Paths"
-)
+extension BlogPost {
+  public static let post0117_MacroBonanza = Self(
+    author: .pointfree,
+    blurb: """
+      Macros are finally available in Swift, and to celebrate we are releasing updates to 4 of our \
+      popular libraries to greatly simplify and enhance their abilities, starting with CasePaths!
+      """,
+    coverImage: nil,
+    id: 117,
+    publishedAt: yearMonthDayFormatter.date(from: "2023-11-13")!,
+    title: "Macro Bonanza: Case Paths"
+  )
+}

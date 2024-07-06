@@ -154,7 +154,7 @@ class NewBlogPostEmailTests: TestCase {
 }
 
 private let post: BlogPost = {
-  var post = post0001_welcome
+  var post = BlogPost.post0001_welcome
   post.coverImage = ""
   return post
 }()
