@@ -2,7 +2,9 @@ We do this only a few times a year: we‘re having a
 [rare, Point-Free sale](/discounts/cyber-monday-plus-2023)
 through this Cyber Monday by offering 30% off the first year of your subscription!
 
-[[Subscribe today!]](/discounts/cyber-monday-plus-2023)
+@Button(/discounts/cyber-monday-plus-2023) {
+  Subscribe today!
+}
 
 Once subscribed you'll get instant access to all [259 episodes][pf] (163 hours of video and
 growing!) of Point-Free content. This includes popular [collections][collections] that were
@@ -130,4 +132,6 @@ offer is valid for only a few days, so you better hurry!
 [cyber-monday-sale]: http://pointfree.co/discounts/cyber-monday-plus-2023
 [collections]: /collections
 
-[[Subscribe today!]](http://pointfree.co/discounts/cyber-monday-plus-2023)
+@Button(/discounts/cyber-monday-plus-2023) {
+  Subscribe today!
+}

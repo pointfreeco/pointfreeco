@@ -76,7 +76,7 @@ alert in a way that works best with the Composable Architecture:
 ```swift
 Button("Delete") { viewStore.send(.deleteTapped) }
   .alert(
-    self.store.scope(state: \.alert),
+    store.scope(state: \.alert),
     dismiss: .alertCancelTapped
   )
 ```

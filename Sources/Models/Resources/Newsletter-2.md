@@ -61,10 +61,10 @@ this down algebraically and see if we can whittle away the invalid states.
 Here is our type algebraically:
 
 ```swift
-// (Is/Not)LoggedIn
-//   * (Is/Not)Subscriber
-//   * (Has/Not)UsedCredit
-//   * (Is/Not)SubscriberOnly (16)
+(Is/Not)LoggedIn
+  * (Is/Not)Subscriber
+  * (Has/Not)UsedCredit
+  * (Is/Not)SubscriberOnly (16)
 ```
 
 Our type is a struct, which is a product type, so we have used `*` to denote that we are multplying
@@ -74,10 +74,10 @@ Let’s take this one step at a time. I first want to consider what states make 
 not logged in:
 
 ```swift
-// NotLoggedIn
-//   * (Is/Not)Subscriber
-//   * (Has/Not)UsedCredit
-//   * (Is/Not)SubscriberOnly (8)
+NotLoggedIn
+  * (Is/Not)Subscriber
+  * (Has/Not)UsedCredit
+  * (Is/Not)SubscriberOnly (8)
 ```
 
 There are 8 states because `2 * 2 * 2 = 8`. Which of these are reasonable? Well, you can’t be logged out
@@ -88,25 +88,25 @@ So, we've just eliminated 6 states from the full set of 16:
 
 ```swift
 // Valid states:
-// NotLoggedIn * NotSubscriber * NotUsedCredit * (Is/Not)SubscriberOnly (2)
+NotLoggedIn * NotSubscriber * NotUsedCredit * (Is/Not)SubscriberOnly (2)
 
 // Invalid states:
-// NotLoggedIn * IsSubscriber  * HasUsedCredit * IsSubscriberOnly  (1)
-// NotLoggedIn * NotSubscriber * HasUsedCredit * IsSubscriberOnly  (1)
-// NotLoggedIn * IsSubscriber  * NotUsedCredit * IsSubscriberOnly  (1)
-// NotLoggedIn * IsSubscriber  * HasUsedCredit * NotSubscriberOnly (1)
-// NotLoggedIn * NotSubscriber * HasUsedCredit * NotSubscriberOnly (1)
-// NotLoggedIn * IsSubscriber  * NotUsedCredit * NotSubscriberOnly (1)
+NotLoggedIn * IsSubscriber  * HasUsedCredit * IsSubscriberOnly  (1)
+NotLoggedIn * NotSubscriber * HasUsedCredit * IsSubscriberOnly  (1)
+NotLoggedIn * IsSubscriber  * NotUsedCredit * IsSubscriberOnly  (1)
+NotLoggedIn * IsSubscriber  * HasUsedCredit * NotSubscriberOnly (1)
+NotLoggedIn * NotSubscriber * HasUsedCredit * NotSubscriberOnly (1)
+NotLoggedIn * IsSubscriber  * NotUsedCredit * NotSubscriberOnly (1)
 ```
 
 That's pretty nice, with just a lil bit of work we've whittled the 16 states down to 10. But, we haven't even
 considered the logged in case yet. Let's look at that:
 
 ```swift
-// LoggedIn
-//   * (Is/Not)Subscriber
-//   * (Has/Not)UsedCredit
-//   * (Is/Not)SubscriberOnly (8)
+LoggedIn
+  * (Is/Not)Subscriber
+  * (Has/Not)UsedCredit
+  * (Is/Not)SubscriberOnly (8)
 ```
 
 Now, all of these states are technically possible, but some are redundant when it comes to what we want to
@@ -115,29 +115,29 @@ used a credit on this episode (which you may have done before you became a subsc
 if the episode is subscriber only or not. Let's list them all our so that we can chip away at them one-by-one:
 
 ```swift
-// LoggedIn * IsSubscriber  * HasUsedCredit * IsSubscriberOnly  (1)
-// LoggedIn * NotSubscriber * HasUsedCredit * IsSubscriberOnly  (1)
-// LoggedIn * IsSubscriber  * NotUsedCredit * IsSubscriberOnly  (1)
-// LoggedIn * NotSubscriber * NotUsedCredit * IsSubscriberOnly  (1)
-// LoggedIn * IsSubscriber  * HasUsedCredit * NotSubscriberOnly (1)
-// LoggedIn * NotSubscriber * HasUsedCredit * NotSubscriberOnly (1)
-// LoggedIn * IsSubscriber  * NotUsedCredit * NotSubscriberOnly (1)
-// LoggedIn * NotSubscriber * NotUsedCredit * NotSubscriberOnly (1)
+LoggedIn * IsSubscriber  * HasUsedCredit * IsSubscriberOnly  (1)
+LoggedIn * NotSubscriber * HasUsedCredit * IsSubscriberOnly  (1)
+LoggedIn * IsSubscriber  * NotUsedCredit * IsSubscriberOnly  (1)
+LoggedIn * NotSubscriber * NotUsedCredit * IsSubscriberOnly  (1)
+LoggedIn * IsSubscriber  * HasUsedCredit * NotSubscriberOnly (1)
+LoggedIn * NotSubscriber * HasUsedCredit * NotSubscriberOnly (1)
+LoggedIn * IsSubscriber  * NotUsedCredit * NotSubscriberOnly (1)
+LoggedIn * NotSubscriber * NotUsedCredit * NotSubscriberOnly (1)
 ```
 
 So, as we just explained, when you are a subscriber all of the other states don't matter. So all states that
 have `IsSubscriber` should really just constitute one state:
 
 ```swift
-// LoggedIn
-//   * IsSubscriber
-//   * (Has/Not)UsedCredit
-//   * (Is/Not)SubscriberOnly (4)
-// ⬇️
-// LoggedIn
-//   * IsSubscriber
-//   * Void
-//   * Void                   (1)
+LoggedIn
+  * IsSubscriber
+  * (Has/Not)UsedCredit
+  * (Is/Not)SubscriberOnly (4)
+              ⬇️
+LoggedIn
+  * IsSubscriber
+  * Void
+  * Void                   (1)
 ```
 
 So we've now gotten rid of 3 invalid states, which means we have just 7 from the original 16.
@@ -145,10 +145,10 @@ So we've now gotten rid of 3 invalid states, which means we have just 7 from the
 We still have 4 more states to consider, the case where you are logged in but not a subscriber.
 
 ```swift
-// LoggedIn * NotSubscriber * HasUsedCredit * IsSubscriberOnly  (1)
-// LoggedIn * NotSubscriber * NotUsedCredit * IsSubscriberOnly  (1)
-// LoggedIn * NotSubscriber * HasUsedCredit * NotSubscriberOnly (1)
-// LoggedIn * NotSubscriber * NotUsedCredit * NotSubscriberOnly (1)
+LoggedIn * NotSubscriber * HasUsedCredit * IsSubscriberOnly  (1)
+LoggedIn * NotSubscriber * NotUsedCredit * IsSubscriberOnly  (1)
+LoggedIn * NotSubscriber * HasUsedCredit * NotSubscriberOnly (1)
+LoggedIn * NotSubscriber * NotUsedCredit * NotSubscriberOnly (1)
 ```
 
 There are two states here that are kind of redundant. For example, if you have used a credit to see this particular
@@ -156,10 +156,10 @@ episode, then it does not matter if the episode was originally subscriber only o
 two states represent just one that we are actually interested in:
 
 ```swift
-// LoggedIn * NotSubscriber * HasUsedCredit * IsSubscriberOnly  (1)
-// LoggedIn * NotSubscriber * HasUsedCredit * NotSubscriberOnly (1)
-// ⬇️
-// LoggedIn * NotSubscriber * HasUsedCredit * Void              (1)
+LoggedIn * NotSubscriber * HasUsedCredit * IsSubscriberOnly  (1)
+LoggedIn * NotSubscriber * HasUsedCredit * NotSubscriberOnly (1)
+                               ⬇️
+LoggedIn * NotSubscriber * HasUsedCredit * Void              (1)
 ```
 
 So we have reduced those two states to one, which brings our original 16 down to just 6! A more than 60%
@@ -182,10 +182,10 @@ So let's start there!
 
 ```swift
 enum EpisodePermission {
-  // LoggedIn    * IsSubscriber    * Void             * Void         (1)
+  // LoggedIn    * IsSubscriber  * Void          * Void              (1)
   // LoggedIn    * NotSubscriber * NotUsedCredit * IsSubscriberOnly  (1)
   // LoggedIn    * NotSubscriber * NotUsedCredit * NotSubscriberOnly (1)
-  // LoggedIn    * NotSubscriber * HasUsedCredit    * Void           (1)
+  // LoggedIn    * NotSubscriber * HasUsedCredit * Void              (1)
   case loggedIn
 
   // NotLoggedIn * NotSubscriber * NotUsedCredit * (Is/Not)SubscriberOnly (2)
@@ -199,10 +199,10 @@ boolean:
 
 ```swift
 enum EpisodePermission {
-  // LoggedIn    * IsSubscriber    * Void             * Void         (1)
+  // LoggedIn    * IsSubscriber  * Void          * Void              (1)
   // LoggedIn    * NotSubscriber * NotUsedCredit * IsSubscriberOnly  (1)
   // LoggedIn    * NotSubscriber * NotUsedCredit * NotSubscriberOnly (1)
-  // LoggedIn    * NotSubscriber * HasUsedCredit    * Void           (1)
+  // LoggedIn    * NotSubscriber * HasUsedCredit * Void              (1)
   case loggedIn
 
   case loggedOut(isEpisodeSubscriberOnly: Bool)
@@ -219,7 +219,7 @@ enum EpisodePermission {
   enum SubscriberPermission {
     // LoggedIn * NotSubscriber * NotUsedCredit * IsSubscriberOnly  (1)
     // LoggedIn * NotSubscriber * NotUsedCredit * NotSubscriberOnly (1)
-    // LoggedIn * NotSubscriber * HasUsedCredit  * Void             (1)
+    // LoggedIn * NotSubscriber * HasUsedCredit * Void              (1)
     case isNotSubscriber
 
     // LoggedIn * IsSubscriber * Void * Void (1)

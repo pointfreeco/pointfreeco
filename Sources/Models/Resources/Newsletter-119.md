@@ -39,7 +39,6 @@ class MeetingDetailModel {
     case edit(EditMeetingModel)
     case record(RecordMeetingModel)
   }
-
   …
 }
 ```
@@ -57,19 +56,19 @@ from the `Destination` enum:
 
 ```swift
 .alert(
-  self.$model.destination,
+  $model.destination,
   case: /MeetingDetailModel.Destination.alert
 ) { action in
-  await self.model.alertButtonTapped(action)
+  await model.alertButtonTapped(action)
 }
 .navigationDestination(
-  unwrapping: self.$model.destination,
+  unwrapping: $model.destination,
   case: /MeetingDetailModel.Destination.record
 ) { $model in
   RecordMeetingView(model: model)
 }
 .sheet(
-  unwrapping: self.$model.destination,
+  unwrapping: $model.destination,
   case: /MeetingDetailModel.Destination.edit
 ) { $model in
   EditMeetingView(model: model)
@@ -104,24 +103,24 @@ that can be handed to the SwiftUI view modifiers, which massively simplifies the
 
 ```diff
 -.alert(
--  self.$model.destination,
+-  $model.destination,
 -  case: /MeetingDetailModel.Destination.alert
 -) { action in
-+.alert(self.$model.destination.alert) { action in
-   await self.model.alertButtonTapped(action)
++.alert($model.destination.alert) { action in
+   await model.alertButtonTapped(action)
  }
 -.navigationDestination(
--  unwrapping: self.$model.destination,
+-  unwrapping: $model.destination,
 -  case: /MeetingDetailModel.Destination.record
 -) { $model in
-+.navigationDestination(item: self.$model.destination.record) { model in
++.navigationDestination(item: $model.destination.record) { model in
    RecordMeetingView(model: model)
  }
 -.sheet(
--  unwrapping: self.$model.destination,
+-  unwrapping: $model.destination,
 -  case: /MeetingDetailModel.Destination.edit
 -) { $model in
-+.sheet(item: self.$model.destination.edit) { model in  
++.sheet(item: $model.destination.edit) { model in  
    EditMeetingView(model: model)
  }
 ```
@@ -134,7 +133,7 @@ modifier anymore.
 <!-- 
 ## Form bindings with dynamic case lookup
 
-TODO: can discuss this if we want: form bindings: self.$model.status.inStock
+TODO: can discuss this if we want: form bindings: $model.status.inStock
 -->
 
 ## Get started today

@@ -52,10 +52,10 @@ class FeatureModel: ObservableObject {
   }
   
   func getFactButtonTapped() async {
-    self.isLoadingFact = true 
-    defer { self.isLoadingFact = false }
+    isLoadingFact = true 
+    defer { isLoadingFact = false }
     do {
-      self.fact = try await self.numberFact(self.count)
+      fact = try await numberFact(count)
     } catch {
       // TODO: Handle error
     } 

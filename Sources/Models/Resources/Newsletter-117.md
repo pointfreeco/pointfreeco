@@ -30,14 +30,16 @@ That immediately gives you access to what is known as a `CaseKeyPath` for each c
 _and_ you can even use key path syntax to construct them:
 
 ```swift
-let activityCase = \Destination.Cases.activity  // CaseKeyPath<Destination, ActivityModel>
+let activityCase = \Destination.Cases.activity
+// CaseKeyPath<Destination, ActivityModel>
 ```
 
 Previously, case paths were constructed by using a custom prefix operator, `/`, which meant there 
 was no type inference or autocomplete help from the compiler:
 
 ```swift
-let activityCase = /Destination.activity  // CasePath<Destination, ActivityModel>
+let activityCase = /Destination.activity
+// CasePath<Destination, ActivityModel>
 ```
 
 Now, case paths by themselves are not very useful, just as key paths by themselves are not very 
@@ -64,7 +66,7 @@ this:
 
 ```diff
  Reduce { state, action in 
-   // ...
+   …
  }
 -.ifLet(\.child, action: /Action.child)
 +.ifLet(\.child, action: \.child)
@@ -75,7 +77,7 @@ can use the [`forEach`][foreach-docs] operator, and again with familiar key path
 
 ```diff
  Reduce { state, action in 
-   // ...
+   …
  }
 -.forEach(\.rows, action: /Action.row(id:action:))
 +.forEach(\.rows, action: \.rows)
@@ -145,7 +147,9 @@ out all of the values matching a particular case:
 
 ```swift
 let destinations: [Destination] = […]
-let activityModels = destinations.compactMap(\.activity)  // [ActivityModel]
+
+let activityModels = destinations.compactMap(\.activity)
+// [ActivityModel]
 ```
 
 All of this comes for free with CasePaths, but you do have to opt into the functionality by applying

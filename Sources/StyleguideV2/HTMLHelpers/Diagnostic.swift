@@ -145,7 +145,7 @@ public struct Diagnostic<Message: HTML>: HTML {
         .backgroundColor(level.detailBackgroundColor)
         .color(.black.dark(.white))
         .grow()
-        .inlineStyle("padding", "7px 8px 8px")
+        .inlineStyle("padding", "8px")
       }
       .inlineStyle("border-radius", "8px")
       .inlineStyle("border", "0.5px solid \(level.backgroundColor.darkValue!)44")

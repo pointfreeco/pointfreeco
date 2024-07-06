@@ -60,29 +60,37 @@ the [`@Dependency`][dep-pw-docs] property wrapper:
 
 ```swift
 final class FeatureModel: ObservableObject {
-  @Dependency(\.continuousClock) var clock  // Controllable async sleep
-  @Dependency(\.date.now) var now           // Controllable current date
-  @Dependency(\.mainQueue) var mainQueue    // Controllable main queue scheduling
-  @Dependency(\.uuid) var uuid              // Controllable UUID creation
+  // Controllable async sleep
+  @Dependency(\.continuousClock) var clock
 
-  // ...
+  // Controllable current date
+  @Dependency(\.date.now) var now
+  
+  // Controllable main queue scheduling
+  @Dependency(\.mainQueue) var mainQueue
+  
+  // Controllable UUID creation
+  @Dependency(\.uuid) var uuid
+  …
 }
 ```
 
 Once your dependencies are declared, rather than reaching out to the `Date()`, `UUID()`, `Task`,
 etc., directly, you can use the dependency that is defined on your feature's model:
 
-```swift
+```swift:5,9,12
 final class FeatureModel: ObservableObject {
-  // ...
-
+  …
   func addButtonTapped() async throws {
-    try await self.clock.sleep(for: .seconds(1))  // 👈 Don't use 'Task.sleep'
-    self.items.append(
+    // Don't use 'Task.sleep'
+    try await clock.sleep(for: .seconds(1))
+    items.append(
       Item(
-        id: self.uuid(),  // 👈 Don't use 'UUID()'
+        // Don't use 'UUID()'
+        id: uuid(),
         name: "",
-        createdAt: self.now  // 👈 Don't use 'Date()'
+        // Don't use 'Date()'
+        createdAt: now
       )
     )
   }
@@ -176,8 +184,7 @@ class FeatureController: UIViewController {
   @Dependency(\.date) var date
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.uuid) var uuid
-
-  // ...
+  …
 }
 ```
 

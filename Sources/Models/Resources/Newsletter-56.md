@@ -215,7 +215,7 @@ store.assert(
   .send(.numberFactButtonTapped) {
     $0.isNumberFactRequestInFlight = true
   },
-  .do { self.scheduler.advance() },
+  .do { scheduler.advance() },
   .receive(
     .numberFactResponse(.success("1 is a good number Brent"))
   ) {
@@ -238,7 +238,7 @@ store.send(.numberFactButtonTapped) {
   $0.isNumberFactRequestInFlight = true
 }
 
-self.scheduler.advance()
+scheduler.advance()
 
 store.receive(
   .numberFactResponse(.success("1 is a good number Brent"))

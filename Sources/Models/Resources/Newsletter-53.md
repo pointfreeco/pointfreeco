@@ -27,7 +27,7 @@ let store = TestStore(
   initialState: state,
   reducer: appReducer,
   environment: AppEnvironment(
-    mainQueue: self.scheduler.eraseToAnyScheduler(),
+    mainQueue: scheduler.eraseToAnyScheduler(),
     uuid: UUID.incrementing
   )
 )
@@ -36,7 +36,7 @@ store.assert(
   .send(.todo(id: state.todos[0].id, action: .checkBoxToggled)) {
     $0.todos[0].isComplete = true
   },
-  .do { self.scheduler.advance(by: 1) },
+  .do { scheduler.advance(by: 1) },
   .receive(.sortCompletedTodos) {
     $0.todos = [
       $0.todos[1],

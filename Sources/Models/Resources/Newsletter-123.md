@@ -110,4 +110,6 @@ offer is valid for only a few days, so you better hurry!
 [black-friday-sale]: http://pointfree.co/discounts/black-friday-2023
 [collections]: /collections
 
-[[Subscribe today!]](http://pointfree.co/discounts/black-friday-2023)
+@Button(/discounts/black-friday-2023) {
+  Subscribe today!
+}

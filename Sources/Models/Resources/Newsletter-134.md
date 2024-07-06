@@ -36,7 +36,7 @@ struct ParentFeature {
     @Shared var count: Int
     // Other properties
   }
-  // ...
+  …
 }
 ```
 
@@ -53,7 +53,7 @@ struct ChildFeature {
     @Shared var count: Int
     // Other properties
   }
-  // ...
+  …
 }
 ```
 
@@ -63,7 +63,7 @@ count rather than the actual count value by using the `$count` projected value:
 ```swift
 case .presentButtonTapped:
   state.child = ChildFeature.State(count: state.$count)
-  // ...
+  …
 ```
 
 Now any mutation the `ChildFeature` makes to its `count` will be instantly made to the 
@@ -110,7 +110,7 @@ persistence strategy with `@Shared`:
 +    @Shared(.appStorage("count")) var count = 0
      // Other properties
    }
-   // ...
+   …
  }
 ```
 
@@ -135,7 +135,9 @@ the list of sync up meetings to disk:
 @ObservableState
 struct State: Equatable {
   @Presents var destination: Destination.State?
-  @Shared(.fileStorage(.syncUps)) var syncUps: IdentifiedArrayOf<SyncUp> = []
+
+  @Shared(.fileStorage(.syncUps))
+  var syncUps: IdentifiedArrayOf<SyncUp> = []
 }
 ```
 
@@ -204,7 +206,9 @@ This feature can be tested in exactly the same way as when you are using non-sha
 
 ```swift
 func testIncrement() async {
-  let store = TestStore(initialState: Feature.State(count: Shared(0))) {
+  let store = TestStore(
+    initialState: Feature.State(count: Shared(0))
+  ) {
     Feature()
   }
 
@@ -259,7 +263,9 @@ the reducer we can drop the trailing closure from the test store assertion:
 
 ```swift
 func testIncrement() async {
-  let store = TestStore(initialState: SimpleFeature.State(count: Shared(0))) {
+  let store = TestStore(
+    initialState: SimpleFeature.State(count: Shared(0))
+  ) {
     SimpleFeature()
   }
   await store.send(.incrementButtonTapped)
@@ -287,7 +293,9 @@ the end of the test, which we can do using the `assert` method:
 
 ```swift
 func testIncrement() async {
-  let store = TestStore(initialState: SimpleFeature.State(count: Shared(0))) {
+  let store = TestStore(
+    initialState: SimpleFeature.State(count: Shared(0))
+  ) {
     SimpleFeature()
   }
   await store.send(.incrementButtonTapped)

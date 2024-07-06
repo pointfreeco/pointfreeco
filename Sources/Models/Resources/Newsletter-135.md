@@ -25,7 +25,7 @@ To share state in one feature with another feature, simply use the `@Shared` pro
 ```swift
 struct State {
   @Shared var signUpData: SignUpData
-  // ...
+  …
 }
 ```
 

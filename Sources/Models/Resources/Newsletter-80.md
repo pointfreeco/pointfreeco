@@ -115,7 +115,7 @@ views that makes state observation explicit:
 
 ```swift
 WithViewStore(store, observe: <#(State) -> ViewState#>) { viewStore in
-  // ...
+  …
 }
 ```
 

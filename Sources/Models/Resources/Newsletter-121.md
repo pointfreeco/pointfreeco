@@ -32,7 +32,8 @@ enum Destination {
   case settings(SettingsModel)
 }
 
-let activityPath = \Destination.Cases.activity  // CaseKeyPath<Destination, ActivityModel>
+let activityPath = \Destination.Cases.activity
+// CaseKeyPath<Destination, ActivityModel>
 ```
 
 This unlocks a lot of interesting possibilities in API design, but the most immediate benefit to 
@@ -112,13 +113,13 @@ perform the state transformation using a simple, more familiar key path syntax:
 
 ```diff
  .sheet(
--  store: self.store.scope(
+-  store: store.scope(
 -    state: \.$destination, 
 -    action: { .destination($0) }
 -  ),
 -  state: /Feature.Destination.State.editForm,
 -  action: Feature.Destination.Action.editForm
-+  store: self.store.scope(
++  store: store.scope(
 +    state: \.$destination, 
 +    action: { .destination($0) }
 +  ),
@@ -144,7 +145,9 @@ This starts to really pay off when testing deeply nested actions, as is often th
 the integration of many features together:
 
 ```diff
--store.receive(.destination(.presented(.child(.response.success("Hello"))))) {
+-store.receive(
+-  .destination(.presented(.child(.response.success("Hello"))))
+-) {
 +store.receive(\.destination.child.response.success) {
    $0.message = "Hello"
  }
@@ -177,17 +180,17 @@ class FeatureModel {
 
 ```diff
 -.navigationDestination(
--  unwrapping: self.$model.destination,
+-  unwrapping: $model.destination,
 -  case: /FeatureModel.Destination.activity
 -) { model in
-+.navigationDestination(item: self.$model.destination.activity) { model in
++.navigationDestination(item: $model.destination.activity) { model in
    ActivityView(model: model) 
  }
 -.sheet(
--  unwrapping: self.$model.destination,
+-  unwrapping: $model.destination,
 -  case: /FeatureModel.Destination.settings
 -) { model in
-+.sheet(item: self.$model.destination.settings) { model in
++.sheet(item: $model.destination.settings) { model in
    SettingsView(model: model)
  }
 ```

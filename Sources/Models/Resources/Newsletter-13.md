@@ -34,7 +34,7 @@ value in an array is present:
 func sequence<A>(_ xs: [A?]) -> [A]? {
   var result: [A] = []
   for x in xs {
-    guard let x = x else { return nil }
+    guard let x else { return nil }
     result.append(x)
   }
   return result

@@ -37,10 +37,10 @@ class EpisodeViewModel: ObservableObject {
   }
 
   func reloadButtonTapped() {
-    self.apiClient.fetchEpisode()
+    apiClient.fetchEpisode()
       .receive(on: DispatchQueue.main)
-      .sink { self.episode = $0 }
-      .store(in: &self.cancellables)
+      .sink { [weak self] in self?.episode = $0 }
+      .store(in: &cancellables)
   }
 }
 ```
@@ -73,10 +73,10 @@ class EpisodeViewModel<S: Scheduler>: ObservableObject {
   }
 
   func reloadButtonTapped() {
-    self.apiClient.fetchEpisode()
-      .receive(on: self.scheduler)
-      .sink { self.episode = $0 }
-      .store(in: &self.cancellables)
+    apiClient.fetchEpisode()
+      .receive(on: scheduler)
+      .sink { [weak self] in self?.episode = $0 }
+      .store(in: &cancellables)
   }
 }
 ```
@@ -115,10 +115,10 @@ class EpisodeViewModel: ObservableObject {
   }
 
   func reloadButtonTapped() {
-    self.apiClient.fetchEpisode()
-      .receive(on: self.scheduler)
-      .sink { self.episode = $0 }
-      .store(in: &self.cancellables)
+    apiClient.fetchEpisode()
+      .receive(on: scheduler)
+      .sink { [weak self] in self?.episode = $0 }
+      .store(in: &cancellables)
   }
 }
 ```
@@ -262,10 +262,10 @@ class HomeViewModel: ObservableObject {
 
   func reloadButtonTapped() {
     Just(())
-      .delay(for: .seconds(10), scheduler: DispachQueue.main)
+      .delay(for: .seconds(10), scheduler: DispatchQueue.main)
       .flatMap { apiClient.fetchEpisodes() }
-      .sink { self.episodes = $0 }
-      .store(in: &self.cancellables)
+      .sink { [weak self] in self?.episodes = $0 }
+      .store(in: &cancellables)
   }
 }
 ```
@@ -279,7 +279,7 @@ func testViewModel() {
   var output: [Episode] = []
   viewModel.$episodes
     .sink { output.append($0) }
-    .store(in: &self.cancellables)
+    .store(in: &cancellables)
 
   viewModel.reloadButtonTapped()
 
@@ -310,10 +310,10 @@ class HomeViewModel: ObservableObject {
 
   func reloadButtonTapped() {
     Just(())
-      .delay(for: .seconds(10), scheduler: self.scheduler)
-      .flatMap { self.apiClient.fetchEpisodes() }
-      .sink { self.episodes = $0 }
-      .store(in: &self.cancellables)
+      .delay(for: .seconds(10), scheduler: scheduler)
+      .flatMap { [apiClient] in apiClient.fetchEpisodes() }
+      .sink { [weak self] in self?.episodes = $0 }
+      .store(in: &cancellables)
   }
 }
 ```
@@ -331,7 +331,7 @@ func testViewModel() {
   var output: [Episode] = []
   viewModel.$episodes
     .sink { output.append($0) }
-    .store(in: &self.cancellables)
+    .store(in: &cancellables)
 
   viewModel.reloadButtonTapped()
 
@@ -380,7 +380,7 @@ var output: [Int] = []
 Publishers.Timer(every: 1, scheduler: scheduler)
   .autoconnect()
   .sink { _ in output.append(output.count) }
-  .store(in: &self.cancellables)
+  .store(in: &cancellables)
 
 XCTAssertEqual(output, [])
 

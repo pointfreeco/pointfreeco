@@ -118,14 +118,14 @@ struct Feature: View {
 
   var body: some View {
     VStack {
-      if let message = self.message {
-        Text(self.message)
+      if let message {
+        Text(message)
       }
     }
     .task {
       do {
         try await Task.sleep(for: .seconds(5))
-        self.message = "Welcome!"
+        message = "Welcome!"
       } catch {}
     }
   }

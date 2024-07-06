@@ -764,7 +764,7 @@ public struct PrismJSHead: HTML {
 
       @media (prefers-color-scheme: dark) {
         .line-highlight {
-          background-color: rgba(255, 255, 255, 0.15);
+          background-color: rgba(255, 255, 255, 0.1);
         }
 
         .language-diff .token.inserted {

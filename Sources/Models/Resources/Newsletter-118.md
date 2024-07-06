@@ -36,7 +36,7 @@ the [`Reducer`][reducer-protocol-docs] protocol:
 -struct Feature: Reducer {
 +@Reducer
 +struct Feature {
-   // ...
+   …
  }
 ```
 
@@ -54,7 +54,7 @@ isolating a child feature's action with a simple key path:
 
 ```diff
  Reduce { state, action in 
-   // ...
+   …
  }
 -.ifLet(\.child, action: /Action.child)
 +.ifLet(\.child, action: \.child)
@@ -74,7 +74,7 @@ case of an enum of destinations:
 
 ```swift
 .sheet(
-  store: self.store.scope(
+  store: store.scope(
     state: \.$destination,
     action: { .destination($0) }
   ),
@@ -90,7 +90,7 @@ this:
 
 ```swift:6-7
 .sheet(
-  store: self.store.scope(
+  store: store.scope(
     state: \.$destination,
     action: { .destination($0) }
   ),
@@ -127,7 +127,7 @@ enum value:
 
 ```swift
 store.receive(
-  .destination(.presented(.child(.response.success("Hello"))))
+  .destination(.presented(.child(.response(.success("Hello")))))
 ) {
   $0.message = "Hello"
 }

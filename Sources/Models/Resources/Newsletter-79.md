@@ -76,8 +76,8 @@ struct ContentView: View {
   let store: Store<State, Action>
 
   var body: some View {
-    WithViewStore(self.store) { viewStore in
-      <#View omitted#>
+    WithViewStore(store) { viewStore in
+      VStack { … }
         .task { await viewStore.send(.task).finish() }
     }
   }
@@ -89,7 +89,7 @@ sequence of notifications:
 
 ```swift
 case .task:
-  <#Reducer logic omitted#>
+  …
   return .run { send in
     for await value in environment.notifications() {
       send(.result(value))

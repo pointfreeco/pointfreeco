@@ -6,7 +6,9 @@ been on the fence on whether or not to subscribe, now is the time!
 
 [eoy-discount]: /discounts/2023-eoy
 
-[[Subscribe today!]](/discounts/2023-eoy)
+@Button(/discounts/2023-eoy) {
+  Subscribe today!
+}
 
 # Highlights
 
@@ -71,20 +73,20 @@ between features, a [unified API for navigation][gut-syncups]:
 
 ```swift
 .navigationDestination(
-  item: self.$model.destination.meeting
+  item: $model.destination.meeting
 ) { meeting in
-  MeetingView(meeting: meeting, syncUp: self.model.syncUp)
+  MeetingView(meeting: meeting, syncUp: model.syncUp)
 }
 .navigationDestination(
-  item: self.$model.destination.record
+  item: $model.destination.record
 ) { recordModel in
   RecordMeetingView(model: recordModel)
 }
-.sheet(item: self.$model.destination.edit) { editModel in
+.sheet(item: $model.destination.edit) { editModel in
   SyncUpFormView(model: editModel)
 }
-.alert(self.$model.destination.alert) { action in
-  await self.model.alertButtonTapped(action)
+.alert($model.destination.alert) { action in
+  await model.alertButtonTapped(action)
 }
 ```
 
@@ -168,11 +170,11 @@ Even something as straightforward as this:
 
 ```swift
 func buttonTapped() async throws {
-  self.isLoading = true 
-  defer { self.isLoading = false }
+  isLoading = true 
+  defer { isLoading = false }
   
-  self.data = nil
-  self.data = try await self.apiClient.fetch()
+  data = nil
+  data = try await apiClient.fetch()
 }
 ```
 
@@ -391,7 +393,6 @@ final class FeatureModel {
   
   // Controllable UUID creation
   @Dependency(\.uuid) var uuid
-
   …
 }
 ```
@@ -406,14 +407,14 @@ final class FeatureModel {
 
   func addButtonTapped() async throws {
     // Don't use 'Task.sleep'
-    try await self.clock.sleep(for: .seconds(1))
-    self.items.append(
+    try await clock.sleep(for: .seconds(1))
+    items.append(
       Item(
         // Don't use 'UUID()'
-        id: self.uuid(), 
+        id: uuid(), 
         name: "",
         // Don't use 'Date()'
-        createdAt: self.now
+        createdAt: now
       )
     )
   }
@@ -735,4 +736,6 @@ is the time!
 
 [eoy-discount]: /discounts/2023-eoy
 
-[[Subscribe today!]](/discounts/2023-eoy)
+@Button(/discounts/2023-eoy) {
+  Subscribe today!
+}

@@ -182,7 +182,7 @@ struct NavPath {
   var elements: [Any] = []
 
   mutating func append(_ newElement: Any) {
-    self.elements.append(newElement)
+    elements.append(newElement)
   }
 }
 ```
@@ -320,7 +320,7 @@ and we will start the path's elements off as an empty array:
 ```swift
 init(from decoder: Decoder) throws {
   var container = try decoder.unkeyedContainer()
-  self.elements = []
+  elements = []
 }
 ```
 
@@ -372,7 +372,7 @@ encoding was reversed:
 ```swift
 let encodedValue = try container.decode(String.self)
 let value = try JSONDecoder().decode(type, from: Data(encodedValue.utf8))
-self.elements.insert(value, at: 0)
+elements.insert(value, at: 0)
 ```
 
 This completes the second half of reverse engineering `NavigationPath`. We can now decode nebulous
@@ -559,7 +559,7 @@ let encodedValue = try container.decode(String.self)
 #else
   let value = try JSONDecoder().decode(type, from: Data(encodedValue.utf8))
 #endif
-self.elements.insert(value, at: 0)
+elements.insert(value, at: 0)
 ```
 
 And that is all it takes to support existential codability in Swift 5.6 and lower. It's pretty

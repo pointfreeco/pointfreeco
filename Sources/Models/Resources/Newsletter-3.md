@@ -185,15 +185,15 @@ These functions directly correspond to applying `||`, `&&` and `!` pointwise on 
 ```swift
 extension PredicateSet {
   func union(_ other: PredicateSet) -> PredicateSet {
-    return PredicateSet { self.contains($0) || other.contains($0) }
+    PredicateSet { self.contains($0) || other.contains($0) }
   }
 
   func intersect(_ other: PredicateSet) -> PredicateSet {
-    return PredicateSet { self.contains($0) && other.contains($0) }
+    PredicateSet { self.contains($0) && other.contains($0) }
   }
 
   var invert: PredicateSet {
-    return PredicateSet { !self.contains($0) }
+    PredicateSet { !self.contains($0) }
   }
 }
 ```
@@ -327,11 +327,11 @@ struct FuncDictionary<K, V> {
   let valueForKey: (K) -> V?
 
   func map<W>(_ f: @escaping (V) -> W) -> FuncDictionary<K, W> {
-    return .init { key in self.valueForKey(key).map(f) }
+    FuncDictionary<K, W> { key in self.valueForKey(key).map(f) }
   }
 
   func contramap<L>(_ f: @escaping (L) -> K) -> FuncDictionary<L, V> {
-    return .init { key in self.valueForKey(f(key)) }
+    FuncDictionary<L, V> { key in self.valueForKey(f(key)) }
   }
 }
 ```
@@ -428,7 +428,7 @@ Well, let's try defining each of `map` and `contramap` on `Endo` and see what go
 ```swift
 extension Endo {
   func map<B>(_ f: @escaping (A) -> B) -> Endo<B> {
-    return Endo<B> { b in
+    Endo<B> { b in
       b // B
       f // (A) -> B
       fatalError("Need to return something in B")
@@ -436,7 +436,7 @@ extension Endo {
   }
 
   func contramap<B>(_ f: @escaping (B) -> A) -> Endo<B> {
-    return Endo<B> { b in
+    Endo<B> { b in
       b // B
       f // (B) -> A
       fatalError("Need to return something in B")
@@ -473,7 +473,7 @@ extension Endo {
   func imap<B>(
     _ f: @escaping (A) -> B, _ g: @escaping (B) -> A
   ) -> Endo<B> {
-    return Endo<B> { b in
+    Endo<B> { b in
       f(self.apply(g(b)))
     }
   }
@@ -495,7 +495,7 @@ This `contramap` is quite similar to some of the other ones we've written:
 ```swift
 extension Equate {
   func contramap<B>(_ f: @escaping (B) -> A) -> Equate<B> {
-    return .init { self.equals(f($0), f($1)) }
+    Equate<B> { self.equals(f($0), f($1)) }
   }
 }
 ```

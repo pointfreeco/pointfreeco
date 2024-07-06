@@ -185,8 +185,7 @@ class StandupDetailModel: ObservableObject {
     case meeting(Meeting)
     case record(RecordMeetingModel)
   }
-
-  // ...
+  …
 }
 ```
 

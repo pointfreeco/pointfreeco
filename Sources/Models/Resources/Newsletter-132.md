@@ -3,7 +3,9 @@ power outages. But things are settled, and we're ready to go live again!
 
 The livestream is now planned for February 12th at 9am PST and 5pm GMT.
 
-[[Watch Feb 12 @ 9am PST / 5pm GMT]](/live)
+@Button(/live) {
+  Watch Feb 12 @ 9am PST / 5pm GMT
+}
 
 We will be discussing the latest release of the Composable Architecture, but we will also unveil a
 surprise release of the library bringing all new super powers to the `@Reducer` macro, _and_ we

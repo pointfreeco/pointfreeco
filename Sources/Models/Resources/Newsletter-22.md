@@ -55,8 +55,8 @@ And we could create predicate sets easily enough. For example, one that holds al
 ```swift
 let isLessThan10 = PredicateSet { $0 < 10 }
 
-isLessThan10.contains(5)  // true
-isLessThan10.contains(11) // false
+isLessThan10.contains(5)   // true
+isLessThan10.contains(11)  // false
 ```
 
 This is neat, but not particularly interesting. But then we discovered that `PredicateSet` supports a
@@ -66,7 +66,7 @@ define it like so:
 ```swift
 extension PredicateSet {
   func contramap<B>(_ f: @escaping (B) -> A) -> Predicate<B> {
-    return Predicate<B> { self.contains(f($0)) }
+    Predicate<B> { self.contains(f($0)) }
   }
 }
 ```
@@ -76,8 +76,8 @@ We could then use this operation to transform our `isLessThan10` predicate into 
 ```swift
 let shortStrings = isLessThan10.contramap { (s: String) in s.count }
 
-shortStrings.contains("Blob")          // true
-shortStrings.contains("Blobby McBlob") // false
+shortStrings.contains("Blob")           // true
+shortStrings.contains("Blobby McBlob")  // false
 ```
 
 Take careful note that there is no "less than 10" logic in the body of the `contramap` transformation.
@@ -94,8 +94,8 @@ import Overture
 
 let shortStrings = isLessThan10.contramap(get(\\String.count))
 
-shortStrings.contains("Blob")          // true
-shortStrings.contains("Blobby McBlob") // false
+shortStrings.contains("Blob")           // true
+shortStrings.contains("Blobby McBlob")  // false
 ```
 
 Now let's rename `contramap` to `pullback`:
@@ -111,8 +111,8 @@ import Overture
 
 let shortStrings = isLessThan10.pullback(get(\\String.count))
 
-shortStrings.contains("Blob")          // true
-shortStrings.contains("Blobby McBlob") // false
+shortStrings.contains("Blob")           // true
+shortStrings.contains("Blobby McBlob")  // false
 ```
 
 Simple enough. But now when we read this code it is far more intuitive. We take our `isLessThan10` predicate

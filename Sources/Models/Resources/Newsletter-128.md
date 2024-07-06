@@ -3,7 +3,9 @@ year][eoy-discount]🎁 of your subscription!
 
 [eoy-discount]: /discounts/2023-eoy 
 
-[[Subscribe today!]](/discounts/2023-eoy)
+@Button(/discounts/2023-eoy) {
+  Subscribe today!
+}
 
 Once subscribed you'll get instant access to 
 all 262 episodes (and growing) of Point-Free, including popular collections that have grown 
@@ -39,4 +41,6 @@ only remain valid through the end of the year! 🥳
 [concurrency-collection]: /collections/concurrency
 [eoy-2023]: /blog/posts/126-2023-year-in-review
 
-[[Subscribe today!]](/discounts/2023-eoy)
+@Button(/discounts/2023-eoy) {
+  Subscribe today!
+}

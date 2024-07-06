@@ -2,7 +2,9 @@ We do this only a few times a year: we‘re having a
 [rare, Point-Free sale](/discounts/black-friday-2023)
 this Black Friday by offering 30% off the first year of your subscription!
 
-[[Subscribe today!]](/discounts/black-friday-2023)
+@Button(/discounts/black-friday-2023) {
+  Subscribe today!
+}
 
 Once subscribed you'll get instant access to all [259 episodes][pf] (163 hours of video and
 growing!) of Point-Free content. This includes popular [collections][collections] that were
@@ -108,4 +110,6 @@ offer is valid for only a few days, so you better hurry!
 [black-friday-sale]: http://pointfree.co/discounts/black-friday-2023
 [collections]: /collections
 
-[[Subscribe today!]](http://pointfree.co/discounts/black-friday-2023)
+@Button(/discounts/black-friday-2023) {
+  Subscribe today!
+}
