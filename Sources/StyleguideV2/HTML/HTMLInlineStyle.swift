@@ -112,9 +112,9 @@ private struct ClassNameGenerator: DependencyKey {
             return seenStyles.count
           }()
         #if DEBUG
-        return "\(style.property)-\(index)"
+          return "\(style.property)-\(index)"
         #else
-        return "c\(index)"
+          return "c\(index)"
         #endif
       }
     }
@@ -124,9 +124,9 @@ private struct ClassNameGenerator: DependencyKey {
     Self { style in
       let hash = classID(
         style.value
-        + (style.media?.rawValue ?? "")
-        + (style.preSelector ?? "")
-        + (style.pseudo?.rawValue ?? "")
+          + (style.media?.rawValue ?? "")
+          + (style.preSelector ?? "")
+          + (style.pseudo?.rawValue ?? "")
       )
       return "\(style.property)-\(hash)"
     }
