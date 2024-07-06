@@ -3,9 +3,7 @@
 
 ### Announcing Point-Free Pointers!
 
- <http://localhost:8080/blog/posts/1-announcing-point-free-pointers>Today we are excited to announcement launch of Point-Free Pointers, a blog to supplement our video
-series for all the content we couldn’t fit in. Expect to find regularly postings here that dive
-even deeper into functional programming, showing real world use cases and more!
+ <http://localhost:8080/blog/posts/1-announcing-point-free-pointers>Today we are excited to announcement launch of Point-Free Pointers, a blog to supplement our video series for all the content we couldn’t fit in. Expect to find regularly postings here that dive even deeper into functional programming, showing real world use cases and more!
 
  <http://localhost:8080/blog/posts/1-announcing-point-free-pointers>
 
