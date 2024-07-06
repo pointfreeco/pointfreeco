@@ -70,40 +70,14 @@ private struct HTMLConverter: MarkupVisitor {
   @HTMLBuilder
   mutating func visitBlockQuote(_ blockQuote: Markdown.BlockQuote) -> AnyHTML {
     let aside = Aside(blockQuote)
-    switch aside.kind.rawValue {
-    case "Error":
-      Diagnostic(level: .error) {
+    if let level = DiagnosticLevel(aside: aside) {
+      Diagnostic(level: level) {
         for child in aside.content {
           visit(child)
         }
       }
       .inlineStyle("padding", "0 1rem")
-
-    case "Expected Failure":
-      Diagnostic(level: .knownIssue) {
-        for child in aside.content {
-          visit(child)
-        }
-      }
-      .inlineStyle("padding", "0 1rem")
-
-    case "Failed":
-      Diagnostic(level: .issue) {
-        for child in aside.content {
-          visit(child)
-        }
-      }
-      .inlineStyle("padding", "0 1rem")
-
-    case "Runtime Warning":
-      Diagnostic(level: .runtimeWarning) {
-        for child in aside.content {
-          visit(child)
-        }
-      }
-      .inlineStyle("padding", "0 1rem")
-
-    default:
+    } else {
       let style = BlockQuoteStyle(blockName: aside.kind.displayName)
       blockquote {
         VStack(spacing: 0.5) {
@@ -415,4 +389,17 @@ private func value(forArgument argument: String, block: BlockDirective) -> Strin
     }
     .first
     .map(String.init)
+}
+
+private extension DiagnosticLevel {
+  init?(aside: Aside) {
+    switch aside.kind.rawValue {
+    case "Error": self = .error
+    case "Expected Failure": self = .knownIssue
+    case "Failed": self = .issue
+    case "Runtime Warning": self = .runtimeWarning
+    case "Warning": self = .warning
+    default: return nil
+    }
+  }
 }
