@@ -1,6 +1,6 @@
 import ConcurrencyExtras
-import Darwin
 import Dependencies
+import Foundation
 import OrderedCollections
 
 extension HTML {
