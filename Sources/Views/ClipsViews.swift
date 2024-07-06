@@ -31,7 +31,10 @@ public struct ClipsIndex: HTML {
         }
       }
 
-      GetStartedModule(style: .solid)
+      CenterColumn {
+        GetStartedModule(style: .solid)
+      }
+      .inlineStyle("margin", "2rem 0")
 
       LazyVGrid(columns: [1, 1, 1]) {
         HTMLForEach(clips.dropFirst(3)) { clip in
