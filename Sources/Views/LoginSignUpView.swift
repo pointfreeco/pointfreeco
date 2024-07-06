@@ -46,11 +46,11 @@ public struct LoginSignUpView: HTML {
           div {
             Paragraph {
               """
-              By clicking “Continue with Github” above, you acknowledge that you have read, \
+              By clicking “Continue with GitHub” above, you acknowledge that you have read, \
               understood, and agree to Point-Free’s
               """
               " "
-              Link.init("Terms & Privacy Policy", href: siteRouter.path(for: .privacy))
+              Link("Terms & Privacy Policy", href: siteRouter.path(for: .privacy))
               "."
             }
             .linkStyle(.init(color: .init(rawValue: "#999"), underline: true))

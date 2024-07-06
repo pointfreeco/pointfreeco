@@ -9,36 +9,34 @@ import Prelude
 import Tuple
 import Views
 
-let blogPostShowMiddleware =
-  fetchBlogPostForParam
-  <| writeStatus(.ok)
-  >=> respond(
-    view: blogPostShowView,
-    layoutData: { post in
-      @Dependency(\.assets) var assets
+func newsletterDetail(
+  _ conn: Conn<StatusLineOpen, Void>,
+  _ postParam: Either<String, BlogPost.ID>
+) async -> Conn<ResponseEnded, Data> {
+  guard let post = fetchBlogPost(forParam: postParam)
+  else {
+    return
+      conn
+      .redirect(to: .home) {
+        $0.flash(.error, "Newsletter not found")
+      }
+  }
 
-      return SimplePageLayoutData(
-        data: post,
-        description: post.blurb,
+  @Dependency(\.assets) var assets
+
+  return
+    conn
+    .writeStatus(.ok)
+    .respondV2(
+      layoutData: SimplePageLayoutData(
+        description: String(stripping: post.blurb),
         image: post.coverImage ?? assets.emailHeaderImgSrc,
-        openGraphType: .website,
-        style: .base(.mountains(.blog)),
-        title: post.title,
-        twitterCard: .summaryLargeImage,
+        title: String(stripping: post.title),
         usePrismJs: true
       )
+    ) {
+      NewsletterDetail(blogPost: post)
     }
-  )
-
-private func fetchBlogPostForParam(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, BlogPost, Data>
-) -> Middleware<StatusLineOpen, ResponseEnded, Either<String, BlogPost.ID>, Data> {
-  return { conn in
-    guard let post = fetchBlogPost(forParam: conn.data)
-    else { return conn |> redirect(to: .home) }
-
-    return middleware(conn.map(const(post)))
-  }
 }
 
 func fetchBlogPost(forParam param: Either<String, BlogPost.ID>) -> BlogPost? {

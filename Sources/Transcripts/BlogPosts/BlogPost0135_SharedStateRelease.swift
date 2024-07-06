@@ -7,7 +7,6 @@ public let post0135_SharedStateRelease = BlogPost(
     synchronized between many features, and can persist state to external systems such as user
     defaults and the file system.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 135),
   coverImage: nil,
   hidden: .no,
   hideFromSlackRSS: false,

@@ -6,7 +6,6 @@ public struct EpisodeCard: HTML {
   @Dependency(\.date.now) var now
   @Dependency(\.envVars.emergencyMode) var emergencyMode
   @Dependency(\.episodeProgresses) var episodeProgresses
-  @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 
   let episode: Episode
@@ -27,7 +26,7 @@ public struct EpisodeCard: HTML {
 
           div {
             Header(4) {
-              Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
+              Link(destination: .episodes(.show(episode))) {
                 HTMLText(episode.title)
                 if let subtitle = episode.subtitle {
                   ":"
@@ -45,7 +44,7 @@ public struct EpisodeCard: HTML {
           .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
       }
     } header: {
-      Link(href: siteRouter.path(for: .episodes(.show(episode)))) {
+      Link(destination: .episodes(.show(episode))) {
         Image(source: episode.image, description: "")
           .attribute("loading", "lazy")
           .inlineStyle("width", "100%")
@@ -57,7 +56,7 @@ public struct EpisodeCard: HTML {
       CardFooter {
         if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
           if !subscriberState.isActive {
-            Link(href: siteRouter.path(for: .pricingLanding)) {
+            Link(destination: .pricingLanding) {
               Label("Subscriber-only", icon: .locked)
             }
             .linkColor(.currentColor)
@@ -114,7 +113,6 @@ public struct Progress: HTML {
 
 public struct ClipCard: HTML {
   @Dependency(\.date.now) var now
-  @Dependency(\.siteRouter) var siteRouter
 
   let clip: Clip
 
@@ -125,7 +123,7 @@ public struct ClipCard: HTML {
   public var body: some HTML {
     Card {
       Header(4) {
-        Link(href: siteRouter.path(for: .clips(.clip(videoID: clip.vimeoVideoID)))) {
+        Link(destination: .clips(.clip(videoID: clip.vimeoVideoID))) {
           HTMLText(clip.title)
         }
         .linkColor(.black.dark(.white))
@@ -136,7 +134,7 @@ public struct ClipCard: HTML {
         .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
         .inlineStyle("margin-top", "1rem")
     } header: {
-      Link(href: siteRouter.path(for: .clips(.clip(videoID: clip.vimeoVideoID)))) {
+      Link(destination: .clips(.clip(videoID: clip.vimeoVideoID))) {
         Image(source: clip.posterURL, description: "")
           .attribute("loading", "lazy")
           .inlineStyle("width", "100%")
@@ -159,8 +157,6 @@ public struct CollectionCard: HTML {
     .flatMap { color in colors.map { (color, $0) } }
     .filter { $0 != $1 }
 
-  @Dependency(\.siteRouter) var siteRouter
-
   let collection: Episode.Collection
   let index: Int
 
@@ -177,7 +173,7 @@ public struct CollectionCard: HTML {
       .color(.gray400.dark(.gray650))
       .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
     } header: {
-      Link(href: siteRouter.path(for: .collections(.collection(collection.slug)))) {
+      Link(destination: .collections(.collection(collection.slug))) {
         let (start, stop) = Self.combos[index % Self.combos.count]
 
         SVG.collection(linearGradientStart: start, stop: stop)

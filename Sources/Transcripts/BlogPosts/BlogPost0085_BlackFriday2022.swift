@@ -3,12 +3,6 @@ import Foundation
 public let post0085_BlackFriday2022 = BlogPost(
   author: .pointfree,
   blurb: sale2020Blurb,
-  contentBlocks: [
-    .init(
-      content: sale2022(name: "Black Friday"),
-      type: .paragraph
-    )
-  ],
   coverImage: nil,
   hidden: .yes,
   id: 85,

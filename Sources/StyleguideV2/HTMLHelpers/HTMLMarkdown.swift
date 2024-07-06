@@ -13,8 +13,10 @@ public struct HTMLMarkdown: HTML {
 
   public var body: some HTML {
     tag("pf-markdown") {
-      var converter = HTMLConverter()
-      converter.visit(Document(parsing: markdown))
+      VStack(spacing: 0.5) {
+        var converter = HTMLConverter()
+        converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
+      }
     }
     .inlineStyle("display", "block")
   }
@@ -33,28 +35,125 @@ private struct HTMLConverter: MarkupVisitor {
   // https://apple.github.io/swift-markdown/documentation/markdown/blockdirectives/
   // TODO: Support `@Custom { … }` directives (`@Timestamp(00:00:00)`, `@Speaker(Brandon) { … }`)
   // TODO: `Document(parsing: …, options: .parseBlockDirectives)`
-  // @HTMLBuilder
-  // mutating func visitBlockDirective(_ blockDirective: Markdown.BlockDirective) -> AnyHTML {
-  // }
-
   @HTMLBuilder
-  mutating func visitBlockQuote(_ blockQuote: Markdown.BlockQuote) -> AnyHTML {
-    // TODO: `let aside = Aside(blockQuote)`
-    blockquote {
-      for child in blockQuote.children {
+  mutating func visitBlockDirective(_ blockDirective: Markdown.BlockDirective) -> AnyHTML {
+    switch blockDirective.name {
+    case "Button":
+      VStack(alignment: .center) {
+        Button(color: .purple) {
+          for child in blockDirective.children {
+            visit(child)
+          }
+        }
+        .href(blockDirective.argumentText.segments.map { $0.trimmedText }.joined(separator: " "))
+        .inlineStyle("margin", "0.5rem 0")
+      }
+
+    case "Video":
+      video {
+        tag("source")
+          .attribute("src", value(forArgument: "source", block: blockDirective))
+      }
+      .attribute("poster", value(forArgument: "poster", block: blockDirective))
+      .attribute("controls")
+      .attribute("playsinline")
+      .inlineStyle("object-fit", "cover")
+      .inlineStyle("margin-bottom", "1rem")
+
+    default:
+      for child in blockDirective.children {
         visit(child)
       }
     }
   }
 
   @HTMLBuilder
+  mutating func visitBlockQuote(_ blockQuote: Markdown.BlockQuote) -> AnyHTML {
+    let aside = Aside(blockQuote)
+    switch aside.kind.rawValue {
+    case "Error":
+      Diagnostic(level: .error) {
+        for child in aside.content {
+          visit(child)
+        }
+      }
+      .inlineStyle("padding", "0 1rem")
+
+    case "Expected Failure":
+      Diagnostic(level: .knownIssue) {
+        for child in aside.content {
+          visit(child)
+        }
+      }
+      .inlineStyle("padding", "0 1rem")
+
+    case "Failed":
+      Diagnostic(level: .issue) {
+        for child in aside.content {
+          visit(child)
+        }
+      }
+      .inlineStyle("padding", "0 1rem")
+
+    case "Runtime Warning":
+      Diagnostic(level: .runtimeWarning) {
+        for child in aside.content {
+          visit(child)
+        }
+      }
+      .inlineStyle("padding", "0 1rem")
+
+    default:
+      let style = BlockQuoteStyle(blockName: aside.kind.displayName)
+      blockquote {
+        VStack(spacing: 0.5) {
+          strong {
+            HTMLText(aside.kind.displayName)
+          }
+          .color(style.borderColor)
+
+          for child in aside.content {
+            visit(child)
+          }
+        }
+      }
+      .color(.offBlack.dark(.offWhite))
+      .backgroundColor(style.backgroundColor)
+      .inlineStyle("border", "2px solid \(style.borderColor.rawValue)")
+      .inlineStyle("border", "2px solid \(style.borderColor.darkValue!)", media: .dark)
+      .inlineStyle("border-radius", "6px")
+      .inlineStyle("margin", "0.5rem 0")
+      .inlineStyle("padding", "1rem 1.5rem")
+    }
+  }
+
+  @HTMLBuilder
   mutating func visitCodeBlock(_ codeBlock: Markdown.CodeBlock) -> AnyHTML {
+    let language: (class: String, dataLine: String?)? = codeBlock.language.map {
+      let languageInfo = $0.split(separator: ":", maxSplits: 2)
+      let language = languageInfo[0]
+      let dataLine = languageInfo.dropFirst().first
+      let highlightColor = languageInfo.dropFirst(2).first
+      return (
+        class: "language-\(language)\(highlightColor.map { " highlight-\($0)" } ?? "")",
+        dataLine: dataLine.map { String($0) }
+      )
+    }
     pre {
       code {
         HTMLText(codeBlock.code)
       }
-      .attribute("class", codeBlock.language.map { "language-\($0)" })
+      .attribute("class", language?.class)
+      .linkUnderline(true)
     }
+    .attribute("data-line", language?.dataLine)
+    .backgroundColor(.offWhite.dark(.offBlack))
+    .color(.black.dark(.gray900))
+    .inlineStyle("margin", "0")
+    .inlineStyle("margin-bottom", "0.5rem")
+    .inlineStyle("overflow-x", "scroll")
+    .inlineStyle("padding", "1rem 1.5rem")
+    .inlineStyle("border-radius", "6px")
   }
 
   @HTMLBuilder
@@ -68,11 +167,12 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitHeading(_ heading: Markdown.Heading) -> AnyHTML {
-    Header(heading.level) {
+    Header(heading.level + 2) {
       for child in heading.children {
         visit(child)
       }
     }
+    .color(.offBlack.dark(.offWhite))
   }
 
   @HTMLBuilder
@@ -83,7 +183,13 @@ private struct HTMLConverter: MarkupVisitor {
   @HTMLBuilder
   mutating func visitImage(_ image: Markdown.Image) -> AnyHTML {
     if let source = image.source {
-      Image(source: source, description: image.title ?? "")
+      VStack(alignment: .center) {
+        Link(href: source) {
+          Image(source: source, description: image.title ?? "")
+            .inlineStyle("margin", "0 1rem")
+            .inlineStyle("border-radius", "6px")
+        }
+      }
     }
   }
 
@@ -117,8 +223,10 @@ private struct HTMLConverter: MarkupVisitor {
   @HTMLBuilder
   mutating func visitListItem(_ listItem: Markdown.ListItem) -> AnyHTML {
     li {
-      for child in listItem.children {
-        visit(child)
+      VStack(spacing: 0.5) {
+        for child in listItem.children {
+          visit(child)
+        }
       }
     }
   }
@@ -130,15 +238,19 @@ private struct HTMLConverter: MarkupVisitor {
         visit(child)
       }
     }
+    .flexContainer(direction: "column", rowGap: "0.5rem")
   }
 
   @HTMLBuilder
   mutating func visitParagraph(_ paragraph: Markdown.Paragraph) -> AnyHTML {
-    Paragraph {
+    p {
       for child in paragraph.children {
         visit(child)
       }
     }
+    .inlineStyle("line-height", "1.5")
+    .inlineStyle("padding", "0")
+    .inlineStyle("margin", "0")
   }
 
   @HTMLBuilder
@@ -216,7 +328,10 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitThematicBreak(_ thematicBreak: Markdown.ThematicBreak) -> AnyHTML {
-    Divider()
+    div {
+      Divider()
+    }
+    .inlineStyle("margin", "1rem 0 2rem")
   }
 
   @HTMLBuilder
@@ -226,6 +341,7 @@ private struct HTMLConverter: MarkupVisitor {
         visit(child)
       }
     }
+    .flexContainer(direction: "column", rowGap: "0.5rem")
   }
 }
 
@@ -263,4 +379,40 @@ private struct AnyHTML: HTML {
     render(html.base)
   }
   var body: Never { fatalError() }
+}
+
+private struct BlockQuoteStyle {
+  var backgroundColor: PointFreeColor
+  var borderColor: PointFreeColor
+  init(blockName: String) {
+    switch blockName {
+    case "Warning", "Correction":
+      self.backgroundColor = PointFreeColor(rawValue: "#FDF2F4").dark(.init(rawValue: "#2E0402"))
+      self.borderColor = PointFreeColor(rawValue: "#D02C1E").dark(.init(rawValue: "#EB4642"))
+    case "Important":
+      self.backgroundColor = PointFreeColor(rawValue: "#FEFBF3").dark(.init(rawValue: "#291F04"))
+      self.borderColor = PointFreeColor(rawValue: "#966922").dark(.init(rawValue: "#F4B842"))
+    case "Announcement", "Tip":
+      self.backgroundColor = PointFreeColor(rawValue: "#FBFFFF").dark(.init(rawValue: "#0F2C2B"))
+      self.borderColor = PointFreeColor(rawValue: "#4B767C").dark(.init(rawValue: "#9FFCE5"))
+    case "Preamble":
+      self.backgroundColor = PointFreeColor(rawValue: "#FBF8FF").dark(.init(rawValue: "#1e1925"))
+      self.borderColor = PointFreeColor(rawValue: "#8D51F6").dark(.init(rawValue: "#8D51F6"))
+    default:
+      self.backgroundColor = PointFreeColor(rawValue: "#f5f5f5").dark(.init(rawValue: "#323232"))
+      self.borderColor = PointFreeColor(rawValue: "#696969").dark(.init(rawValue: "#9a9a9a"))
+    }
+  }
+}
+
+private func value(forArgument argument: String, block: BlockDirective) -> String? {
+  block.argumentText.segments
+    .compactMap {
+      let text = $0.trimmedText.drop(while: { $0 == " " })
+      return text.hasPrefix("\(argument): \"")
+        ? text.dropFirst("\(argument): \"".count).prefix(while: { $0 != "\"" })
+        : nil
+    }
+    .first
+    .map(String.init)
 }
