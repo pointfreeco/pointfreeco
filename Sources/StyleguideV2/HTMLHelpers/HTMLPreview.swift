@@ -13,6 +13,14 @@
       self.body = body()
       self.head = head()
     }
+
+    public init<D: HTMLDocument>(
+      @HTMLBuilder document: () -> D
+    ) where Head == D.Head, Body == D.Content {
+      let document = document()
+      self.body = document.body
+      self.head = document.head
+    }
   }
 
   extension HTMLPreview: NSViewRepresentable {

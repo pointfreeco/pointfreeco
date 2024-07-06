@@ -7,7 +7,6 @@ public let post0115_MacroTesting020 = BlogPost(
     easier to fully assert on your macros, including holistic testing of diagnostics, fix-its, and
     expanded source code.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 115),
   coverImage: nil,
   id: 115,
   publishedAt: yearMonthDayFormatter.date(from: "2023-10-03")!,

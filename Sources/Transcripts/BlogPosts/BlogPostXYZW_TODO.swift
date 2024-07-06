@@ -5,7 +5,6 @@ public let postXYZW_TODO = BlogPost(
   blurb: """
     TODO
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 0),  // TODO
   coverImage: nil,  // TODO
   hidden: .no,  // todo
   hideFromSlackRSS: false,  // todo

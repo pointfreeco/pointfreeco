@@ -8,7 +8,6 @@ public let post0144_WWDCSale = BlogPost(
     and get access to our upcoming series, such as "Modern UIKit", as well as all of our future \
     deep dives into WWDC 24's announcements!
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 144),
   coverImage: nil,
   hidden: .noUntil(yearMonthDayFormatter.date(from: "2024-06-19")!),
   hideFromSlackRSS: true,

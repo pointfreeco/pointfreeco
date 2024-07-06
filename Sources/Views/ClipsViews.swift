@@ -122,6 +122,56 @@ public func clipView(clip: Models.Clip) -> Node {
   ]
 }
 
+var subscriberCalloutView: Node {
+  @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
+
+  guard subscriberState.isNonSubscriber else { return [] }
+
+  return [
+    divider,
+    .gridRow(
+      .gridColumn(
+        sizes: [.desktop: 9, .mobile: 12],
+        attributes: [.style(margin(leftRight: .auto))],
+        .div(
+          attributes: [
+            .class(
+              [
+                Class.margin([.mobile: [.all: 4]]),
+                Class.padding([.mobile: [.all: 3]]),
+                Class.pf.colors.bg.gray900,
+              ]
+            )
+          ],
+          .h4(
+            attributes: [
+              .class(
+                [
+                  Class.pf.type.responsiveTitle4,
+                  Class.padding([.mobile: [.bottom: 2]]),
+                ]
+              )
+            ],
+            "Subscribe to Point-Free"
+          ),
+          .p(
+            "👋 Hey there! See anything you like? You may be interested in ",
+            .a(
+              attributes: [
+                .href(siteRouter.path(for: .pricingLanding)),
+                .class([Class.pf.type.underlineLink]),
+              ],
+              "subscribing"
+            ),
+            " so that you get access to these episodes and all future ones."
+          )
+        )
+      )
+    ),
+  ]
+}
+
 public func clipsView(clips: [Models.Clip]) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 

@@ -6,7 +6,6 @@ public let post0127_EOYSale = BlogPost(
     Through the new year, we're offering personal Point-Free subscriptions for 25% off the first \
     year!
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 127),
   coverImage: nil,
   hidden: .yes,
   hideFromSlackRSS: true,

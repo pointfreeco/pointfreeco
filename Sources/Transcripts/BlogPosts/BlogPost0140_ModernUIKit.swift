@@ -7,7 +7,6 @@ public let post0140_ModernUIKit = BlogPost(
     how Swift's new observation tools completely revolutionize the way one interacts with UIKit,
     including 2-way bindings, navigation, and more!
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 140),
   coverImage: nil,
   hidden: .no,
   hideFromSlackRSS: false,

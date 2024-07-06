@@ -7,7 +7,6 @@ public let post0130_TCAObservationRelease = BlogPost(
     Architecture, simplifying nearly every facet of the library. Join us for an overview, as well \
     as a special announcement!
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 130),
   coverImage: nil,
   hidden: .no,
   hideFromSlackRSS: false,

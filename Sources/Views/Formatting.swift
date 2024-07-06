@@ -15,9 +15,20 @@ extension Date {
     Self.episodeFormatter.string(from: self)
   }
 
+  public func weekdayMonthDayYear() -> String {
+    Self.newsletterFormatter.string(from: self)
+  }
+
   private static let episodeFormatter: DateFormatter = {
     let df = DateFormatter()
     df.dateFormat = "MMM d, yyyy"
+    df.timeZone = TimeZone(secondsFromGMT: 0)
+    return df
+  }()
+
+  private static let newsletterFormatter: DateFormatter = {
+    let df = DateFormatter()
+    df.dateFormat = "EEEE MMMM d, yyyy"
     df.timeZone = TimeZone(secondsFromGMT: 0)
     return df
   }()

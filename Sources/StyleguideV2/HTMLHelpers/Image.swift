@@ -11,5 +11,6 @@ public struct Image: HTML {
     img()
       .attribute("src", source)
       .attribute("alt", description)
+      .inlineStyle("max-width", "100%")
   }
 }

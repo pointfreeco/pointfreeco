@@ -6,7 +6,6 @@ public let post0141_TCAFAQ = BlogPost(
     A collection of some of the most common questions and comments people have concerning the
     library.
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 141),
   coverImage: nil,
   hidden: .no,
   hideFromSlackRSS: false,

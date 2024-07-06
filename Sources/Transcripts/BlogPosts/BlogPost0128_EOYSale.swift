@@ -6,7 +6,6 @@ public let post0128_EOYSale = BlogPost(
     Get 25% off for the first year of subscription with our end-of-year sale. Get access to all past
     episodes, as well as everything we have planned for next year!
     """,
-  contentBlocks: loadBlogTranscriptBlocks(forSequence: 128),
   coverImage: nil,
   hidden: .yes,
   hideFromSlackRSS: true,
