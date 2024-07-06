@@ -110,49 +110,50 @@ struct CenterColumn<Content: HTML>: HTML {
 }
 
 #if DEBUG && canImport(SwiftUI)
-import SwiftUI
-import Transcripts
+  import SwiftUI
+  import Transcripts
 
-#Preview("Clips Index", traits: .fixedLayout(width: 800, height: 1000)) {
-  HTMLPreview {
-    PageLayout(layoutData: SimplePageLayoutData(title: "")) {
-      ClipsIndex(
-        clips: [
-          .mock,
-          .mock,
-          .mock,
-          .mock,
-        ]
+  #Preview("Clips Index", traits: .fixedLayout(width: 800, height: 1000)) {
+    HTMLPreview {
+      PageLayout(layoutData: SimplePageLayoutData(title: "")) {
+        ClipsIndex(
+          clips: [
+            .mock,
+            .mock,
+            .mock,
+            .mock,
+          ]
+        )
+      }
+    }
+  }
+
+  #Preview("Clip Show", traits: .fixedLayout(width: 800, height: 1000)) {
+    HTMLPreview {
+      PageLayout(layoutData: SimplePageLayoutData(title: "")) {
+        ClipView(clip: .mock)
+      }
+    }
+  }
+
+  extension Models.Clip {
+    fileprivate static var mock: Self {
+      Models.Clip(
+        id: Clip.ID(UUID()),
+        blurb: """
+          We often need to perform async work when there is no async context, such as in SwiftUI button action closures. In such cases it seems that you have no choice but to spin up an unstructured Task, but you may have heard that doing so it bad. So what are you to do? Well, there is an easy answer…
+          """,
+        createdAt: Date(),
+        description: """
+          We often need to perform async work when there is no async context, such as in SwiftUI button action closures. In such cases it seems that you have no choice but to spin up an unstructured Task, but you may have heard that doing so it bad. So what are you to do? Well, there is an easy answer…
+          """,
+        duration: 300,
+        order: 1,
+        posterURL:
+          "https://i.vimeocdn.com/video/1864209432-b580f900f7a12b935e0e8c7028c124b5d15c8f80efb688445312650c9b973910-d",
+        title: "How should you perform async work in a non-async context?",
+        vimeoVideoID: 790_482_468
       )
     }
   }
-}
-
-#Preview("Clip Show", traits: .fixedLayout(width: 800, height: 1000)) {
-  HTMLPreview {
-    PageLayout(layoutData: SimplePageLayoutData(title: "")) {
-      ClipView(clip: .mock)
-    }
-  }
-}
-
-extension Models.Clip {
-  fileprivate static var mock: Self {
-    Models.Clip(
-      id: Clip.ID(UUID()),
-      blurb: """
-        We often need to perform async work when there is no async context, such as in SwiftUI button action closures. In such cases it seems that you have no choice but to spin up an unstructured Task, but you may have heard that doing so it bad. So what are you to do? Well, there is an easy answer…
-        """,
-      createdAt: Date(),
-      description: """
-        We often need to perform async work when there is no async context, such as in SwiftUI button action closures. In such cases it seems that you have no choice but to spin up an unstructured Task, but you may have heard that doing so it bad. So what are you to do? Well, there is an easy answer…
-        """,
-      duration: 300,
-      order: 1,
-      posterURL: "https://i.vimeocdn.com/video/1864209432-b580f900f7a12b935e0e8c7028c124b5d15c8f80efb688445312650c9b973910-d",
-      title: "How should you perform async work in a non-async context?",
-      vimeoVideoID: 790482468
-    )
-  }
-}
 #endif
