@@ -469,7 +469,7 @@ private struct ReferAFriend: HTML {
           )
       }
       .inlineStyle("justify-content", "center")
-      .inlineStyle("margin", "2rem 4rem")
+      .inlineStyle("margin", "2rem 0 0 0")
     }
   }
 }

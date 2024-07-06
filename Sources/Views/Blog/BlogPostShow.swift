@@ -8,6 +8,7 @@ import Models
 import PointFreeRouter
 import Prelude
 import Styleguide
+import StyleguideV2
 
 public func blogPostShowView(post: BlogPost) -> Node {
   @Dependency(\.date.now) var now
@@ -65,10 +66,19 @@ public func blogPostContentView(_ post: BlogPost) -> Node {
       ]
     ),
 
-    .div(
-      attributes: [.class([Class.pf.colors.bg.white])],
-      .fragment(post.contentBlocks.map { transcriptBlockView($0) })
-    ),
+    Node {
+      VStack(spacing: 3) {
+        if let content = post.content {
+          article {
+            HTMLMarkdown(content)
+              .color(.gray150.dark(.gray800))
+              .linkColor(.black.dark(.white))
+              .linkUnderline(true)
+          }
+        }
+      }
+      .inlineStyle("margin", "0 auto", media: .desktop)
+    }
   ]
 }
 

@@ -643,7 +643,12 @@ private struct BaseStyles: HTML {
         box-sizing:inherit
       }
       body, html {
-        background: #121212;
+        background: #fff;
+      }
+      @media (prefers-color-scheme: dark) {
+        body, html {
+          background: #121212;
+        }
       }
       .markdown *:link, .markdown *:visited { color: inherit; }
       .diagnostic * {

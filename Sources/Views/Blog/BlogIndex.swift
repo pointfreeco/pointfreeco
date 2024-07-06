@@ -31,6 +31,8 @@ public func blogIndexView(blogPosts: [BlogPost]) -> Node {
   ]
 }
 
+import StyleguideV2
+
 private func newBlogPostView(_ post: BlogPost) -> Node {
   return [
     .div(

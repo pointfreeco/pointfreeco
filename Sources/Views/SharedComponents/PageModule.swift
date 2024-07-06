@@ -117,7 +117,7 @@ public struct PageModuleTheme {
     leftRightMargin: Double,
     leftRightMarginDesktop: Double,
     titleMarginBottom: Double,
-    gridJustification: String = "baseline"
+    gridJustification: String = "flex-start"
   ) {
     self.backgroundColor = backgroundColor
     self.contentBackgroundColor = contentBackgroundColor
