@@ -2,7 +2,7 @@ GET http://localhost:8080/blog
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 35536
+Content-Length: 35818
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -335,59 +335,61 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
 .flex-wrap-101{flex-wrap:nowrap}
 .justify-content-102{justify-content:center}
 .color-103{color:#121212}
-.margin-top-105:not(:first-child){margin-top:1.5rem}
-.margin-bottom-106:not(:last-child){margin-bottom:0.5rem}
-.font-size-107{font-size:2.0rem}
-.row-gap-108{row-gap:0.5rem}
-.padding-109{padding:0}
-.color-110{color:#808080}
-.row-gap-112{row-gap:3.0rem}
-.background-113{background:#fff}
-.padding-top-120{padding-top:4.0rem}
-.padding-left-121{padding-left:2.0rem}
-.padding-bottom-122{padding-bottom:4.0rem}
-.padding-right-123{padding-right:2.0rem}
-.background-124{background:#fafafa}
-.max-width-128{max-width:40rem}
-.color-129{color:#555555}
-.margin-top-131{margin-top:3rem}
-.display-132{display:inline-block}
-.padding-133{padding:1.0rem 1.25rem}
-.text-decoration-134:visited{text-decoration:underline}
-.text-decoration-135:link{text-decoration:underline}
-.margin-top-139{margin-top:0.5rem}
-.font-size-140{font-size:1.5rem}
-.color-141{color:#171717}
-.color-142{color:#666666}
-.margin-143{margin:2rem 0}
-.display-144:last-child{display:none}
-.border-145{border:none}
-.border-top-146{border-top:1px solid #ccc}
-.margin-148{margin:0 30%}
-.background-color-157{background-color:#121212}
-.align-items-158{align-items:first baseline}
-.font-size-164{font-size:1.25rem}
-.line-height-166{line-height:1.45}
-.color-168:link{color:#79f2b0}
-.color-169:visited{color:#79f2b0}
-.display-170{display:grid}
-.grid-template-columns-171{grid-template-columns:1fr 2fr}
-.font-size-172{font-size:0.75rem}
-.letter-spacing-174{letter-spacing:0.54pt}
-.line-height-175{line-height:1.25}
-.text-transform-176{text-transform:uppercase}
+.color-105:link{color:#171717}
+.color-107:visited{color:#171717}
+.margin-top-109:not(:first-child){margin-top:1.5rem}
+.margin-bottom-110:not(:last-child){margin-bottom:0.5rem}
+.font-size-111{font-size:2.0rem}
+.row-gap-112{row-gap:0.5rem}
+.padding-113{padding:0}
+.color-114{color:#808080}
+.row-gap-116{row-gap:3.0rem}
+.background-117{background:#fff}
+.padding-top-124{padding-top:4.0rem}
+.padding-left-125{padding-left:2.0rem}
+.padding-bottom-126{padding-bottom:4.0rem}
+.padding-right-127{padding-right:2.0rem}
+.background-128{background:#fafafa}
+.max-width-132{max-width:40rem}
+.color-133{color:#555555}
+.margin-top-135{margin-top:3rem}
+.display-136{display:inline-block}
+.padding-137{padding:1.0rem 1.25rem}
+.text-decoration-138:visited{text-decoration:underline}
+.text-decoration-139:link{text-decoration:underline}
+.margin-top-143{margin-top:0.5rem}
+.font-size-144{font-size:1.5rem}
+.color-145{color:#171717}
+.color-146{color:#666666}
+.margin-147{margin:2rem 0}
+.display-148:last-child{display:none}
+.border-149{border:none}
+.border-top-150{border-top:1px solid #ccc}
+.margin-152{margin:0 30%}
+.background-color-161{background-color:#121212}
+.align-items-162{align-items:first baseline}
+.font-size-168{font-size:1.25rem}
+.line-height-170{line-height:1.45}
+.color-172:link{color:#79f2b0}
+.color-173:visited{color:#79f2b0}
+.display-174{display:grid}
+.grid-template-columns-175{grid-template-columns:1fr 2fr}
+.font-size-176{font-size:0.75rem}
+.letter-spacing-178{letter-spacing:0.54pt}
+.line-height-179{line-height:1.25}
+.text-transform-180{text-transform:uppercase}
 @media only screen and (max-width: 831px){
   .position-1{position:sticky}
   .top-2{top:0}
   .display-17{display:none}
   input:checked ~ .display-63{display:block}
-  .padding-top-153{padding-top:2.0rem}
-  .padding-left-154{padding-left:2.0rem}
-  .padding-bottom-155{padding-bottom:2.0rem}
-  .padding-right-156{padding-right:2.0rem}
-  .padding-bottom-163{padding-bottom:1.0rem}
-  .margin-bottom-167{margin-bottom:0.0rem}
-  .padding-top-177{padding-top:1.0rem}
+  .padding-top-157{padding-top:2.0rem}
+  .padding-left-158{padding-left:2.0rem}
+  .padding-bottom-159{padding-bottom:2.0rem}
+  .padding-right-160{padding-right:2.0rem}
+  .padding-bottom-167{padding-bottom:1.0rem}
+  .margin-bottom-171{margin-bottom:0.0rem}
+  .padding-top-181{padding-top:1.0rem}
 }
 @media only screen and (min-width: 832px){
   .padding-5{padding:1.5rem}
@@ -396,35 +398,37 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
   .padding-76{padding:8rem 3rem}
   .margin-95{margin:0 auto}
   .padding-97{padding:4.0rem 3.0rem 4.0rem}
-  .width-111{width:60%}
-  .align-items-115{align-items:center}
-  .padding-top-116{padding-top:8.0rem}
-  .padding-left-117{padding-left:8.0rem}
-  .padding-bottom-118{padding-bottom:8.0rem}
-  .padding-right-119{padding-right:8.0rem}
-  .text-align-126{text-align:center}
-  .padding-top-149{padding-top:4.0rem}
-  .padding-left-150{padding-left:4.0rem}
-  .padding-bottom-151{padding-bottom:4.0rem}
-  .padding-right-152{padding-right:4.0rem}
-  .column-gap-159{column-gap:1.0rem}
-  .display-160{display:grid}
-  .grid-template-columns-161{grid-template-columns:1fr 1fr}
-  .row-gap-162{row-gap:1.0rem}
-  .font-size-165{font-size:1.5rem}
-  .font-size-173{font-size:0.875rem}
+  .width-115{width:60%}
+  .align-items-119{align-items:center}
+  .padding-top-120{padding-top:8.0rem}
+  .padding-left-121{padding-left:8.0rem}
+  .padding-bottom-122{padding-bottom:8.0rem}
+  .padding-right-123{padding-right:8.0rem}
+  .text-align-130{text-align:center}
+  .padding-top-153{padding-top:4.0rem}
+  .padding-left-154{padding-left:4.0rem}
+  .padding-bottom-155{padding-bottom:4.0rem}
+  .padding-right-156{padding-right:4.0rem}
+  .column-gap-163{column-gap:1.0rem}
+  .display-164{display:grid}
+  .grid-template-columns-165{grid-template-columns:1fr 1fr}
+  .row-gap-166{row-gap:1.0rem}
+  .font-size-169{font-size:1.5rem}
+  .font-size-177{font-size:0.875rem}
 }
 @media (prefers-color-scheme: dark){
   .background-color-94{background-color:#121212}
   .color-104{color:#fafafa}
-  .background-114{background:#121212}
-  .background-125{background:#171717}
-  .color-127{color:#fff}
-  .color-130{color:#ccc}
-  .color-136:link{color:#666666}
-  .color-137:visited{color:#666666}
-  .color-138{color:#a8a8a8}
-  .border-top-147{border-top:1px solid #555555}
+  .color-106:link{color:#fafafa}
+  .color-108:visited{color:#fafafa}
+  .background-118{background:#121212}
+  .background-129{background:#171717}
+  .color-131{color:#fff}
+  .color-134{color:#ccc}
+  .color-140:link{color:#666666}
+  .color-141:visited{color:#666666}
+  .color-142{color:#a8a8a8}
+  .border-top-151{border-top:1px solid #555555}
 }
 
     </style>
@@ -479,153 +483,153 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
 <div class="background-color-93 background-color-94">
   <div class="max-width-6 margin-95 padding-96 padding-97 display-8 flex-direction-9 flex-wrap-10 justify-content-98 align-items-99">
     <div class="padding-bottom-100 flex-basis-66 display-8 flex-direction-9 flex-wrap-101 justify-content-102 align-items-12">
-      <pf-vstack class="color-103 color-104 text-align-68 width-0 align-items-71 display-8 flex-direction-72 max-width-73 row-gap-74">
-        <h3 class="margin-62 margin-top-105 margin-bottom-106 font-size-107 font-weight-82 line-height-83">
+      <pf-vstack class="color-103 color-104 text-align-68 width-0 align-items-71 display-8 flex-direction-72 max-width-73 row-gap-74"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-105 color-106 color-107 color-108" href="/blog/posts/0-mock-blog-post">
+        <h3 class="margin-62 margin-top-109 margin-bottom-110 font-size-111 font-weight-82 line-height-83">
           <pf-markdown class="display-47">
-            <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-108">
-              <p class="line-height-86 padding-109 margin-62">Mock Blog Post
+            <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-112">
+              <p class="line-height-86 padding-113 margin-62">Mock Blog Post
               </p>
             </pf-vstack>
           </pf-markdown>
-        </h3>
-        <div class="color-110">Monday April 16, 2018
+        </h3></a>
+        <div class="color-114">Monday April 16, 2018
         </div>
       </pf-vstack>
     </div>
-    <pf-vstack class="margin-95 width-111 align-items-71 display-8 flex-direction-72 max-width-73 row-gap-112">
+    <pf-vstack class="margin-95 width-115 align-items-71 display-8 flex-direction-72 max-width-73 row-gap-116">
     </pf-vstack>
   </div>
 </div>
-<div class="background-113 background-114">
-  <div class="align-items-115 display-8 flex-direction-72 flex-wrap-10 row-gap-108 padding-top-116 padding-left-117 padding-bottom-118 padding-right-119 padding-top-120 padding-left-121 padding-bottom-122 padding-right-123 background-124 background-125 margin-7 max-width-6">
-    <div class="text-align-126">
-      <h2 class="color-103 color-127 margin-62 margin-top-79 margin-bottom-80 font-size-81 font-weight-82 line-height-83">Get started with our free&nbsp;plan
+<div class="background-117 background-118">
+  <div class="align-items-119 display-8 flex-direction-72 flex-wrap-10 row-gap-112 padding-top-120 padding-left-121 padding-bottom-122 padding-right-123 padding-top-124 padding-left-125 padding-bottom-126 padding-right-127 background-128 background-129 margin-7 max-width-6">
+    <div class="text-align-130">
+      <h2 class="color-103 color-131 margin-62 margin-top-79 margin-bottom-80 font-size-81 font-weight-82 line-height-83">Get started with our free&nbsp;plan
       </h2>
     </div>
-    <div class="text-align-126">
-      <p class="margin-95 max-width-128 color-129 color-130 font-weight-85 line-height-86 font-size-87 padding-bottom-88 padding-top-89 padding-left-90 padding-right-91 margin-62 line-height-86">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
+    <div class="text-align-130">
+      <p class="margin-95 max-width-132 color-133 color-134 font-weight-85 line-height-86 font-size-87 padding-bottom-88 padding-top-89 padding-left-90 padding-right-91 margin-62 line-height-86">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
       </p>
     </div>
-    <div class="text-align-126 width-0"><a class="margin-top-131 display-132 font-size-87 color-39 color-40 color-41 background-color-42 border-43 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-133 transition-38" href="/signup">Sign up for free →</a>
-    </div><a class="text-align-126 font-weight-85 line-height-86 font-size-26 text-decoration-134 text-decoration-135 text-decoration-16 color-23 color-136 color-24 color-137" href="/pricing">View plans and pricing</a>
+    <div class="text-align-130 width-0"><a class="margin-top-135 display-136 font-size-87 color-39 color-40 color-41 background-color-42 border-43 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-137 transition-38" href="/signup">Sign up for free →</a>
+    </div><a class="text-align-130 font-weight-85 line-height-86 font-size-26 text-decoration-138 text-decoration-139 text-decoration-16 color-23 color-140 color-24 color-141" href="/pricing">View plans and pricing</a>
   </div>
 </div>
 <div class="background-color-93 background-color-94">
   <div class="max-width-6 margin-95 padding-96 padding-97 display-8 flex-direction-9 flex-wrap-10 justify-content-98 align-items-99">
     <div class="padding-bottom-100 flex-basis-66 display-8 flex-direction-9 flex-wrap-101 justify-content-102 align-items-12">
-      <h3 class="color-103 color-104 margin-62 margin-top-105 margin-bottom-106 font-size-107 font-weight-82 line-height-83">Older posts
+      <h3 class="color-103 color-104 margin-62 margin-top-109 margin-bottom-110 font-size-111 font-weight-82 line-height-83">Older posts
       </h3>
     </div>
     <ul class="padding-left-18 list-style-type-19">
       <li>
-        <div class="color-110 color-138">Apr 16, 2018
+        <div class="color-114 color-142">Apr 16, 2018
         </div>
-        <div class="margin-top-139">
-          <h4 class="margin-62 margin-top-105 margin-bottom-106 font-size-140 font-weight-82 line-height-83"><a class="color-141 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
+        <div class="margin-top-143">
+          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
           </h4>
         </div>
-        <div class="color-142 color-138">
+        <div class="color-146 color-142">
           <pf-markdown class="display-47">
-            <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-108">
-              <p class="line-height-86 padding-109 margin-62">This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
+            <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-112">
+              <p class="line-height-86 padding-113 margin-62">This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
               </p>
             </pf-vstack>
           </pf-markdown>
         </div>
       </li>
-      <li class="margin-143 display-144">
-        <hr class="border-145 border-top-146 border-top-147 margin-148">
+      <li class="margin-147 display-148">
+        <hr class="border-149 border-top-150 border-top-151 margin-152">
       </li>
       <li>
-        <div class="color-110 color-138">Apr 16, 2018
+        <div class="color-114 color-142">Apr 16, 2018
         </div>
-        <div class="margin-top-139">
-          <h4 class="margin-62 margin-top-105 margin-bottom-106 font-size-140 font-weight-82 line-height-83"><a class="color-141 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
+        <div class="margin-top-143">
+          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
           </h4>
         </div>
-        <div class="color-142 color-138">
+        <div class="color-146 color-142">
           <pf-markdown class="display-47">
-            <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-108">
-              <p class="line-height-86 padding-109 margin-62">This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
+            <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-112">
+              <p class="line-height-86 padding-113 margin-62">This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
               </p>
             </pf-vstack>
           </pf-markdown>
         </div>
       </li>
-      <li class="margin-143 display-144">
-        <hr class="border-145 border-top-146 border-top-147 margin-148">
+      <li class="margin-147 display-148">
+        <hr class="border-149 border-top-150 border-top-151 margin-152">
       </li>
       <li>
-        <div class="color-110 color-138">Apr 16, 2018
+        <div class="color-114 color-142">Apr 16, 2018
         </div>
-        <div class="margin-top-139">
-          <h4 class="margin-62 margin-top-105 margin-bottom-106 font-size-140 font-weight-82 line-height-83"><a class="color-141 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
+        <div class="margin-top-143">
+          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
           </h4>
         </div>
-        <div class="color-142 color-138">
+        <div class="color-146 color-142">
           <pf-markdown class="display-47">
-            <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-108">
-              <p class="line-height-86 padding-109 margin-62">This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
+            <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-112">
+              <p class="line-height-86 padding-113 margin-62">This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
               </p>
             </pf-vstack>
           </pf-markdown>
         </div>
       </li>
-      <li class="margin-143 display-144">
-        <hr class="border-145 border-top-146 border-top-147 margin-148">
+      <li class="margin-147 display-148">
+        <hr class="border-149 border-top-150 border-top-151 margin-152">
       </li>
       <li>
-        <div class="color-110 color-138">Apr 16, 2018
+        <div class="color-114 color-142">Apr 16, 2018
         </div>
-        <div class="margin-top-139">
-          <h4 class="margin-62 margin-top-105 margin-bottom-106 font-size-140 font-weight-82 line-height-83"><a class="color-141 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
+        <div class="margin-top-143">
+          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
           </h4>
         </div>
-        <div class="color-142 color-138">
+        <div class="color-146 color-142">
           <pf-markdown class="display-47">
-            <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-108">
-              <p class="line-height-86 padding-109 margin-62">This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
+            <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-112">
+              <p class="line-height-86 padding-113 margin-62">This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
               </p>
             </pf-vstack>
           </pf-markdown>
         </div>
       </li>
-      <li class="margin-143 display-144">
-        <hr class="border-145 border-top-146 border-top-147 margin-148">
+      <li class="margin-147 display-148">
+        <hr class="border-149 border-top-150 border-top-151 margin-152">
       </li>
       <li>
-        <div class="color-110 color-138">Apr 16, 2018
+        <div class="color-114 color-142">Apr 16, 2018
         </div>
-        <div class="margin-top-139">
-          <h4 class="margin-62 margin-top-105 margin-bottom-106 font-size-140 font-weight-82 line-height-83"><a class="color-141 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
+        <div class="margin-top-143">
+          <h4 class="margin-62 margin-top-109 margin-bottom-110 font-size-144 font-weight-82 line-height-83"><a class="color-145 color-104 text-decoration-14 text-decoration-15 text-decoration-16" href="/blog/posts/0-mock-blog-post">Mock Blog Post</a>
           </h4>
         </div>
-        <div class="color-142 color-138">
+        <div class="color-146 color-142">
           <pf-markdown class="display-47">
-            <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-108">
-              <p class="line-height-86 padding-109 margin-62">This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
+            <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-112">
+              <p class="line-height-86 padding-113 margin-62">This is the blurb to a mock blog post. This should just be short and to the point, using only plain text, no markdown.
               </p>
             </pf-vstack>
           </pf-markdown>
         </div>
       </li>
-      <li class="margin-143 display-144">
-        <hr class="border-145 border-top-146 border-top-147 margin-148">
+      <li class="margin-147 display-148">
+        <hr class="border-149 border-top-150 border-top-151 margin-152">
       </li>
     </ul>
   </div>
 </div>
-<footer class="padding-top-149 padding-left-150 padding-bottom-151 padding-right-152 padding-top-153 padding-left-154 padding-bottom-155 padding-right-156 background-color-157">
-  <pf-vgrid class="align-items-158 width-0 column-gap-159 display-160 grid-template-columns-161 row-gap-162">
-    <div class="padding-bottom-163 padding-right-152">
-      <h4 class="font-size-164 font-size-165 line-height-166 margin-bottom-167 font-size-140"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-40 color-39" href="/">Point-Free</a>
+<footer class="padding-top-153 padding-left-154 padding-bottom-155 padding-right-156 padding-top-157 padding-left-158 padding-bottom-159 padding-right-160 background-color-161">
+  <pf-vgrid class="align-items-162 width-0 column-gap-163 display-164 grid-template-columns-165 row-gap-166">
+    <div class="padding-bottom-167 padding-right-156">
+      <h4 class="font-size-168 font-size-169 line-height-170 margin-bottom-171 font-size-144"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-40 color-39" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-85 line-height-86 font-size-87 color-41">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-168 color-169" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-168 color-169" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-85 line-height-86 font-size-87 color-41">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-172 color-173" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-172 color-173" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="width-0 column-gap-78 display-170 grid-template-columns-171 row-gap-74">
+    <pf-vgrid class="width-0 column-gap-78 display-174 grid-template-columns-175 row-gap-74">
       <div>
-        <h5 class="font-size-172 font-size-173 letter-spacing-174 line-height-175 text-transform-176 color-41">Content
+        <h5 class="font-size-176 font-size-177 letter-spacing-178 line-height-179 text-transform-180 color-41">Content
         </h5>
         <ol class="padding-left-18 list-style-type-19">
           <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/pricing">Pricing</a>
@@ -643,7 +647,7 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
         </ol>
       </div>
       <div>
-        <h5 class="font-size-172 font-size-173 letter-spacing-174 line-height-175 text-transform-176 color-41">More
+        <h5 class="font-size-176 font-size-177 letter-spacing-178 line-height-179 text-transform-180 color-41">More
         </h5>
         <ol class="padding-left-18 list-style-type-19">
           <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/about">About Us</a>
@@ -661,7 +665,7 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
         </ol>
       </div>
     </pf-vgrid>
-    <p class="padding-top-177 font-weight-85 line-height-86 font-size-26 color-142">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
+    <p class="padding-top-181 font-weight-85 line-height-86 font-size-26 color-146">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
     </p>
   </pf-vgrid>
 </footer>

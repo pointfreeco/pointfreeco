@@ -42,9 +42,12 @@ struct NewsletterDetailModule: HTML {
       .inlineStyle("width", "60%", media: .desktop)
     } title: {
       VStack {
-        Header(3) {
-          HTMLMarkdown(blogPost.title)
+        Link(destination: .blog(.show(.left(blogPost.slug)))) {
+          Header(3) {
+            HTMLMarkdown(blogPost.title)
+          }
         }
+        .linkColor(.offBlack.dark(.offWhite))
 
         div {
           HTMLText(blogPost.publishedAt.weekdayMonthDayYear())
