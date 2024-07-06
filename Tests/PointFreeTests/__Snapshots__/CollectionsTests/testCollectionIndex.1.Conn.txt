@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 29369
+Content-Length: 30055
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -23,13 +23,16 @@ X-XSS-Protection: 1; mode=block
     <style>/*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template{display:none}[hidden]{display:none}
     </style>
     <style>html {
-  font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family: ui-sans-serif, -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   -o-box-sizing: border-box;
   box-sizing: border-box;
+}
+code, pre, tt, kbd, samp {
+  font-family: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, monospace;
 }
 body {
   -webkit-box-sizing: border-box;
@@ -48,7 +51,26 @@ body {
 body, html {
   background: #fff;
 }
+@media (prefers-color-scheme: dark) {
+  body, html {
+    background: #121212;
+  }
+}
+article > pf-markdown > pf-vstack > p:last-of-type::after {
+  margin: 0 0.5rem;
+  content: "❖";
+}
 .markdown *:link, .markdown *:visited { color: inherit; }
+.diagnostic * {
+  font: inherit;
+  line-height: 1.25 !important;
+}
+.diagnostic pre {
+  background: inherit;
+  margin: 0 1.125rem;
+  padding: 0;
+  text-wrap: auto;
+}
 @media only screen and (min-width: 832px) {
   html {
     font-size: 16px;
@@ -57,11 +79,6 @@ body, html {
 @media only screen and (max-width: 831px) {
   html {
     font-size: 14px;
-  }
-}
-@media (prefers-color-scheme: dark) {
-  body, html {
-    background: #121212;
   }
 }
 @keyframes Pulse {
@@ -157,115 +174,118 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
 .background-70{background:linear-gradient(#121212, #242424)}
 .align-items-71{align-items:stretch}
 .flex-direction-72{flex-direction:column}
-.row-gap-73{row-gap:1.0rem}
-.padding-74{padding:6rem 2rem}
-.column-gap-76{column-gap:1.0rem}
-.margin-top-77:not(:first-child){margin-top:1.75rem}
-.margin-bottom-78:not(:last-child){margin-bottom:0.75rem}
-.font-size-79{font-size:3.0rem}
-.font-weight-80{font-weight:700}
-.line-height-81{line-height:1.2}
-.color-82{color:#ccc}
-.font-weight-83{font-weight:normal}
-.line-height-84{line-height:1.5}
-.font-size-85{font-size:1.0rem}
-.padding-bottom-86:not(:last-child){padding-bottom:0.5rem}
-.padding-top-87{padding-top:0}
-.padding-left-88{padding-left:0}
-.padding-right-89{padding-right:0}
-.color-90{color:#fafafa}
-.background-color-91{background-color:#fff}
-.padding-94{padding:4.0rem 2.0rem 4.0rem}
-.justify-content-96{justify-content:baseline}
-.align-items-97{align-items:baseline}
-.box-shadow-103{box-shadow:0 2px 10px -2px rgba(0,0,0,0.3)}
-.border-radius-104{border-radius:5px}
-.margin-105{margin:1rem 0 2rem 0}
-.overflow-106{overflow:hidden}
-.border-bottom-108{border-bottom:1px solid #e8e8e8}
-.padding-110{padding:2rem 1.5rem}
-.text-decoration-111:hover{text-decoration:none}
-.color-112:link{color:#121212}
-.color-114:visited{color:#121212}
-.margin-top-116:not(:first-child){margin-top:1.5rem}
-.margin-bottom-117:not(:last-child){margin-bottom:0.5rem}
-.font-size-118{font-size:1.5rem}
-.color-119{color:#a8a8a8}
-.padding-121{padding:0.5rem 1.5rem 1.5rem}
-.row-gap-122{row-gap:0}
-.color-123{color:#666666}
-.column-gap-125{column-gap:0.25rem}
-.background-126{background:linear-gradient(#121212, #291a40)}
-.row-gap-128{row-gap:0.5rem}
-.padding-top-133{padding-top:4.0rem}
-.padding-left-134{padding-left:2.0rem}
-.padding-bottom-135{padding-bottom:4.0rem}
-.padding-right-136{padding-right:2.0rem}
-.max-width-138{max-width:40rem}
-.margin-top-139{margin-top:3rem}
-.display-140{display:inline-block}
-.padding-141{padding:1.0rem 1.25rem}
-.text-decoration-142:visited{text-decoration:underline}
-.text-decoration-143:link{text-decoration:underline}
-.background-color-152{background-color:#121212}
-.align-items-153{align-items:first baseline}
-.font-size-156{font-size:1.25rem}
-.line-height-158{line-height:1.45}
-.color-160:link{color:#79f2b0}
-.color-161:visited{color:#79f2b0}
-.display-162{display:grid}
-.grid-template-columns-163{grid-template-columns:1fr 2fr}
-.font-size-164{font-size:0.75rem}
-.letter-spacing-166{letter-spacing:0.54pt}
-.line-height-167{line-height:1.25}
-.text-transform-168{text-transform:uppercase}
+.max-width-73{max-width:100%}
+.row-gap-74{row-gap:1.0rem}
+.padding-75{padding:6rem 2rem}
+.max-height-77{max-height:100%}
+.column-gap-78{column-gap:1.0rem}
+.margin-top-79:not(:first-child){margin-top:1.75rem}
+.margin-bottom-80:not(:last-child){margin-bottom:0.75rem}
+.font-size-81{font-size:3.0rem}
+.font-weight-82{font-weight:700}
+.line-height-83{line-height:1.2}
+.color-84{color:#ccc}
+.font-weight-85{font-weight:normal}
+.line-height-86{line-height:1.5}
+.font-size-87{font-size:1.0rem}
+.padding-bottom-88:not(:last-child){padding-bottom:0.5rem}
+.padding-top-89{padding-top:0}
+.padding-left-90{padding-left:0}
+.padding-right-91{padding-right:0}
+.color-92{color:#fafafa}
+.background-color-93{background-color:#fff}
+.padding-96{padding:4.0rem 2.0rem 4.0rem}
+.justify-content-98{justify-content:flex-start}
+.align-items-99{align-items:baseline}
+.box-shadow-105{box-shadow:0 2px 10px -2px rgba(0,0,0,0.3)}
+.border-radius-106{border-radius:5px}
+.margin-107{margin:1rem 0 2rem 0}
+.overflow-108{overflow:hidden}
+.border-bottom-110{border-bottom:1px solid #e8e8e8}
+.padding-112{padding:2rem 1.5rem}
+.text-decoration-113:hover{text-decoration:none}
+.color-114:link{color:#121212}
+.color-116:visited{color:#121212}
+.margin-top-118:not(:first-child){margin-top:1.5rem}
+.margin-bottom-119:not(:last-child){margin-bottom:0.5rem}
+.font-size-120{font-size:1.5rem}
+.color-121{color:#a8a8a8}
+.padding-123{padding:0.5rem 1.5rem 1.5rem}
+.row-gap-124{row-gap:0}
+.color-125{color:#666666}
+.row-gap-127{row-gap:0.5rem}
+.padding-128{padding:0}
+.column-gap-129{column-gap:0.25rem}
+.background-130{background:linear-gradient(#121212, #291a40)}
+.padding-top-136{padding-top:4.0rem}
+.padding-left-137{padding-left:2.0rem}
+.padding-bottom-138{padding-bottom:4.0rem}
+.padding-right-139{padding-right:2.0rem}
+.max-width-141{max-width:40rem}
+.margin-top-142{margin-top:3rem}
+.display-143{display:inline-block}
+.padding-144{padding:1.0rem 1.25rem}
+.text-decoration-145:visited{text-decoration:underline}
+.text-decoration-146:link{text-decoration:underline}
+.background-color-155{background-color:#121212}
+.align-items-156{align-items:first baseline}
+.font-size-159{font-size:1.25rem}
+.line-height-161{line-height:1.45}
+.color-163:link{color:#79f2b0}
+.color-164:visited{color:#79f2b0}
+.display-165{display:grid}
+.grid-template-columns-166{grid-template-columns:1fr 2fr}
+.font-size-167{font-size:0.75rem}
+.letter-spacing-169{letter-spacing:0.54pt}
+.line-height-170{line-height:1.25}
+.text-transform-171{text-transform:uppercase}
 @media only screen and (max-width: 831px){
   .position-1{position:sticky}
   .top-2{top:0}
   .display-17{display:none}
   input:checked ~ .display-63{display:block}
-  .padding-top-148{padding-top:2.0rem}
-  .padding-left-149{padding-left:2.0rem}
-  .padding-bottom-150{padding-bottom:2.0rem}
-  .padding-right-151{padding-right:2.0rem}
-  .padding-bottom-155{padding-bottom:1.0rem}
-  .margin-bottom-159{margin-bottom:0.0rem}
-  .padding-top-169{padding-top:1.0rem}
+  .padding-top-151{padding-top:2.0rem}
+  .padding-left-152{padding-left:2.0rem}
+  .padding-bottom-153{padding-bottom:2.0rem}
+  .padding-right-154{padding-right:2.0rem}
+  .padding-bottom-158{padding-bottom:1.0rem}
+  .margin-bottom-162{margin-bottom:0.0rem}
+  .padding-top-172{padding-top:1.0rem}
 }
 @media only screen and (min-width: 832px){
   .padding-5{padding:1.5rem}
   .padding-left-20{padding-left:1.5rem}
   .display-45{display:none}
-  .padding-75{padding:8rem 3rem}
-  .margin-93{margin:0 auto}
-  .padding-95{padding:4.0rem 3.0rem 4.0rem}
-  .column-gap-98{column-gap:1.0rem}
-  .display-99{display:grid}
-  .grid-template-columns-100{grid-template-columns:1fr 1fr 1fr}
-  .row-gap-101{row-gap:1.0rem}
-  .align-items-127{align-items:center}
-  .padding-top-129{padding-top:8.0rem}
-  .padding-left-130{padding-left:8.0rem}
-  .padding-bottom-131{padding-bottom:8.0rem}
-  .padding-right-132{padding-right:8.0rem}
-  .text-align-137{text-align:center}
-  .padding-top-144{padding-top:4.0rem}
-  .padding-left-145{padding-left:4.0rem}
-  .padding-bottom-146{padding-bottom:4.0rem}
-  .padding-right-147{padding-right:4.0rem}
-  .grid-template-columns-154{grid-template-columns:1fr 1fr}
-  .font-size-157{font-size:1.5rem}
-  .font-size-165{font-size:0.875rem}
+  .padding-76{padding:8rem 3rem}
+  .margin-95{margin:0 auto}
+  .padding-97{padding:4.0rem 3.0rem 4.0rem}
+  .column-gap-100{column-gap:1.0rem}
+  .display-101{display:grid}
+  .grid-template-columns-102{grid-template-columns:1fr 1fr 1fr}
+  .row-gap-103{row-gap:1.0rem}
+  .align-items-131{align-items:center}
+  .padding-top-132{padding-top:8.0rem}
+  .padding-left-133{padding-left:8.0rem}
+  .padding-bottom-134{padding-bottom:8.0rem}
+  .padding-right-135{padding-right:8.0rem}
+  .text-align-140{text-align:center}
+  .padding-top-147{padding-top:4.0rem}
+  .padding-left-148{padding-left:4.0rem}
+  .padding-bottom-149{padding-bottom:4.0rem}
+  .padding-right-150{padding-right:4.0rem}
+  .grid-template-columns-157{grid-template-columns:1fr 1fr}
+  .font-size-160{font-size:1.5rem}
+  .font-size-168{font-size:0.875rem}
 }
 @media (prefers-color-scheme: dark){
-  .background-color-92{background-color:#121212}
-  .border-102{border:1px #353535 solid}
-  .background-color-107{background-color:#242424}
-  .border-bottom-109{border-bottom:1px solid #3d3d3d}
-  .color-113:link{color:#fff}
-  .color-115:visited{color:#fff}
-  .color-120{color:#666666}
-  .color-124{color:#a8a8a8}
+  .background-color-94{background-color:#121212}
+  .border-104{border:1px #353535 solid}
+  .background-color-109{background-color:#242424}
+  .border-bottom-111{border-bottom:1px solid #3d3d3d}
+  .color-115:link{color:#fff}
+  .color-117:visited{color:#fff}
+  .color-122{color:#666666}
+  .color-126{color:#a8a8a8}
 }
 
     </style>
@@ -305,22 +325,22 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
     </ul>
   </nav>
 </div>
-<pf-vstack class="box-sizing-69 background-70 align-items-71 display-8 flex-direction-72 row-gap-73">
-  <pf-hstack class="box-sizing-69 flex-basis-66 max-width-6 width-0 margin-7 padding-74 padding-75 align-items-12 display-8 flex-direction-9 column-gap-76">
+<pf-vstack class="box-sizing-69 background-70 align-items-71 display-8 flex-direction-72 max-width-73 row-gap-74">
+  <pf-hstack class="box-sizing-69 flex-basis-66 max-width-6 width-0 margin-7 padding-75 padding-76 align-items-12 display-8 flex-direction-9 max-height-77 column-gap-78">
     <div class="flex-grow-64">
-      <h2 class="color-41 margin-62 margin-top-77 margin-bottom-78 font-size-79 font-weight-80 line-height-81">Collections
+      <h2 class="color-41 margin-62 margin-top-79 margin-bottom-80 font-size-81 font-weight-82 line-height-83">Collections
       </h2>
-      <p class="color-82 font-weight-83 line-height-84 font-size-85 padding-bottom-86 padding-top-87 padding-left-88 padding-right-89 margin-62 line-height-84">We contextualize broad themes into episode collections.
+      <p class="color-84 font-weight-85 line-height-86 font-size-87 padding-bottom-88 padding-top-89 padding-left-90 padding-right-91 margin-62 line-height-86">We contextualize broad themes into episode collections.
       </p>
     </div>
-    <div class="color-90">
+    <div class="color-92">
     </div>
   </pf-hstack>
 </pf-vstack>
-<div class="background-color-91 background-color-92">
-  <div class="max-width-6 margin-93 padding-94 padding-95 display-8 flex-direction-9 flex-wrap-10 justify-content-96 align-items-97">
-    <pf-vgrid class="width-0 column-gap-98 display-99 grid-template-columns-100 row-gap-101">
-      <pf-vstack class="border-102 box-shadow-103 border-radius-104 margin-105 overflow-106 background-color-91 background-color-107 align-items-71 display-8 flex-direction-72 row-gap-73"><a class="border-bottom-108 border-bottom-109 display-47 padding-110 text-align-68 text-decoration-14 text-decoration-15 text-decoration-111 color-112 color-113 color-114 color-115" href="/collections/functions"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div class="background-color-93 background-color-94">
+  <div class="max-width-6 margin-95 padding-96 padding-97 display-8 flex-direction-9 flex-wrap-10 justify-content-98 align-items-99">
+    <pf-vgrid class="width-0 column-gap-100 display-101 grid-template-columns-102 row-gap-103">
+      <pf-vstack class="border-104 box-shadow-105 border-radius-106 margin-107 overflow-108 background-color-93 background-color-109 align-items-71 display-8 flex-direction-72 max-width-73 row-gap-74"><a class="border-bottom-110 border-bottom-111 display-47 padding-112 text-align-68 text-decoration-14 text-decoration-15 text-decoration-113 color-114 color-115 color-116 color-117" href="/collections/functions"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="0.5" width="64" height="64" rx="32" fill="url(#paint0_linear_733_2369)"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M35.5 17.0259L50.474 31.9999L35.5 46.9739L20.526 31.9999L35.5 17.0259ZM33.0043 34.4956C34.3178 35.8091 36.5883 35.9029 37.9957 34.4956C39.4218 33.0695 39.3092 30.8177 37.9957 29.5042C36.6822 28.1907 34.4304 28.0781 33.0043 29.5042C31.597 30.9116 31.6908 33.1821 33.0043 34.4956ZM29.5883 17.1141L31.0883 18.6141L17.6143 32.0881L31.0883 45.5622L29.5883 47.0622L14.6143 32.0881L29.5883 17.1141Z" fill="white"/>
 <defs>
@@ -331,26 +351,28 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
 </defs>
 </svg>
         <div>
-          <h4 class="margin-62 margin-top-116 margin-bottom-117 font-size-118 font-weight-80 line-height-81">Functions
+          <h4 class="margin-62 margin-top-118 margin-bottom-119 font-size-120 font-weight-82 line-height-83">Functions
           </h4>
-          <div class="font-weight-83 line-height-84 font-size-26 color-119 color-120">Collection
+          <div class="font-weight-85 line-height-86 font-size-26 color-121 color-122">Collection
           </div>
         </div></a>
-        <pf-vstack class="padding-121 flex-grow-64 align-items-71 display-8 flex-direction-72 row-gap-73">
-          <pf-vstack class="flex-grow-64 align-items-71 display-8 flex-direction-72 row-gap-122">
-            <div class="color-123 color-124">
+        <pf-vstack class="padding-123 flex-grow-64 align-items-71 display-8 flex-direction-72 max-width-73 row-gap-74">
+          <pf-vstack class="flex-grow-64 align-items-71 display-8 flex-direction-72 max-width-73 row-gap-124">
+            <div class="color-125 color-126">
               <pf-markdown class="display-47">
-                <p class="padding-bottom-86 padding-top-87 padding-left-88 padding-right-89 margin-62 line-height-84">This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.
-                </p>
+                <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-127">
+                  <p class="line-height-86 padding-128 margin-62">This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.
+                  </p>
+                </pf-vstack>
               </pf-markdown>
             </div>
           </pf-vstack>
-          <pf-hstack class="color-119 color-120 align-items-12 display-8 flex-direction-9 column-gap-76">
-            <pf-hstack class="font-weight-83 line-height-84 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-125"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <pf-hstack class="color-121 color-122 align-items-12 display-8 flex-direction-9 max-height-77 column-gap-78">
+            <pf-hstack class="font-weight-85 line-height-86 font-size-26 align-items-12 display-8 flex-direction-9 max-height-77 column-gap-129"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M6.66665 11.4999L10.6666 8.49992L6.66665 5.49992V11.4999ZM7.99998 1.83325C4.31998 1.83325 1.33331 4.81992 1.33331 8.49992C1.33331 12.1799 4.31998 15.1666 7.99998 15.1666C11.68 15.1666 14.6666 12.1799 14.6666 8.49992C14.6666 4.81992 11.68 1.83325 7.99998 1.83325ZM7.99998 13.8333C5.05998 13.8333 2.66665 11.4399 2.66665 8.49992C2.66665 5.55992 5.05998 3.16659 7.99998 3.16659C10.94 3.16659 13.3333 5.55992 13.3333 8.49992C13.3333 11.4399 10.94 13.8333 7.99998 13.8333Z" fill="currentColor"/>
 </svg>6 episodes
             </pf-hstack>
-            <pf-hstack class="font-weight-83 line-height-84 font-size-26 align-items-12 display-8 flex-direction-9 column-gap-125"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <pf-hstack class="font-weight-85 line-height-86 font-size-26 align-items-12 display-8 flex-direction-9 max-height-77 column-gap-129"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
 </svg>2 hr 18 min
             </pf-hstack>
@@ -360,31 +382,31 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
     </pf-vgrid>
   </div>
 </div>
-<div class="background-126">
-  <div class="align-items-127 display-8 flex-direction-72 flex-wrap-10 row-gap-128 padding-top-129 padding-left-130 padding-bottom-131 padding-right-132 padding-top-133 padding-left-134 padding-bottom-135 padding-right-136 margin-7 max-width-6">
-    <div class="text-align-137">
-      <h2 class="color-41 margin-62 margin-top-77 margin-bottom-78 font-size-79 font-weight-80 line-height-81">Get started with our free&nbsp;plan
+<div class="background-130">
+  <div class="align-items-131 display-8 flex-direction-72 flex-wrap-10 row-gap-127 padding-top-132 padding-left-133 padding-bottom-134 padding-right-135 padding-top-136 padding-left-137 padding-bottom-138 padding-right-139 margin-7 max-width-6">
+    <div class="text-align-140">
+      <h2 class="color-41 margin-62 margin-top-79 margin-bottom-80 font-size-81 font-weight-82 line-height-83">Get started with our free&nbsp;plan
       </h2>
     </div>
-    <div class="text-align-137">
-      <p class="margin-93 max-width-138 color-82 font-weight-83 line-height-84 font-size-85 padding-bottom-86 padding-top-87 padding-left-88 padding-right-89 margin-62 line-height-84">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
+    <div class="text-align-140">
+      <p class="margin-95 max-width-141 color-84 font-weight-85 line-height-86 font-size-87 padding-bottom-88 padding-top-89 padding-left-90 padding-right-91 margin-62 line-height-86">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
       </p>
     </div>
-    <div class="text-align-137 width-0"><a class="margin-top-139 display-140 font-size-85 color-39 color-40 color-41 background-color-42 border-43 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-141 transition-38" href="/signup">Sign up for free →</a>
-    </div><a class="text-align-137 font-weight-83 line-height-84 font-size-26 text-decoration-142 text-decoration-143 text-decoration-16 color-23 color-24" href="/pricing">View plans and pricing</a>
+    <div class="text-align-140 width-0"><a class="margin-top-142 display-143 font-size-87 color-39 color-40 color-41 background-color-42 border-43 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-144 transition-38" href="/signup">Sign up for free →</a>
+    </div><a class="text-align-140 font-weight-85 line-height-86 font-size-26 text-decoration-145 text-decoration-146 text-decoration-16 color-23 color-24" href="/pricing">View plans and pricing</a>
   </div>
 </div>
-<footer class="padding-top-144 padding-left-145 padding-bottom-146 padding-right-147 padding-top-148 padding-left-149 padding-bottom-150 padding-right-151 background-color-152">
-  <pf-vgrid class="align-items-153 width-0 column-gap-98 display-99 grid-template-columns-154 row-gap-101">
-    <div class="padding-bottom-155 padding-right-147">
-      <h4 class="font-size-156 font-size-157 line-height-158 margin-bottom-159 font-size-118"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-40 color-39" href="/">Point-Free</a>
+<footer class="padding-top-147 padding-left-148 padding-bottom-149 padding-right-150 padding-top-151 padding-left-152 padding-bottom-153 padding-right-154 background-color-155">
+  <pf-vgrid class="align-items-156 width-0 column-gap-100 display-101 grid-template-columns-157 row-gap-103">
+    <div class="padding-bottom-158 padding-right-150">
+      <h4 class="font-size-159 font-size-160 line-height-161 margin-bottom-162 font-size-120"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-40 color-39" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-83 line-height-84 font-size-85 color-41">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-160 color-161" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-160 color-161" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-85 line-height-86 font-size-87 color-41">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-163 color-164" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-163 color-164" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="width-0 column-gap-76 display-162 grid-template-columns-163 row-gap-73">
+    <pf-vgrid class="width-0 column-gap-78 display-165 grid-template-columns-166 row-gap-74">
       <div>
-        <h5 class="font-size-164 font-size-165 letter-spacing-166 line-height-167 text-transform-168 color-41">Content
+        <h5 class="font-size-167 font-size-168 letter-spacing-169 line-height-170 text-transform-171 color-41">Content
         </h5>
         <ol class="padding-left-18 list-style-type-19">
           <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/pricing">Pricing</a>
@@ -402,7 +424,7 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
         </ol>
       </div>
       <div>
-        <h5 class="font-size-164 font-size-165 letter-spacing-166 line-height-167 text-transform-168 color-41">More
+        <h5 class="font-size-167 font-size-168 letter-spacing-169 line-height-170 text-transform-171 color-41">More
         </h5>
         <ol class="padding-left-18 list-style-type-19">
           <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/about">About Us</a>
@@ -420,7 +442,7 @@ input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
         </ol>
       </div>
     </pf-vgrid>
-    <p class="padding-top-169 font-weight-83 line-height-84 font-size-26 color-123">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
+    <p class="padding-top-172 font-weight-85 line-height-86 font-size-26 color-125">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
     </p>
   </pf-vgrid>
 </footer>
