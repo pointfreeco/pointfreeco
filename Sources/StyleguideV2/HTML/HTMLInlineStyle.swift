@@ -26,6 +26,8 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
   private let content: Content
   private var styles: [Style]
 
+  @Dependency(ClassNameGenerator.self) fileprivate var classNameGenerator
+
   init(
     content: Content,
     property: String,
@@ -80,27 +82,7 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     }
 
     for style in html.styles {
-      #if DEBUG
-        let hash = encode(
-          UInt64(
-            murmurHash(
-              style.value
-                + (style.media?.rawValue ?? "")
-                + (style.preSelector ?? "")
-                + (style.pseudo?.rawValue ?? "")
-            )
-          )
-        )
-        let className = "\(style.property)-\(hash)"
-      #else
-        let index: Int =
-          printer.classes.firstIndex(of: style)
-          ?? {
-            defer { printer.classes.append(style) }
-            return printer.classes.count
-          }()
-        let className = "c\(index)"
-      #endif
+      let className = html.classNameGenerator.generate(style)
       let selector = """
         \(style.preSelector.map { "\($0) " } ?? "").\(className)\(style.pseudo?.rawValue ?? "")
         """
@@ -114,6 +96,45 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
     }
   }
   public var body: Never { fatalError() }
+}
+
+private struct ClassNameGenerator: DependencyKey {
+  var generate: @Sendable (Style) -> String
+
+  static var liveValue: ClassNameGenerator {
+    let seenStyles = LockIsolated<OrderedSet<Style>>([])
+    return Self { style in
+      seenStyles.withValue { seenStyles in
+        let index =
+          seenStyles.firstIndex(of: style)
+          ?? {
+            seenStyles.append(style)
+            return seenStyles.count
+          }()
+        #if DEBUG
+        return "\(style.property)-\(index)"
+        #else
+        return "c\(index)"
+        #endif
+      }
+    }
+  }
+
+  static var testValue: ClassNameGenerator {
+    Self { style in
+      let hash = encode(
+        UInt64(
+          murmurHash(
+            style.value
+              + (style.media?.rawValue ?? "")
+              + (style.preSelector ?? "")
+              + (style.pseudo?.rawValue ?? "")
+          )
+        )
+      )
+      return "\(style.property)-\(hash)"
+    }
+  }
 }
 
 private struct Style: Hashable {
