@@ -17,12 +17,13 @@ application, one of the most popular server-side Swift frameworks available toda
 
 ## Vapor Leaf Templates
 
-Typically a Vapor app renders HTML views through the use of the [Leaf](https://docs.vapor.codes/3.0/leaf/)
-templating language. It's design is very similar to that of [Stencil](https://stencil.fuller.li/en/latest/),
-which we discussed in our [episode](/episodes/ep29-dsls-vs-templating-languages) comparing DSLs to templating
-languages. As an example, we could create a Leaf template by saving the following to a `.leaf` file:
+Typically a Vapor app renders HTML views through the use of the
+[Leaf](https://docs.vapor.codes/3.0/leaf/) templating language. It's design is very similar to that
+of [Stencil](https://stencil.fuller.li/en/latest/), which we discussed in our
+[episode](/episodes/ep29-dsls-vs-templating-languages) comparing DSLs to templating languages. As an
+example, we could create a Leaf template by saving the following to a `.leaf` file:
 
-```swift
+```
 <ul>
   #for(user in users) {
     <li>#(user.name)</li>
@@ -46,18 +47,22 @@ router.get("hello") { req in
 }
 ```
 
-This templating language is flexible, easy to use, and great as a starting point. However, it has all of the
-same problems that we covered in our last [episode](/episodes/ep29-dsls-vs-templating-languages), including
-lack of type-safety, no good tooling support (autocomplete, syntax highlighting, refactoring, debugging, etc.)
-and it can be more rigid that what we are used to.
+This templating language is flexible, easy to use, and great as a starting point. However, it has
+all of the same problems that we covered in our last
+[episode](/episodes/ep29-dsls-vs-templating-languages), including lack of type-safety, no good
+tooling support (autocomplete, syntax highlighting, refactoring, debugging, etc.) and it can be more
+rigid that what we are used to.
 
 ## Using swift-html with Vapor
 
-Luckily Vapor makes it very easy to support other methods of rendering besides Leaf, and that is precisely
-what our new library helps with. Simply add the following to your `Package.swift` file:
+Luckily Vapor makes it very easy to support other methods of rendering besides Leaf, and that is
+precisely what our new library helps with. Simply add the following to your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/pointfreeco/swift-html-vapor.git", from: "0.1.0"),
+.package(
+  url: "https://github.com/pointfreeco/swift-html-vapor",
+  from: "0.1.0"
+),
 """,
 ```
 
@@ -74,12 +79,14 @@ router.get("hello") { _ in
   html([
     body([
       h1(["Type-safe Vapor HTML"]),
-      p([\"\"\"
-         This is a Vapor plugin that allows you to write type-safe,
-         transformable, composable HTML views in a Vapor app!
-         \"\"\"])
+      p([
+        """
+        This is a Vapor plugin that allows you to write type-safe, \
+        transformable, composable HTML views in a Vapor app!
+        """
       ])
     ])
+  ])
 }
 
 try app.run()

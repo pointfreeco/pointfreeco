@@ -31,13 +31,16 @@ case .recordButtonTapped:
   return Effect.run { send in
     // 1️⃣ Ask user for speech recording permission.
     let status = await speechClient.requestAuthorization()
-    await send(.speechRecognizerAuthorizationStatusResponse(status))
+    await send(
+      .speechRecognizerAuthorizationStatusResponse(status)
+    )
 
     // 2️⃣ If not authorized, then there's nothing more to do.
     guard status == .authorized
     else { return }
 
-    // 3️⃣ If authorized, then start recording audio and live transcribing.
+    // 3️⃣ If authorized, then start recording audio and live
+    //    transcribing.
     let request = SFSpeechAudioBufferRecognitionRequest()
     for try await result in await speechClient.startTask(request) {
       await send(
@@ -119,7 +122,9 @@ class FeatureTest: XCTestCase {
     await store.send(.factButtonTapped) {
       $0.isLoading = true
     }
-    await store.receive(.factResponse(.success("42 is a good number!"))) {
+    await store.receive(
+      .factResponse(.success("42 is a good number!"))
+    ) {
       $0.isLoading = false
       $0.fact = "42 is a good number!"
     }
@@ -146,7 +151,16 @@ how to cycle through a bunch of colors with a 1 second pause between each color:
 
 ```swift
 return .run { send in
-  for color in [Color.red, .blue, .green, .orange, .pink, .purple, .yellow, .black] {
+  for color in [
+    Color.red,
+    .blue,
+    .green,
+    .orange,
+    .pink,
+    .purple,
+    .yellow,
+    .black
+  ] {
     await send(.setColor(color), animation: .linear)
     try await environment.mainQueue.sleep(for: 1)
   }

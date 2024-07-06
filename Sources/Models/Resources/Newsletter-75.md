@@ -112,7 +112,7 @@ To see this, consider an endpoint to fetch a book that is associated with a part
 
 ```swift
 // GET /users/:userId/books/:bookId
-app.get("users", ":userId", "books", ":bookId") { req -> Response in
+app.get("users", ":userId", "books", ":bookId") { req in
   guard
     let userId = req.parameters.get("userId", Int.self),
     let bookId = req.parameters.get("bookId", Int.self)
@@ -223,7 +223,11 @@ Node.ul(
   user.books.map { book in
     .li(
       .a(
-        .href(siteRouter.path(for: .userBook(userId: user.id, bookId: book.id)),
+        .href(
+          siteRouter.path(
+            for: .userBook(userId: user.id, bookId: book.id)
+          )
+        ),
         book.title
       )
     )

@@ -29,7 +29,7 @@ struct StandupsList: View {
 
   var body: some View {
     List {
-      ForEach(self.standups) { standup in
+      ForEach(standups) { standup in
         StandupRow(standup: standup)
       }
     }
@@ -46,10 +46,10 @@ can perform some work, say, removing the element:
 
 ```swift
 func deleteStandup(id: Standup.ID) {
-  guard let index = self.standups.firstIndex(where: { $0.id == id })
+  guard let index = standups.firstIndex(where: { $0.id == id })
   else { return }
 
-  self.standups.remove(at: index)
+  standups.remove(at: index)
 }
 ```
 
@@ -65,12 +65,12 @@ deleting the standup. If we do this naively:
 
 ```swift:5
 func deleteStandup(id: Standup.ID) async throws {
-  guard let index = self.standups.firstIndex(where: { $0.id == id })
+  guard let index = standups.firstIndex(where: { $0.id == id })
   else { return }
 
-  try await self.apiClient.delete(id: id)
+  try await apiClient.delete(id: id)
 
-  self.standups.remove(at: index)
+  standups.remove(at: index)
 }
 ```
 
@@ -119,8 +119,8 @@ its ID:
 
 ```swift
 func deleteStandup(id: Standup.ID) async throws {
-  try await self.apiClient.delete(id: id)
-  self.standups.remove(id: id)
+  try await apiClient.delete(id: id)
+  standups.remove(id: id)
 }
 ```
 
@@ -130,7 +130,7 @@ client suspends for, we will always remove the correct element.
 We can also update an element by its ID:
 
 ```swift
-self.standups[id: standup.id] = standup
+standups[id: standup.id] = standup
 ```
 
 …and more.

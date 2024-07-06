@@ -20,14 +20,16 @@ gives you the benefit of having a natural place to nest your feature's domain:
 ```swift
 struct Feature: ReducerProtocol {
   struct State {
-    // ...
+    …
   }
   enum Action {
-    // ...
+    …
   }
 
-  func reduce(into state: inout State, action: Action) -> Effect<Action, Never> {
-    // ...
+  func reduce(
+    into state: inout State, action: Action
+  ) -> Effect<Action, Never> {
+    …
   }
 }
 ```
@@ -89,8 +91,7 @@ struct Feature: ReducerProtocol {
   @Dependency(\.apiClient) var apiClient
   @Dependency(\.mainQueue) var mainQueue
   @Dependency(\.uuid) var uuid
-
-  // ...
+  …
 }
 ```
 

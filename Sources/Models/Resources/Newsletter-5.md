@@ -65,7 +65,9 @@ application:
 
 ```swift
 let baseButtonStyle: (UIButton) -> Void = {
-  $0.contentEdgeInsets = .init(top: 12, left: 16, bottom: 12, right: 16)
+  $0.contentEdgeInsets = .init(
+    top: 12, left: 16, bottom: 12, right: 16
+  )
   $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
 }
 ```
@@ -96,8 +98,8 @@ let roundedButtonStyle =
     <> roundedStyle
 ```
 
-Then we could define our “filled button style” to start with the “rounded” style and layer on some additional
-styles using function composition:
+Then we could define our “filled button style” to start with the “rounded” style and layer on some
+additional styles using function composition:
 
 ```swift
 let filledButtonStyle =
@@ -108,19 +110,22 @@ let filledButtonStyle =
 }
 ```
 
-We could even have an “image button style” that is a curried styling function that takes an upfront `UIImage`
-first, and then returns a `UIButton` styling function:
+We could even have an “image button style” that is a curried styling function that takes an upfront
+`UIImage` first, and then returns a `UIButton` styling function:
 
 ```swift
 let imageButtonStyle: (UIImage?) -> (UIButton) -> Void = { image in
   return {
-    $0.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 16)
+    $0.imageEdgeInsets = .init(
+      top: 0, left: 0, bottom: 0, right: 16
+    )
     $0.setImage(image, for: .normal)
   }
 }
 ```
 
-And with that helper it’s a small leap to derive a “GitHub button style” by using all of our previous helpers:
+And with that helper it’s a small leap to derive a “GitHub button style” by using all of our
+previous helpers:
 
 ```swift
 let gitHubButtonStyle =
@@ -128,15 +133,16 @@ let gitHubButtonStyle =
     <> imageButtonStyle(UIImage(named: "github"))
 ```
 
-In just 30 lines of code we have set the foundation for the styling of all buttons in our application!
+In just 30 lines of code we have set the foundation for the styling of all buttons in our
+application!
 
 ## Conclusion
 
-We think that functions and function composition are a really powerful way to style UIKit components. But the
-best part is that it’s simple and doesn't add layers of abstraction to your application. You can get benefits
-from using this tool in your code base today.
+We think that functions and function composition are a really powerful way to style UIKit
+components. But the best part is that it’s simple and doesn't add layers of abstraction to your
+application. You can get benefits from using this tool in your code base today.
 
 If this interests you then you may also want to check out our latest episode on
-“[Styling with Overture](https://www.pointfree.co/episodes/ep17-styling-with-overture)”, which improves
-on the ideas discussed in this blog post by using our [Overture](https://github.com/pointfreeco/swift-overture)
-library.
+“[Styling with Overture](https://www.pointfree.co/episodes/ep17-styling-with-overture)”, which 
+improves on the ideas discussed in this blog post by using our
+[Overture](https://github.com/pointfreeco/swift-overture) library.

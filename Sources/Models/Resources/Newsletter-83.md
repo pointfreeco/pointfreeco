@@ -145,7 +145,7 @@ await store.send(.addButtonTapped) {
 
 This fixes one test failure, but there's still another:
 
-> Failed: 🛑 The store received 1 unexpected action after this one: …
+> 🛑 The store received 1 unexpected action after this one: …
 >
 > ```
 > Unhandled actions: [
@@ -237,7 +237,8 @@ await store.receive(.login(.delegate(.didLogin))) {
     Profile.State(...)
   )
   ...
-  // 7️⃣ *Finally* assert that the selected tab switches to activity.
+  // 7️⃣ *Finally* assert that the selected tab switches to
+  //    activity.
   $0.selectedTab = .activity
 }
 ```

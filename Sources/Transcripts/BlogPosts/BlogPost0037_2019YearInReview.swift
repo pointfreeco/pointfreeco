@@ -3,7 +3,8 @@ import Foundation
 public let post0037_2019YearInReview = BlogPost(
   author: .brandon,
   blurb: """
-    Random number generators, parsers, SwiftUI, composable architecture and more! Join us for a review of everything we accomplished in 2019!
+    Random number generators, parsers, SwiftUI, composable architecture and more! Join us for a \
+    review of everything we accomplished in 2019!
     """,
   coverImage: nil,
   id: 37,

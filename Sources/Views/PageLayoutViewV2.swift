@@ -676,9 +676,6 @@ private struct BaseStyles: HTML {
         50% { opacity: 0; }
         to { opacity: 1; }
       }
-      pre, pre code {
-        overflow-x: scroll;
-      }
       """
     }
   }
@@ -694,6 +691,8 @@ public struct PrismJSHead: HTML {
 
       .line-highlight {
         background-color: rgba(0, 121, 255, 0.1);
+        margin-top: 1rem;
+        margin-left: -1.5rem;
         position: absolute;
       }
 

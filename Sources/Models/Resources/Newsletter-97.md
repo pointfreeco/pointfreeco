@@ -63,9 +63,8 @@ struct SpeechClient {
   var requestAuthorization:
     @Sendable () async -> SFSpeechRecognizerAuthorizationStatus
   var startTask:
-    @Sendable (SFSpeechAudioBufferRecognitionRequest) async -> AsyncThrowingStream<
-      SpeechRecognitionResult, Error
-    >
+    @Sendable (SFSpeechAudioBufferRecognitionRequest) async
+      -> AsyncThrowingStream<SpeechRecognitionResult, Error>
 }
 ```
 
@@ -84,9 +83,10 @@ So we no longer reach for Speech APIs directly, and instead we only go through t
 authorization][speech-rec-auth-source]:
 
 ```swift
-let authorization = await self.speechClient.authorizationStatus() == .notDetermined
-  ? self.speechClient.requestAuthorization()
-  : self.speechClient.authorizationStatus()
+let authorization =
+  await speechClient.authorizationStatus() == .notDetermined
+    ? speechClient.requestAuthorization()
+    : speechClient.authorizationStatus()
 ```
 
 With that little bit of upfront work we were able to restore functionality in our previews

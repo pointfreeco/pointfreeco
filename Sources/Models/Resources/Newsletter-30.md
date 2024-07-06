@@ -63,7 +63,7 @@ The name of the property wrapper that connects our model to a view was also rena
 struct ContentView: View {
   @ObservedObject var state: AppState
 
-  var body: some View {…}
+  var body: some View { … }
 }
 ```
 
@@ -132,7 +132,7 @@ activity feed:
 struct ActivityView: View {
   @Binding var activityFeed: [Activity]
 
-  var body: some View {…}
+  var body: some View { … }
 }
 ```
 

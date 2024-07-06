@@ -1,8 +1,8 @@
-![](https://d1iqsrac68iyd8.cloudfront.net/posts/0006-tagged-seconds-and-milliseconds/poster.jpg)
-
 > Preamble: Let's create a type-safe interface for dealing with seconds and milliseconds in our
 > programs. We'll use the `Tagged` type, which allows us to construct all new types in a lightweight
 > way.
+
+![](https://d1iqsrac68iyd8.cloudfront.net/posts/0006-tagged-seconds-and-milliseconds/poster.jpg)
 
 The [Tagged](https://github.com/pointfreeco/swift-tagged) type is a powerful way of creating new
 types in a very lightweight way. It's a small package that leverages many advanced features of

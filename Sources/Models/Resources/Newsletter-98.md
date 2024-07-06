@@ -39,7 +39,6 @@ func testLoadingDataDecodingFailed() throws {
   } operation: {
     StandupsListModel()
   }
-
   …
 }
 ```
@@ -100,17 +99,19 @@ func testDelete() async throws {
   // 2️⃣ Simulate the user tapping the delete button
   detailModel.deleteButtonTapped()
 
-  // 🗣️ Assert an alert shows asking the user to confirm deleting the standup
+  // 🗣️ Assert an alert shows asking the user to confirm deleting
+  //    the standup
   let alert = try XCTUnwrap(
-    detailModel.destination, case: /StandupDetailModel.Destination.alert
+    detailModel.destination,
+    case: /StandupDetailModel.Destination.alert
   )
   XCTAssertNoDifference(alert, .deleteStandup)
 
   // 3️⃣ Simulate the user confirming deletion
   await detailModel.alertButtonTapped(.confirmDeletion)
 
-  // 🗣️ Assert the detail screen is popped off the stack and that the standup
-  //    is removed from the list.
+  // 🗣️ Assert the detail screen is popped off the stack and that
+  //    the standup is removed from the list.
   XCTAssertNil(model.destination)
   XCTAssertEqual(model.standups, [])
   XCTAssertEqual(detailModel.isDismissed, true)
@@ -152,7 +153,8 @@ application so that you can override the dependencies used, such as the data man
 struct StandupsApp: App {
   var body: some Scene {
     WindowGroup {
-      if ProcessInfo.processInfo.environment["UITesting"] == "true" {
+      if ProcessInfo.processInfo.environment["UITesting"] == "true"
+      {
         withDependencies {
           $0.dataManager = .mock()
         } operation: {

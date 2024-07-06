@@ -14,6 +14,8 @@ One of our [most popular series ever][modern-swiftui]. We build a complex applic
 forms of navigation, complex side effects (timers, speech recognizers, data persistence), using 
 modern techniques, and with a focus on parent-child communication and testability.
 
+[modern-swiftui]: /collections/swiftui/modern-swiftui 
+
 ### [**Swift Concurrency: Past, Present, Future**][concurrency]
 
 While WWDC 2023 isn't expected to release any huge, game changing additions to Swift's concurrency 
@@ -26,7 +28,10 @@ We also discuss an advanced and often overlooked aspect of concurrency, which is
 asynchrony using Swift's new [`Clock`][clock-docs] protocol. We dive deep into the protocol 
 definition, we write custom implementations of the protocol, and we show how to take control over
 time.
- 
+
+[concurrency]: /collections/concurrency
+[clock-docs]: https://developer.apple.com/documentation/swift/clock 
+
 ### [**SwiftUI Navigation**][swiftui-nav]
 
 Late last year we finished a long series of episodes covering every aspect of [navigation in 
@@ -39,6 +44,10 @@ We also explored some of iOS 16's newer forms of navigation, such as the
 decouple a parent and child feature, as well as the powerful new 
 [`NavigationStack`][nav-stack-docs] that helps fully decouple all sibling features that want to be
 presented onto a stack.
+
+[swiftui-nav]: /collections/swiftui/navigation
+[nav-dest-docs]: https://developer.apple.com/documentation/swiftui/view/navigationdestination(ispresented:destination:)
+[nav-stack-docs]: https://developer.apple.com/documentation/swiftui/navigationstack/
 
 ### [**Composable Architecture Navigation**][tca-nav]
 
@@ -54,6 +63,10 @@ And on top of this, everything remained [100% testable][tca-nav-testing]. You ca
 nuanced tests for how parent and child features interact with each other, and be confident that 
 complex navigation flows work as you expect.  
 
+[tca-nav]: /collections/composable-architecture/navigation
+[tca-gh]: http://github.com/pointfreeco/swift-composable-architecture   
+[tca-nav-testing]: /episodes/ep237-composable-stacks-testing
+
 ## Subscribe today
 
 And that is just barely scratching the surface of what we offer on [Point-Free](/). We hope you'll 
@@ -63,13 +76,3 @@ year!
 @Button(/discounts/wwdc-2023) {
   Subscribe for 25% off!
 }
-
-[tca-nav-testing]: /episodes/ep237-composable-stacks-testing
-[tca-nav]: /collections/composable-architecture/navigation
-[tca-gh]: http://github.com/pointfreeco/swift-composable-architecture   
-[modern-swiftui]: /collections/swiftui/modern-swiftui 
-[concurrency]: /collections/concurrency
-[clock-docs]: https://developer.apple.com/documentation/swift/clock 
-[swiftui-nav]: /collections/swiftui/navigation
-[nav-dest-docs]: https://developer.apple.com/documentation/swiftui/view/navigationdestination(ispresented:destination:)
-[nav-stack-docs]: https://developer.apple.com/documentation/swiftui/navigationstack/

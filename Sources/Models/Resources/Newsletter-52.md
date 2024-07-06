@@ -110,7 +110,9 @@ derive a binding by specifying the key path and form action case:
 ```swift
 TextField(
   "Display name",
-  text: viewStore.binding(keyPath: \.displayName, send: SettingsAction.form)
+  text: viewStore.binding(
+    keyPath: \.displayName, send: SettingsAction.form
+  )
 )
 ```
 

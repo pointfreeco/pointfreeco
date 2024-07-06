@@ -67,7 +67,7 @@ struct FeatureView: View {
   let store: Store<FeatureState, FeatureAction>
 
   var body: some View {
-    WithViewStore(self.store) { viewStore in
+    WithViewStore(store) { viewStore in
       // View will recompute whenever store's state changes
     }
   }
@@ -100,7 +100,7 @@ when wielded incorrectly. It is quite common for us to see code that constructs 
 that observes _all_ of state, like this:
 
 ```swift
-WithViewStore(self.store) { viewStore in
+WithViewStore(store) { viewStore in
   // View in here
 }
 ```
@@ -114,7 +114,7 @@ In order to mitigate the problem, 0.40.0 introduces a new interface for construc
 views that makes state observation explicit:
 
 ```swift
-WithViewStore(self.store, observe: <#(State) -> ViewState#>) { viewStore in
+WithViewStore(store, observe: <#(State) -> ViewState#>) { viewStore in
   // ...
 }
 ```

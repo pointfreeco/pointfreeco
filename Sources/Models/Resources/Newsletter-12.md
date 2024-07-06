@@ -168,7 +168,7 @@ that each support a `zip` operation.
 > makes use of both of these zip structures? Write the signature of such a function and implement
 > it.
 
-We accidentally put in both part 1 and 2 episodes, so we already solved it
+We accidentally put this exercise in both part 1 and 2 episodes, so we already solved it
 [before](/blog/posts/11-solutions-to-exercises-zip-part-1)!
 
 > Exercise 4.2: Consider the type `[Validated<A, E>]`. We again have have a nesting of types, each

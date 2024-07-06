@@ -38,7 +38,7 @@ new generators out of old:
 ```swift
 extension Gen {
   func map<B>(_ f: @escaping (A) -> B) -> Gen<B> {
-    return .init { f(self.run()) }
+    Gen<B> { f(self.run()) }
   }
 }
 ```
@@ -49,13 +49,13 @@ It’s easy enough to cook up values of the `Gen` type. Often we can just wrap t
 
 ```swift
 func int(in range: ClosedRange<Int>) -> Gen<Int> {
-  return .init { Int.random(in: range) }
+  Gen { Int.random(in: range) }
 }
 
-int(in: 0...10).run() // 3
-int(in: 0...10).run() // 1
-int(in: 0...10).run() // 7
-int(in: 0...10).run() // 10
+int(in: 0...10).run()  // 3
+int(in: 0...10).run()  // 1
+int(in: 0...10).run()  // 7
+int(in: 0...10).run()  // 10
 ```
 
 Here `int(in:)` is a function that takes a range and returns a generator of random numbers in that range,
@@ -67,17 +67,17 @@ sized arrays with random elements:
 ```swift
 extension Gen {
   func array(count: Gen<Int>) -> Gen<[A]> {
-    return .init {
+    return Gen<[A]> {
       Array(repeating: (), count: count.run())
         .map { self.run() }
     }
   }
 }
 
-int(in: 0...10).array(count: int(in: 0...3)).run() // [2, 7]
-int(in: 0...10).array(count: int(in: 0...3)).run() // [6, 4, 3]
-int(in: 0...10).array(count: int(in: 0...3)).run() // [8, 0]
-int(in: 0...10).array(count: int(in: 0...3)).run() // []
+int(in: 0...10).array(count: int(in: 0...3)).run()  // [2, 7]
+int(in: 0...10).array(count: int(in: 0...3)).run()  // [6, 4, 3]
+int(in: 0...10).array(count: int(in: 0...3)).run()  // [8, 0]
+int(in: 0...10).array(count: int(in: 0...3)).run()  // []
 ```
 
 So already `Gen` has given us a nice way to express something that does not exist in the Swift 4.2 API.
@@ -92,17 +92,17 @@ a `String` from that value:
 let zalgo = int(in: 0x300 ... 0x36f)
   .map { String(UnicodeScalar($0)!) }
 
-zalgo.run() // " ͉"
-zalgo.run() // " ͚"
-zalgo.run() // " ̊"
-zalgo.run() // " ̓"
+zalgo.run()  // " ͉"
+zalgo.run()  // " ͚"
+zalgo.run()  // " ̊"
+zalgo.run()  // " ̓"
 ```
 
 That was quite easy!
 
-Next let’s create a generator of a random number of Zalgo characters together. We want this because the more
-Zalgo characters you use next to each other, the more intense the glitchiness is, e.g., P̅ö̔̇͆inͪt-F͛̑̓ͩrẽẻ versus
-P̡o҉̩̹̻̠ͅi͚̼͚̪ͅṋ̨t̘̹̯͚̭́-̡̗͉F̖́rẹ̛̖e̶̖̜̰̫͎.
+Next let’s create a generator of a random number of Zalgo characters together. We want this because
+the more Zalgo characters you use next to each other, the more intense the glitchiness is, _e.g._,
+P̅ö̔̇͆inͪt-F͛̑̓ͩrẽẻ versus P̡o҉̩̹̻̠ͅi͚̼͚̪ͅṋ̨t̘̹̯͚̭́-̡̗͉F̖́rẹ̛̖e̶̖̜̰̫͎.
 
 ```swift
 func zalgos(intensity: Int) -> Gen<String> {
@@ -128,16 +128,19 @@ let highZalgos   = zalgos(intensity: 20)
 "a" + highZalgos.run()   // ậ̵͇͚͍̗̿͌́͐̾̂͜͡
 ```
 
-Here we were able to build the `zalgos(intensity:)` function by transforming the `zalgo` generator under the
-hood. The `intensity` determines the maximum number of combined Zalgo characters we are allowed to have.
+Here we were able to build the `zalgos(intensity:)` function by transforming the `zalgo` generator
+under the hood. The `intensity` determines the maximum number of combined Zalgo characters we are
+allowed to have.
 
-Now that we have a way of building up many Zalgo characters of various intensities we can easily “Zalgo-ify”
-any string by simply interspersing Zalgo characters between the string's characters:
+Now that we have a way of building up many Zalgo characters of various intensities we can easily
+“Zalgo-ify” any string by simply interspersing Zalgo characters between the string's characters:
 
 ```swift
-func zalgoify(with zalgos: Gen<String>) -> (String) -> Gen<String> {
+func zalgoify(
+  with zalgos: Gen<String>
+) -> (String) -> Gen<String> {
   return { string in
-    return Gen {
+    Gen {
       string
         .map { char in String(char) + zalgos.run() }
         .joined()
@@ -146,9 +149,10 @@ func zalgoify(with zalgos: Gen<String>) -> (String) -> Gen<String> {
 }
 ```
 
-We wrote this function in the “[configuration first, data last](/episodes/ep5-higher-order-functions)”
-curried style. If you give it a Zalgo generator, it will give back a function that transforms any string
-into its Zalgo-ified version. Let’s use it!
+We wrote this function in the
+“[configuration first, data last](/episodes/ep5-higher-order-functions)” curried style. If you give
+it a Zalgo generator, it will give back a function that transforms any string into its Zalgo-ified
+version. Let’s use it!
 
 ```swift
 let tameZalgoify   = zalgoify(with: tameZalgos)
@@ -156,28 +160,29 @@ let lowZalgoify    = zalgoify(with: lowZalgos)
 let mediumZalgoify = zalgoify(with: mediumZalgos)
 let highZalgoify   = zalgoify(with: highZalgos)
 
-tameZalgoify("What’s the point?").run()   // "Wha̠t͟’͉s̍ thẻ ͪpoint̕?͖"
+tameZalgoify("What’s the point?").run()    // "Wha̠t͟’͉s̍ thẻ ͪpoint̕?͖"
 
 
-lowZalgoify("What’s the point?").run()    // "Wh̑͆aͭ̓̀͠͝t̵ͭ̓ͨ͟’̯̰̊s͢ ͉͏͂͝t̵̓̀hȇ̖̐͊ ̎͘p̡o̖̤͗͟i̓̿n̂t̰͑̉?ͭ"
+lowZalgoify("What’s the point?").run()     // "Wh̑͆aͭ̓̀͠͝t̵ͭ̓ͨ͟’̯̰̊s͢ ͉͏͂͝t̵̓̀hȇ̖̐͊ ̎͘p̡o̖̤͗͟i̓̿n̂t̰͑̉?ͭ"
 
 
-mediumZalgoify("What’s the point?").run() // "W̗̖͍̫͑́h̷̩̪̙̀ͪ͘͜ä̴̞͐̓̉̀͑t͈͍͚͑̎’̦͗̓̆̐̋̀s͎̻͚̾̒͐ͩ̀̚͝ ̥̥̫͚̘ṯ̷̢ͯͯ͗́͘ͅhͦẻ̢͓̥́̓ͦ͊͊͘ ̌ͣp̳̪̂̽͆ͨ͐õ̝ͬi̟̬͈͚̺̔n̦̂ẗ́̓ͨ͝?̨̈́̌̄"
+mediumZalgoify("What’s the point?").run()  // "W̗̖͍̫͑́h̷̩̪̙̀ͪ͘͜ä̴̞͐̓̉̀͑t͈͍͚͑̎’̦͗̓̆̐̋̀s͎̻͚̾̒͐ͩ̀̚͝ ̥̥̫͚̘ṯ̷̢ͯͯ͗́͘ͅhͦẻ̢͓̥́̓ͦ͊͊͘ ̌ͣp̳̪̂̽͆ͨ͐õ̝ͬi̟̬͈͚̺̔n̦̂ẗ́̓ͨ͝?̨̈́̌̄"
 
 
-highZalgoify("What’s the point?").run()   // "W̷͍͕̱̎ͦ̂̔̓͋͘͢h̸͕͙̝̐̇a̧͎̟̺̥͖͂ͭ̓ͧ̄́͘̚͝t͈̳̼ͣ̍̈ͭ́ͯ’̡̟̺̫͈̍ͯ͐ͨ͂̚͟s̸͎̣̪̠̯͌ͬ͗͏̱̂ ̟t̜̗̼͕̲̩̪̗̦̾̈̅ͤ̾̿̾̍̚ͅh̝ë̢̩͈̰́ͥ̒ͫͩ̎̌͢ ̳̱̯̰ͫ͑ͧ͑̔͛͋ͬ̿p̸̧̼̻͎̱̺ͥͮ̅͌ͣͪ̍͘o̡͕̠̊͟ͅỉ̬͚͂ͥ̐ṇ̡ͤ̕t̢̤͎ͭ̔͒ͧ͒͐́ͅ?̨̯̺̩̗̬̣͌̌̾ͨ͠"
+highZalgoify("What’s the point?").run()    // "W̷͍͕̱̎ͦ̂̔̓͋͘͢h̸͕͙̝̐̇a̧͎̟̺̥͖͂ͭ̓ͧ̄́͘̚͝t͈̳̼ͣ̍̈ͭ́ͯ’̡̟̺̫͈̍ͯ͐ͨ͂̚͟s̸͎̣̪̠̯͌ͬ͗͏̱̂ ̟t̜̗̼͕̲̩̪̗̦̾̈̅ͤ̾̿̾̍̚ͅh̝ë̢̩͈̰́ͥ̒ͫͩ̎̌͢ ̳̱̯̰ͫ͑ͧ͑̔͛͋ͬ̿p̸̧̼̻͎̱̺ͥͮ̅͌ͣͪ̍͘o̡͕̠̊͟ͅỉ̬͚͂ͥ̐ṇ̡ͤ̕t̢̤͎ͭ̔͒ͧ͒͐́ͅ?̨̯̺̩̗̬̣͌̌̾ͨ͠"
 ```
 
-Wow! We’ve been able to progressively increase the Zalgo-ification of our string “What’s the point?”, and
-the entire generator was built from small, reusable units that work in isolation but also plug together in
-all types of interesting ways.
+Wow! We’ve been able to progressively increase the Zalgo-ification of our string “What’s the
+point?”, and the entire generator was built from small, reusable units that work in isolation but
+also plug together in all types of interesting ways.
 
 ## Conclusion
 
-This has been a fun demonstration of the power of composition. We started with a very simple type, `Gen<A>`,
-that had a `map` function, and a few generators (`int(in:)` and `array(count:)`), and from that we built a
-generator that can randomly Zalgo-ify any string. And it even comes with a dial to tune the intensity you
-want from your Zalgo-ification. This is the power of composition!
+This has been a fun demonstration of the power of composition. We started with a very simple type,
+`Gen<A>`, that had a `map` function, and a few generators (`int(in:)` and `array(count:)`), and from
+that we built a generator that can randomly Zalgo-ify any string. And it even comes with a dial to
+tune the intensity you want from your Zalgo-ification. This is the power of composition!
 
 If this piques your interest, then you will probably be interested in this week’s episode
-"[Composable Randomness](/episodes/ep30-composable-randomness)", where we go even deeper into this idea.
+"[Composable Randomness](/episodes/ep30-composable-randomness)", where we go even deeper into this
+idea.

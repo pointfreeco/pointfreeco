@@ -1,10 +1,24 @@
-This week's [episode](/episodes/ep149-derived-behavior-optionals-and-enums) took a deep dive into how we can embrace some of Swift's most important data modeling tools (optionals and enums) in the Composable Architecture without sacrificing composition of our application's behavior. We showed that one our very own case study applications, the [Tic-Tac-Toe app](https://github.com/pointfreeco/swift-composable-architecture/blob/7b42aaced0153c67e6f97659fd7bcfd605428243/Examples/TicTacToe/Sources/Core/AppCore.swift#L7-L12) demo, modeled its root state in a less than ideal fashion: using two optional values instead of an enum. This allows invalid states to be representable in our application, which leaks into application logic making it more complex, and so we'd love to make those states [unrepresentable](/episodes/ep4-algebraic-data-types) by the compiler.
+This week's [episode](/episodes/ep149-derived-behavior-optionals-and-enums) took a deep dive into
+how we can embrace some of Swift's most important data modeling tools (optionals and enums) in the
+Composable Architecture without sacrificing composition of our application's behavior. We showed
+that one our very own case study applications, the
+[Tic-Tac-Toe app](https://github.com/pointfreeco/swift-composable-architecture/blob/7b42aaced0153c67e6f97659fd7bcfd605428243/Examples/TicTacToe/Sources/Core/AppCore.swift#L7-L12)
+demo, modeled its root state in a less than ideal fashion: using two optional values instead of an
+enum. This allows invalid states to be representable in our application, which leaks into
+application logic making it more complex, and so we'd love to make those states
+[unrepresentable](/episodes/ep4-algebraic-data-types) by the compiler.
 
-Unfortunately, the [Composable Architecture](/collections/composable-architecture) does not come with the tools necessary to properly use enums for state… well, until today that is! We are [releasing](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.19.0) a new version of the library that adds a `pullback` method on `Reducer` and a `SwitchStore` view that are specifically tuned for breaking down behaviors modeled on enum state into behavior for each case of the enum.
+Unfortunately, the [Composable Architecture](/collections/composable-architecture) does not come
+with the tools necessary to properly use enums for state… well, until today that is! We are [releasing](https://github.com/pointfreeco/swift-composable-architecture/releases/tag/0.19.0) a
+new version of the library that adds a `pullback` method on `Reducer` and a `SwitchStore` view that
+are specifically tuned for breaking down behaviors modeled on enum state into behavior for each case
+of the enum.
 
 ## `Reducer.pullback`
 
-We often want to model the state of a part of our applications using an enum to represent mutually exclusive states. For example, at the root of our application we may separate the logged-in and logged-out states into cases of an enum:
+We often want to model the state of a part of our applications using an enum to represent mutually
+exclusive states. For example, at the root of our application we may separate the logged-in and
+logged-out states into cases of an enum:
 
 ```swift
 enum AppState {
@@ -13,45 +27,70 @@ enum AppState {
 }
 ```
 
-In the Composable Architecture we like to define reducers on sub-state and then use the `pullback` and `combine` operators to piece multiple reducers together into one big reducer that operates on bigger pieces of state. The `pullback` operator accomplishes this by using a `WritableKeyPath` to extract out sub-state, operate on it, and then plug it back into the whole state. So we would hope we could define a reducer for each of the logged-in domain and logged-out domain that could then be pieced together to operate on the entire app domain.
+In the Composable Architecture we like to define reducers on sub-state and then use the `pullback`
+and `combine` operators to piece multiple reducers together into one big reducer that operates on
+bigger pieces of state. The `pullback` operator accomplishes this by using a `WritableKeyPath` to
+extract out sub-state, operate on it, and then plug it back into the whole state. So we would hope
+we could define a reducer for each of the logged-in domain and logged-out domain that could then be
+pieced together to operate on the entire app domain.
 
-However, when state is modeled as an enum we do not have access to key paths. We instead need a way to try to extract a particular case from the state enum, operate on it, and then embed it back into the state enum. This is precisely what [case paths](/collections/enums-and-structs/case-paths) excel at, which is the analogous concept for key paths, but tuned specifically for enums instead.
+However, when state is modeled as an enum we do not have access to key paths. We instead need a way
+to try to extract a particular case from the state enum, operate on it, and then embed it back into
+the state enum. This is precisely what [case paths](/collections/enums-and-structs/case-paths) excel
+at, which is the analogous concept for key paths, but tuned specifically for enums instead.
 
-So, rather than pulling back a reducer along a key path to some sub-state we can instead pull back along a _case path_ to a sub-case:
+So, rather than pulling back a reducer along a key path to some sub-state we can instead pull back
+along a _case path_ to a sub-case:
 
 ```swift
-let loggedInReducer: Reducer<LoggedInState, LoggedInAction, LoggedInEnvironment> = …
+let loggedInReducer: Reducer<
+  LoggedInState, LoggedInAction, LoggedInEnvironment
+> = …
 
-let loggedOutReducer: Reducer<LoggedOutState, LoggedOutAction, LoggedOutEnvironment> = …
+let loggedOutReducer: Reducer<
+  LoggedOutState, LoggedOutAction, LoggedOutEnvironment
+> = …
 
 let appReducer = Reducer.combine(
   loggedInReducer.pullback(
     state: /AppState.loggedIn,
     action: /AppAction.loggedIn,
-    environment: { LoggedInEnvironment(...) }
+    environment: { LoggedInEnvironment(…) }
   ),
 
   loggedOutReducer.pullback(
     state: /AppState.loggedOut,
     action: /AppAction.loggedOut,
-    environment: { LoggedOutEnvironment(...) }
+    environment: { LoggedOutEnvironment(…) }
   )
 )
 ```
 
 ## `SwitchStore`
 
-While the `pullback` operator helps us compose the logic of our application, the `SwitchStore` view helps us compose the behavior of our application. It serves the same purpose that the `IfLetStore` serves for optionals and the `ForEachStore` serves for collections, but is tuned specifically for enums. It allows you to destructure a store into multiple stores, one for each case of your state's enum.
+While the `pullback` operator helps us compose the logic of our application, the `SwitchStore` view
+helps us compose the behavior of our application. It serves the same purpose that the `IfLetStore`
+serves for optionals and the `ForEachStore` serves for collections, but is tuned specifically for
+enums. It allows you to destructure a store into multiple stores, one for each case of your state's
+enum.
 
-For example, if we had a `LoggedInView` and `LoggedOutView` to represent the root view for each of the logged in and out states, then we could "switch" on the root store in order to figure out which view to display:
+For example, if we had a `LoggedInView` and `LoggedOutView` to represent the root view for each of
+the logged in and out states, then we could "switch" on the root store in order to figure out which
+view to display:
 
 ```swift
-SwitchStore(self.store) {
-  CaseLet(state: /AppState.loggedIn, action: AppAction.loggedIn) { loggedInStore in
+SwitchStore(store) {
+  CaseLet(
+    state: /AppState.loggedIn,
+    action: AppAction.loggedIn
+  ) { loggedInStore in
     LoggedInView(store: loggedInStore)
   }
 
-  CaseLet(state: /AppState.loggedOut, action: AppAction.loggedOut) { loggedOutStore in
+  CaseLet(
+    state: /AppState.loggedOut,
+    action: AppAction.loggedOut
+  ) { loggedOutStore in
     LoggedOutView(store: loggedOutStore)
   }
 }
@@ -60,13 +99,19 @@ SwitchStore(self.store) {
 Under the hood the `SwitchStore` view figures out whenever your state enum's case changes from the `.loggedIn` case to the `.loggedOut` case (or vice-versa), and will make sure the correct view is displayed. You can also leverage SwiftUI's transition APIs to automatically animate when the views appear or disappear:
 
 ```swift
-SwitchStore(self.store) {
-  CaseLet(state: /AppState.loggedIn, action: AppAction.loggedIn) { loggedInStore in
+SwitchStore(store) {
+  CaseLet(
+    state: /AppState.loggedIn,
+    action: AppAction.loggedIn
+  ) { loggedInStore in
     LoggedInView(store: loggedInStore)
       .transition(.opacity.combined(with: .offset(x: 0, y: 20))
   }
 
-  CaseLet(state: /AppState.loggedOut, action: AppAction.loggedOut) { loggedOutStore in
+  CaseLet(
+    state: /AppState.loggedOut,
+    action: AppAction.loggedOut
+  ) { loggedOutStore in
     LoggedOutView(store: loggedOutStore)
       .transition(.opacity)
   }

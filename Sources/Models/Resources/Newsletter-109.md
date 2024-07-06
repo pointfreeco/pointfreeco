@@ -39,7 +39,7 @@ class FeatureModel: ObservableObject {
       named: UIApplication.userDidTakeScreenshotNotification
     )
     for await _ in screenshots {
-      self.count += 1
+      count += 1
     }
   }
 }
@@ -81,7 +81,8 @@ func testBasics() async {
 
   // Simulate a screen shot being taken.
   NotificationCenter.default.post(
-    name: UIApplication.userDidTakeScreenshotNotification, object: nil
+    name: UIApplication.userDidTakeScreenshotNotification,
+    object: nil
   )
 }
 ```
@@ -99,7 +100,8 @@ func testBasics() async {
 
   // Simulate a screen shot being taken.
   NotificationCenter.default.post(
-    name: UIApplication.userDidTakeScreenshotNotification, object: nil
+    name: UIApplication.userDidTakeScreenshotNotification,
+    object: nil
   )
 
   // Give the task an opportunity to update the view model.
@@ -202,7 +204,7 @@ class FeatureModel: ObservableObject {
   …
   func buttonTapped() {
     …
-    await self.analytics.track("Button tapped")
+    await analytics.track("Button tapped")
   }
 }
 ```
@@ -215,7 +217,9 @@ way we should use an actor, and `ActorIsolated` makes this easy:
 func testAnalytics() async {
   let events = ActorIsolated<[String]>([])
   let analytics = AnalyticsClient(
-    track: { event in await events.withValue { $0.append(event) } }
+    track: { event in
+      await events.withValue { $0.append(event) }
+    }
   )
   let model = FeatureModel(analytics: analytics)
   model.buttonTapped()
@@ -248,14 +252,17 @@ The library comes with numerous helper APIs spread across the two Swift stream t
     `NotificationCenter.Notifications` async sequence to a stream by using the
     [`eraseToStream`][erase-to-stream-source] method:
 
-    ```swift
+    ```swift:10
     extension ScreenshotsClient {
       static let live = Self(
         screenshots: {
           NotificationCenter.default
-            .notifications(named: UIApplication.userDidTakeScreenshotNotification)
+            .notifications(
+              named: UIApplication
+                .userDidTakeScreenshotNotification
+            )
             .map { _ in }
-            .eraseToStream()  // ⬅️
+            .eraseToStream()
         }
       )
     }
@@ -278,7 +285,8 @@ The library comes with numerous helper APIs spread across the two Swift stream t
     let model = FeatureModel(screenshots: screenshots.stream)
 
     XCTAssertEqual(model.screenshotCount, 0)
-    screenshots.continuation.yield()  // Simulate a screenshot being taken.
+    // Simulate a screenshot being taken.
+    screenshots.continuation.yield()
     XCTAssertEqual(model.screenshotCount, 1)
     ```
 

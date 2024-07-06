@@ -84,6 +84,7 @@ class MyWebPageTests: XCTestCase {
     assertSnapshot(matching: doc, as: .html)
   }
 }
+```
 
 ## Bug fixes and performance improvements
 

@@ -69,9 +69,9 @@ for removing the element:
 
 ```swift
 func deleteStandup(id: Standup.ID) {
-  guard let index = self.standups.firstIndex(where: { $0.id == id })
+  guard let index = standups.firstIndex(where: { $0.id == id })
   else { return }
-  self.standups.remove(at: index)
+  sstandups.remove(at: index)
 }
 ```
 
@@ -87,12 +87,12 @@ deleting the standup. If we do this naively:
 
 ```swift:5
 func deleteStandup(id: Standup.ID) async throws {
-  guard let index = self.standups.firstIndex(where: { $0.id == id })
+  guard let index = standups.firstIndex(where: { $0.id == id })
   else { return }
 
-  try await self.apiClient.delete(id: id)
+  try await apiClient.delete(id: id)
 
-  self.standups.remove(at: index)
+  standups.remove(at: index)
 }
 ```
 
@@ -124,13 +124,13 @@ like regular arrays. However, they come with additional API that allow for the s
 reading and modifying of elements by their ID. Such as removing an element by its ID:
 
 ```swift
-self.standups.remove(id: id)
+standups.remove(id: id)
 ```
 
 …or updating an element by its ID:
 
 ```swift
-self.standups[id: standup.id] = standup
+standups[id: standup.id] = standup
 ```
 
 
@@ -196,25 +196,25 @@ navigation (alerts, sheets, popovers, drill-downs, _etc._) with a single, unifie
 
 ```swift
 .navigationDestination(
-  unwrapping: self.$model.destination,
+  unwrapping: $model.destination,
   case: /StandupDetailModel.Destination.meeting
 ) { $meeting in
-  MeetingView(meeting: meeting, standup: self.model.standup)
+  MeetingView(meeting: meeting, standup: model.standup)
 }
 .navigationDestination(
-  unwrapping: self.$model.destination,
+  unwrapping: $model.destination,
   case: /StandupDetailModel.Destination.record
 ) { $model in
   RecordMeetingView(model: model)
 }
 .alert(
-  unwrapping: self.$model.destination,
+  unwrapping: $model.destination,
   case: /StandupDetailModel.Destination.alert
 ) { action in
-  await self.model.alertButtonTapped(action)
+  await model.alertButtonTapped(action)
 }
 .sheet(
-  unwrapping: self.$model.destination,
+  unwrapping: $model.destination,
   case: /StandupDetailModel.Destination.edit
 ) { $editModel in
   EditStandupView(model: editModel)
@@ -227,9 +227,9 @@ tapped][standup-detail-edit-button-tapped], we can show the edit sheet by simply
 `destination` state:
 
 ```swift
-self.destination = .edit(
+destination = .edit(
   withDependencies(from: self) {
-    EditStandupModel(standup: self.standup)
+    EditStandupModel(standup: standup)
   }
 )
 ```
@@ -238,9 +238,9 @@ Or when the ["Start a meeting" button is tapped][standup-detail-start-meeting-ta
 drill down to the record meeting screen by populating the `destination` state:
 
 ```swift
-self.destination = .record(
+destination = .record(
   withDependencies(from: self) {
-    RecordMeetingModel(standup: self.standup)
+    RecordMeetingModel(standup: standup)
   }
 )
 ```
@@ -250,7 +250,7 @@ by simply `nil`-ing out the `destination` state:
 
 ```swift
 func cancelEditButtonTapped() {
-  self.destination = nil
+  destination = nil
 }
 ```
 
@@ -362,11 +362,17 @@ func testDelete() async throws {
 
   model.standupTapped(standup: model.standups[0])
 
-  let detailModel = try XCTUnwrap(model.destination, case: /StandupsListModel.Destination.detail)
+  let detailModel = try XCTUnwrap(
+    model.destination,
+    case: /StandupsListModel.Destination.detail
+  )
 
   detailModel.deleteButtonTapped()
 
-  let alert = try XCTUnwrap(detailModel.destination, case: /StandupDetailModel.Destination.alert)
+  let alert = try XCTUnwrap(
+    detailModel.destination,
+    case: /StandupDetailModel.Destination.alert
+  )
 
   XCTAssertNoDifference(alert, .deleteStandup)
 

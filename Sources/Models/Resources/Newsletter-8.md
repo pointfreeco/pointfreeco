@@ -1,6 +1,6 @@
-![](https://d1iqsrac68iyd8.cloudfront.net/posts/0008-conditional-coding/poster.png)
-
 > Preamble: What happens when we combine Swift's conditional conformance with codability?
+
+![](https://d1iqsrac68iyd8.cloudfront.net/posts/0008-conditional-coding/poster.png)
 
 Swift 4 introduced the
 [`Codable`](https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types)

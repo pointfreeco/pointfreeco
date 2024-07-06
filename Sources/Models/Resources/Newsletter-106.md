@@ -49,7 +49,6 @@ struct InventoryFeature: ReducerProtocol {
     case addItem(PresentationAction<ItemFormFeature.Action>)
     …
   }
-
   …
 }
 ```
@@ -65,8 +64,8 @@ populating the child's state to drive navigation:
 
 ```swift
 struct InventoryFeature: ReducerProtocol {
-  struct State: Equatable {…}
-  enum Action: Equatable {…}
+  struct State: Equatable { … }
+  enum Action: Equatable { … }
 
   var body: some ReducerProtocolOf<Self> {
     Reduce<State, Action> { state, action in
@@ -107,7 +106,9 @@ struct InventoryView: View {
       …
     }
     .sheet(
-      store: self.store.scope(state: \.$addItem, action: { .addItem($0) })
+      store: store.scope(
+        state: \.$addItem, action: { .addItem($0) }
+      )
     ) { store in
       ItemFormView(store: store)
     }
@@ -262,7 +263,9 @@ struct RootView: View {
 
   var body: some View {
     NavigationStackStore(
-      path: self.store.scope(state: \.path, action: { .path($0) })
+      path: store.scope(
+        state: \.path, action: { .path($0) }
+      )
     ) {
       // Root view of the navigation stack
     } destination: { state in

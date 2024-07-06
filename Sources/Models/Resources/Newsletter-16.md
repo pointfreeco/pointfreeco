@@ -1,8 +1,8 @@
-![](https://d1iqsrac68iyd8.cloudfront.net/posts/0016-announcing-swift-html/poster.jpg)
-
 > Preamble: Today we are [open sourcing](https://github.com/pointfreeco/swift-html) a new library
 > for building HTML documents in Swift. It's extensible, transformable, type-safe, and provides many
 > benefits over templating languages.
+
+![](https://d1iqsrac68iyd8.cloudfront.net/posts/0016-announcing-swift-html/poster.jpg)
 
 The entire [Point-Free](https://www.pointfree.co) website is built using server-side Swift, and the
 code base has been [open source](https://github.com/pointfreeco/pointfreeco) from day one. When we
@@ -73,8 +73,8 @@ let doc = Node.element("header", [], [
     .text("!")
   ]),
   .element("img", [
-    ("src", "/logo.png"), ("width", "64"), ("height", "64")], []
-  ),
+    ("src", "/logo.png"), ("width", "64"), ("height", "64")
+  ], []),
 ])
 ```
 

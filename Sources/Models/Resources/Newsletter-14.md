@@ -1,8 +1,8 @@
-![](https://d1iqsrac68iyd8.cloudfront.net/posts/0014-open-sourcing-validated/poster.jpg)
-
 > Preamble: Today we are open sourcing [Validated](https://github.com/pointfreeco/swift-validated),
 > a tiny functional Swift library for handling multiple errors: functionality that you don't get
 > from throwing functions and the `Result` type.
+
+![](https://d1iqsrac68iyd8.cloudfront.net/posts/0014-open-sourcing-validated/poster.jpg)
 
 Error handling in Swift is done through a first-class language feature known as `throw` and `catch`.
 It allows you to express the concept of an operation that can fail and provide a data value to

@@ -106,15 +106,15 @@ private struct HTMLConverter: MarkupVisitor {
     default:
       let style = BlockQuoteStyle(blockName: aside.kind.displayName)
       blockquote {
-        strong {
-          HTMLText(aside.kind.displayName)
-        }
-        .color(style.borderColor)
-        .inlineStyle("margin-bottom", "0.25rem")
-        .inlineStyle("display", "block")
+        VStack(spacing: 0.5) {
+          strong {
+            HTMLText(aside.kind.displayName)
+          }
+          .color(style.borderColor)
 
-        for child in aside.content {
-          visit(child)
+          for child in aside.content {
+            visit(child)
+          }
         }
       }
       .color(.offBlack.dark(.offWhite))
@@ -139,7 +139,7 @@ private struct HTMLConverter: MarkupVisitor {
         dataLine: dataLine.map { String($0) }
       )
     }
-    div {
+//    div {
       pre {
         code {
           HTMLText(codeBlock.code)
@@ -151,9 +151,10 @@ private struct HTMLConverter: MarkupVisitor {
       .attribute("data-line", language?.dataLine)
       .inlineStyle("margin", "0")
       .inlineStyle("padding-right", "1rem")
-    }
+//    }
     .backgroundColor(.offWhite.dark(.offBlack))
     .inlineStyle("margin-bottom", "0.5rem")
+    .inlineStyle("overflow-x", "scroll")
     .inlineStyle("padding", "1rem 0 1rem 1.5rem")
     .inlineStyle("border-radius", "6px")
   }
@@ -225,11 +226,12 @@ private struct HTMLConverter: MarkupVisitor {
   @HTMLBuilder
   mutating func visitListItem(_ listItem: Markdown.ListItem) -> AnyHTML {
     li {
-      for child in listItem.children {
-        visit(child)
+      VStack(spacing: 0.5) {
+        for child in listItem.children {
+          visit(child)
+        }
       }
     }
-    .inlineStyle("margin-top", "0.5rem")
   }
 
   @HTMLBuilder
@@ -239,7 +241,7 @@ private struct HTMLConverter: MarkupVisitor {
         visit(child)
       }
     }
-    .inlineStyle("margin-top", "0.5rem", pseudo: .not(.firstChild))
+    .flexContainer(direction: "column", rowGap: "0.5rem")
   }
 
   @HTMLBuilder
@@ -342,7 +344,7 @@ private struct HTMLConverter: MarkupVisitor {
         visit(child)
       }
     }
-    .inlineStyle("margin-top", "0.5rem")
+    .flexContainer(direction: "column", rowGap: "0.5rem")
   }
 }
 

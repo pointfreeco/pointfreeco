@@ -74,7 +74,6 @@ let featureReducer = Reducer<
         .catchToEffect()
         .map(AppAction.motionUpdate)
     )
-
   …
   }
 }
@@ -157,7 +156,6 @@ func testFeature() {
       )
     )
   )
-
   …
 }
 ```

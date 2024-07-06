@@ -1,11 +1,11 @@
-![](https://d1iqsrac68iyd8.cloudfront.net/posts/0004-overture-functional-setters/0004-poster-1.jpg)
-
 > Preamble:This week's
 > [episode](https://www.pointfree.co/episodes/ep15-setters-ergonomics-performance) explored
 > providing a friendlier API to functional setters, and improved their performance by leveraging
 > Swift's value mutation semantics. To make these ideas accessible to everyone we have updated our
 > [Swift Overture](https://github.com/pointfreeco/swift-overture) library to add these helper
 > functions and more!
+
+![](https://d1iqsrac68iyd8.cloudfront.net/posts/0004-overture-functional-setters/0004-poster-1.jpg)
 
 We released [Swift Overture](https://github.com/pointfreeco/swift-overture), a library for embracing
 function composition, a little over a month ago, and the reception has been great! It has helped

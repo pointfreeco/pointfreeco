@@ -1,8 +1,8 @@
-![](https://d1iqsrac68iyd8.cloudfront.net/posts/0028-enum-properties/cover.png)
-
 > Announcement: We wanted to make Swift enum data access as ergonomic as struct data access, so
 > today we are open sourcing a code generation tool to do just that:
 > [generate-enum-properties](https://github.com/pointfreeco/swift-enum-properties).
+
+![](https://d1iqsrac68iyd8.cloudfront.net/posts/0028-enum-properties/cover.png)
 
 We are excited to announce the 0.1.0 release of
 [generate-enum-properties](https://github.com/pointfreeco/swift-enum-properties), a code generation

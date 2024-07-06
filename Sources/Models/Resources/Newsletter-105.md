@@ -62,7 +62,7 @@ and how to use them.
 
       var body: some View {
         NavigationStackStore(
-          self.store.scope(state: \.path, action: Root.Action.path)
+          store.scope(state: \.path, action: { .path($0) })
         ) {
           Text("Welcome")
         } destination: { store in

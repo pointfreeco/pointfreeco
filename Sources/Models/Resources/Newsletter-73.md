@@ -54,7 +54,7 @@ let users = Many {
 But, if we run our parser on the `input` value above we will find we only get `nil` instead of an array of users:
 
 ```swift
-let output = users.parser(input) // nil
+let output = users.parser(input)  // nil
 ```
 
 The reason for this is because we actually have a typo for the boolean in the last column of the last row of the CSV text:
@@ -266,7 +266,7 @@ For example, the `Whitespace` parser does not fail, and if we wanted to `.map` o
 
 ```swift
 let whitespaceCount = Whitespace().map(\.count)
-try whitespaceCount.parse("   Hello".utf8) // 3
+try whitespaceCount.parse("   Hello".utf8)  // 3
 // Must use `try`, even though the parser cannot fail 😫
 ```
 

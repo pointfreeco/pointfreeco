@@ -59,7 +59,9 @@ path.codable  // nil
 Currently this value is `nil` because the `User` struct we defined earlier does not conform to
 `Codable`, and a warning is even printed in the logs explaining as such:
 
-> Cannot create CodableRepresentation of navigation path, because presented value of type "User" is not Codable.
+```
+Cannot create CodableRepresentation of navigation path, because presented value of type "User" is not Codable.
+```
 
 `NavigationPath` requires that everything you append to it be `Codable` in order for its magic trick
 to work. So, let's make the `User` struct `Codable`:

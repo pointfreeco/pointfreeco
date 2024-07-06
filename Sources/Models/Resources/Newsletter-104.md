@@ -38,7 +38,6 @@ Here is a very quick overview of what you can look forward to:
         case child(PresentationAction<Child.Action>)
         …
       }
-  
       …
     }
     ```
@@ -76,7 +75,9 @@ Here is a very quick overview of what you can look forward to:
           …
         }
         .sheet(
-          store: self.store.scope(state: \.$child, action: Parent.Action.child)
+          store: store.scope(
+            state: \.$child, action: { .child($0) }
+          )
         ) { store in
           ChildView(store: store)
         }
