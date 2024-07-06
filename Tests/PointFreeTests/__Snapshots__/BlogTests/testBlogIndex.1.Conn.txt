@@ -2,7 +2,7 @@ GET http://localhost:8080/blog
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 30577
+Content-Length: 33119
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -242,326 +242,326 @@ Prism.languages.insertBefore('swift', 'string-literal', {
     <meta property="og:url" content="http://localhost:8080/blog">
     <meta name="twitter:url" content="http://localhost:8080/blog"><script src="https://plausible.io/js/script.js" defer data-domain="pointfree.co"></script>
     <style>
-.width-0{width:100%}
-.background-3{background:#121212}
-.padding-4{padding:2rem}
-.max-width-6{max-width:1280px}
-.margin-7{margin:0 auto}
-.display-8{display:flex}
-.flex-direction-9{flex-direction:row}
-.flex-wrap-10{flex-wrap:wrap}
-.justify-content-11{justify-content:space-between}
-.align-items-12{align-items:center}
-.line-height-13{line-height:0}
-.text-decoration-14:visited{text-decoration:none}
-.text-decoration-15:link{text-decoration:none}
-.text-decoration-16:hover{text-decoration:underline}
-.padding-left-18{padding-left:0.0rem}
-.list-style-type-19{list-style-type:none}
-.padding-left-21:not(:first-child){padding-left:2rem}
-.display-22{display:inline}
-.color-23:link{color:#a8a8a8}
-.color-24:visited{color:#a8a8a8}
-.padding-left-25:not(:first-child){padding-left:1rem}
-.font-size-26{font-size:0.875rem}
-.color-27:visited{color:#974dff}
-.color-28:link{color:#974dff}
-.color-29{color:#974dff}
-.border-30{border:1px solid #974dff}
-.border-radius-31{border-radius:0.5rem}
-.box-shadow-32:hover{box-shadow:inset 0 0 0 20rem rgba(0,0,0,0.1)}
-.cursor-33{cursor:pointer}
-.font-weight-34{font-weight:500}
-.text-decoration-35{text-decoration:none}
-.white-space-36{white-space:nowrap}
-.padding-37{padding:0.75rem 1.0rem}
-.transition-38{transition:0.3s}
-.color-39:visited{color:#fff}
-.color-40:link{color:#fff}
-.color-41{color:#fff}
-.background-color-42{background-color:#974dff}
-.border-43{border:none #fff}
-.display-44{display:none}
-.user-select-46{user-select:none}
-.display-47{display:block}
-.border-radius-48{border-radius:1.5px}
-.transition-49{transition:all .2s ease-out, background .2s ease-out}
-.position-50{position:relative}
-.background-51{background:#f6f6f6}
-.height-52{height:3px}
-.width-53{width:24px}
-.top-54{top:-5px}
-input:checked ~ #menu-icon .top-55{top:0}
-input:checked ~ #menu-icon .transform-56{transform:rotate(-45deg)}
-input:checked ~ #menu-icon .transform-57{transform:rotate(0deg)}
-input:checked ~ #menu-icon .background-58{background:transparent}
-.top-59{top:5px}
-input:checked ~ #menu-icon .top-60{top:-5px}
-input:checked ~ #menu-icon .transform-61{transform:rotate(45deg)}
-.margin-62{margin:0}
-.flex-grow-64{flex-grow:1}
-.flex-shrink-65{flex-shrink:1}
-.flex-basis-66{flex-basis:100%}
-.padding-top-67{padding-top:1.5rem}
-.text-align-68{text-align:center}
-.box-sizing-69{box-sizing:border-box}
-.background-70{background:linear-gradient(#121212, #242424)}
-.align-items-71{align-items:stretch}
-.flex-direction-72{flex-direction:column}
-.max-width-73{max-width:100%}
-.row-gap-74{row-gap:1.0rem}
-.padding-75{padding:6rem 2rem}
-.max-height-77{max-height:100%}
-.column-gap-78{column-gap:1.0rem}
-.margin-top-79:not(:first-child){margin-top:1.75rem}
-.margin-bottom-80:not(:last-child){margin-bottom:0.75rem}
-.font-size-81{font-size:3.0rem}
-.font-weight-82{font-weight:700}
-.line-height-83{line-height:1.2}
-.color-84{color:#ccc}
-.font-weight-85{font-weight:normal}
-.line-height-86{line-height:1.5}
-.font-size-87{font-size:1.0rem}
-.padding-bottom-88:not(:last-child){padding-bottom:0.5rem}
-.padding-top-89{padding-top:0}
-.padding-left-90{padding-left:0}
-.padding-right-91{padding-right:0}
-.color-92{color:#fafafa}
-.background-color-93{background-color:#fff}
-.padding-96{padding:4.0rem 2.0rem 4.0rem}
-.justify-content-98{justify-content:flex-start}
-.align-items-99{align-items:baseline}
-.padding-bottom-100{padding-bottom:3.0rem}
-.flex-wrap-101{flex-wrap:nowrap}
-.justify-content-102{justify-content:center}
-.color-103{color:#121212}
-.color-105:link{color:#171717}
-.color-107:visited{color:#171717}
-.margin-top-109:not(:first-child){margin-top:1.5rem}
-.margin-bottom-110:not(:last-child){margin-bottom:0.5rem}
-.font-size-111{font-size:2.0rem}
-.row-gap-112{row-gap:0.5rem}
-.padding-113{padding:0}
-.color-114{color:#808080}
-.row-gap-116{row-gap:3.0rem}
-.background-117{background:#fff}
-.padding-top-124{padding-top:4.0rem}
-.padding-left-125{padding-left:2.0rem}
-.padding-bottom-126{padding-bottom:4.0rem}
-.padding-right-127{padding-right:2.0rem}
-.background-128{background:#fafafa}
-.max-width-132{max-width:40rem}
-.color-133{color:#555555}
-.margin-top-135{margin-top:3rem}
-.display-136{display:inline-block}
-.padding-137{padding:1.0rem 1.25rem}
-.text-decoration-138:visited{text-decoration:underline}
-.text-decoration-139:link{text-decoration:underline}
-.background-color-150{background-color:#121212}
-.align-items-151{align-items:first baseline}
-.font-size-157{font-size:1.25rem}
-.line-height-159{line-height:1.45}
-.font-size-161{font-size:1.5rem}
-.color-162:link{color:#79f2b0}
-.color-163:visited{color:#79f2b0}
-.display-164{display:grid}
-.grid-template-columns-165{grid-template-columns:1fr 2fr}
-.font-size-166{font-size:0.75rem}
-.letter-spacing-168{letter-spacing:0.54pt}
-.line-height-169{line-height:1.25}
-.text-transform-170{text-transform:uppercase}
-.color-172{color:#666666}
+.width-C8uWv{width:100%}
+.background-K2J0r1{background:#121212}
+.padding-hS6a7{padding:2rem}
+.max-width-P6HnV{max-width:1280px}
+.margin-gEzmi{margin:0 auto}
+.display-BvS8W3{display:flex}
+.flex-direction-jlten2{flex-direction:row}
+.flex-wrap-6YEaQ3{flex-wrap:wrap}
+.justify-content-ymXQt{justify-content:space-between}
+.align-items-CdPBO2{align-items:center}
+.line-height-FBkWQ3{line-height:0}
+.text-decoration-Mif7n4:visited{text-decoration:none}
+.text-decoration-Q5Er64:link{text-decoration:none}
+.text-decoration-Zf0gY:hover{text-decoration:underline}
+.padding-left-E4tBw4{padding-left:0.0rem}
+.list-style-type-Wl0y44{list-style-type:none}
+.padding-left-dzKEp:not(:first-child){padding-left:2rem}
+.display-mFpu24{display:inline}
+.color-dwzNH2:link{color:#a8a8a8}
+.color-hzlcf:visited{color:#a8a8a8}
+.padding-left-IOMPq3:not(:first-child){padding-left:1rem}
+.font-size-RTPM71{font-size:0.875rem}
+.color-C4SO14:visited{color:#974dff}
+.color-d8fIz1:link{color:#974dff}
+.color-cemJK2{color:#974dff}
+.border-8Hnfa1{border:1px solid #974dff}
+.border-radius-NKv2f3{border-radius:0.5rem}
+.box-shadow-dyray:hover{box-shadow:inset 0 0 0 20rem rgba(0,0,0,0.1)}
+.cursor-xmR5l{cursor:pointer}
+.font-weight-aG4U6{font-weight:500}
+.text-decoration-Wl0y44{text-decoration:none}
+.white-space-RLKFg3{white-space:nowrap}
+.padding-inc4S2{padding:0.75rem 1.0rem}
+.transition-DjHPg{transition:0.3s}
+.color-QZ6Yg3:visited{color:#fff}
+.color-rNSFg1:link{color:#fff}
+.color-nbn0i3{color:#fff}
+.background-color-cemJK2{background-color:#974dff}
+.border-i8QWz2{border:none #fff}
+.display-Wl0y44{display:none}
+.user-select-Wl0y44{user-select:none}
+.display-ix08W2{display:block}
+.border-radius-Oi9xr3{border-radius:1.5px}
+.transition-BVnrT{transition:all .2s ease-out, background .2s ease-out}
+.position-Pjz1G2{position:relative}
+.background-4kuW21{background:#f6f6f6}
+.height-BOHcc4{height:3px}
+.width-t6pNK3{width:24px}
+.top-SUDJi1{top:-5px}
+input:checked ~ #menu-icon .top-xEdC7{top:0}
+input:checked ~ #menu-icon .transform-0hcgW2{transform:rotate(-45deg)}
+input:checked ~ #menu-icon .transform-kZtH24{transform:rotate(0deg)}
+input:checked ~ #menu-icon .background-WytRx3{background:transparent}
+.top-YwIIn{top:5px}
+input:checked ~ #menu-icon .top-i3LWY2{top:-5px}
+input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
+.margin-FBkWQ3{margin:0}
+.flex-grow-tzL8I2{flex-grow:1}
+.flex-shrink-tzL8I2{flex-shrink:1}
+.flex-basis-C8uWv{flex-basis:100%}
+.padding-top-Xin5E2{padding-top:1.5rem}
+.text-align-CdPBO2{text-align:center}
+.box-sizing-otfSh{box-sizing:border-box}
+.background-RMpfJ3{background:linear-gradient(#121212, #242424)}
+.align-items-msN8p3{align-items:stretch}
+.flex-direction-7gclL{flex-direction:column}
+.max-width-C8uWv{max-width:100%}
+.row-gap-83zzS1{row-gap:1.0rem}
+.padding-jNK411{padding:6rem 2rem}
+.max-height-C8uWv{max-height:100%}
+.column-gap-83zzS1{column-gap:1.0rem}
+.margin-top-rmfs01:not(:first-child){margin-top:1.75rem}
+.margin-bottom-1rcXs4:not(:last-child){margin-bottom:0.75rem}
+.font-size-NBsge3{font-size:3.0rem}
+.font-weight-SywJI1{font-weight:700}
+.line-height-auF6B{line-height:1.2}
+.color-KmPrN{color:#ccc}
+.font-weight-evfWi1{font-weight:normal}
+.line-height-9Qkso4{line-height:1.5}
+.font-size-83zzS1{font-size:1.0rem}
+.padding-bottom-yQEjs3:not(:last-child){padding-bottom:0.5rem}
+.padding-top-FBkWQ3{padding-top:0}
+.padding-left-FBkWQ3{padding-left:0}
+.padding-right-FBkWQ3{padding-right:0}
+.color-c5ixr2{color:#fafafa}
+.background-color-nbn0i3{background-color:#fff}
+.padding-bFon03{padding:4.0rem 2.0rem 4.0rem}
+.justify-content-n56cj2{justify-content:flex-start}
+.align-items-0Zubr3{align-items:baseline}
+.padding-bottom-NBsge3{padding-bottom:3.0rem}
+.flex-wrap-RLKFg3{flex-wrap:nowrap}
+.justify-content-CdPBO2{justify-content:center}
+.color-K2J0r1{color:#121212}
+.color-FF7Dt2:link{color:#171717}
+.color-py8mM2:visited{color:#171717}
+.margin-top-EvtWd3:not(:first-child){margin-top:1.5rem}
+.margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
+.font-size-QgYLk2{font-size:2.0rem}
+.row-gap-NKv2f3{row-gap:0.5rem}
+.padding-FBkWQ3{padding:0}
+.color-I8WpG4{color:#808080}
+.row-gap-NBsge3{row-gap:3.0rem}
+.background-nbn0i3{background:#fff}
+.padding-top-P1piO2{padding-top:4.0rem}
+.padding-left-QgYLk2{padding-left:2.0rem}
+.padding-bottom-P1piO2{padding-bottom:4.0rem}
+.padding-right-QgYLk2{padding-right:2.0rem}
+.background-c5ixr2{background:#fafafa}
+.max-width-3zifi{max-width:40rem}
+.color-GPfER1{color:#555555}
+.margin-top-H64QF2{margin-top:3rem}
+.display-qrAHi{display:inline-block}
+.padding-8K2qP3{padding:1.0rem 1.25rem}
+.text-decoration-gUV393:visited{text-decoration:underline}
+.text-decoration-tfb0F1:link{text-decoration:underline}
+.background-color-K2J0r1{background-color:#121212}
+.align-items-Dq4Oc4{align-items:first baseline}
+.font-size-yLOVS3{font-size:1.25rem}
+.line-height-B6FIc2{line-height:1.45}
+.font-size-Xin5E2{font-size:1.5rem}
+.color-H59Xg3:link{color:#79f2b0}
+.color-tgLLb3:visited{color:#79f2b0}
+.display-mqllb2{display:grid}
+.grid-template-columns-x1B8x4{grid-template-columns:1fr 2fr}
+.font-size-xlo1p4{font-size:0.75rem}
+.letter-spacing-fGWfX2{letter-spacing:0.54pt}
+.line-height-9Xzre{line-height:1.25}
+.text-transform-RqT8X1{text-transform:uppercase}
+.color-OpZD03{color:#666666}
 @media only screen and (max-width: 831px){
-  .position-1{position:sticky}
-  .top-2{top:0}
-  .display-17{display:none}
-  input:checked ~ .display-63{display:block}
-  .padding-top-146{padding-top:2.0rem}
-  .padding-left-147{padding-left:2.0rem}
-  .padding-bottom-148{padding-bottom:2.0rem}
-  .padding-right-149{padding-right:2.0rem}
-  .padding-bottom-156{padding-bottom:1.0rem}
-  .margin-bottom-160{margin-bottom:0.0rem}
-  .padding-top-171{padding-top:1.0rem}
+  .position-0RTpx2{position:sticky}
+  .top-dcqqP{top:0}
+  .display-mScdO2{display:none}
+  input:checked ~ .display-sAbis3{display:block}
+  .padding-top-bS1Ay3{padding-top:2.0rem}
+  .padding-left-bS1Ay3{padding-left:2.0rem}
+  .padding-bottom-bS1Ay3{padding-bottom:2.0rem}
+  .padding-right-bS1Ay3{padding-right:2.0rem}
+  .padding-bottom-GuM2x3{padding-bottom:1.0rem}
+  .margin-bottom-IGAQh1{margin-bottom:0.0rem}
+  .padding-top-GuM2x3{padding-top:1.0rem}
 }
 @media only screen and (min-width: 832px){
-  .padding-5{padding:1.5rem}
-  .padding-left-20{padding-left:1.5rem}
-  .display-45{display:none}
-  .padding-76{padding:8rem 3rem}
-  .margin-95{margin:0 auto}
-  .padding-97{padding:4.0rem 3.0rem 4.0rem}
-  .width-115{width:60%}
-  .align-items-119{align-items:center}
-  .padding-top-120{padding-top:8.0rem}
-  .padding-left-121{padding-left:8.0rem}
-  .padding-bottom-122{padding-bottom:8.0rem}
-  .padding-right-123{padding-right:8.0rem}
-  .text-align-130{text-align:center}
-  .padding-top-142{padding-top:4.0rem}
-  .padding-left-143{padding-left:4.0rem}
-  .padding-bottom-144{padding-bottom:4.0rem}
-  .padding-right-145{padding-right:4.0rem}
-  .column-gap-152{column-gap:1.0rem}
-  .display-153{display:grid}
-  .grid-template-columns-154{grid-template-columns:1fr 1fr}
-  .row-gap-155{row-gap:1.0rem}
-  .font-size-158{font-size:1.5rem}
-  .font-size-167{font-size:0.875rem}
+  .padding-dR5Tt4{padding:1.5rem}
+  .padding-left-dR5Tt4{padding-left:1.5rem}
+  .display-Nvbu41{display:none}
+  .padding-jFt024{padding:8rem 3rem}
+  .margin-mBI0f2{margin:0 auto}
+  .padding-EmXfB2{padding:4.0rem 3.0rem 4.0rem}
+  .width-GE6zR{width:60%}
+  .align-items-GE99b{align-items:center}
+  .padding-top-OzbZs1{padding-top:8.0rem}
+  .padding-left-OzbZs1{padding-left:8.0rem}
+  .padding-bottom-OzbZs1{padding-bottom:8.0rem}
+  .padding-right-OzbZs1{padding-right:8.0rem}
+  .text-align-GE99b{text-align:center}
+  .padding-top-ujLNr4{padding-top:4.0rem}
+  .padding-left-ujLNr4{padding-left:4.0rem}
+  .padding-bottom-ujLNr4{padding-bottom:4.0rem}
+  .padding-right-ujLNr4{padding-right:4.0rem}
+  .column-gap-ZNGkd1{column-gap:1.0rem}
+  .display-jdJkm4{display:grid}
+  .grid-template-columns-V2CuF3{grid-template-columns:1fr 1fr}
+  .row-gap-ZNGkd1{row-gap:1.0rem}
+  .font-size-dR5Tt4{font-size:1.5rem}
+  .font-size-Fb6s54{font-size:0.875rem}
 }
 @media (prefers-color-scheme: dark){
-  .background-color-94{background-color:#121212}
-  .color-104{color:#fafafa}
-  .color-106:link{color:#fafafa}
-  .color-108:visited{color:#fafafa}
-  .background-118{background:#121212}
-  .background-129{background:#171717}
-  .color-131{color:#fff}
-  .color-134{color:#ccc}
-  .color-140:link{color:#666666}
-  .color-141:visited{color:#666666}
+  .background-color-dMv2U1{background-color:#121212}
+  .color-GOHNR{color:#fafafa}
+  .color-Jm6Xp1:link{color:#fafafa}
+  .color-D9CPB:visited{color:#fafafa}
+  .background-dMv2U1{background:#121212}
+  .background-xnERS1{background:#171717}
+  .color-wVkSF3{color:#fff}
+  .color-VoDZ9{color:#ccc}
+  .color-0sCqm2:link{color:#666666}
+  .color-8PEWD2:visited{color:#666666}
 }
 
     </style>
   </head>
   <body>
-<div class="width-0 position-1 top-2 background-3">
-  <nav class="padding-4 padding-5 max-width-6 margin-7 display-8 flex-direction-9 flex-wrap-10 justify-content-11 align-items-12 background-3"><a class="line-height-13 text-decoration-14 text-decoration-15 text-decoration-16" href="/"><img alt="Point-Free" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"></a>
-    <ul class="display-17 padding-left-18 list-style-type-19">
-      <li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/collections">Collections</a>
+<div class="width-C8uWv position-0RTpx2 top-dcqqP background-K2J0r1">
+  <nav class="padding-hS6a7 padding-dR5Tt4 max-width-P6HnV margin-gEzmi display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-ymXQt align-items-CdPBO2 background-K2J0r1"><a class="line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/"><img alt="Point-Free" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"></a>
+    <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/collections">Collections</a>
       </li>
-      <li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/pricing">Pricing</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/pricing">Pricing</a>
       </li>
-      <li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/blog">Blog</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/blog">Blog</a>
       </li>
-      <li class="padding-left-20 padding-left-21 display-22"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/gifts">Gifts</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/gifts">Gifts</a>
       </li>
     </ul>
-    <ul class="display-17 padding-left-18 list-style-type-19">
-      <li class="display-22 padding-left-25"><a href="/login?redirect=http://localhost:8080/blog" class="font-size-26 color-27 color-28 color-29 border-30 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-37 transition-38">Login</a>
+    <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
+      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/login?redirect=http://localhost:8080/blog" class="font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Login</a>
       </li>
-      <li class="display-22 padding-left-25"><a href="/signup?redirect=http://localhost:8080/blog" class="font-size-26 color-39 color-40 color-41 background-color-42 border-43 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-37 transition-38">Sign up</a>
+      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/signup?redirect=http://localhost:8080/blog" class="font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Sign up</a>
       </li>
-    </ul><input class="display-44" id="menu-checkbox" type="checkbox"><label class="cursor-33 display-45 cursor-33 user-select-46" id="menu-icon" for="menu-checkbox"><span class="display-47 border-radius-48 transition-49 position-50 background-51 height-52 width-53 top-54 top-55 transform-56"></span><span class="display-47 border-radius-48 transition-49 position-50 background-51 height-52 width-53 transform-57 background-58"></span><span class="display-47 border-radius-48 transition-49 position-50 background-51 height-52 width-53 top-59 top-60 transform-61"></span></label>
-    <ul class="margin-62 display-44 display-63 flex-grow-64 flex-shrink-65 flex-basis-66 padding-left-18 list-style-type-19 color-41">
-      <li class="padding-top-67"><a class="display-47 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/collections">Collections</a>
+    </ul><input class="display-Wl0y44" id="menu-checkbox" type="checkbox"><label class="cursor-xmR5l display-Nvbu41 cursor-xmR5l user-select-Wl0y44" id="menu-icon" for="menu-checkbox"><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-SUDJi1 top-xEdC7 transform-0hcgW2"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 transform-kZtH24 background-WytRx3"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-YwIIn top-i3LWY2 transform-BHskb"></span></label>
+    <ul class="margin-FBkWQ3 display-Wl0y44 display-sAbis3 flex-grow-tzL8I2 flex-shrink-tzL8I2 flex-basis-C8uWv padding-left-E4tBw4 list-style-type-Wl0y44 color-nbn0i3">
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/collections">Collections</a>
       </li>
-      <li class="padding-top-67"><a class="display-47 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/pricing">Pricing</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/pricing">Pricing</a>
       </li>
-      <li class="padding-top-67"><a class="display-47 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/blog">Blog</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/blog">Blog</a>
       </li>
-      <li class="padding-top-67"><a class="display-47 text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="/gifts">Gifts</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/gifts">Gifts</a>
       </li>
-      <li class="padding-top-67"><a class="display-47 text-align-68 font-size-26 color-27 color-28 color-29 border-30 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-37 transition-38" href="/login?redirect=http://localhost:8080/blog">Login</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/login?redirect=http://localhost:8080/blog">Login</a>
       </li>
-      <li class="padding-top-67"><a class="display-47 text-align-68 font-size-26 color-39 color-40 color-41 background-color-42 border-43 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-37 transition-38" href="/signup?redirect=http://localhost:8080/blog">Sign up</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/signup?redirect=http://localhost:8080/blog">Sign up</a>
       </li>
     </ul>
   </nav>
 </div>
-<pf-vstack class="box-sizing-69 background-70 align-items-71 display-8 flex-direction-72 max-width-73 row-gap-74">
-  <pf-hstack class="box-sizing-69 flex-basis-66 max-width-6 width-0 margin-7 padding-75 padding-76 align-items-12 display-8 flex-direction-9 max-height-77 column-gap-78">
-    <div class="flex-grow-64">
-      <h2 class="color-41 margin-62 margin-top-79 margin-bottom-80 font-size-81 font-weight-82 line-height-83">Newsletter
+<pf-vstack class="box-sizing-otfSh background-RMpfJ3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+  <pf-hstack class="box-sizing-otfSh flex-basis-C8uWv max-width-P6HnV width-C8uWv margin-gEzmi padding-jNK411 padding-jFt024 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
+    <div class="flex-grow-tzL8I2">
+      <h2 class="color-nbn0i3 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">Newsletter
       </h2>
-      <p class="color-84 font-weight-85 line-height-86 font-size-87 padding-bottom-88 padding-top-89 padding-left-90 padding-right-91 margin-62 line-height-86">Explore advanced programming topics in Swift.
+      <p class="color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Explore advanced programming topics in Swift.
       </p>
     </div>
-    <div class="color-92">
+    <div class="color-c5ixr2">
     </div>
   </pf-hstack>
 </pf-vstack>
-<div class="background-color-93 background-color-94">
-  <div class="max-width-6 margin-95 padding-96 padding-97 display-8 flex-direction-9 flex-wrap-10 justify-content-98 align-items-99">
-    <div class="padding-bottom-100 flex-basis-66 display-8 flex-direction-9 flex-wrap-101 justify-content-102 align-items-12">
-      <pf-vstack class="color-103 color-104 text-align-68 width-0 align-items-71 display-8 flex-direction-72 max-width-73 row-gap-74"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-105 color-106 color-107 color-108" href="/blog/posts/0-mock-blog-post">
-        <h3 class="margin-62 margin-top-109 margin-bottom-110 font-size-111 font-weight-82 line-height-83">
-          <pf-markdown class="display-47">
-            <pf-vstack class="align-items-71 display-8 flex-direction-72 max-width-73 row-gap-112">
-              <p class="line-height-86 padding-113 margin-62">Mock Blog Post
+<div class="background-color-nbn0i3 background-color-dMv2U1">
+  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+    <div class="padding-bottom-NBsge3 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-CdPBO2 align-items-CdPBO2">
+      <pf-vstack class="color-K2J0r1 color-GOHNR text-align-CdPBO2 width-C8uWv align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB" href="/blog/posts/0-mock-blog-post">
+        <h3 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">
+          <pf-markdown class="display-ix08W2">
+            <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+              <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Mock Blog Post
               </p>
             </pf-vstack>
           </pf-markdown>
         </h3></a>
-        <div class="color-114">Monday April 16, 2018
+        <div class="color-I8WpG4">Monday April 16, 2018
         </div>
       </pf-vstack>
     </div>
-    <pf-vstack class="margin-95 width-115 align-items-71 display-8 flex-direction-72 max-width-73 row-gap-116">
+    <pf-vstack class="margin-mBI0f2 width-GE6zR align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NBsge3">
     </pf-vstack>
   </div>
 </div>
-<div class="background-117 background-118">
-  <div class="align-items-119 display-8 flex-direction-72 flex-wrap-10 row-gap-112 padding-top-120 padding-left-121 padding-bottom-122 padding-right-123 padding-top-124 padding-left-125 padding-bottom-126 padding-right-127 background-128 background-129 margin-7 max-width-6">
-    <div class="text-align-130">
-      <h2 class="color-103 color-131 margin-62 margin-top-79 margin-bottom-80 font-size-81 font-weight-82 line-height-83">Get started with our free&nbsp;plan
+<div class="background-nbn0i3 background-dMv2U1">
+  <div class="align-items-GE99b display-BvS8W3 flex-direction-7gclL flex-wrap-6YEaQ3 row-gap-NKv2f3 padding-top-OzbZs1 padding-left-OzbZs1 padding-bottom-OzbZs1 padding-right-OzbZs1 padding-top-P1piO2 padding-left-QgYLk2 padding-bottom-P1piO2 padding-right-QgYLk2 background-c5ixr2 background-xnERS1 margin-gEzmi max-width-P6HnV">
+    <div class="text-align-GE99b">
+      <h2 class="color-K2J0r1 color-wVkSF3 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">Get started with our free&nbsp;plan
       </h2>
     </div>
-    <div class="text-align-130">
-      <p class="margin-95 max-width-132 color-133 color-134 font-weight-85 line-height-86 font-size-87 padding-bottom-88 padding-top-89 padding-left-90 padding-right-91 margin-62 line-height-86">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
+    <div class="text-align-GE99b">
+      <p class="margin-mBI0f2 max-width-3zifi color-GPfER1 color-VoDZ9 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Our free plan includes 1 subscriber-only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
       </p>
     </div>
-    <div class="text-align-130 width-0"><a class="margin-top-135 display-136 font-size-87 color-39 color-40 color-41 background-color-42 border-43 border-radius-31 box-shadow-32 cursor-33 font-weight-34 text-decoration-35 text-decoration-15 white-space-36 padding-137 transition-38" href="/signup">Sign up for free →</a>
-    </div><a class="text-align-130 font-weight-85 line-height-86 font-size-26 text-decoration-138 text-decoration-139 text-decoration-16 color-23 color-140 color-24 color-141" href="/pricing">View plans and pricing</a>
+    <div class="text-align-GE99b width-C8uWv"><a class="margin-top-H64QF2 display-qrAHi font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/signup">Sign up for free →</a>
+    </div><a class="text-align-GE99b font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-dwzNH2 color-0sCqm2 color-hzlcf color-8PEWD2" href="/pricing">View plans and pricing</a>
   </div>
 </div>
-<div class="background-color-93 background-color-94">
-  <div class="max-width-6 margin-95 padding-96 padding-97 display-8 flex-direction-9 flex-wrap-10 justify-content-98 align-items-99">
-    <div class="padding-bottom-100 flex-basis-66 display-8 flex-direction-9 flex-wrap-101 justify-content-102 align-items-12">
-      <h3 class="color-103 color-104 margin-62 margin-top-109 margin-bottom-110 font-size-111 font-weight-82 line-height-83">Older posts
+<div class="background-color-nbn0i3 background-color-dMv2U1">
+  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+    <div class="padding-bottom-NBsge3 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-CdPBO2 align-items-CdPBO2">
+      <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Older posts
       </h3>
     </div>
-    <ul class="padding-left-18 list-style-type-19">
+    <ul class="padding-left-E4tBw4 list-style-type-Wl0y44">
     </ul>
   </div>
 </div>
-<footer class="padding-top-142 padding-left-143 padding-bottom-144 padding-right-145 padding-top-146 padding-left-147 padding-bottom-148 padding-right-149 background-color-150">
-  <pf-vgrid class="align-items-151 width-0 column-gap-152 display-153 grid-template-columns-154 row-gap-155">
-    <div class="padding-bottom-156 padding-right-145">
-      <h4 class="font-size-157 font-size-158 line-height-159 margin-bottom-160 font-size-161"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-40 color-39" href="/">Point-Free</a>
+<footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
+  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-V2CuF3 row-gap-ZNGkd1">
+    <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
+      <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-85 line-height-86 font-size-87 color-41">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-162 color-163" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-162 color-163" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="width-0 column-gap-78 display-164 grid-template-columns-165 row-gap-74">
+    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-x1B8x4 row-gap-83zzS1">
       <div>
-        <h5 class="font-size-166 font-size-167 letter-spacing-168 line-height-169 text-transform-170 color-41">Content
+        <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>
-        <ol class="padding-left-18 list-style-type-19">
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/pricing">Pricing</a>
+        <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/pricing">Pricing</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/gifts">Gifts</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/">Videos</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/">Videos</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/collections">Collections</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/collections">Collections</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/clips">Clips</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/clips">Clips</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/blog">Blog</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/blog">Blog</a>
           </li>
         </ol>
       </div>
       <div>
-        <h5 class="font-size-166 font-size-167 letter-spacing-168 line-height-169 text-transform-170 color-41">More
+        <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">More
         </h5>
-        <ol class="padding-left-18 list-style-type-19">
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/about">About Us</a>
+        <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/about">About Us</a>
           </li>
-          <li rel="me"><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
+          <li rel="me"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="https://www.twitter.com/pointfreeco">Twitter</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://www.twitter.com/pointfreeco">Twitter</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="https://github.com/pointfreeco">GitHub</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://github.com/pointfreeco">GitHub</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="mailto:support@pointfree.co">Contact Us</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="mailto:support@pointfree.co">Contact Us</a>
           </li>
-          <li><a class="text-decoration-14 text-decoration-15 text-decoration-16 color-28 color-27" href="/privacy">Privacy Policy</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/privacy">Privacy Policy</a>
           </li>
         </ol>
       </div>
     </pf-vgrid>
-    <p class="padding-top-171 font-weight-85 line-height-86 font-size-26 color-172">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-14 text-decoration-15 text-decoration-16 color-23 color-24" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
+    <p class="padding-top-GuM2x3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
     </p>
   </pf-vgrid>
 </footer>
