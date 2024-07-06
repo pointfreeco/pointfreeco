@@ -8,13 +8,14 @@ import StyleguideV2
 
 public struct PrivacyAndTerms: HTML {
   public init() {}
-  
+
   public var body: some HTML {
     PageHeader(title: "Privacy Policy & Terms") {
     }
 
     PageModule.init(theme: .content) {
-      HTMLMarkdown("""
+      HTMLMarkdown(
+        """
         ## Personal identification information
         We collect email addresses of registered Users and any other information voluntarily entered into forms on the Site. None of this information is sold or provided to third parties, except to provide the products and services you've requested, with your permission, or as required by law.
 
@@ -54,7 +55,8 @@ public struct PrivacyAndTerms: HTML {
         Questions about this policy can be sent to support@pointfree.co.
 
         This document was last updated on January 13, 2020.
-        """)
+        """
+      )
       .color(.offBlack.dark(.offWhite))
     }
   }
