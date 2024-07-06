@@ -26,7 +26,15 @@ public struct ClipsIndex: HTML {
     }
     PageModule(theme: .content) {
       LazyVGrid(columns: [1, 1, 1]) {
-        HTMLForEach(clips) { clip in
+        HTMLForEach(clips.prefix(3)) { clip in
+          ClipCard(clip)
+        }
+      }
+
+      GetStartedModule(style: .solid)
+
+      LazyVGrid(columns: [1, 1, 1]) {
+        HTMLForEach(clips.dropFirst(3)) { clip in
           ClipCard(clip)
         }
       }
