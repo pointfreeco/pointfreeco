@@ -79,7 +79,7 @@ public struct PricingLanding: HTML {
             " and "
             Link(
               "educational",
-              destination: .blog(.show(slug: post0010_studentDiscounts.slug))
+              destination: .blog(.show(.post0010_studentDiscounts))
             )
             " discounts available"
           }
