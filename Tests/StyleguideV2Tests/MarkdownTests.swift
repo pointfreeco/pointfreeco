@@ -20,8 +20,8 @@
       .render()
       let expected = """
 
-        <pf-markdown class="display-0">
-          <pf-vstack class="align-items-1 display-2 flex-direction-3 max-width-4 row-gap-5">
+        <pf-markdown class="display-ix08W2">
+          <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
             <table>
               <thead>
                 <tr>
@@ -89,8 +89,8 @@
       .render()
       let expected = """
 
-        <pf-markdown class="display-0">
-          <pf-vstack class="align-items-1 display-2 flex-direction-3 max-width-4 row-gap-5">
+        <pf-markdown class="display-ix08W2">
+          <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
             <table>
               <thead>
                 <tr>
