@@ -46,6 +46,10 @@ public struct EpisodeDetail: HTML {
           )
 
           VStack {
+            if !permission.isViewable, currentUser.map({ $0.episodeCreditCount > 0 }) ?? true {
+              UnlockEpisodeCallout(episode: episode)
+            }
+
             article {
               transcript
                 .color(.gray150.dark(.gray800))
@@ -124,7 +128,6 @@ private struct TableOfContents: HTML {
 
   var body: some HTML {
     VStack {
-
       ul {
         HTMLForEach(tableOfContents) { section in
           if let timestamp = section.timestamp {
@@ -156,6 +159,14 @@ private struct TableOfContents: HTML {
     .inlineStyle("border-radius", "6px")
     .inlineStyle("position", "sticky", media: .desktop)
     .inlineStyle("top", "1rem", media: .desktop)
+  }
+}
+
+struct UnlockEpisodeCallout: HTML {
+  let episode: Episode
+
+  var body: some HTML {
+    HTMLEmpty()
   }
 }
 
