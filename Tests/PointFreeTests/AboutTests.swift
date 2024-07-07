@@ -11,9 +11,13 @@ import XCTest
 #endif
 
 class AboutTests: TestCase {
+  override func setUp() {
+    super.setUp()
+    //SnapshotTesting.isRecording=true
+  }
+
   @MainActor
   func testAbout() async throws {
-    //SnapshotTesting.isRecording=true
     let conn = connection(from: request(to: .about))
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
