@@ -3,8 +3,13 @@ import Markdown
 public struct HTMLMarkdown: HTML {
   public struct Section {
     public let title: String
+    public let id: String
     public let level: Int
     public let timestamp: Timestamp?
+
+    public var anchor: String {
+      "#\(id)"
+    }
   }
 
   public let markdown: String
@@ -37,7 +42,8 @@ private struct HTMLConverter: MarkupVisitor {
   typealias Result = AnyHTML
 
   private var currentTimestamp: Timestamp?
-  private var currentSection: (title: String, level: Int)?
+  private var currentSection: (title: String, id: String, level: Int)?
+  private var ids: Set<Slug> = []
   var tableOfContents: [HTMLMarkdown.Section] = []
 
   @HTMLBuilder
@@ -101,6 +107,7 @@ private struct HTMLConverter: MarkupVisitor {
           let _ = tableOfContents.append(
             HTMLMarkdown.Section(
               title: currentSection.title,
+              id: currentSection.id,
               level: currentSection.level,
               timestamp: timestamp
             )
@@ -201,14 +208,17 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitHeading(_ heading: Markdown.Heading) -> AnyHTML {
+    let id = ids.slug(for: heading.plainText)
+
     Header(heading.level + 2) {
       for child in heading.children {
         visit(child)
       }
     }
+    .attribute("id", id)
     .color(.offBlack.dark(.offWhite))
 
-    let _ = currentSection = (title: heading.plainText, level: heading.level)
+    let _ = currentSection = (title: heading.plainText, id: id, level: heading.level)
   }
 
   @HTMLBuilder
@@ -485,6 +495,14 @@ public struct Timestamp: HTML {
     hour * 60 * 60 + minute * 60 + second
   }
 
+  public var id: String {
+    "t\(duration)"
+  }
+
+  public var anchor: String {
+    "#\(id)"
+  }
+
   public func formatted() -> String {
     var formatted = ""
     if hour > 0 {
@@ -511,14 +529,14 @@ public struct Timestamp: HTML {
     let duration = self.duration
     div {
       div {
-        Link(href: "#t\(duration)") {
+        Link(href: anchor) {
           HTMLText(formatted())
         }
       }
       .fontStyle(.body(.small))
       .linkStyle(LinkStyle(color: .gray800.dark(.gray300), underline: nil))
       .attribute("data-timestamp", "\(duration)")
-      .attribute("id", "t\(duration)")
+      .attribute("id", id)
       .inlineStyle("font-variant-numeric", "tabular-nums")
       .inlineStyle("line-height", "3", media: .desktop)
       .inlineStyle("margin-left", "-4rem", media: .desktop)
@@ -526,5 +544,26 @@ public struct Timestamp: HTML {
       .inlineStyle("text-align", "right", media: .desktop)
       .inlineStyle("width", "3.25rem", media: .desktop)
     }
+  }
+}
+
+private struct Slug: Hashable {
+  var name: String
+  var generation: Int
+}
+
+extension Set<Slug> {
+  fileprivate func slug(for string: String) -> String {
+    var slug = Slug(name: string.slug(), generation: 0)
+    while contains(slug) {
+      slug.generation += 1
+    }
+    return "\(slug.name)\(slug.generation > 0 ? "-\(slug.generation)" : "")"
+  }
+}
+
+extension String {
+  fileprivate func slug() -> String {
+    split(whereSeparator: { !$0.isLetter && !$0.isNumber }).joined(separator: "-").lowercased()
   }
 }

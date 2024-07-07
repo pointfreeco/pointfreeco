@@ -43,18 +43,18 @@ public struct EpisodeDetail: HTML {
                 if let timestamp = section.timestamp {
                   li {
                     HStack(alignment: .firstTextBaseline) {
-                      div {
+                      Link(href: section.anchor) {
                         HTMLText(section.title)
                       }
+                      .linkColor(.offBlack.dark(.offWhite))
                       Spacer()
-                      Link(href: "#t\(timestamp.duration)") {
+                      Link(href: timestamp.anchor) {
                         HTMLText(timestamp.formatted())
                       }
                       .inlineStyle("font-variant-numeric", "tabular-nums")
+                      .linkColor(.gray800.dark(.gray300))
                     }
-                    .color(.offBlack.dark(.offWhite))
                     .fontStyle(.body(.small))
-                    .linkColor(.gray800.dark(.gray300))
                   }
                 }
               }
