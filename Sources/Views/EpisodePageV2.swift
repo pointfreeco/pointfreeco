@@ -4,6 +4,8 @@ import StyleguideV2
 
 public struct EpisodeDetail: HTML {
   @Dependency(\.currentUser) var currentUser
+  @Dependency(\.date.now) var now
+  @Dependency(\.envVars.emergencyMode) var emergencyMode
 
   let episode: Episode
   let transcript: HTMLMarkdown?
@@ -14,6 +16,17 @@ public struct EpisodeDetail: HTML {
   }
 
   public var body: some HTML {
+    VideoHeader(
+      title: episode.fullTitle,
+      subtitle: """
+        Episode #\(episode.sequence) • \
+        \(headerDateFormatter.string(from: episode.publishedAt)) \
+        • \(episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) ? "Subscriber-Only" : "Free Episode")
+        """,
+      blurb: episode.blurb,
+      vimeoVideoID: VimeoVideo.ID(rawValue: episode.fullVideo.vimeoId)
+    )
+    
     PageModule(theme: .content) {
       if let transcript {
         ul {
@@ -49,22 +62,6 @@ public struct EpisodeDetail: HTML {
         .inlineStyle("margin", "0 auto", media: .desktop)
         .inlineStyle("max-width", "60%", media: .desktop)
       }
-    } title: {
-      VStack {
-        Link(destination: .episodes(.show(episode))) {
-          Header(3) {
-            HTMLMarkdown(episode.title)
-          }
-        }
-        .linkColor(.offBlack.dark(.offWhite))
-
-        div {
-          HTMLText(episode.publishedAt.weekdayMonthDayYear())
-        }
-        .color(.gray500)
-      }
-      .inlineStyle("text-align", "center")
-      .inlineStyle("width", "100%")
     }
   }
 }

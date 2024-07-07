@@ -60,57 +60,14 @@ public struct ClipView: HTML {
   }
 
   public var body: some HTML {
-    CenterColumn {
-      VStack(alignment: .center) {
-        Header(3) {
-          HTMLText(clip.title)
-        }
-        .color(.offWhite)
-        .inlineStyle("text-align", "center")
-
-        span {
-          """
-          Episode Clip • \(headerDateFormatter.string(from: clip.createdAt))
-          """
-        }
-        .color(.gray800)
-
-        HTMLMarkdown(clip.description)
-          .color(.gray900)
-          .inlineStyle("max-width", "768px")
-          .linkStyle(.init(color: .offWhite, underline: true))
-      }
-      .inlineStyle("padding", "6rem 2rem")
-      .inlineStyle("padding", "8rem 3rem", media: .desktop)
-    }
-    .inlineStyle("background", "linear-gradient(#121212, #242424)")
-    .inlineStyle("padding-bottom", "2rem")
-
-    CenterColumn {
-      div {
-        div {
-          div {
-            iframe()
-              .attribute("src", "https://player.vimeo.com/video/\(clip.vimeoVideoID)?pip=1")
-              .attribute("frameborder", "0")
-              .attribute("allow", "autoplay; fullscreen")
-              .attribute("allowfullscreen")
-              .inlineStyle("width", "100%")
-              .inlineStyle("height", "100%")
-              .inlineStyle("position", "absolute")
-            script()
-              .attribute("src", "https://player.vimeo.com/api/player.js")
-          }
-          .inlineStyle("width", "100%")
-          .inlineStyle("position", "relative")
-          .inlineStyle("padding-bottom", "56.25%")
-        }
-        .inlineStyle("box-shadow", "0rem 1rem 20px rgba(0,0,0,0.2)")
-        .inlineStyle("margin", "0 4rem", media: .desktop)
-      }
-    }
-    .inlineStyle("margin-top", "-4rem")
-    .inlineStyle("padding-bottom", "4rem")
+    VideoHeader(
+      title: clip.title,
+      subtitle: """
+        Episode Clip • \(headerDateFormatter.string(from: clip.createdAt))
+        """,
+      blurb: clip.description,
+      vimeoVideoID: clip.vimeoVideoID
+    )
 
     if !subscriberState.isActiveSubscriber {
       CenterColumn {
