@@ -17,7 +17,7 @@ public struct EpisodeDetail: HTML {
     PageModule(theme: .content) {
       if let transcript {
         ul {
-          for section in transcript.tableOfContents {
+          HTMLForEach(transcript.tableOfContents) { section in
             if let timestamp = section.timestamp {
               li {
                 HStack {
@@ -25,15 +25,18 @@ public struct EpisodeDetail: HTML {
                     HTMLText(section.title)
                   }
                   Spacer()
-                  div {
+                  Link(href: "#t\(timestamp.duration)") {
                     HTMLText(timestamp.formatted())
                   }
                   .inlineStyle("font-variant-numeric", "tabular-nums")
+                  .linkColor(.gray800.dark(.gray300))
                 }
+                .fontStyle(.body(.small))
               }
             }
           }
         }
+        .listStyle(.reset)
 
         VStack(spacing: 3) {
           article {
