@@ -106,7 +106,7 @@ func showEpisode(
         usePrismJs: true
       )
     ) {
-      "TODO"
+      EpisodeDetail(episode: episode)
     }
 }
 
