@@ -577,7 +577,7 @@ public struct Timestamp: HTML {
         .inlineStyle("line-height", "1", media: .desktop)
         .inlineStyle("position", "relative", media: .desktop)
         .inlineStyle("text-transform", "uppercase")
-        .inlineStyle("top", "0.625rem", media: .desktop)
+        .inlineStyle("top", "0.5rem", media: .desktop)
       }
 
       let duration = self.duration
