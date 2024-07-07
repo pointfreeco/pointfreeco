@@ -8,17 +8,18 @@ public struct EpisodeDetail: HTML {
   @Dependency(\.envVars.emergencyMode) var emergencyMode
   @Dependency(\.subscriberState) var subscriberState
 
-  let episode: Episode
-  let permission: EpisodePermission
+  let episodePageData: EpisodePageData
   let transcript: HTMLMarkdown?
 
-  public init(episode: Episode, permission: EpisodePermission) {
-    self.episode = episode
-    self.permission = permission
-    self.transcript = episode.transcript.map {
-      HTMLMarkdown($0, previewOnly: !permission.isViewable)
+  public init(episodePageData: EpisodePageData) {
+    self.episodePageData = episodePageData
+    self.transcript = episodePageData.episode.transcript.map {
+      HTMLMarkdown($0, previewOnly: !episodePageData.permission.isViewable)
     }
   }
+
+  private var episode: Episode { episodePageData.episode }
+  private var permission: EpisodePermission { episodePageData.permission }
 
   public var body: some HTML {
     let isSubscriberOnly = episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode)
@@ -39,38 +40,10 @@ public struct EpisodeDetail: HTML {
     if let transcript {
       PageModule(theme: .content) {
         LazyVGrid(columns: [.desktop: [3, 6], .mobile: [1]]) {
-          div {
-            ul {
-              HTMLForEach(transcript.tableOfContents) { section in
-                if let timestamp = section.timestamp {
-                  li {
-                    HStack(alignment: .firstTextBaseline) {
-                      Link(href: section.anchor) {
-                        HTMLText(section.title)
-                      }
-                      .linkColor(.offBlack.dark(.offWhite))
-                      Spacer()
-                      Link(href: timestamp.anchor) {
-                        HTMLText(timestamp.formatted())
-                      }
-                      .attribute("data-timestamp", "\(timestamp.duration)")
-                      .linkColor(.gray800.dark(.gray300))
-                      .inlineStyle("font-variant-numeric", "tabular-nums")
-                    }
-                    .fontStyle(.body(.small))
-                  }
-                }
-              }
-            }
-            .inlineStyle("margin", "1rem")
-            .listStyle(.reset)
-          }
-          .flexContainer(direction: "column")
-          .inlineStyle("align-self", "start", media: .desktop)
-          .inlineStyle("border", "1px solid #ccc")
-          .inlineStyle("border-radius", "6px")
-          .inlineStyle("position", "sticky", media: .desktop)
-          .inlineStyle("top", "1rem", media: .desktop)
+          TableOfContents(
+            episodePageData: episodePageData,
+            tableOfContents: transcript.tableOfContents
+          )
 
           VStack {
             article {
@@ -145,6 +118,47 @@ public struct EpisodeDetail: HTML {
   }
 }
 
+private struct TableOfContents: HTML {
+  let episodePageData: EpisodePageData
+  let tableOfContents: [HTMLMarkdown.Section]
+
+  var body: some HTML {
+    VStack {
+
+      ul {
+        HTMLForEach(tableOfContents) { section in
+          if let timestamp = section.timestamp {
+            li {
+              HStack(alignment: .firstTextBaseline) {
+                Link(href: section.anchor) {
+                  HTMLText(section.title)
+                }
+                .linkColor(.offBlack.dark(.offWhite))
+                Spacer()
+                Link(href: timestamp.anchor) {
+                  HTMLText(timestamp.formatted())
+                }
+                .attribute("data-timestamp", "\(timestamp.duration)")
+                .linkColor(.gray800.dark(.gray300))
+                .inlineStyle("font-variant-numeric", "tabular-nums")
+              }
+              .fontStyle(.body(.small))
+            }
+          }
+        }
+      }
+      .inlineStyle("margin", "1rem")
+      .listStyle(.reset)
+    }
+    .flexContainer(direction: "column")
+    .inlineStyle("align-self", "start", media: .desktop)
+    .inlineStyle("border", "1px solid #ccc")
+    .inlineStyle("border-radius", "6px")
+    .inlineStyle("position", "sticky", media: .desktop)
+    .inlineStyle("top", "1rem", media: .desktop)
+  }
+}
+
 #if DEBUG && canImport(SwiftUI)
   import SwiftUI
   import Transcripts
@@ -152,7 +166,15 @@ public struct EpisodeDetail: HTML {
   #Preview("Episode Detail", traits: .fixedLayout(width: 500, height: 1000)) {
     HTMLPreview {
       PageLayout(layoutData: SimplePageLayoutData(title: "")) {
-        EpisodeDetail(episode: .mock, permission: .loggedOut(isEpisodeSubscriberOnly: false))
+        EpisodeDetail(
+          episodePageData: EpisodePageData(
+            context: .direct(previousEpisode: nil, nextEpisode: nil),
+            emergencyMode: false,
+            episode: .mock,
+            episodeProgress: 30,
+            permission: .loggedOut(isEpisodeSubscriberOnly: false)
+          )
+        )
       }
     }
   }

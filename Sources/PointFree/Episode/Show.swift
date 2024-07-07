@@ -106,7 +106,14 @@ func showEpisode(
         usePrismJs: true
       )
     ) {
-      EpisodeDetail(episode: episode, permission: permission)
+      EpisodeDetail(
+        episodePageData: episodePageData(
+          collectionSlug: collectionSlug,
+          episode: episode,
+          episodeProgress: progress,
+          permission: permission
+        )
+      )
     }
 }
 
