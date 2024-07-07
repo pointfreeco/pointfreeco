@@ -48,6 +48,7 @@ struct VideoHeader: HTML {
               .inlineStyle("height", "100%")
               .inlineStyle("position", "absolute")
             script()
+              .attribute("async")
               .attribute("src", "https://player.vimeo.com/api/player.js")
           }
           .inlineStyle("width", "100%")

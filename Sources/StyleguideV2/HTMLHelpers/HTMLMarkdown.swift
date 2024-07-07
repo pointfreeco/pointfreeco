@@ -16,22 +16,21 @@ public struct HTMLMarkdown: HTML {
   public let tableOfContents: [Section]
   public let content: AnyHTML
 
-  public init(_ markdown: String) {
+  public init(_ markdown: String, previewOnly: Bool = false) {
     self.markdown = markdown
-    var converter = HTMLConverter()
+    var converter = HTMLConverter(previewOnly: previewOnly)
     self.content = converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
     self.tableOfContents = converter.tableOfContents
   }
 
-  public init(_ markdown: () -> String) {
-    self.init(markdown())
+  public init(previewOnly: Bool = false, _ markdown: () -> String) {
+    self.init(markdown(), previewOnly: previewOnly)
   }
 
   public var body: some HTML {
     tag("pf-markdown") {
       VStack(spacing: 0.5) {
-        var converter = HTMLConverter()
-        converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
+        content
       }
     }
     .inlineStyle("display", "block")
@@ -40,6 +39,12 @@ public struct HTMLMarkdown: HTML {
 
 private struct HTMLConverter: MarkupVisitor {
   typealias Result = AnyHTML
+
+  let previewOnly: Bool
+
+  init(previewOnly: Bool) {
+    self.previewOnly = previewOnly
+  }
 
   private var currentTimestamp: Timestamp?
   private var currentSection: (title: String, id: String, level: Int)?
@@ -532,10 +537,10 @@ public struct Timestamp: HTML {
         Link(href: anchor) {
           HTMLText(formatted())
         }
+        .attribute("data-timestamp", "\(duration)")
       }
       .fontStyle(.body(.small))
       .linkStyle(LinkStyle(color: .gray800.dark(.gray300), underline: nil))
-      .attribute("data-timestamp", "\(duration)")
       .attribute("id", id)
       .inlineStyle("font-variant-numeric", "tabular-nums")
       .inlineStyle("line-height", "3", media: .desktop)

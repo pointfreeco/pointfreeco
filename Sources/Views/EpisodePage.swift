@@ -1689,6 +1689,18 @@ public enum EpisodePermission: Equatable {
       case hasUsedCredit
     }
   }
+
+  public var isViewable: Bool {
+    switch self {
+    case .loggedIn(_, .isSubscriber),
+      .loggedIn(_, .isNotSubscriber(.hasUsedCredit)),
+      .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(false))),
+      .loggedOut(false):
+      return true
+    default:
+      return false
+    }
+  }
 }
 
 func nonBreaking(title: String) -> String {

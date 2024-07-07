@@ -3,7 +3,7 @@ import Models
 import Tagged
 
 extension Episode {
-  public var privateTranscript: String? {
+  public var transcript: String? {
     guard
       let url = Bundle.module.url(forResource: "Episode-\(sequence.rawValue)", withExtension: "md")
     else { return nil }

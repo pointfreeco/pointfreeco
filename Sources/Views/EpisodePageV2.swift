@@ -9,11 +9,13 @@ public struct EpisodeDetail: HTML {
   @Dependency(\.subscriberState) var subscriberState
 
   let episode: Episode
+  let permission: EpisodePermission
   let transcript: HTMLMarkdown?
 
-  public init(episode: Episode) {
+  public init(episode: Episode, permission: EpisodePermission) {
     self.episode = episode
-    self.transcript = episode.privateTranscript.map { HTMLMarkdown($0) }
+    self.permission = permission
+    self.transcript = episode.transcript.map { HTMLMarkdown($0) }
   }
 
   public var body: some HTML {
@@ -27,7 +29,9 @@ public struct EpisodeDetail: HTML {
         • \(isSubscriberOnly ? "Subscriber-Only" : "Free Episode")
         """,
       blurb: episode.blurb,
-      vimeoVideoID: VimeoVideo.ID(rawValue: episode.fullVideo.vimeoId)
+      vimeoVideoID: VimeoVideo.ID(
+        rawValue: permission.isViewable ? episode.fullVideo.vimeoId : episode.trailerVideo.vimeoId
+      )
     )
 
     if !subscriberState.isActiveSubscriber {
@@ -51,8 +55,9 @@ public struct EpisodeDetail: HTML {
                       Link(href: timestamp.anchor) {
                         HTMLText(timestamp.formatted())
                       }
-                      .inlineStyle("font-variant-numeric", "tabular-nums")
+                      .attribute("data-timestamp", "\(timestamp.duration)")
                       .linkColor(.gray800.dark(.gray300))
+                      .inlineStyle("font-variant-numeric", "tabular-nums")
                     }
                     .fontStyle(.body(.small))
                   }
@@ -83,18 +88,70 @@ public struct EpisodeDetail: HTML {
         .inlineStyle("min-width", "0")
       }
     }
+
+    script {
+      #"""
+      window.addEventListener("load", function(event) {
+        const iframe = document.querySelector("iframe")
+        const player = new Vimeo.Player(iframe)
+        const trackProgress = \#(permission.isViewable)
+
+        jump(window.location.hash, false)
+
+        let lastSeenPercent = 0
+        if (trackProgress) {
+          player.on('timeupdate', function(data) {
+            if (Math.abs(data.percent - lastSeenPercent) >= 0.01) {
+              lastSeenPercent = data.percent
+
+              const httpRequest = new XMLHttpRequest()
+              httpRequest.open(
+                "POST",
+                window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
+              )
+              httpRequest.send()
+            }
+          })
+        }
+
+        document.addEventListener("click", function(event) {
+          const target = event.target
+          const time = Number(target.dataset.timestamp)
+          if (target.tagName != "A") { return }
+          if (target.dataset.timestamp == undefined) { return }
+          if (time < 0) { return }
+          if (isElementVisible(iframe)) { event.preventDefault() }
+          player.setCurrentTime(time)
+          player.play()
+
+          function isElementVisible(element) {
+            const rect = element.getBoundingClientRect()
+            const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight)
+            return rect.bottom >= 0 && rect.top < viewHeight
+          }
+        })
+
+        function jump(hash, play) {
+          const time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "")
+          if (time <= 0) { return }
+          player.setCurrentTime(time)
+          if (play) { player.play() }
+        }
+      })
+      """#
+    }
   }
 }
 
 #if DEBUG && canImport(SwiftUI)
-import SwiftUI
-import Transcripts
+  import SwiftUI
+  import Transcripts
 
-#Preview("Clips Index", traits: .fixedLayout(width: 500, height: 1000)) {
-  HTMLPreview {
-    PageLayout(layoutData: SimplePageLayoutData(title: "")) {
-      EpisodeDetail(episode: .mock)
+  #Preview("Episode Detail", traits: .fixedLayout(width: 500, height: 1000)) {
+    HTMLPreview {
+      PageLayout(layoutData: SimplePageLayoutData(title: "")) {
+        EpisodeDetail(episode: .mock, permission: .loggedOut(isEpisodeSubscriberOnly: false))
+      }
     }
   }
-}
 #endif

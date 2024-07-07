@@ -73,7 +73,7 @@ func showEpisode(
     progress = nil
   }
 
-  guard episode.privateTranscript != nil else {
+  guard episode.transcript != nil else {
     return conn
       .writeStatus(.ok)
       .respond(
@@ -106,7 +106,7 @@ func showEpisode(
         usePrismJs: true
       )
     ) {
-      EpisodeDetail(episode: episode)
+      EpisodeDetail(episode: episode, permission: permission)
     }
 }
 
