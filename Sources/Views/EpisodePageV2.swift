@@ -6,6 +6,7 @@ public struct EpisodeDetail: HTML {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.date.now) var now
   @Dependency(\.envVars.emergencyMode) var emergencyMode
+  @Dependency(\.subscriberState) var subscriberState
 
   let episode: Episode
   let transcript: HTMLMarkdown?
@@ -26,7 +27,11 @@ public struct EpisodeDetail: HTML {
       blurb: episode.blurb,
       vimeoVideoID: VimeoVideo.ID(rawValue: episode.fullVideo.vimeoId)
     )
-    
+
+    if !subscriberState.isActiveSubscriber {
+      GetStartedModule(style: .solid)
+    }
+
     PageModule(theme: .content) {
       if let transcript {
         ul {
@@ -65,3 +70,16 @@ public struct EpisodeDetail: HTML {
     }
   }
 }
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+import Transcripts
+
+#Preview("Clips Index", traits: .fixedLayout(width: 500, height: 1000)) {
+  HTMLPreview {
+    PageLayout(layoutData: SimplePageLayoutData(title: "")) {
+      EpisodeDetail(episode: .mock)
+    }
+  }
+}
+#endif
