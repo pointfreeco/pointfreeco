@@ -233,6 +233,14 @@ private struct HTMLConverter: MarkupVisitor {
   mutating func visitHeading(_ heading: Markdown.Heading) -> AnyHTML {
     let id = ids.slug(for: heading.plainText)
 
+    a {}
+      .attribute("id", id)
+      .inlineStyle("display", "block")
+      .inlineStyle("position", "relative")
+      .inlineStyle("top", "-5em")
+      .inlineStyle("top", "-0.5em", media: .desktop)
+      .inlineStyle("visibility", "hidden")
+
     div {
       Header(heading.level + 2) {
         for child in heading.children {
@@ -252,9 +260,9 @@ private struct HTMLConverter: MarkupVisitor {
         .inlineStyle("left", "0")
         .inlineStyle("position", "absolute")
         .inlineStyle("text-align", "center")
+        .inlineStyle("top", "2px", media: .mobile)
         .inlineStyle("width", "2.5rem")
       }
-      .attribute("id", id)
       .color(.offBlack.dark(.offWhite))
     }
     .inlineStyle("margin-left", "-2.25rem")
