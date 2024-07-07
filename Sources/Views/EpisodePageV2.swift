@@ -127,31 +127,16 @@ private struct TableOfContents: HTML {
   let tableOfContents: [HTMLMarkdown.Section]
 
   var body: some HTML {
-    VStack {
-      ul {
-        HTMLForEach(tableOfContents) { section in
-          if let timestamp = section.timestamp {
-            li {
-              HStack(alignment: .firstTextBaseline) {
-                Link(href: section.anchor) {
-                  HTMLText(section.title)
-                }
-                .linkColor(.offBlack.dark(.offWhite))
-                Spacer()
-                Link(href: timestamp.anchor) {
-                  HTMLText(timestamp.formatted())
-                }
-                .attribute("data-timestamp", "\(timestamp.duration)")
-                .linkColor(.gray800.dark(.gray300))
-                .inlineStyle("font-variant-numeric", "tabular-nums")
-              }
-              .fontStyle(.body(.small))
-            }
-          }
-        }
-      }
-      .inlineStyle("margin", "1rem")
-      .listStyle(.reset)
+    VStack(spacing: 0) {
+      TableOfContentsSection(type: .collection(.swiftUI, section: .modernSwiftUI))
+      TableOfContentsSection(type: .episode(.mock))
+      TableOfContentsSection(
+        type: .focusedEpisode(
+          episodePageData.episode,
+          tableOfContents
+        )
+      )
+      TableOfContentsSection(type: .episode(.mock))
     }
     .flexContainer(direction: "column")
     .inlineStyle("align-self", "start", media: .desktop)
@@ -170,23 +155,181 @@ struct UnlockEpisodeCallout: HTML {
   }
 }
 
+struct TableOfContentsSection: HTML {
+  let type: SectionType
+
+  var body: some HTML {
+    HTMLGroup {
+      switch type {
+      case .collection(let collection, section: let section):
+        VStack(spacing: 0) {
+          Header(6) {
+            "Collection"
+          }
+          .uppercase()
+          .color(.gray650.dark(.gray400))
+          Link(
+            destination: .collections(.collection(collection.slug, .section(section.slug, .show)))
+          ) {
+            Header(5) {
+              HTMLText(section.title)
+            }
+          }
+        }
+      case .episode(let episode):
+        VStack(spacing: 0) {
+          Header(6) {
+            "Previous episode" // TODO
+          }
+          .uppercase()
+          .color(.gray650.dark(.gray400))
+          div {
+            HStack(alignment: .center, spacing: 0.5) {
+              PlayIcon()
+              div {
+                Header(5) {
+                  HTMLText(episode.fullTitle)
+                }
+              }
+            }
+          }
+        }
+      case .focusedEpisode(let episode, let tableOfContents):
+        VStack(spacing: 0.5) {
+          HStack(alignment: .center, spacing: 0.5) {
+            PlayIcon()
+            div {
+              Header(5) {
+                HTMLText(episode.fullTitle + ": Lorem Ipsum Edition")
+              }
+            }
+            .truncateOverflow()
+          }
+          HStack(spacing: 0.5) {
+            div {
+              div()
+                .inlineStyle("width", "2px")
+                .inlineStyle("height", "100%")
+                .inlineStyle("margin", "0 auto")
+                .background(.gray800)
+            }
+            .flexItem(grow: "0", shrink: "0", basis: "1.25rem")
+            .inlineStyle("text-align", "center")
+            ul {
+              HTMLForEach(tableOfContents) { section in
+                li {
+                  HStack(alignment: .firstTextBaseline, spacing: 0) {
+                    Link(href: section.anchor) {
+                      HTMLText(section.title)
+                    }
+                    .linkColor(.offBlack.dark(.offWhite))
+                    .truncateOverflow()
+                    Spacer()
+                    if let timestamp = section.timestamp {
+                      Link(href: timestamp.anchor) {
+                        HTMLText(timestamp.formatted())
+                      }
+                      .attribute("data-timestamp", "\(timestamp.duration)")
+                      .linkColor(.gray800.dark(.gray300))
+                      .inlineStyle("font-variant-numeric", "tabular-nums")
+                    }
+                  }
+                  .fontStyle(.body(.small))
+                }
+              }
+            }
+            .inlineStyle("width", "100%")
+            .inlineStyle("margin", "0")
+            .flexItem(basis: "auto")
+            .listStyle(.reset)
+          }
+        }
+      }
+    }
+    .linkStyle(.init(color: .offBlack.dark(.offWhite), underline: false))
+    .inlineStyle("padding", "1.5rem 1rem")
+    .inlineStyle("border-top", "1px solid #ccc", pseudo: .not(.firstChild))
+  }
+
+  struct PlayIcon: HTML {
+    var body: some HTML {
+      SVG(base64: playIconSvgBase64(), description: "")
+        .flexItem(basis: "1.25rem")
+        .inlineStyle("margin-top", "2px")
+    }
+  }
+
+  enum SectionType {
+    case collection(Episode.Collection, section: Episode.Collection.Section)
+    case episode(Episode)
+    case focusedEpisode(Episode, [HTMLMarkdown.Section])
+  }
+}
+
+extension HTML {
+  fileprivate func truncateOverflow() -> some HTML {
+    self
+      .inlineStyle("white-space", "nowrap")
+      .inlineStyle("overflow", "hidden")
+      .inlineStyle("text-overflow", "ellipsis")
+  }
+  fileprivate func uppercase() -> some HTML {
+    self
+      .inlineStyle("text-transform", "uppercase")
+      .inlineStyle("letter-spacing", "0.54pt")
+  }
+}
+
 #if DEBUG && canImport(SwiftUI)
   import SwiftUI
   import Transcripts
 
-  #Preview("Episode Detail", traits: .fixedLayout(width: 500, height: 1000)) {
-    HTMLPreview {
-      PageLayout(layoutData: SimplePageLayoutData(title: "")) {
-        EpisodeDetail(
-          episodePageData: EpisodePageData(
-            context: .direct(previousEpisode: nil, nextEpisode: nil),
-            emergencyMode: false,
-            episode: .mock,
-            episodeProgress: 30,
-            permission: .loggedOut(isEpisodeSubscriberOnly: false)
-          )
+#Preview("Episode Detail", traits: .fixedLayout(width: 500, height: 1000)) {
+  HTMLPreview {
+    PageLayout(layoutData: SimplePageLayoutData(title: "")) {
+      EpisodeDetail(
+        episodePageData: EpisodePageData(
+          context: .direct(previousEpisode: nil, nextEpisode: nil),
+          emergencyMode: false,
+          episode: .mock,
+          episodeProgress: 30,
+          permission: .loggedOut(isEpisodeSubscriberOnly: false)
         )
-      }
+      )
     }
   }
+}
+
+@testable import StyleguideV2
+
+#Preview("Sidebar", traits: .fixedLayout(width: 400, height: 1000)) {
+  HTMLPreview {
+    PageLayout(layoutData: SimplePageLayoutData(title: "")) {
+      TableOfContents(
+        episodePageData: EpisodePageData(
+          context: .direct(previousEpisode: nil, nextEpisode: nil),
+          emergencyMode: false,
+          episode: .mock,
+          episodeProgress: 30,
+          permission: .loggedOut(isEpisodeSubscriberOnly: false)
+        ),
+        tableOfContents: [
+          HTMLMarkdown.Section(
+            title: "Introduction",
+            id: "1",
+            level: 1,
+            timestamp: Timestamp(format: "00:01:03", speaker: "Brandon")
+          ),
+          HTMLMarkdown.Section(
+            title: "Binding",
+            id: "2",
+            level: 1,
+            timestamp: Timestamp(format: "00:03:03", speaker: "Stephen")
+          )
+        ]
+      )
+      .inlineStyle("margin", "2rem")
+    }
+  }
+}
 #endif
