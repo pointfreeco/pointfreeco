@@ -38,6 +38,18 @@ public struct HTMLMarkdown: HTML {
             previewOnly ? "linear-gradient(to bottom,black 20%,transparent 100%)" : nil,
             pseudo: .lastChild
           )
+          .inlineStyle(
+            "content",
+            previewOnly ? nil : #""❖""#,
+            pre: "article",
+            pseudo: .is("p") + .lastOfType + .after
+          )
+          .inlineStyle(
+            "margin-left",
+            previewOnly ? nil : "0.5rem",
+            pre: "article",
+            pseudo: .is("p") + .lastOfType + .after
+          )
       }
     }
     .inlineStyle("display", "block")
