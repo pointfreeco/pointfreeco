@@ -35,6 +35,7 @@ public struct AboutView: HTML {
           [ksr-open-source]: https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd
           """
         )
+        .color(.offBlack.dark(.offWhite))
       }
 
       CenterColumn {
@@ -87,6 +88,7 @@ public struct AboutView: HTML {
             And so much more…
             """)
           .inlineStyle("max-width", "48rem")
+          .color(.offBlack.dark(.offWhite))
         }
         .inlineStyle("margin", "0 auto")
       }
@@ -107,6 +109,7 @@ public struct AboutView: HTML {
             [pf-gh]: https://github.com/pointfreeco
             """)
           .inlineStyle("max-width", "48rem")
+          .color(.offBlack.dark(.offWhite))
         }
         .inlineStyle("margin", "0 auto")
       }
@@ -139,6 +142,7 @@ struct HostCard: HTML {
           Header(4) {
             HTMLText(name)
           }
+          .color(.offBlack.dark(.offWhite))
         }
       }
       .inlineStyle("text-align", "center")
