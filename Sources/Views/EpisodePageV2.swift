@@ -162,91 +162,14 @@ struct TableOfContentsSection: HTML {
     HTMLGroup {
       switch type {
       case .collection(let collection, section: let section):
-        VStack(spacing: 0) {
-          Header(6) {
-            "Collection"
-          }
-          .uppercase()
-          .color(.gray650.dark(.gray400))
-          Link(
-            destination: .collections(.collection(collection.slug, .section(section.slug, .show)))
-          ) {
-            Header(5) {
-              HTMLText(section.title)
-            }
-          }
-        }
+        CollectionSection(collection: collection, section: section)
       case .episode(let episode):
-        VStack(spacing: 0) {
-          Header(6) {
-            "Previous episode" // TODO
-          }
-          .uppercase()
-          .color(.gray650.dark(.gray400))
-          div {
-            HStack(alignment: .center, spacing: 0.5) {
-              PlayIcon()
-              div {
-                Header(5) {
-                  HTMLText(episode.fullTitle)
-                }
-              }
-            }
-          }
-        }
+        EpisodeSection(episode: episode)
       case .focusedEpisode(let episode, let tableOfContents):
-        VStack(spacing: 0.5) {
-          HStack(alignment: .center, spacing: 0.5) {
-            PlayIcon()
-            div {
-              Header(5) {
-                HTMLText(episode.fullTitle + ": Lorem Ipsum Edition")
-              }
-            }
-            .truncateOverflow()
-          }
-          HStack(spacing: 0.5) {
-            div {
-              div()
-                .inlineStyle("width", "2px")
-                .inlineStyle("height", "100%")
-                .inlineStyle("margin", "0 auto")
-                .background(.gray800)
-            }
-            .flexItem(grow: "0", shrink: "0", basis: "1.25rem")
-            .inlineStyle("text-align", "center")
-            ul {
-              HTMLForEach(tableOfContents) { section in
-                li {
-                  HStack(alignment: .firstTextBaseline, spacing: 0) {
-                    Link(href: section.anchor) {
-                      HTMLText(section.title)
-                    }
-                    .linkColor(.offBlack.dark(.offWhite))
-                    .truncateOverflow()
-                    Spacer()
-                    if let timestamp = section.timestamp {
-                      Link(href: timestamp.anchor) {
-                        HTMLText(timestamp.formatted())
-                      }
-                      .attribute("data-timestamp", "\(timestamp.duration)")
-                      .linkColor(.gray800.dark(.gray300))
-                      .inlineStyle("font-variant-numeric", "tabular-nums")
-                    }
-                  }
-                  .fontStyle(.body(.small))
-                }
-              }
-            }
-            .inlineStyle("width", "100%")
-            .inlineStyle("margin", "0")
-            .flexItem(basis: "auto")
-            .listStyle(.reset)
-          }
-        }
+        FocusedEpisodeSection(episode: episode, tableOfContents: tableOfContents)
       }
     }
-    .linkStyle(.init(color: .offBlack.dark(.offWhite), underline: false))
+    .linkStyle(.init(color: .offBlack.dark(.offWhite)))
     .inlineStyle("padding", "1.5rem 1rem")
     .inlineStyle("border-top", "1px solid #ccc", pseudo: .not(.firstChild))
   }
@@ -256,6 +179,106 @@ struct TableOfContentsSection: HTML {
       SVG(base64: playIconSvgBase64(), description: "")
         .flexItem(basis: "1.25rem")
         .inlineStyle("margin-top", "2px")
+    }
+  }
+
+  struct FocusedEpisodeSection: HTML {
+    let episode: Episode
+    let tableOfContents: [HTMLMarkdown.Section]
+    var body: some HTML {
+      VStack(spacing: 1) {
+        HStack(alignment: .center, spacing: 0.5) {
+          PlayIcon()
+          div {
+            Header(5) {
+              HTMLText(episode.fullTitle + ": Lorem Ipsum Edition")
+            }
+          }
+        }
+        HStack(spacing: 0.5) {
+          div {
+            div()
+              .inlineStyle("width", "2px")
+              .inlineStyle("height", "100%")
+              .inlineStyle("margin", "0 auto")
+              .background(.gray800)
+          }
+          .flexItem(grow: "0", shrink: "0", basis: "1.25rem")
+          .inlineStyle("text-align", "center")
+          ul {
+            HTMLForEach(tableOfContents) { section in
+              li {
+                HStack(alignment: .center, spacing: 0.25) {
+                  Link(href: section.anchor) {
+                    HTMLText(section.title + " Hello world")
+                  }
+                  .linkColor(.offBlack.dark(.offWhite))
+                  .inlineStyle("line-height", "1.35")
+
+                  Spacer()
+                  if let timestamp = section.timestamp {
+                    Link(href: timestamp.anchor) {
+                      HTMLText(timestamp.formatted())
+                    }
+                    .attribute("data-timestamp", "\(timestamp.duration)")
+                    .linkColor(.gray800.dark(.gray300))
+                    .inlineStyle("font-variant-numeric", "tabular-nums")
+                  }
+                }
+                .fontStyle(.body(.small))
+              }
+            }
+          }
+          .flexContainer(direction: "column", rowGap: "0.25rem")
+          .inlineStyle("width", "100%")
+          .inlineStyle("margin", "0")
+          .listStyle(.reset)
+        }
+      }
+    }
+  }
+
+  struct EpisodeSection: HTML {
+    let episode: Episode
+    var body: some HTML {
+      VStack(spacing: 0) {
+        Header(6) {
+          "Previous episode" // TODO
+        }
+        .uppercase()
+        .color(.gray650.dark(.gray400))
+        div {
+          HStack(alignment: .center, spacing: 0.5) {
+            PlayIcon()
+            div {
+              Header(5) {
+                HTMLText(episode.fullTitle)
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  struct CollectionSection: HTML {
+    let collection: Episode.Collection
+    let section: Episode.Collection.Section
+    var body: some HTML {
+      VStack(spacing: 0) {
+        Header(6) {
+          "Collection"
+        }
+        .uppercase()
+        .color(.gray650.dark(.gray400))
+        Link(
+          destination: .collections(.collection(collection.slug, .section(section.slug, .show)))
+        ) {
+          Header(5) {
+            HTMLText(section.title)
+          }
+        }
+      }
     }
   }
 
