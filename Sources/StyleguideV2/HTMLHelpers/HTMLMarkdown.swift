@@ -13,11 +13,13 @@ public struct HTMLMarkdown: HTML {
   }
 
   public let markdown: String
+  public let previewOnly: Bool
   public let tableOfContents: [Section]
   public let content: AnyHTML
 
   public init(_ markdown: String, previewOnly: Bool = false) {
     self.markdown = markdown
+    self.previewOnly = previewOnly
     var converter = HTMLConverter(previewOnly: previewOnly)
     self.content = converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
     self.tableOfContents = converter.tableOfContents
@@ -31,6 +33,11 @@ public struct HTMLMarkdown: HTML {
     tag("pf-markdown") {
       VStack(spacing: 0.5) {
         content
+          .inlineStyle(
+            "mask-image",
+            previewOnly ? "linear-gradient(to bottom,black 20%,transparent 100%)" : nil,
+            pseudo: .lastChild
+          )
       }
     }
     .inlineStyle("display", "block")
@@ -54,7 +61,10 @@ private struct HTMLConverter: MarkupVisitor {
   @HTMLBuilder
   mutating func defaultVisit(_ markup: any Markup) -> AnyHTML {
     for child in markup.children {
-      visit(child)
+      let html = visit(child)
+      if previewOnly ? tableOfContents.count <= 1 : true {
+        html
+      }
     }
   }
 

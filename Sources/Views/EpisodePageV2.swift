@@ -15,7 +15,9 @@ public struct EpisodeDetail: HTML {
   public init(episode: Episode, permission: EpisodePermission) {
     self.episode = episode
     self.permission = permission
-    self.transcript = episode.transcript.map { HTMLMarkdown($0) }
+    self.transcript = episode.transcript.map {
+      HTMLMarkdown($0, previewOnly: !permission.isViewable)
+    }
   }
 
   public var body: some HTML {
@@ -33,10 +35,6 @@ public struct EpisodeDetail: HTML {
         rawValue: permission.isViewable ? episode.fullVideo.vimeoId : episode.trailerVideo.vimeoId
       )
     )
-
-    if !subscriberState.isActiveSubscriber {
-      GetStartedModule(style: .solid)
-    }
 
     if let transcript {
       PageModule(theme: .content) {
@@ -87,6 +85,10 @@ public struct EpisodeDetail: HTML {
         }
         .inlineStyle("min-width", "0")
       }
+    }
+
+    if !subscriberState.isActiveSubscriber {
+      GetStartedModule(style: .solid)
     }
 
     script {
