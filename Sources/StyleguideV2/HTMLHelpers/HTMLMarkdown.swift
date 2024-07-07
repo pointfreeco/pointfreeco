@@ -1,14 +1,25 @@
 import Markdown
 
 public struct HTMLMarkdown: HTML {
-  let markdown: String
+  public struct Section {
+    public let title: String
+    public let level: Int
+    public let timestamp: Timestamp?
+  }
+
+  public let markdown: String
+  public let tableOfContents: [Section]
+  public let content: AnyHTML
 
   public init(_ markdown: String) {
     self.markdown = markdown
+    var converter = HTMLConverter()
+    self.content = converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
+    self.tableOfContents = converter.tableOfContents
   }
 
   public init(_ markdown: () -> String) {
-    self.markdown = markdown()
+    self.init(markdown())
   }
 
   public var body: some HTML {
@@ -24,6 +35,10 @@ public struct HTMLMarkdown: HTML {
 
 private struct HTMLConverter: MarkupVisitor {
   typealias Result = AnyHTML
+
+  private var currentTimestamp: Timestamp?
+  private var currentSection: (title: String, level: Int)?
+  var tableOfContents: [HTMLMarkdown.Section] = []
 
   @HTMLBuilder
   mutating func defaultVisit(_ markup: any Markup) -> AnyHTML {
@@ -73,10 +88,22 @@ private struct HTMLConverter: MarkupVisitor {
         .split(separator: ", ")
 
       if let segment = segments.first {
-        Timestamp(
+        let timestamp = Timestamp(
           format: String(segment),
           speaker: segments.dropFirst().first.map { String($0) }
         )
+        let _ = currentTimestamp = timestamp
+        timestamp
+        if let currentSection {
+          let _ = tableOfContents.append(
+            HTMLMarkdown.Section(
+              title: currentSection.title,
+              level: currentSection.level,
+              timestamp: timestamp
+            )
+          )
+          let _ = self.currentSection = nil
+        }
       }
 
     case "Video":
@@ -177,6 +204,8 @@ private struct HTMLConverter: MarkupVisitor {
       }
     }
     .color(.offBlack.dark(.offWhite))
+
+    let _ = currentSection = (title: heading.plainText, level: heading.level)
   }
 
   @HTMLBuilder
@@ -371,18 +400,18 @@ extension HTMLBuilder {
   }
 }
 
-private struct AnyHTML: HTML {
+public struct AnyHTML: HTML {
   let base: any HTML
   init(_ base: any HTML) {
     self.base = base
   }
-  static func _render(_ html: AnyHTML, into printer: inout HTMLPrinter) {
+  public static func _render(_ html: AnyHTML, into printer: inout HTMLPrinter) {
     func render<T: HTML>(_ html: T) {
       T._render(html, into: &printer)
     }
     render(html.base)
   }
-  var body: Never { fatalError() }
+  public var body: Never { fatalError() }
 }
 
 private struct BlockQuoteStyle {
@@ -434,11 +463,11 @@ private extension DiagnosticLevel {
   }
 }
 
-struct Timestamp: HTML {
-  var hour: Int
-  var minute: Int
-  var second: Int
-  var speaker: String?
+public struct Timestamp: HTML {
+  public var hour: Int
+  public var minute: Int
+  public var second: Int
+  public var speaker: String?
 
   init?(format: String, speaker: String?) {
     let components = format.split(separator: ":")
@@ -449,11 +478,11 @@ struct Timestamp: HTML {
     self.speaker = speaker
   }
 
-  var duration: Int {
+  public var duration: Int {
     hour * 60 * 60 + minute * 60 + second
   }
 
-  func formatted() -> String {
+  public func formatted() -> String {
     var formatted = ""
     if hour > 0 {
       formatted.append("\(hour < 10 ? "0" : "")\(hour):")
@@ -463,7 +492,7 @@ struct Timestamp: HTML {
     return formatted
   }
 
-  var body: some HTML {
+  public var body: some HTML {
     if let speaker {
       strong {
         HTMLText(speaker)

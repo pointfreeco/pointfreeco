@@ -15,8 +15,27 @@ public struct EpisodeDetail: HTML {
 
   public var body: some HTML {
     PageModule(theme: .content) {
-      VStack(spacing: 3) {
-        if let transcript {
+      if let transcript {
+        ul {
+          for section in transcript.tableOfContents {
+            if let timestamp = section.timestamp {
+              li {
+                HStack {
+                  div {
+                    HTMLText(section.title)
+                  }
+                  Spacer()
+                  div {
+                    HTMLText(timestamp.formatted())
+                  }
+                  .inlineStyle("font-variant-numeric", "tabular-nums")
+                }
+              }
+            }
+          }
+        }
+
+        VStack(spacing: 3) {
           article {
             transcript
               .color(.gray150.dark(.gray800))
@@ -24,9 +43,9 @@ public struct EpisodeDetail: HTML {
               .linkUnderline(true)
           }
         }
+        .inlineStyle("margin", "0 auto", media: .desktop)
+        .inlineStyle("width", "60%", media: .desktop)
       }
-      .inlineStyle("margin", "0 auto", media: .desktop)
-      .inlineStyle("width", "60%", media: .desktop)
     } title: {
       VStack {
         Link(destination: .episodes(.show(episode))) {
