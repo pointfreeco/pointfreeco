@@ -6,6 +6,36 @@ import HtmlCssSupport
 import Models
 import PointFreeRouter
 import Stripe
+import StyleguideV2
+
+public struct GiftsPaymentView: HTML {
+  let plan: Gifts.Plan
+  let stripeJs: String
+  let stripePublishableKey: Stripe.Client.PublishableKey
+
+  public var body: some HTML {
+    PageHeader(title: "Gift subscription") {
+      "Give \(plan.monthCount) months of Point-Free access"
+    }
+  }
+}
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+import Transcripts
+
+#Preview("Clips Index", traits: .fixedLayout(width: 800, height: 1000)) {
+  HTMLPreview {
+    PageLayout(layoutData: SimplePageLayoutData(title: "")) {
+      GiftsPaymentView(
+        plan: .year,
+        stripeJs: "",
+        stripePublishableKey: ""
+      )
+    }
+  }
+}
+#endif
 
 public func giftsPayment(
   plan: Gifts.Plan,
