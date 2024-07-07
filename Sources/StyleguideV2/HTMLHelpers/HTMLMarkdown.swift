@@ -80,9 +80,6 @@ private struct HTMLConverter: MarkupVisitor {
     }
   }
 
-  // https://apple.github.io/swift-markdown/documentation/markdown/blockdirectives/
-  // TODO: Support `@Custom { … }` directives (`@Timestamp(00:00:00)`, `@Speaker(Brandon) { … }`)
-  // TODO: `Document(parsing: …, options: .parseBlockDirectives)`
   @HTMLBuilder
   mutating func visitBlockDirective(_ blockDirective: Markdown.BlockDirective) -> AnyHTML {
     switch blockDirective.name {
