@@ -64,6 +64,9 @@ private struct HTMLConverter: MarkupVisitor {
         .inlineStyle("margin", "0.5rem 0")
       }
 
+    case "Comment":
+      HTMLEmpty()
+
     case "T":
       /*
        TODO: Find/replace transcripts
@@ -182,7 +185,7 @@ private struct HTMLConverter: MarkupVisitor {
     .color(.black.dark(.gray900))
     .inlineStyle("margin", "0")
     .inlineStyle("margin-bottom", "0.5rem")
-    .inlineStyle("overflow-x", "scroll")
+    .inlineStyle("overflow-x", "auto")
     .inlineStyle("padding", "1rem 1.5rem")
     .inlineStyle("border-radius", "6px")
   }
@@ -517,8 +520,8 @@ public struct Timestamp: HTML {
       .attribute("data-timestamp", "\(duration)")
       .attribute("id", "t\(duration)")
       .inlineStyle("font-variant-numeric", "tabular-nums")
-      .inlineStyle("margin-left", "-4rem", media: .desktop)
       .inlineStyle("line-height", "3", media: .desktop)
+      .inlineStyle("margin-left", "-4rem", media: .desktop)
       .inlineStyle("position", "absolute", media: .desktop)
       .inlineStyle("text-align", "right", media: .desktop)
       .inlineStyle("width", "3.25rem", media: .desktop)

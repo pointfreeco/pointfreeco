@@ -17,12 +17,14 @@ public struct EpisodeDetail: HTML {
   }
 
   public var body: some HTML {
+    let isSubscriberOnly = episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode)
+
     VideoHeader(
       title: episode.fullTitle,
       subtitle: """
-        Episode #\(episode.sequence) • \
-        \(headerDateFormatter.string(from: episode.publishedAt)) \
-        • \(episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) ? "Subscriber-Only" : "Free Episode")
+        Episode #\(episode.sequence) \
+        • \(headerDateFormatter.string(from: episode.publishedAt)) \
+        • \(isSubscriberOnly ? "Subscriber-Only" : "Free Episode")
         """,
       blurb: episode.blurb,
       vimeoVideoID: VimeoVideo.ID(rawValue: episode.fullVideo.vimeoId)
@@ -32,40 +34,53 @@ public struct EpisodeDetail: HTML {
       GetStartedModule(style: .solid)
     }
 
-    PageModule(theme: .content) {
-      if let transcript {
-        ul {
-          HTMLForEach(transcript.tableOfContents) { section in
-            if let timestamp = section.timestamp {
-              li {
-                HStack {
-                  div {
-                    HTMLText(section.title)
+    if let transcript {
+      PageModule(theme: .content) {
+        LazyVGrid(columns: [.desktop: [3, 6], .mobile: [1]]) {
+          div {
+            ul {
+              HTMLForEach(transcript.tableOfContents) { section in
+                if let timestamp = section.timestamp {
+                  li {
+                    HStack(alignment: .firstTextBaseline) {
+                      div {
+                        HTMLText(section.title)
+                      }
+                      Spacer()
+                      Link(href: "#t\(timestamp.duration)") {
+                        HTMLText(timestamp.formatted())
+                      }
+                      .inlineStyle("font-variant-numeric", "tabular-nums")
+                    }
+                    .color(.offBlack.dark(.offWhite))
+                    .fontStyle(.body(.small))
+                    .linkColor(.gray800.dark(.gray300))
                   }
-                  Spacer()
-                  Link(href: "#t\(timestamp.duration)") {
-                    HTMLText(timestamp.formatted())
-                  }
-                  .inlineStyle("font-variant-numeric", "tabular-nums")
-                  .linkColor(.gray800.dark(.gray300))
                 }
-                .fontStyle(.body(.small))
               }
             }
+            .inlineStyle("margin", "1rem")
+            .listStyle(.reset)
           }
-        }
-        .listStyle(.reset)
+          .flexContainer(direction: "column")
+          .inlineStyle("align-self", "start", media: .desktop)
+          .inlineStyle("border", "1px solid #ccc")
+          .inlineStyle("border-radius", "6px")
+          .inlineStyle("position", "sticky", media: .desktop)
+          .inlineStyle("top", "1rem", media: .desktop)
 
-        VStack(spacing: 3) {
-          article {
-            transcript
-              .color(.gray150.dark(.gray800))
-              .linkColor(.black.dark(.white))
-              .linkUnderline(true)
+          VStack {
+            article {
+              transcript
+                .color(.gray150.dark(.gray800))
+                .linkColor(.black.dark(.white))
+                .linkUnderline(true)
+            }
           }
+          .inlineStyle("margin-left", "4rem", media: .desktop)
+          .inlineStyle("min-width", "0")
         }
-        .inlineStyle("margin", "0 auto", media: .desktop)
-        .inlineStyle("max-width", "60%", media: .desktop)
+        .inlineStyle("min-width", "0")
       }
     }
   }
