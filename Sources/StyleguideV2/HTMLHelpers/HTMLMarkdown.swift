@@ -34,11 +34,6 @@ public struct HTMLMarkdown: HTML {
       VStack(spacing: 0.5) {
         content
           .inlineStyle(
-            "mask-image",
-            previewOnly ? "linear-gradient(to bottom,black 20%,transparent 100%)" : nil,
-            pseudo: .lastChild
-          )
-          .inlineStyle(
             "content",
             previewOnly ? nil : #""❖""#,
             pre: "article",
@@ -51,6 +46,10 @@ public struct HTMLMarkdown: HTML {
             pseudo: .is("p") + .lastOfType + .after
           )
       }
+      .inlineStyle(
+        "mask-image",
+        previewOnly ? "linear-gradient(to bottom,black 50%,transparent 100%)" : nil
+      )
     }
     .inlineStyle("display", "block")
   }
