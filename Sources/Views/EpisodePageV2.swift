@@ -47,7 +47,7 @@ public struct EpisodeDetail: HTML {
           }
         }
         .inlineStyle("margin", "0 auto", media: .desktop)
-        .inlineStyle("width", "60%", media: .desktop)
+        .inlineStyle("max-width", "60%", media: .desktop)
       }
     } title: {
       VStack {
