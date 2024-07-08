@@ -523,8 +523,8 @@ private func value(forArgument argument: String, block: BlockDirective) -> Strin
     .map(String.init)
 }
 
-private extension DiagnosticLevel {
-  init?(aside: Aside) {
+extension DiagnosticLevel {
+  fileprivate init?(aside: Aside) {
     switch aside.kind.rawValue {
     case "Error": self = .error
     case "Expected Failure": self = .knownIssue

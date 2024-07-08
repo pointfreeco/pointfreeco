@@ -133,7 +133,8 @@ public struct EpisodeDetail: HTML {
                   let gitHubRouter = GitHubRouter()
                   div {
                     Link(
-                      href: gitHubRouter
+                      href:
+                        gitHubRouter
                         .url(for: .episodeCodeSample(directory: codeSampleDirectory))
                         .absoluteString
                     ) {
@@ -229,7 +230,7 @@ private struct TableOfContents: HTML {
   var body: some HTML {
     VStack(spacing: 0) {
       switch episodePageData.context {
-      case .collection(let collection, section: let section):
+      case .collection(let collection, let section):
         TableOfContentsSection(type: .collection(collection, section: section))
         HTMLForEach(section.coreLessons) { lesson in
           if case let .episode(episode) = lesson {
@@ -275,7 +276,7 @@ struct UnlockEpisodeCallout: HTML {
     case .loggedOut(isEpisodeSubscriberOnly: true):
       Callout(
         "Unlock This Episode",
-        icon:  SVG(base64: circleLockSvgBase64, description: "Locked")
+        icon: SVG(base64: circleLockSvgBase64, description: "Locked")
       ) {
         """
         Our Free plan includes 1 subscriber-only episode of your choice, plus weekly updates from \
@@ -296,7 +297,7 @@ struct UnlockEpisodeCallout: HTML {
     where user.episodeCreditCount > 0:
       Callout(
         "Unlock This Episode",
-        icon:  SVG(base64: circleLockSvgBase64, description: "Locked")
+        icon: SVG(base64: circleLockSvgBase64, description: "Locked")
       ) {
         """
         You have \(user.episodeCreditCount) episode \
@@ -350,7 +351,7 @@ struct UnlockEpisodeCallout: HTML {
 
     case .loggedOut(isEpisodeSubscriberOnly: false),
       .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: false))):
-      
+
       Callout("Subscribe to Point-Free") {
         "Access all past and future episodes when you become a subscriber."
       } callToAction: {
@@ -451,9 +452,9 @@ struct TableOfContentsSection: HTML {
   var body: some HTML {
     HTMLGroup {
       switch type {
-      case .collection(let collection, section: let section):
+      case .collection(let collection, let section):
         CollectionSection(collection: collection, section: section)
-      case .episode(let episode, sequence: let sequence):
+      case .episode(let episode, let sequence):
         EpisodeSection(episode: episode, sequence: sequence)
       case .focusedEpisode(let episode, let tableOfContents):
         FocusedEpisodeSection(episode: episode, tableOfContents: tableOfContents)
@@ -487,10 +488,10 @@ struct TableOfContentsSection: HTML {
         SVG(base64: downloadIconSvgBase64, description: "")
           .inlineStyle("max-width", "1rem")
       }
-        .inlineStyle("text-align", "center")
-        .flexItem(basis: "1.25rem")
-        .inlineStyle("margin-top", "2px")
-        .inlineStyle("filter", "invert(100%)", media: .dark)
+      .inlineStyle("text-align", "center")
+      .flexItem(basis: "1.25rem")
+      .inlineStyle("margin-top", "2px")
+      .inlineStyle("filter", "invert(100%)", media: .dark)
     }
   }
 
@@ -664,50 +665,50 @@ extension HTML {
   import SwiftUI
   import Transcripts
 
-#Preview("Episode Detail", traits: .fixedLayout(width: 500, height: 1000)) {
-  HTMLPreview {
-    PageLayout(layoutData: SimplePageLayoutData(title: "")) {
-      EpisodeDetail(
-        episodePageData: EpisodePageData(
-          context: .direct(previousEpisode: nil, nextEpisode: nil),
-          emergencyMode: false,
-          episode: .mock,
-          episodeProgress: 30,
-          permission: .loggedOut(isEpisodeSubscriberOnly: false)
-        )
-      )
-    }
-  }
-}
-
-#Preview("Sidebar", traits: .fixedLayout(width: 400, height: 1000)) {
-  HTMLPreview {
-    PageLayout(layoutData: SimplePageLayoutData(title: "")) {
-      TableOfContents(
-        episodePageData: EpisodePageData(
-          context: .direct(previousEpisode: nil, nextEpisode: nil),
-          emergencyMode: false,
-          episode: .mock,
-          episodeProgress: 30,
-          permission: .loggedOut(isEpisodeSubscriberOnly: false)
-        ),
-        tableOfContents: [
-          HTMLMarkdown.Section(
-            title: "Introduction",
-            id: "1",
-            level: 1,
-            timestamp: Timestamp(format: "00:01:03", speaker: "Brandon")
-          ),
-          HTMLMarkdown.Section(
-            title: "Binding",
-            id: "2",
-            level: 1,
-            timestamp: Timestamp(format: "00:03:03", speaker: "Stephen")
+  #Preview("Episode Detail", traits: .fixedLayout(width: 500, height: 1000)) {
+    HTMLPreview {
+      PageLayout(layoutData: SimplePageLayoutData(title: "")) {
+        EpisodeDetail(
+          episodePageData: EpisodePageData(
+            context: .direct(previousEpisode: nil, nextEpisode: nil),
+            emergencyMode: false,
+            episode: .mock,
+            episodeProgress: 30,
+            permission: .loggedOut(isEpisodeSubscriberOnly: false)
           )
-        ]
-      )
-      .inlineStyle("margin", "2rem")
+        )
+      }
     }
   }
-}
+
+  #Preview("Sidebar", traits: .fixedLayout(width: 400, height: 1000)) {
+    HTMLPreview {
+      PageLayout(layoutData: SimplePageLayoutData(title: "")) {
+        TableOfContents(
+          episodePageData: EpisodePageData(
+            context: .direct(previousEpisode: nil, nextEpisode: nil),
+            emergencyMode: false,
+            episode: .mock,
+            episodeProgress: 30,
+            permission: .loggedOut(isEpisodeSubscriberOnly: false)
+          ),
+          tableOfContents: [
+            HTMLMarkdown.Section(
+              title: "Introduction",
+              id: "1",
+              level: 1,
+              timestamp: Timestamp(format: "00:01:03", speaker: "Brandon")
+            ),
+            HTMLMarkdown.Section(
+              title: "Binding",
+              id: "2",
+              level: 1,
+              timestamp: Timestamp(format: "00:03:03", speaker: "Stephen")
+            ),
+          ]
+        )
+        .inlineStyle("margin", "2rem")
+      }
+    }
+  }
 #endif
