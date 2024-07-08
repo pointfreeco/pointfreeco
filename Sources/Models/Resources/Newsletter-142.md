@@ -10,7 +10,7 @@ Swift officially turns 10 years old at this year's WWDC! To celebrate we are off
 This is the perfect time to get full access to all of our videos. In the past year we have explored 
 many advanced topics of Swift and SwiftUI, including:
 
-* ### Modern UIKit
+* **Modern UIKit**
 
   This is our [newest series of episodes][modern-uikit-collection], and it is still currently in 
   progress. We will show that the Observation framework in Swift allows us to completely 
@@ -18,21 +18,21 @@ many advanced topics of Swift and SwiftUI, including:
   navigation tools that allow us to write UIKit features in a style that looks very similar to 
   SwiftUI.  
 
-* ### A tour of the Composable Architecture 1.0
+* **A tour of the Composable Architecture 1.0**
 
   A little less than 1 year ago we [released 1.0][tca-1.0-blog] of the Composable Architecture,
   and along with it we released a brand new [tour series of episodes][tour-tca-1.0]. The tour builds
   a moderately complex app from scratch, and along the way you will learn value lessons in domain
   modeling, dependencies and controlling side effects, navigation, testing and more.
 
-* ### Observation
+* **Observation**
 
   We dove _deep_ into the [observation tools][observation-collection] of Swift, and showed how they 
   could be applied to the [Composable Architecture][observation-tca-collection]. We even 
   [back ported][perception-blog] Swift's observation tools so that they can run on platforms going
   all the way back to iOS 13!
   
-* ### Shared state
+* **Shared state**
 
   Sharing state in the Composable Architecture has been, historically, quite difficult because of
   the library's preference for one to model their domains with value types instead of reference
@@ -40,7 +40,7 @@ many advanced topics of Swift and SwiftUI, including:
   still embrace value types _and_ still exhaustively test features that are sharing state. And
   we even incorporated persistence into the solution too!
   
-* ### Macros
+* **Macros**
 
   Macros are a powerful Swift feature, and they are only going to get more powerful. But what
   does it take to build complex macros, and further how do you test and debug them? We have 
