@@ -305,9 +305,9 @@ struct UnlockEpisodeCallout: HTML {
         """
       } callToAction: {
         form {
-          Button(color: .purple) {
-            "Redeem this episode"
-          }
+          Button(tag: input, color: .purple)
+            .attribute("value", "Redeem this episode")
+            .attribute("type", "submit")
         }
         .attribute("action", siteRouter.path(for: .useEpisodeCredit(episode.id)))
         .attribute("method", "post")
@@ -410,13 +410,15 @@ struct Callout<Message: HTML, CallToAction: HTML, Bar: HTML>: HTML {
         .inlineStyle("line-height", "3")
       }
       VStack(spacing: 0.5) {
-        div {
-          icon
+        if let icon {
+          div {
+            icon
+          }
+          .inlineStyle("filter", "invert()", media: .dark)
+          .inlineStyle("height", "3rem")
+          .inlineStyle("margin-top", "1rem")
+          .inlineStyle("text-align", "center")
         }
-        .inlineStyle("filter", "invert()", media: .dark)
-        .inlineStyle("height", "3rem")
-        .inlineStyle("margin-top", "1rem")
-        .inlineStyle("text-align", "center")
         Header(4) {
           HTMLText(title)
         }
