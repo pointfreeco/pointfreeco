@@ -10,12 +10,12 @@ way.
 ## Beta preview for Swift Testing support
 
 > Note: Currently our support of the Swift Testing framework is considered "beta" 
-because the new testing framework has not even officially been released yet. Once it is officially 
-released, probably sometime in September, we will have an officialy release with support.
+> because the new testing framework has not even officially been released yet. Once it is officially 
+> released, probably sometime in September, we will have an official release with support.
 
 To use the new Swift Testing tools in SnapshotTesting you just need to upgrade to 
 [version 1.17.0][snapshot-1.17] of the library. Once that is done the `assertSnapshot` function
-can be used in both XCTestCase subclasses as well as inside new-style `@Test`s and `@Suite`s:
+can be used in both `XCTestCase` subclasses as well as inside new-style `@Test`s and `@Suite`s:
 
 ```swift
 @Suite
@@ -47,7 +47,7 @@ to get access to it you must perform an `@_spi(Experimental)` import of snapshot
 ```swift
 @_spi(Experimental) import SnapshotTesting
 
-@Suite(.snapshots(diffTool: .ksdiff, record: .all))
+@Suite(.snapshots(record: .all, diffTool: .ksdiff))
 struct FeatureTests {
   …
 }
@@ -56,8 +56,8 @@ struct FeatureTests {
 That will override the `diffTool` and `record` options for the entire `FeatureTests` suite.
 
 > Important: As evident by the usage of `@_spi(Experimental)` this API is subject to change. As
-soon as the Swift Testing library finalizes its API for `CustomExecutionTrait` we will update
-the library accordingly and remove the `@_spi` annotation.
+> soon as the Swift Testing library finalizes its API for `CustomExecutionTrait` we will update
+> the library accordingly and remove the `@_spi` annotation.
 
 ## New features in SnapshotTesting
 
