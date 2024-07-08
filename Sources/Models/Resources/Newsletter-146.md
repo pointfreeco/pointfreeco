@@ -41,7 +41,7 @@ record mode or diff tool used in failure messages.
 
 There is an experimental version of this tool in Swift Testing, called 
 [`CustomExecutionTrait`][custom-execution-trait-gh], and this library provides such a trait called 
-`.snapshots(diffTool:record:)`. It allows you to customize snapshots for a `@Test` or `@Suite`, but 
+`.snapshots(record:diffTool:)`. It allows you to customize snapshots for a `@Test` or `@Suite`, but 
 to get access to it you must perform an `@_spi(Experimental)` import of snapshot testing:
 
 ```swift
@@ -135,7 +135,7 @@ class FeatureTests: XCTestCase {
 // After
 class FeatureTests: XCTestCase {
   override func invokeTest() {
-    withSnapshotTesting(diffTool: .ksdiff, record: .all) {
+    withSnapshotTesting(record: .all, diffTool: .ksdiff) {
       super.invokeTest()
     }
   }
