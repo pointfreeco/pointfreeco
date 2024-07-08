@@ -680,8 +680,6 @@ extension HTML {
   }
 }
 
-@testable import StyleguideV2
-
 #Preview("Sidebar", traits: .fixedLayout(width: 400, height: 1000)) {
   HTMLPreview {
     PageLayout(layoutData: SimplePageLayoutData(title: "")) {

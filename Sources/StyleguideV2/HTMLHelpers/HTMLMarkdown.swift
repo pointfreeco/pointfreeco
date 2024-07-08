@@ -10,6 +10,13 @@ public struct HTMLMarkdown: HTML {
     public var anchor: String {
       "#\(id)"
     }
+
+    public init(title: String, id: String, level: Int, timestamp: Timestamp?) {
+      self.title = title
+      self.id = id
+      self.level = level
+      self.timestamp = timestamp
+    }
   }
 
   public let markdown: String
@@ -535,7 +542,7 @@ public struct Timestamp: HTML {
   public var second: Int
   public var speaker: String?
 
-  init?(format: String, speaker: String?) {
+  public init?(format: String, speaker: String?) {
     let components = format.split(separator: ":")
     guard let second = components.last.flatMap({ Int($0) }) else { return nil }
     self.hour = components.dropLast(2).last.flatMap { Int($0) } ?? 0
