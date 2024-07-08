@@ -2,7 +2,7 @@ GET http://localhost:8080/about
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 41394
+Content-Length: 49782
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -54,10 +54,6 @@ body, html {
   body, html {
     background: #121212;
   }
-}
-article > pf-markdown > pf-vstack > p:last-of-type::after {
-  margin: 0 0.5rem;
-  content: "❖";
 }
 .markdown *:link, .markdown *:visited { color: inherit; }
 .diagnostic * {
@@ -199,12 +195,24 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .align-items-0Zubr3{align-items:baseline}
 .color-BoTGL{color:#171717}
 .row-gap-NKv2f3{row-gap:0.5rem}
+article .content-xD6dy1:is(p):last-of-type::after{content:"❖"}
+article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
+.top-kDUvL2{top:-5em}
+.visibility-PhNC81{visibility:hidden}
+.margin-left-SH03u1{margin-left:-2.25rem}
+.padding-left-5jRhu{padding-left:2.25rem}
 .margin-top-EvtWd3:not(:first-child){margin-top:1.5rem}
 .margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
 .font-size-QgYLk2{font-size:2.0rem}
-.padding-FBkWQ3{padding:0}
+article div:hover > * > .display-Vk1P81{display:initial}
+.left-FBkWQ3{left:0}
+.position-X8qzJ{position:absolute}
+.width-Wr637{width:2.5rem}
 .text-decoration-gUV393:visited{text-decoration:underline}
 .text-decoration-tfb0F1:link{text-decoration:underline}
+.color-Vv8Gw4:link{color:#ccc}
+.color-x5AlI2:visited{color:#ccc}
+.padding-FBkWQ3{padding:0}
 .color-T7UxR2:link{color:#121212}
 .color-IVYQy2:visited{color:#121212}
 .padding-MlBf82{padding:0 2rem}
@@ -235,7 +243,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .color-H59Xg3:link{color:#79f2b0}
 .color-tgLLb3:visited{color:#79f2b0}
 .display-mqllb2{display:grid}
-.grid-template-columns-x1B8x4{grid-template-columns:1fr 2fr}
+.grid-template-columns-hE9y01{grid-template-columns:minmax(0, 1fr) minmax(0, 2fr)}
 .font-size-xlo1p4{font-size:0.75rem}
 .letter-spacing-fGWfX2{letter-spacing:0.54pt}
 .line-height-9Xzre{line-height:1.25}
@@ -245,9 +253,10 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   .top-dcqqP{top:0}
   .display-mScdO2{display:none}
   input:checked ~ .display-sAbis3{display:block}
+  .top-RSlUg4{top:2px}
   .column-gap-GuM2x3{column-gap:1.0rem}
   .display-Vv9EA3{display:grid}
-  .grid-template-columns-10jle4{grid-template-columns:1fr}
+  .grid-template-columns-RehC04{grid-template-columns:minmax(0, 1fr)}
   .row-gap-GuM2x3{row-gap:1.0rem}
   .padding-top-bS1Ay3{padding-top:2.0rem}
   .padding-left-bS1Ay3{padding-left:2.0rem}
@@ -264,9 +273,12 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   .padding-jFt024{padding:8rem 3rem}
   .margin-mBI0f2{margin:0 auto}
   .padding-EmXfB2{padding:4.0rem 3.0rem 4.0rem}
+  .top-FEoZS2{top:-0.5em}
+  .margin-left-ItApa4{margin-left:-2.5rem}
+  .padding-left-WU6C5{padding-left:2.5rem}
   .column-gap-ZNGkd1{column-gap:1.0rem}
   .display-jdJkm4{display:grid}
-  .grid-template-columns-V2CuF3{grid-template-columns:1fr 1fr}
+  .grid-template-columns-AWWfa{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
   .row-gap-ZNGkd1{row-gap:1.0rem}
   .padding-top-ujLNr4{padding-top:4.0rem}
   .padding-left-ujLNr4{padding-left:4.0rem}
@@ -278,6 +290,8 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 @media (prefers-color-scheme: dark){
   .background-color-dMv2U1{background-color:#121212}
   .color-GOHNR{color:#fafafa}
+  .color-9rBiP:link{color:#555555}
+  .color-CwERD1:visited{color:#555555}
   .color-3tgnX1:link{color:#fff}
   .color-fIiIX2:visited{color:#fff}
   .border-bSHu21{border:1px #353535 solid}
@@ -339,17 +353,19 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <pf-markdown class="color-BoTGL color-GOHNR display-ix08W2">
-      <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-        <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Your hosts
-        </h3>
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Brandon and Stephen are industry experts living in New York and California. They previously helped build and <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2" href="https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd">open source</a> the <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2" href="https://www.kickstarter.com/">Kickstarter</a> mobile apps, and have worked with dozens of companies to help build their products and improve their engineering practices.
+      <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="your-hosts"></a>
+        <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+          <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Your hosts<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#your-hosts"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+          </h3>
+        </div>
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Brandon and Stephen are industry experts living in New York and California. They previously helped build and <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2" href="https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd">open source</a> the <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2" href="https://www.kickstarter.com/">Kickstarter</a> mobile apps, and have worked with dozens of companies to help build their products and improve their engineering practices.
         </p>
       </pf-vstack>
     </pf-markdown>
   </div>
 </div>
 <pf-center-column class="padding-MlBf82 width-C8uWv box-sizing-otfSh display-ix08W2">
-  <pf-vgrid class="max-width-P6HnV width-C8uWv margin-gEzmi width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-V2CuF3 row-gap-ZNGkd1 column-gap-GuM2x3 display-Vv9EA3 grid-template-columns-10jle4 row-gap-GuM2x3">
+  <pf-vgrid class="max-width-P6HnV width-C8uWv margin-gEzmi width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1 column-gap-GuM2x3 display-Vv9EA3 grid-template-columns-RehC04 row-gap-GuM2x3">
     <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
       <pf-vstack class="border-bottom-9YkDE1 border-bottom-a7wnM text-align-CdPBO2 display-ix08W2 padding-A2Nt1 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="width-1VZj64 height-1VZj64 border-radius-mGDEV1 max-width-C8uWv" src="https://d3rccdn33rt8ze.cloudfront.net/about-us/brando.jpg" alt="Avatar of Brandon Williams.">
         <div>
@@ -362,7 +378,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
           <div class="color-OpZD03 color-5uscm3">
             <pf-markdown class="display-ix08W2">
               <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Brandon did math for a very long time, and now enjoys talking about functional programming as a means to better our craft as engineers.
+                <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Brandon did math for a very long time, and now enjoys talking about functional programming as a means to better our craft as engineers.
                 </p>
               </pf-vstack>
             </pf-markdown>
@@ -384,7 +400,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
           <div class="color-OpZD03 color-5uscm3">
             <pf-markdown class="display-ix08W2">
               <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Stephen taught himself to code when he realized his English degree didn’t pay the bills. He became a functional convert and believer after years of objects.
+                <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Stephen taught himself to code when he realized his English degree didn’t pay the bills. He became a functional convert and believer after years of objects.
                 </p>
               </pf-vstack>
             </pf-markdown>
@@ -400,28 +416,38 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <pf-vstack class="margin-gEzmi align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
       <pf-markdown class="color-BoTGL color-GOHNR max-width-vCelo2 display-ix08W2">
-        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-          <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">What we’ll cover
-          </h3>
-          <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We’ve got so much we want to talk about, but just a quick overview of the things we have planned:
+        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="what-we-ll-cover"></a>
+          <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+            <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">What we’ll cover<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#what-we-ll-cover"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+            </h3>
+          </div>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We’ve got so much we want to talk about, but just a quick overview of the things we have planned:
+          </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="pure-functions-and-side-effects"></a>
+          <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+            <h5 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Pure functions and side effects<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#pure-functions-and-side-effects"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+            </h5>
+          </div>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Side effects are one of the greatest sources of complexity in an application, and every program has this in common. After giving a proper definition of side effects and pure functions, we will show how to push the effects to the boundary of your application, leaving behind an understandable, testable and pure core.
+          </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="code-reuse-through-function-composition"></a>
+          <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+            <h5 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Code reuse through function composition<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#code-reuse-through-function-composition"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+            </h5>
+          </div>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">The most basic unit of code reusability comes in the form of simple function composition. We will show that by focusing on small atomic units that compose well, we can build large complex systems that are easy to understand.
+          </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="maximizing-the-use-of-the-type-system"></a>
+          <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+            <h5 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Maximizing the use of the type system<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#maximizing-the-use-of-the-type-system"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+            </h5>
+          </div>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">You’ve already seen how the type system helps prevent bugs by making sure you don’t accidentally add an integer to a string, or call a method on a “null” value, but it can do so much more. You can encode invariants of your application directly into the types so impossible application states are not representable and can never compile.
+          </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="turning-programming-problems-into-algebraic-problems"></a>
+          <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+            <h5 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Turning programming problems into algebraic problems<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#turning-programming-problems-into-algebraic-problems"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+            </h5>
+          </div>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Algebraic problems are nice because they carry structure that can be manipulated in predictable and understandable ways. For example, if you have ever simplified a complicated boolean expression that looked like a &amp;&amp; b || a &amp;&amp; c to look like a &amp;&amp; (b || c), you were exploiting the algebraic stucture that || and &amp;&amp; have. Many programming problems can be given an algebraic structure that allows one to manipulate the problem in the same way you factored out the a &amp;&amp; from that expression.
           </p>
-          <h5 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Pure functions and side effects
-          </h5>
-          <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Side effects are one of the greatest sources of complexity in an application, and every program has this in common. After giving a proper definition of side effects and pure functions, we will show how to push the effects to the boundary of your application, leaving behind an understandable, testable and pure core.
-          </p>
-          <h5 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Code reuse through function composition
-          </h5>
-          <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">The most basic unit of code reusability comes in the form of simple function composition. We will show that by focusing on small atomic units that compose well, we can build large complex systems that are easy to understand.
-          </p>
-          <h5 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Maximizing the use of the type system
-          </h5>
-          <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">You’ve already seen how the type system helps prevent bugs by making sure you don’t accidentally add an integer to a string, or call a method on a “null” value, but it can do so much more. You can encode invariants of your application directly into the types so impossible application states are not representable and can never compile.
-          </p>
-          <h5 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Turning programming problems into algebraic problems
-          </h5>
-          <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Algebraic problems are nice because they carry structure that can be manipulated in predictable and understandable ways. For example, if you have ever simplified a complicated boolean expression that looked like a &amp;&amp; b || a &amp;&amp; c to look like a &amp;&amp; (b || c), you were exploiting the algebraic stucture that || and &amp;&amp; have. Many programming problems can be given an algebraic structure that allows one to manipulate the problem in the same way you factored out the a &amp;&amp; from that expression.
-          </p>
-          <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">And so much more…
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">And so much more…
           </p>
         </pf-vstack>
       </pf-markdown>
@@ -432,16 +458,18 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <pf-vstack class="margin-gEzmi align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
       <pf-markdown class="color-BoTGL color-GOHNR max-width-vCelo2 display-ix08W2">
-        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-          <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Open source
-          </h3>
-          <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">When we open-sourced the entire iOS and Android codebases at Kickstarter, we saw that it was one of the best resources to show people how to build a large application in the functional style. It transcended any talks about the theoretical benefits or proposed simplifications. We could just show directly how embracing pure functions allowed us to write code that was understandable in isolation, and enabled us to write tests for every subtle edge case.
+        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="open-source"></a>
+          <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+            <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Open source<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#open-source"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+            </h3>
+          </div>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">When we open-sourced the entire iOS and Android codebases at Kickstarter, we saw that it was one of the best resources to show people how to build a large application in the functional style. It transcended any talks about the theoretical benefits or proposed simplifications. We could just show directly how embracing pure functions allowed us to write code that was understandable in isolation, and enabled us to write tests for every subtle edge case.
           </p>
-          <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We wanted to be able to do that again, but this time we’d build an entire website in server-side Swift, all in the functional style! This meant we had to build nearly everything from scratch, from server middleware and routing to HTML views and CSS.
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We wanted to be able to do that again, but this time we’d build an entire website in server-side Swift, all in the functional style! This meant we had to build nearly everything from scratch, from server middleware and routing to HTML views and CSS.
           </p>
-          <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We discovered quite a few fun things along the way, like using Swift Playgrounds to design pages in an iterative fashion, and came to the conclusion that server-side Swift will soon be a viable backend language rivaling almost every other language out there.
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We discovered quite a few fun things along the way, like using Swift Playgrounds to design pages in an iterative fashion, and came to the conclusion that server-side Swift will soon be a viable backend language rivaling almost every other language out there.
           </p>
-          <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">You can view the entire source code to this site on our GitHub organization, <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2" href="https://github.com/pointfreeco">https://github.com/pointfreeco</a>.
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">You can view the entire source code to this site on our GitHub organization, <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2" href="https://github.com/pointfreeco">https://github.com/pointfreeco</a>.
           </p>
         </pf-vstack>
       </pf-markdown>
@@ -449,14 +477,14 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   </div>
 </div>
 <footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
-  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-V2CuF3 row-gap-ZNGkd1">
+  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
       <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3" href="/">Point-Free</a>
       </h4>
       <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-x1B8x4 row-gap-83zzS1">
+    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-hE9y01 row-gap-83zzS1">
       <div>
         <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>
