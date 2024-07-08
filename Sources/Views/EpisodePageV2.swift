@@ -264,14 +264,14 @@ struct Callout<Message: HTML, CallToAction: HTML, Bar: HTML>: HTML {
   let icon: SVG?
   let message: Message
   let callToAction: CallToAction
-  let bar: Bar
+  let bar: Bar?
 
   init(
     _ title: String,
     icon: SVG? = nil,
     @HTMLBuilder message: () -> Message,
     @HTMLBuilder callToAction: () -> CallToAction,
-    @HTMLBuilder bar: () -> Bar = { HTMLEmpty() }
+    @HTMLBuilder bar: () -> Bar? = { Never?.none }
   ) {
     self.title = title
     self.icon = icon
@@ -282,20 +282,27 @@ struct Callout<Message: HTML, CallToAction: HTML, Bar: HTML>: HTML {
 
   var body: some HTML {
     VStack {
-      div {
-        HStack(spacing: 0.5) {
-          bar
+      if let bar {
+        div {
+          HStack(spacing: 0.5) {
+            bar
+          }
+          .inlineStyle("justify-content", "center")
         }
-        .inlineStyle("justify-content", "center")
+        .backgroundColor(.gray900.dark(.gray150))
+        .fontStyle(.body(.small))
+        .inlineStyle("border-bottom", "1px solid #ccc")
+        .inlineStyle("border-bottom", "1px solid #555", media: .dark)
+        .inlineStyle("font-weight", "600")
+        .inlineStyle("line-height", "3")
       }
-      .backgroundColor(.gray900.dark(.gray150))
-      .fontStyle(.body(.small))
-      .inlineStyle("border-bottom", "1px solid #ccc")
-      .inlineStyle("border-bottom", "1px solid #555", media: .dark)
-      .inlineStyle("font-weight", "600")
-      .inlineStyle("line-height", "3")
       VStack(spacing: 0.5) {
-        icon
+        div {
+          icon
+        }
+        .inlineStyle("height", "3rem")
+        .inlineStyle("margin-top", "1rem")
+        .inlineStyle("text-align", "center")
         Header(4) {
           HTMLText(title)
         }
@@ -303,6 +310,7 @@ struct Callout<Message: HTML, CallToAction: HTML, Bar: HTML>: HTML {
         Paragraph {
           message
         }
+        .inlineStyle("margin-bottom", "1rem")
         .inlineStyle("text-wrap", "balance")
         VStack(alignment: .center, spacing: 0.5) {
           callToAction
