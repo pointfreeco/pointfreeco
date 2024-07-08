@@ -12,11 +12,15 @@ func aboutResponse(
 ) -> Conn<ResponseEnded, Data> {
   conn
     .writeStatus(.ok)
-    .respond(view: aboutView) {
-      SimplePageLayoutData(
-        data: [.brandon, .stephen],
-        extraStyles: aboutExtraStyles,
-        title: "About"
+    .respondV2(
+      layoutData: SimplePageLayoutData(
+        description: """
+          Point-Free is a video series that explores advanced topics in the Swift programming \
+          language.
+          """,
+        title: "About Point-Free"
       )
+    ) {
+      AboutView()
     }
 }
