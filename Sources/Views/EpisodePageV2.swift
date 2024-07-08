@@ -195,7 +195,7 @@ struct TableOfContentsSection: HTML {
           PlayIcon()
           div {
             Header(5) {
-              HTMLText(episode.fullTitle + ": Lorem Ipsum Edition")
+              HTMLText(episode.fullTitle)
             }
             .color(linkStyle.color)
           }
@@ -215,22 +215,22 @@ struct TableOfContentsSection: HTML {
               li {
                 HStack(alignment: .center, spacing: 0.25) {
                   Link(href: section.anchor) {
-                    HTMLText(section.title + " Hello world")
+                    HTMLText(section.title)
                   }
                   .linkColor(.offBlack.dark(.offWhite))
                   .inlineStyle("line-height", "1.35")
 
-                  Spacer()
                   if let timestamp = section.timestamp {
                     Link(href: timestamp.anchor) {
                       HTMLText(timestamp.formatted())
                     }
                     .attribute("data-timestamp", "\(timestamp.duration)")
-                    .linkColor(.gray800.dark(.gray300))
+                    .linkColor(.gray(0.66))
                     .inlineStyle("font-variant-numeric", "tabular-nums")
                   }
                 }
                 .fontStyle(.body(.small))
+                .inlineStyle("justify-content", "space-between")
               }
             }
           }
@@ -240,7 +240,7 @@ struct TableOfContentsSection: HTML {
           .listStyle(.reset)
         }
       }
-      .backgroundColor(.gray(0.97))
+      .backgroundColor(.gray(0.98).dark(.gray(0.1)))
     }
   }
 
