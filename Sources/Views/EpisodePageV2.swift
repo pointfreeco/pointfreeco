@@ -39,7 +39,7 @@ public struct EpisodeDetail: HTML {
 
     if let transcript {
       PageModule(theme: .content) {
-        LazyVGrid(columns: [.desktop: [3, 6], .mobile: [1]]) {
+        LazyVGrid(columns: [.desktop: [30, 70], .mobile: [1]]) {
           TableOfContents(
             episodePageData: episodePageData,
             tableOfContents: transcript.tableOfContents
@@ -141,6 +141,7 @@ private struct TableOfContents: HTML {
     .flexContainer(direction: "column")
     .inlineStyle("align-self", "start", media: .desktop)
     .inlineStyle("border", "1px solid #ccc")
+    .inlineStyle("border", "1px solid #555", media: .dark)
     .inlineStyle("border-radius", "6px")
     .inlineStyle("position", "sticky", media: .desktop)
     .inlineStyle("top", "1rem", media: .desktop)
@@ -169,9 +170,10 @@ struct TableOfContentsSection: HTML {
         FocusedEpisodeSection(episode: episode, tableOfContents: tableOfContents)
       }
     }
-    .linkStyle(.init(color: .offBlack.dark(.offWhite)))
+    .linkColor(.offBlack.dark(.offWhite))
     .inlineStyle("padding", "1.5rem 1rem")
     .inlineStyle("border-top", "1px solid #ccc", pseudo: .not(.firstChild))
+    .inlineStyle("border-top", "1px solid #555", media: .dark, pseudo: .not(.firstChild))
   }
 
   struct PlayIcon: HTML {
@@ -179,12 +181,14 @@ struct TableOfContentsSection: HTML {
       SVG(base64: playIconSvgBase64(), description: "")
         .flexItem(basis: "1.25rem")
         .inlineStyle("margin-top", "2px")
+        .inlineStyle("filter", "invert(100%)", media: .dark)
     }
   }
 
   struct FocusedEpisodeSection: HTML {
     let episode: Episode
     let tableOfContents: [HTMLMarkdown.Section]
+    @Dependency(\.linkStyle) var linkStyle
     var body: some HTML {
       VStack(spacing: 1) {
         HStack(alignment: .center, spacing: 0.5) {
@@ -193,6 +197,7 @@ struct TableOfContentsSection: HTML {
             Header(5) {
               HTMLText(episode.fullTitle + ": Lorem Ipsum Edition")
             }
+            .color(linkStyle.color)
           }
         }
         HStack(spacing: 0.5) {
@@ -235,6 +240,7 @@ struct TableOfContentsSection: HTML {
           .listStyle(.reset)
         }
       }
+      .backgroundColor(.gray(0.97))
     }
   }
 
@@ -251,8 +257,10 @@ struct TableOfContentsSection: HTML {
           HStack(alignment: .center, spacing: 0.5) {
             PlayIcon()
             div {
-              Header(5) {
-                HTMLText(episode.fullTitle)
+              Link(destination: .episodes(.show(episode))) {
+                Header(5) {
+                  HTMLText(episode.fullTitle)
+                }
               }
             }
           }
