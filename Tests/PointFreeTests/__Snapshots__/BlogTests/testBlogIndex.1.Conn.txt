@@ -2,7 +2,7 @@ GET http://localhost:8080/blog
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 33279
+Content-Length: 33362
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -106,6 +106,10 @@ body, html {
 
 .highlight-fail .line-highlight {
   background-color: rgba(255, 68, 68, 0.15);
+}
+
+.highlight-warn .line-highlight {
+  background-color: rgba(254, 223, 43, 0.15);
 }
 
 .language-diff {
