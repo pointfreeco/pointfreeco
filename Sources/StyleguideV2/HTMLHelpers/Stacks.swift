@@ -1,3 +1,5 @@
+import OrderedCollections
+
 public struct HStack<Content: HTML>: HTML {
   let alignment: VerticalAlignment
   let spacing: Double?
@@ -94,13 +96,13 @@ extension HTML {
 }
 
 public struct LazyVGrid<Content: HTML>: HTML {
-  let columns: [MediaQuery?: [Int]]
+  let columns: OrderedDictionary<MediaQuery?, [Int]>
   let content: Content
   let horizontalSpacing: Double?
   let verticalSpacing: Double?
 
   public init(
-    columns: [MediaQuery: [Int]],
+    columns: OrderedDictionary<MediaQuery?, [Int]>,
     // TODO: alignment: HorizontalAlignment = .center,
     horizontalSpacing: Double? = nil,
     verticalSpacing: Double? = nil,

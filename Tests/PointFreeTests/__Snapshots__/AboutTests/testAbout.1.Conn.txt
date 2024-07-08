@@ -2,7 +2,7 @@ GET http://localhost:8080/about
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 61163
+Content-Length: 49782
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -11,2420 +11,253 @@ X-Frame-Options: SAMEORIGIN
 X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <title>
-      About
+    <title>About Point-Free
     </title>
-    <style>
-      /*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template{display:none}[hidden]{display:none}
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#121212">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <style>/*! normalize.css v8.0.0 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details{display:block}summary{display:list-item}template{display:none}[hidden]{display:none}
     </style>
-    <style>
-      
-body, html {
-  height : 100%;
+    <style>html {
+  font-family: ui-sans-serif, -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
 }
-
-html {
-  font-size          : 14px;
-  font-family        : -apple-system,Helvetica Neue,Helvetica,Arial,sans-serif;
-  line-height        : 1.5;
-  -webkit-box-sizing : border-box;
-  -moz-box-sizing    : border-box;
-  -ms-box-sizing     : border-box;
-  -o-box-sizing      : border-box;
-  box-sizing         : border-box;
+code, pre, tt, kbd, samp {
+  font-family: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, Monaco, Consolas, monospace;
 }
-
 body {
-  -webkit-box-sizing : border-box;
-  -moz-box-sizing    : border-box;
-  -ms-box-sizing     : border-box;
-  -o-box-sizing      : border-box;
-  box-sizing         : border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing:border-box
+}
+*, * ::before, * ::after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  -ms-box-sizing: inherit;
+  -o-box-sizing: inherit;
+  box-sizing:inherit
+}
+body, html {
+  background: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  body, html {
+    background: #121212;
+  }
+}
+.markdown *:link, .markdown *:visited { color: inherit; }
+.diagnostic * {
+  font: inherit;
+  line-height: 1.25 !important;
+}
+.diagnostic pre {
+  background: inherit;
+  margin: 0 1.125rem;
+  padding: 0;
+  text-wrap: auto;
 }
-
-*, *::before, *::after {
-  -webkit-box-sizing : inherit;
-  -moz-box-sizing    : inherit;
-  -ms-box-sizing     : inherit;
-  -o-box-sizing      : inherit;
-  box-sizing         : inherit;
-}
-
-.bg-black {
-  background-color : #121212;
-}
-
-.bg-blue900 {
-  background-color : #e6f8ff;
-}
-
-.bg-dark {
-  background-color : #121212;
-}
-
-.bg-gray150 {
-  background-color : #242424;
-}
-
-.bg-gray650 {
-  background-color : #a8a8a8;
-}
-
-.bg-gray850 {
-  background-color : #d8d8d8;
-}
-
-.bg-gray900 {
-  background-color : #f6f6f6;
-}
-
-.bg-green {
-  background-color : #79f2b0;
-}
-
-.bg-inherit {
-  background-color : inherit;
-}
-
-.bg-purple {
-  background-color : #974dff;
-}
-
-.bg-purple150 {
-  background-color : #291a40;
-}
-
-.bg-red {
-  background-color : #eb1c26;
-}
-
-.bg-white {
-  background-color : #fff;
-}
-
-.bg-yellow {
-  background-color : #fff080;
-}
-
-.border-gray-650 {
-  border-top-color    : #a8a8a8;
-  border-right-color  : #a8a8a8;
-  border-bottom-color : #a8a8a8;
-  border-left-color   : #a8a8a8;
-}
-
-.border-gray-800 {
-  border-top-color    : #ccc;
-  border-right-color  : #ccc;
-  border-bottom-color : #ccc;
-  border-left-color   : #ccc;
-}
-
-.border-gray-850 {
-  border-top-color    : #d8d8d8;
-  border-right-color  : #d8d8d8;
-  border-bottom-color : #d8d8d8;
-  border-left-color   : #d8d8d8;
-}
-
-.border-gray-900 {
-  border-top-color    : #f6f6f6;
-  border-right-color  : #f6f6f6;
-  border-bottom-color : #f6f6f6;
-  border-left-color   : #f6f6f6;
-}
-
-.fg-black {
-  color : #121212;
-}
-
-.fg-blue {
-  color : #4cccff;
-}
-
-.fg-gray300 {
-  color : #555555;
-}
-
-.fg-gray400 {
-  color : #666666;
-}
-
-.fg-gray500 {
-  color : #808080;
-}
-
-.fg-gray650 {
-  color : #a8a8a8;
-}
-
-.fg-gray850 {
-  color : #d8d8d8;
-}
-
-.fg-green {
-  color : #79f2b0;
-}
-
-.fg-purple {
-  color : #974dff;
-}
-
-.fg-red {
-  color : #eb1c26;
-}
-
-.fg-yellow {
-  color : #fff080;
-}
-
-.fg-white {
-  color : #fff;
-}
-
-a:link.pf-link-black {
-  color : #121212;
-}
-
-a:visited.pf-link-black {
-  color : #121212;
-}
-
-a:link.pf-link-gray650 {
-  color : #a8a8a8;
-}
-
-a:visited.pf-link-gray650 {
-  color : #a8a8a8;
-}
-
-a:link.pf-link-green {
-  color : #79f2b0;
-}
-
-a:visited.pf-link-green {
-  color : #79f2b0;
-}
-
-a:link.pf-link-purple {
-  color : #974dff;
-}
-
-a:visited.pf-link-purple {
-  color : #974dff;
-}
-
-a:link.pf-link-red {
-  color : #eb1c26;
-}
-
-a:visited.pf-link-red {
-  color : #eb1c26;
-}
-
-a:link.pf-link-white {
-  color : #fff;
-}
-
-a:visited.pf-link-white {
-  color : #fff;
-}
-
-a:link.pf-link-yellow {
-  color : #fff080;
-}
-
-a:visited.pf-link-yellow {
-  color : #fff080;
-}
-
-.code {
-  background-color : rgba(0,0,0,0.02);
-  color            : #24292e;
-  font-family      : ui-monospace,monospace;
-}
-
-code {
-  font-family : ui-monospace,monospace;
-}
-
-pre {
-  font-family : ui-monospace,monospace;
-}
-
-.inline-code {
-  color                      : #24292e;
-  font-family                : ui-monospace,monospace;
-  padding-top                : 1px;
-  padding-bottom             : 1px;
-  padding-right              : 5px;
-  padding-left               : 5px;
-  border-top-left-radius     : 3px;
-  border-top-right-radius    : 3px;
-  border-bottom-right-radius : 3px;
-  border-bottom-left-radius  : 3px;
-}
-
-.opacity-25 {
-  opacity : 0.25;
-}
-
-.opacity-50 {
-  opacity : 0.5;
-}
-
-.opacity-75 {
-  opacity : 0.75;
-}
-
-a, a:link, a:visited {
-  color           : #121212;
-  text-decoration : none;
-}
-
-a:hover, a:active {
-  text-decoration : underline;
-}
-
-a.underline-link {
-  text-decoration : underline;
-}
-
-.body-leading {
-  font-size : 1.1875rem;
-}
-
-h1, h2, h3, h4, h5, h6, p, ul, ol {
-  margin-top    : 0.5rem;
-  margin-bottom : 0.5rem;
-  margin-right  : 0;
-  margin-left   : 0;
-}
-
-hr {
-  border-top-color    : transparent;
-  border-right-color  : transparent;
-  border-bottom-color : transparent;
-  border-left-color   : transparent;
-  border-top-style    : none;
-  border-right-style  : none;
-  border-bottom-style : none;
-  border-left-style   : none;
-  border-top-width    : 0;
-  border-right-width  : 0;
-  border-bottom-width : 0;
-  border-left-width   : 0;
-}
-
-.pf-divider {
-  border-top-color : #ddd;
-  height           : 0px;
-}
-
-.pf-navbar a, .pf-navbar a:link {
-  color : #fff;
-}
-
-.btn-normal:hover {
-  -webkit-box-shadow : inset 0 0 0 20rem rgba(0,0,0,0.1);
-  -moz-box-shadow    : inset 0 0 0 20rem rgba(0,0,0,0.1);
-  -ms-box-shadow     : inset 0 0 0 20rem rgba(0,0,0,0.1);
-  -o-box-shadow      : inset 0 0 0 20rem rgba(0,0,0,0.1);
-  box-shadow         : inset 0 0 0 20rem rgba(0,0,0,0.1);
-}
-
-a:active.btn-normal {
-  -webkit-box-shadow : inset 0 0 0 20rem rgba(0,0,0,0.3);
-  -moz-box-shadow    : inset 0 0 0 20rem rgba(0,0,0,0.3);
-  -ms-box-shadow     : inset 0 0 0 20rem rgba(0,0,0,0.3);
-  -o-box-shadow      : inset 0 0 0 20rem rgba(0,0,0,0.3);
-  box-shadow         : inset 0 0 0 20rem rgba(0,0,0,0.3);
-}
-
-a:link.btn-normal {
-  text-decoration : none;
-}
-
-.btn-normal {
-  padding-top    : 0.75rem;
-  padding-bottom : 0.75rem;
-}
-
-.btn-outline:hover {
-  text-decoration : none !important;
-}
-
-.btn-outline {
-  text-decoration : underline !important;
-}
-
-.vid-time-link {
-  padding-top : 0.25rem;
-}
-
-.blue-gradient {
-  background : rgba(128,219,255,0.85);
-  background : -moz-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
-  background : -webkit-gradient(left top, left bottom, color-stop(0%, rgba(128,219,255,0.85)), color-stop(100%, rgba(128,219,255,0)));
-  background : -webkit-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
-  background : -o-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
-  background : -ms-linear-gradient(top, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
-  background : linear-gradient(to bottom, rgba(128,219,255,0.85) 0%, rgba(128,219,255,0) 100%);
-}
-
-.reflect-x {
-  transform         : scaleX(-1);
-  -webkit-transform : scaleX(-1);
-  -moz-transform    : scaleX(-1);
-  -o-transform      : scaleX(-1);
-  -ms-transform     : scaleX(-1);
-}
-
-.token.atrule {
-  color       : #d73a49;
-  font-weight : 600;
-}
-
-.token.boolean {
-  color       : #d73a49;
-  font-weight : 600;
-}
-
-.token.builtin {
-  color : #6f42c1;
-}
-
-.token.class-name {
-  color : #6f42c1;
-}
-
-.token.comment {
-  color : #6a737d;
-}
-
-.token.constant {
-  color       : #d73a49;
-  font-weight : 600;
-}
-
-.token.directive {
-  color : #643820;
-}
-
-.token.directive-name {
-  color : #643820;
-}
-
-.token.function {
-  color : #005cc5;
-}
-
-.token.keyword {
-  color       : #d73a49;
-  font-weight : 600;
-}
-
-.token.number {
-  color : #a963ff;
-}
-
-.token.other-directive {
-  color       : #d73a49;
-  font-weight : 600;
-}
-
-.token.string {
-  color : #032f62;
-}
-
-.token.placeholder-open, .placeholder-close {
-  display : none;
-}
-
-.token.placeholder {
-  background-color           : #a8a8a8;
-  border-top-left-radius     : 6px;
-  border-top-right-radius    : 6px;
-  border-bottom-right-radius : 6px;
-  border-bottom-left-radius  : 6px;
-  color                      : #fff;
-  margin-top                 : -2px;
-  margin-bottom              : -2px;
-  margin-right               : -2px;
-  margin-left                : -2px;
-  padding-top                : 2px;
-  padding-bottom             : 2px;
-  padding-right              : 2px;
-  padding-left               : 2px;
-}
-
-.token.code-fold {
-  background-color           : #a8a8a8;
-  border-top-left-radius     : 6px;
-  border-top-right-radius    : 6px;
-  border-bottom-right-radius : 6px;
-  border-bottom-left-radius  : 6px;
-  color                      : #fff;
-  margin-top                 : -2px;
-  margin-bottom              : -2px;
-  margin-right               : -2px;
-  margin-left                : -2px;
-  padding-top                : 2px;
-  padding-bottom             : 2px;
-  padding-right              : 2px;
-  padding-left               : 2px;
-}
-
-.h1 {
-  font-size : 4rem;
-}
-
-.h2 {
-  font-size : 3rem;
-}
-
-.h3 {
-  font-size : 2rem;
-}
-
-.h4 {
-  font-size : 1.5rem;
-}
-
-.h5 {
-  font-size : 1rem;
-}
-
-.h6 {
-  font-size : 0.875rem;
-}
-
-.ts-m-r4 {
-  font-size : 4rem;
-}
-
-.ts-m-r3 {
-  font-size : 3rem;
-}
-
-.ts-m-r2 {
-  font-size : 2rem;
-}
-
-.ts-m-r1_5 {
-  font-size : 1.5rem;
-}
-
-.ts-m-r1_25 {
-  font-size : 1.25rem;
-}
-
-.ts-m-r1 {
-  font-size : 1rem;
-}
-
-.ts-m-r0_875 {
-  font-size : 0.875rem;
-}
-
-.ts-m-r0_75 {
-  font-size : 0.75rem;
-}
-
-.hide-all {
-  position : absolute;
-  height   : 1px;
-  width    : 1px;
-  overflow : hidden;
-  clip     : rect(1px,1px,1px,1px);
-}
-
-.flex {
-  display : flex;
-}
-
-.flex-column {
-  flex-direction : column;
-}
-
-.flex-wrap {
-  flex-wrap : wrap;
-}
-
-
-.items-start {
-  align-items : flex-start;
-}
-
-.items-end {
-  align-items : flex-end;
-}
-
-.items-center {
-  align-items : center;
-}
-
-.items-baseline {
-  align-items : baseline;
-}
-
-.items-stretch {
-  align-items : stretch;
-}
-
-.self-start {
-  align-self : flex-start;
-}
-
-.self-end {
-  align-self : flex-end;
-}
-
-.self-center {
-  align-self : center;
-}
-
-.self-baseline {
-  align-self : baseline;
-}
-
-.self-stretch {
-  align-self : stretch;
-}
-
-.justify-start {
-  justify-content : flex-start;
-}
-
-.justify-end {
-  justify-content : flex-end;
-}
-
-.justify-center {
-  justify-content : center;
-}
-
-.justify-between {
-  justify-content : space-between;
-}
-
-.justify-around {
-  justify-content : space-around;
-}
-
-.align-start {
-  align-content : flex-start;
-}
-
-.align-end {
-  align-content : flex-end;
-}
-
-.align-center {
-  align-content : center;
-}
-
-.align-between {
-  align-content : space-between;
-}
-
-.align-around {
-  align-content : space-around;
-}
-
-.order-0 {
-  order : 0;
-}
-
-.order-1 {
-  order : 1;
-}
-
-.order-2 {
-  order : 2;
-}
-
-.order-3 {
-  order : 3;
-}
-
-.order-last {
-  order : 99999;
-}
-
-.row {
-  -webkit-box-sizing : border-box;
-  -moz-box-sizing    : border-box;
-  -ms-box-sizing     : border-box;
-  -o-box-sizing      : border-box;
-  box-sizing         : border-box;
-  display            : flex;
-  flex-grow          : 0;
-  flex-shrink        : 1;
-  flex-basis         : auto;
-  flex-direction     : row;
-  flex-wrap          : wrap;
-}
-
-.row.reverse {
-  flex-direction : row-reverse;
-}
-
-.col.reverse {
-  flex-direction : column-reverse;
-}
-
-.col-m, .col-m-1, .col-m-2, .col-m-3, .col-m-4, .col-m-5, .col-m-6, .col-m-7, .col-m-8, .col-m-9, .col-m-10, .col-m-11, .col-m-12 {
-  -webkit-box-sizing : border-box;
-  -moz-box-sizing    : border-box;
-  -ms-box-sizing     : border-box;
-  -o-box-sizing      : border-box;
-  box-sizing         : border-box;
-  flex-grow          : 0;
-  flex-shrink        : 0;
-  flex-basis         : auto;
-}
-
-.col-m {
-  flex-grow  : 1;
-  flex-basis : 0;
-  max-width  : 100%;
-}
-
-.col-m-1 {
-  flex-basis : 8.333333333333334%;
-  max-width  : 8.333333333333334%;
-}
-
-.col-m-2 {
-  flex-basis : 16.666666666666668%;
-  max-width  : 16.666666666666668%;
-}
-
-.col-m-3 {
-  flex-basis : 25%;
-  max-width  : 25%;
-}
-
-.col-m-4 {
-  flex-basis : 33.333333333333336%;
-  max-width  : 33.333333333333336%;
-}
-
-.col-m-5 {
-  flex-basis : 41.666666666666664%;
-  max-width  : 41.666666666666664%;
-}
-
-.col-m-6 {
-  flex-basis : 50%;
-  max-width  : 50%;
-}
-
-.col-m-7 {
-  flex-basis : 58.333333333333336%;
-  max-width  : 58.333333333333336%;
-}
-
-.col-m-8 {
-  flex-basis : 66.66666666666667%;
-  max-width  : 66.66666666666667%;
-}
-
-.col-m-9 {
-  flex-basis : 75%;
-  max-width  : 75%;
-}
-
-.col-m-10 {
-  flex-basis : 83.33333333333333%;
-  max-width  : 83.33333333333333%;
-}
-
-.col-m-11 {
-  flex-basis : 91.66666666666667%;
-  max-width  : 91.66666666666667%;
-}
-
-.col-m-12 {
-  flex-basis : 100%;
-  max-width  : 100%;
-}
-
-.start-m {
-  justify-content : flex-start;
-  text-align      : start;
-}
-
-.center-m {
-  justify-content : center;
-  text-align      : center;
-}
-
-.end-m {
-  justify-content : flex-end;
-  text-align      : end;
-}
-
-.top-m {
-  align-items : flex-start;
-}
-
-.middle-m {
-  align-items : center;
-}
-
-.bottom-m {
-  align-items : flex-end;
-}
-
-.around-m {
-  justify-content : space-around;
-}
-
-.between-m {
-  justify-content : space-between;
-}
-
-.first-m {
-  order : -1;
-}
-
-.last-m {
-  order : 1;
-}
-
-.m-pb0 {
-  padding-bottom : 0;
-}
-
-.m-pb1 {
-  padding-bottom : 0.5rem;
-}
-
-.m-pb2 {
-  padding-bottom : 1rem;
-}
-
-.m-pb3 {
-  padding-bottom : 2rem;
-}
-
-.m-pb4 {
-  padding-bottom : 4rem;
-}
-
-.m-pb5 {
-  padding-bottom : 8rem;
-}
-
-.m-pl0 {
-  padding-left : 0;
-}
-
-.m-pl1 {
-  padding-left : 0.5rem;
-}
-
-.m-pl2 {
-  padding-left : 1rem;
-}
-
-.m-pl3 {
-  padding-left : 2rem;
-}
-
-.m-pl4 {
-  padding-left : 4rem;
-}
-
-.m-pl5 {
-  padding-left : 8rem;
-}
-
-.m-pr0 {
-  padding-right : 0;
-}
-
-.m-pr1 {
-  padding-right : 0.5rem;
-}
-
-.m-pr2 {
-  padding-right : 1rem;
-}
-
-.m-pr3 {
-  padding-right : 2rem;
-}
-
-.m-pr4 {
-  padding-right : 4rem;
-}
-
-.m-pr5 {
-  padding-right : 8rem;
-}
-
-.m-pt0 {
-  padding-top : 0;
-}
-
-.m-pt1 {
-  padding-top : 0.5rem;
-}
-
-.m-pt2 {
-  padding-top : 1rem;
-}
-
-.m-pt3 {
-  padding-top : 2rem;
-}
-
-.m-pt4 {
-  padding-top : 4rem;
-}
-
-.m-pt5 {
-  padding-top : 8rem;
-}
-
-.m-mb0 {
-  margin-bottom : 0;
-}
-
-.m-mb1 {
-  margin-bottom : 0.5rem;
-}
-
-.m-mb2 {
-  margin-bottom : 1rem;
-}
-
-.m-mb3 {
-  margin-bottom : 2rem;
-}
-
-.m-mb4 {
-  margin-bottom : 4rem;
-}
-
-.m-mb5 {
-  margin-bottom : 8rem;
-}
-
-.m-ml0 {
-  margin-left : 0;
-}
-
-.m-ml1 {
-  margin-left : 0.5rem;
-}
-
-.m-ml2 {
-  margin-left : 1rem;
-}
-
-.m-ml3 {
-  margin-left : 2rem;
-}
-
-.m-ml4 {
-  margin-left : 4rem;
-}
-
-.m-ml5 {
-  margin-left : 8rem;
-}
-
-.m-mr0 {
-  margin-right : 0;
-}
-
-.m-mr1 {
-  margin-right : 0.5rem;
-}
-
-.m-mr2 {
-  margin-right : 1rem;
-}
-
-.m-mr3 {
-  margin-right : 2rem;
-}
-
-.m-mr4 {
-  margin-right : 4rem;
-}
-
-.m-mr5 {
-  margin-right : 8rem;
-}
-
-.m-mt0 {
-  margin-top : 0;
-}
-
-.m-mt1 {
-  margin-top : 0.5rem;
-}
-
-.m-mt2 {
-  margin-top : 1rem;
-}
-
-.m-mt3 {
-  margin-top : 2rem;
-}
-
-.m-mt4 {
-  margin-top : 4rem;
-}
-
-.m-mt5 {
-  margin-top : 8rem;
-}
-
-.bold {
-  font-weight : 700;
-}
-
-.bolder {
-  font-weight : bolder;
-}
-
-.medium {
-  font-weight : 500;
-}
-
-.semi-bold {
-  font-weight : 600;
-}
-
-.caps {
-  text-transform : uppercase;
-  letter-spacing : 0.54pt;
-}
-
-.italic {
-  font-style : italic;
-}
-
-.light {
-  font-weight : 300;
-}
-
-.lighter {
-  font-weight : light;
-}
-
-.normal {
-  font-weight : normal;
-}
-
-.underline {
-  text-decoration : underline;
-}
-
-.lh-0 {
-  line-height : 1.15;
-}
-
-.lh-1 {
-  line-height : 1.25;
-}
-
-.lh-2 {
-  line-height : 1.45;
-}
-
-.lh-3 {
-  line-height : 1.5;
-}
-
-.lh-1r {
-  line-height : 1rem;
-}
-
-.lh-2r {
-  line-height : 2rem;
-}
-
-.lh-3r {
-  line-height : 3rem;
-}
-
-.lh-4r {
-  line-height : 4rem;
-}
-
-.font-family-inherit {
-  font-family : inherit;
-}
-
-.font-family-monospace {
-  font-family : ui-monospace,monospace;
-}
-
-.font-size-inherit {
-  font-size : inherit;
-}
-
-.text-decoration-none {
-  text-decoration : none;
-}
-
-.list-style-none {
-  list-style-type : none;
-}
-
-.list-reset {
-  list-style-type : none;
-  padding-left    : 0;
-}
-
-.start-align {
-  text-align : start;
-}
-
-.center {
-  text-align : center;
-}
-
-.end-align {
-  text-align : end;
-}
-
-.justify {
-  text-align : justify;
-}
-
-.nowrap {
-  white-space : nowrap;
-}
-
-.break-word {
-  word-wrap : break-word;
-}
-
-.overflow-hidden {
-  overflow : hidden;
-}
-
-.overflow-scroll {
-  overflow : scroll;
-}
-
-.overflow-auto {
-  overflow : auto;
-}
-
-.overflow-auto-x {
-  overflow-x : auto;
-}
-
-.overflow-auto-y {
-  overflow-y : auto;
-}
-
-.clear-fix::before, .clear-fix::after {
-  content : "";
-  display : table;
-}
-
-.clear-fix::after {
-  clear : both;
-}
-
-.left {
-  float : left;
-}
-
-.right {
-  float : right;
-}
-
-.fit {
-  max-width : 100%;
-}
-
-.border-box {
-  -webkit-box-sizing : border-box;
-  -moz-box-sizing    : border-box;
-  -ms-box-sizing     : border-box;
-  -o-box-sizing      : border-box;
-  box-sizing         : border-box;
-}
-
-.static {
-  position : static;
-}
-
-.relative {
-  position : relative;
-}
-
-.absolute {
-  position : absolute;
-}
-
-.fixed {
-  position : fixed;
-}
-
-.sticky {
-  position : sticky;
-  position : -webkit-sticky;
-}
-
-.sticky-m {
-  position : sticky;
-  position : -webkit-sticky;
-}
-
-.top-0 {
-  top : 0;
-}
-
-.right-0 {
-  right : 0;
-}
-
-.bottom-0 {
-  bottom : 0;
-}
-
-.left-0 {
-  left : 0;
-}
-
-.z1 {
-  z-index : 1;
-}
-
-.z2 {
-  z-index : 2;
-}
-
-.z3 {
-  z-index : 3;
-}
-
-.z4 {
-  z-index : 4;
-}
-
-.far-far-away {
-  position : absolute;
-  top      : -9999px;
-  left     : -9999px;
-}
-
-.border {
-  border-top-style    : solid;
-  border-right-style  : solid;
-  border-bottom-style : solid;
-  border-left-style   : solid;
-  border-top-width    : 1px;
-  border-right-width  : 1px;
-  border-bottom-width : 1px;
-  border-left-width   : 1px;
-}
-
-.border-top {
-  border-top-style : solid;
-  border-top-width : 1px;
-}
-
-.border-right {
-  border-right-style : solid;
-  border-right-width : 1px;
-}
-
-.border-bottom {
-  border-bottom-style : solid;
-  border-bottom-width : 1px;
-}
-
-.border-left {
-  border-left-style : solid;
-  border-left-width : 1px;
-}
-
-.border-none {
-  border-top-style    : none;
-  border-right-style  : none;
-  border-bottom-style : none;
-  border-left-style   : none;
-  border-top-width    : 0;
-  border-right-width  : 0;
-  border-bottom-width : 0;
-  border-left-width   : 0;
-}
-
-.rounded {
-  border-top-left-radius     : 6px;
-  border-top-right-radius    : 6px;
-  border-bottom-right-radius : 6px;
-  border-bottom-left-radius  : 6px;
-}
-
-.rounded-left {
-  border-top-left-radius    : 6px;
-  border-bottom-left-radius : 6px;
-}
-
-.rounded-right {
-  border-top-right-radius    : 6px;
-  border-bottom-right-radius : 6px;
-}
-
-.circle {
-  border-top-left-radius     : 50%;
-  border-top-right-radius    : 50%;
-  border-bottom-right-radius : 50%;
-  border-bottom-left-radius  : 50%;
-}
-
-.pill {
-  border-top-left-radius     : 9999px;
-  border-top-right-radius    : 9999px;
-  border-bottom-right-radius : 9999px;
-  border-bottom-left-radius  : 9999px;
-}
-
-.align-middle {
-  vertical-align : middle;
-}
-
-.align-top {
-  vertical-align : top;
-}
-
-.h-1r {
-  height : 1rem;
-}
-
-.h-2r {
-  height : 2rem;
-}
-
-.h-3r {
-  height : 3rem;
-}
-
-.h-4r {
-  height : 4rem;
-}
-
-.w-50p {
-  width : 50%;
-}
-
-.w-100p {
-  width : 100%;
-}
-
-.h-100p {
-  height : 100%;
-}
-
-.inline {
-  display : inline;
-}
-
-.block {
-  display : block;
-}
-
-.inline-block {
-  display : inline-block;
-}
-
-.none {
-  display : none;
-}
-
-.table {
-  display : table;
-}
-
-.table-cell {
-  display : table-cell;
-}
-
-.cursor-pointer {
-  cursor : pointer;
-}
-
 @media only screen and (min-width: 832px) {
-
-html {
-  font-size : 16px;
-}
-
+  html {
+    font-size: 16px;
+  }
 }
 @media only screen and (max-width: 831px) {
-
-.hero-logo {
-  max-width : 260px;
-}
-
-}
-@media only screen and (min-width: 832px) {
-
-.ts-d-r4 {
-  font-size : 4rem;
-}
-
-.ts-d-r3 {
-  font-size : 3rem;
-}
-
-.ts-d-r2 {
-  font-size : 2rem;
-}
-
-.ts-d-r1_5 {
-  font-size : 1.5rem;
-}
-
-.ts-d-r1_25 {
-  font-size : 1.25rem;
-}
-
-.ts-d-r1 {
-  font-size : 1rem;
-}
-
-.ts-d-r0_875 {
-  font-size : 0.875rem;
-}
-
-.ts-d-r0_75 {
-  font-size : 0.75rem;
-}
-
-}
-@media only screen and (max-width: 831px) {
-
-.hide-m {
-  display : none;
-}
-
-}
-@media only screen and (min-width: 832px) {
-
-.hide-d {
-  display : none;
-}
-
-}
-@media only screen and (max-width: 831px) {
-
-.flex-m {
-  display : flex;
-}
-
-}
-@media only screen and (min-width: 832px) {
-
-.flex-d {
-  display : flex;
-}
-
-}
-@media only screen and (min-width: 832px) {
-
-.col-d, .col-d-1, .col-d-2, .col-d-3, .col-d-4, .col-d-5, .col-d-6, .col-d-7, .col-d-8, .col-d-9, .col-d-10, .col-d-11, .col-d-12 {
-  -webkit-box-sizing : border-box;
-  -moz-box-sizing    : border-box;
-  -ms-box-sizing     : border-box;
-  -o-box-sizing      : border-box;
-  box-sizing         : border-box;
-  flex-grow          : 0;
-  flex-shrink        : 0;
-  flex-basis         : auto;
-}
-
-.col-d {
-  flex-grow  : 1;
-  flex-basis : 0;
-  max-width  : 100%;
-}
-
-.col-d-1 {
-  flex-basis : 8.333333333333334%;
-  max-width  : 8.333333333333334%;
-}
-
-.col-d-2 {
-  flex-basis : 16.666666666666668%;
-  max-width  : 16.666666666666668%;
-}
-
-.col-d-3 {
-  flex-basis : 25%;
-  max-width  : 25%;
-}
-
-.col-d-4 {
-  flex-basis : 33.333333333333336%;
-  max-width  : 33.333333333333336%;
-}
-
-.col-d-5 {
-  flex-basis : 41.666666666666664%;
-  max-width  : 41.666666666666664%;
-}
-
-.col-d-6 {
-  flex-basis : 50%;
-  max-width  : 50%;
-}
-
-.col-d-7 {
-  flex-basis : 58.333333333333336%;
-  max-width  : 58.333333333333336%;
-}
-
-.col-d-8 {
-  flex-basis : 66.66666666666667%;
-  max-width  : 66.66666666666667%;
-}
-
-.col-d-9 {
-  flex-basis : 75%;
-  max-width  : 75%;
-}
-
-.col-d-10 {
-  flex-basis : 83.33333333333333%;
-  max-width  : 83.33333333333333%;
-}
-
-.col-d-11 {
-  flex-basis : 91.66666666666667%;
-  max-width  : 91.66666666666667%;
-}
-
-.col-d-12 {
-  flex-basis : 100%;
-  max-width  : 100%;
-}
-
-.start-d {
-  justify-content : flex-start;
-  text-align      : start;
-}
-
-.center-d {
-  justify-content : center;
-  text-align      : center;
-}
-
-.end-d {
-  justify-content : flex-end;
-  text-align      : end;
-}
-
-.top-d {
-  align-items : flex-start;
-}
-
-.middle-d {
-  align-items : center;
-}
-
-.bottom-d {
-  align-items : flex-end;
-}
-
-.around-d {
-  justify-content : space-around;
-}
-
-.between-d {
-  justify-content : space-between;
-}
-
-.first-d {
-  order : -1;
-}
-
-.last-d {
-  order : 1;
-}
-
-}
-@media only screen and (min-width: 832px) {
-
-.d-pb0 {
-  padding-bottom : 0;
-}
-
-.d-pb1 {
-  padding-bottom : 0.5rem;
-}
-
-.d-pb2 {
-  padding-bottom : 1rem;
-}
-
-.d-pb3 {
-  padding-bottom : 2rem;
-}
-
-.d-pb4 {
-  padding-bottom : 4rem;
-}
-
-.d-pb5 {
-  padding-bottom : 8rem;
-}
-
-.d-pl0 {
-  padding-left : 0;
-}
-
-.d-pl1 {
-  padding-left : 0.5rem;
-}
-
-.d-pl2 {
-  padding-left : 1rem;
-}
-
-.d-pl3 {
-  padding-left : 2rem;
-}
-
-.d-pl4 {
-  padding-left : 4rem;
-}
-
-.d-pl5 {
-  padding-left : 8rem;
-}
-
-.d-pr0 {
-  padding-right : 0;
-}
-
-.d-pr1 {
-  padding-right : 0.5rem;
-}
-
-.d-pr2 {
-  padding-right : 1rem;
-}
-
-.d-pr3 {
-  padding-right : 2rem;
-}
-
-.d-pr4 {
-  padding-right : 4rem;
-}
-
-.d-pr5 {
-  padding-right : 8rem;
-}
-
-.d-pt0 {
-  padding-top : 0;
-}
-
-.d-pt1 {
-  padding-top : 0.5rem;
-}
-
-.d-pt2 {
-  padding-top : 1rem;
-}
-
-.d-pt3 {
-  padding-top : 2rem;
-}
-
-.d-pt4 {
-  padding-top : 4rem;
-}
-
-.d-pt5 {
-  padding-top : 8rem;
-}
-
-}
-@media only screen and (min-width: 832px) {
-
-.d-mb0 {
-  margin-bottom : 0;
-}
-
-.d-mb1 {
-  margin-bottom : 0.5rem;
-}
-
-.d-mb2 {
-  margin-bottom : 1rem;
-}
-
-.d-mb3 {
-  margin-bottom : 2rem;
-}
-
-.d-mb4 {
-  margin-bottom : 4rem;
-}
-
-.d-mb5 {
-  margin-bottom : 8rem;
-}
-
-.d-ml0 {
-  margin-left : 0;
-}
-
-.d-ml1 {
-  margin-left : 0.5rem;
-}
-
-.d-ml2 {
-  margin-left : 1rem;
-}
-
-.d-ml3 {
-  margin-left : 2rem;
-}
-
-.d-ml4 {
-  margin-left : 4rem;
-}
-
-.d-ml5 {
-  margin-left : 8rem;
-}
-
-.d-mr0 {
-  margin-right : 0;
-}
-
-.d-mr1 {
-  margin-right : 0.5rem;
-}
-
-.d-mr2 {
-  margin-right : 1rem;
-}
-
-.d-mr3 {
-  margin-right : 2rem;
-}
-
-.d-mr4 {
-  margin-right : 4rem;
-}
-
-.d-mr5 {
-  margin-right : 8rem;
-}
-
-.d-mt0 {
-  margin-top : 0;
-}
-
-.d-mt1 {
-  margin-top : 0.5rem;
-}
-
-.d-mt2 {
-  margin-top : 1rem;
-}
-
-.d-mt3 {
-  margin-top : 2rem;
-}
-
-.d-mt4 {
-  margin-top : 4rem;
-}
-
-.d-mt5 {
-  margin-top : 8rem;
-}
-
-}
-@media only screen and (min-width: 832px) {
-
-.sticky-d {
-  position : sticky;
-  position : -webkit-sticky;
-}
-
-}
-
-    </style>
-    <style>
-      
-
-.md-ctn hr {
-  margin-top       : 2rem;
-  margin-right     : 30%;
-  margin-bottom    : 2rem;
-  margin-left      : 30%;
-  border-top-style : solid;
-  border-top-width : 1px;
-  background-color : #ffffff;
-  border-top-color : #ddd;
-  height           : 0px;
-}
-
-.md-ctn ul {
-  margin-bottom : 1.5rem;
-}
-
-.md-ctn blockquote {
-  color                      : #555555;
-  border-left-color          : #d8d8d8;
-  border-top-left-radius     : 2px;
-  border-top-right-radius    : 2px;
-  border-bottom-right-radius : 2px;
-  border-bottom-left-radius  : 2px;
-  border-left-style          : solid;
-  border-left-width          : 3px;
-  margin-right               : 0rem;
-  margin-bottom              : 2rem;
-  margin-left                : 0rem;
-  padding-right              : 2rem;
-  padding-left               : 2rem;
-}
-
-.md-ctn p {
-  word-wrap : break-word;
-}
-
-.md-ctn p:not(:last-child) {
-  margin-bottom : 1.5rem;
-}
-
-
-.md-ctn pre code {
-  padding-top                : 0.5rem;
-  padding-bottom             : 0.5rem;
-  padding-right              : 2rem;
-  padding-left               : 2rem;
-  background-color           : rgba(0,0,0,0.02);
-  border-top-color           : rgba(0,0,0,0.15);
-  border-right-color         : rgba(0,0,0,0.15);
-  border-bottom-color        : rgba(0,0,0,0.15);
-  border-left-color          : rgba(0,0,0,0.15);
-  border-top-left-radius     : 6px;
-  border-top-right-radius    : 6px;
-  border-bottom-right-radius : 6px;
-  border-bottom-left-radius  : 6px;
-  display                    : block;
-  margin-bottom              : 1.5rem;
-}
-
-.md-ctn pre {
-  overflow-x : auto;
-}
-
-.md-ctn code {
-  font-family : ui-monospace,monospace;
-}
-
-
-.md-ctn a {
-  text-decoration : underline;
-}
-
-.md-ctn a:link {
-  color : #291a40;
-}
-
-.md-ctn a:visited {
-  color : #291a40;
-}
-
-.md-ctn a:hover {
-  color : #121212;
-}
-
-
-.md-ctn-dark a {
-  text-decoration : underline;
-}
-
-.md-ctn-dark a:link {
-  color : #fff;
-}
-
-.md-ctn-dark a:visited {
-  color : #fff;
-}
-
-.md-ctn-dark a:hover {
-  color : #fff;
-}
-
-.bg-black .md-ctn a {
-  color : #fff;
-}
-
-.bg-black .md-ctn a:link {
-  color : #fff;
-}
-
-.bg-black .md-ctn a:visited {
-  color : #fff;
-}
-
-.bg-black .md-ctn a:hover {
-  color : #fff;
-}
-
-
-    </style>
-    <style>
-      
-.host-img {
-  float  : left;
-  width  : 160px;
-  height : 160px;
-}
-
-.host-bio {
-  margin-left : 180px;
-}
-
-@media only screen and (min-width: 832px) and (max-width: 1300px) {
-
-.host-img {
-  width  : 100px;
-  height : 100px;
-}
-
-}
-@media only screen and (min-width: 832px) and (max-width: 1300px) {
-
-.host-bio {
-  margin-left : 120px;
-}
-
-}
-
-    </style>
-    <style>
-      @keyframes Pulse {
+  html {
+    font-size: 14px;
+  }
+}
+@keyframes Pulse {
   from { opacity: 1; }
   50% { opacity: 0; }
   to { opacity: 1; }
 }
     </style>
-    <meta name="viewport"
-          content="width=device-width,initial-scale=1.0">
-    <link href="http://localhost:8080/feed/episodes.xml"
-          rel="alternate"
-          title="Point-Free Episodes"
-          type="application/atom+xml">
-    <link href="http://localhost:8080/blog/feed/atom.xml"
-          rel="alternate"
-          title="Point-Free Blog"
-          type="application/atom+xml">
-    <link rel="apple-touch-icon"
-          sizes="180x180"
-          href="https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png">
-    <link rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png">
-    <link rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png">
-    <link rel="manifest"
-          href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
-    <link rel="mask-icon"
-          href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
-    <meta name="description"
-          content="Point-Free is a video series exploring advanced programming topics in Swift.">
-    <meta property="og:description"
-          content="Point-Free is a video series exploring advanced programming topics in Swift.">
-    <meta name="twitter:description"
-          content="Point-Free is a video series exploring advanced programming topics in Swift.">
-    <meta name="twitter:image"
-          content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
-    <meta property="og:image"
-          content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
-    <meta name="title"
-          content="About">
-    <meta property="og:title"
-          content="About">
-    <meta name="twitter:title"
-          content="About">
-    <meta property="og:type"
-          content="website">
-    <meta name="twitter:card"
-          content="summary_large_image">
-    <meta name="twitter:site"
-          content="@pointfreeco">
-    <meta property="og:url"
-          content="http://localhost:8080/about">
-    <meta name="twitter:url"
-          content="http://localhost:8080/about">
-    <script defer
-            data-domain="pointfree.co"
-            src="https://plausible.io/js/script.js">
-    </script>
-  </head>
-  <body>
-    <div class="bg-blue900
-                d-pt2
-                d-pb2
-                m-pl2
-                m-pr2
-                m-pt2
-                m-pb2
-                middle-m
-                between-m">
-      <div style="max-width:1080px;
-                  margin-right:auto;
-                  margin-left:auto">
-        <div class="items-center
-                    row">
-          <div class="hide-d
-                      col-m">
-            <a class="start-m"
-               href="/">
-              <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzJweCIgaGVpZ2h0PSI3MnB4IiB2aWV3Qm94PSIwIDAgNzIgNzIiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iR3JvdXAiIGZpbGw9IiMxMjEyMTIiPgogICAgICAgICAgICA8cGF0aCBkPSJNNTQuMzM2MzI4Niw1My42NjM2NzE0IEwzNiw3MiBMMTcuNjYzNjcxNCw1My42NjM2NzE0IEwxOC4xMTkxMTg2LDUzLjY2MzY3MTQgTDE4LjExOTExODYsNDkuNjkxMjY2MSBMMjIuNjM3NDkzLDQ5LjY5MTI2NjEgTDIyLjYzNzQ5Myw0Ni44Nzc0Nzg5IEwxOC4xMTkxMTg2LDQ2Ljg3NzQ3ODkgTDE4LjExOTExODYsNDMuOTcxNzM4IEwyMy4yNDExNjI1LDQzLjk3MTczOCBMMjMuMjQxMTYyNSw0MS4xNTc5NTA5IEwxNC43ODk3OTAxLDQxLjE1Nzk1MDkgTDE0Ljc4OTc5MDEsNTAuNzg5NzkwMSBMMi4xMzE2MjgyMWUtMTQsMzYgTDcuNzk3Mjg1NTksMjguMjAyNzE0NCBMNy43OTcyODU1OSwzNS4yNzI5MDU5IEwxMS4xMjY2MTQxLDM1LjI3MjkwNTkgTDExLjEyNjYxNDEsMzIuNTY5NDYzNCBMMTIuNTE2ODgzMSwzMi41Njk0NjM0IEMxNS44NjQ1MDQ3LDMyLjU2OTQ2MzQgMTcuNzQ4Njg1MSwzMC40NTQ1MjU0IDE3Ljc0ODY4NTEsMjcuNjc3NTE5OCBDMTcuNzQ4Njg1MSwyNS4wOTU5MTI5IDE2LjEyMDMyOTcsMjMuMDcwNTg3NSAxMy4yMDE2NDc0LDIyLjc5ODM1MjYgTDM2LDIuMTMxNjI4MjFlLTE0IEw1OC43NjcxODU0LDIyLjc2NzE4NTQgTDU0LjI5ODEyNjcsMjIuNzY3MTg1NCBMNTQuMjk4MTI2NywyNS41ODA5NzI1IEw1Ny41OTA4NjkxLDI1LjU4MDk3MjUgTDU3LjU5MDg2OTEsMzUuMjcyOTA1OSBMNjAuOTIwMTk3NiwzNS4yNzI5MDU5IEw2MC45MjAxOTc2LDI1LjU4MDk3MjUgTDYxLjU4MDk3MjUsMjUuNTgwOTcyNSBMNzIsMzYgTDU3LjE1MDExNTcsNTAuODQ5ODg0MyBMNTIuMDI5NzkyOSw1MC44NDk4ODQzIEw1Mi4wMjk3OTI5LDQ5LjU0NDEzOTkgTDU2LjUyOTg3NDMsNDkuNTQ0MTM5OSBMNTYuNTI5ODc0Myw0Ni44Nzc0Nzg5IEw1Mi4wMjk3OTI5LDQ2Ljg3NzQ3ODkgTDUyLjAyOTc5MjksNDMuOTcxNzM4IEw1Ny40MjYyMzIsNDMuOTcxNzM4IEw1Ny40MjYyMzIsNDEuMTU3OTUwOSBMNDguNzAwNDY0NCw0MS4xNTc5NTA5IEw0OC43MDA0NjQ0LDUzLjY2MzY3MTQgTDU0LjMzNjMyODYsNTMuNjYzNjcxNCBaIE0xMS4xMjY2MTQxLDI5LjczNzI4NTUgTDExLjEyNjYxNDEsMjUuNTk5MzYzMyBMMTIuMzUyMjQ2LDI1LjU5OTM2MzMgQzEzLjg1MjI3MzIsMjUuNTk5MzYzMyAxNC40MDEwNjM2LDI2LjQ2MzcyOTMgMTQuNDAxMDYzNiwyNy42Nzc1MTk4IEMxNC40MDEwNjM2LDI4Ljg5MTMxMDMgMTMuODUyMjczMiwyOS43MzcyODU1IDEyLjM1MjI0NiwyOS43MzcyODU1IEwxMS4xMjY2MTQxLDI5LjczNzI4NTUgWiBNMjYuMDIxNzAwNiwzNS40Mzg0MjI4IEMyOS42MDcxMzEzLDM1LjQzODQyMjggMzIuNjk4NjUwNiwzMi43OTAxNTI2IDMyLjY5ODY1MDYsMjkuMDIwMDQ1NyBDMzIuNjk4NjUwNiwyNS4yNDk5Mzg3IDI5LjYwNzEzMTMsMjIuNjIwMDU5MyAyNi4wMjE3MDA2LDIyLjYyMDA1OTMgQzIyLjQzNjI2OTksMjIuNjIwMDU5MyAxOS4zNDQ3NTA1LDI1LjI0OTkzODcgMTkuMzQ0NzUwNSwyOS4wMjAwNDU3IEMxOS4zNDQ3NTA1LDMyLjc5MDE1MjYgMjIuNDM2MjY5OSwzNS40Mzg0MjI4IDI2LjAyMTcwMDYsMzUuNDM4NDIyOCBaIE0yNi4wMjE3MDA2LDMyLjUzMjY4MTkgQzIzLjkzNjI5NywzMi41MzI2ODE5IDIyLjc0NzI1MTEsMzAuOTg3ODU3NiAyMi43NDcyNTExLDI5LjAyMDA0NTcgQzIyLjc0NzI1MTEsMjcuMDUyMjMzOCAyMy45MzYyOTcsMjUuNTI1ODAwMiAyNi4wMjE3MDA2LDI1LjUyNTgwMDIgQzI4LjEwNzEwNDIsMjUuNTI1ODAwMiAyOS4yOTYxNSwyNy4wNTIyMzM4IDI5LjI5NjE1LDI5LjAyMDA0NTcgQzI5LjI5NjE1LDMwLjk4Nzg1NzYgMjguMTA3MTA0MiwzMi41MzI2ODE5IDI2LjAyMTcwMDYsMzIuNTMyNjgxOSBaIE0zNC44OTgzODU1LDM1LjI3MjkwNTkgTDM4LjIyNzcxNCwzNS4yNzI5MDU5IEwzOC4yMjc3MTQsMjIuNzY3MTg1NCBMMzQuODk4Mzg1NSwyMi43NjcxODU0IEwzNC44OTgzODU1LDM1LjI3MjkwNTkgWiBNNTEuOTcwMzQwNiwzNS40OTM1OTUxIEM1Mi4xNzE1NjM4LDM1LjY1OTExMiA1Mi4yMjY0NDI4LDM1LjYwMzkzOTcgNTIuMjI2NDQyOCwzNS40NTY4MTM2IEw1Mi4yMjY0NDI4LDIyLjc2NzE4NTQgTDQ5LjA5ODMzNzUsMjIuNzY3MTg1NCBMNDkuMDk4MzM3NSwyOS4wMzg0MzY0IEw0MS4yODcyMjA2LDIyLjU2NDg4NyBDNDEuMDg1OTk3NCwyMi4zOTkzNzAxIDQxLjAzMTExODQsMjIuNDkxMzIzOSA0MS4wMzExMTg0LDIyLjYwMTY2ODUgTDQxLjAzMTExODQsMzUuMjcyOTA1OSBMNDQuMTU5MjIzOCwzNS4yNzI5MDU5IEw0NC4xNTkyMjM4LDI5LjAzODQzNjQgTDUxLjk3MDM0MDYsMzUuNDkzNTk1MSBaIE0zMy4xNjA1NDkyLDUwLjExNDI1MzcgQzM0LjYyMzk5MDMsNDkuMzA1MDYgMzUuNDEwNTg5OSw0Ny44NzA1ODAzIDM1LjQxMDU4OTksNDYuMDY4Mjg1MyBDMzUuNDEwNTg5OSw0My4yOTEyNzk3IDMzLjUyNjQwOTUsNDEuMTU3OTUwOSAzMC4xNzg3ODgsNDEuMTU3OTUwOSBMMjUuNDU5MTkwNCw0MS4xNTc5NTA5IEwyNS40NTkxOTA0LDUzLjY2MzY3MTQgTDI4Ljc4ODUxODksNTMuNjYzNjcxNCBMMjguNzg4NTE4OSw1MC43OTQ3MTIgTDMwLjAzMjQ0MzksNTAuNzk0NzEyIEwzMS43NzAyODAyLDUzLjY2MzY3MTQgTDM1LjM3NDAwMzksNTMuNjYzNjcxNCBMMzMuMTYwNTQ5Miw1MC4xMTQyNTM3IFogTTI4Ljc4ODUxODksNDguMTI4MDUxIEwyOC43ODg1MTg5LDQzLjk5MDEyODggTDMwLjAxNDE1MDgsNDMuOTkwMTI4OCBDMzEuNTE0MTc4LDQzLjk5MDEyODggMzIuMDYyOTY4NCw0NC44NTQ0OTQ3IDMyLjA2Mjk2ODQsNDYuMDY4Mjg1MyBDMzIuMDYyOTY4NCw0Ny4yODIwNzU4IDMxLjUxNDE3OCw0OC4xMjgwNTEgMzAuMDE0MTUwOCw0OC4xMjgwNTEgTDI4Ljc4ODUxODksNDguMTI4MDUxIFogTTM3LjUzNzE1MjgsNTMuNjYzNjcxNCBMNDYuNTE5MDIyNSw1My42NjM2NzE0IEw0Ni41MTkwMjI1LDUwLjg0OTg4NDMgTDQwLjg2NjQ4MTMsNTAuODQ5ODg0MyBMNDAuODY2NDgxMyw0OS41NDQxMzk5IEw0NS4zNjY1NjI3LDQ5LjU0NDEzOTkgTDQ1LjM2NjU2MjcsNDYuODc3NDc4OSBMNDAuODY2NDgxMyw0Ni44Nzc0Nzg5IEw0MC44NjY0ODEzLDQzLjk3MTczOCBMNDYuMjYyOTIwMyw0My45NzE3MzggTDQ2LjI2MjkyMDMsNDEuMTU3OTUwOSBMMzcuNTM3MTUyOCw0MS4xNTc5NTA5IEwzNy41MzcxNTI4LDUzLjY2MzY3MTQgWiIgaWQ9ImdseXBoIj48L3BhdGg+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4="
-                   alt="Point-Free">
-            </a>
-          </div>
-          <div class="hide-m
-                      col-m
-                      col-d-3">
-            <a href="/">
-              <img src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iIzEyMTIxMiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"
-                   alt="Point-Free">
-            </a>
-          </div>
-          <div class="col-m
-                      col-d-9">
-            <ul class="list-reset
-                       end-m
-                       fg-black
-                       normal
-                       h6
-                       lh-4">
-              <li class="m-pl2
-                         inline">
-                <a href="/pricing"
-                   class="pf-link-black">
-                  Pricing
-                </a>
-              </li>
-              <li class="m-pl2
-                         inline">
-                <a class="pf-link-black"
-                   href="/collections">
-                  Collections
-                </a>
-              </li>
-              <li class="m-pl2
-                         inline">
-                <a href="/blog"
-                   class="pf-link-black">
-                  Blog
-                </a>
-              </li>
-              <li class="m-pl2
-                         inline">
-                <a href="/gifts"
-                   class="pf-link-black">
-                  Gifts
-                </a>
-              </li>
-              <li class="m-pl2
-                         inline">
-                <a href="/authenticate?redirect=http://localhost:8080/about"
-                   class="medium
-                          cursor-pointer
-                          nowrap
-                          btn-normal
-                          border-none
-                          text-decoration-none
-                          pf-link-white
-                          fg-white
-                          bg-black
-                          h6
-                          m-pl1
-                          m-pr1
-                          m-pt1
-                          m-pb1">
-                  <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmIiBhcmlhLWxhYmVsbGVkYnk9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGUgaWQ9InNpbXBsZWljb25zLWdpdGh1Yi1pY29uIj5HaXRIdWIgaWNvbjwvdGl0bGU+PHBhdGggZD0iTTEyIC4yOTdjLTYuNjMgMC0xMiA1LjM3My0xMiAxMiAwIDUuMzAzIDMuNDM4IDkuOCA4LjIwNSAxMS4zODUuNi4xMTMuODItLjI1OC44Mi0uNTc3IDAtLjI4NS0uMDEtMS4wNC0uMDE1LTIuMDQtMy4zMzguNzI0LTQuMDQyLTEuNjEtNC4wNDItMS42MUM0LjQyMiAxOC4wNyAzLjYzMyAxNy43IDMuNjMzIDE3LjdjLTEuMDg3LS43NDQuMDg0LS43MjkuMDg0LS43MjkgMS4yMDUuMDg0IDEuODM4IDEuMjM2IDEuODM4IDEuMjM2IDEuMDcgMS44MzUgMi44MDkgMS4zMDUgMy40OTUuOTk4LjEwOC0uNzc2LjQxNy0xLjMwNS43Ni0xLjYwNS0yLjY2NS0uMy01LjQ2Ni0xLjMzMi01LjQ2Ni01LjkzIDAtMS4zMS40NjUtMi4zOCAxLjIzNS0zLjIyLS4xMzUtLjMwMy0uNTQtMS41MjMuMTA1LTMuMTc2IDAgMCAxLjAwNS0uMzIyIDMuMyAxLjIzLjk2LS4yNjcgMS45OC0uMzk5IDMtLjQwNSAxLjAyLjAwNiAyLjA0LjEzOCAzIC40MDUgMi4yOC0xLjU1MiAzLjI4NS0xLjIzIDMuMjg1LTEuMjMuNjQ1IDEuNjUzLjI0IDIuODczLjEyIDMuMTc2Ljc2NS44NCAxLjIzIDEuOTEgMS4yMyAzLjIyIDAgNC42MS0yLjgwNSA1LjYyNS01LjQ3NSA1LjkyLjQyLjM2LjgxIDEuMDk2LjgxIDIuMjIgMCAxLjYwNi0uMDE1IDIuODk2LS4wMTUgMy4yODYgMCAuMzE1LjIxLjY5LjgyNS41N0MyMC41NjUgMjIuMDkyIDI0IDE3LjU5MiAyNCAxMi4yOTdjMC02LjYyNy01LjM3My0xMi0xMi0xMiIvPjwvc3ZnPg=="
-                       alt
-                       class="m-mr1"
-                       style="margin-bottom:-4px"
-                       width="20"
-                       height="20">
-                  <span>
-                    Log in
-                  </span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-m
-                  col-d-7
-                  col-m-12">
-        <div class="d-pl4
-                    d-pr4
-                    d-pt4
-                    d-pb4
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3">
-          <h1 class="fg-black
-                     bold
-                     ts-d-r2
-                     ts-m-r1_5
-                     lh-2">
-            About
-          </h1>
-          <div class="md-ctn">
-            <p>Point-Free is a video series that explores advanced topics in the Swift programming language. Each
-episode covers a topic that may seem complex and academic at first, but turns out to be quite simple.
-At the end of each episode we’ll ask <em>“what’s the point?!”</em>, so that we can bring the concepts back
-down to earth and show how these ideas can improve the quality of your code today.</p>
-<p>We’ve got so much we want to talk about, but just a quick overview of the things we have planned:</p>
-
-          </div>
-          <p>
-            <ul class="list-style-none
-                       m-pl4
-                       m-pt2
-                       m-pb2">
-              <li>
-                <h5 class="fg-black
-                           bold
-                           ts-d-r1
-                           ts-m-r0_875
-                           lh-1">
-                  Pure functions and side effects
-                </h5>
-                <p class="fg-black
-                          normal
-                          h5
-                          lh-4
-                          m-pb2">
-                  Side effects are one of the greatest sources of complexity in an application, and every program
-has this in common. After giving a proper definition of side effects and pure functions, we will
-show how to push the effects to the boundary of your application, leaving behind an
-understandable, testable and pure core.
-                </p>
-              </li>
-              <li>
-                <h5 class="fg-black
-                           bold
-                           ts-d-r1
-                           ts-m-r0_875
-                           lh-1">
-                  Code reuse through function composition
-                </h5>
-                <p class="fg-black
-                          normal
-                          h5
-                          lh-4
-                          m-pb2">
-                  The most basic unit of code reusability comes in the form of simple function composition. We will
-show that by focusing on small atomic units that compose well, we can build large complex
-systems that are easy to understand.
-                </p>
-              </li>
-              <li>
-                <h5 class="fg-black
-                           bold
-                           ts-d-r1
-                           ts-m-r0_875
-                           lh-1">
-                  Maximizing the use of the type system
-                </h5>
-                <p class="fg-black
-                          normal
-                          h5
-                          lh-4
-                          m-pb2">
-                  You’ve already seen how the type system helps prevent bugs by making sure you don’t accidentally
-add an integer to a string, or call a method on a “null” value, but it can do so much more. You
-can encode invariants of your application directly into the types so impossible application
-states are not representable and can never compile.
-                </p>
-              </li>
-              <li>
-                <h5 class="fg-black
-                           bold
-                           ts-d-r1
-                           ts-m-r0_875
-                           lh-1">
-                  Turning programming problems into algebraic problems
-                </h5>
-                <div class="md-ctn">
-                  <p>Algebraic problems are nice because they carry structure that can be manipulated in predictable
-and understandable ways. For example, if you have ever simplified a complicated boolean
-expression that looked like <code>a &amp;&amp; b || a &amp;&amp; c</code> to look like <code>a &amp;&amp; (b || c)</code>, you were exploiting
-the algebraic stucture that <code>||</code> and <code>&amp;&amp;</code> have. Many programming problems can be given an
-algebraic structure that allows one to manipulate the problem in the same way you factored out
-the <code>a &amp;&amp;</code> from that expression.</p>
-
-                </div>
-              </li>
-            </ul>
-          </p>
-          <p>
-            And so much more…
-          </p>
-          <h1 class="fg-black
-                     bold
-                     ts-d-r1_5
-                     ts-m-r1_25
-                     lh-2
-                     m-pt3">
-            Open source
-          </h1>
-          <p class="fg-black
-                    normal
-                    h5
-                    lh-4
-                    m-pb2">
-            When we 
-            <a href="https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd"
-               class="pf-link-purple">
-              open-sourced
-            </a>
-             the entire 
-            <a href="http://github.com/kickstarter/ios-oss"
-               class="pf-link-purple">
-              iOS
-            </a>
-             and 
-            <a href="http://github.com/kickstarter/android-oss"
-               class="pf-link-purple">
-              Android
-            </a>
-             codebases at 
-            <a href="http://www.kickstarter.com"
-               class="pf-link-purple">
-              Kickstarter
-            </a>
-            , we saw that it was one of the best resources to show people how to build a large application in
-the functional style. It transcended any talks about the theoretical benefits or proposed
-simplifications. We could just show directly how embracing pure functions allowed us to write code that
-was understandable in isolation, and enabled us to write tests for every subtle edge case.
-          </p>
-          <p class="fg-black
-                    normal
-                    h5
-                    lh-4
-                    m-pb2">
-            We wanted to be able to do that again, but this time we’d build an entire website in server-side Swift,
-all in the functional style! This meant we had to build nearly everything from scratch, from server
-middleware and routing to HTML views and CSS.
-          </p>
-          <p class="fg-black
-                    normal
-                    h5
-                    lh-4
-                    m-pb2">
-            We discovered quite a few fun things along the way, like using Swift Playgrounds to design pages in an
-iterative fashion, and came to the conclusion that server-side Swift will soon be a viable backend
-language rivaling almost every other language out there.
-          </p>
-          <p class="fg-black
-                    normal
-                    h5
-                    lh-4
-                    m-pb2">
-            You can view the entire source code to this site on our GitHub organization, 
-            <a href="https://github.com/pointfreeco"
-               class="pf-link-purple">
-              https://github.com/pointfreeco
-            </a>
-            .
-          </p>
-        </div>
-      </div>
-      <div class="bg-purple150
-                  col-m
-                  col-d-5
-                  col-m-12">
-        <div class="d-pl4
-                    d-pr4
-                    d-pt4
-                    d-pb4
-                    m-pl3
-                    m-pr3
-                    m-pt3
-                    m-pb3
-                    bg-purple150
-                    sticky-d
-                    top-0">
-          <h1 class="fg-black
-                     bold
-                     ts-d-r2
-                     ts-m-r1_5
-                     lh-2
-                     fg-white
-                     m-pb2">
-            Your hosts
-          </h1>
-          <p class="fg-black
-                    normal
-                    h5
-                    lh-4
-                    fg-white
-                    m-pb3">
-            Brandon and Stephen are software engineers living in Brooklyn, New York. They previously helped 
-            build and 
-            <a class="pf-link-green
-                      underline"
-               href="https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd">
-              open source
-            </a>
-             the 
-            <a class="pf-link-green
-                      underline"
-               href="https://www.kickstarter.com">
-              Kickstarter
-            </a>
-             mobile apps.
-          </p>
-          <div class="m-pb3">
-            <img src
-                 alt="Photo of Brandon Williams"
-                 class="host-img">
-            <div class="host-bio">
-              <a href="http://www.fewbutripe.com"
-                 class="pf-link-white
-                        h5
-                        bold">
-                Brandon Williams
-              </a>
-              <p class="fg-white
-                        fg-black
-                        normal
-                        h5
-                        lh-4">
-                Brandon did math for a very long time, and now enjoys talking about functional programming as a means to
-better our craft as engineers.
-              </p>
-              <a href="https://www.twitter.com/mbrandonw"
-                 class="pf-link-white
-                        m-pt2">
-                Twitter
-                <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CjxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgo8cG9seWdvbiBpZD0icmlnaHQiIGZpbGw9IiNmZmZmZmYiIHBvaW50cz0iOS41NzQyMTg3NSAwIDE5LjM4MjgxMjUgOS44MDg1OTM3NSA5LjU3NDIxODc1IDE5LjYxNzE4NzUgOC4yMzgyODEyNSAxOC4yOTI5Njg4IDE1Ljc4NTE1NjIgMTAuNzQ2MDkzOCAwIDEwLjc0NjA5MzggMCA4Ljg3MTA5Mzc1IDE1Ljc4NTE1NjIgOC44NzEwOTM3NSA4LjIzODI4MTI1IDEuMzI0MjE4NzUiPjwvcG9seWdvbj4KPC9nPgo8L3N2Zz4="
-                     alt
-                     class="align-middle
-                            m-ml1"
-                     width="16"
-                     height="16">
-              </a>
-            </div>
-          </div>
-          <div class="m-pb3">
-            <img src
-                 alt="Photo of Stephen Celis"
-                 class="host-img">
-            <div class="host-bio">
-              <a href="http://www.stephencelis.com"
-                 class="pf-link-white
-                        h5
-                        bold">
-                Stephen Celis
-              </a>
-              <p class="fg-white
-                        fg-black
-                        normal
-                        h5
-                        lh-4">
-                Stephen taught himself to code when he realized his English degree didn’t pay the bills. He became a
-functional convert and believer after years of objects.
-              </p>
-              <a href="https://www.twitter.com/stephencelis"
-                 class="pf-link-white
-                        m-pt2">
-                Twitter
-                <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CjxnIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgo8cG9seWdvbiBpZD0icmlnaHQiIGZpbGw9IiNmZmZmZmYiIHBvaW50cz0iOS41NzQyMTg3NSAwIDE5LjM4MjgxMjUgOS44MDg1OTM3NSA5LjU3NDIxODc1IDE5LjYxNzE4NzUgOC4yMzgyODEyNSAxOC4yOTI5Njg4IDE1Ljc4NTE1NjIgMTAuNzQ2MDkzOCAwIDEwLjc0NjA5MzggMCA4Ljg3MTA5Mzc1IDE1Ljc4NTE1NjIgOC44NzEwOTM3NSA4LjIzODI4MTI1IDEuMzI0MjE4NzUiPjwvcG9seWdvbj4KPC9nPgo8L3N2Zz4="
-                     alt
-                     class="align-middle
-                            m-ml1"
-                     width="16"
-                     height="16">
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <link rel="apple-touch-icon" sizes="180x180" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png">
+    <link rel="icon" sizes="32x32" type="image/png" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-32x32.png">
+    <link rel="icon" sizes="16x16" type="image/png" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png">
+    <link rel="manifest" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
+    <link rel="mask-icon" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
+    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
+    <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
+    <meta name="title" content="About Point-Free">
+    <meta property="og:title" content="About Point-Free">
+    <meta name="twitter:title" content="About Point-Free">
+    <meta name="description" content="Point-Free is a video series that explores advanced topics in the Swift programming language.">
+    <meta property="og:description" content="Point-Free is a video series that explores advanced topics in the Swift programming language.">
+    <meta name="twitter:description" content="Point-Free is a video series that explores advanced topics in the Swift programming language.">
+    <meta property="og:image" content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
+    <meta name="twitter:image" content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@pointfreeco">
+    <meta property="og:url" content="http://localhost:8080/about">
+    <meta name="twitter:url" content="http://localhost:8080/about"><script src="https://plausible.io/js/script.js" defer data-domain="pointfree.co"></script>
     <style>
-      
-.background-color-K2J0r1{background-color:#121212}
-.align-items-Dq4Oc4{align-items:first baseline}
 .width-C8uWv{width:100%}
-.font-size-yLOVS3{font-size:1.25rem}
-.line-height-B6FIc2{line-height:1.45}
-.font-size-Xin5E2{font-size:1.5rem}
+.z-index-yn1UK1{z-index:9999}
+.background-K2J0r1{background:#121212}
+.padding-hS6a7{padding:2rem}
+.max-width-P6HnV{max-width:1280px}
+.margin-gEzmi{margin:0 auto}
+.display-BvS8W3{display:flex}
+.flex-direction-jlten2{flex-direction:row}
+.flex-wrap-6YEaQ3{flex-wrap:wrap}
+.justify-content-ymXQt{justify-content:space-between}
+.align-items-CdPBO2{align-items:center}
+.line-height-FBkWQ3{line-height:0}
 .text-decoration-Mif7n4:visited{text-decoration:none}
 .text-decoration-Q5Er64:link{text-decoration:none}
 .text-decoration-Zf0gY:hover{text-decoration:underline}
-.color-rNSFg1:link{color:#fff}
+.padding-left-E4tBw4{padding-left:0.0rem}
+.list-style-type-Wl0y44{list-style-type:none}
+.padding-left-dzKEp:not(:first-child){padding-left:2rem}
+.display-mFpu24{display:inline}
+.color-dwzNH2:link{color:#a8a8a8}
+.color-hzlcf:visited{color:#a8a8a8}
+.padding-left-IOMPq3:not(:first-child){padding-left:1rem}
+.font-size-RTPM71{font-size:0.875rem}
+.color-C4SO14:visited{color:#974dff}
+.color-d8fIz1:link{color:#974dff}
+.color-cemJK2{color:#974dff}
+.border-8Hnfa1{border:1px solid #974dff}
+.border-radius-NKv2f3{border-radius:0.5rem}
+.box-shadow-dyray:hover{box-shadow:inset 0 0 0 20rem rgba(0,0,0,0.1)}
+.cursor-xmR5l{cursor:pointer}
+.font-weight-aG4U6{font-weight:500}
+.text-decoration-Wl0y44{text-decoration:none}
+.white-space-RLKFg3{white-space:nowrap}
+.padding-inc4S2{padding:0.75rem 1.0rem}
+.transition-DjHPg{transition:0.3s}
 .color-QZ6Yg3:visited{color:#fff}
+.color-rNSFg1:link{color:#fff}
+.color-nbn0i3{color:#fff}
+.background-color-cemJK2{background-color:#974dff}
+.border-i8QWz2{border:none #fff}
+.display-Wl0y44{display:none}
+.user-select-Wl0y44{user-select:none}
+.display-ix08W2{display:block}
+.border-radius-Oi9xr3{border-radius:1.5px}
+.transition-BVnrT{transition:all .2s ease-out, background .2s ease-out}
+.position-Pjz1G2{position:relative}
+.background-4kuW21{background:#f6f6f6}
+.height-BOHcc4{height:3px}
+.width-t6pNK3{width:24px}
+.top-SUDJi1{top:-5px}
+input:checked ~ #menu-icon .top-xEdC7{top:0}
+input:checked ~ #menu-icon .transform-0hcgW2{transform:rotate(-45deg)}
+input:checked ~ #menu-icon .transform-kZtH24{transform:rotate(0deg)}
+input:checked ~ #menu-icon .background-WytRx3{background:transparent}
+.top-YwIIn{top:5px}
+input:checked ~ #menu-icon .top-i3LWY2{top:-5px}
+input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
+.margin-FBkWQ3{margin:0}
+.flex-grow-tzL8I2{flex-grow:1}
+.flex-shrink-tzL8I2{flex-shrink:1}
+.flex-basis-C8uWv{flex-basis:100%}
+.padding-top-Xin5E2{padding-top:1.5rem}
+.text-align-CdPBO2{text-align:center}
+.box-sizing-otfSh{box-sizing:border-box}
+.background-RMpfJ3{background:linear-gradient(#121212, #242424)}
+.align-items-msN8p3{align-items:stretch}
+.flex-direction-7gclL{flex-direction:column}
+.max-width-C8uWv{max-width:100%}
+.row-gap-83zzS1{row-gap:1.0rem}
+.padding-jNK411{padding:6rem 2rem}
+.max-height-C8uWv{max-height:100%}
+.column-gap-83zzS1{column-gap:1.0rem}
+.margin-top-rmfs01:not(:first-child){margin-top:1.75rem}
+.margin-bottom-1rcXs4:not(:last-child){margin-bottom:0.75rem}
+.font-size-NBsge3{font-size:3.0rem}
+.font-weight-SywJI1{font-weight:700}
+.line-height-auF6B{line-height:1.2}
+.color-KmPrN{color:#ccc}
 .font-weight-evfWi1{font-weight:normal}
 .line-height-9Qkso4{line-height:1.5}
 .font-size-83zzS1{font-size:1.0rem}
-.color-nbn0i3{color:#fff}
+.padding-bottom-yQEjs3:not(:last-child){padding-bottom:0.5rem}
+.padding-top-FBkWQ3{padding-top:0}
+.padding-left-FBkWQ3{padding-left:0}
+.padding-right-FBkWQ3{padding-right:0}
+.color-c5ixr2{color:#fafafa}
+.background-color-nbn0i3{background-color:#fff}
+.padding-bFon03{padding:4.0rem 2.0rem 4.0rem}
+.justify-content-n56cj2{justify-content:flex-start}
+.align-items-0Zubr3{align-items:baseline}
+.color-BoTGL{color:#171717}
+.row-gap-NKv2f3{row-gap:0.5rem}
+article .content-xD6dy1:is(p):last-of-type::after{content:"❖"}
+article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
+.top-kDUvL2{top:-5em}
+.visibility-PhNC81{visibility:hidden}
+.margin-left-SH03u1{margin-left:-2.25rem}
+.padding-left-5jRhu{padding-left:2.25rem}
+.margin-top-EvtWd3:not(:first-child){margin-top:1.5rem}
+.margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
+.font-size-QgYLk2{font-size:2.0rem}
+article div:hover > * > .display-Vk1P81{display:initial}
+.left-FBkWQ3{left:0}
+.position-X8qzJ{position:absolute}
+.width-Wr637{width:2.5rem}
+.text-decoration-gUV393:visited{text-decoration:underline}
+.text-decoration-tfb0F1:link{text-decoration:underline}
+.color-Vv8Gw4:link{color:#ccc}
+.color-x5AlI2:visited{color:#ccc}
+.padding-FBkWQ3{padding:0}
+.color-T7UxR2:link{color:#121212}
+.color-IVYQy2:visited{color:#121212}
+.padding-MlBf82{padding:0 2rem}
+.box-shadow-91xof{box-shadow:0 2px 10px -2px rgba(0,0,0,0.3)}
+.border-radius-YwIIn{border-radius:5px}
+.margin-yehVj4{margin:1rem 0 2rem 0}
+.overflow-PhNC81{overflow:hidden}
+.border-bottom-9YkDE1{border-bottom:1px solid #e8e8e8}
+.padding-A2Nt1{padding:2rem 0}
+.width-1VZj64{width:4rem}
+.height-1VZj64{height:4rem}
+.border-radius-mGDEV1{border-radius:9999px}
+.font-size-Xin5E2{font-size:1.5rem}
+.padding-sjJTB1{padding:0.5rem 1.5rem 1.5rem}
+.row-gap-FBkWQ3{row-gap:0}
+.color-OpZD03{color:#666666}
+.column-gap-NKv2f3{column-gap:0.5rem}
+.color-2xQmi:link{color:#666666}
+.color-l1hXg2:visited{color:#666666}
+.background-color-c5ixr2{background-color:#fafafa}
+.max-width-vCelo2{max-width:48rem}
+.margin-top-ukUO62:not(:first-child){margin-top:0.5rem}
+.line-height-EHclK1{line-height:1.15}
+.background-color-K2J0r1{background-color:#121212}
+.align-items-Dq4Oc4{align-items:first baseline}
+.font-size-yLOVS3{font-size:1.25rem}
+.line-height-B6FIc2{line-height:1.45}
 .color-H59Xg3:link{color:#79f2b0}
 .color-tgLLb3:visited{color:#79f2b0}
-.column-gap-83zzS1{column-gap:1.0rem}
 .display-mqllb2{display:grid}
 .grid-template-columns-hE9y01{grid-template-columns:minmax(0, 1fr) minmax(0, 2fr)}
-.row-gap-83zzS1{row-gap:1.0rem}
 .font-size-xlo1p4{font-size:0.75rem}
 .letter-spacing-fGWfX2{letter-spacing:0.54pt}
 .line-height-9Xzre{line-height:1.25}
 .text-transform-RqT8X1{text-transform:uppercase}
-.padding-left-E4tBw4{padding-left:0.0rem}
-.list-style-type-Wl0y44{list-style-type:none}
-.color-d8fIz1:link{color:#974dff}
-.color-C4SO14:visited{color:#974dff}
-.font-size-RTPM71{font-size:0.875rem}
-.color-OpZD03{color:#666666}
-.color-dwzNH2:link{color:#a8a8a8}
-.color-hzlcf:visited{color:#a8a8a8}
-@media only screen and (min-width: 832px){
-  .padding-top-ujLNr4{padding-top:4.0rem}
-  .padding-left-ujLNr4{padding-left:4.0rem}
-  .padding-bottom-ujLNr4{padding-bottom:4.0rem}
-  .padding-right-ujLNr4{padding-right:4.0rem}
-  .column-gap-ZNGkd1{column-gap:1.0rem}
-  .display-jdJkm4{display:grid}
-  .grid-template-columns-AWWfa{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
-  .row-gap-ZNGkd1{row-gap:1.0rem}
-  .font-size-dR5Tt4{font-size:1.5rem}
-  .font-size-Fb6s54{font-size:0.875rem}
-}
 @media only screen and (max-width: 831px){
+  .position-0RTpx2{position:sticky}
+  .top-dcqqP{top:0}
+  .display-mScdO2{display:none}
+  input:checked ~ .display-sAbis3{display:block}
+  .top-RSlUg4{top:2px}
+  .column-gap-GuM2x3{column-gap:1.0rem}
+  .display-Vv9EA3{display:grid}
+  .grid-template-columns-RehC04{grid-template-columns:minmax(0, 1fr)}
+  .row-gap-GuM2x3{row-gap:1.0rem}
   .padding-top-bS1Ay3{padding-top:2.0rem}
   .padding-left-bS1Ay3{padding-left:2.0rem}
   .padding-bottom-bS1Ay3{padding-bottom:2.0rem}
@@ -2433,9 +266,216 @@ functional convert and believer after years of objects.
   .margin-bottom-IGAQh1{margin-bottom:0.0rem}
   .padding-top-GuM2x3{padding-top:1.0rem}
 }
+@media only screen and (min-width: 832px){
+  .padding-dR5Tt4{padding:1.5rem}
+  .padding-left-dR5Tt4{padding-left:1.5rem}
+  .display-Nvbu41{display:none}
+  .padding-jFt024{padding:8rem 3rem}
+  .margin-mBI0f2{margin:0 auto}
+  .padding-EmXfB2{padding:4.0rem 3.0rem 4.0rem}
+  .top-FEoZS2{top:-0.5em}
+  .margin-left-ItApa4{margin-left:-2.5rem}
+  .padding-left-WU6C5{padding-left:2.5rem}
+  .column-gap-ZNGkd1{column-gap:1.0rem}
+  .display-jdJkm4{display:grid}
+  .grid-template-columns-AWWfa{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
+  .row-gap-ZNGkd1{row-gap:1.0rem}
+  .padding-top-ujLNr4{padding-top:4.0rem}
+  .padding-left-ujLNr4{padding-left:4.0rem}
+  .padding-bottom-ujLNr4{padding-bottom:4.0rem}
+  .padding-right-ujLNr4{padding-right:4.0rem}
+  .font-size-dR5Tt4{font-size:1.5rem}
+  .font-size-Fb6s54{font-size:0.875rem}
+}
+@media (prefers-color-scheme: dark){
+  .background-color-dMv2U1{background-color:#121212}
+  .color-GOHNR{color:#fafafa}
+  .color-9rBiP:link{color:#555555}
+  .color-CwERD1:visited{color:#555555}
+  .color-3tgnX1:link{color:#fff}
+  .color-fIiIX2:visited{color:#fff}
+  .border-bSHu21{border:1px #353535 solid}
+  .background-color-Hakcq1{background-color:#242424}
+  .border-bottom-a7wnM{border-bottom:1px solid #3d3d3d}
+  .color-5uscm3{color:#a8a8a8}
+  .background-color-xnERS1{background-color:#171717}
+}
 
     </style>
-    
+  </head>
+  <body>
+<nav class="width-C8uWv position-0RTpx2 top-dcqqP z-index-yn1UK1 background-K2J0r1">
+  <div class="padding-hS6a7 padding-dR5Tt4 max-width-P6HnV margin-gEzmi display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-ymXQt align-items-CdPBO2 background-K2J0r1"><a class="line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/"><img alt="Point-Free" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"></a>
+    <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/collections">Collections</a>
+      </li>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/pricing">Pricing</a>
+      </li>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/blog">Blog</a>
+      </li>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/gifts">Gifts</a>
+      </li>
+    </ul>
+    <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
+      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/login?redirect=http://localhost:8080/about" class="font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Login</a>
+      </li>
+      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/signup?redirect=http://localhost:8080/about" class="font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Sign up</a>
+      </li>
+    </ul><input class="display-Wl0y44" id="menu-checkbox" type="checkbox"><label class="cursor-xmR5l display-Nvbu41 cursor-xmR5l user-select-Wl0y44" id="menu-icon" for="menu-checkbox"><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-SUDJi1 top-xEdC7 transform-0hcgW2"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 transform-kZtH24 background-WytRx3"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-YwIIn top-i3LWY2 transform-BHskb"></span></label>
+    <ul class="margin-FBkWQ3 display-Wl0y44 display-sAbis3 flex-grow-tzL8I2 flex-shrink-tzL8I2 flex-basis-C8uWv padding-left-E4tBw4 list-style-type-Wl0y44 color-nbn0i3">
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/collections">Collections</a>
+      </li>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/pricing">Pricing</a>
+      </li>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/blog">Blog</a>
+      </li>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/gifts">Gifts</a>
+      </li>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/login?redirect=http://localhost:8080/about">Login</a>
+      </li>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/signup?redirect=http://localhost:8080/about">Sign up</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<pf-vstack class="box-sizing-otfSh background-RMpfJ3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+  <pf-hstack class="box-sizing-otfSh flex-basis-C8uWv max-width-P6HnV width-C8uWv margin-gEzmi padding-jNK411 padding-jFt024 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
+    <div class="flex-grow-tzL8I2">
+      <h2 class="color-nbn0i3 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">About
+      </h2>
+      <p class="color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Point-Free is a video series that explores advanced topics in the Swift programming language. Each episode covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show how these ideas can improve the quality of your code today.
+      </p>
+    </div>
+    <div class="color-c5ixr2">
+    </div>
+  </pf-hstack>
+</pf-vstack>
+<div class="background-color-nbn0i3 background-color-dMv2U1">
+  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+    <pf-markdown class="color-BoTGL color-GOHNR display-ix08W2">
+      <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="your-hosts"></a>
+        <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+          <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Your hosts<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#your-hosts"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+          </h3>
+        </div>
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Brandon and Stephen are industry experts living in New York and California. They previously helped build and <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2" href="https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd">open source</a> the <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2" href="https://www.kickstarter.com/">Kickstarter</a> mobile apps, and have worked with dozens of companies to help build their products and improve their engineering practices.
+        </p>
+      </pf-vstack>
+    </pf-markdown>
+  </div>
+</div>
+<pf-center-column class="padding-MlBf82 width-C8uWv box-sizing-otfSh display-ix08W2">
+  <pf-vgrid class="max-width-P6HnV width-C8uWv margin-gEzmi width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1 column-gap-GuM2x3 display-Vv9EA3 grid-template-columns-RehC04 row-gap-GuM2x3">
+    <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+      <pf-vstack class="border-bottom-9YkDE1 border-bottom-a7wnM text-align-CdPBO2 display-ix08W2 padding-A2Nt1 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="width-1VZj64 height-1VZj64 border-radius-mGDEV1 max-width-C8uWv" src="https://d3rccdn33rt8ze.cloudfront.net/about-us/brando.jpg" alt="Avatar of Brandon Williams.">
+        <div>
+          <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Brandon Williams
+          </h4>
+        </div>
+      </pf-vstack>
+      <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+        <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
+          <div class="color-OpZD03 color-5uscm3">
+            <pf-markdown class="display-ix08W2">
+              <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Brandon did math for a very long time, and now enjoys talking about functional programming as a means to better our craft as engineers.
+                </p>
+              </pf-vstack>
+            </pf-markdown>
+          </div>
+        </pf-vstack>
+        <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-NKv2f3"><img alt src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNSAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE0LjI5MTggMS44NjQ0NEMxMy43NyAyLjA5NTU2IDEzLjIwOTYgMi4yNTIgMTIuNjIwNyAyLjMyMjIyQzEzLjIyMTYgMS45NjIyMiAxMy42ODI5IDEuMzkyIDEzLjkgMC43MTI2NjdDMTMuMzM3OCAxLjA0NiAxMi43MTU2IDEuMjg4NjcgMTIuMDUyNCAxLjQxODQ0QzExLjUyMjQgMC44NTMzMzMgMTAuNzY2NCAwLjUgOS45Mjk1NSAwLjVDOC4zMjI4OCAwLjUgNy4wMjAyMiAxLjgwMjIyIDcuMDIwMjIgMy40MDk1NkM3LjAyMDIyIDMuNjM3NTYgNy4wNDY0NCAzLjg1ODQ0IDcuMDk1MzMgNC4wNzE3OEM0LjY3NjQ0IDMuOTUwNDQgMi41MzM1NSAyLjc5Mjg5IDEuMDk3OTkgMS4wMzI0NEMwLjg0Nzk5NSAxLjQ2MjY3IDAuNzA0NjYyIDEuOTYyMjIgMC43MDQ2NjIgMi40OTQ2N0MwLjcwNDY2MiAzLjUwNDIyIDEuMjE4NDQgNC4zOTUxMSAxLjk5ODg4IDQuOTE2ODlDMS41MjIgNC45MDEzMyAxLjA3MzMzIDQuNzcwNjcgMC42ODExMDYgNC41NTI0NEMwLjY4MDY2MiA0LjU2NDg5IDAuNjgwNjYxIDQuNTc2ODkgMC42ODA2NjEgNC41ODg2N0MwLjY4MDY2MSA1Ljk5ODY3IDEuNjgzNTUgNy4xNzQ4OSAzLjAxNDg4IDcuNDQyQzIuNzcwNDQgNy41MDgyMiAyLjUxMzU1IDcuNTQzNTYgMi4yNDgyMiA3LjU0MzU2QzIuMDYwNDQgNy41NDM1NiAxLjg3OCA3LjUyNjIyIDEuNzAwNjYgNy40OTI0NEMyLjA3MTExIDguNjQ4IDMuMTQ1MTEgOS40ODkxMSA0LjQxODQ0IDkuNTEyNDRDMy40MjI0NCAxMC4yOTI0IDIuMTY3MzMgMTAuNzU4IDAuODA1MTA2IDEwLjc1OEMwLjU3MDY2MSAxMC43NTggMC4zMzkzMjggMTAuNzQ0NyAwLjExMTMyOCAxMC43MTcxQzEuMzk4ODggMTEuNTQzMSAyLjkyODIyIDEyLjAyNDIgNC41NzA2NiAxMi4wMjQyQzkuOTIyNDQgMTIuMDI0MiAxMi44NDg0IDcuNTkwODkgMTIuODQ4NCAzLjc0NjQ0QzEyLjg0ODQgMy42MjA4OSAxMi44NDU2IDMuNDk0NjcgMTIuODQgMy4zNzAyMkMxMy40MDg0IDIuOTU5NzggMTMuOTAxOCAyLjQ0OCAxNC4yOTE2IDEuODY0ODlMMTQuMjkxOCAxLjg2NDQ0WiIgZmlsbD0iIzFEQTFGMyIvPgo8L3N2Zz4="><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-2xQmi color-l1hXg2" href="https://www.twitter.com/mbrandonw">Follow on Twitter</a>
+        </pf-hstack>
+      </pf-vstack>
+    </pf-vstack>
+    <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+      <pf-vstack class="border-bottom-9YkDE1 border-bottom-a7wnM text-align-CdPBO2 display-ix08W2 padding-A2Nt1 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="width-1VZj64 height-1VZj64 border-radius-mGDEV1 max-width-C8uWv" src="https://d3rccdn33rt8ze.cloudfront.net/about-us/stephen.jpg" alt="Avatar of Stephen Celis.">
+        <div>
+          <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Stephen Celis
+          </h4>
+        </div>
+      </pf-vstack>
+      <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+        <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
+          <div class="color-OpZD03 color-5uscm3">
+            <pf-markdown class="display-ix08W2">
+              <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Stephen taught himself to code when he realized his English degree didn’t pay the bills. He became a functional convert and believer after years of objects.
+                </p>
+              </pf-vstack>
+            </pf-markdown>
+          </div>
+        </pf-vstack>
+        <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-NKv2f3"><img alt src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxNSAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE0LjI5MTggMS44NjQ0NEMxMy43NyAyLjA5NTU2IDEzLjIwOTYgMi4yNTIgMTIuNjIwNyAyLjMyMjIyQzEzLjIyMTYgMS45NjIyMiAxMy42ODI5IDEuMzkyIDEzLjkgMC43MTI2NjdDMTMuMzM3OCAxLjA0NiAxMi43MTU2IDEuMjg4NjcgMTIuMDUyNCAxLjQxODQ0QzExLjUyMjQgMC44NTMzMzMgMTAuNzY2NCAwLjUgOS45Mjk1NSAwLjVDOC4zMjI4OCAwLjUgNy4wMjAyMiAxLjgwMjIyIDcuMDIwMjIgMy40MDk1NkM3LjAyMDIyIDMuNjM3NTYgNy4wNDY0NCAzLjg1ODQ0IDcuMDk1MzMgNC4wNzE3OEM0LjY3NjQ0IDMuOTUwNDQgMi41MzM1NSAyLjc5Mjg5IDEuMDk3OTkgMS4wMzI0NEMwLjg0Nzk5NSAxLjQ2MjY3IDAuNzA0NjYyIDEuOTYyMjIgMC43MDQ2NjIgMi40OTQ2N0MwLjcwNDY2MiAzLjUwNDIyIDEuMjE4NDQgNC4zOTUxMSAxLjk5ODg4IDQuOTE2ODlDMS41MjIgNC45MDEzMyAxLjA3MzMzIDQuNzcwNjcgMC42ODExMDYgNC41NTI0NEMwLjY4MDY2MiA0LjU2NDg5IDAuNjgwNjYxIDQuNTc2ODkgMC42ODA2NjEgNC41ODg2N0MwLjY4MDY2MSA1Ljk5ODY3IDEuNjgzNTUgNy4xNzQ4OSAzLjAxNDg4IDcuNDQyQzIuNzcwNDQgNy41MDgyMiAyLjUxMzU1IDcuNTQzNTYgMi4yNDgyMiA3LjU0MzU2QzIuMDYwNDQgNy41NDM1NiAxLjg3OCA3LjUyNjIyIDEuNzAwNjYgNy40OTI0NEMyLjA3MTExIDguNjQ4IDMuMTQ1MTEgOS40ODkxMSA0LjQxODQ0IDkuNTEyNDRDMy40MjI0NCAxMC4yOTI0IDIuMTY3MzMgMTAuNzU4IDAuODA1MTA2IDEwLjc1OEMwLjU3MDY2MSAxMC43NTggMC4zMzkzMjggMTAuNzQ0NyAwLjExMTMyOCAxMC43MTcxQzEuMzk4ODggMTEuNTQzMSAyLjkyODIyIDEyLjAyNDIgNC41NzA2NiAxMi4wMjQyQzkuOTIyNDQgMTIuMDI0MiAxMi44NDg0IDcuNTkwODkgMTIuODQ4NCAzLjc0NjQ0QzEyLjg0ODQgMy42MjA4OSAxMi44NDU2IDMuNDk0NjcgMTIuODQgMy4zNzAyMkMxMy40MDg0IDIuOTU5NzggMTMuOTAxOCAyLjQ0OCAxNC4yOTE2IDEuODY0ODlMMTQuMjkxOCAxLjg2NDQ0WiIgZmlsbD0iIzFEQTFGMyIvPgo8L3N2Zz4="><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-2xQmi color-l1hXg2" href="https://www.twitter.com/stephencelis">Follow on Twitter</a>
+        </pf-hstack>
+      </pf-vstack>
+    </pf-vstack>
+  </pf-vgrid>
+</pf-center-column>
+<div class="background-color-c5ixr2 background-color-xnERS1">
+  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+    <pf-vstack class="margin-gEzmi align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+      <pf-markdown class="color-BoTGL color-GOHNR max-width-vCelo2 display-ix08W2">
+        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="what-we-ll-cover"></a>
+          <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+            <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">What we’ll cover<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#what-we-ll-cover"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+            </h3>
+          </div>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We’ve got so much we want to talk about, but just a quick overview of the things we have planned:
+          </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="pure-functions-and-side-effects"></a>
+          <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+            <h5 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Pure functions and side effects<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#pure-functions-and-side-effects"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+            </h5>
+          </div>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Side effects are one of the greatest sources of complexity in an application, and every program has this in common. After giving a proper definition of side effects and pure functions, we will show how to push the effects to the boundary of your application, leaving behind an understandable, testable and pure core.
+          </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="code-reuse-through-function-composition"></a>
+          <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+            <h5 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Code reuse through function composition<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#code-reuse-through-function-composition"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+            </h5>
+          </div>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">The most basic unit of code reusability comes in the form of simple function composition. We will show that by focusing on small atomic units that compose well, we can build large complex systems that are easy to understand.
+          </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="maximizing-the-use-of-the-type-system"></a>
+          <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+            <h5 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Maximizing the use of the type system<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#maximizing-the-use-of-the-type-system"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+            </h5>
+          </div>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">You’ve already seen how the type system helps prevent bugs by making sure you don’t accidentally add an integer to a string, or call a method on a “null” value, but it can do so much more. You can encode invariants of your application directly into the types so impossible application states are not representable and can never compile.
+          </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="turning-programming-problems-into-algebraic-problems"></a>
+          <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+            <h5 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Turning programming problems into algebraic problems<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#turning-programming-problems-into-algebraic-problems"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+            </h5>
+          </div>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Algebraic problems are nice because they carry structure that can be manipulated in predictable and understandable ways. For example, if you have ever simplified a complicated boolean expression that looked like a &amp;&amp; b || a &amp;&amp; c to look like a &amp;&amp; (b || c), you were exploiting the algebraic stucture that || and &amp;&amp; have. Many programming problems can be given an algebraic structure that allows one to manipulate the problem in the same way you factored out the a &amp;&amp; from that expression.
+          </p>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">And so much more…
+          </p>
+        </pf-vstack>
+      </pf-markdown>
+    </pf-vstack>
+  </div>
+</div>
+<div class="background-color-nbn0i3 background-color-dMv2U1">
+  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+    <pf-vstack class="margin-gEzmi align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+      <pf-markdown class="color-BoTGL color-GOHNR max-width-vCelo2 display-ix08W2">
+        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="open-source"></a>
+          <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+            <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Open source<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#open-source"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+            </h3>
+          </div>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">When we open-sourced the entire iOS and Android codebases at Kickstarter, we saw that it was one of the best resources to show people how to build a large application in the functional style. It transcended any talks about the theoretical benefits or proposed simplifications. We could just show directly how embracing pure functions allowed us to write code that was understandable in isolation, and enabled us to write tests for every subtle edge case.
+          </p>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We wanted to be able to do that again, but this time we’d build an entire website in server-side Swift, all in the functional style! This meant we had to build nearly everything from scratch, from server middleware and routing to HTML views and CSS.
+          </p>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We discovered quite a few fun things along the way, like using Swift Playgrounds to design pages in an iterative fashion, and came to the conclusion that server-side Swift will soon be a viable backend language rivaling almost every other language out there.
+          </p>
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">You can view the entire source code to this site on our GitHub organization, <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2" href="https://github.com/pointfreeco">https://github.com/pointfreeco</a>.
+          </p>
+        </pf-vstack>
+      </pf-markdown>
+    </pf-vstack>
+  </div>
+</div>
 <footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
   <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
@@ -2488,4 +528,3 @@ functional convert and believer after years of objects.
 </footer>
   </body>
 </html>
-
