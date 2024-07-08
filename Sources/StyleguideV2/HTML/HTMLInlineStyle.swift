@@ -109,7 +109,7 @@ private struct ClassNameGenerator: DependencyKey {
           seenStyles.firstIndex(of: style)
           ?? {
             seenStyles.append(style)
-            return seenStyles.count
+            return seenStyles.count - 1
           }()
         #if DEBUG
           return "\(style.property)-\(index)"
