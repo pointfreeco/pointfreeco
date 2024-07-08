@@ -2,7 +2,7 @@ GET http://localhost:8080/privacy
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 32640
+Content-Length: 44151
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -54,10 +54,6 @@ body, html {
   body, html {
     background: #121212;
   }
-}
-article > pf-markdown > pf-vstack > p:last-of-type::after {
-  margin: 0 0.5rem;
-  content: "❖";
 }
 .markdown *:link, .markdown *:visited { color: inherit; }
 .diagnostic * {
@@ -199,9 +195,21 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .align-items-0Zubr3{align-items:baseline}
 .color-BoTGL{color:#171717}
 .row-gap-NKv2f3{row-gap:0.5rem}
+article .content-xD6dy1:is(p):last-of-type::after{content:"❖"}
+article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
+.top-kDUvL2{top:-5em}
+.visibility-PhNC81{visibility:hidden}
+.margin-left-SH03u1{margin-left:-2.25rem}
+.padding-left-5jRhu{padding-left:2.25rem}
 .margin-top-EvtWd3:not(:first-child){margin-top:1.5rem}
 .margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
 .font-size-Xin5E2{font-size:1.5rem}
+article div:hover > * > .display-Vk1P81{display:initial}
+.left-FBkWQ3{left:0}
+.position-X8qzJ{position:absolute}
+.width-Wr637{width:2.5rem}
+.color-Vv8Gw4:link{color:#ccc}
+.color-x5AlI2:visited{color:#ccc}
 .padding-FBkWQ3{padding:0}
 .background-color-K2J0r1{background-color:#121212}
 .align-items-Dq4Oc4{align-items:first baseline}
@@ -210,7 +218,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .color-H59Xg3:link{color:#79f2b0}
 .color-tgLLb3:visited{color:#79f2b0}
 .display-mqllb2{display:grid}
-.grid-template-columns-x1B8x4{grid-template-columns:1fr 2fr}
+.grid-template-columns-hE9y01{grid-template-columns:minmax(0, 1fr) minmax(0, 2fr)}
 .font-size-xlo1p4{font-size:0.75rem}
 .letter-spacing-fGWfX2{letter-spacing:0.54pt}
 .line-height-9Xzre{line-height:1.25}
@@ -221,6 +229,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   .top-dcqqP{top:0}
   .display-mScdO2{display:none}
   input:checked ~ .display-sAbis3{display:block}
+  .top-RSlUg4{top:2px}
   .padding-top-bS1Ay3{padding-top:2.0rem}
   .padding-left-bS1Ay3{padding-left:2.0rem}
   .padding-bottom-bS1Ay3{padding-bottom:2.0rem}
@@ -236,13 +245,16 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   .padding-jFt024{padding:8rem 3rem}
   .margin-mBI0f2{margin:0 auto}
   .padding-EmXfB2{padding:4.0rem 3.0rem 4.0rem}
+  .top-FEoZS2{top:-0.5em}
+  .margin-left-ItApa4{margin-left:-2.5rem}
+  .padding-left-WU6C5{padding-left:2.5rem}
   .padding-top-ujLNr4{padding-top:4.0rem}
   .padding-left-ujLNr4{padding-left:4.0rem}
   .padding-bottom-ujLNr4{padding-bottom:4.0rem}
   .padding-right-ujLNr4{padding-right:4.0rem}
   .column-gap-ZNGkd1{column-gap:1.0rem}
   .display-jdJkm4{display:grid}
-  .grid-template-columns-V2CuF3{grid-template-columns:1fr 1fr}
+  .grid-template-columns-AWWfa{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
   .row-gap-ZNGkd1{row-gap:1.0rem}
   .font-size-dR5Tt4{font-size:1.5rem}
   .font-size-Fb6s54{font-size:0.875rem}
@@ -250,6 +262,8 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 @media (prefers-color-scheme: dark){
   .background-color-dMv2U1{background-color:#121212}
   .color-GOHNR{color:#fafafa}
+  .color-9rBiP:link{color:#555555}
+  .color-CwERD1:visited{color:#555555}
 }
 
     </style>
@@ -304,24 +318,32 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <pf-markdown class="color-BoTGL color-GOHNR display-ix08W2">
-      <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-        <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Personal identification information
-        </h4>
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We collect email addresses of registered Users and any other information voluntarily entered into forms on the Site. None of this information is sold or provided to third parties, except to provide the products and services you’ve requested, with your permission, or as required by law.
+      <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="personal-identification-information"></a>
+        <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+          <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Personal identification information<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#personal-identification-information"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+          </h4>
+        </div>
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We collect email addresses of registered Users and any other information voluntarily entered into forms on the Site. None of this information is sold or provided to third parties, except to provide the products and services you’ve requested, with your permission, or as required by law.
+        </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="non-personal-identification-information"></a>
+        <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+          <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Non-personal identification information<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#non-personal-identification-information"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+          </h4>
+        </div>
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We may collect non-personal identification information about Users whenever they interact with the Site, This may include: the browser name, the type of computer, the operating system, and other similar information.
+        </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="web-browser-cookies"></a>
+        <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+          <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Web browser cookies<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#web-browser-cookies"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+          </h4>
+        </div>
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">The Site may use “cookies” to enhance User experience. Users may choose to set their web browser to refuse cookies, or to indicate when cookies are being sent. Note that this may cause some parts of the Site to function improperly.
+        </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="how-we-use-collected-information"></a>
+        <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+          <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">How we use collected information<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#how-we-use-collected-information"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+          </h4>
+        </div>
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Point-Free, Inc. collects and uses Users personal information for the following purposes:
         </p>
-        <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Non-personal identification information
-        </h4>
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We may collect non-personal identification information about Users whenever they interact with the Site, This may include: the browser name, the type of computer, the operating system, and other similar information.
-        </p>
-        <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Web browser cookies
-        </h4>
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">The Site may use “cookies” to enhance User experience. Users may choose to set their web browser to refuse cookies, or to indicate when cookies are being sent. Note that this may cause some parts of the Site to function improperly.
-        </p>
-        <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">How we use collected information
-        </h4>
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Point-Free, Inc. collects and uses Users personal information for the following purposes:
-        </p>
-        <ul class="display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3">
+        <ul class="content-xD6dy1 margin-left-rhxaL1 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3">
           <li>
             <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
               <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">To personalize user experience: to understand how our Users as a group use the Site.
@@ -352,48 +374,60 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
               </p>
             </pf-vstack>
           </li>
-        </ul>
-        <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">How we protect your information
-        </h4>
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We adopt appropriate data collection, storage and processing practices and security measures to protect against unauthorized access, alteration, disclosure or destruction of your personal information, username, password, transaction information and data stored on our Site.
+        </ul><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="how-we-protect-your-information"></a>
+        <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+          <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">How we protect your information<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#how-we-protect-your-information"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+          </h4>
+        </div>
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We adopt appropriate data collection, storage and processing practices and security measures to protect against unauthorized access, alteration, disclosure or destruction of your personal information, username, password, transaction information and data stored on our Site.
         </p>
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Sensitive and private data exchange between the Site and its Users happens over a SSL secured communication channel and is encrypted and protected with digital signatures.
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Sensitive and private data exchange between the Site and its Users happens over a SSL secured communication channel and is encrypted and protected with digital signatures.
+        </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="sharing-your-personal-information"></a>
+        <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+          <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Sharing your personal information<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#sharing-your-personal-information"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+          </h4>
+        </div>
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We do not sell, trade, or rent Users’ personal identification information to others. We may share generic aggregated demographic information not linked to any personal identification information regarding visitors and users with our business partners and trusted affiliates for the purposes outlined above.
+        </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="compliance-with-children-s-online-privacy-protection-act"></a>
+        <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+          <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Compliance with children’s online privacy protection act<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#compliance-with-children-s-online-privacy-protection-act"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+          </h4>
+        </div>
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Protecting the privacy of the very young is especially important. For that reason, we never collect or maintain information at our Site from those we actually know are under 13, and no part of our website is structured to attract anyone under 13.
+        </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="terms-of-use"></a>
+        <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+          <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Terms of use<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#terms-of-use"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+          </h4>
+        </div>
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Individual subscriptions are only valid for use by an individual person. Team subscriptions are only valid for use by the number of persons allotted seats. We reserve the right to cancel subscriptions at our own discretion.
+        </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="changes-to-this-privacy-policy"></a>
+        <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+          <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Changes to this privacy policy<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#changes-to-this-privacy-policy"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+          </h4>
+        </div>
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Point-Free, Inc. has the discretion to update this privacy policy at any time. When we do, we will revise the updated date at the bottom of this page.
+        </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="contacting-us"></a>
+        <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
+          <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Contacting us<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#contacting-us"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+          </h4>
+        </div>
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Questions about this policy can be sent to support@pointfree.co.
         </p>
-        <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Sharing your personal information
-        </h4>
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We do not sell, trade, or rent Users’ personal identification information to others. We may share generic aggregated demographic information not linked to any personal identification information regarding visitors and users with our business partners and trusted affiliates for the purposes outlined above.
-        </p>
-        <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Compliance with children’s online privacy protection act
-        </h4>
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Protecting the privacy of the very young is especially important. For that reason, we never collect or maintain information at our Site from those we actually know are under 13, and no part of our website is structured to attract anyone under 13.
-        </p>
-        <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Terms of use
-        </h4>
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Individual subscriptions are only valid for use by an individual person. Team subscriptions are only valid for use by the number of persons allotted seats. We reserve the right to cancel subscriptions at our own discretion.
-        </p>
-        <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Changes to this privacy policy
-        </h4>
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Point-Free, Inc. has the discretion to update this privacy policy at any time. When we do, we will revise the updated date at the bottom of this page.
-        </p>
-        <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Contacting us
-        </h4>
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Questions about this policy can be sent to support@pointfree.co.
-        </p>
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">This document was last updated on January 13, 2020.
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">This document was last updated on January 13, 2020.
         </p>
       </pf-vstack>
     </pf-markdown>
   </div>
 </div>
 <footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
-  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-V2CuF3 row-gap-ZNGkd1">
+  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
       <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3" href="/">Point-Free</a>
       </h4>
       <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-x1B8x4 row-gap-83zzS1">
+    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-hE9y01 row-gap-83zzS1">
       <div>
         <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>

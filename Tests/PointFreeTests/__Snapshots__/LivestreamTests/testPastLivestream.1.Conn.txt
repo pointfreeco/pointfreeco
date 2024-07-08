@@ -2,7 +2,7 @@ GET http://localhost:8080/live/streams/42
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 28863
+Content-Length: 29182
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -54,10 +54,6 @@ body, html {
   body, html {
     background: #121212;
   }
-}
-article > pf-markdown > pf-vstack > p:last-of-type::after {
-  margin: 0 0.5rem;
-  content: "❖";
 }
 .markdown *:link, .markdown *:visited { color: inherit; }
 .diagnostic * {
@@ -173,10 +169,11 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .background-RMpfJ3{background:linear-gradient(#121212, #242424)}
 .padding-bottom-hS6a7{padding-bottom:2rem}
 .box-sizing-otfSh{box-sizing:border-box}
-.padding-jNK411{padding:6rem 2rem}
+.padding-SSyG82{padding:3rem 2rem 6rem}
 .flex-direction-7gclL{flex-direction:column}
 .max-width-C8uWv{max-width:100%}
-.row-gap-83zzS1{row-gap:1.0rem}
+.row-gap-FBkWQ3{row-gap:0}
+.text-wrap-aqIE4{text-wrap:balance}
 .color-c5ixr2{color:#fafafa}
 .margin-top-EvtWd3:not(:first-child){margin-top:1.5rem}
 .margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
@@ -184,10 +181,14 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .font-weight-SywJI1{font-weight:700}
 .line-height-auF6B{line-height:1.2}
 .color-KmPrN{color:#ccc}
+.margin-top-hS6a7{margin-top:2rem}
+.text-align-9dzn33{text-align:justify}
 .max-width-iVA1Q1{max-width:768px}
 .color-4kuW21{color:#f6f6f6}
 .align-items-msN8p3{align-items:stretch}
 .row-gap-NKv2f3{row-gap:0.5rem}
+article .content-xD6dy1:is(p):last-of-type::after{content:"❖"}
+article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .line-height-9Qkso4{line-height:1.5}
 .padding-FBkWQ3{padding:0}
 .margin-top-NLtLD2{margin-top:-4rem}
@@ -228,7 +229,8 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .color-tgLLb3:visited{color:#79f2b0}
 .column-gap-83zzS1{column-gap:1.0rem}
 .display-mqllb2{display:grid}
-.grid-template-columns-x1B8x4{grid-template-columns:1fr 2fr}
+.grid-template-columns-hE9y01{grid-template-columns:minmax(0, 1fr) minmax(0, 2fr)}
+.row-gap-83zzS1{row-gap:1.0rem}
 .font-size-xlo1p4{font-size:0.75rem}
 .letter-spacing-fGWfX2{letter-spacing:0.54pt}
 .line-height-9Xzre{line-height:1.25}
@@ -251,7 +253,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   .padding-dR5Tt4{padding:1.5rem}
   .padding-left-dR5Tt4{padding-left:1.5rem}
   .display-Nvbu41{display:none}
-  .padding-jFt024{padding:8rem 3rem}
+  .padding-m1d7z4{padding:4rem 3rem 6rem}
   .margin-JRgcV{margin:0 4rem}
   .align-items-GE99b{align-items:center}
   .padding-top-OzbZs1{padding-top:8.0rem}
@@ -266,7 +268,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   .padding-right-ujLNr4{padding-right:4.0rem}
   .column-gap-ZNGkd1{column-gap:1.0rem}
   .display-jdJkm4{display:grid}
-  .grid-template-columns-V2CuF3{grid-template-columns:1fr 1fr}
+  .grid-template-columns-AWWfa{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
   .row-gap-ZNGkd1{row-gap:1.0rem}
   .font-size-dR5Tt4{font-size:1.5rem}
   .font-size-Fb6s54{font-size:0.875rem}
@@ -318,12 +320,12 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   </div>
 </nav>
 <pf-center-column class="background-RMpfJ3 padding-bottom-hS6a7 width-C8uWv box-sizing-otfSh display-ix08W2">
-  <pf-vstack class="max-width-P6HnV width-C8uWv margin-gEzmi padding-jNK411 padding-jFt024 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-    <h3 class="text-align-CdPBO2 color-c5ixr2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Video Title
+  <pf-vstack class="max-width-P6HnV width-C8uWv margin-gEzmi padding-SSyG82 padding-m1d7z4 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
+    <h3 class="text-align-CdPBO2 text-wrap-aqIE4 color-c5ixr2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Video Title
     </h3><span class="color-KmPrN">Episode Clip • Jan 31, 2018</span>
-    <pf-markdown class="max-width-iVA1Q1 color-4kuW21 display-ix08W2">
+    <pf-markdown class="margin-top-hS6a7 text-align-9dzn33 max-width-iVA1Q1 color-4kuW21 display-ix08W2">
       <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-        <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
+        <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat
         </p>
       </pf-vstack>
     </pf-markdown>
@@ -334,7 +336,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
     <div class="box-shadow-yJzQS2 margin-JRgcV">
       <div class="width-C8uWv position-Pjz1G2 padding-bottom-MI04k">
         <iframe class="width-C8uWv height-C8uWv position-X8qzJ" src="https://player.vimeo.com/video/42?pip=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen>
-        </iframe><script src="https://player.vimeo.com/api/player.js"></script>
+        </iframe><script async src="https://player.vimeo.com/api/player.js"></script>
       </div>
     </div>
   </div>
@@ -356,14 +358,14 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   </div>
 </pf-center-column>
 <footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
-  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-V2CuF3 row-gap-ZNGkd1">
+  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
       <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3" href="/">Point-Free</a>
       </h4>
       <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-x1B8x4 row-gap-83zzS1">
+    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-hE9y01 row-gap-83zzS1">
       <div>
         <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>
