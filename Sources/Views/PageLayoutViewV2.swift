@@ -705,6 +705,10 @@ public struct PrismJSHead: HTML {
         background-color: rgba(255, 68, 68, 0.15);
       }
 
+      .highlight-warn .line-highlight {
+        background-color: rgba(254, 223, 43, 0.15);
+      }
+
       .language-diff {
         color: #808080;
       }

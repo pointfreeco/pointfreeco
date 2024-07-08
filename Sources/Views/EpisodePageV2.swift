@@ -140,6 +140,7 @@ public struct EpisodeDetail: HTML {
                     ) {
                       HStack(alignment: .center, spacing: 0.5) {
                         SVG(base64: gitHubSvgBase64(fill: "currentColor"), description: "")
+                          .inlineStyle("filter", "invert()", media: .dark)
                           .inlineStyle("height", "20px")
                           .inlineStyle("horizontal-align", "middle")
                           .inlineStyle("vertical-align", "middle")
@@ -525,7 +526,7 @@ struct TableOfContentsSection: HTML {
               li {
                 HStack(alignment: .center, spacing: 0.25) {
                   Link(href: section.anchor) {
-                    HTMLText(section.title)
+                    HTMLMarkdown(section.title)
                   }
                   .linkColor(.offBlack.dark(.offWhite))
                   .inlineStyle("line-height", "1.35")
