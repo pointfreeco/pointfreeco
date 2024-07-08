@@ -529,7 +529,7 @@ This looks a little strange. What happens if we fully expand it?
 
 There are a lot of representable states here that don't make sense. They even jump out on each line. We can get `URLResponse * Error`, while `URLResponse` should never be inhabited at the same time as `Error`. We can also get `Data * Error`, which also makes no sense. We can also get `1`, which is just `Void`, or in this case where everything value is `nil`. And we can also get everything: `Data * URLResponse * Error`, which should never happen.
 
-!> [correction]: It was brought to our attention by one of our viewers, [Ole Begemann](http://twitter.com/olebegemann), that
+> Correction: It was brought to our attention by one of our viewers, [Ole Begemann](http://twitter.com/olebegemann), that
 > it is in fact possible for `URLResponse` and `Error` to be non-`nil` at the same time. He wrote a great
 > [blog post](https://oleb.net/blog/2018/03/making-illegal-states-unrepresentable/) about this, and we
 > discuss this correction at the beginning of our follow up episode,

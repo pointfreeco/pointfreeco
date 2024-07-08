@@ -801,7 +801,7 @@ However that does not work. It turns out that the binding you get by doing `self
 @T(00:35:54)
 We are not aware of a single abstraction that covers both regular bindings and `FocusState` bindings. One could theorize an abstraction around property wrappers:
 
-!> [correction]: After recording this episode, we realized that `ReferenceWritableKeyPath` _is_ an abstraction that would work here, though there are some caveats involved in defining a `synchronize` helper using them. We'll leave that exploration as an exercise for the viewer.
+> Correction: After recording this episode, we realized that `ReferenceWritableKeyPath` _is_ an abstraction that would work here, though there are some caveats involved in defining a `synchronize` helper using them. We'll leave that exploration as an exercise for the viewer.
 
 ```swift
 func synchronize<A, B>(

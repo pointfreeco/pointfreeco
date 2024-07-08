@@ -70,7 +70,7 @@ Then we can add the library to this project by using Xcode's SPM integration:
 @T(00:07:38)
 The package comes with two libraries. The core library is `ComposableArchitecture`, which is what we want to use in our main Todos application. There is also a library `ComposableArchitectureTestSupport` that comes with some handy utilities for testing features built in the Composable Architecture. So let's make sure to add each library to the "Todos" and "TodosTests" targets.
 
-!> [correction]: Since this episode was recorded, the `ComposableArchitectureTestSupport` module has merged into `ComposableArchitecture` and is no longer needed. You can now link your app target to `ComposableArchitecture` and will have access to test helpers in your test target.
+> Correction: Since this episode was recorded, the `ComposableArchitectureTestSupport` module has merged into `ComposableArchitecture` and is no longer needed. You can now link your app target to `ComposableArchitecture` and will have access to test helpers in your test target.
 
 ## Setting up basic infrastructure
 

@@ -1,6 +1,6 @@
-!> [correction]: This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
-
 ## Introduction
+
+> Correction: This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
 
 @T(00:00:05)
 Today we are going to begin discussing some application architecture ideas, which somehow in the one and a half years since Point-Free was launched we haven't really discussed head-on. We've covered lots of broad ideas on how to make your applications more understandable and testable, such as pushing side effects to the boundaries, using pure functions as much as possible, and putting an emphasis on functions and composition above all other abstractions.
@@ -365,10 +365,12 @@ And then to conform to the protocol we must provide a `didChange` property. The 
 var didChange: AppState.PublisherType
 ```
 
-!> [correction]: In Xcode 11 beta 5 and later versions, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model:
-> ```
+> Correction: In Xcode 11 beta 5 and later versions, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model:
+>
+> ```swift
 > let objectDidChange = ObservableObjectPublisher()
 > ```
+>
 > This boilerplate is also not necessary, as the `ObservableObject` protocol will synthesize a default publisher for you automatically.
 
 @T(00:21:54)
@@ -392,16 +394,19 @@ var count = 0 {
 }
 ```
 
-!> [correction]: With Xcode 11 beta 5 and later, `willSet` should be used instead of `didSet`:
-> ```
+> Correction: With Xcode 11 beta 5 and later, `willSet` should be used instead of `didSet`:
+>
+> ```swift
 > var count = 0 {
 >   willSet {
 >     self.objectWillChange.send()
 >   }
 > }
 > ```
+>
 > Or you can remove this boilerplate entirely by using a `@Published` property wrapper:
-> ```
+>
+> ```swift
 > @Published var count = 0
 > ```
 
@@ -412,7 +417,7 @@ And that is all we need to do to get persistent state in place for our applicati
 @ObjectBinding var state: AppState
 ```
 
-!> [correction]: With Xcode 11 beta 5 and later, SwiftUI's `@ObjectBinding` property wrapper was deprecated in favor of the `@ObservedObject` wrapper introduced to the Combine framework.
+> Correction: With Xcode 11 beta 5 and later, SwiftUI's `@ObjectBinding` property wrapper was deprecated in favor of the `@ObservedObject` wrapper introduced to the Combine framework.
 
 @T(00:24:17)
 This will break a few things in our view because we no longer have a `count` field, and instead we must access it through our `state` field:

@@ -759,7 +759,7 @@ And we've really demonstrated this by looking at an actual, real-world applicati
 @T(00:27:53)
 Luckily for our viewers, they too can now take advantage of this because we've released a new version of [swift-composable-architecture](https://github.com/pointfreeco/swift-composable-architecture) that bring all of these form helpers to the core library and they can instantly start taking advantage of these APIs.
 
-!> [correction]: We released this feature the week before this episode aired and made a few changes after hearing back from you! We have generalized the "form" naming to apply more generally to bindings. This means `FormAction` is now `BindingAction`, and the `form` higher-order reducer is now a `binding` higher-order reducer, as well. Thanks to the community for this feedback!
+> Correction: We released this feature the week before this episode aired and made a few changes after hearing back from you! We have generalized the "form" naming to apply more generally to bindings. This means `FormAction` is now `BindingAction`, and the `form` higher-order reducer is now a `binding` higher-order reducer, as well. Thanks to the community for this feedback!
 
 @T(00:28:08)
 Until next time.

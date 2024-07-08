@@ -600,7 +600,7 @@ case .init(ascii: "\n"):
   result.append([])
 ```
 
-!> [correction]: Whoops! This code actually introduces a bug, where `continue` prevents the `endIndex` from advancing. While this is a good demonstration of how hard it is to maintain code like this, it wasn't intended 😬! A more resilient `precondition` could have caught this, though!
+> Correction: Whoops! This code actually introduces a bug, where `continue` prevents the `endIndex` from advancing. While this is a good demonstration of how hard it is to maintain code like this, it wasn't intended 😬! A more resilient `precondition` could have caught this, though!
 
 @T(00:30:06)
 Now when we run benchmarks we don't hit the precondition:

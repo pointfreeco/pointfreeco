@@ -124,7 +124,7 @@ Let’s hop over to the `Package.swift` file to see how we share modules between
 @T(00:10:13)
 As we mentioned before our `Package.swift` is a little intense. It houses all of the modules for both the client and the server, of which they are currently 91. So the file is very long, but it’s also structured a little differently from a standard SPM manifest. At the very top we get the first hint that something is different by noticing the `package` variable is defined as `var` rather than a `let` as is customary:
 
-!> [correction]: One of our viewers [pointed out](https://github.com/pointfreeco/isowords/discussions/106) that `Package` is a class in SPM and so the `var` is not necessary. We can use `let` and still make these mutations just fine.
+> Correction: One of our viewers [pointed out](https://github.com/pointfreeco/isowords/discussions/106) that `Package` is a class in SPM and so the `var` is not necessary. We can use `let` and still make these mutations just fine.
 
 ```swift
 // MARK: - shared

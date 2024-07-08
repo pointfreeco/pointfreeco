@@ -1,6 +1,6 @@
-!> [correction]: This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
-
 ## What’s the point?
+
+> Correction: This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
 
 @T(00:00:05)
 We've now got a moderately complex application built in SwiftUI. It's honestly kind of amazing. There is absolutely no way we would have been able to build this application in the amount of time we did using UIKit. There would have been a maze of protocols to implement and delegates to set up and probably a huge number of bugs introduced along the way.
@@ -71,14 +71,17 @@ var loggedInUser: User? = nil {
 }
 ```
 
-!> [correction]: This episode was recorded with Xcode 11 beta 3. In later betas, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model. Because of this, `willSet` should be used instead of `didSet`:
-> ```
+> Correction: This episode was recorded with Xcode 11 beta 3. In later betas, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model. Because of this, `willSet` should be used instead of `didSet`:
+>
+> ```swift
 > var loggedInUser: User? {
 >   willSet { self.objectWillChange.send() }
 > }
 > ```
+>
 > Even better, we can remove this boilerplate entirely by using a `@Published` property wrapper:
-> ```
+>
+> ```swift
 > @Published var loggedInUser: User?
 > ```
 
@@ -137,10 +140,12 @@ It just feels like the core description of our state is being obscured by all of
 @T(00:08:16)
 It's actually possible to create a universal solution to this problem by wrapping a value type in a class that is a bindable object, and tapping into that value's `didSet` in order to notify of changes that happen to any part of the value. However, the point here is that Apple has yet to give us a solution for truly modeling our global app state in a scaleable way, we must come up with our own solutions.
 
-!> [correction]: This episode was recorded with Xcode 11 beta 3. Later betas introduced changes to dramatically reduce this boilerplate:
+> Correction: This episode was recorded with Xcode 11 beta 3. Later betas introduced changes to dramatically reduce this boilerplate:
+>
 > - The observable object publisher is now synthesized automatically.
 > - Properties wrapped with `@Published` will automatically be subscribed to by SwiftUI and do not need to do the `willSet` dance.
-> ```
+>
+> ```swift
 > class AppState: ObservableObject {
 >   @Published var count = 0
 >   @Published var favoritePrimes: [Int] = []
@@ -178,7 +183,7 @@ Also some of these mutations are happening on the global state and some on local
 .presentation(self.$alertNthPrime) { n in
 ```
 
-!> [correction]: This episode was recorded with Xcode 11 beta 3, and a change has been made to the presentation APIs in beta 4 and later versions of Xcode. The above APIs have been renamed to `alert(isPresented:content:)` and `alert(item:content:)`.
+> Correction: This episode was recorded with Xcode 11 beta 3, and a change has been made to the presentation APIs in beta 4 and later versions of Xcode. The above APIs have been renamed to `alert(isPresented:content:)` and `alert(item:content:)`.
 
 @T(00:10:01)
 This allows SwiftUI to reset this value to `nil` once the alert is dismissed. That's a hidden mutation that you have to know about!
@@ -377,8 +382,10 @@ If we could do something like this then we could maybe even conceivably extract 
 @T(00:21:01)
 Unfortunately, it is not yet known how this can be accomplished in SwiftUI. The closest we have come up with is to create a wrapper class that conforms to `ObjectBinding` and exposes only a bit of sub-state. We need to define our own initializer and we need to expose the global state's `didChange` with a computed property.
 
-!> [correction]: This episode was recorded with Xcode 11 beta 3. While it allowed you to derive `Binding`s of sub-state from observable bindings, a bug prevented it from propagating this mutable state over presentation boundaries, like navigation links and modal sheets. This bug has since been fixed in Xcode 11 beta 5, and state is now much more composable.
+> Correction: This episode was recorded with Xcode 11 beta 3. While it allowed you to derive `Binding`s of sub-state from observable bindings, a bug prevented it from propagating this mutable state over presentation boundaries, like navigation links and modal sheets. This bug has since been fixed in Xcode 11 beta 5, and state is now much more composable.
+>
 > Rather than define `FavoritePrimesState`, we can instead pass two bindings to `FavoritesPrimeView`:
+>
 > ```swift
 > struct FavoritePrimesView: View {
 >   @Binding var favoritePrimes: [Int]

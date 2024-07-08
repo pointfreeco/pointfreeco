@@ -30,7 +30,7 @@ let template = Template.init(stringLiteral: """
 """)
 ```
 
-!> [correction]: We autocompleted the `init(stringLiteral:)` initializer, which probably shouldn't be invoked directly. `Template` comes with a more suitable `init(templateString:)` initializer.
+> Correction: We autocompleted the `init(stringLiteral:)` initializer, which probably shouldn't be invoked directly. `Template` comes with a more suitable `init(templateString:)` initializer.
 
 @T(00:02:33)
 And to use this template, we can call its `render` method.
@@ -283,7 +283,7 @@ print(try template.render(["users": ["Blob", "Blob Jr.", "Blob Sr."]])
 @T(00:10:30)
 OK, well this is very concerning. We now have a runtime crash. Not just an error being thrown which we can catch. This means that it could take down our server. We haven't yet updated the data being fed into the template, so when it tries to access `name` on the strings we're passing through, it presumably can't reconcile trying to find the `name` field of a string, and something in the library is causing a crash.
 
-!> [correction]: We opened a GitHub [issue](https://github.com/stencilproject/Stencil/issues/231) about this crash when
+> Correction: We opened a GitHub [issue](https://github.com/stencilproject/Stencil/issues/231) about this crash when
 > we first released this episode, and a fix was [merged](https://github.com/stencilproject/Stencil/pull/234)
 > just a few days later.
 

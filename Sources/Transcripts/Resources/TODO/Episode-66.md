@@ -1,6 +1,6 @@
-!> [correction]: This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
-
 ## Introduction
+
+> Correction: This episode was recorded with Xcode 11 beta 3, and a lot has changed in recent betas. While we note these changes inline below, we also went over them in detail [on our blog](/blog/posts/30-swiftui-and-state-management-corrections).
 
 @T(00:00:05)
 OK, so we had to do a bit of plumbing to properly get our global app state inside each of our views, but the benefit of doing this work is that now the count value will persist across all screens. We can drill down into the counter, change it, go back to the main screen, and drill down again and everything is restored to how it was previously. So we have achieved persistence with very little work using the power of `@ObjectBinding` in SwiftUI.
@@ -20,7 +20,7 @@ Modals are presented in SwiftUI by setting presentation information on your view
 .presentation(<#Modal?#>)
 ```
 
-!> [correction]: This episode was recorded with Xcode 11 beta 3, and a change has been made to the presentation APIs in beta 4 and later versions of Xcode. The modal presentation API is captured in a few view modifier methods called `sheet` that present and dismiss a view given the state of a `Binding`.
+> Correction: This episode was recorded with Xcode 11 beta 3, and a change has been made to the presentation APIs in beta 4 and later versions of Xcode. The modal presentation API is captured in a few view modifier methods called `sheet` that present and dismiss a view given the state of a `Binding`.
 
 @T(00:01:44)
 If you provide a `nil` value here nothing will happen, and if you provide a `Modal` value it will present that modal over your current view. And then to dismiss the modal you must put `nil` back into this function.
@@ -197,14 +197,17 @@ var favoritePrimes: [Int] = [] {
 }
 ```
 
-!> [correction]: This episode was recorded with Xcode 11 beta 3. In later betas, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model. Because of this, `willSet` should be used instead of `didSet`:
-> ```
+> Correction: This episode was recorded with Xcode 11 beta 3. In later betas, SwiftUI's `BindableObject` protocol was deprecated in favor of an `ObservableObject` protocol that was introduced to the Combine framework. This protocol utilizes an `objectWillChange` property of `ObservableObjectPublisher`, which is pinged _before_ (not after) any mutations are made to your model. Because of this, `willSet` should be used instead of `didSet`:
+>
+> ```swift
 > var favoritePrimes: [Int] = [] {
 >   willSet { self.objectWillChange.send() }
 > }
 > ```
+>
 > Even better, we can remove this boilerplate entirely by using a `@Published` property wrapper:
-> ```
+>
+> ```swift
 > @Published var favoritePrimes: [Int] = []
 > ```
 
@@ -345,7 +348,7 @@ Alerts are done pretty similarly to modals in that you use the `.presentation` m
 .presentation(<#Binding<Identifiable?>#>, alert: <#(Identifiable) -> Alert#>)
 ```
 
-!> [correction]: This episode was recorded with Xcode 11 beta 3, and a change has been made to the presentation APIs in beta 4 and later versions of Xcode. The above APIs have been renamed to `alert(isPresented:content:)` and `alert(item:content:)`.
+> Correction: This episode was recorded with Xcode 11 beta 3, and a change has been made to the presentation APIs in beta 4 and later versions of Xcode. The above APIs have been renamed to `alert(isPresented:content:)` and `alert(item:content:)`.
 
 @T(00:14:47)
 We can either provide a `Binding` of a boolean value such that whenever the binding turns to `true` the alert is shown and when it's `false` it is dismissed, or we can provide a `Binding` of an optional such that when a value is present the alert is shown and when it is `nil` the alert is dismissed.

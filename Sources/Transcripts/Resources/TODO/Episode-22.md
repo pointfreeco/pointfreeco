@@ -88,7 +88,7 @@ The script even conveniently opens Xcode for us!
 @T(00:03:30)
 A quick word of warning: if you have multiple Xcodes installed, this may open the wrong one as so right now it may be a good time to check that you are on Xcode 9.4 or earlier. At this moment we don't yet support Xcode 10.
 
-!> [correction]: [We now support Xcode 10](https://github.com/pointfreeco/pointfreeco/pull/262), but be sure to have `xcode-select` pointed to the right Xcode when you run `make`!
+> Correction: [We now support Xcode 10](https://github.com/pointfreeco/pointfreeco/pull/262), but be sure to have `xcode-select` pointed to the right Xcode when you run `make`!
 
 @T(00:03:44)
 If we look at all of the project targets we'll see that something called `PointFree-Package` is selected by default. There are many more packages below it, which the Swift Package Manager is generating for whatever reason. Hopefully they'll clean this up in the future.
@@ -470,7 +470,7 @@ This snapshot is an artifact that, every time we run tests, gets checked. If any
 @T(00:26:57)
 This particular snapshot is just a blob of text right now and we do want to improve its actually pretty print the HTML, we just haven't had a lot of time recently.
 
-!> [correction]: We [recently](https://github.com/pointfreeco/pointfreeco/pull/262/commits/65190d961444cc658c1a03fe011361043b543d09) made our snapshots [a little prettier](https://github.com/pointfreeco/pointfreeco/pull/262/commits/65190d961444cc658c1a03fe011361043b543d09#diff-322217894a1f0a55d5b4dd97aab3b5b1).
+> Correction: We [recently](https://github.com/pointfreeco/pointfreeco/pull/262/commits/65190d961444cc658c1a03fe011361043b543d09) made our snapshots [a little prettier](https://github.com/pointfreeco/pointfreeco/pull/262/commits/65190d961444cc658c1a03fe011361043b543d09#diff-322217894a1f0a55d5b4dd97aab3b5b1).
 
 @T(00:27:14)
 We call `assertSnapshot` a couple other times in this test.

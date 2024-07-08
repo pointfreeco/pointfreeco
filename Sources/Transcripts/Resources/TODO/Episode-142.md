@@ -14,7 +14,8 @@ But there’s a lot more packed into this repo, so much we’ll probably never b
 @T(00:01:26)
 Well, first things first. Let’s get everyone set up with the isowords code base. We can begin by cloning the repo onto our computer and opening the workspace:
 
-!> [correction]: The isowords code base has changed [recently](https://github.com/pointfreeco/isowords/pull/122), and there's no longer an Xcode workspace at the root directory. Instead, open the Xcode project at `App/isowords.xcodeproj`.
+> Correction: The isowords code base has changed [recently](https://github.com/pointfreeco/isowords/pull/122), and there's no longer an Xcode workspace at the root directory. Instead, open the Xcode project at `App/isowords.xcodeproj`.
+>
 > To make sure you are following the newest directions for setting up the project, please see the [README](https://github.com/pointfreeco/isowords#readme) for the project.
 
 ```bash

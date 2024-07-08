@@ -36,7 +36,7 @@ class TodosTests: XCTestCase {
 }
 ```
 
-!> [correction]: Since this episode was recorded, the `ComposableArchitectureTestSupport` module has merged into `ComposableArchitecture`. You can now import `ComposableArchitecture` in your test targets to access the test store.
+> Correction: Since this episode was recorded, the `ComposableArchitectureTestSupport` module has merged into `ComposableArchitecture`. You can now import `ComposableArchitecture` in your test targets to access the test store.
 
 @T(00:03:05)
 However, the `TestStore` requires both the state and the actions of our domain to be equatable so that we can properly assert on how the system evolves. `AppState`  is already equatable, so we just need to make `AppAction` equatable:
