@@ -569,7 +569,8 @@ struct TableOfContentsSection: HTML {
           }
         }
       }
-      .backgroundColor(.gray(0.98).dark(.gray(0.1)))
+      .backgroundColor(.gray(0xfa).dark(.gray(0x19)))
+      .inlineStyle("border-radius", "0 0 6px 6px")
     }
   }
 
