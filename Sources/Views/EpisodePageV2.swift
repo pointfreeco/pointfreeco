@@ -46,8 +46,8 @@ public struct EpisodeDetail: HTML {
           )
 
           VStack {
-            if !permission.isViewable, currentUser.map({ $0.episodeCreditCount > 0 }) ?? true {
-              UnlockEpisodeCallout(episode: episode)
+            if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
+              UnlockEpisodeCallout(episode: episode, permission: permission)
             }
 
             article {
@@ -149,10 +149,175 @@ private struct TableOfContents: HTML {
 }
 
 struct UnlockEpisodeCallout: HTML {
+  @Dependency(\.currentRoute) var currentRoute
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.siteRouter) var siteRouter
+
   let episode: Episode
+  let permission: EpisodePermission
 
   var body: some HTML {
-    HTMLEmpty()
+    switch permission {
+    case .loggedIn(_, .isSubscriber):
+      HTMLEmpty()
+    case .loggedOut(isEpisodeSubscriberOnly: true):
+      Callout(
+        "Unlock This Episode",
+        icon:  SVG(base64: circleLockSvgBase64, description: "Locked")
+      ) {
+        """
+        Our Free plan includes 1 subscriber-only episode of your choice, plus weekly updates from \
+        our newsletter.
+        """
+      } callToAction: {
+        Button(color: .black) {
+          Label("Sign in with GitHub", icon: .gitHubIcon)
+        }
+        .attribute(
+          "href",
+          siteRouter.gitHubAuthPath(redirect: currentRoute)
+        )
+      }
+
+    case .loggedIn(let user, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: true)))
+    where user.episodeCreditCount > 0:
+      Callout(
+        "Unlock This Episode",
+        icon:  SVG(base64: circleLockSvgBase64, description: "Locked")
+      ) {
+        """
+        You have \(user.episodeCreditCount) episode \
+        credit\(user.episodeCreditCount == 1 ? "" : "s"). \
+        Spend \(user.episodeCreditCount == 1 ? "it" : "one") to watch this episode for free?
+        """
+      } callToAction: {
+        form {
+          Button(color: .black) {
+            "Redeem this episode"
+          }
+        }
+        .attribute("action", siteRouter.path(for: .useEpisodeCredit(episode.id)))
+        .attribute("method", "post")
+      }
+
+    case .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: true))):
+      Callout(
+        "Subscribe to Point-Free",
+        icon: SVG(base64: lockSvgBase64, description: "Locked")
+      ) {
+        "Access this episode, plus all past and future episodes, when you become a subscriber."
+      } callToAction: {
+        Button(color: .purple) {
+          "See plans and pricing"
+        }
+        .attribute("href", siteRouter.path(for: .pricingLanding))
+        if currentUser == nil {
+          Paragraph {
+            "Already a subscriber? "
+            Link("Log in", href: siteRouter.gitHubAuthPath(redirect: currentRoute))
+          }
+        }
+      } bar: {
+        SVG(base64: lockSvgBase64, description: "Locked")
+        "This episode is for subscribers only."
+      }
+
+    case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)):
+      Callout("Subscribe to Point-Free") {
+        "Access all past and future episodes when you become a subscriber."
+      } callToAction: {
+        Button(color: .purple) {
+          "See plans and pricing"
+        }
+        .attribute("href", siteRouter.path(for: .pricingLanding))
+      } bar: {
+        SVG(base64: unlockSvgBase64, description: "Free")
+        "You unlocked this episode with a credit."
+      }
+
+    case .loggedOut(isEpisodeSubscriberOnly: false),
+      .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: false))):
+      
+      Callout("Subscribe to Point-Free") {
+        "Access all past and future episodes when you become a subscriber."
+      } callToAction: {
+        Button(color: .purple) {
+          "See plans and pricing"
+        }
+        .attribute("href", siteRouter.path(for: .pricingLanding))
+        if currentUser == nil {
+          Paragraph {
+            "Already a subscriber? "
+            Link("Log in", href: siteRouter.gitHubAuthPath(redirect: currentRoute))
+          }
+        }
+      } bar: {
+        SVG(base64: unlockSvgBase64, description: "Free")
+        "This episode is free for everyone."
+      }
+    }
+  }
+}
+
+struct Callout<Message: HTML, CallToAction: HTML, Bar: HTML>: HTML {
+  let title: String
+  let icon: SVG?
+  let message: Message
+  let callToAction: CallToAction
+  let bar: Bar
+
+  init(
+    _ title: String,
+    icon: SVG? = nil,
+    @HTMLBuilder message: () -> Message,
+    @HTMLBuilder callToAction: () -> CallToAction,
+    @HTMLBuilder bar: () -> Bar = { HTMLEmpty() }
+  ) {
+    self.title = title
+    self.icon = icon
+    self.message = message()
+    self.callToAction = callToAction()
+    self.bar = bar()
+  }
+
+  var body: some HTML {
+    VStack {
+      div {
+        HStack(spacing: 0.5) {
+          bar
+        }
+        .inlineStyle("justify-content", "center")
+      }
+      .backgroundColor(.gray900.dark(.gray150))
+      .fontStyle(.body(.small))
+      .inlineStyle("border-bottom", "1px solid #ccc")
+      .inlineStyle("border-bottom", "1px solid #555", media: .dark)
+      .inlineStyle("font-weight", "600")
+      .inlineStyle("line-height", "3")
+      VStack(spacing: 0.5) {
+        icon
+        Header(4) {
+          HTMLText(title)
+        }
+        .color(.offBlack.dark(.offWhite))
+        Paragraph {
+          message
+        }
+        .inlineStyle("text-wrap", "balance")
+        VStack(alignment: .center, spacing: 0.5) {
+          callToAction
+        }
+        .fontStyle(.body(.small))
+      }
+      .inlineStyle("padding", "1rem 2rem 2rem")
+    }
+    .linkColor(.purple)
+    .color(.gray650.dark(.gray400))
+    .inlineStyle("border", "1px solid #ccc")
+    .inlineStyle("border", "1px solid #555", media: .dark)
+    .inlineStyle("border-radius", "6px")
+    .inlineStyle("overflow", "hidden")
+    .inlineStyle("text-align", "center")
   }
 }
 
