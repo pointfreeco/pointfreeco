@@ -170,8 +170,9 @@ struct UnlockEpisodeCallout: HTML {
         our newsletter.
         """
       } callToAction: {
-        Button(color: .black) {
+        Button(color: .purple) {
           Label("Sign in with GitHub", icon: .gitHubIcon)
+            .fontStyle(.body(.regular))
         }
         .attribute(
           "href",
@@ -192,7 +193,7 @@ struct UnlockEpisodeCallout: HTML {
         """
       } callToAction: {
         form {
-          Button(color: .black) {
+          Button(color: .purple) {
             "Redeem this episode"
           }
         }
@@ -300,6 +301,7 @@ struct Callout<Message: HTML, CallToAction: HTML, Bar: HTML>: HTML {
         div {
           icon
         }
+        .inlineStyle("filter", "invert()", media: .dark)
         .inlineStyle("height", "3rem")
         .inlineStyle("margin-top", "1rem")
         .inlineStyle("text-align", "center")
@@ -320,7 +322,7 @@ struct Callout<Message: HTML, CallToAction: HTML, Bar: HTML>: HTML {
       .inlineStyle("padding", "1rem 2rem 2rem")
     }
     .linkColor(.purple)
-    .color(.gray650.dark(.gray400))
+    .color(.gray650.dark(.gray500))
     .inlineStyle("border", "1px solid #ccc")
     .inlineStyle("border", "1px solid #555", media: .dark)
     .inlineStyle("border-radius", "6px")
