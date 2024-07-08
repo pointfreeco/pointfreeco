@@ -64,7 +64,8 @@ public struct AboutView: HTML {
 
       PageModule(theme: .informational) {
         VStack {
-          HTMLMarkdown("""
+          HTMLMarkdown(
+            """
             # What we'll cover
 
             We’ve got so much we want to talk about, but just a quick overview of the things we have planned:
@@ -86,7 +87,8 @@ public struct AboutView: HTML {
             Algebraic problems are nice because they carry structure that can be manipulated in predictable and understandable ways. For example, if you have ever simplified a complicated boolean expression that looked like a && b || a && c to look like a && (b || c), you were exploiting the algebraic stucture that || and && have. Many programming problems can be given an algebraic structure that allows one to manipulate the problem in the same way you factored out the a && from that expression.
 
             And so much more…
-            """)
+            """
+          )
           .inlineStyle("max-width", "48rem")
           .color(.offBlack.dark(.offWhite))
         }
@@ -95,7 +97,8 @@ public struct AboutView: HTML {
 
       PageModule(theme: .content) {
         VStack {
-          HTMLMarkdown("""
+          HTMLMarkdown(
+            """
             # Open source
 
             When we open-sourced the entire iOS and Android codebases at Kickstarter, we saw that it was one of the best resources to show people how to build a large application in the functional style. It transcended any talks about the theoretical benefits or proposed simplifications. We could just show directly how embracing pure functions allowed us to write code that was understandable in isolation, and enabled us to write tests for every subtle edge case.
@@ -107,7 +110,8 @@ public struct AboutView: HTML {
             You can view the entire source code to this site on our GitHub organization, [https://github.com/pointfreeco][pf-gh].
 
             [pf-gh]: https://github.com/pointfreeco
-            """)
+            """
+          )
           .inlineStyle("max-width", "48rem")
           .color(.offBlack.dark(.offWhite))
         }
@@ -160,25 +164,26 @@ struct HostCard: HTML {
 
 extension SVG {
   static let twitter = SVG(
-    base64: base64EncodedString("""
-    <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M14.2918 1.86444C13.77 2.09556 13.2096 2.252 12.6207 2.32222C13.2216 1.96222 13.6829 1.392 13.9 0.712667C13.3378 1.046 12.7156 1.28867 12.0524 1.41844C11.5224 0.853333 10.7664 0.5 9.92955 0.5C8.32288 0.5 7.02022 1.80222 7.02022 3.40956C7.02022 3.63756 7.04644 3.85844 7.09533 4.07178C4.67644 3.95044 2.53355 2.79289 1.09799 1.03244C0.847995 1.46267 0.704662 1.96222 0.704662 2.49467C0.704662 3.50422 1.21844 4.39511 1.99888 4.91689C1.522 4.90133 1.07333 4.77067 0.681106 4.55244C0.680662 4.56489 0.680661 4.57689 0.680661 4.58867C0.680661 5.99867 1.68355 7.17489 3.01488 7.442C2.77044 7.50822 2.51355 7.54356 2.24822 7.54356C2.06044 7.54356 1.878 7.52622 1.70066 7.49244C2.07111 8.648 3.14511 9.48911 4.41844 9.51244C3.42244 10.2924 2.16733 10.758 0.805106 10.758C0.570661 10.758 0.339328 10.7447 0.111328 10.7171C1.39888 11.5431 2.92822 12.0242 4.57066 12.0242C9.92244 12.0242 12.8484 7.59089 12.8484 3.74644C12.8484 3.62089 12.8456 3.49467 12.84 3.37022C13.4084 2.95978 13.9018 2.448 14.2916 1.86489L14.2918 1.86444Z" fill="#1DA1F3"/>
-    </svg>
-    """),
+    base64: base64EncodedString(
+      """
+      <svg width="15" height="13" viewBox="0 0 15 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14.2918 1.86444C13.77 2.09556 13.2096 2.252 12.6207 2.32222C13.2216 1.96222 13.6829 1.392 13.9 0.712667C13.3378 1.046 12.7156 1.28867 12.0524 1.41844C11.5224 0.853333 10.7664 0.5 9.92955 0.5C8.32288 0.5 7.02022 1.80222 7.02022 3.40956C7.02022 3.63756 7.04644 3.85844 7.09533 4.07178C4.67644 3.95044 2.53355 2.79289 1.09799 1.03244C0.847995 1.46267 0.704662 1.96222 0.704662 2.49467C0.704662 3.50422 1.21844 4.39511 1.99888 4.91689C1.522 4.90133 1.07333 4.77067 0.681106 4.55244C0.680662 4.56489 0.680661 4.57689 0.680661 4.58867C0.680661 5.99867 1.68355 7.17489 3.01488 7.442C2.77044 7.50822 2.51355 7.54356 2.24822 7.54356C2.06044 7.54356 1.878 7.52622 1.70066 7.49244C2.07111 8.648 3.14511 9.48911 4.41844 9.51244C3.42244 10.2924 2.16733 10.758 0.805106 10.758C0.570661 10.758 0.339328 10.7447 0.111328 10.7171C1.39888 11.5431 2.92822 12.0242 4.57066 12.0242C9.92244 12.0242 12.8484 7.59089 12.8484 3.74644C12.8484 3.62089 12.8456 3.49467 12.84 3.37022C13.4084 2.95978 13.9018 2.448 14.2916 1.86489L14.2918 1.86444Z" fill="#1DA1F3"/>
+      </svg>
+      """),
     description: ""
   )
 }
 
 #if DEBUG && canImport(SwiftUI)
-import SwiftUI
+  import SwiftUI
 
-#Preview(traits: .fixedLayout(width: 800, height: 1000)) {
-  HTMLPreview {
-    PageLayout(layoutData: SimplePageLayoutData(title: "")) {
-      AboutView()
+  #Preview(traits: .fixedLayout(width: 800, height: 1000)) {
+    HTMLPreview {
+      PageLayout(layoutData: SimplePageLayoutData(title: "")) {
+        AboutView()
+      }
     }
   }
-}
 #endif
 
 public struct Host {
