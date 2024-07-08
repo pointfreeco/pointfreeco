@@ -576,10 +576,7 @@ public struct Timestamp: HTML {
   }
 
   public func formatted() -> String {
-    var formatted = ""
-    if hour > 0 {
-      formatted.append("\(hour < 10 ? "0" : "")\(hour):")
-    }
+    var formatted = hour > 0 ? "\(hour):" : ""
     formatted.append("\(hour > 0 && minute < 10 ? "0" : "")\(minute):")
     formatted.append("\(second < 10 ? "0" : "")\(second)")
     return formatted
