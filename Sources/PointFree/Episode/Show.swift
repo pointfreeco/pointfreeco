@@ -26,7 +26,8 @@ func showEpisode(
 
   guard let episode = episode(forParam: param)
   else {
-    return conn
+    return
+      conn
       .writeStatus(.notFound)
       .respond { _ in episodeNotFoundView() }
   }
@@ -62,7 +63,8 @@ func showEpisode(
       }
     }
     if fetchProgress {
-      progress = try? await database
+      progress =
+        try? await database
         .fetchEpisodeProgress(userID: currentUser.id, sequence: episode.sequence)
         .percent
     } else {
@@ -74,7 +76,8 @@ func showEpisode(
   }
 
   guard episode.transcript != nil else {
-    return conn
+    return
+      conn
       .writeStatus(.ok)
       .respond(
         view: episodePageView(episodePageData:),
@@ -93,10 +96,11 @@ func showEpisode(
             usePrismJs: true
           )
         }
-    )
+      )
   }
 
-  return conn
+  return
+    conn
     .writeStatus(.ok)
     .respondV2(
       layoutData: SimplePageLayoutData(
@@ -129,8 +133,12 @@ private func episodePageData(
   @Dependency(\.date.now) var now
 
   let context: EpisodePageData.Context
-  if let collection = collections.first(where: { $0.slug == collectionSlug }) {
-    context = .collection(collection)
+  if let collection = collections.first(where: { $0.slug == collectionSlug }),
+    let section = collection.sections.first(where: {
+      $0.coreLessons.contains(where: { $0.episode?.id == episode.id })
+    })
+  {
+    context = .collection(collection, section: section)
   } else {
     context = .direct(
       previousEpisode: episodes().first(where: { $0.sequence == episode.sequence - 1 }),

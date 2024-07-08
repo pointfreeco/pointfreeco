@@ -228,15 +228,27 @@ private struct TableOfContents: HTML {
 
   var body: some HTML {
     VStack(spacing: 0) {
-      TableOfContentsSection(type: .collection(.swiftUI, section: .modernSwiftUI))
-      TableOfContentsSection(type: .episode(.mock))
-      TableOfContentsSection(
-        type: .focusedEpisode(
-          episodePageData.episode,
-          tableOfContents
-        )
-      )
-      TableOfContentsSection(type: .episode(.mock))
+      switch episodePageData.context {
+      case .collection(let collection, section: let section):
+        TableOfContentsSection(type: .collection(collection, section: section))
+        HTMLForEach(section.coreLessons) { lesson in
+          if case let .episode(episode) = lesson {
+            if episode.id == episodePageData.episode.id {
+              TableOfContentsSection(type: .focusedEpisode(episode, tableOfContents))
+            } else {
+              TableOfContentsSection(type: .episode(episode))
+            }
+          }
+        }
+      case .direct(let previousEpisode, let nextEpisode):
+        if let previousEpisode {
+          TableOfContentsSection(type: .episode(previousEpisode, sequence: .previous))
+        }
+        TableOfContentsSection(type: .focusedEpisode(episodePageData.episode, tableOfContents))
+        if let nextEpisode {
+          TableOfContentsSection(type: .episode(nextEpisode, sequence: .next))
+        }
+      }
     }
     .flexContainer(direction: "column")
     .inlineStyle("align-self", "start", media: .desktop)
@@ -439,8 +451,8 @@ struct TableOfContentsSection: HTML {
       switch type {
       case .collection(let collection, section: let section):
         CollectionSection(collection: collection, section: section)
-      case .episode(let episode):
-        EpisodeSection(episode: episode)
+      case .episode(let episode, sequence: let sequence):
+        EpisodeSection(episode: episode, sequence: sequence)
       case .focusedEpisode(let episode, let tableOfContents):
         FocusedEpisodeSection(episode: episode, tableOfContents: tableOfContents)
       }
@@ -454,6 +466,26 @@ struct TableOfContentsSection: HTML {
   struct PlayIcon: HTML {
     var body: some HTML {
       SVG(base64: playIconSvgBase64(), description: "")
+        .flexItem(basis: "1.25rem")
+        .inlineStyle("margin-top", "2px")
+        .inlineStyle("filter", "invert(100%)", media: .dark)
+    }
+  }
+  struct ReferencesIcon: HTML {
+    var body: some HTML {
+      SVG(base64: referencesIconSvgBase64, description: "")
+        .flexItem(basis: "1.25rem")
+        .inlineStyle("margin-top", "2px")
+        .inlineStyle("filter", "invert(100%)", media: .dark)
+    }
+  }
+  struct DownloadIcon: HTML {
+    var body: some HTML {
+      div {
+        SVG(base64: downloadIconSvgBase64, description: "")
+          .inlineStyle("max-width", "1rem")
+      }
+        .inlineStyle("text-align", "center")
         .flexItem(basis: "1.25rem")
         .inlineStyle("margin-top", "2px")
         .inlineStyle("filter", "invert(100%)", media: .dark)
@@ -514,6 +546,28 @@ struct TableOfContentsSection: HTML {
           .inlineStyle("margin", "0")
           .listStyle(.reset)
         }
+        if !episode.references.isEmpty {
+          HStack(alignment: .center, spacing: 0.5) {
+            ReferencesIcon()
+            div {
+              Link(href: "#references") {
+                Header(5) { "References" }
+                  .color(linkStyle.color)
+              }
+            }
+          }
+        }
+        if episode.codeSampleDirectory != nil {
+          HStack(alignment: .center, spacing: 0.5) {
+            DownloadIcon()
+            div {
+              Link(href: "#downloads") {
+                Header(5) { "Downloads" }
+                  .color(linkStyle.color)
+              }
+            }
+          }
+        }
       }
       .backgroundColor(.gray(0.98).dark(.gray(0.1)))
     }
@@ -521,10 +575,23 @@ struct TableOfContentsSection: HTML {
 
   struct EpisodeSection: HTML {
     let episode: Episode
+    let sequence: TableOfContentsSection.SectionType.Sequence?
+
     var body: some HTML {
       VStack(spacing: 0) {
-        Header(6) {
-          "Previous episode" // TODO
+        HTMLGroup {
+          switch sequence {
+          case .previous:
+            Header(6) {
+              "Previous episode"
+            }
+          case .next:
+            Header(6) {
+              "Next episode"
+            }
+          case nil:
+            HTMLEmpty()
+          }
         }
         .uppercase()
         .color(.gray650.dark(.gray400))
@@ -567,8 +634,12 @@ struct TableOfContentsSection: HTML {
 
   enum SectionType {
     case collection(Episode.Collection, section: Episode.Collection.Section)
-    case episode(Episode)
+    case episode(Episode, sequence: Sequence? = nil)
     case focusedEpisode(Episode, [HTMLMarkdown.Section])
+    enum Sequence {
+      case previous
+      case next
+    }
   }
 }
 
