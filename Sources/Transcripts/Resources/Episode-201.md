@@ -279,9 +279,9 @@ func f() {
 }
 ```
 
-@T(00:11:50)
 > Warning: Initialization of variable 'x' was never used; consider replacing with assignment to '_' or removing it
 
+@T(00:11:50)
 And the warning is useful to let you know that something is maybe not quite right. The fact that this variable is unused could mean that you aren’t doing exactly what you think you are doing, and so it should be looked at eventually.
 
 @T(00:12:01)
@@ -315,9 +315,6 @@ If we try to use dot to then discover what all the environment holds we are met 
 environment.<#⎋#>
 ```
 
-@T(00:12:31)
-> No Completions
-
 We know that the environment has a `mainQueue` property so we can try to type a few characters:
 
 ```swift
@@ -337,8 +334,6 @@ environment.mainQueue.slee<#⎋#>
 ```
 
 @T(00:12:56)
-> No Completions
-
 Even the `send` value that is given to us by the `.run` effect isn’t auto-completable. We cannot autocomplete any of the actions that we are allowed to send back into the system:
 
 ```swift
@@ -346,8 +341,6 @@ send(.<#⎋#>
 ```
 
 @T(00:13:11)
-> No Completions
-
 This greatly dampens the experience of using the library. Autocomplete can remove a lot of mental burden at a time when you when you are already knee deep in the complexities of your feature’s logic. Especially when trying to create asynchronous effects.
 
 ## Readability, composition and correctness
@@ -910,9 +903,9 @@ environment: {
 }
 ```
 
-@T(00:32:09)
 > Error: Missing argument  for parameter 'dependencies'
 
+@T(00:32:09)
 This no longer compiles because we aren’t passing along the new dependency. In order to do that we need to add the dependency to the game environment:
 
 ```swift

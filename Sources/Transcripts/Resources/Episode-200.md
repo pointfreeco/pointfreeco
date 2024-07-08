@@ -673,11 +673,11 @@ continuation.onTermination = { _ in
 }
 ```
 
-@T(00:25:54)
 > Warning: Reference to captured var 'audioEngine' in concurrently-executing code; this is an error in Swift 6
->
+
 > Warning: Reference to captured var 'recognitionTask' in concurrently-executing code; this is an error in Swift 6
 
+@T(00:25:54)
 Well, now we get a bunch of warnings. It turns out that the `onTermination` closure is marked as `@Sendable`, which greatly restricts the kinds of closures you can use. In particular, it cannot capture non-isolated mutable data or non-sendable data. We don’t actually need these variables to be mutable in the closure, so let’s capture them in an immutable fashion:
 
 ```swift

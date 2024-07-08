@@ -984,7 +984,9 @@ But another kind of deep linking that is important is URL deep linking. We dedic
 @T(00:41:53)
 We can open Safari in the simulator, and navigate to a URL like:
 
-> nav:///inventory/add/colorPicker
+```
+nav:///inventory/add/colorPicker
+```
 
 @T(00:42:12)
 That should launch the application, switch to the inventory tab, open up the “Add” sheet, and further drill down to the color picker. And amazingly it does just that.

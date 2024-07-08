@@ -123,7 +123,7 @@ let nestedReducer = Reducer<
 This reducer is a little bit mind-bendy, but it gets the job done. Needing to `.forEach` on the `self` in order to run the reducer on the collection of children is wild, but once that is done you get something really powerful out of it.
 
 @T(00:04:30)
-Let’s see what this looks like when we port this over to the `ReducerProtocol`. I’ll switch over to [version 0.41](https://github.com/pointfreeco/swift-composable-architecture/tree/0.41.0], and we’ll see that the domain modeling looks basically the same, except we now use `@Dependency` in order to instantly get access to a fully controllably UUID generator:
+Let’s see what this looks like when we port this over to the `ReducerProtocol`. I’ll switch over to [version 0.41](https://github.com/pointfreeco/swift-composable-architecture/tree/0.41.0), and we’ll see that the domain modeling looks basically the same, except we now use `@Dependency` in order to instantly get access to a fully controllably UUID generator:
 
 ```swift
 struct Nested: ReducerProtocol {
