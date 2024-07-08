@@ -1,7 +1,7 @@
 GET http://0.0.0.0:8080/
 
 200 OK
-Content-Length: 130258
+Content-Length: 130502
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -53,10 +53,6 @@ body, html {
   body, html {
     background: #121212;
   }
-}
-article > pf-markdown > pf-vstack > p:last-of-type::after {
-  margin: 0 0.5rem;
-  content: "❖";
 }
 .markdown *:link, .markdown *:visited { color: inherit; }
 .diagnostic * {
@@ -236,6 +232,8 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .color-T7UxR2:link{color:#121212}
 .color-IVYQy2:visited{color:#121212}
 .color-OpZD03{color:#666666}
+article .content-xD6dy1:is(p):last-of-type::after{content:"❖"}
+article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .padding-FBkWQ3{padding:0}
 .max-height-C8uWv{max-height:100%}
 .column-gap-83zzS1{column-gap:1.0rem}
@@ -265,7 +263,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .color-H59Xg3:link{color:#79f2b0}
 .color-tgLLb3:visited{color:#79f2b0}
 .display-mqllb2{display:grid}
-.grid-template-columns-x1B8x4{grid-template-columns:1fr 2fr}
+.grid-template-columns-hE9y01{grid-template-columns:minmax(0, 1fr) minmax(0, 2fr)}
 .font-size-xlo1p4{font-size:0.75rem}
 .letter-spacing-fGWfX2{letter-spacing:0.54pt}
 .line-height-9Xzre{line-height:1.25}
@@ -300,12 +298,12 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   .height-wjv553{height:60px}
   .column-gap-ZNGkd1{column-gap:1.0rem}
   .display-jdJkm4{display:grid}
-  .grid-template-columns-V2CuF3{grid-template-columns:1fr 1fr}
+  .grid-template-columns-AWWfa{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
   .row-gap-ZNGkd1{row-gap:1.0rem}
   .padding-YB9JG:nth-child(even){padding:0rem 1.5rem 4rem 0}
   .padding-CTEDv4:nth-child(odd){padding:0rem 0 4rem 1.5rem}
   .padding-gRWSc1{padding:7.5%}
-  .grid-template-columns-b94ob1{grid-template-columns:1fr 1fr 1fr}
+  .grid-template-columns-oWJr1{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)}
   .display-fTgPl1{display:block}
   .padding-top-ujLNr4{padding-top:4.0rem}
   .padding-left-ujLNr4{padding-left:4.0rem}
@@ -413,7 +411,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
       <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">What to expect
       </h3>
     </div>
-    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-V2CuF3 row-gap-ZNGkd1">
+    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
       <pf-vstack class="padding-YB9JG padding-CTEDv4 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="padding-FJnJ04 padding-gRWSc1 max-width-C8uWv max-width-C8uWv" loading="lazy" src="https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg" alt>
         <div>
           <h4 class="text-align-GE99b color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">New content regularly
@@ -455,7 +453,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
       <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Free episodes
       </h3><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/episodes/free">See all →</a>
     </div>
-    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-b94ob1 row-gap-ZNGkd1">
+    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
       <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/episodes/ep1-type-safe-html-in-swift"><img class="width-C8uWv max-width-C8uWv" loading="lazy" src alt></a>
         <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
           <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
@@ -470,7 +468,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
               </pf-vstack>
               <pf-markdown class="color-OpZD03 color-5uscm3 display-ix08W2">
                 <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                  <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
+                  <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
                   </p>
                 </pf-vstack>
               </pf-markdown>
@@ -498,7 +496,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
       <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">All episodes
       </h3><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/episodes">See all →</a>
     </div>
-    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-b94ob1 row-gap-ZNGkd1">
+    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
       <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/episodes/ep1-type-safe-html-in-swift"><img class="width-C8uWv max-width-C8uWv" loading="lazy" src alt></a>
         <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
           <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
@@ -513,7 +511,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
               </pf-vstack>
               <pf-markdown class="color-OpZD03 color-5uscm3 display-ix08W2">
                 <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                  <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
+                  <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
                   </p>
                 </pf-vstack>
               </pf-markdown>
@@ -545,7 +543,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
               </pf-vstack>
               <pf-markdown class="color-OpZD03 color-5uscm3 display-ix08W2">
                 <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                  <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">This is a short blurb to give a high-level overview of what the episode is about. It can only be plain text, no markdown allowed. Here is some more text just to have some filler.
+                  <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">This is a short blurb to give a high-level overview of what the episode is about. It can only be plain text, no markdown allowed. Here is some more text just to have some filler.
                   </p>
                 </pf-vstack>
               </pf-markdown>
@@ -573,7 +571,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
       <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Collections
       </h3><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/collections">See all →</a>
     </div>
-    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-b94ob1 row-gap-ZNGkd1">
+    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
       <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 padding-PJnmd4 text-align-CdPBO2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-8r95N color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2" href="/collections/functions"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="0.5" width="64" height="64" rx="32" fill="url(#paint0_linear_733_2369)"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M35.5 17.0259L50.474 31.9999L35.5 46.9739L20.526 31.9999L35.5 17.0259ZM33.0043 34.4956C34.3178 35.8091 36.5883 35.9029 37.9957 34.4956C39.4218 33.0695 39.3092 30.8177 37.9957 29.5042C36.6822 28.1907 34.4304 28.0781 33.0043 29.5042C31.597 30.9116 31.6908 33.1821 33.0043 34.4956ZM29.5883 17.1141L31.0883 18.6141L17.6143 32.0881L31.0883 45.5622L29.5883 47.0622L14.6143 32.0881L29.5883 17.1141Z" fill="white"/>
@@ -595,7 +593,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
             <div class="color-OpZD03 color-5uscm3">
               <pf-markdown class="display-ix08W2">
                 <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                  <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.
+                  <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.
                   </p>
                 </pf-vstack>
               </pf-markdown>
@@ -623,7 +621,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
       </h3>
     </div>
     <pf-vstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NBsge3">
-      <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-b94ob1 row-gap-ZNGkd1">
+      <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
         <pf-vstack class="display-fTgPl1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="text-decoration-line-Wl0y44 display-ix08W2 border-9YkDE1 border-qEa5h2 border-radius-NKv2f3 padding-Xin5E2 margin-bottom-MGp2B2 background-color-nbn0i3 background-color-Hakcq1 color-K2J0r1 color-wVkSF3" href="https://twitter.com/lucaceppelli/status/1136290297242165249">
           <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
             <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><img class="background-color-Vt0a43 background-color-lJpf9 border-radius-Xin5E2 height-NBsge3 width-NBsge3 max-width-C8uWv" loading="lazy" src="https://pbs.twimg.com/profile_images/1681590474019151872/JnbVvgVC_400x400.jpg" alt>
@@ -793,14 +791,14 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   </div>
 </div>
 <footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
-  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-V2CuF3 row-gap-ZNGkd1">
+  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
       <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3" href="/">Point-Free</a>
       </h4>
       <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-x1B8x4 row-gap-83zzS1">
+    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-hE9y01 row-gap-83zzS1">
       <div>
         <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>

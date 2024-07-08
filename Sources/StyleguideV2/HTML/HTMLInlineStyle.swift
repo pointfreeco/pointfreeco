@@ -155,6 +155,8 @@ public struct Pseudo: RawRepresentable, Hashable {
   }
 
   public static let active = Self(rawValue: ":active")
+  public static let after = Self(rawValue: "::after")
+  public static let before = Self(rawValue: "::before")
   public static let checked = Self(rawValue: ":checked")
   public static let disabled = Self(rawValue: ":disabled")
   public static let empty = Self(rawValue: ":empty")
@@ -165,6 +167,7 @@ public struct Pseudo: RawRepresentable, Hashable {
   public static let hover = Self(rawValue: ":hover")
   public static let inRange = Self(rawValue: ":in-range")
   public static let invalid = Self(rawValue: ":invalid")
+  public static func `is`(_ s: String) -> Self { Self(rawValue: ":is(\(s))") }
   public static let lang = Self(rawValue: ":lang")
   public static let lastChild = Self(rawValue: ":last-child")
   public static let lastOfType = Self(rawValue: ":last-of-type")
@@ -187,6 +190,9 @@ public struct Pseudo: RawRepresentable, Hashable {
   public static let valid = Self(rawValue: ":valid")
   public static let visited = Self(rawValue: ":visited")
   public static func not(_ other: Self) -> Self { Self(rawValue: ":not(\(other.rawValue))") }
+  public static func + (lhs: Self, rhs: Self) -> Self {
+    Self(rawValue: lhs.rawValue + rhs.rawValue)
+  }
 }
 
 private func classID(_ value: String) -> String {

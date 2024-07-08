@@ -22,7 +22,7 @@
 
         <pf-markdown class="display-ix08W2">
           <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-            <table>
+            <table class="content-xD6dy1 margin-left-rhxaL1">
               <thead>
                 <tr>
                   <th align="left">User
@@ -91,7 +91,7 @@
 
         <pf-markdown class="display-ix08W2">
           <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-            <table>
+            <table class="content-xD6dy1 margin-left-rhxaL1">
               <thead>
                 <tr>
                   <th>User

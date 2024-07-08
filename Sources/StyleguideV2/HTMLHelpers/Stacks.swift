@@ -141,7 +141,7 @@ public struct LazyVGrid<Content: HTML>: HTML {
         .inlineStyle("display", "grid", media: columns.key)
         .inlineStyle(
           "grid-template-columns",
-          columns.value.map { "\($0)fr" }.joined(separator: " "),
+          columns.value.map { "minmax(0, \($0)fr)" }.joined(separator: " "),
           media: columns.key
         )
         .inlineStyle(

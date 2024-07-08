@@ -1,22 +1,62 @@
 import Markdown
 
 public struct HTMLMarkdown: HTML {
-  let markdown: String
+  public struct Section {
+    public let title: String
+    public let id: String
+    public let level: Int
+    public let timestamp: Timestamp?
 
-  public init(_ markdown: String) {
-    self.markdown = markdown
+    public var anchor: String {
+      "#\(id)"
+    }
+
+    public init(title: String, id: String, level: Int, timestamp: Timestamp?) {
+      self.title = title
+      self.id = id
+      self.level = level
+      self.timestamp = timestamp
+    }
   }
 
-  public init(_ markdown: () -> String) {
-    self.markdown = markdown()
+  public let markdown: String
+  public let previewOnly: Bool
+  public let tableOfContents: [Section]
+  public let content: AnyHTML
+
+  public init(_ markdown: String, previewOnly: Bool = false) {
+    self.markdown = markdown
+    self.previewOnly = previewOnly
+    var converter = HTMLConverter(previewOnly: previewOnly)
+    self.content = converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
+    self.tableOfContents = converter.tableOfContents
+  }
+
+  public init(previewOnly: Bool = false, _ markdown: () -> String) {
+    self.init(markdown(), previewOnly: previewOnly)
   }
 
   public var body: some HTML {
     tag("pf-markdown") {
       VStack(spacing: 0.5) {
-        var converter = HTMLConverter()
-        converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
+        content
+          .inlineStyle(
+            "content",
+            previewOnly ? nil : #""❖""#,
+            pre: "article",
+            pseudo: .is("p") + .lastOfType + .after
+          )
+          .inlineStyle(
+            "margin-left",
+            previewOnly ? nil : "0.5rem",
+            pre: "article",
+            pseudo: .is("p") + .lastOfType + .after
+          )
       }
+      .inlineStyle(
+        "mask-image",
+        previewOnly ? "linear-gradient(to bottom,black 50%,transparent 100%)" : nil
+      )
     }
     .inlineStyle("display", "block")
   }
@@ -25,16 +65,27 @@ public struct HTMLMarkdown: HTML {
 private struct HTMLConverter: MarkupVisitor {
   typealias Result = AnyHTML
 
+  let previewOnly: Bool
+
+  init(previewOnly: Bool) {
+    self.previewOnly = previewOnly
+  }
+
+  private var currentTimestamp: Timestamp?
+  private var currentSection: (title: String, id: String, level: Int)?
+  private var ids: Set<Slug> = []
+  var tableOfContents: [HTMLMarkdown.Section] = []
+
   @HTMLBuilder
   mutating func defaultVisit(_ markup: any Markup) -> AnyHTML {
     for child in markup.children {
-      visit(child)
+      let html = visit(child)
+      if previewOnly ? tableOfContents.count <= 1 : true {
+        html
+      }
     }
   }
 
-  // https://apple.github.io/swift-markdown/documentation/markdown/blockdirectives/
-  // TODO: Support `@Custom { … }` directives (`@Timestamp(00:00:00)`, `@Speaker(Brandon) { … }`)
-  // TODO: `Document(parsing: …, options: .parseBlockDirectives)`
   @HTMLBuilder
   mutating func visitBlockDirective(_ blockDirective: Markdown.BlockDirective) -> AnyHTML {
     switch blockDirective.name {
@@ -45,8 +96,54 @@ private struct HTMLConverter: MarkupVisitor {
             visit(child)
           }
         }
-        .href(blockDirective.argumentText.segments.map { $0.trimmedText }.joined(separator: " "))
+        .href(blockDirective.argumentText.segments.map(\.trimmedText).joined(separator: " "))
         .inlineStyle("margin", "0.5rem 0")
+      }
+
+    case "Comment":
+      HTMLEmpty()
+
+    case "T":
+      /*
+       TODO: Find/replace transcripts
+
+       FIND:
+       \[(\d{2}:\d{2}:\d{2})\] \*\*([^:]+):\*\*
+
+       REPLACE:
+       @T($1, $2)
+
+       ---
+
+       FIND:
+       \[(\d{2}:\d{2}:\d{2})\]
+
+       REPLACE:
+       @T($1)
+       */
+      let segments = blockDirective.argumentText.segments
+        .map(\.trimmedText)
+        .joined()
+        .split(separator: ", ")
+
+      if let segment = segments.first {
+        let timestamp = Timestamp(
+          format: String(segment),
+          speaker: segments.dropFirst().first.map { String($0) }
+        )
+        let _ = currentTimestamp = timestamp
+        timestamp
+        if let currentSection {
+          let _ = tableOfContents.append(
+            HTMLMarkdown.Section(
+              title: currentSection.title,
+              id: currentSection.id,
+              level: currentSection.level,
+              timestamp: timestamp
+            )
+          )
+          let _ = self.currentSection = nil
+        }
       }
 
     case "Video":
@@ -70,40 +167,14 @@ private struct HTMLConverter: MarkupVisitor {
   @HTMLBuilder
   mutating func visitBlockQuote(_ blockQuote: Markdown.BlockQuote) -> AnyHTML {
     let aside = Aside(blockQuote)
-    switch aside.kind.rawValue {
-    case "Error":
-      Diagnostic(level: .error) {
+    if let level = DiagnosticLevel(aside: aside) {
+      Diagnostic(level: level) {
         for child in aside.content {
           visit(child)
         }
       }
       .inlineStyle("padding", "0 1rem")
-
-    case "Expected Failure":
-      Diagnostic(level: .knownIssue) {
-        for child in aside.content {
-          visit(child)
-        }
-      }
-      .inlineStyle("padding", "0 1rem")
-
-    case "Failed":
-      Diagnostic(level: .issue) {
-        for child in aside.content {
-          visit(child)
-        }
-      }
-      .inlineStyle("padding", "0 1rem")
-
-    case "Runtime Warning":
-      Diagnostic(level: .runtimeWarning) {
-        for child in aside.content {
-          visit(child)
-        }
-      }
-      .inlineStyle("padding", "0 1rem")
-
-    default:
+    } else {
       let style = BlockQuoteStyle(blockName: aside.kind.displayName)
       blockquote {
         VStack(spacing: 0.5) {
@@ -151,7 +222,7 @@ private struct HTMLConverter: MarkupVisitor {
     .color(.black.dark(.gray900))
     .inlineStyle("margin", "0")
     .inlineStyle("margin-bottom", "0.5rem")
-    .inlineStyle("overflow-x", "scroll")
+    .inlineStyle("overflow-x", "auto")
     .inlineStyle("padding", "1rem 1.5rem")
     .inlineStyle("border-radius", "6px")
   }
@@ -167,12 +238,47 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitHeading(_ heading: Markdown.Heading) -> AnyHTML {
-    Header(heading.level + 2) {
-      for child in heading.children {
-        visit(child)
+    let id = ids.slug(for: heading.plainText)
+
+    a {}
+      .attribute("id", id)
+      .inlineStyle("display", "block")
+      .inlineStyle("position", "relative")
+      .inlineStyle("top", "-5em")
+      .inlineStyle("top", "-0.5em", media: .desktop)
+      .inlineStyle("visibility", "hidden")
+
+    div {
+      Header(heading.level + 2) {
+        for child in heading.children {
+          visit(child)
+        }
+
+        Link(href: "#\(id)") {
+          SVG("Link") {
+            """
+            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg>
+            """
+          }
+        }
+        .linkColor(.gray800.dark(.gray300))
+        .inlineStyle("display", "none")
+        .inlineStyle("display", "initial", pre: "article div:hover > * >")
+        .inlineStyle("left", "0")
+        .inlineStyle("position", "absolute")
+        .inlineStyle("text-align", "center")
+        .inlineStyle("top", "2px", media: .mobile)
+        .inlineStyle("width", "2.5rem")
       }
+      .color(.offBlack.dark(.offWhite))
     }
-    .color(.offBlack.dark(.offWhite))
+    .inlineStyle("margin-left", "-2.25rem")
+    .inlineStyle("margin-left", "-2.5rem", media: .desktop)
+    .inlineStyle("padding-left", "2.25rem")
+    .inlineStyle("padding-left", "2.5rem", media: .desktop)
+    .inlineStyle("position", "relative")
+
+    let _ = currentSection = (title: heading.plainText, id: id, level: heading.level)
   }
 
   @HTMLBuilder
@@ -367,18 +473,18 @@ extension HTMLBuilder {
   }
 }
 
-private struct AnyHTML: HTML {
+public struct AnyHTML: HTML {
   let base: any HTML
   init(_ base: any HTML) {
     self.base = base
   }
-  static func _render(_ html: AnyHTML, into printer: inout HTMLPrinter) {
+  public static func _render(_ html: AnyHTML, into printer: inout HTMLPrinter) {
     func render<T: HTML>(_ html: T) {
       T._render(html, into: &printer)
     }
     render(html.base)
   }
-  var body: Never { fatalError() }
+  public var body: Never { fatalError() }
 }
 
 private struct BlockQuoteStyle {
@@ -415,4 +521,112 @@ private func value(forArgument argument: String, block: BlockDirective) -> Strin
     }
     .first
     .map(String.init)
+}
+
+private extension DiagnosticLevel {
+  init?(aside: Aside) {
+    switch aside.kind.rawValue {
+    case "Error": self = .error
+    case "Expected Failure": self = .knownIssue
+    case "Failed": self = .issue
+    case "Runtime Warning": self = .runtimeWarning
+    case "Warning": self = .warning
+    default: return nil
+    }
+  }
+}
+
+public struct Timestamp: HTML {
+  public var hour: Int
+  public var minute: Int
+  public var second: Int
+  public var speaker: String?
+
+  public init?(format: String, speaker: String?) {
+    let components = format.split(separator: ":")
+    guard let second = components.last.flatMap({ Int($0) }) else { return nil }
+    self.hour = components.dropLast(2).last.flatMap { Int($0) } ?? 0
+    self.minute = components.dropLast().last.flatMap { Int($0) } ?? 0
+    self.second = second
+    self.speaker = speaker
+  }
+
+  public var duration: Int {
+    hour * 60 * 60 + minute * 60 + second
+  }
+
+  public var id: String {
+    "t\(duration)"
+  }
+
+  public var anchor: String {
+    "#\(id)"
+  }
+
+  public func formatted() -> String {
+    var formatted = ""
+    if hour > 0 {
+      formatted.append("\(hour < 10 ? "0" : "")\(hour):")
+    }
+    formatted.append("\(hour > 0 && minute < 10 ? "0" : "")\(minute):")
+    formatted.append("\(second < 10 ? "0" : "")\(second)")
+    return formatted
+  }
+
+  public var body: some HTML {
+    div {
+      if let speaker {
+        strong {
+          HTMLText(speaker)
+        }
+        .color(.gray500)
+        .inlineStyle("font-size", "0.875rem")
+        .inlineStyle("line-height", "1", media: .desktop)
+        .inlineStyle("position", "relative", media: .desktop)
+        .inlineStyle("text-transform", "uppercase")
+        .inlineStyle("top", "0.5rem", media: .desktop)
+      }
+
+      let duration = self.duration
+      div {
+        div {
+          Link(href: anchor) {
+            HTMLText(formatted())
+          }
+          .attribute("data-timestamp", "\(duration)")
+        }
+        .fontStyle(.body(.small))
+        .linkStyle(LinkStyle(color: .gray800.dark(.gray300), underline: nil))
+        .attribute("id", id)
+        .inlineStyle("font-variant-numeric", "tabular-nums")
+        .inlineStyle("line-height", "3", media: .desktop)
+        .inlineStyle("margin-left", "-4rem", media: .desktop)
+        .inlineStyle("position", "absolute", media: .desktop)
+        .inlineStyle("text-align", "right", media: .desktop)
+        .inlineStyle("width", "3.25rem", media: .desktop)
+      }
+    }
+    .flexContainer(direction: "column-reverse", rowGap: "0.5rem", media: .mobile)
+  }
+}
+
+private struct Slug: Hashable {
+  var name: String
+  var generation: Int
+}
+
+extension Set<Slug> {
+  fileprivate func slug(for string: String) -> String {
+    var slug = Slug(name: string.slug(), generation: 0)
+    while contains(slug) {
+      slug.generation += 1
+    }
+    return "\(slug.name)\(slug.generation > 0 ? "-\(slug.generation)" : "")"
+  }
+}
+
+extension String {
+  fileprivate func slug() -> String {
+    split(whereSeparator: { !$0.isLetter && !$0.isNumber }).joined(separator: "-").lowercased()
+  }
 }
