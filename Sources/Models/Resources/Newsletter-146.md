@@ -13,36 +13,67 @@ way.
 > because the new testing framework has not even officially been released yet. Once it is officially 
 > released, probably sometime in September, we will have an official release with support.
 
-To use the new Swift Testing tools in SnapshotTesting you just need to upgrade to 
-[version 1.17.0][snapshot-1.17] of the library. Once that is done the `assertSnapshot` function
-can be used in both `XCTestCase` subclasses as well as inside new-style `@Test`s and `@Suite`s:
+The Apple ecosystem currently has two primary testing frameworks, and unfortunately they are not
+compatible with each other. There is the XCTest framework, which is a private framework provided
+by Apple and heavily integrated into Xcode. And now there is Swift Testing, an open source testing
+framework built in Swift that is capable of integrating into a variety of environments.
+
+These two frameworks are not compatible in the sense that an assertion made in one framework
+from a test in the other framework will not trigger a test failure. So, if you are writing a test
+with the new `@Test` macro style, and you use a test helper that ultimately calls `XCTFail` under
+the hood, that will not bubble up to an actual test failure when tests are run. And similarly, if
+you have a test case inheriting from `XCTestCase` that ultimiately invokes the new style `#expect`
+macro, that too will not actually trigger a test failure.
+
+However, these details have all been hidden away in the SnapshotTesting library. You can simply
+use `assertSnapshot` in either an `XCTestCase` subclass _or_ `@Test`, and it will dynamically 
+detect what context it is running in and trigger the correct test failure:
 
 ```swift
-@Suite
-struct FeatureTests {
-  @Test func snapshot() {
-    assertSnapshot(FeatureView(), as: .image)
+class FeatureTests: XCTestCase {
+  func testFeature() {
+    assertSnapshot(of: MyView(), as: .image)  // ✅
+  }
+}
+
+@Test 
+func testFeature() {
+  assertSnapshot(of: MyView(), as: .image)  // ✅
+}
+```
+
+For the most part, asserting on snapshots works the same whether you are using XCTest or Swift
+Testing. There is one major difference, and that is how snapshot configuration works. There are
+two major ways snapshots can be configured: `diffTool` and `record`. 
+
+The `diffTool` property allows you to customize how a command is printed to the test failure
+message that allows you to quickly open a diff of two files, such as
+[Kaleidoscope](http://kaleidoscope.app). The `record` property allows you to change the mode of
+assertion so that new snapshots are generated and saved to disk.
+
+These properties can be overridden for a scope of an operation using the `withSnapshotTesting` 
+function. In an XCTest context the simplest way to do this is to override the `invokeTest` method 
+on `XCTestCase` and wrap it in `withSnapshotTesting`:
+
+```swift
+class FeatureTests: XCTestCase {
+  override func invokeTest() {
+    withSnapshotTesting(
+      record: .missing,
+      diffTool: .ksdiff 
+    ) {
+      super.invokeTest()
+    }
   }
 }
 ```
 
-It may not seem like much, but this actually pretty great. The new Swift Testing framework is not
-compatible with the older XCTest framework. Invoking `XCTAssert` inside a new-style test cannot 
-register test failures, and similarly using the new `#expect` macro from within an `XCTestCase` 
-subclass also does not work.
+This will override the `diffTool` and `record` properties for each test function.
 
-To make this work, the `assertSnapshot` function dynamically detects which testing environment
-it is in so that it knows to either invoke `XCTFail` or the new `Issue.record` under the hood.
-For the most part it just works seamlessly without you having to worry about it.
-
-However, there is one major difference. Swift Testing does not (yet) have a substitute for 
-`invokeTest`, which can be used to configuration snapshots for every test in a suite, such as the
-record mode or diff tool used in failure messages.
-
-There is an experimental version of this tool in Swift Testing, called 
-[`CustomExecutionTrait`][custom-execution-trait-gh], and this library provides such a trait called 
-`.snapshots(record:diffTool:)`. It allows you to customize snapshots for a `@Test` or `@Suite`, but 
-to get access to it you must perform an `@_spi(Experimental)` import of snapshot testing:
+Swift's new testing framework does not currently have a public API for this kind of customization.
+There is an experimental feature, called `CustomExecutionTrait`, that does gives us this ability,
+and the library provides such a trait called ``Testing/Trait/snapshots(diffTool:record:)``. It can
+be attached to any `@Test` or `@Suite` to configure snapshot testing:
 
 ```swift
 @_spi(Experimental) import SnapshotTesting
@@ -52,8 +83,6 @@ struct FeatureTests {
   …
 }
 ```
-
-That will override the `diffTool` and `record` options for the entire `FeatureTests` suite.
 
 > Important: As evident by the usage of `@_spi(Experimental)` this API is subject to change. As
 > soon as the Swift Testing library finalizes its API for `CustomExecutionTrait` we will update
