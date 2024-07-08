@@ -1,5 +1,7 @@
 import Dependencies
 import Models
+import PointFreeRouter
+import Styleguide
 import StyleguideV2
 
 public struct EpisodeDetail: HTML {
@@ -56,6 +58,102 @@ public struct EpisodeDetail: HTML {
                 .linkColor(.black.dark(.white))
                 .linkUnderline(true)
             }
+
+            div {
+              Divider()
+            }
+            .inlineStyle("margin", "5rem 0 2.5rem")
+
+            div {
+              if !episode.references.isEmpty {
+                Header(4) {
+                  "References"
+                }
+                .attribute("id", "references")
+
+                ul {
+                  HTMLForEach(episode.references) { reference in
+                    li {
+                      Header(5) {
+                        Link(href: reference.link) {
+                          HTMLText(reference.title)
+                        }
+                      }
+                      div {
+                        if let author = reference.author {
+                          HTMLText(author)
+                        }
+                        if reference.author != nil && reference.publishedAt != nil {
+                          " • "
+                        }
+                        if let publishedAt = reference.publishedAt {
+                          HTMLText(publishedAt.monthDayYear())
+                        }
+                      }
+                      .fontStyle(.body(.small))
+                      .color(.gray500)
+                      if let blurb = reference.blurb {
+                        p {
+                          HTMLText(String(stripping: blurb))
+                        }
+                        .color(.gray400.dark(.gray650))
+                        .inlineStyle("margin", "0")
+                      }
+                      div {
+                        Link(href: reference.link) {
+                          HTMLText(reference.link)
+                        }
+                      }
+                      .linkUnderline(true)
+                      .inlineStyle("margin-top", "0.25rem")
+                    }
+                  }
+                }
+                .linkColor(.offBlack.dark(.offWhite))
+                .listStyle(.reset)
+                .flexContainer(
+                  direction: "column",
+                  rowGap: "2rem"
+                )
+              }
+
+              if let codeSampleDirectory = episode.codeSampleDirectory {
+                div {
+                  Header(4) {
+                    "Downloads"
+                  }
+                  .attribute("id", "downloads")
+                }
+                .inlineStyle("margin-top", "4rem")
+                div {
+                  Header(5) {
+                    "Sample code"
+                  }
+                  .inlineStyle("margin", "1rem 0 0")
+                  let gitHubRouter = GitHubRouter()
+                  div {
+                    Link(
+                      href: gitHubRouter
+                        .url(for: .episodeCodeSample(directory: codeSampleDirectory))
+                        .absoluteString
+                    ) {
+                      HStack(alignment: .center, spacing: 0.5) {
+                        SVG(base64: gitHubSvgBase64(fill: "currentColor"), description: "")
+                          .inlineStyle("height", "20px")
+                          .inlineStyle("horizontal-align", "middle")
+                          .inlineStyle("vertical-align", "middle")
+                          .inlineStyle("width", "20px")
+                        HTMLText(codeSampleDirectory)
+                      }
+                    }
+                  }
+                  .linkColor(.offBlack.dark(.offWhite))
+                  .linkUnderline(true)
+                  .inlineStyle("margin-top", "0.25rem")
+                }
+              }
+            }
+            .color(.black.dark(.offWhite))
           }
           .inlineStyle("margin-left", "4rem", media: .desktop)
           .inlineStyle("min-width", "0")
@@ -64,8 +162,10 @@ public struct EpisodeDetail: HTML {
       }
     }
 
-    if !subscriberState.isActiveSubscriber {
-      GetStartedModule(style: .solid)
+    if currentUser == nil {
+      GetStartedModule(style: .gradient)
+    } else if subscriberState.isNonSubscriber {
+      UpgradeModule()
     }
 
     script {
