@@ -46,8 +46,8 @@ extension HTML {
 }
 
 public struct LinkStyle {
-  var color: PointFreeColor?
-  var underline: Bool?
+  public var color: PointFreeColor?
+  public var underline: Bool?
   public init(
     color: PointFreeColor? = nil,
     underline: Bool? = nil

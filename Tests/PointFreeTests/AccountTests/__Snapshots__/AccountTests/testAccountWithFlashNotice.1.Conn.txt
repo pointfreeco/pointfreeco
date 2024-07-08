@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"You’ve subscribed!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 79712
+Content-Length: 79754
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -2869,7 +2869,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
 .color-tgLLb3:visited{color:#79f2b0}
 .column-gap-83zzS1{column-gap:1.0rem}
 .display-mqllb2{display:grid}
-.grid-template-columns-x1B8x4{grid-template-columns:1fr 2fr}
+.grid-template-columns-hE9y01{grid-template-columns:minmax(0, 1fr) minmax(0, 2fr)}
 .row-gap-83zzS1{row-gap:1.0rem}
 .font-size-xlo1p4{font-size:0.75rem}
 .letter-spacing-fGWfX2{letter-spacing:0.54pt}
@@ -2890,7 +2890,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
   .padding-right-ujLNr4{padding-right:4.0rem}
   .column-gap-ZNGkd1{column-gap:1.0rem}
   .display-jdJkm4{display:grid}
-  .grid-template-columns-V2CuF3{grid-template-columns:1fr 1fr}
+  .grid-template-columns-AWWfa{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
   .row-gap-ZNGkd1{row-gap:1.0rem}
   .font-size-dR5Tt4{font-size:1.5rem}
   .font-size-Fb6s54{font-size:0.875rem}
@@ -2908,14 +2908,14 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
     </style>
     
 <footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
-  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-V2CuF3 row-gap-ZNGkd1">
+  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
       <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3" href="/">Point-Free</a>
       </h4>
       <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-x1B8x4 row-gap-83zzS1">
+    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-hE9y01 row-gap-83zzS1">
       <div>
         <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>

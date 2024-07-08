@@ -16,33 +16,110 @@ import Styleguide
 import Tuple
 import Views
 
-let episodeResponse:
-  M<
-    Tuple2<Either<String, Episode.ID>, Episode.Collection.Slug?>
-  > =
-    fetchEpisodeForParam
-    <| writeStatus(.ok)
-    >=> userEpisodePermission
-    >=> fetchEpisodeProgress
-    >=> map(lower)
-    >>> respond(
-      view: episodePageView(episodePageData:),
-      layoutData: { permission, episode, episodeProgress, collectionSlug in
-        SimplePageLayoutData(
-          data: episodePageData(
-            collectionSlug: collectionSlug,
-            episode: episode,
-            episodeProgress: episodeProgress,
-            permission: permission
-          ),
-          description: episode.blurb,
-          image: episode.image,
-          style: .base(.minimal(.black)),
-          title: "Episode #\(episode.sequence): \(episode.fullTitle)",
-          usePrismJs: true
+func showEpisode(
+  _ conn: Conn<StatusLineOpen, Void>,
+  param: Either<String, Episode.ID>,
+  collectionSlug: Episode.Collection.Slug?
+) async -> Conn<ResponseEnded, Data> {
+
+  @Dependency(\.episodes) var episodes
+
+  guard let episode = episode(forParam: param)
+  else {
+    return
+      conn
+      .writeStatus(.notFound)
+      .respond { _ in episodeNotFoundView() }
+  }
+
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
+  @Dependency(\.subscriberState) var subscriberState
+
+  let permission: EpisodePermission
+  let progress: Int?
+
+  if let currentUser {
+    var fetchProgress = false
+    if subscriberState.isActiveSubscriber {
+      permission = .loggedIn(user: currentUser, subscriptionPermission: .isSubscriber)
+      fetchProgress = true
+    } else {
+      let credits = try? await database.fetchEpisodeCredits(userID: currentUser.id)
+      if credits?.contains(where: { $0.episodeSequence == episode.sequence }) == true {
+        permission = .loggedIn(
+          user: currentUser,
+          subscriptionPermission: .isNotSubscriber(creditPermission: .hasUsedCredit)
         )
+        fetchProgress = true
+      } else {
+        permission = .loggedIn(
+          user: currentUser,
+          subscriptionPermission: .isNotSubscriber(
+            creditPermission: .hasNotUsedCredit(isEpisodeSubscriberOnly: episode.subscriberOnly)
+          )
+        )
+        fetchProgress = !episode.subscriberOnly
       }
-    )
+    }
+    if fetchProgress {
+      progress =
+        try? await database
+        .fetchEpisodeProgress(userID: currentUser.id, sequence: episode.sequence)
+        .percent
+    } else {
+      progress = nil
+    }
+  } else {
+    permission = .loggedOut(isEpisodeSubscriberOnly: episode.subscriberOnly)
+    progress = nil
+  }
+
+  guard episode.transcript != nil else {
+    return
+      conn
+      .writeStatus(.ok)
+      .respond(
+        view: episodePageView(episodePageData:),
+        layoutData: {
+          SimplePageLayoutData(
+            data: episodePageData(
+              collectionSlug: collectionSlug,
+              episode: episode,
+              episodeProgress: progress,
+              permission: permission
+            ),
+            description: episode.blurb,
+            image: episode.image,
+            style: .base(.minimal(.black)),
+            title: "Episode #\(episode.sequence): \(episode.fullTitle)",
+            usePrismJs: true
+          )
+        }
+      )
+  }
+
+  return
+    conn
+    .writeStatus(.ok)
+    .respondV2(
+      layoutData: SimplePageLayoutData(
+        description: String(stripping: episode.blurb),
+        image: episode.image,
+        title: "Episode #\(episode.sequence): \(episode.fullTitle)",
+        usePrismJs: true
+      )
+    ) {
+      EpisodeDetail(
+        episodePageData: episodePageData(
+          collectionSlug: collectionSlug,
+          episode: episode,
+          episodeProgress: progress,
+          permission: permission
+        )
+      )
+    }
+}
 
 private func episodePageData(
   collectionSlug: Episode.Collection.Slug?,
@@ -56,8 +133,12 @@ private func episodePageData(
   @Dependency(\.date.now) var now
 
   let context: EpisodePageData.Context
-  if let collection = collections.first(where: { $0.slug == collectionSlug }) {
-    context = .collection(collection)
+  if let collection = collections.first(where: { $0.slug == collectionSlug }),
+    let section = collection.sections.first(where: {
+      $0.coreLessons.contains(where: { $0.episode?.id == episode.id })
+    })
+  {
+    context = .collection(collection, section: section)
   } else {
     context = .direct(
       previousEpisode: episodes().first(where: { $0.sequence == episode.sequence - 1 }),

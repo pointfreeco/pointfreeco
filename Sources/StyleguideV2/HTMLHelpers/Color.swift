@@ -50,5 +50,19 @@ public struct PointFreeColor {
   public static let white = Self(rawValue: "#fff")
   public static let offWhite = Self(rawValue: "#fafafa")
 
+  public static func gray(_ value: UInt8) -> Self {
+    var hex = String(value, radix: 16)
+    if hex.count == 1 { hex.insert("0", at: hex.startIndex) }
+    var darkHex = String(255 - value, radix: 16)
+    if darkHex.count == 1 { darkHex.insert("0", at: darkHex.startIndex) }
+    return Self(rawValue: "#\(hex)\(hex)\(hex)")
+      .dark(Self(rawValue: "#\(darkHex)\(darkHex)\(darkHex)"))
+  }
+
+  @_disfavoredOverload
+  public static func gray(_ value: Double) -> Self {
+    gray(UInt8(255 * value))
+  }
+
   public static let currentColor = Self(rawValue: "currentColor")
 }

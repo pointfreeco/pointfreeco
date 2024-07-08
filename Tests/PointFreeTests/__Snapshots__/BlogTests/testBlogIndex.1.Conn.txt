@@ -2,7 +2,7 @@ GET http://localhost:8080/blog
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 33164
+Content-Length: 33279
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -54,10 +54,6 @@ body, html {
   body, html {
     background: #121212;
   }
-}
-article > pf-markdown > pf-vstack > p:last-of-type::after {
-  margin: 0 0.5rem;
-  content: "❖";
 }
 .markdown *:link, .markdown *:visited { color: inherit; }
 .diagnostic * {
@@ -342,6 +338,8 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
 .font-size-QgYLk2{font-size:2.0rem}
 .row-gap-NKv2f3{row-gap:0.5rem}
+article .content-xD6dy1:is(p):last-of-type::after{content:"❖"}
+article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .padding-FBkWQ3{padding:0}
 .color-I8WpG4{color:#808080}
 .row-gap-NBsge3{row-gap:3.0rem}
@@ -366,7 +364,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .color-H59Xg3:link{color:#79f2b0}
 .color-tgLLb3:visited{color:#79f2b0}
 .display-mqllb2{display:grid}
-.grid-template-columns-x1B8x4{grid-template-columns:1fr 2fr}
+.grid-template-columns-hE9y01{grid-template-columns:minmax(0, 1fr) minmax(0, 2fr)}
 .font-size-xlo1p4{font-size:0.75rem}
 .letter-spacing-fGWfX2{letter-spacing:0.54pt}
 .line-height-9Xzre{line-height:1.25}
@@ -405,7 +403,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   .padding-right-ujLNr4{padding-right:4.0rem}
   .column-gap-ZNGkd1{column-gap:1.0rem}
   .display-jdJkm4{display:grid}
-  .grid-template-columns-V2CuF3{grid-template-columns:1fr 1fr}
+  .grid-template-columns-AWWfa{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
   .row-gap-ZNGkd1{row-gap:1.0rem}
   .font-size-dR5Tt4{font-size:1.5rem}
   .font-size-Fb6s54{font-size:0.875rem}
@@ -479,7 +477,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
         <h3 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">
           <pf-markdown class="display-ix08W2">
             <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-              <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Mock Blog Post
+              <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Mock Blog Post
               </p>
             </pf-vstack>
           </pf-markdown>
@@ -517,14 +515,14 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   </div>
 </div>
 <footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
-  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-V2CuF3 row-gap-ZNGkd1">
+  <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
       <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3" href="/">Point-Free</a>
       </h4>
       <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
-    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-x1B8x4 row-gap-83zzS1">
+    <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-hE9y01 row-gap-83zzS1">
       <div>
         <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>

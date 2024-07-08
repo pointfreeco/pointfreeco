@@ -94,7 +94,7 @@ public struct DiagnosticLevel {
     buttonBackgroundColor: .init(rawValue: "#ACA3AF", darkValue: "#2B252E")
   )
 
-  static let warning = Self(
+  public static let warning = Self(
     icon: .warning,
     iconColor: .init(rawValue: "#FFBA00", darkValue: "#FFC502"),
     highlightColor: .init(rawValue: "#FFFAEA", darkValue: "#3F3A30"),

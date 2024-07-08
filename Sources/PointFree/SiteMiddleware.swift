@@ -160,8 +160,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     .performAsync()
 
   case let .collections(.collection(collectionSlug, .section(_, .episode(episodeParam)))):
-    return await episodeResponse(conn.map(const(episodeParam .*. collectionSlug .*. unit)))
-      .performAsync()
+    return await showEpisode(conn.map { _ in }, param: episodeParam, collectionSlug: collectionSlug)
 
   case let .collections(
     .collection(_, .section(_, .progress(param: param, percent: percent)))

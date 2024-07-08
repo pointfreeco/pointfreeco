@@ -19,7 +19,7 @@ public struct EpisodePageData {
   var permission: EpisodePermission
 
   public enum Context {
-    case collection(Episode.Collection)
+    case collection(Episode.Collection, section: Episode.Collection.Section)
     case direct(previousEpisode: Episode?, nextEpisode: Episode?)
   }
 
@@ -38,7 +38,7 @@ public struct EpisodePageData {
   }
 
   public var collection: Episode.Collection? {
-    guard case let .collection(collection) = self.context else { return nil }
+    guard case let .collection(collection, section: _) = self.context else { return nil }
     return collection
   }
 
@@ -53,14 +53,7 @@ public struct EpisodePageData {
 
   public var route: SiteRoute {
     switch context {
-    case let .collection(collection):
-      guard
-        let section = collection.sections.first(where: {
-          $0.coreLessons.contains(where: {
-            $0.episode == self.episode
-          })
-        })
-      else { return .episodes(.show(.left(self.episode.slug))) }
+    case let .collection(collection, section: section):
       return .collections(
         .collection(collection.slug, .section(section.slug, .episode(.left(self.episode.slug))))
       )
@@ -117,17 +110,7 @@ private func sideBar(
   data: EpisodePageData
 ) -> Node {
   switch data.context {
-  case let .collection(collection):
-    guard
-      let section = collection.sections
-        .first(where: { section in
-          section.coreLessons.contains(where: { lesson in
-            // TODO: equatable
-            lesson.episode?.id == data.episode.id
-          })
-        })
-      // TODO: is it possible for a section to not be found?
-    else { return [] }
+  case let .collection(collection, section: section):
     guard
       let currentEpisodeIndex = section.coreLessons.firstIndex(where: {
         $0.episode?.id == data.episode.id
@@ -1687,6 +1670,18 @@ public enum EpisodePermission: Equatable {
     public enum CreditPermission: Equatable {
       case hasNotUsedCredit(isEpisodeSubscriberOnly: Bool)
       case hasUsedCredit
+    }
+  }
+
+  public var isViewable: Bool {
+    switch self {
+    case .loggedIn(_, .isSubscriber),
+      .loggedIn(_, .isNotSubscriber(.hasUsedCredit)),
+      .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(false))),
+      .loggedOut(false):
+      return true
+    default:
+      return false
     }
   }
 }
