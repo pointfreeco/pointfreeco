@@ -24,7 +24,7 @@ platforms (SwiftUI, UIKit, AppKit, _etc._), as well as tools that can be used cr
 
 The tools from the library broadly fall into 3 main categories:
 
-* ### State observation
+* **State observation**
 
   SwiftUI makes use of the `@Observable` macro to allow one to encapsulate the logic and behavior of 
   a feature in a reference type, and the view will minimally observe changes to the model depending
@@ -81,7 +81,7 @@ The tools from the library broadly fall into 3 main categories:
   closure of `observe` will not be invoked. This means only the bare essentials of state will be
   observed, and you don't have to think about it at all. 
 
-* ### 2-way bindings
+* **2-way bindings**
 
   Bindings in SwiftUI are a powerful tool for allowing two independent features to share a bit of 
   state. They are so powerful that it is easy to take for granted these days, and to forget how
@@ -124,7 +124,7 @@ The tools from the library broadly fall into 3 main categories:
   That makes the model the "source of truth", and you never have to worry about the UI getting 
   out of sync with the model.
 
-* ### Navigation
+* **Navigation**
 
   State-driven navigation is probably one of the most powerful concepts that SwiftUI introduced to
   developers on Apple's platforms. It allows you to write complex code in a concise and correct
