@@ -17,7 +17,7 @@ way.
 The Apple ecosystem currently has two primary testing frameworks, and unfortunately they are not
 compatible with each other. There is the XCTest framework, which has been around for decades and
 is a private framework provided by Apple and heavily integrated into Xcode. And now there is 
-[Swift Testing](http://github.com/apple/swift-testing), an open source testing ramework built in 
+[Swift Testing](http://github.com/apple/swift-testing), an open source testing framework built in 
 Swift that is capable of integrating into a variety of environments.
 
 These two frameworks are not compatible in the sense that an assertion made in one framework
