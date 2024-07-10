@@ -162,5 +162,6 @@ extension BlogPost {
     .post0143_WWDCSale,
     .post0144_WWDCSale,
     .post0145_UIKitNavBeta,
+    .post0146_SnapshotSwiftTesting,
   ]
 }
