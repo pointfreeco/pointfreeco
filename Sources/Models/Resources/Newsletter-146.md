@@ -39,7 +39,7 @@ class FeatureTests: XCTestCase {
 }
 
 @Test 
-func testFeature() {
+func feature() {
   assertSnapshot(of: MyView(), as: .image)  // ✅
 }
 ```
@@ -90,8 +90,8 @@ struct FeatureTests {
 > soon as the Swift Testing library finalizes its API for `CustomExecutionTrait` we will update
 > the library accordingly and remove the `@_spi` annotation.
 
-Now all tests run in the suite will be recorded in the `.all` and test failures will be printed
-with the `ksdiff` command line tool.
+Now all tests run in the suite will be recorded in the `.all` record mode and test failures will 
+be printed with the `ksdiff` command line tool.
 
 ## New features in SnapshotTesting
 
