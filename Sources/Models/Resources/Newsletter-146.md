@@ -113,9 +113,9 @@ These customization options have a few downsides currently.
 
   * And second, these options aren't as granular as some of our users wanted. When ``isRecording``
     is true snapshots are generated and written to disk, and when it is false snapshots are not 
-    generated, _unless_ a file is not present on disk. The a snapshot _is_ generated. Some of our
+    generated, _unless_ a file is not present on disk. Then a snapshot _is_ generated. Some of our
     users wanted an option between these two extremes, where snapshots would not be generated if the
-    file does not exist on disk.
+    file does not exist on disk or if the test passes already.
 
     And the ``diffTool`` variable allows one to specify a command line tool to use for visualizing
     diffs of files, but only works when the command line tool accepts a very narrow set of 
