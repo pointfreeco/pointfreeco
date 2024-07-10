@@ -10,13 +10,15 @@ way.
 ## Beta preview for Swift Testing support
 
 > Note: Currently our support of the Swift Testing framework is considered "beta" 
-> because the new testing framework has not even officially been released yet. Once it is officially 
-> released, probably sometime in September, we will have an official release with support.
+> because Swift's own testing framework has not even officially been released yet. Once it is 
+> officially released, probably sometime in September, we will have an official release of our 
+> libraries with support.
 
 The Apple ecosystem currently has two primary testing frameworks, and unfortunately they are not
-compatible with each other. There is the XCTest framework, which is a private framework provided
-by Apple and heavily integrated into Xcode. And now there is Swift Testing, an open source testing
-framework built in Swift that is capable of integrating into a variety of environments.
+compatible with each other. There is the XCTest framework, which has been around for decades and
+is a private framework provided by Apple and heavily integrated into Xcode. And now there is 
+[Swift Testing](http://github.com/apple/swift-testing), an open source testing ramework built in 
+Swift that is capable of integrating into a variety of environments.
 
 These two frameworks are not compatible in the sense that an assertion made in one framework
 from a test in the other framework will not trigger a test failure. So, if you are writing a test
@@ -25,7 +27,7 @@ the hood, that will not bubble up to an actual test failure when tests are run. 
 you have a test case inheriting from `XCTestCase` that ultimiately invokes the new style `#expect`
 macro, that too will not actually trigger a test failure.
 
-However, these details have all been hidden away in the SnapshotTesting library. You can simply
+However, these details have all been hidden away in our SnapshotTesting library. You can simply
 use `assertSnapshot` in either an `XCTestCase` subclass _or_ `@Test`, and it will dynamically 
 detect what context it is running in and trigger the correct test failure:
 
@@ -72,7 +74,7 @@ This will override the `diffTool` and `record` properties for each test function
 
 Swift's new testing framework does not currently have a public API for this kind of customization.
 There is an experimental feature, called `CustomExecutionTrait`, that does gives us this ability,
-and the library provides such a trait called ``Testing/Trait/snapshots(diffTool:record:)``. It can
+and the library provides such a trait called `.snapshots(diffTool:record:)`. It can
 be attached to any `@Test` or `@Suite` to configure snapshot testing:
 
 ```swift
@@ -87,6 +89,9 @@ struct FeatureTests {
 > Important: As evident by the usage of `@_spi(Experimental)` this API is subject to change. As
 > soon as the Swift Testing library finalizes its API for `CustomExecutionTrait` we will update
 > the library accordingly and remove the `@_spi` annotation.
+
+Now all tests run in the suite will be recorded in the `.all` and test failures will be printed
+with the `ksdiff` command line tool.
 
 ## New features in SnapshotTesting
 
