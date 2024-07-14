@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep288_modernUIKit = Episode(
     blurb: """
-      TODO
+      We round out our stack navigation tools with support for an `@Environment`-like feature for \
+      holding onto the stack's path, a `NavigationLink`-like feature for pushing features onto the \
+      stack from anywhere, and we'll handle every corner case from deep-linking to user dismissal.
       """,
     codeSampleDirectory: "0288-modern-uikit-pt8",
     exercises: _exercises,
