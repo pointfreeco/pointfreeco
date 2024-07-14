@@ -19,7 +19,7 @@ extension Episode {
       .swiftPerception,
     ],
     sequence: 288,
-    subtitle: "Unified Navigation",
+    subtitle: "Stack Navigation, Part 2",
     title: "Modern UIKit",
     trailerVideo: .init(
       bytesLength: 46_600_000,

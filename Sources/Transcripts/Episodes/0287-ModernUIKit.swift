@@ -3,7 +3,10 @@ import Foundation
 extension Episode {
   public static let ep287_modernUIKit = Episode(
     blurb: """
-      TODO
+      We have now implemented tree-based navigation in UIKit, driven by the Observation framework, \
+      but there is another form of navigation to think about: stack-based navigation, where you \
+      drive your navigation from a flat collection of states rather than a heavily-nested type. \
+      Let's leverage Observation to build a really nice tool for stack-based navigation.
       """,
     codeSampleDirectory: "0287-modern-uikit-pt7",
     exercises: _exercises,
@@ -19,7 +22,7 @@ extension Episode {
       .swiftPerception,
     ],
     sequence: 287,
-    subtitle: "Stack-based Navigation",
+    subtitle: "Stack Navigation, Part 1",
     title: "Modern UIKit",
     trailerVideo: .init(
       bytesLength: 55_400_000,

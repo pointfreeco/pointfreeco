@@ -78,6 +78,19 @@ public func responseTimeout(_ interval: TimeInterval)
   }
 }
 
+extension Conn where Step == HeadersOpen {
+  public func respond(
+    _ view: @escaping (A) -> Node
+  ) -> Conn<ResponseEnded, Data> {
+    @Dependency(\.renderHtml) var renderHtml
+
+    return respond(
+      body: renderHtml(view(data)),
+      contentType: .html
+    )
+  }
+}
+
 public func respond<A>(
   _ view: @escaping (A) -> Node
 ) -> Middleware<HeadersOpen, ResponseEnded, A, Data> {

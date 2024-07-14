@@ -29,7 +29,7 @@ func showEpisode(
     return
       conn
       .writeStatus(.notFound)
-      .respond { _ in episodeNotFoundView() }
+      .respond { episodeNotFoundView() }
   }
 
   @Dependency(\.currentUser) var currentUser

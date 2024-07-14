@@ -3,6 +3,10 @@ import Models
 import Tagged
 
 extension Episode {
+  public var hasTranscript: Bool {
+    Bundle.module.url(forResource: "Episode-\(sequence.rawValue)", withExtension: "md") != nil
+  }
+
   public var transcript: String? {
     guard
       let url = Bundle.module.url(forResource: "Episode-\(sequence.rawValue)", withExtension: "md")
@@ -18,6 +22,7 @@ extension Episode {
 
   public var transcriptBlocks: [TranscriptBlock] {
     get {
+      guard !hasTranscript else { return [] }
       let transcripts = self._transcriptBlocks ?? Episode.allPrivateTranscripts[self.id]
       assert(
         transcripts != nil, "Missing private transcript for episode #\(self.id) (\(self.title))!")
