@@ -509,6 +509,7 @@ struct TableOfContentsSection: HTML {
               HTMLText(episode.fullTitle)
             }
             .color(linkStyle.color)
+            .inlineStyle("word-wrap", "balance")
           }
         }
         HStack(spacing: 0.5) {
@@ -530,6 +531,7 @@ struct TableOfContentsSection: HTML {
                   }
                   .linkColor(.offBlack.dark(.offWhite))
                   .inlineStyle("line-height", "1.35")
+                  .inlineStyle("word-break", "break-all")
 
                   if let timestamp = section.timestamp {
                     Link(href: timestamp.anchor) {
@@ -608,6 +610,7 @@ struct TableOfContentsSection: HTML {
                 Header(5) {
                   HTMLText(episode.fullTitle)
                 }
+                .inlineStyle("word-wrap", "balance")
               }
             }
           }
