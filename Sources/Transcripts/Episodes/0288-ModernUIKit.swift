@@ -10,7 +10,7 @@ extension Episode {
     codeSampleDirectory: "0288-modern-uikit-pt8",
     exercises: _exercises,
     id: 288,
-    length: 26 * 60 + 53,
+    length: 28 * 60 + 30,
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2024-07-22")!,
     references: [
