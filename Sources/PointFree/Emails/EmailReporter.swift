@@ -76,7 +76,7 @@ public struct EmailReporter: IssueReporter {
     line: UInt,
     column: UInt
   ) {
-    repo
+    reportIssue(error, message(), fileID: fileID, filePath: filePath, line: line, column: column)
   }
 
   private func send(
