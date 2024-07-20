@@ -734,11 +734,11 @@ And then we would want to plug this domain into the feature’s domain:
 
 ```swift
 struct State {
-  // …
+  …
   var rows: IdentifiedArrayOf<RowState>
 }
 enum Action {
-  // …
+  …
   case row(id: RowState.ID, RowAction)
 }
 ```

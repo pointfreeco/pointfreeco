@@ -242,7 +242,9 @@ struct AppEnvironment {
 Then we can make our `appReducer` work with the `AppEnvironment`, which means the closure is now handed an instance of the environment:
 
 ```swift
-let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
+let appReducer: Reducer<
+  AppState, AppAction, AppEnvironment
+> = .combine(
   …,
   Reducer { state, action, environment in
     …
