@@ -2,6 +2,7 @@ import Dependencies
 import Either
 import Foundation
 import HttpPipeline
+import IssueReporting
 import Models
 import PointFreePrelude
 import PointFreeRouter
@@ -78,25 +79,19 @@ private func fetchInvoices<A>(
   return { conn in
     let subscription = conn.data.first
 
-    return EitherIO {
-      try await stripe.fetchInvoices(
-        customerID: subscription.customer.id,
-        status: .paid
-      )
-    }
-    .withExcept(notifyError(subject: "Couldn't load invoices"))
-    .run
-    .flatMap {
-      switch $0 {
-      case let .right(invoices):
-        return conn.map(const(subscription .*. invoices .*. conn.data.second))
-          |> middleware
-      case .left:
-        return conn
-          |> redirect(
-            to: .account(),
-            headersMiddleware: flash(.error, invoiceError)
-          )
+    return IO {
+      do {
+        let invoices = try await stripe.fetchInvoices(
+          customerID: subscription.customer.id,
+          status: .paid
+        )
+        return await middleware(conn.map { _ in subscription .*. invoices .*. conn.data.second })
+          .performAsync()
+      } catch {
+        reportIssue(error, "Couldn't load invoices")
+        return conn.redirect(to: .account()) {
+          $0.flash(.error, invoiceError)
+        }
       }
     }
   }

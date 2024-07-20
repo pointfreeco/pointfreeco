@@ -1,5 +1,6 @@
 import Either
 import EmailAddress
+import Html
 import IssueReporting
 
 extension IssueReporter where Self == EmailReporter {
@@ -57,6 +58,27 @@ public struct EmailReporter: IssueReporter {
     }
   }
 
+  public func expectIssue(
+    _ message: @autoclosure () -> String?,
+    fileID: StaticString,
+    filePath: StaticString,
+    line: UInt,
+    column: UInt
+  ) {
+    reportIssue(message(), fileID: fileID, filePath: filePath, line: line, column: column)
+  }
+
+  public func expectIssue(
+    _ error: any Error,
+    _ message: @autoclosure () -> String?,
+    fileID: StaticString,
+    filePath: StaticString,
+    line: UInt,
+    column: UInt
+  ) {
+    repo
+  }
+
   private func send(
     error: (any Error)? = nil,
     message: String?,
@@ -92,7 +114,7 @@ public struct EmailReporter: IssueReporter {
     try await sendEmail(
       to: emails,
       subject: "[PointFree Error] \(subject.isEmpty ? "Untitled" : subject)",
-      content: inj1(body)
+      content: inj2(.pre(.raw(body)))
     )
   }
 }

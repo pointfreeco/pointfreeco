@@ -3,6 +3,7 @@ import Either
 import Foundation
 import Html
 import HttpPipeline
+import IssueReporting
 import Models
 import PointFreePrelude
 import PointFreeRouter
@@ -31,7 +32,7 @@ func accountRssMiddleware(
     }
 
     // Track feed request
-    await notifyError(subject: "Create Feed Request Event Failed") {
+    await withExpectedIssue("Create Feed Request Event Failed", isIntermittent: true) {
       try await database.createFeedRequestEvent(
         feedType: .privateEpisodesFeed,
         userAgent: conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
