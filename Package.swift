@@ -36,7 +36,6 @@ var package = Package(
     .library(name: "Styleguide", targets: ["Styleguide"]),
     .library(name: "StyleguideV2", targets: ["StyleguideV2"]),
     .library(name: "Syndication", targets: ["Syndication"]),
-    .library(name: "TranscriptParser", targets: ["TranscriptParser"]),
     .library(name: "Transcripts", targets: ["Transcripts"]),
     .library(name: "Views", targets: ["Views"]),
     .library(name: "WebPreview", targets: ["WebPreview"]),
@@ -54,7 +53,6 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.3.1"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
     .package(url: "https://github.com/pointfreeco/swift-overture", revision: "ac1cd0f"),
-    .package(url: "https://github.com/pointfreeco/swift-parsing", from: "0.13.0"),
     .package(url: "https://github.com/pointfreeco/swift-prelude", revision: "da5ead2"),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", branch: "async"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.10.0"),
@@ -509,25 +507,9 @@ var package = Package(
     ),
 
     .target(
-      name: "TranscriptParser",
-      dependencies: [
-        "Models",
-        .product(name: "Parsing", package: "swift-parsing"),
-      ]
-    ),
-
-    .testTarget(
-      name: "TranscriptParserTests",
-      dependencies: [
-        "TranscriptParser",
-        .product(name: "CustomDump", package: "swift-custom-dump"),
-      ]
-    ),
-
-    .target(
       name: "Transcripts",
       dependencies: [
-        "TranscriptParser"
+        "Models",
       ],
       resources: [
         .process("Resources"),

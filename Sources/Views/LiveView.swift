@@ -185,3 +185,18 @@ private let livestreamScheduledAtFormatter: DateFormatter = {
   df.timeStyle = .short
   return df
 }()
+
+private func nonBreaking(title: String) -> String {
+  let parts = title.components(separatedBy: ": ")
+  guard
+    parts.count == 2,
+    let mainTitle = parts.first,
+    let subTitle = parts.last
+  else { return title }
+
+  let nonBreakingSubtitle = subTitle.components(separatedBy: ", ")
+    .map { $0.replacingOccurrences(of: " ", with: "&nbsp;") }
+    .joined(separator: ", ")
+
+  return mainTitle + ": " + nonBreakingSubtitle
+}

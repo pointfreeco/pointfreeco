@@ -48,7 +48,6 @@ extension Api {
     var sequence: Episode.Sequence
     var subscriberOnly: Bool
     var title: String
-    var transcriptBlocks: [Episode.TranscriptBlock]
     var video: Episode.Video
 
     init(episode: Episode, currentDate: Date) {
@@ -70,11 +69,10 @@ extension Api {
       self.sequence = episode.sequence
       self.subscriberOnly = subscriberOnly
       self.title = episode.fullTitle
-      self.transcriptBlocks = episode.transcriptBlocks
       self.video =
         subscriberOnly
-        ? episode.trailerVideo
-        : episode.fullVideo  // TODO: use subscriber data to determine this
+          ? episode.trailerVideo
+          : episode.fullVideo  // TODO: use subscriber data to determine this
     }
   }
 }

@@ -555,7 +555,6 @@ class EpisodePageTests: TestCase {
     var episode = self.episodes()[0]
     episode.exercises = [.mock, .mock]
     episode.references = [.mock]
-    episode.transcriptBlocks = Array(episode.transcriptBlocks[0...1])
 
     try await withDependencies {
       $0.episodes = { [episode] }

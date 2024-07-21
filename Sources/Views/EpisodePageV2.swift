@@ -4,6 +4,85 @@ import PointFreeRouter
 import Styleguide
 import StyleguideV2
 
+public enum EpisodePermission: Equatable {
+  case loggedIn(user: User, subscriptionPermission: SubscriberPermission)
+  case loggedOut(isEpisodeSubscriberOnly: Bool)
+
+  public enum SubscriberPermission: Equatable {
+    case isNotSubscriber(creditPermission: CreditPermission)
+    case isSubscriber
+
+    public enum CreditPermission: Equatable {
+      case hasNotUsedCredit(isEpisodeSubscriberOnly: Bool)
+      case hasUsedCredit
+    }
+  }
+
+  public var isViewable: Bool {
+    switch self {
+    case .loggedIn(_, .isSubscriber),
+      .loggedIn(_, .isNotSubscriber(.hasUsedCredit)),
+      .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(false))),
+      .loggedOut(false):
+      return true
+    default:
+      return false
+    }
+  }
+}
+
+public struct EpisodePageData {
+  var context: Context
+  var emergencyMode: Bool
+  var episode: Episode
+  var episodeProgress: Int?
+  var permission: EpisodePermission
+
+  public enum Context {
+    case collection(Episode.Collection, section: Episode.Collection.Section)
+    case direct(previousEpisode: Episode?, nextEpisode: Episode?)
+  }
+
+  public init(
+    context: Context,
+    emergencyMode: Bool,
+    episode: Episode,
+    episodeProgress: Int?,
+    permission: EpisodePermission
+  ) {
+    self.context = context
+    self.emergencyMode = emergencyMode
+    self.episode = episode
+    self.episodeProgress = episodeProgress
+    self.permission = permission
+  }
+
+  public var collection: Episode.Collection? {
+    guard case let .collection(collection, section: _) = self.context else { return nil }
+    return collection
+  }
+
+  public var section: Episode.Collection.Section? {
+    guard
+      let collection = self.collection,
+      let section = collection.sections
+        .first(where: { $0.coreLessons.contains(where: { $0.episode == self.episode }) })
+    else { return nil }
+    return section
+  }
+
+  public var route: SiteRoute {
+    switch context {
+    case let .collection(collection, section: section):
+      return .collections(
+        .collection(collection.slug, .section(section.slug, .episode(.left(self.episode.slug))))
+      )
+    case .direct:
+      return .episodes(.show(.left(self.episode.slug)))
+    }
+  }
+}
+
 public struct EpisodeDetail: HTML {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.date.now) var now
@@ -223,6 +302,13 @@ public struct EpisodeDetail: HTML {
     }
   }
 }
+
+let headerDateFormatter: DateFormatter = {
+  let df = DateFormatter()
+  df.dateFormat = "MMM d, yyyy"
+  df.timeZone = TimeZone(secondsFromGMT: 0)
+  return df
+}()
 
 private struct TableOfContents: HTML {
   let episodePageData: EpisodePageData
