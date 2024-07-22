@@ -76,27 +76,11 @@ func showEpisode(
   }
 
   guard episode.transcript != nil else {
+    // TODO: reportIssue("Episode #\(episode.sequence) transcript not found")
     return
       conn
-      .writeStatus(.ok)
-      .respond(
-        view: episodePageView(episodePageData:),
-        layoutData: {
-          SimplePageLayoutData(
-            data: episodePageData(
-              collectionSlug: collectionSlug,
-              episode: episode,
-              episodeProgress: progress,
-              permission: permission
-            ),
-            description: episode.blurb,
-            image: episode.image,
-            style: .base(.minimal(.black)),
-            title: "Episode #\(episode.sequence): \(episode.fullTitle)",
-            usePrismJs: true
-          )
-        }
-      )
+      .writeStatus(.notFound)
+      .respond { episodeNotFoundView() }
   }
 
   return
@@ -198,6 +182,19 @@ let progressResponse: M<Tuple2<Either<String, Episode.ID>, Int>> =
   )
   <| userEpisodePermission
   >=> updateProgress
+
+private func isEpisodeViewable(for permission: EpisodePermission) -> Bool {
+  switch permission {
+  case .loggedIn(_, .isSubscriber):
+    return true
+  case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)):
+    return true
+  case let .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(isSubscriberOnly))):
+    return !isSubscriberOnly
+  case let .loggedOut(isSubscriberOnly):
+    return !isSubscriberOnly
+  }
+}
 
 private let updateProgress: M<Tuple3<EpisodePermission, Episode, Int>> = { conn in
   @Dependency(\.currentUser) var currentUser
