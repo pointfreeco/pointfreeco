@@ -4,9 +4,9 @@ warnings, breakpoints, assertions, and do so in a testable manner.
 
 ## Reporting issues
 
-The primary tool for reporting an issue in your application code is the 
-[`reportIssue`](<doc:reportIssue(_:fileID:filePath:line:column:)>) function. You can invoke from
-anywhere with your features' code to signal that something happened that should not have:
+The primary tool for reporting an issue in your application code is the `reportIssue` function. You
+can invoke it from anywhere in your features' code to signal that something happened that should not
+have:
 
 ```swift
 guard let lastItem = items.last
@@ -14,27 +14,36 @@ else {
   reportIssue("'items' should never be empty.")
   return 
 }
-// Use 'lastItem'
+…
 ```
 
-By default, [`reportIssue`](<doc:reportIssue(_:fileID:filePath:line:column:)>) will trigger an
-unobtrusive, purple runtime warning when running your app in Xcode (simulator and device):
+By default, this will trigger an unobtrusive, purple runtime warning when running your app in Xcode
+(simulator and device):
 
-![A purple runtime warning in Xcode showing that an issue has been reported.](https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/runtime-warning.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/runtime-warning~dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/runtime-warning.png">
+  <img alt="A purple runtime warning in Xcode showing that an issue has been reported." src="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/runtime-warning.png">
+</picture>
 
-This provides a very visible way to see when an issue has occured in your application without
-stopping the app's execution and interrupting your workflow.
+This provides a very visual way to see when an issue has occurred in your application without
+stopping the app's execution or interrupting your workflow.
 
-The [`reportIssue`](<doc:reportIssue(_:fileID:filePath:line:column:)>) tool can also be customized
-to allow for other ways of reporting issues. It can be configured to trigger a breakpoint if you
-want to do some debugging when an issue is reported, or a precondition or fatal error if you want
-to truly stop execution. And you can create your own custom issue reporter to send issues to OSLog 
-or an external server. 
+The `reportIssue` tool can also be customized to allow for other ways of reporting issues. It can be
+configured to trigger a breakpoint if you want to do some debugging when an issue is reported, or a
+precondition or fatal error if you want to truly stop execution. And you can create your own custom
+issue reporter to send issues to OSLog or an external server.
 
 Further, when running your code in a testing context (both XCTest and Swift's native Testing
 framework), all reported issues become _test failures_. This helps you get test coverage that
 problematic code paths are not executed, and makes it possible to build testing tools for libraries
 that ship in the same target as the library itself.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/test-failure~dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/test-failure.png">
+  <img alt="A purple runtime warning in Xcode showing that an issue has been reported." src="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/test-failure.png">
+</picture>
 
 ## Issue reporters
 
@@ -52,7 +61,7 @@ You an also create your own custom issue reporter by defining a type that confor
 ``IssueReporter/reportIssue(_:fileID:filePath:line:column:)``, which you can implement to report
 issues in any way you want.
 
-## Overridding issue reporters
+## Overriding issue reporters
 
 By default the library uses the ``IssueReporter/runtimeWarning`` reporter, but it is possible to 
 override the reporters used. There are two primary ways:
