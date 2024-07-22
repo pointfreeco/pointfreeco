@@ -96,7 +96,7 @@ reporters used. There are two primary ways:
         IssueReporters.current = [.fatalError]
       }
       var body: some Scene {
-        // ...
+        …
       }
     }
     ```
