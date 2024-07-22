@@ -509,7 +509,7 @@ var package = Package(
     .target(
       name: "Transcripts",
       dependencies: [
-        "Models",
+        "Models"
       ],
       resources: [
         .process("Resources"),

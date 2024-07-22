@@ -71,8 +71,8 @@ extension Api {
       self.title = episode.fullTitle
       self.video =
         subscriberOnly
-          ? episode.trailerVideo
-          : episode.fullVideo  // TODO: use subscriber data to determine this
+        ? episode.trailerVideo
+        : episode.fullVideo  // TODO: use subscriber data to determine this
     }
   }
 }

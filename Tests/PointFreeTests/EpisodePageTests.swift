@@ -555,7 +555,7 @@ class EpisodePageTests: TestCase {
   //   var episode = self.episodes()[0]
   //   episode.exercises = [.mock, .mock]
   //   episode.references = [.mock]
-  // 
+  //
   //   try await withDependencies {
   //     $0.episodes = { [episode] }
   //     $0.renderHtml = { Html.render($0) }
@@ -564,7 +564,7 @@ class EpisodePageTests: TestCase {
   //       from: request(
   //         to: .episodes(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
   //     )
-  // 
+  //
   //     #if !os(Linux)
   //       if self.isScreenshotTestingAvailable {
   //         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
@@ -573,11 +573,11 @@ class EpisodePageTests: TestCase {
   //         )
   //         webView.loadHTMLString(html, baseURL: nil)
   //         await assertSnapshot(matching: webView, as: .image, named: "desktop")
-  // 
+  //
   //         webView.frame.size.width = 500
   //         webView.frame.size.height = 1700
   //         await assertSnapshot(matching: webView, as: .image, named: "mobile")
-  // 
+  //
   //         try await webView.evaluateJavaScript(
   //           """
   //           document.getElementsByTagName('details')[0].open = true
@@ -586,7 +586,7 @@ class EpisodePageTests: TestCase {
   //         await assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
   //       }
   //     #endif
-  // 
+  //
   //     await withDependencies {
   //       $0.episodes = { [episode] }
   //       $0.renderHtml = { Html.debugRender($0) }
