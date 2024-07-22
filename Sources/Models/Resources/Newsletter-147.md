@@ -23,7 +23,7 @@ By default, this will trigger an unobtrusive, purple runtime warning when runnin
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/runtime-warning~dark.png">
   <source media="(prefers-color-scheme: light)" srcset="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/runtime-warning.png">
-  <img alt="A purple runtime warning in Xcode showing that an issue has been reported." src="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/runtime-warning.png">
+  <img alt="A purple runtime warning in Xcode showing that an issue has been reported." src="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/runtime-warning.png" width="100%">
 </picture>
 
 This provides a very visual way to see when an issue has occurred in your application without
@@ -32,18 +32,20 @@ stopping the app's execution or interrupting your workflow.
 The `reportIssue` tool can also be customized to allow for other ways of reporting issues. It can be
 configured to trigger a breakpoint if you want to do some debugging when an issue is reported, or a
 precondition or fatal error if you want to truly stop execution. And you can create your own custom
-issue reporter to send issues to OSLog or an external server.
+issue reporter to send issues to OSLog or an external server. 
 
 Further, when running your code in a testing context (both XCTest and Swift's native Testing
 framework), all reported issues become _test failures_. This helps you get test coverage that
 problematic code paths are not executed, and makes it possible to build testing tools for libraries
 that ship in the same target as the library itself.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/test-failure~dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/test-failure.png">
-  <img alt="A purple runtime warning in Xcode showing that an issue has been reported." src="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/test-failure.png">
-</picture>
+<div>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/test-failure~dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/test-failure.png">
+    <img alt="A purple runtime warning in Xcode showing that an issue has been reported." src="https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/test-failure.png" width="100%">
+  </picture>
+</div>
 
 ## Issue reporters
 
