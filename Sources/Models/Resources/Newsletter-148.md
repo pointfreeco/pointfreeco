@@ -2,15 +2,14 @@ We are excited to announce that we now have beta support for Swift's new native 
 in all of [Point-Free's](/) libraries. This includes the [Composable Architecture][tca-gh],
 [SnapshotTesting][snapshot-testing-gh], [Dependencies][deps-gh], and a lot more! 
 
-> Note: Currently our support of the Swift Testing framework is considered "beta" 
-> because Swift's own testing framework has not even officially been released yet. Once it is 
-> officially released, probably sometime in September, we will have an official release of our 
-> libraries with support.
+> Note: Currently our support of the Swift Testing framework is considered "beta" because Swift's
+> own testing framework has not even officially been released yet. Once it is officially released,
+> probably sometime in September, we will have an official release of our libraries with support.
 
 ## Swift Testing
 
 Swift 6 and Xcode 16 have introduced a brand new testing framework that is native to the Swift
-language. It is powerful and robust, and will eventually be able to run all all platforms, not just
+language. It is powerful and robust, and will eventually be able to run on all platforms, not just
 Apple's platforms.
 
 We currently maintain many libraries that provide test helpers, but currently those helpers work
@@ -18,7 +17,7 @@ only for the XCTest framework. If you try to write a test with the new Testing f
 one of our helpers, any failure triggered by the failure will not actually fail the test suite.
 
 So, we have updated every one of our libraries so that they can be seamlessly used in Swift Testing
-_and_ XCTest.:
+_and_ XCTest.
 
 ### Composable Architecture
 
@@ -27,6 +26,7 @@ allows one to fully test features built with the library. You can now write thes
 modern `@Test` function and it will all just work:
 
 ```swift
+@MainActor
 @Test
 func basics() async {
   let store = TestStore(initialState: Feature.State()) {
@@ -44,15 +44,15 @@ func basics() async {
 }
 ```
 
-Running this test will fail because we forgot to assert that `isLoading` goes back to `false`
-after receiving a response:
+Running this test will fail because we forgot to assert that `isLoading` goes back to `false` after
+receiving a response:
 
 > Failed: A state change does not match expectation: …
 >
 > ```
 >   Feature.State(
->     count: 0,
->     fact: "0 is a good number",
+>     count: 0,
+>     fact: "0 is a good number",
 > −   isLoading: true,
 > +   isLoading: false,
 >   )
@@ -73,16 +73,15 @@ example above, if we had forgotten to override the `factClient` dependency:
 ```diff
  let store = TestStore(initialState: Feature.State()) {
    Feature()
-+}
 -} withDependencies: {
 -  $0.factClient = .mock
--}
+ }
 ```
 
 …then running the test produces a test failure letting you know you are accessing a live dependency
 from a test context:
 
-> Failed: @Dependency(\\.factClient) has no test implementation, but was accessed from a test 
+> Failed: `@Dependency(\.factClient)` has no test implementation, but was accessed from a test 
 > context:
 >
 > ```
@@ -97,9 +96,9 @@ from a test context:
 >
 > To fix, override 'factClient' with a test value. 
 
-### Custom dump
+### Custom Dump
 
-Our [CustomDump][custom-dump-gh] library comes with a few tools for printing out large data 
+Our [Custom Dump][custom-dump-gh] library comes with a few tools for printing out large data 
 structures into a nicely formatted string. The string can be used to provide helpful debugging tools 
 to apps and libraries, but can also be used to power a test assertion tools that helps visualize the 
 exact difference between two values.
@@ -114,7 +113,7 @@ XCTAssertEqual(user, other)
 
 …then the test failure is not very helpful:
 
-> Failed: XCTAssertEqual failed: ("User(favoriteNumbers: [42, 1729], id: 2, name: "Blob")") is not equal to ("User(favoriteNumbers: [42, 1729], id: 2, name: "Blob!")")
+> Failed: XCTAssertEqual failed: ("`User(favoriteNumbers: [42, 1729], id: 2, name: "Blob")`") is not equal to ("`User(favoriteNumbers: [42, 1729], id: 2, name: "Blob!")`")
 
 And so CustomDump provides a tool that makes this failure message much easier to read, and it's
 called `XCTAssertNoDifference`:
@@ -156,7 +155,7 @@ using our library to produce better failure messages.
 
 [custom-dump-gh]: https://github.com/pointfreeco/swift-custom-dump
 
-### Snapshot testing
+### Snapshot Testing
 
 Our popular [SnapshotTesting][snapshot-testing-gh] library provides powerful tools for testing
 large, complex data structures by snapshotting them into a serializable format, and saving them
@@ -175,8 +174,8 @@ more and they have all been updated!
 
 ## Get started today
 
-Be sure to update all our libraries to their newest version, and start writing tests with 
-Swift's native Testing framework today!
+Be sure to update all our libraries to their newest version, and start writing tests with Swift's
+native Testing framework today!
 
 [clocks-gh]: https://github.com/pointfreeco/swift-clocks
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
