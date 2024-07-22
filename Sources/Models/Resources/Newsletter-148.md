@@ -124,17 +124,19 @@ other.name += "!"
 XCTAssertNoDifference(user, other)
 ```
 
-Now the failure wil look like this:
+Now the failure will look like this:
 
 > Failed: XCTAssertNoDifference failed: …
 > 
->     User(
->       favoriteNumbers: […],
->       id: 2,
->   −   name: "Blob"
->   +   name: "Blob!"
->     )
-> 
+> ```
+>   User(
+>     favoriteNumbers: […],
+>     id: 2,
+> −   name: "Blob"
+> +   name: "Blob!"
+>   )
+> ```
+>
 > (First: −, Second: +)
 
 However, as is clear from the name, `XCTAssertNoDifference` was built to work with the XCTest
