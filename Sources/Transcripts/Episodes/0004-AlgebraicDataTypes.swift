@@ -34,8 +34,7 @@ extension Episode {
         sd540: "0004-trailer-540p-d07c80f547fe401e96a1dd0282e1feb5"
       ),
       vimeoId: 354_215_001
-    ),
-    transcriptBlocks: loadTranscriptBlocks(forSequence: 4)
+    )
   )
 }
 

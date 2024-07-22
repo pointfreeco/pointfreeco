@@ -1,8 +1,8 @@
-[00:00:18] # Introduction
+## Introduction
 
 Today we wanna talk about a link between two worlds: Swift types and algebra. We all have familiarity with both of these worlds, but it turns out they are related in a very deep, beautiful way. Using this correspondence we can better understand what adds complexity to our data structures, and even use intuition we have from algebra to better sculpt our data so that impossible states are not representable, and hence do not compile!
 
-[00:01:00] # The algebra of structs
+## The algebra of structs
 
 First, let's look at something simple enough: structs. In fact, this particular struct:
 
@@ -45,7 +45,8 @@ Pair<Bool, Three>(first: false, second: .three)
 
 OK this has six values! Interesting!
 
-[00:02:43] There's a strange type in Swift called `Void`. In fact it's strange for at least two reasons. For one, you can refer to the type and the value in the same way:
+@T(00:02:43)
+There's a strange type in Swift called `Void`. In fact it's strange for at least two reasons. For one, you can refer to the type and the value in the same way:
 
 ```swift
 _: Void = Void()
@@ -82,7 +83,8 @@ Only 1 value!
 
 Interesting! We had no choice but to plug in `()` for the second field, and so it didn't really change the type much.
 
-[00:04:48] There is yet another strange type in Swift: `Never`. Its definition is simple enough:
+@T(00:04:48)
+There is yet another strange type in Swift: `Never`. Its definition is simple enough:
 
 ```swift
 enum Never {}
@@ -99,38 +101,40 @@ There's nothing we can put here and have Swift compile this program.
 So what happens when we plug `Never` into `Pair`?
 
 ```swift
-Pair<Bool, Never>(first: true, second: ???)
+Pair<Bool, Never>(first: true, second: <#???#>)
 ```
 
 There's nothing we can put into `???`!
 
 The `Never` type also gets special treatment by the compiler, in which a function that returns `Never` is known to be a non-returning function. For example, the `fatalError` function returns `Never`. The compiler knows that all lines and branches of code after the execution of this statement will never happen, and can use that to prove exhaustiveness.
 
-[00:06:06] With all of these examples in mind, what is the relationship between the number of values in `A` and `B` and the number of values in `Pair<A, B>`?
+@T(00:06:06)
+With all of these examples in mind, what is the relationship between the number of values in `A` and `B` and the number of values in `Pair<A, B>`?
 
 ```swift
-// Pair<Bool, Bool>  = 4
-// Pair<Bool, Three> = 6
-// Pair<Bool, Void>  = 2
-// Pair<Void, Void>  = 1
-// Pair<Bool, Never> = 0
+Pair<Bool, Bool>  = 4
+Pair<Bool, Three> = 6
+Pair<Bool, Void>  = 2
+Pair<Void, Void>  = 1
+Pair<Bool, Never> = 0
 ```
 
 A pattern's beginning to emerge: multiplication!
 
 ```swift
-// Pair<Bool, Bool>  = 4 = 2 * 2
-// Pair<Bool, Three> = 6 = 2 * 3
-// Pair<Bool, Void>  = 2 = 2 * 1
-// Pair<Void, Void>  = 1 = 1 * 1
-// Pair<Bool, Never> = 0 = 2 * 0
+Pair<Bool, Bool>  = 4 = 2 * 2
+Pair<Bool, Three> = 6 = 2 * 3
+Pair<Bool, Void>  = 2 = 2 * 1
+Pair<Void, Void>  = 1 = 1 * 1
+Pair<Bool, Never> = 0 = 2 * 0
 ```
 
 `Pair` causes the number of values to multiply, _i.e._ the number of values in `Pair<A, B>` is the number of values in `A` times the number of values in `B`.
 
 There's another algebraic interpretation of this phenomenon: logical conjunction, a.k.a. _and_. The `Pair` type is encapsulating what it means to take the "and" of two types, i.e. a value of `Pair<A, B>` is precisely a value of type `A` and a another value of type `B`.
 
-[00:08:08] And this is true of any struct and tuple, not just `Pair`. Let's look at an example:
+@T(00:08:08)
+And this is true of any struct and tuple, not just `Pair`. Let's look at an example:
 
 ```swift
 enum Theme {
@@ -154,25 +158,26 @@ struct Component {
 What's the algebra of `Component`?
 
 ```swift
-// Bool * Theme * State = 2 * 3 * 2 = 12
+Bool * Theme * State = 2 * 3 * 2 = 12
 ```
 
 `Component` has twelve values!
 
-[00:08:58] With this intuition, let's wipe away all of the names of the types, and just focus on what data is stored in the fields. To do that, we are going to create a notation that is not valid Swift code, but will allow us to more compactly see the algebra we are uncovering here. So where we used to write `Pair<A, B>` we are now simply going to write `A * B`. Indeed this looks strange, but it is only to help guide our intuition:
+@T(00:08:58)
+With this intuition, let's wipe away all of the names of the types, and just focus on what data is stored in the fields. To do that, we are going to create a notation that is not valid Swift code, but will allow us to more compactly see the algebra we are uncovering here. So where we used to write `Pair<A, B>` we are now simply going to write `A * B`. Indeed this looks strange, but it is only to help guide our intuition:
 
 ```swift
-// Pair<A, B>        = A * B
-// Pair<Bool, Bool>  = Bool * Bool
-// Pair<Bool, Three> = Bool * Three
-// Pair<Bool, Void>  = Bool * Void
-// Pair<Bool, Never> = Bool * Never
+Pair<A, B>        = A * B
+Pair<Bool, Bool>  = Bool * Bool
+Pair<Bool, Three> = Bool * Three
+Pair<Bool, Void>  = Bool * Void
+Pair<Bool, Never> = Bool * Never
 ```
 
 We call `A * B` the product of the types `A` and `B`. And now that we are thinking a little bit more abstractly, we can even loosen our intuition around `Pair<A, B>` being the literal multiplication of the number of elements in `A` and `B`. While that is indeed true for types with finitely many values, that doesn't really help us with things like:
 
 ```swift
-// Pair<Bool, String> = Bool * String
+Pair<Bool, String> = Bool * String
 ```
 
 We no longer get to talk about the number of values, because `String` has an infinite number, but we're still allowed to think of this as multiplication.
@@ -180,27 +185,29 @@ We no longer get to talk about the number of values, because `String` has an inf
 We could even consider the following:
 
 ```swift
-// String * [Int]
-// [String] * [[Int]]
+String   * [Int]
+[String] * [[Int]]
 ```
 
 We're multiplying infinite types together!
 
-[00:11:12] Let's take things a step further and wipe away the names from `Void`, `Never` and `Bool` and only represent those types by the number of values that are contained within.
+@T(00:11:12)
+Let's take things a step further and wipe away the names from `Void`, `Never` and `Bool` and only represent those types by the number of values that are contained within.
 
 ```swift
-// Never = 0
-// Void = 1
-// Bool = 2
+Never = 0
+Void  = 1
+Bool  = 2
 ```
 
 So now we aren't even thinking about specific types, just abstract algebraic entities.
 
-[00:11:46] # The algebra of enums
+## The algebra of enums
 
 OK, now we've seen that structs in Swift correspond to multiplication of types. But there's a corresponding "dual": addition! How's this look like in Swift's type system?
 
-[00:12:10] Well, turns out Swift has support for such a construction, and that's precisely an `enum`! Let's consider the most generic, non-trivial enum one could make:
+@T(00:12:10)
+Well, turns out Swift has support for such a construction, and that's precisely an `enum`! Let's consider the most generic, non-trivial enum one could make:
 
 ```swift
 enum Either<A, B> {
@@ -248,7 +255,8 @@ Either<Bool, Never>.right(???)
 
 This last example is particularly interesting. We saw that by taking a pair with `Never`, _i.e._ `Pair<A, Never>`, we made the pair uninhabited. However, with `Either` it just means that one case is uninhabited, but the other is free to take values in `Bool`.
 
-[00:14:46] Now we can see some algebra peeking through. So what's the relationship between the number of values in `A` and `B` and the number of values in `Either<A, B>`?
+@T(00:14:46)
+Now we can see some algebra peeking through. So what's the relationship between the number of values in `A` and `B` and the number of values in `Either<A, B>`?
 
 ```swift
 Either<Bool, Bool>  = 4 = 2 + 2
@@ -268,7 +276,7 @@ Either<Bool, Void>  = Bool + Void  = 2 + 1 = 3
 Either<Bool, Never> = Bool + Never = 2 + 0 = 2
 ```
 
-[00:17:37] # Word of warning: Void
+## Word of warning: Void
 
 It's worth noting that some languages (such as Haskell, PureScript, Idris) use `Void` to denote the uninhabited type (_i.e._, what Swift calls `Never`), and so could lead to some confusion if you look into those languages. And in fact, in some sense that's a great name since "void" kinda seems like a space that has nothing in it!
 
@@ -303,7 +311,7 @@ typealias Void = ()
 
 Tuples in Swift are non-nominal types, _i.e._ you don't get to refer to them by name, only by structure. This is a very unfortunate thing in Swift that can hopefully some day be remedied.
 
-[00:19:28] # Empty structs vs. empty enums
+## Empty structs vs. empty enums
 
 But now we want to call out something very strange. Let's look at the definitions of `Unit` and `Never` side-by-side:
 
@@ -380,15 +388,15 @@ product([]) == 1
 
 Now, transporting this concept back to the type world, we are naturally led to the statement that the "empty sum type" has no values (i.e. uninhabited) and that the "empty product type" has exactly one value! So we've used algebra to disentangle a really gnarly existential quandary!
 
-[00:23:26] # Algebraic properties
+## Algebraic properties
 
 Now that we've built up some of the concepts to understand the correspondence between Swift types and algebra, let's try to flex these muscles and see if we can get intuition on some type constructions at this higher level.
 
 Let's start easy. Recall that `Void` corresponds to `1`, and in the algebra world we know that multiplying by `1` doesn't do anything. What does this look like in types?
 
 ```swift
-// Void = 1
-// A * Void = A = Void * A
+Void = 1
+A * Void = A = Void * A
 ```
 
 This means that using a `Void` value in the field of a struct has the net effect of essentially leaving the type unchanged.
@@ -396,8 +404,8 @@ This means that using a `Void` value in the field of a struct has the net effect
 On the other hand, `Never` corresponds to `0`, and we know that multiplying with it results in `0`. In the type world this look like:
 
 ```swift
-// Never = 0
-// A * Never = Never = Never * A
+Never = 0
+A * Never = Never = Never * A
 ```
 
 So putting `Never` in a field of the struct has the net result of turning that struct into a `Never` type itself. It completely annihilates it.
@@ -405,22 +413,22 @@ So putting `Never` in a field of the struct has the net result of turning that s
 But, adding `0` has a net result of leaving the value unchanged, and in types this corresponds to:
 
 ```swift
-// A + Never = A = Never + A
+A + Never = A = Never + A
 ```
 
 Let's go the other way. Consider this type expression:
 
 ```swift
-// 1 + A = Void + A
+1 + A = Void + A
 ```
 
 In terms of `Either` this is:
 
 ```swift
-// Either<Void, A> {
-//   case left(())
-//   case right(A)
-// }
+Either<Void, A> {
+  case left(())
+  case right(A)
+}
 ```
 
 So this is the type that has all of the values of `A` on the right side, and then this one special value `left(Void())` is adjoined. What native Swift type has this same shape? Optionals!
@@ -435,19 +443,19 @@ enum Optional<A> {
 The `none` case corresponds to `left` (a case with no associated value is essentially the same as a case with a `Void` value), and the `some` case corresponds to `right`. So now we have seen:
 
 ```swift
-// 1 + A = Void + A = A?
+1 + A = Void + A = A?
 ```
 
 Now, say you came across this expression:
 
 ```swift
-// Either<Pair<A, B>, Pair<A, C>>
+Either<Pair<A, B>, Pair<A, C>>
 ```
 
 Let's see what it looks like in our notation:
 
 ```swift
-// A * B + A * C
+A * B + A * C
 ```
 
 Using basic algebra we understand how to factorize this into a simpler expression:
@@ -473,7 +481,7 @@ Pair<Either<A, B>, Either<A, C>>
 And in the math world:
 
 ```swift
-// (A + B) * (A + C)
+(A + B) * (A + C)
 ```
 
 This equation does not factorize anymore and so we cannot make it any simpler.
@@ -481,47 +489,50 @@ This equation does not factorize anymore and so we cannot make it any simpler.
 We could, of course, expand it out so that it equals:
 
 ```swift
-// A * A + A * C + B * A + B * C
+A * A + A * C + B * A + B * C
 ```
 
 And this is kind of like an enum with four cases, each case being a pair. That may not be what you want, but maybe you do, and you have the algebra to show you how to do it!
 
 Every data structure that we talk about, if we just think of the data and none of the behavior we associate with the data, it's all just sums of products: you start with a base enum of cases, and each case you have a bunch of products, which may in turn contain more sums and products.
 
-[00:29:25] # What’s the point?
+## What’s the point?
 
 We've written a bunch of pseudocode that isn't even valid Swift, all it can do is guide our intuition. Have we gotten any benefit out of this?
 
 Let's look at a method on `URLSession`.
 
 ```swift
-// URLSession.shared
-//   .dataTask(with: url, completionHandler: (data: Data?, response: URLResponse?, error: Error?) -> Void)
+URLSession.shared.dataTask(
+  with: url,
+  completionHandler:
+    (data: Data?, response: URLResponse?, error: Error?) -> Void
+)
 ```
 
 The completion handler gives us back three values that are all optional. This is a product type with 3 fields. Swift Tuples are just products. Let's express it algebraically:
 
 ```swift
-// (Data + 1) * (URLResponse + 1) * (Error + 1)
+(Data + 1) * (URLResponse + 1) * (Error + 1)
 ```
 
 This looks a little strange. What happens if we fully expand it?
 
 ```swift
-// (Data + 1) * (URLResponse + 1) * (Error + 1)
-//   = Data * URLResponse * Error
-//     + Data * URLResponse
-//     + URLResponse * Error
-//     + Data * Error
-//     + Data
-//     + URLResponse
-//     + Error
-//     + 1
+(Data + 1) * (URLResponse + 1) * (Error + 1)
+  = Data * URLResponse * Error
+    + Data * URLResponse
+    + URLResponse * Error
+    + Data * Error
+    + Data
+    + URLResponse
+    + Error
+    + 1
 ```
 
 There are a lot of representable states here that don't make sense. They even jump out on each line. We can get `URLResponse * Error`, while `URLResponse` should never be inhabited at the same time as `Error`. We can also get `Data * Error`, which also makes no sense. We can also get `1`, which is just `Void`, or in this case where everything value is `nil`. And we can also get everything: `Data * URLResponse * Error`, which should never happen.
 
-!> [correction]: It was brought to our attention by one of our viewers, [Ole Begemann](http://twitter.com/olebegemann), that
+> Correction: It was brought to our attention by one of our viewers, [Ole Begemann](http://twitter.com/olebegemann), that
 > it is in fact possible for `URLResponse` and `Error` to be non-`nil` at the same time. He wrote a great
 > [blog post](https://oleb.net/blog/2018/03/making-illegal-states-unrepresentable/) about this, and we
 > discuss this correction at the beginning of our follow up episode,
@@ -532,7 +543,7 @@ When you work with this interface, you may notice that when you `if let` over th
 Let's use our new intuitions to represent just what we want:
 
 ```swift
-// Data * URLResponse + Error
+Data * URLResponse + Error
 ```
 
 What's this look like with our types?
@@ -544,7 +555,7 @@ Either<Pair<Data, URLResponse>, Error>
 In fact, the Swift community has embraced a type that allows us to handle these kinds of states, the `Result` type.
 
 ```swift
-// Result<(Data, URLResponse), Error>
+Result<(Data, URLResponse), Error>
 ```
 
 And in this case, rather than use our `Pair`, we can use a simple tuple to represent the product of `Data` and `URLResponse`.
@@ -554,7 +565,7 @@ By using the proper type in the completion callback, we have greatly reduced the
 Let's consider the `Result` type further. What if we're using an API that returns `Result` but with a particular operation that can never fail? We can specify that our error type is `Never`!
 
 ```swift
-// Result<A, Never>
+Result<A, Never>
 ```
 
 Now we can be sure that the error case is uninhabitable.
@@ -562,7 +573,7 @@ Now we can be sure that the error case is uninhabitable.
 And what if we're dealing with an asynchronous API that supported cancellation? How could we add that cancellation case to our `Result`?
 
 ```swift
-// Result<A, Error>?
+Result<A, Error>?
 ```
 
 We just make it optional!

@@ -1,4 +1,4 @@
-[00:00:05] # Introduction
+## Introduction
 
 We've now had an entire episode just about functions where we emphasized the importance of looking at the input and output types of functions to understand how they compose, but there are a lot of things a function can do that aren't captured by its signature alone. These things are called "side effects."
 
@@ -6,7 +6,8 @@ Side effects are one of the biggest sources of complexity in code, and to make t
 
 In this episode we'll cover a few kinds of side effects, show why they're so difficult to test, why they don't compose, and try to address these problems in a nice way.
 
-[00:00:43] Side effect is a pretty overloaded term, so in order to define it, let's first look at a function that has no side effects:
+@T(00:00:43)
+Side effect is a pretty overloaded term, so in order to define it, let's first look at a function that has no side effects:
 
 ```swift
 func compute(_ x: Int) -> Int {
@@ -17,28 +18,28 @@ func compute(_ x: Int) -> Int {
 When we call our function, we get a result back:
 
 ```swift
-compute(2) // 5
+compute(2)  // 5
 ```
 
 A really nice property of functions without side effects is that no matter how many times we call one with the same input, we always get the same output:
 
 ```swift
-compute(2) // 5
-compute(2) // 5
-compute(2) // 5
+compute(2)  // 5
+compute(2)  // 5
+compute(2)  // 5
 ```
 
 This predictability makes it incredibly simple to write tests for them.
 
 ```swift
-assertEqual(5, compute(2)) // ✅
+assertEqual(5, compute(2))  // ✅
 ```
 
 If we ever write a test with the wrong expectation or the wrong input for an expectation, it will _always_ fail.
 
-```swift
-assertEqual(4, compute(2)) // ❌
-assertEqual(5, compute(3)) // ❌
+```swift:1-2:fail
+assertEqual(4, compute(2))
+assertEqual(5, compute(3))
 ```
 
 Let's add a side effect to our function.
@@ -56,7 +57,7 @@ We've inserted a `print` statement right in the middle.
 When we call `computeWithEffect` with the same input as before, we get the same output:
 
 ```swift
-computeWithEffect(2) // 5
+computeWithEffect(2)  // 5
 ```
 
 But if we look at our console, there's some _additional_ output here.
@@ -69,8 +70,8 @@ If we compare function signatures, `computeWithEffect` is exactly the same as `c
 
 Let's write a test for this function:
 
-```swift
-assertEqual(5, computeWithEffect(2)) // ✅
+```swift:1:pass
+assertEqual(5, computeWithEffect(2))
 ```
 
 It passes! But now we have an _additional_ line in our console.
@@ -85,8 +86,8 @@ And this is behavior that we just can't test. Here we're just printing to the co
 Side-effects can also break compositional intuitions we build. In our episode on functions, we discussed how mapping over an array with two functions is the same as mapping over an array with the composition of those functions:
 
 ```swift
-[2, 10].map(compute).map(compute) // [26, 10202]
-[2, 10].map(compute >>> compute)  // [26, 10202]
+[2, 10].map(compute).map(compute)  // [26, 10202]
+[2, 10].map(compute >>> compute)   // [26, 10202]
 ```
 
 Now let's try that with `computeWithEffect`:
@@ -114,7 +115,7 @@ Computed 10202
 
 We can no longer take advantage of this property without having to consider the side effects. Our ability to make this kind of refactor is a real-world performance optimization: instead of traversing our array twice, we traverse it just once. If our functions have side effects, though, they won't execute in the same order, and order may be something we depend on! Making this kind of performance optimization in the world of side effects could break our code!
 
-[00:05:20] # Hidden outputs
+## Hidden outputs
 
 Let's look at the simplest way to control this side effect. Rather than performing the effect in the body of the function, we can return an extra value that describes what needs to be printed. A function could print many things, so we'll use an array of strings to model this.
 
@@ -124,29 +125,27 @@ func computeAndPrint(_ x: Int) -> (Int, [String]) {
   return (computation, ["Computed \(computation)"])
 }
 
-computeAndPrint(2) // (5, ["Computed 5"])
+computeAndPrint(2)  // (5, ["Computed 5"])
 ```
 
 We get a result of not only the computation, but an array of logs we may want to print.
 
 Let's write a test:
 
-```swift
+```swift:1:pass
 assertEqual(
   (5, ["Computed 5"]),
   computeAndPrint(2)
 )
-// ✅
 ```
 
 Now we're getting coverage not only on the computation, but on the effect we want to perform! Our test will now fail if the side effect is in an unexpected format.
 
-```swift
+```swift:1:fail
 assertEqual(
   (5, ["Computed 3"]),
   computeAndPrint(2)
 )
-// ❌
 ```
 
 The data is quite simple here, but remember, it could potentially be more critical data that describes an API request or analytics event, and we could be writing assertions that these effects are being prepared the way we expect them to.
@@ -162,25 +161,26 @@ logs.forEach { print($0) }
 
 We may not want the caller to have side effects, though, so it may have to pass them along, as well. And maybe _its_ caller doesn't want to have side effects, and so on! This sounds like a messy problem, but there are nice ways to solve it. Before we can solve _that_ problem, though, we need to understand _this_ one in detail.
 
-[00:08:15] It may seem like we've solved the effects problem: we just need to substitute them with descriptions in the output of our functions. Unfortunately, we've broken one of the most important features of functions: composition.
+@T(00:08:15)
+It may seem like we've solved the effects problem: we just need to substitute them with descriptions in the output of our functions. Unfortunately, we've broken one of the most important features of functions: composition.
 
 Our `compute` function is nice because it forward-composes with itself.
 
 ```swift
-compute >>> compute // (Int) -> Int
+compute >>> compute  // (Int) -> Int
 ```
 
 And our `computeWithEffect` function is actually kind of nice because it _also_ forward-composes with itself.
 
 ```swift
-computeWithEffect >>> computeWithEffect // (Int) -> Int
+computeWithEffect >>> computeWithEffect  // (Int) -> Int
 ```
 
 We can pipe values into them and get results.
 
 ```swift
-2 |> compute >>> compute // 26
-2 |> computeWithEffect >>> computeWithEffect // 26
+2 |> compute >>> compute  // 26
+2 |> computeWithEffect >>> computeWithEffect  // 26
 ```
 
 Of course, now we're back to having `computeWithEffect` printing to the console.
@@ -194,8 +194,9 @@ Meanwhile, our attempt to solve this problem, `computeAndPrint`, does _not_ comp
 
 ```swift
 computeAndPrint >>> computeAndPrint
-// Cannot convert value of type '(Int) -> (Int, [String])' to expected argument type '((Int, [String])) -> (Int, [String])'
 ```
+
+> Error: Cannot convert value of type '(Int) -> (Int, [String])' to expected argument type '((Int, [String])) -> (Int, [String])'
 
 The output of `computeAndPrint` is a tuple, `(Int, [String])`, but the input is just `Int`.
 
@@ -206,10 +207,10 @@ In the case of functions that return tuples, we can fix the composition quite ni
 ```swift
 func compose<A, B, C>(
   _ f: @escaping (A) -> (B, [String]),
-  _ g: @escaping (B) -> (C, [String])
+_ g: @escaping (B) -> (C, [String])
   ) -> (A) -> (C, [String]) {
 
-  // …
+  …
 }
 ```
 
@@ -221,7 +222,7 @@ We can implement this function by looking at the type of functions and the value
 func compose<A, B, C>(
   _ f: @escaping (A) -> (B, [String]),
   _ g: @escaping (B) -> (C, [String])
-  ) -> (A) -> (C, [String]) {
+) -> (A) -> (C, [String]) {
 
   return { a in
     let (b, logs) = f(a)
@@ -247,19 +248,28 @@ We've now created a whole new function that calls `computeAndPrint` twice. When 
 // (26, ["Computed 5", "Computed 26"])
 ```
 
-[00:11:00] # Introducing >=>
+## Introducing >=>
 
 It seems like we've recovered composition and completely solved the problem, but things start to get messy when we compose more than two functions.
 
 ```swift
-2 |> compose(compose(computeAndPrint, computeAndPrint), computeAndPrint)
+2 |> compose(
+  compose(computeAndPrint, computeAndPrint),
+  computeAndPrint
+)
 ```
 
 What's maybe worse is that there are two different ways to make the same composition:
 
 ```swift
-2 |> compose(compose(computeAndPrint, computeAndPrint), computeAndPrint)
-2 |> compose(computeAndPrint, compose(computeAndPrint, computeAndPrint))
+2 |> compose(
+  compose(computeAndPrint, computeAndPrint),
+  computeAndPrint
+)
+2 |> compose(
+  computeAndPrint,
+  compose(computeAndPrint, computeAndPrint)
+)
 ```
 
 Parentheses always seem to be the enemy of composition. What's the enemy of parentheses? An infix operator.
@@ -287,7 +297,7 @@ We can now rename our `compose` function and we can glue our effectful functions
 func >=> <A, B, C>(
   _ f: @escaping (A) -> (B, [String]),
   _ g: @escaping (B) -> (C, [String])
-  ) -> (A) -> (C, [String]) {
+) -> (A) -> (C, [String]) {
 
   return { a in
     let (b, logs) = f(a)
@@ -296,7 +306,8 @@ func >=> <A, B, C>(
   }
 }
 
-computeAndPrint >=> computeAndPrint >=> computeAndPrint // (Int) -> (Int, [String])
+computeAndPrint >=> computeAndPrint >=> computeAndPrint
+// (Int) -> (Int, [String])
 ```
 
 We can pipe values through and use multiple lines to create pipelines that read nicely from top to bottom.
@@ -352,10 +363,10 @@ We've introduced a new operator, so it's time to justify its addition to our cod
 func >=> <A, B, C>(
   _ f: @escaping (A) -> B?,
   _ g: @escaping (B) -> C?
-  ) -> ((A) -> C?) {
+) -> ((A) -> C?) {
 
   return { a in
-    fatalError() // an exercise for the viewer
+    fatalError()  // an exercise for the viewer
   }
 }
 ```
@@ -375,10 +386,10 @@ We could also use the operator to enhance composition with functions that return
 func >=> <A, B, C>(
   _ f: @escaping (A) -> [B],
   _ g: @escaping (B) -> [C]
-  ) -> ((A) -> [C]) {
+) -> ((A) -> [C]) {
 
   return { a in
-    fatalError() // an exercise for the viewer
+    fatalError()  // an exercise for the viewer
   }
 }
 ```
@@ -389,17 +400,17 @@ And if we were using a `Promise` or `Future` type, we could use the operator to 
 func >=> <A, B, C>(
   _ f: @escaping (A) -> Promise<B>,
   _ g: @escaping (B) -> Promise<C>
-  ) -> ((A) -> Promise<C>) {
+) -> ((A) -> Promise<C>) {
 
   return { a in
-    fatalError() // an exercise for the viewer
+    fatalError()  // an exercise for the viewer
   }
 }
 ```
 
 We'll see this shape come up time and time again. In some languages with very powerful type systems, it's possible to define this operator a single time and get all of these implementations immediately. Swift does not yet have these features, so we have to define them for new types as we go. We're still able to build an intuition for this shape, though, and share it over many, many types. Now when we see `>=>` we can know that it's chaining into some kind of effect.
 
-[00:18:51] # Hidden inputs
+## Hidden inputs
 
 We've covered a side effect that leads to a hidden output and shown how to control it by making that output explicit in our functions, all while retaining composability. There's another kind of side effect that's a bit trickier.
 
@@ -419,12 +430,11 @@ When we run this code again, we're likely to get a different value. This is the 
 
 If we write a test, it's almost always going to fail.
 
-```swift
+```swift:1:fail
 assertEqual(
   "Hello Blob! It's 32 seconds past the minute.",
   greetWithEffect("Blob")
 )
-// ❌
 ```
 
 This is a particularly bad side effect. In our previous case we could at the very least write assertions against its output, we just weren't covering the whole story. In this case we cant even write a test because the output keeps changing.
@@ -444,12 +454,11 @@ greet(at: Date(), name: "Blob")
 
 This function behaves the same as before but with one crucial difference: we can now control the date and have a test that always passes.
 
-```swift
+```swift:1:pass
 assertEqual(
   "Hello Blob! It's 39 seconds past the minute.",
   greet(at: Date(timeIntervalSince1970: 39), name: "Blob")
 )
-// ✅
 ```
 
 We've recovered testability at the cost of some boilerplate. The caller of the function needs to pass the date explicitly, which seems unnecessary outside of our tests. We may be tempted to hide this implementation detail by specifying a default argument and inject this dependency on the current date into our function to clean up the call site.
@@ -463,7 +472,8 @@ func greet(at date: Date = Date(), name: String) -> String {
 greet(name: "Blob")
 ```
 
-[00:22:35] This reads a bit nicer, but we have a bigger problem: we've broken composition again.
+@T(00:22:35)
+This reads a bit nicer, but we have a bigger problem: we've broken composition again.
 
 Our first `greetWithEffect` function had a nice `(String) -> String` shape that could be composed with other functions that return strings and functions take strings as input.
 
@@ -513,14 +523,14 @@ func greet(at date: Date) -> (String) -> String {
 Now we can call our greet function with a date and get a brand new `(String) -> String` function.
 
 ```swift
-greet(at: Date()) // (String) -> String
+greet(at: Date())  // (String) -> String
 ```
 
 This function composes!
 
 ```swift
-uppercased >>> greet(at: Date()) // (String) -> String
-greet(at: Date()) >>> uppercased // (String) -> String
+uppercased >>> greet(at: Date())  // (String) -> String
+greet(at: Date()) >>> uppercased  // (String) -> String
 ```
 
 And we can pipe values through!
@@ -534,17 +544,16 @@ And we can pipe values through!
 
 We've restored composition and still have testability.
 
-```swift
+```swift:1:pass
 assertEqual(
   "Hello Blob! It's 37 seconds past the minute.",
   "Blob" |> greet(at: Date(timeIntervalSince1970: 37))
 )
-// ✅
 ```
 
 So now we've encountered an effect that was impossible to test and we were able to control it by moving that context into the input of the function, which is the dual version of the effect we came across earlier. Our first effect reached out into the world and made a change, which is kind of like a hidden output, while this effect depends on some state of the outside world, which is kind of like a hidden input! All effects manifest in this way.
 
-[00:26:29] # Mutation
+## Mutation
 
 Let's look at a very particular type of effect and really analyze it: mutation. We've all had to deal with mutation in code and it can lead to a lot of complexity. Luckily, Swift provides some type-level features to help control mutation and properly document how and where it can happen.
 
@@ -573,10 +582,10 @@ Here we have a `NumberFormatter` from `Foundation` and several functions that co
 ```swift
 decimalStyle(formatter)
 wholeStyle(formatter)
-formatter.string(for: 1234.6) // "1,235"
+formatter.string(for: 1234.6)  // "1,235"
 
 currencyStyle(formatter)
-formatter.string(for: 1234.6) // "$1,234"
+formatter.string(for: 1234.6)  // "$1,234"
 ```
 
 If we now re-apply our first set of formatters, we have a problem.
@@ -584,7 +593,7 @@ If we now re-apply our first set of formatters, we have a problem.
 ```swift
 decimalStyle(formatter)
 wholeStyle(formatter)
-formatter.string(for: 1234.6) // "1,234"
+formatter.string(for: 1234.6)  // "1,234"
 ```
 
 The output's changed from `"1,235"` to `"1,234"`. The reason it's changed? Mutation. The `currencyStyle` function's changes have bled into other uses of our formatter, resulting in a bug that in a larger context might be hard to track down.
@@ -595,7 +604,8 @@ The reason we're seeing this particular kind of mutation is because `NumberForma
 
 Swift also has "value" types. This is Swift's answer to controlling mutation. When you assign a value, you get a brand new copy to work with for the given scope. All mutations are local and anything else holding onto the same value upstream won't see these changes.
 
-[00:29:33] Let's refactor this code to use values.
+@T(00:29:33)
+Let's refactor this code to use values.
 
 We'll start with a struct that is a wrapper around the configuration we do with `NumberFormatter`.
 
@@ -618,21 +628,27 @@ struct NumberFormatterConfig {
 It has some nice defaults and a `formatter` computed property that we can use to derive new, "honest" `NumberFormatter`s. What does it look like to update our styling functions to use `NumberFormatterConfig` instead?
 
 ```swift
-func decimalStyle(_ format: NumberFormatterConfig) -> NumberFormatterConfig {
+func decimalStyle(
+  _ format: NumberFormatterConfig
+) -> NumberFormatterConfig {
   var format = format
   format.numberStyle = .decimal
   format.maximumFractionDigits = 2
   return format
 }
 
-func currencyStyle(_ format: NumberFormatterConfig) -> NumberFormatterConfig {
+func currencyStyle(
+  _ format: NumberFormatterConfig
+) -> NumberFormatterConfig {
   var format = format
   format.numberStyle = .currency
   format.roundingMode = .down
   return format
 }
 
-func wholeStyle(_ format: NumberFormatterConfig) -> NumberFormatterConfig {
+func wholeStyle(
+  _ format: NumberFormatterConfig
+) -> NumberFormatterConfig {
   var format = format
   format.maximumFractionDigits = 0
   return format
@@ -734,23 +750,24 @@ Swift requires us to annotate, at the call site, that we're agreeing to let this
 ```swift
 inoutDecimalStyle(&config)
 inoutWholeStyle(&config)
-config.formatter.string(from: 1234.6) // "1,235"
+config.formatter.string(from: 1234.6)  // "1,235"
 ```
 
 We can continue to call our mutating style functions in a similar fashion.
 
 ```swift
 inoutCurrencyStyle(&config)
-config.formatter.string(from: 1234.6) // "$1,234"
+config.formatter.string(from: 1234.6)  // "$1,234"
 
 inoutDecimalStyle(&config)
 inoutWholeStyle(&config)
-config.formatter.string(from: 1234.6) // "1,234"
+config.formatter.string(from: 1234.6)  // "1,234"
 ```
 
 And there's our bug again, but the code involved now has a lot of syntax that screams "mutation" and it makes this kind of bug much easier to track down.
 
-[00:34:42] It's great that Swift provides a nice solution to mutation problems by providing type-level features to control where mutation can happen and how far it can travel. We still have a problem to solve if we want to use it, though.
+@T(00:34:42)
+It's great that Swift provides a nice solution to mutation problems by providing type-level features to control where mutation can happen and how far it can travel. We still have a problem to solve if we want to use it, though.
 
 The styling functions we used that returned brand new copies have a nice shape:
 
@@ -774,7 +791,7 @@ It turns out that we can define a function called `toInout` that converts a func
 ```swift
 func toInout<A>(
   _ f: @escaping (A) -> A
-  ) -> ((inout A) -> Void) {
+) -> ((inout A) -> Void) {
 
   return { a in
     a = f(a)
@@ -787,7 +804,7 @@ We can also define a dual function, `fromInout`, that does the inverse transform
 ```swift
 func fromInout<A>(
   _ f: @escaping (inout A) -> Void
-  ) -> ((A) -> A) {
+) -> ((A) -> A) {
 
   return { a in
     var copy = a
@@ -799,7 +816,7 @@ func fromInout<A>(
 
 What we see here is there's a natural correspondence between `(A) -> A` functions and `(inout A) -> Void` functions. Functions from `(A) -> A` compose very nicely, so through this correspondence, we would hope that functions from `(inout A) -> Void` could share these compositional qualities.
 
-[00:37:55] # Introducing <>
+## Introducing <>
 
 Even though we saw that `(A) -> A` functions compose using `>>>`, we shouldn't reuse this operator because it has way too much freedom. We're looking at a much more constrained, single-type composition. So let's define a new operator. Let's start with the precedence group.
 
@@ -823,8 +840,8 @@ We can define the operator against `(A) -> A` simply enough:
 ```swift
 func <> <A>(
   f: @escaping (A) -> A,
-  g: @escaping (A) -> A)
-  -> ((A) -> A) {
+  g: @escaping (A) -> A
+) -> ((A) -> A) {
 
   return f >>> g
 }
@@ -837,8 +854,8 @@ Let's define `<>` for `inout` functions:
 ```swift
 func <> <A>(
   f: @escaping (inout A) -> Void,
-  g: @escaping (inout A) -> Void)
-  -> ((inout A) -> Void) {
+  g: @escaping (inout A) -> Void
+) -> ((inout A) -> Void) {
 
   return { a in
     f(&a)
@@ -896,7 +913,7 @@ We've solved this problem at the cost of yet another operator, so it's time to c
 
 3. Is this a universal operator or is it only solving a domain-specific problem? We've only defined this operator for `(A) -> A` functions and `(inout A) -> Void` functions so far, but it turns out that `<>` is used far more generally for combining two things of the same type into one, which is kind of the most fundamental unit of computation there is. We're going to encounter this operator all over the place.
 
-[00:43:17] # What’s the point?
+## What’s the point?
 
 It's time to slow down and ask: "What's the point?" We've encountered a lot of effects that introduced complexity into our code and made it more difficult to test. We decided to fix this by doing a little bit of upfront work to make the effects explicit in the types, both inputs and outputs, but then we broke composition. Then we introduced operators that aid in composition specifically for composing effects. Was it worth it?
 

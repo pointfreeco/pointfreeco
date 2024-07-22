@@ -32,7 +32,6 @@ extension Episode {
         sd540: "0001-540p-7632868f031e41d885b7aaad3eb8e92d"
       ),
       vimeoId: 348_650_932
-    ),
-    transcriptBlocks: loadTranscriptBlocks(forSequence: 1)
+    )
   )
 }
