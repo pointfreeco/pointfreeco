@@ -12,7 +12,7 @@ extension BlogPost {
     hidden: .no,
     hideFromSlackRSS: false,
     id: 147,
-    publishedAt: yearMonthDayFormatter.date(from: "2099-07-24")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2024-07-23")!,
     title: "Unobtrusive and testable issue reporting"
   )
 }
