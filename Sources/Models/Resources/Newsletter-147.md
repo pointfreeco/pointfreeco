@@ -38,11 +38,13 @@ precondition or fatal error if you want to truly stop execution. And you can cre
 issue reporter to send issues to OSLog or an external server. 
 
 Further, when running your code in a testing context (both XCTest and Swift's native Testing
-framework), all reported issues become _test failures_. This helps you get test coverage that
-problematic code paths are not executed, and makes it possible to build testing tools for libraries
-that ship in the same target as the library itself.
+framework), all reported issues become _test failures_:
 
 > Failed: 'items' should never be empty.
+
+This helps you get test coverage that
+problematic code paths are not executed, and makes it possible to build testing tools for libraries
+that ship in the same target as the library itself.
 
 ## Issue reporters
 
