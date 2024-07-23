@@ -2,7 +2,7 @@ import Foundation
 
 extension BlogPost {
   public static let post0147_IssueReporting = Self(
-    author: .pointfree,  
+    author: .pointfree,
     blurb: """
       We are releasing a brand new library today: Issue Reporting. It enables you to report
       issues in your application and library code as Xcode runtime warnings, breakpoints,
