@@ -8,7 +8,6 @@ extension BlogPost {
       libraries, including the Composable Architecture, SnapshotTesting, Dependencies, and more!
       """,
     coverImage: nil,
-    "https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/runtime-warning.png",
     hidden: .no,
     hideFromSlackRSS: false,
     id: 148,
