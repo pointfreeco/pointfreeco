@@ -8,7 +8,8 @@ extension BlogPost {
       issues in your application and library code as Xcode runtime warnings, breakpoints,
       assertions, and do so in a testable manner.
       """,
-    coverImage: "https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/runtime-warning.png",
+    coverImage:
+      "https://pointfreeco-blog.s3.amazonaws.com/posts/0147-issue-reporting/runtime-warning.png",
     hidden: .no,
     hideFromSlackRSS: false,
     id: 147,
