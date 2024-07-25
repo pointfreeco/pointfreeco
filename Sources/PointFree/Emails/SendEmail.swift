@@ -123,3 +123,12 @@ public func sendEmail(
     )
   )
 }
+
+func notifyError<R>(_ subject: String, operation: () async throws -> R) async -> R? {
+  do {
+    return try await operation()
+  } catch {
+    reportIssue(error, subject)
+    return nil
+  }
+}

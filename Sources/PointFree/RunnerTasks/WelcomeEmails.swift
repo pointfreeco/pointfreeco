@@ -33,7 +33,7 @@ public func sendWelcomeEmails() async throws {
   @Dependency(\.continuousClock) var clock
   @Dependency(\.database) var database
 
-  await withExpectedIssue("Welcome emails failed", isIntermittent: true) {
+  await notifyError("Welcome emails failed") {
     async let emails1 = database.fetchUsersToWelcome(registeredWeeksAgo: 1).map(welcomeEmail1)
     async let emails2 = database.fetchUsersToWelcome(registeredWeeksAgo: 2).map(welcomeEmail2)
     async let users = database.fetchUsersToWelcome(registeredWeeksAgo: 3)

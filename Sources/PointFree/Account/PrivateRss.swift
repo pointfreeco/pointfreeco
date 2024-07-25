@@ -32,7 +32,7 @@ func accountRssMiddleware(
     }
 
     // Track feed request
-    await withExpectedIssue("Create Feed Request Event Failed", isIntermittent: true) {
+    await notifyError("Create Feed Request Event Failed") {
       try await database.createFeedRequestEvent(
         feedType: .privateEpisodesFeed,
         userAgent: conn.request.allHTTPHeaderFields?["User-Agent"] ?? "",
