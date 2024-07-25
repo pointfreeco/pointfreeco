@@ -76,7 +76,6 @@ func showEpisode(
   }
 
   guard episode.transcript != nil else {
-    // TODO: reportIssue("Episode #\(episode.sequence) transcript not found")
     return
       conn
       .writeStatus(.notFound)
