@@ -337,3 +337,5 @@ private var subscribeButton: Node {
     )
   )
 }
+
+private let useCreditCTA = "Use an episode credit"

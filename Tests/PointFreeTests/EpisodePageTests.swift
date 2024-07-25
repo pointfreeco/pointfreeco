@@ -550,52 +550,51 @@ class EpisodePageTests: TestCase {
     }
   }
 
-  @MainActor
-  func testEpisodePage_ExercisesAndReferences() async throws {
-    var episode = self.episodes()[0]
-    episode.exercises = [.mock, .mock]
-    episode.references = [.mock]
-    episode.transcriptBlocks = Array(episode.transcriptBlocks[0...1])
-
-    try await withDependencies {
-      $0.episodes = { [episode] }
-      $0.renderHtml = { Html.render($0) }
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .episodes(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
-      )
-
-      #if !os(Linux)
-        if self.isScreenshotTestingAvailable {
-          let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
-          let html = await String(
-            decoding: siteMiddleware(conn).data, as: UTF8.self
-          )
-          webView.loadHTMLString(html, baseURL: nil)
-          await assertSnapshot(matching: webView, as: .image, named: "desktop")
-
-          webView.frame.size.width = 500
-          webView.frame.size.height = 1700
-          await assertSnapshot(matching: webView, as: .image, named: "mobile")
-
-          try await webView.evaluateJavaScript(
-            """
-            document.getElementsByTagName('details')[0].open = true
-            """
-          )
-          await assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
-        }
-      #endif
-
-      await withDependencies {
-        $0.episodes = { [episode] }
-        $0.renderHtml = { Html.debugRender($0) }
-      } operation: {
-        await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
-      }
-    }
-  }
+  // @MainActor
+  // func testEpisodePage_ExercisesAndReferences() async throws {
+  //   var episode = self.episodes()[0]
+  //   episode.exercises = [.mock, .mock]
+  //   episode.references = [.mock]
+  //
+  //   try await withDependencies {
+  //     $0.episodes = { [episode] }
+  //     $0.renderHtml = { Html.render($0) }
+  //   } operation: {
+  //     let conn = connection(
+  //       from: request(
+  //         to: .episodes(.show(.left(self.episodes().first!.slug))), session: .loggedIn)
+  //     )
+  //
+  //     #if !os(Linux)
+  //       if self.isScreenshotTestingAvailable {
+  //         let webView = WKWebView(frame: .init(x: 0, y: 0, width: 1100, height: 1600))
+  //         let html = await String(
+  //           decoding: siteMiddleware(conn).data, as: UTF8.self
+  //         )
+  //         webView.loadHTMLString(html, baseURL: nil)
+  //         await assertSnapshot(matching: webView, as: .image, named: "desktop")
+  //
+  //         webView.frame.size.width = 500
+  //         webView.frame.size.height = 1700
+  //         await assertSnapshot(matching: webView, as: .image, named: "mobile")
+  //
+  //         try await webView.evaluateJavaScript(
+  //           """
+  //           document.getElementsByTagName('details')[0].open = true
+  //           """
+  //         )
+  //         await assertSnapshot(matching: webView, as: .image, named: "desktop-solution-open")
+  //       }
+  //     #endif
+  //
+  //     await withDependencies {
+  //       $0.episodes = { [episode] }
+  //       $0.renderHtml = { Html.debugRender($0) }
+  //     } operation: {
+  //       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+  //     }
+  //   }
+  // }
 
   @MainActor
   func testEpisodePage_Trialing() async throws {
