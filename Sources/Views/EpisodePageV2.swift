@@ -79,7 +79,7 @@ public struct EpisodePageData {
         .collection(collection.slug, .section(section.slug, .episode(.left(self.episode.slug))))
       )
     case .direct:
-      return .episodes(.show(.left(self.episode.slug)))
+      return .episodes(.show(episode))
     }
   }
 }
@@ -398,7 +398,10 @@ struct UnlockEpisodeCallout: HTML {
             .attribute("value", "Redeem this episode")
             .attribute("type", "submit")
         }
-        .attribute("action", siteRouter.path(for: .useEpisodeCredit(episode.id)))
+        .attribute(
+          "action",
+          siteRouter.path(for: .episodes(.episode(param: .right(episode.id), .useCredit)))
+        )
         .attribute("method", "post")
       }
 

@@ -44,7 +44,7 @@ func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bo
           attributes: [.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
           announcementView(announcement: announcement),
           .a(
-            attributes: [.href(siteRouter.url(for: .episodes(.show(.left(ep.slug)))))],
+            attributes: [.href(siteRouter.url(for: .episodes(.show(ep))))],
             .h3(
               attributes: [.class([Class.pf.type.responsiveTitle3])],
               .text("#\(ep.sequence): \(ep.fullTitle)"))
@@ -53,7 +53,7 @@ func newEpisodeEmailContent(ep: Episode, announcement: String?, isSubscriber: Bo
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(
-              attributes: [.href(siteRouter.url(for: .episodes(.show(.left(ep.slug)))))],
+              attributes: [.href(siteRouter.url(for: .episodes(.show(ep))))],
               .img(attributes: [.src(ep.image), .alt(""), .style(maxWidth(.pct(100)))])
             )
           ),
@@ -111,7 +111,7 @@ private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
       ),
       .a(
         attributes: [
-          .href(siteRouter.url(for: .episodes(.show(.left(ep.slug))))),
+          .href(siteRouter.url(for: .episodes(.show(ep)))),
           .class([
             Class.pf.components.button(color: .black, style: .underline), Class.display.inlineBlock,
           ]),
@@ -133,7 +133,7 @@ private func subscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
       attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
       .a(
         attributes: [
-          .href(siteRouter.url(for: .episodes(.show(.left(ep.slug))))),
+          .href(siteRouter.url(for: .episodes(.show(ep)))),
           .class([Class.pf.components.button(color: .purple)]),
         ],
         "Watch now!"

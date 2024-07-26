@@ -18,20 +18,9 @@ import Views
 
 func showEpisode(
   _ conn: Conn<StatusLineOpen, Void>,
-  param: Either<String, Episode.ID>,
+  episode: Episode,
   collectionSlug: Episode.Collection.Slug?
 ) async -> Conn<ResponseEnded, Data> {
-
-  @Dependency(\.episodes) var episodes
-
-  guard let episode = episode(forParam: param)
-  else {
-    return
-      conn
-      .writeStatus(.notFound)
-      .respond { episodeNotFoundView() }
-  }
-
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.database) var database
   @Dependency(\.subscriberState) var subscriberState
@@ -241,7 +230,7 @@ private func applyCreditMiddleware<Z>(
   guard user.episodeCreditCount > 0 else {
     return conn
       |> redirect(
-        to: .episodes(.show(.left(episode.slug))),
+        to: .episodes(.show(episode)),
         headersMiddleware: flash(.error, "You do not have any credits to use.")
       )
   }
@@ -257,14 +246,14 @@ private func applyCreditMiddleware<Z>(
       const(
         conn
           |> redirect(
-            to: .episodes(.show(.left(episode.slug))),
+            to: .episodes(.show(episode)),
             headersMiddleware: flash(.warning, "Something went wrong.")
           )
       ),
       const(
         conn
           |> redirect(
-            to: .episodes(.show(.left(episode.slug))),
+            to: .episodes(.show(episode)),
             headersMiddleware: flash(.notice, "You now have access to this episode!")
           )
       )
@@ -284,7 +273,7 @@ private func validateCreditRequest<Z>(
     guard user.episodeCreditCount > 0 else {
       return conn
         |> redirect(
-          to: .episodes(.show(.left(episode.slug))),
+          to: .episodes(.show(episode)),
           headersMiddleware: flash(.error, "You do not have any credits to use.")
         )
     }
@@ -295,7 +284,7 @@ private func validateCreditRequest<Z>(
 
     return conn
       |> redirect(
-        to: .episodes(.show(.left(episode.slug))),
+        to: .episodes(.show(episode)),
         headersMiddleware: flash(.warning, "This episode is already available to you.")
       )
   }

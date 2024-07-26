@@ -39,9 +39,7 @@ func resumeMiddleware(
     return await redirect(
       to: .episodes(
         .show(
-          .left(
-            episodes().first(where: { $0.sequence == latestProgress.episodeSequence })!.slug
-          )
+          episodes().first(where: { $0.sequence == latestProgress.episodeSequence })!
         )
       ),
       headersMiddleware: flash(.notice, "Resuming your last watched episode.")
@@ -60,7 +58,7 @@ func resumeMiddleware(
   }
 
   return await redirect(
-    to: .episodes(.show(.left(nextEpisode.slug))),
+    to: .episodes(.show(nextEpisode)),
     headersMiddleware: flash(.notice, "Starting the next episode.")
   )(conn)
   .performAsync()
