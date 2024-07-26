@@ -104,7 +104,7 @@ public struct EmailReporter: IssueReporter {
       dump(error, to: &errorDump, indent: 4)
       body.append(
         """
-        
+
 
           Error:
         \(errorDump)
