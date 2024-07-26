@@ -4,6 +4,7 @@ import EmailAddress
 import Foundation
 import Html
 import HtmlPlainTextPrint
+import IssueReporting
 import Mailgun
 import Models
 import Parsing
@@ -123,34 +124,11 @@ public func sendEmail(
   )
 }
 
-func notifyError(subject: String) -> (Error) -> Prelude.Unit {
-  return { error in
-    Task {
-      var errorDump = ""
-      dump(error, to: &errorDump)
-      _ = try await sendEmail(
-        to: adminEmails,
-        subject: "[PointFree Error] \(subject)",
-        content: inj1(errorDump)
-      )
-    }
-    return unit
-  }
-}
-
-func notifyError<R>(subject: String, operation: () async throws -> R) async -> R? {
+func notifyError<R>(_ subject: String, operation: () async throws -> R) async -> R? {
   do {
     return try await operation()
   } catch {
-    Task {
-      var errorDump = ""
-      dump(error, to: &errorDump)
-      _ = try await sendEmail(
-        to: adminEmails,
-        subject: "[PointFree Error] \(subject)",
-        content: inj1(errorDump)
-      )
-    }
+    reportIssue(error, subject)
     return nil
   }
 }

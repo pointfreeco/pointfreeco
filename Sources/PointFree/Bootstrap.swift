@@ -1,8 +1,11 @@
 import Dependencies
 import EnvVars
+import IssueReporting
 import Models
 
 public func bootstrap() async {
+  IssueReporters.current += [.adminEmail]
+
   @Dependency(\.fireAndForget) var fireAndForget
 
   print("⚠️ Bootstrapping PointFree...")

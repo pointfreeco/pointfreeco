@@ -22,7 +22,6 @@ public struct Episode: Equatable, Identifiable {
   public var subtitle: String?
   public var title: String
   public var trailerVideo: Video
-  public var _transcriptBlocks: [TranscriptBlock]?
 
   public init(
     alternateSlug: String? = nil,
@@ -41,8 +40,7 @@ public struct Episode: Equatable, Identifiable {
     sequence: Sequence,
     subtitle: String? = nil,
     title: String,
-    trailerVideo: Video,
-    transcriptBlocks: [TranscriptBlock]? = nil
+    trailerVideo: Video
   ) {
     self.alternateSlug = alternateSlug
     self.blurb = blurb
@@ -65,7 +63,6 @@ public struct Episode: Equatable, Identifiable {
     self.subtitle = subtitle
     self.title = title
     self.trailerVideo = trailerVideo
-    self._transcriptBlocks = transcriptBlocks
   }
 
   public struct Question: Equatable {
@@ -327,213 +324,6 @@ public struct Episode: Equatable, Identifiable {
       self.link = link
       self.publishedAt = publishedAt
       self.title = title
-    }
-  }
-
-  public struct TranscriptBlock: Codable, Equatable {
-    public var content: String
-    public var speaker: String?
-    public var timestamp: Int?
-    public var type: BlockType
-
-    public init(
-      content: String,
-      speaker: String? = nil,
-      timestamp: Int? = nil,
-      type: BlockType
-    ) {
-      self.content = content
-      self.speaker = speaker
-      self.timestamp = timestamp
-      self.type = type
-    }
-
-    public enum BlockType: Codable, Equatable {
-      case box(Box)
-      case button(href: String)
-      case code(lang: CodeLang)
-      case image(src: String, sizing: ImageSizing)
-      // TODO: rename to markdown
-      case paragraph
-      case question(String)
-      case title
-      case video(poster: String, sources: [String])
-
-      public struct Box: Codable, Equatable {
-        public let title: String?
-        public let backgroundColor: String
-        public let borderColor: String
-
-        public init(
-          title: String?,
-          backgroundColor: String,
-          borderColor: String
-        ) {
-          self.backgroundColor = backgroundColor
-          self.borderColor = borderColor
-          self.title = title
-        }
-
-        public init?(name: String) {
-          switch name.lowercased() {
-          case "announcement":
-            self = .announcement
-          case "correction":
-            self = .correction
-          case "note":
-            self = .note
-          case "preamble":
-            self = .preamble
-          case "runtime-warning":
-            self = .runtimeWarning
-          case "tip":
-            self = .tip
-          case "update":
-            self = .update
-          case "warning":
-            self = .warning
-          default:
-            return nil
-          }
-        }
-
-        public var name: String? {
-          switch self {
-          case .announcement:
-            return "announcement"
-          case .correction:
-            return "correction"
-          case .note:
-            return "note"
-          case .preamble:
-            return "preamble"
-          case .runtimeWarning:
-            return "runtime-warning"
-          case .tip:
-            return "tip"
-          case .update:
-            return "update"
-          case .warning:
-            return "warning"
-          default:
-            return nil
-          }
-        }
-
-        public static let announcement = Self(
-          title: "📣 Announcement",
-          backgroundColor: "dcf4e7",
-          borderColor: "79f2b0"
-        )
-        public static let correction = Self(
-          title: "Correction",
-          backgroundColor: "ffdbdd",
-          borderColor: "eb1c26"
-        )
-        public static let note = Self(
-          title: "Note",
-          backgroundColor: "f6f6f6",
-          borderColor: "d8d8d8"
-        )
-        public static let preamble = Self(
-          title: "Preamble",
-          backgroundColor: "eee2ff",
-          borderColor: "974dff"
-        )
-        public static let runtimeWarning = Self(
-          title: "🟣 Warning",
-          backgroundColor: "eee2ff",
-          borderColor: "974dff"
-        )
-        public static let tip = Self(
-          title: "Tip",
-          backgroundColor: "dcf4e7",
-          borderColor: "79f2b0"
-        )
-        public static let update = Self(
-          title: "📣 Update",
-          backgroundColor: "dcf4e7",
-          borderColor: "79f2b0"
-        )
-        public static let warning = Self(
-          title: "⚠️ Warning",
-          backgroundColor: "fcf9db",
-          borderColor: "FCF18F"
-        )
-      }
-
-      private enum CodingKeys: CodingKey {
-        case href
-        case lang
-        case poster
-        case question
-        case sizing
-        case sources
-        case src
-        case type
-      }
-
-      public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        switch self {
-        case let .box(box):
-          try container.encode("box", forKey: .type)
-          try container.encode(box, forKey: .type)
-        case let .button(href: href):
-          try container.encode("button", forKey: .type)
-          try container.encode(href, forKey: .href)
-        case let .code(lang):
-          try container.encode("code", forKey: .type)
-          try container.encode(lang, forKey: .lang)
-        case let .image(src, sizing):
-          try container.encode("image", forKey: .type)
-          try container.encode(sizing, forKey: .sizing)
-          try container.encode(src, forKey: .src)
-        case .paragraph:
-          try container.encode("paragraph", forKey: .type)
-        case let .question(question):
-          try container.encode("question", forKey: .type)
-          try container.encode(question, forKey: .question)
-        case .title:
-          try container.encode("title", forKey: .type)
-        case let .video(poster, sources):
-          try container.encode("video", forKey: .type)
-          try container.encode(poster, forKey: .poster)
-          try container.encode(sources, forKey: .sources)
-        }
-      }
-
-      public init(from decoder: Decoder) throws {
-        throw DecodingError.dataCorrupted(
-          .init(
-            codingPath: decoder.codingPath,
-            debugDescription: "Unimplemented"
-          )
-        )
-      }
-
-      public static func image(src: String) -> BlockType {
-        return .image(src: src, sizing: .fullWidth)
-      }
-
-      public enum ImageSizing: String, Codable, CaseIterable {
-        case fullWidth
-        case inset
-      }
-
-      public struct CodeLang: Codable, Equatable {
-        public let identifier: String
-
-        public static let diff = CodeLang(identifier: "diff")
-        public static let html = CodeLang(identifier: "html")
-        public static let javaScript = CodeLang(identifier: "javascript")
-        public static let json = CodeLang(identifier: "json")
-        public static let plainText = CodeLang(identifier: "txt")
-        public static let ruby = CodeLang(identifier: "ruby")
-        public static let shell = CodeLang(identifier: "bash")
-        public static let sql = CodeLang(identifier: "sql")
-        public static let swift = CodeLang(identifier: "swift")
-      }
     }
   }
 

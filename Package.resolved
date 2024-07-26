@@ -347,8 +347,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
       "state" : {
-        "revision" : "6f30bdba373bbd7fbfe241dddd732651f2fbd1e2",
-        "version" : "1.1.2"
+        "revision" : "357ca1e5dd31f613a1d43320870ebc219386a495",
+        "version" : "1.2.2"
       }
     }
   ],
