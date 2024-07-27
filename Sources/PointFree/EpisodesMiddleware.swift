@@ -38,14 +38,7 @@ public func episodesMiddleware(
       return await showEpisode(conn, episode: episode, collectionSlug: collectionSlug)
 
     case .useCredit:
-      @Dependency(\.currentUser) var currentUser
-      @Dependency(\.subscriberState) var subscriberState
-      return await useCreditResponse(
-        conn: conn.map(
-          const(.right(episode.id) .*. currentUser .*. subscriberState .*. .episodes(route) .*. unit)
-        )
-      )
-      .performAsync()
+      return await useCreditMiddleware(episode: episode, conn)
     }
   }
 }
@@ -74,6 +67,40 @@ private func episodesListMiddleware(
     ) {
       Episodes(listType: listType)
     }
+}
+
+private func useCreditMiddleware(
+  episode: Episode,
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var user
+  guard let user else { return conn.loginAndRedirect() }
+  let permission = await EpisodePermission(episode: episode)
+
+  guard user.episodeCreditCount > 0 else {
+    return conn.redirect(to: .episodes(.show(episode))) {
+      $0.flash(.error, "You do not have any credits to use.")
+    }
+  }
+
+  guard !permission.isViewable else {
+    return conn.redirect(to: .episodes(.show(episode))) {
+      $0.flash(.warning, "This episode is already available to you.")
+    }
+  }
+
+  do {
+    @Dependency(\.database) var database
+    try await database.redeemEpisodeCredit(sequence: episode.sequence, userID: user.id)
+    try await database.updateUser(id: user.id, episodeCreditCount: user.episodeCreditCount - 1)
+    return conn.redirect(to: .episodes(.show(episode))) {
+      $0.flash(.notice, "You now have access to this episode!")
+    }
+  } catch {
+    return conn.redirect(to: .episodes(.show(episode))) {
+      $0.flash(.error, "Something went wrong.")
+    }
+  }
 }
 
 private func episode(forParam param: Either<String, Episode.ID>) -> Episode? {

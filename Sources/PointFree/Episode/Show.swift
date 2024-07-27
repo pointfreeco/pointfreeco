@@ -21,55 +21,27 @@ func showEpisode(
   episode: Episode,
   collectionSlug: Episode.Collection.Slug?
 ) async -> Conn<ResponseEnded, Data> {
-  @Dependency(\.currentUser) var currentUser
-  @Dependency(\.database) var database
-  @Dependency(\.subscriberState) var subscriberState
-
-  let permission: EpisodePermission
-  let progress: Int?
-
-  if let currentUser {
-    var fetchProgress = false
-    if subscriberState.isActiveSubscriber {
-      permission = .loggedIn(user: currentUser, subscriptionPermission: .isSubscriber)
-      fetchProgress = true
-    } else {
-      let credits = try? await database.fetchEpisodeCredits(userID: currentUser.id)
-      if credits?.contains(where: { $0.episodeSequence == episode.sequence }) == true {
-        permission = .loggedIn(
-          user: currentUser,
-          subscriptionPermission: .isNotSubscriber(creditPermission: .hasUsedCredit)
-        )
-        fetchProgress = true
-      } else {
-        permission = .loggedIn(
-          user: currentUser,
-          subscriptionPermission: .isNotSubscriber(
-            creditPermission: .hasNotUsedCredit(isEpisodeSubscriberOnly: episode.subscriberOnly)
-          )
-        )
-        fetchProgress = !episode.subscriberOnly
-      }
-    }
-    if fetchProgress {
-      progress =
-        try? await database
-        .fetchEpisodeProgress(userID: currentUser.id, sequence: episode.sequence)
-        .percent
-    } else {
-      progress = nil
-    }
-  } else {
-    permission = .loggedOut(isEpisodeSubscriberOnly: episode.subscriberOnly)
-    progress = nil
-  }
-
   guard episode.transcript != nil else {
     // TODO: reportIssue("Episode #\(episode.sequence) transcript not found")
     return
       conn
       .writeStatus(.notFound)
       .respond { episodeNotFoundView() }
+  }
+
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
+  @Dependency(\.subscriberState) var subscriberState
+
+  let permission = await EpisodePermission(episode: episode)
+  let progress: Int? = switch permission {
+  case .loggedIn(let currentUser, .isSubscriber),
+    .loggedIn(let currentUser, .isNotSubscriber(creditPermission: .hasUsedCredit)),
+    .loggedIn(let currentUser, .isNotSubscriber(creditPermission: .hasNotUsedCredit(false))):
+    try? await database
+    .fetchEpisodeProgress(userID: currentUser.id, sequence: episode.sequence)
+    .percent
+  default: nil
   }
 
   return
@@ -128,15 +100,6 @@ private func episodePageData(
   )
 }
 
-func useCreditResponse<Z>(
-  conn: Conn<StatusLineOpen, T5<Either<String, Episode.ID>, User?, SubscriberState, SiteRoute?, Z>>
-) -> IO<Conn<ResponseEnded, Data>> {
-  conn
-    |> (fetchEpisodeForParam
-      <<< validateUserEpisodePermission
-      <| applyCreditMiddleware)
-}
-
 private func fetchEpisodeForParam<Z>(
   middleware: @escaping M<T2<Episode, Z>>
 ) -> M<T2<Either<String, Episode.ID>, Z>> {
@@ -153,15 +116,6 @@ private func episodeNotFoundResponse<Z>(
   conn
     |> writeStatus(.notFound)
     >=> respond { _ in episodeNotFoundView() }
-}
-
-private func validateUserEpisodePermission<Z>(
-  middleware: @escaping M<T5<EpisodePermission, Episode, User, SubscriberState, Z>>
-) -> M<T4<Episode, User?, SubscriberState, Z>> {
-  middleware
-    |> { userEpisodePermission >=> $0 }
-    <<< filterMap(require3 >>> pure, or: loginAndRedirect)
-    <<< validateCreditRequest
 }
 
 let progressResponse: M<Tuple2<Either<String, Episode.ID>, Int>> =
@@ -217,76 +171,6 @@ private let updateProgress: M<Tuple3<EpisodePermission, Episode, Int>> = { conn 
     return conn
       |> writeStatus(.ok)
       >=> end
-  }
-}
-
-private func applyCreditMiddleware<Z>(
-  _ conn: Conn<StatusLineOpen, T4<EpisodePermission, Episode, User, Z>>
-) -> IO<Conn<ResponseEnded, Data>> {
-  @Dependency(\.database) var database
-
-  let (episode, user) = (get2(conn.data), get3(conn.data))
-
-  guard user.episodeCreditCount > 0 else {
-    return conn
-      |> redirect(
-        to: .episodes(.show(episode)),
-        headersMiddleware: flash(.error, "You do not have any credits to use.")
-      )
-  }
-
-  return EitherIO {
-    try await database.redeemEpisodeCredit(sequence: episode.sequence, userID: user.id)
-    try await database
-      .updateUser(id: user.id, episodeCreditCount: user.episodeCreditCount - 1)
-  }
-  .run
-  .flatMap(
-    either(
-      const(
-        conn
-          |> redirect(
-            to: .episodes(.show(episode)),
-            headersMiddleware: flash(.warning, "Something went wrong.")
-          )
-      ),
-      const(
-        conn
-          |> redirect(
-            to: .episodes(.show(episode)),
-            headersMiddleware: flash(.notice, "You now have access to this episode!")
-          )
-      )
-    )
-  )
-}
-
-private func validateCreditRequest<Z>(
-  _ middleware: @escaping Middleware<
-    StatusLineOpen, ResponseEnded, T4<EpisodePermission, Episode, User, Z>, Data
-  >
-) -> Middleware<StatusLineOpen, ResponseEnded, T4<EpisodePermission, Episode, User, Z>, Data> {
-
-  return { conn in
-    let (permission, episode, user) = (get1(conn.data), get2(conn.data), get3(conn.data))
-
-    guard user.episodeCreditCount > 0 else {
-      return conn
-        |> redirect(
-          to: .episodes(.show(episode)),
-          headersMiddleware: flash(.error, "You do not have any credits to use.")
-        )
-    }
-
-    guard isEpisodeViewable(for: permission) else {
-      return middleware(conn)
-    }
-
-    return conn
-      |> redirect(
-        to: .episodes(.show(episode)),
-        headersMiddleware: flash(.warning, "This episode is already available to you.")
-      )
   }
 }
 
