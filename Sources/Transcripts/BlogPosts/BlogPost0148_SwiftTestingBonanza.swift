@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0148_SwiftTestingBonanza = Self(
     author: .pointfree,
     blurb: """
-      We are release beta support for Swift's new native Testing framework in **all** of our
+      We are releasing beta support for Swift's new native Testing framework in **all** of our
       libraries, including the Composable Architecture, SnapshotTesting, Dependencies, and more!
       """,
     coverImage: nil,
