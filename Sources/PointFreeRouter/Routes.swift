@@ -155,7 +155,10 @@ public indirect enum SiteRoute: Equatable {
 struct SlugOrID<ID: RawRepresentable>: ParserPrinter where ID.RawValue == Int {
   var body: some ParserPrinter<Substring, Either<String, ID>> {
     OneOf {
-      Digits().map(.representing(ID.self).map(.case(Either<String, ID>.right)))
+      Parse {
+        Digits().map(.representing(ID.self).map(.case(Either<String, ID>.right)))
+        End()
+      }
       Parse(.string.map(.case(Either<String, ID>.left)))
     }
   }

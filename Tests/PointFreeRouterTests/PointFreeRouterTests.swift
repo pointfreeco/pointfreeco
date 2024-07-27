@@ -206,7 +206,7 @@ class PointFreeRouterTests: TestCase {
     )
     request.httpMethod = "POST"
     let route = SiteRoute.collections(
-      .collection("tca", .section("basics", .progress(param: .left("1"), percent: 50)))
+      .collection("tca", .section("basics", .progress(param: .right(1), percent: 50)))
     )
 
     XCTAssertEqual(try siteRouter.match(request: request), route)
