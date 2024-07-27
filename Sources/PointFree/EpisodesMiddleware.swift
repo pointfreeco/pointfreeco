@@ -8,8 +8,6 @@ import HttpPipeline
 import Models
 import PointFreeRouter
 import Prelude
-import StyleguideV2
-import Tuple
 import Views
 
 public func episodesMiddleware(
@@ -31,8 +29,7 @@ public func episodesMiddleware(
 
     switch episodeRoute {
     case let .progress(percent):
-      return await progressResponse(conn.map(const(param .*. percent .*. unit)))
-        .performAsync()
+      return await progressMiddleware(episode: episode, percent: percent, conn)
 
     case let .show(collectionSlug):
       return await showEpisode(conn, episode: episode, collectionSlug: collectionSlug)
@@ -67,6 +64,116 @@ private func episodesListMiddleware(
     ) {
       Episodes(listType: listType)
     }
+}
+
+private func progressMiddleware(
+  episode: Episode,
+  percent: Int,
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  guard
+    let currentUser,
+    await EpisodePermission(episode: episode).isViewable
+  else { return conn.writeStatus(.ok).empty() }
+
+  do {
+    @Dependency(\.database) var database
+    try await database.updateEpisodeProgress(
+      sequence: episode.sequence,
+      progress: percent,
+      isFinished: percent >= 90,
+      userID: currentUser.id
+    )
+  } catch {
+    reportIssue()
+  }
+
+  return conn.writeStatus(.ok).empty()
+}
+
+private func showEpisode(
+  _ conn: Conn<StatusLineOpen, Void>,
+  episode: Episode,
+  collectionSlug: Episode.Collection.Slug?
+) async -> Conn<ResponseEnded, Data> {
+  guard episode.transcript != nil else {
+    reportIssue("Episode #\(episode.sequence) transcript not found")
+    return
+      conn
+      .writeStatus(.notFound)
+      .respond { episodeNotFoundView() }
+  }
+
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
+  @Dependency(\.subscriberState) var subscriberState
+
+  let permission = await EpisodePermission(episode: episode)
+  let progress: Int? = switch permission {
+  case .loggedIn(let currentUser, .isSubscriber),
+    .loggedIn(let currentUser, .isNotSubscriber(creditPermission: .hasUsedCredit)),
+    .loggedIn(let currentUser, .isNotSubscriber(creditPermission: .hasNotUsedCredit(false))):
+    try? await database
+    .fetchEpisodeProgress(userID: currentUser.id, sequence: episode.sequence)
+    .percent
+  default: nil
+  }
+
+  return
+    conn
+    .writeStatus(.ok)
+    .respondV2(
+      layoutData: SimplePageLayoutData(
+        description: String(stripping: episode.blurb),
+        image: episode.image,
+        title: "Episode #\(episode.sequence): \(episode.fullTitle)",
+        usePrismJs: true
+      )
+    ) {
+      EpisodeDetail(
+        episodePageData: episodePageData(
+          collectionSlug: collectionSlug,
+          episode: episode,
+          episodeProgress: progress,
+          permission: permission
+        )
+      )
+    }
+}
+
+private func episodePageData(
+  collectionSlug: Episode.Collection.Slug?,
+  episode: Episode,
+  episodeProgress: Int?,
+  permission: EpisodePermission
+) -> EpisodePageData {
+  @Dependency(\.collections) var collections
+  @Dependency(\.envVars.emergencyMode) var emergencyMode
+  @Dependency(\.episodes) var episodes
+  @Dependency(\.date.now) var now
+
+  let context: EpisodePageData.Context
+  if let collection = collections.first(where: { $0.slug == collectionSlug }),
+    let section = collection.sections.first(where: {
+      $0.coreLessons.contains(where: { $0.episode?.id == episode.id })
+    })
+  {
+    context = .collection(collection, section: section)
+  } else {
+    context = .direct(
+      previousEpisode: episodes().first(where: { $0.sequence == episode.sequence - 1 }),
+      nextEpisode: episodes().first(where: { $0.sequence == episode.sequence + 1 })
+    )
+  }
+
+  return EpisodePageData(
+    context: context,
+    emergencyMode: emergencyMode,
+    episode: episode,
+    episodeProgress: episodeProgress,
+    permission: permission
+  )
 }
 
 private func useCreditMiddleware(
