@@ -13,7 +13,7 @@ extension Episode {
     id: 289,
     length: 55 * 60 + 9,
     permission: .subscriberOnly,
-    publishedAt: yearMonthDayFormatter.date(from: "2024-07-22")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2024-07-29")!,
     references: [
       Episode.Reference(
         author: "Chris Eidhof",

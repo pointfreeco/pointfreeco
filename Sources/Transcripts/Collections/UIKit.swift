@@ -26,6 +26,7 @@ extension Episode.Collection {
           .init(episode: .ep286_modernUIKit),
           .init(episode: .ep287_modernUIKit),
           .init(episode: .ep288_modernUIKit),
+          .init(episode: .ep289_modernUIKit),
         ],
         isFinished: false,
         isHidden: false,
