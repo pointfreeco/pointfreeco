@@ -31,7 +31,7 @@ public struct GiftsV2: HTML {
           .attribute("href", siteRouter.path(for: .gifts(.plan(.threeMonths))))
         }
 
-        PricingLane("6 momths", annualPricePerMonth: 108) {
+        PricingLane("6 months", annualPricePerMonth: 108) {
           "One-time payment"
         } features: {
           baseFeatures
