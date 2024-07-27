@@ -152,7 +152,7 @@ both XCTest and Swift's new native Testing framework:
 }
 ```
 
-Anytime the test failure messages of `#expect` are difficult for you to parse you may consider
+Any time the test failure messages of `#expect` are difficult for you to parse you may consider
 using our library to produce better failure messages.
 
 [custom-dump-gh]: https://github.com/pointfreeco/swift-custom-dump

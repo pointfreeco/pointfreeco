@@ -1,4 +1,5 @@
 import Foundation
+import IssueReporting
 import Models
 import Tagged
 
@@ -10,7 +11,10 @@ extension Episode {
   public var transcript: String? {
     guard
       let url = Bundle.module.url(forResource: "Episode-\(sequence.rawValue)", withExtension: "md")
-    else { return nil }
+    else {
+      reportIssue("Episode #\(sequence) transcript not found")
+      return nil
+    }
     return try? String(decoding: Data(contentsOf: url), as: UTF8.self)
   }
 
