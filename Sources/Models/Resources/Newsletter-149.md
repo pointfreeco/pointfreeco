@@ -3,6 +3,10 @@ We are excited to announce a brand new open-source library from Point-Free:
 powerful state management and navigation APIs for Apple platforms, such as SwiftUI, UIKit, and 
 AppKit, as well as for non-Apple platforms, such as Windows, Linux, Wasm, and more.
 
+> Note: Swift Navigation is a re-branding and significantly updated version of our previous 
+[SwiftUI Navigation][swiftui-nav-gh] library. That library is now effectively archived, and if
+you were using SwiftUI Navigation you can update to this new library when you see fit.
+
 ## Overview
 
 The SwiftNavigation library forms the foundation that more advanced tools can be built upon, such
@@ -21,9 +25,6 @@ All of these tools form the foundation for how one can build more powerful and r
 SwiftUI, UIKit, AppKit, and even [non-Apple platforms](#Non-Apple-platforms).
 
 ## SwiftUI
-
-> Important: To get access to the tools described below you must depend on the SwiftNavigation 
-> package and import the SwiftUINavigation library.
 
 SwiftUI already comes with incredibly powerful navigation APIs, but there are a few areas lacking
 that can be filled. In particular, driving navigation from enum state so that you can have
@@ -122,9 +123,6 @@ We now have a concise way of describing all of the destinations a feature can na
 we can still use SwiftUI's navigation APIs.
 
 ## UIKit
-
-> Important: To get access to the tools described below you must depend on the SwiftNavigation 
-> package and import the UIKitNavigation library.
 
 Unlike SwiftUI, UIKit does not come with state-driven navigation tools. Its navigation tools are
 "fire-and-forget", meaning you simply invoke a method to trigger a navigation, but there is 
@@ -256,8 +254,13 @@ alert(isPresented: $model.isShowingErrorAlert) {
 
 ## Get started today
 
+And this is just scratching the surface of what is possible with [Swift Navigation][swift-nav-gh].
+Be sure to check out the [examples and case studies][examples-case-studies] in the repo to see
+more use cases, and if you have any questions feel free to open a 
+[discussion][swift-nav-discussion].
 
-
+[swift-nav-discussion]: https://github.com/pointfreeco/swift-navigation/discussions
+[examples-case-studies]: https://github.com/pointfreeco/swift-navigation/tree/main/Examples
 [observe-docs]: todo
 [uibinding-docs]: todo
 [swift-nav-gh]: https://github.com/pointfreeco/swift-navigation
@@ -265,3 +268,4 @@ alert(isPresented: $model.isShowingErrorAlert) {
 [navigation-path-docs]: todo
 [binding-bool-init-docs]: todo
 [observe-uikit-docs]: todo
+[swiftui-nav-gh]: https://github.com/pointfreeco/swiftui-navigation
