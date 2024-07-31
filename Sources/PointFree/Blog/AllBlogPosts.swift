@@ -165,5 +165,6 @@ extension BlogPost {
     .post0146_SnapshotSwiftTesting,
     .post0147_IssueReporting,
     .post0148_SwiftTestingBonanza,
+    .post0149_SwiftNav,
   ]
 }
