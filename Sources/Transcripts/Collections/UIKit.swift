@@ -28,7 +28,7 @@ extension Episode.Collection {
           .init(episode: .ep288_modernUIKit),
           .init(episode: .ep289_modernUIKit),
         ],
-        isFinished: false,
+        isFinished: true,
         isHidden: false,
         related: [],
         title: "Modern UIKit",
