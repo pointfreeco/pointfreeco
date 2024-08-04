@@ -34,6 +34,8 @@ For example, suppose you have a feature that can present a sheet for creating an
 a view for editing an item, and can present an alert for confirming to delete an item. One can
 technically model this with 3 separate optionals:
 
+<div id="FeatureModel"></div>
+
 ```swift
 @Observable
 class FeatureModel {
@@ -68,6 +70,8 @@ are valid: either all are `nil` or exactly one is non-`nil`.
 By allowing these 4 other invalid states we can accidentally tell SwiftUI to both present a sheet
 and alert at the same time, but that is not a valid thing to do in SwiftUI. The framework will even
 print a message to the console letting you know that in the future it may actually crash your app.
+And these invalid states make it difficult for you to be sure that you know exactly what is 
+being presented right now.
 
 Luckily Swift comes with the perfect tool for dealing with this kind of situation: enums! They
 allow you to concisely define a type that can be one of many cases. So, we can refactor our 3
@@ -143,8 +147,8 @@ just needs to construct a piece of state that represents where you want to navig
 SwiftUI, and let SwiftUI do the rest.
 
 The UIKitNavigation library brings a powerful suite of navigation tools to UIKit that are heavily
-inspired by SwiftUI. For example, if you have a feature model like the one discussed above in
-the <doc:SwiftNavigation#SwiftUI> section:
+inspired by SwiftUI. For example, if you have a feature model like the one 
+[discussed above](#FeatureModel):
 
 ```swift
 @Observable
@@ -261,11 +265,11 @@ more use cases, and if you have any questions feel free to open a
 
 [swift-nav-discussion]: https://github.com/pointfreeco/swift-navigation/discussions
 [examples-case-studies]: https://github.com/pointfreeco/swift-navigation/tree/main/Examples
-[observe-docs]: todo
-[uibinding-docs]: todo
+[observe-docs]: https://github.com/pointfreeco/swift-navigation/blob/c69c834c0fd54babe4d4c917e3adcd8ac86fb994/Sources/SwiftNavigation/Observe.swift#L4-L58
+[uibinding-docs]: https://github.com/pointfreeco/swift-navigation/blob/c69c834c0fd54babe4d4c917e3adcd8ac86fb994/Sources/SwiftNavigation/UIBinding.swift#L3-L132
 [swift-nav-gh]: https://github.com/pointfreeco/swift-navigation
-[transaction-docs]: todo
-[navigation-path-docs]: todo
-[binding-bool-init-docs]: todo
-[observe-uikit-docs]: todo
+[transaction-docs]: https://github.com/pointfreeco/swift-navigation/blob/c69c834c0fd54babe4d4c917e3adcd8ac86fb994/Sources/SwiftNavigation/UITransaction.swift#L1
+[navigation-path-docs]: https://github.com/pointfreeco/swift-navigation/blob/c69c834c0fd54babe4d4c917e3adcd8ac86fb994/Sources/SwiftNavigation/UINavigationPath.swift
+[binding-bool-init-docs]: https://github.com/pointfreeco/swift-navigation/blob/c69c834c0fd54babe4d4c917e3adcd8ac86fb994/Sources/SwiftNavigation/Binding.swift#L5-L13
+[observe-uikit-docs]: https://github.com/pointfreeco/swift-navigation/blob/c69c834c0fd54babe4d4c917e3adcd8ac86fb994/Sources/UIKitNavigation/Observe.swift#L6-L111
 [swiftui-nav-gh]: https://github.com/pointfreeco/swiftui-navigation
