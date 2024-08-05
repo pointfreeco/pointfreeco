@@ -213,7 +213,7 @@ class FeatureViewController: UIViewController {
 }
 ```
 
-By using the libraries navigation tools we can be guaranteed that the model will be kept in sync
+By using the library's navigation tools we can be guaranteed that the model will be kept in sync
 with the view. When the state becomes non-`nil` the corresponding form of navigation will be 
 triggered, and when the presented view is dismissed, the state will be `nil`'d out.
 
