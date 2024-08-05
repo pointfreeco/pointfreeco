@@ -42,7 +42,7 @@ class FeatureModel {
   var addItem: AddItemModel?
   var deleteItemAlertIsPresented: Bool
   var editItem: EditItemModel?
-  // ...
+  …
 }
 ```
 
@@ -53,8 +53,11 @@ to describe the type of navigation:
 .sheet(item: $model.addItem) { addItemModel in
   AddItemView(model: addItemModel)
 }
-.alert("Delete?", isPresented: $model.deleteItemAlertIsPresented) {
-  Button("Yes", role: .destructive) { /* ... */ }
+.alert(
+  "Delete?",
+  isPresented: $model.deleteItemAlertIsPresented
+) {
+  Button("Yes", role: .destructive) { … }
   Button("No", role: .cancel) {}
 }
 .navigationDestination(item: $model.editItem) { editItemModel in
@@ -100,7 +103,7 @@ refer to the cases of an enum with dot-syntax just like one does with structs an
 ```diff
 +@CasePathable
  enum Destination {
-   // ...
+   …
  }
 ```
 
@@ -111,11 +114,16 @@ the `destination` property:
 .sheet(item: $model.destination.addItem) { addItemModel in
   AddItemView(model: addItemModel)
 }
-.alert("Delete?", isPresented: Binding($model.destination.deleteItemAlert)) {
-  Button("Yes", role: .destructive) { /* ... */ }
+.alert(
+  "Delete?",
+  isPresented: Binding($model.destination.deleteItemAlert)
+) {
+  Button("Yes", role: .destructive) { … }
   Button("No", role: .cancel) {}
 }
-.navigationDestination(item: $model.destination.editItem) { editItemModel in
+.navigationDestination(
+  item: $model.destination.editItem
+) { editItemModel in
   EditItemView(model: editItemModel)
 }
 ```
@@ -135,9 +143,12 @@ no representation of that in your feature's state.
 For example, to present a sheet from a button press one can simply do:
 
 ```swift
-let button = UIButton(type: .system, primaryAction: UIAction { [weak self] _ in
-  present(SettingsViewController(), animated: true)
-})
+let button = UIButton(
+  type: .system,
+  primaryAction: UIAction { [weak self] _ in
+    present(SettingsViewController(), animated: true)
+  }
+)
 ```
 
 This makes it easy to get started with navigation, but as SwiftUI has taught us, it is incredibly
@@ -177,13 +188,25 @@ class FeatureViewController: UIViewController {
     present(item: $model.destination.addItem) { addItemModel in
       AddItemViewController(model: addItemModel)
     }
-    present(isPresented: Binding($model.destination.deleteItemAlert)) {
-      let alert = UIAlertController(title: "Delete?", message: message, preferredStyle: .alert)
-      alert.addAction(UIAlertAction(title: "Yes", style: .destructive))
-      alert.addAction(UIAlertAction(title: "No", style: .cancel))
+    present(
+      isPresented: Binding($model.destination.deleteItemAlert)
+    ) {
+      let alert = UIAlertController(
+        title: "Delete?",
+        message: message,
+        preferredStyle: .alert
+      )
+      alert.addAction(
+        UIAlertAction(title: "Yes", style: .destructive)
+      )
+      alert.addAction(
+        UIAlertAction(title: "No", style: .cancel)
+      )
       return alert
     }
-    navigationDestination(item: $model.destination.editItem) { editItemModel in
+    navigationDestination(
+      item: $model.destination.editItem
+    ) { editItemModel in
       EditItemViewController(model: editItemModel)
     }
   }
