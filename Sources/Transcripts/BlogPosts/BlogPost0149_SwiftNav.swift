@@ -12,7 +12,7 @@ extension BlogPost {
     coverImage: nil,
     hidden: .no,
     hideFromSlackRSS: false,
-    id: 149,  
+    id: 149,
     publishedAt: yearMonthDayFormatter.date(from: "2024-08-05")!,
     title: "Swift Navigation: Powerful navigation tools for all Swift platforms"
   )
