@@ -96,8 +96,11 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     @Dependency(\.siteRouter) var siteRouter
 
     let login = request(
-      to: .gitHubAuth(redirect: siteRouter.url(for: .episodes(.show(.right(42))))),
-      session: .loggedIn)
+      to: .gitHubAuth(
+        redirect: siteRouter.url(for: .episodes(.episode(param: .right(42), .show())))
+      ),
+      session: .loggedIn
+    )
     let conn = connection(from: login)
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -146,7 +149,10 @@ class AuthTests: TestCase {
 
       let auth = request(
         to: .gitHubCallback(
-          code: "deadbeef", redirect: siteRouter.url(for: .episodes(.show(.right(42))))))
+          code: "deadbeef",
+          redirect: siteRouter.url(for: .episodes(.episode(param: .right(42), .show())))
+        )
+      )
       let conn = connection(from: auth)
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }

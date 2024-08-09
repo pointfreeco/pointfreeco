@@ -54,7 +54,6 @@ public indirect enum SiteRoute: Equatable {
   )
   case team(Team)
   case teamInviteCode(TeamInviteCode)
-  case useEpisodeCredit(Episode.ID)
   case webhooks(Webhooks)
 
   public enum Blog: Equatable {
@@ -92,17 +91,22 @@ public indirect enum SiteRoute: Equatable {
 
   public enum EpisodesRoute: Equatable {
     case list(ListType)
-    case progress(param: Either<String, Episode.ID>, percent: Int)
-    case show(Either<String, Episode.ID>)
+    case episode(param: Either<String, Episode.ID>, EpisodeRoute)
 
     public static func show(_ episode: Episode) -> Self {
-      .show(.left(episode.slug))
+      .episode(param: .left(episode.slug), .show())
     }
 
     public enum ListType: Equatable {
       case all
       case free
       case history
+    }
+
+    public enum EpisodeRoute: Equatable {
+      case progress(percent: Int)
+      case show(collection: Episode.Collection.Slug? = nil)
+      case useCredit
     }
   }
 
@@ -151,8 +155,11 @@ public indirect enum SiteRoute: Equatable {
 struct SlugOrID<ID: RawRepresentable>: ParserPrinter where ID.RawValue == Int {
   var body: some ParserPrinter<Substring, Either<String, ID>> {
     OneOf {
+      Parse {
+        Digits().map(.representing(ID.self).map(.case(Either<String, ID>.right)))
+        End()
+      }
       Parse(.string.map(.case(Either<String, ID>.left)))
-      Digits().map(.representing(ID.self).map(.case(Either<String, ID>.right)))
     }
   }
 }
@@ -237,18 +244,26 @@ struct EpisodesRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.EpisodesRoute.show)) {
+      Route(.case(SiteRoute.EpisodesRoute.episode)) {
         Path { SlugOrID<Episode.ID>() }
-      }
 
-      Route(.case(SiteRoute.EpisodesRoute.progress)) {
-        Method.post
-        Path {
-          SlugOrID<Episode.ID>()
-          "progress"
-        }
-        Query {
-          Field("percent") { Digits() }
+        OneOf {
+          Route(.case(SiteRoute.EpisodesRoute.EpisodeRoute.show)) {
+            Always(Episode.Collection.Slug?.none)
+          }
+
+          Route(.case(SiteRoute.EpisodesRoute.EpisodeRoute.progress)) {
+            Method.post
+            Path { "progress" }
+            Query {
+              Field("percent") { Digits() }
+            }
+          }
+
+          Route(.case(SiteRoute.EpisodesRoute.EpisodeRoute.useCredit)) {
+            Method.post
+            Path { "credit" }
+          }
         }
       }
     }
@@ -666,15 +681,6 @@ struct SiteRouter: ParserPrinter {
       Route(.case(SiteRoute.teamInviteCode)) {
         Path { "join" }
         JoinRouter()
-      }
-
-      Route(.case(SiteRoute.useEpisodeCredit)) {
-        Method.post
-        Path {
-          "episodes"
-          Digits().map(.representing(Episode.ID.self))
-          "credit"
-        }
       }
 
       Route(.case(SiteRoute.webhooks)) {

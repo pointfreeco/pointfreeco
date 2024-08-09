@@ -160,13 +160,16 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     .performAsync()
 
   case let .collections(.collection(collectionSlug, .section(_, .episode(episodeParam)))):
-    return await showEpisode(conn.map { _ in }, param: episodeParam, collectionSlug: collectionSlug)
+    return await episodesMiddleware(
+      route: .episode(param: episodeParam, .show(collection: collectionSlug)),
+      conn.map { _ in }
+    )
 
-  case let .collections(
-    .collection(_, .section(_, .progress(param: param, percent: percent)))
-  ):
-    return await progressResponse(conn.map(const(param .*. percent .*. unit)))
-      .performAsync()
+  case let .collections(.collection(_, .section(_, .progress(episodeParam, percent)))):
+    return await episodesMiddleware(
+      route: .episode(param: episodeParam, .progress(percent: percent)),
+      conn.map { _ in }
+    )
 
   case let .discounts(couponId, billing):
     let subscribeData = SubscribeConfirmationData(
@@ -351,14 +354,6 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
   case let .team(.remove(teammateId)):
     return await removeTeammateMiddleware(conn.map(const(teammateId .*. currentUser .*. unit)))
       .performAsync()
-
-  case let .useEpisodeCredit(episodeId):
-    return await useCreditResponse(
-      conn: conn.map(
-        const(Either.right(episodeId) .*. currentUser .*. subscriberState .*. route .*. unit)
-      )
-    )
-    .performAsync()
 
   case let .webhooks(.stripe(.paymentIntents(event))):
     return await stripePaymentIntentsWebhookMiddleware(conn.map(const(event)))
