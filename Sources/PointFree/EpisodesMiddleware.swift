@@ -110,15 +110,16 @@ private func showEpisode(
   @Dependency(\.subscriberState) var subscriberState
 
   let permission = await EpisodePermission(episode: episode)
-  let progress: Int? = switch permission {
-  case .loggedIn(let currentUser, .isSubscriber),
-    .loggedIn(let currentUser, .isNotSubscriber(creditPermission: .hasUsedCredit)),
-    .loggedIn(let currentUser, .isNotSubscriber(creditPermission: .hasNotUsedCredit(false))):
-    try? await database
-    .fetchEpisodeProgress(userID: currentUser.id, sequence: episode.sequence)
-    .percent
-  default: nil
-  }
+  let progress: Int? =
+    switch permission {
+    case .loggedIn(let currentUser, .isSubscriber),
+      .loggedIn(let currentUser, .isNotSubscriber(creditPermission: .hasUsedCredit)),
+      .loggedIn(let currentUser, .isNotSubscriber(creditPermission: .hasNotUsedCredit(false))):
+      try? await database
+        .fetchEpisodeProgress(userID: currentUser.id, sequence: episode.sequence)
+        .percent
+    default: nil
+    }
 
   return
     conn
