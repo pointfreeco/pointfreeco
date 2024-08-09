@@ -292,5 +292,7 @@ extension Episode {
     .ep287_modernUIKit,
     .ep288_modernUIKit,
     .ep289_modernUIKit,
+    .ep290_crossPlatform,
+    .ep291_crossPlatform,
   ]
 }

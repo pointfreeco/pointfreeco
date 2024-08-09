@@ -15,8 +15,7 @@ func episodesRssMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseE
 }
 
 func slackEpisodesRssMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseEnded, Data> {
-  return
-    conn
+  conn
     .writeStatus(.ok)
     .respond(xml: slackEpisodesFeedView)
     .clearBodyForHeadRequests()
