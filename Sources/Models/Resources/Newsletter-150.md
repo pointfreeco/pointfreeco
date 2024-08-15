@@ -1,4 +1,4 @@
-Today we are release version [1.13][tca-1.13-release] of the 
+Today we are releasing version [1.13][tca-1.13-release] of the 
 [Composable Architecture][tca-gh] that brings a new suite of UIKit tools to the library. You can
 now observe changes in a `Store` using the simple `observe` function, and you can drive navigation
 (sheets, popovers, stacks, and more!) from state.
