@@ -104,7 +104,7 @@ struct AppFeature {
 ```
 
 Then you can subclass `NavigationStackController` and call the initializer that allows you to 
-provide a binding to the stack that drives navigation, a view controller for the root, and a 
+provide a binding to the store that drives navigation, a view controller for the root, and a 
 trailing closure that describes how to transform a child feature in a view controller: 
 
 ```swift
