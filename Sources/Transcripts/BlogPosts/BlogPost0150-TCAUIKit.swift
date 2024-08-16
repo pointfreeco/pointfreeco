@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0150_TCAUIKit = Self(
     author: .pointfree,
     blurb: """
-      Today we are release version 1.13] of the Composable Architecture that brings a new suite of 
+      Today we are release version 1.13 of the Composable Architecture that brings a new suite of 
       UIKit tools to the library.
       """,
     coverImage: nil,
