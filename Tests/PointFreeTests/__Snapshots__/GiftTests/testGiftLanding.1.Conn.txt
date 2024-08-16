@@ -422,7 +422,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
         <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
           <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
             <pf-vstack class="color-K2J0r1 color-wVkSF3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-              <h4 class="margin-top-Xin5E2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">6 momths
+              <h4 class="margin-top-Xin5E2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">6 months
               </h4>
               <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
                 <div>

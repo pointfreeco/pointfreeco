@@ -112,7 +112,7 @@ test-oss: db
 		--enable-test-discovery
 
 test-linux:
-	docker-compose build && docker-compose run \
+	docker compose build && docker compose run \
 		--entrypoint "swift test --enable-test-discovery --skip-build" web
 
 linux-start:
