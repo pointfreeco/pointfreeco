@@ -16,10 +16,10 @@ let store: StoreOf<Feature>
 
 func viewDidLoad() {
   super.viewDidLoad()
-  
+
   observe { [weak self] in
     guard let self else { return }
-    
+
     countLabel.text = "Count: \(store.count)"
     if let fact = store.fact {
       factLabel.text = fact
@@ -68,10 +68,10 @@ like so:
 
 func viewDidLoad() {
   super.viewDidLoad()
-  
   …
-  
-  present(item: $store.scope(state: \.child, action: \.child)) { store in
+  present(
+    item: $store.scope(state: \.child, action: \.child)
+  ) { store in
     ChildViewController(store: store)
   }
 }
@@ -90,7 +90,7 @@ navigation stack like so:
 struct AppFeature {
   struct State {
     var path = StackState<Path.State>()
-    // ...
+    …
   }
 
   @Reducer
@@ -99,8 +99,7 @@ struct AppFeature {
     case detailItem(DetailFeature)
     case editItem(EditFeature)
   }
-
-  // ...
+  …
 }
 ```
 
@@ -117,7 +116,7 @@ class AppController: NavigationStackController {
 
     self.init(path: $store.scope(state: \.path, action: \.path)) {
       RootViewController(store: store)
-    } destination: { store in 
+    } destination: { store in
       switch store.case {
       case .addItem(let store):
         AddViewController(store: store)
