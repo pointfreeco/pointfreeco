@@ -186,6 +186,7 @@ public struct EpisodeDetail: HTML {
                       }
                       .linkUnderline(true)
                       .inlineStyle("margin-top", "0.25rem")
+                      .inlineStyle("word-break", "break-all")
                     }
                   }
                 }
