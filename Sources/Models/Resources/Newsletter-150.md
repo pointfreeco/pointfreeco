@@ -140,7 +140,7 @@ of the Composable Architecture.
 Be sure to update your dependency on the Composable Architecture to 1.13 today, and if you have
 any questions please open a [discussion][tca-discussion] on the repo!
 
-[tree-based-nav]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/stackbasednavigation
+[stack-based-nav]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/stackbasednavigation
 [tree-based-nav]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/treebasednavigation
 [tca-1.13-release]: https://github.com/pointfreeco/swift-composable-architecture/releases/tag/1.13.0
 [tca-gh]: https://github.com/pointfreeco/swift-composable-architecture/
