@@ -3,13 +3,13 @@ import Foundation
 extension Episode {
   public static let ep291_crossPlatform = Episode(
     blurb: """
-      TODO
+      We are going to take a Swift feature _into the browser_. We will set up a WebAssembly application from scratch, show how to run and debug it, and even set up some basic UI. And then we will integrate our existing model into it, all powered by the magic of Swift's Observation framework.
       """,
     codeSampleDirectory: "0291-cross-platform-pt2",
     exercises: _exercises,
     id: 291,
     length: 32 * 60 + 15,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2024-08-19")!,
     references: [
       // TODO
