@@ -357,6 +357,20 @@ now providing some rudimentary tools for AppKit.
 The `observe` tool now works on macOS, and further it has been integrated with AppKit's animation
 APIs.
 
+For example, an AppKit app can introduce animated changes to a model using `withAppKitAnimation`,
+which can be thought of as an AppKit-friendly version of SwiftUI's `withAnimation`:
+
+```swift
+func incrementButtonTapped() {
+  withAppKitAnimation {
+    count += 1
+  }
+}
+```
+
+And then any `observe` block that observes this change will automatically apply it to the view in
+an animation.
+
 ## Explore cross-platform Swift today
 
 We hope that you have found the prospects of cross-platform Swift as exciting as we have! If you
