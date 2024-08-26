@@ -14,7 +14,7 @@ Thanks to herculean effects of
 [Max Desiatov](https://github.com/MaxDesiatov),
 [@yonihemi](https://github.com/yonihemi),
 [Yuta Saito](https://github.com/kateinoigakukun),
-[Carson Katri](https://github.com/carson-katri), and others, Swift can now be 
+[Carson Katri](https://github.com/carson-katri), and many others, Swift can now be 
 [deployed on Windows](https://www.swift.org/blog/swift-on-windows/) and 
 [WebAssembly](https://github.com/swiftwasm/). And each year there are more platforms being explored,
 such as [embedded Swift](https://www.swift.org/blog/embedded-swift-examples/).
@@ -103,7 +103,7 @@ So, Swift is indeed running in the browser, but there isn't much functionalityâ€
 Let's build a tiny Swift feature that can run in the browser, but that can also run on Apple's
 platforms such as iOS. The feature will need to be pure Swift and it can't use any
 Apple-specific frameworks (no SwiftUI or UIKit). Luckily Swift comes with a powerful observation
-framework that is built in pure Swift, and so instantly available on all platforms supported
+framework that is built in pure Swift, and so is instantly available on all platforms supported
 by Swift.
 
 So, let's create a simple `CounterModel` feature that holds onto an integer and exposes some 
