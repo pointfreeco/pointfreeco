@@ -102,7 +102,7 @@
     {
       "identity" : "swift-cmark",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftlang/swift-cmark.git",
+      "location" : "https://github.com/apple/swift-cmark.git",
       "state" : {
         "revision" : "3bc2f3e25df0cecc5dc269f7ccae65d0f386f06a",
         "version" : "0.4.0"
@@ -300,7 +300,7 @@
     {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftlang/swift-syntax.git",
+      "location" : "https://github.com/apple/swift-syntax.git",
       "state" : {
         "revision" : "64889f0c732f210a935a0ad7cda38f77f876262d",
         "version" : "509.1.1"

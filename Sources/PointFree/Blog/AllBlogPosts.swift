@@ -167,5 +167,6 @@ extension BlogPost {
     .post0148_SwiftTestingBonanza,
     .post0149_SwiftNav,
     .post0150_TCAUIKit,
+    .post0151_CrossPlatformSwift,
   ]
 }
