@@ -1,6 +1,7 @@
 Ever since Swift was open sourced in 2015 it has been possible to deploy Swift on non-Apple 
 platforms, though it was mostly restricted to just Linux. Even this very site was built in Swift 
-from the first day it launched in 2018. 
+from the first day it launched in 2018 (and 
+[open-sourced!](http://github.com/pointfreeco/pointfreeco)). 
 
 Over the years the developer experience for building server-side applications in Swift has greatly
 improved, thanks to a combination of effort from Apple and the greater Swift community. However,
