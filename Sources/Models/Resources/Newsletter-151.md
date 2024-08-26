@@ -19,9 +19,9 @@ Thanks to herculean effects of
 [WebAssembly](https://github.com/swiftwasm/). And each year there are more platforms being explored,
 such as [embedded Swift](https://www.swift.org/blog/embedded-swift-examples/).
 
-However, we aren't going to sugar coat things. Building Swift applications for non-Apple platforms
+However, we aren't going to sugarcoat things. Building Swift applications for non-Apple platforms
 can be quite difficult. The tools are not as polished as they are for Apple's platforms, most 
-frameworks that we know and love are not available (e.g. SwiftUI 😢), and it takes significant
+frameworks that we know and love are not available (_e.g._, SwiftUI 😢), and it takes significant
 work to prepare an app for sharing code across multiple platforms.
 
 That is the topic of the 
@@ -38,13 +38,12 @@ and other platforms, that allows one to run any language in the browser, not jus
 Many languages support Wasm, including Python, Ruby, Rust, and C++, and even Swift has experimental 
 support for Wasm. 
 
-
 We'll start by creating
 a new Swift executable in a package and opening it in Xcode: 
 
 > Important: In order to run the code in this article you must be on **beta 4** of Xcode 16. The 
-version of Swift that shipped in newer versions of Xcode unfortunately have a bug that needs to be 
-[fixed](https://github.com/swiftlang/swift/pull/75902).
+> version of Swift that shipped in newer versions of Xcode unfortunately have a bug that needs to be 
+> [fixed](https://github.com/swiftlang/swift/pull/75902).
 
 ```
 mkdir WasmCounter
@@ -54,7 +53,7 @@ open Package.swift
 ```
 
 Next we will add some dependencies to the Package.swift of this package. In order to build a Wasm 
-application we will use the [carton](http://github.com/swiftwasm/carton) plugin from the
+application we will use the [`carton`](http://github.com/swiftwasm/carton) plugin from the
 [SwiftWasm](http://github.com/swiftwasm) organization: 
 
 ```swift
@@ -67,7 +66,7 @@ dependencies: [
 use a very specific snapshot of the Swift compiler. We can't use the one that is included with 
 Xcode.
 
-Luckily `carton` makes this very easy to manage. Simply create a `.swift-version` file at the root
+Luckily `carton` makes this very easy to manage. Simply create a .swift-version file at the root
 of the package that describes the snapshot we want to use. The latest one we have found that works
 well is the following: 
 
@@ -79,8 +78,8 @@ wasm-DEVELOPMENT-SNAPSHOT-2024-07-16-a
 
 With that done, we can run `carton` from the command line:
 
-```
-swift run carton dev
+```sh
+$ swift run carton dev
 ```
 
 …and then `carton` will download and install the Swift snapshot, compile your executable, and
@@ -148,7 +147,7 @@ dependencies: [
 ```
 
 > Important: You must depend on exactly version 0.19.2 of JavaScriptKit to work around some 
-compilation issues.
+> compilation issues.
 
 Next we will add the JavaScriptKit and JavaScriptEventLoop products to our WasmCounter executable
 so that we can access those libraries:
@@ -199,8 +198,8 @@ _ = document.body.appendChild(countLabel)
 With that little bit of code written you can refresh the browser to see "Count: 0" showing. This 
 means that our Swift code is running in the browser _and_ manipulating the DOM.
 
-Next we will create and custom a button that when clicked invokes the `decrementButtonTapped`
-method on the model:
+Next we will create a button that when clicked invokes the `decrementButtonTapped` method on the
+model:
 
 ```swift
 let model = CounterModel()
@@ -282,7 +281,7 @@ dependencies: [
 ],
 ```
 
-…and add the SwiftNavigation produce to the WasmCounter executable:
+…and add the SwiftNavigation product to the WasmCounter executable:
 
 ```swift:6
 .executableTarget(
@@ -295,7 +294,7 @@ dependencies: [
 ),
 ```
 
-Now we can import Swift Navigation:
+Now we can import it:
 
 ```swift
 import SwiftNavigation
