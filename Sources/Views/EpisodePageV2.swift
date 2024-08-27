@@ -128,9 +128,7 @@ public struct EpisodeDetail: HTML {
           )
 
           VStack {
-            if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
-              UnlockEpisodeCallout(episode: episode, permission: permission)
-            }
+            UnlockEpisodeCallout(episode: episode, permission: permission)
 
             article {
               transcript

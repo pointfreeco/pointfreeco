@@ -20,6 +20,7 @@ extension Episode.Collection {
         coreLessons: [
           .init(episode: .ep290_crossPlatform),
           .init(episode: .ep291_crossPlatform),
+          .init(episode: .ep292_crossPlatform),
         ],
         isFinished: false,
         isHidden: false,
