@@ -27,7 +27,8 @@ work to prepare an app for sharing code across multiple platforms.
 That is the topic of the 
 [new series of episodes](https://www.pointfree.co/collections/cross-platform-swift) we have just
 started, but in this blog post we want to describe the very basics of getting a simple Swift app
-running on a non-Apple platform, in particular in a browser.
+running on a non-Apple platform, in particular in a browser. By the end of this article you will
+have a simple counter feature built in Swift and running in the browser.
 
 ## WebAssembly
 
@@ -43,7 +44,8 @@ a new Swift executable in a package and opening it in Xcode:
 
 > Important: In order to run the code in this article you must be on **beta 4** of Xcode 16. The 
 > version of Swift that shipped in newer versions of Xcode unfortunately have a bug that needs to be 
-> [fixed](https://github.com/swiftlang/swift/pull/75902).
+> [fixed](https://github.com/swiftlang/swift/pull/75902). It is also possible to use VSCode to
+> build this project, but that takes more work to set up.
 
 ```
 mkdir WasmCounter
@@ -84,7 +86,7 @@ $ swift run carton dev
 
 …and then `carton` will download and install the Swift snapshot, compile your executable, and
 automatically open a browser with the executable running. And it may not seem like much, but there
-is in fact a Swift executable running in the browser. In fact, if you open your browsers developer
+is in fact a Swift executable running in the browser. In fact, if you open your browser's developer
 console (cmd+option+I in Safari), then you will see that "Hello, world!" is printed, and that's 
 because the executable currently prints that message:
 
@@ -126,14 +128,20 @@ class CounterModel {
 }
 ```
 
+> Note: This code, and all code in this article, can be put in the main.swift file in the executable
+> target created by SPM.
+
 This is 100% pure Swift code and can compile on _any_ platform that Swift supports, including
-Linux, Windows, Wasm, and more. And now we would like to build out the HTML view that actually
-implements this model.
+Linux, Windows, Wasm, and more. Of course the model is quite simple, but in the future it may
+accrue more responsibilities, such as network requests, persistence, and more. 
+
+And now we would like to build out the HTML view that actually interacts with this model in order
+to display the count and invoke the methods on the model.
 
 ## JavaScriptKit
 
 WebAssembly does get direct access to the Document Object Model (DOM) in the browser for adding
-and removing HTML nodes in the view. One must go through JavaScript to do this, and there is an
+and removing HTML nodes. One must go through JavaScript to do this, and there is an
 additional library from the SwiftWasm organization to make this easier, called 
 [JavaScriptKit](https://github.com/swiftwasm/javascriptkit).
 
@@ -187,7 +195,7 @@ Thanks to a novel use of the
 JavaScriptKit allows us to write Swift code that looks very similar to JavaScript, and invokes 
 actual JavaScript APIs under the hood:
 
-```javascript
+```swift
 let document = JSObject.global.document
 
 var countLabel = document.createElement("div")
@@ -195,7 +203,8 @@ countLabel.innerText = "Count: 0"
 _ = document.body.appendChild(countLabel)
 ```
 
-With that little bit of code written you can refresh the browser to see "Count: 0" showing. This 
+Character-for-character, this Swift code is nearly identical to the JavaScript version. And
+with that little bit of code written you can refresh the browser to see "Count: 0" showing. This 
 means that our Swift code is running in the browser _and_ manipulating the DOM.
 
 Next we will create a button that when clicked invokes the `decrementButtonTapped` method on the
@@ -321,6 +330,11 @@ observe {
 }
 ```
 
+The mere act of us accessing `model.count` in this closure means we subscribe to any changes to
+that field. If `count` is ever mutated, the closure will be called again, and the UI will be updated
+with the newest value. And further, if any state in `model` changes that is _not_ accessed in this
+closure, the closure will not be invoked because we are not subscribed to those changes.
+
 However, there are two things to be mindful of with this code. First, to keep the observation alive
 we must store the token that is returned from `observe`:
 
@@ -351,11 +365,9 @@ It is absolutely incredible to see!
 The primary reason it was so easy to use the `CounterModel` observable class in a WebAssembly
 app is thanks to the `observe` function that comes with our Swift Navigation library. It provides
 many foundational tools that can be used in _any_ Swift app deployed to _any_ platform. But it
-also provides specific tools for SwiftUI, UIKit, and starting today with the 2.1 release, we are
-now providing some rudimentary tools for AppKit.
-
-The `observe` tool now works on macOS, and further it has been integrated with AppKit's animation
-APIs.
+also provides specific tools for SwiftUI, UIKit, and starting today with the 2.2 release, we are
+now providing some rudimentary tools for AppKit. The `observe` tool now works on macOS, and further 
+it has been integrated with AppKit's animation APIs.
 
 For example, an AppKit app can introduce animated changes to a model using `withAppKitAnimation`,
 which can be thought of as an AppKit-friendly version of SwiftUI's `withAnimation`:
