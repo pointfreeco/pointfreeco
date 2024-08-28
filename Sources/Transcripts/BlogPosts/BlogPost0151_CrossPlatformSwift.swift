@@ -8,7 +8,8 @@ extension BlogPost {
       and even the browser! Join us for a quick overview of how to get a simple, pure-Swift app
       running in WebAssembly.
       """,
-    coverImage: "https://pointfreeco-blog.s3.amazonaws.com/posts/0151-cross-platform/wasm-counter.gif",
+    coverImage:
+      "https://pointfreeco-blog.s3.amazonaws.com/posts/0151-cross-platform/wasm-counter.gif",
     hidden: .no,
     hideFromSlackRSS: false,
     id: 151,
