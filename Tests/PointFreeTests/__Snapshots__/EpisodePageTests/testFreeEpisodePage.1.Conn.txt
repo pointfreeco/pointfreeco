@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 138425
+Content-Length: 142239
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -370,12 +370,26 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .color-py8mM2:visited{color:#171717}
 .font-variant-numeric-vLOwL2{font-variant-numeric:tabular-nums}
 .max-width-dnNPN1{max-width:1rem}
+.overflow-PhNC81{overflow:hidden}
+.color-Vt0a43{color:#a8a8a8}
+.border-bottom-S35Gp4{border-bottom:1px solid #ccc}
+.font-weight-uXksW1{font-weight:600}
+.line-height-YiPUh{line-height:3}
+.background-color-4kuW21{background-color:#f6f6f6}
+.justify-content-CdPBO2{justify-content:center}
+.padding-OTxAT3{padding:1rem 2rem 2rem}
+.font-size-Xin5E2{font-size:1.5rem}
+.margin-bottom-dnNPN1{margin-bottom:1rem}
+.padding-bottom-yQEjs3:not(:last-child){padding-bottom:0.5rem}
+.padding-top-FBkWQ3{padding-top:0}
+.padding-left-FBkWQ3{padding-left:0}
+.padding-right-FBkWQ3{padding-right:0}
+.padding-8K2qP3{padding:1.0rem 1.25rem}
 .color-PJVOr3{color:#242424}
 .top-kDUvL2{top:-5em}
 .visibility-PhNC81{visibility:hidden}
 .margin-left-SH03u1{margin-left:-2.25rem}
 .padding-left-5jRhu{padding-left:2.25rem}
-.font-size-Xin5E2{font-size:1.5rem}
 article div:hover > * > .display-Vk1P81{display:initial}
 .left-FBkWQ3{left:0}
 .width-Wr637{width:2.5rem}
@@ -391,7 +405,6 @@ article div:hover > * > .display-Vk1P81{display:initial}
 .filter-NZxSK3{filter:drop-shadow(0 0 2px rgba(0,0,0,0.2)) drop-shadow(0 1px 0 rgba(0,0,0,0.2))}
 .border-radius-GcgQe4{border-radius:8px}
 .border-pdTqi3{border:0.5px solid #86343244}
-.overflow-PhNC81{overflow:hidden}
 .column-gap-FBkWQ3{column-gap:0}
 .padding-pEJFL3{padding:8px 8px 7px}
 .background-color-pET3t1{background-color:#FFC0C0}
@@ -420,13 +433,8 @@ article div:hover > * > .display-Vk1P81{display:initial}
 .margin-bottom-1rcXs4:not(:last-child){margin-bottom:0.75rem}
 .font-size-NBsge3{font-size:3.0rem}
 .max-width-3zifi{max-width:40rem}
-.padding-bottom-yQEjs3:not(:last-child){padding-bottom:0.5rem}
-.padding-top-FBkWQ3{padding-top:0}
-.padding-left-FBkWQ3{padding-left:0}
-.padding-right-FBkWQ3{padding-right:0}
 .margin-top-H64QF2{margin-top:3rem}
 .display-qrAHi{display:inline-block}
-.padding-8K2qP3{padding:1.0rem 1.25rem}
 .background-color-K2J0r1{background-color:#121212}
 .align-items-Dq4Oc4{align-items:first baseline}
 .font-size-yLOVS3{font-size:1.25rem}
@@ -511,6 +519,9 @@ article div:hover > * > .display-Vk1P81{display:initial}
   .color-D9CPB:visited{color:#fafafa}
   .color-atKCn2:link{color:#575757}
   .color-WJrrA4:visited{color:#575757}
+  .color-z3q4D{color:#808080}
+  .border-bottom-Sh2jA3{border-bottom:1px solid #555}
+  .background-color-Hakcq1{background-color:#242424}
   .color-VoDZ9{color:#ccc}
   .color-9rBiP:link{color:#555555}
   .color-CwERD1:visited{color:#555555}
@@ -654,6 +665,22 @@ article div:hover > * > .display-Vk1P81{display:initial}
         </pf-vstack>
       </pf-vstack>
       <pf-vstack class="margin-left-YkrNQ min-width-FBkWQ3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+        <pf-vstack class="border-S35Gp4 border-Sh2jA3 border-radius-xypJ01 overflow-PhNC81 text-align-CdPBO2 color-Vt0a43 color-z3q4D align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+          <div class="border-bottom-S35Gp4 border-bottom-Sh2jA3 font-weight-uXksW1 line-height-YiPUh font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 background-color-4kuW21 background-color-Hakcq1">
+            <pf-hstack class="justify-content-CdPBO2 align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-NKv2f3"><img alt="Free" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE1IiB2aWV3Qm94PSIwIDAgMTIgMTUiIHdpZHRoPSIxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtOCAxMS4zMzMzMzMzYy43MzMzMzMzMyAwIDEuMzMzMzMzMzMtLjYgMS4zMzMzMzMzMy0xLjMzMzMzMzMgMC0uNzMzMzMzMzMtLjYtMS4zMzMzMzMzMy0xLjMzMzMzMzMzLTEuMzMzMzMzMzNzLTEuMzMzMzMzMzMuNi0xLjMzMzMzMzMzIDEuMzMzMzMzMzNjMCAuNzMzMzMzMy42IDEuMzMzMzMzMyAxLjMzMzMzMzMzIDEuMzMzMzMzM3ptNC01Ljk5OTk5OTk3aC0uNjY2NjY2N3YtMS4zMzMzMzMzM2MwLTEuODQtMS40OTMzMzMzLTMuMzMzMzMzMzMtMy4zMzMzMzMzLTMuMzMzMzMzMzNzLTMuMzMzMzMzMzMgMS40OTMzMzMzMy0zLjMzMzMzMzMzIDMuMzMzMzMzMzNoMS4yNjY2NjY2NmMwLTEuMTQuOTI2NjY2NjctMi4wNjY2NjY2NyAyLjA2NjY2NjY3LTIuMDY2NjY2NjdzMi4wNjY2NjY3LjkyNjY2NjY3IDIuMDY2NjY2NyAyLjA2NjY2NjY3djEuMzMzMzMzMzNoLTYuMDY2NjY2N2MtLjczMzMzMzMzIDAtMS4zMzMzMzMzMy42LTEuMzMzMzMzMzMgMS4zMzMzMzMzNHY2LjY2NjY2NjYzYzAgLjczMzMzMzQuNiAxLjMzMzMzMzQgMS4zMzMzMzMzMyAxLjMzMzMzMzRoOGMuNzMzMzMzMyAwIDEuMzMzMzMzMy0uNiAxLjMzMzMzMzMtMS4zMzMzMzM0di02LjY2NjY2NjYzYzAtLjczMzMzMzM0LS42LTEuMzMzMzMzMzQtMS4zMzMzMzMzLTEuMzMzMzMzMzR6bTAgNy45OTk5OTk5N2gtOHYtNi42NjY2NjY2M2g4eiIgZmlsbD0iIzdkN2Q3ZCIgZmlsbC1ydWxlPSJldmVub2RkIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMikiLz48L3N2Zz4=">This episode is free for everyone.
+            </pf-hstack>
+          </div>
+          <pf-vstack class="padding-OTxAT3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+            <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Subscribe to Point-Free
+            </h4>
+            <p class="margin-bottom-dnNPN1 text-wrap-aqIE4 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Access all past and future episodes when you become a subscriber.
+            </p>
+            <pf-vstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a href="/pricing" class="font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">See plans and pricing</a>
+              <p class="padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Already a subscriber? <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/authenticate?redirect=http://localhost:8080/episodes/ep2-proof-in-functions">Log in</a>
+              </p>
+            </pf-vstack>
+          </pf-vstack>
+        </pf-vstack>
         <article>
           <pf-markdown class="color-PJVOr3 color-VoDZ9 display-ix08W2">
             <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="introduction"></a>
