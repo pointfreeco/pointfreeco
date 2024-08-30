@@ -115,8 +115,12 @@ public struct EpisodeDetail: HTML {
         """,
       blurb: episode.blurb,
       vimeoVideoID: VimeoVideo.ID(
-        rawValue: permission.isViewable ? episode.fullVideo.vimeoId : episode.trailerVideo.vimeoId
-      )
+        rawValue: permission.isViewable
+          ? episode.fullVideo.vimeoId
+          : episode.trailerVideo.vimeoId
+      ),
+      length: episode.length.rawValue,
+      progress: episodePageData.episodeProgress
     )
 
     if let transcript {
