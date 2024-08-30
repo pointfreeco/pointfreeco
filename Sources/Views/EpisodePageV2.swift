@@ -119,8 +119,9 @@ public struct EpisodeDetail: HTML {
           ? episode.fullVideo.vimeoId
           : episode.trailerVideo.vimeoId
       ),
-      length: episode.length.rawValue,
-      progress: episodePageData.episodeProgress
+      progress: episodePageData.episodeProgress.map {
+        .init(percent: $0, seconds: episode.length.rawValue)
+      }
     )
 
     if let transcript {

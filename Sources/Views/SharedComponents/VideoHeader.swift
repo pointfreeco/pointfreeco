@@ -6,8 +6,12 @@ struct VideoHeader: HTML {
   let subtitle: String
   let blurb: String
   let vimeoVideoID: VimeoVideo.ID
-  let length: Int
-  let progress: Int?
+  let progress: Progress?
+
+  struct Progress {
+    let percent: Int
+    let seconds: Int
+  }
 
   var body: some HTML {
     CenterColumn {
@@ -66,6 +70,6 @@ struct VideoHeader: HTML {
   }
 
   private var timestamp: String {
-    progress.map { "#t=\(Int(Double(length * $0) / 100))s" } ?? ""
+    progress.map { "#t=\(Int(Double($0.seconds * $0.percent) / 100))s" } ?? ""
   }
 }
