@@ -23,6 +23,7 @@ public struct GiftsV2: HTML {
         PricingLane("3 months", annualPricePerMonth: 54) {
           "One-time payment"
         } features: {
+          li { "Full access for 3 months" }
           baseFeatures
         } callToAction: {
           Button(color: .purple) {
@@ -34,6 +35,7 @@ public struct GiftsV2: HTML {
         PricingLane("6 months", annualPricePerMonth: 108) {
           "One-time payment"
         } features: {
+          li { "Full access for 3 months" }
           baseFeatures
         } callToAction: {
           Button(color: .purple) {
@@ -45,6 +47,7 @@ public struct GiftsV2: HTML {
         PricingLane("1 year", annualPricePerMonth: 168) {
           "One-time payment"
         } features: {
+          li { "Full access for 1 year" }
           li { "22% off the 3 and 6 month gift options" }
             .color(.black)
             .backgroundColor(.yellow)
@@ -74,7 +77,6 @@ public struct GiftsV2: HTML {
   var baseFeatures: some HTML {
     let stats = EpisodesStats()
 
-    li { "Full access for 3 months" }
     li { "All \(stats.allEpisodes) episodes with transcripts" }
     li { "Over \(stats.allHours) hours of video" }
     li {

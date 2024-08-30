@@ -2,7 +2,7 @@ GET http://localhost:8080/gifts
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 114484
+Content-Length: 114482
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -465,9 +465,9 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
                 </div>
               </pf-hstack>
               <ul class="font-size-RTPM71 margin-yiBeC4 padding-left-E4tBw4 list-style-type-Wl0y44 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3 color-I8WpG4 color-VoDZ9">
-                <li class="margin-LDhNn4 padding-B7Alk3 background-color-QNGbR3 color-K2J0r1">22% off the 3 and 6 month gift options
+                <li>Full access for 1 year
                 </li>
-                <li>Full access for 3 months
+                <li class="margin-LDhNn4 padding-B7Alk3 background-color-QNGbR3 color-K2J0r1">22% off the 3 and 6 month gift options
                 </li>
                 <li>All 0 episodes with transcripts
                 </li>
