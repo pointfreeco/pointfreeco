@@ -6,6 +6,12 @@ struct VideoHeader: HTML {
   let subtitle: String
   let blurb: String
   let vimeoVideoID: VimeoVideo.ID
+  let progress: Progress?
+
+  struct Progress {
+    let percent: Int
+    let seconds: Int
+  }
 
   var body: some HTML {
     CenterColumn {
@@ -40,7 +46,7 @@ struct VideoHeader: HTML {
         div {
           div {
             iframe()
-              .attribute("src", "https://player.vimeo.com/video/\(vimeoVideoID)?pip=1")
+              .attribute("src", "https://player.vimeo.com/video/\(vimeoVideoID)?pip=1\(timestamp)")
               .attribute("frameborder", "0")
               .attribute("allow", "autoplay; fullscreen")
               .attribute("allowfullscreen")
@@ -61,5 +67,9 @@ struct VideoHeader: HTML {
     }
     .inlineStyle("margin-top", "-4rem")
     .inlineStyle("padding-bottom", "4rem")
+  }
+
+  private var timestamp: String {
+    progress.map { "#t=\(Int(Double($0.seconds * $0.percent) / 100))s" } ?? ""
   }
 }

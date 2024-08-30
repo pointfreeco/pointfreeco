@@ -66,7 +66,8 @@ public struct ClipView: HTML {
         Episode Clip • \(headerDateFormatter.string(from: clip.createdAt))
         """,
       blurb: clip.description,
-      vimeoVideoID: clip.vimeoVideoID
+      vimeoVideoID: clip.vimeoVideoID,
+      progress: nil
     )
 
     if !subscriberState.isActiveSubscriber {
