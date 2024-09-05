@@ -176,9 +176,7 @@ public struct EpisodeDetail: HTML {
                       .fontStyle(.body(.small))
                       .color(.gray500)
                       if let blurb = reference.blurb {
-                        p {
-                          HTMLText(String(stripping: blurb))
-                        }
+                        HTMLMarkdown(blurb)
                         .color(.gray400.dark(.gray650))
                         .inlineStyle("margin", "0")
                       }

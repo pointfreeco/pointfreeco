@@ -12,7 +12,9 @@ extension Episode {
     permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2024-08-19")!,
     references: [
-      // TODO
+      .swiftForWebAssembly,
+      .batteriesNotIncluded,
+      .swiftWebAssemblyGoodNotes,
     ],
     sequence: 291,
     subtitle: "WebAssembly",

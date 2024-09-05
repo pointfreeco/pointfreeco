@@ -1382,6 +1382,36 @@ extension Episode.Reference {
     title: "Validated"
   )
 
+  public static let swiftForWebAssembly = Episode.Reference(
+    author: "Steven Van Impe",
+    blurb: """
+      A talk from SwiftCraft 2024: _WebAssembly is a rapidly growing technology that provides great opportunities for Swift developers. This talk will introduce Swift developers to WebAssembly, and demonstrate how they can run Swift in the browser, call JavaScript from Swift to access the DOM, add Swift modules to web apps, and so much more. A live demo will show how a single Swift codebase can power not just an iOS app, but also a web app, and a back-end._
+      """,
+    link: "https://www.youtube.com/watch?v=q0OdHVfz7r0",
+    publishedAt: yearMonthDayFormatter.date(from: "04-28-2024"),
+    title: "Swift for WebAssembly - How To Use Swift In Your Web App"
+  )
+
+  public static let batteriesNotIncluded = Episode.Reference(
+    author: "Kabir Oberai",
+    blurb: """
+      A talk from Swift TO 2023: _A confrontation of the notion that Xcode+macOS are the only way to develop apps for Apple platforms. We’ll discover what it takes to build apps in other IDEs like Visual Studio Code, as well as on non-Apple platforms, unveiling the secrets of cross-compilation to build, sign, and deploy iOS apps on Windows and Linux._
+      """,
+    link: "https://www.youtube.com/watch?v=fQ9uU9RHnRM",
+    publishedAt: yearMonthDayFormatter.date(from: "08-31-2023"),
+    title: "Batteries Not Included: Beyond Xcode"
+  )
+
+  public static let swiftWebAssemblyGoodNotes = Episode.Reference(
+    author: "Pedro Gómez",
+    blurb: """
+      A talk from NSSpain 2022 discussing how Goodnotes uses Swift Wasm in their application: _When a company implements 100% of the codebase in a language like Swift, there is a chance that in the future you may need to implement something that is not an iOS app with the same code, something like a web page maybe? This talk relates how we've reused most of the already implemented code in GoodNotes iOS app to create a web project we can reuse in different platforms, the technical approach we fo llowed, challenges and solutions applied._
+      """,
+    link: "https://vimeo.com/751290710",
+    publishedAt: yearMonthDayFormatter.date(from: "2022-11-19"),
+    title: "Swift WebAssembly + GoodNotes, a cross-platform story!"
+  )
+
   public static let testingAndDeclarativeUIs = Episode.Reference(
     author: "Nataliya Patsovska",
     blurb: #"""
