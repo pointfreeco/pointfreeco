@@ -177,8 +177,8 @@ public struct EpisodeDetail: HTML {
                       .color(.gray500)
                       if let blurb = reference.blurb {
                         HTMLMarkdown(blurb)
-                        .color(.gray400.dark(.gray650))
-                        .inlineStyle("margin", "0")
+                          .color(.gray400.dark(.gray650))
+                          .inlineStyle("margin", "0")
                       }
                       div {
                         Link(href: reference.link) {
