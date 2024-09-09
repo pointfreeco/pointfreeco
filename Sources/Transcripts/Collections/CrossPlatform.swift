@@ -22,6 +22,7 @@ extension Episode.Collection {
           .init(episode: .ep291_crossPlatform),
           .init(episode: .ep292_crossPlatform),
           .init(episode: .ep293_crossPlatform),
+          .init(episode: .ep294_crossPlatform),
         ],
         isFinished: false,
         isHidden: false,
