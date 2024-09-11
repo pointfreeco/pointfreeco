@@ -52,7 +52,7 @@ import DependenciesTestSupport
 @Suite(
   .dependency(\.apiClient, .failsOnSignUp),
   .dependency(\.date.now, Date(timeIntervalSince1970: 1234567890)),
-  .dependency(\.continuousClock, .immediate)  
+  .dependency(\.continuousClock, .immediate)
 )
 struct FeatureTests {
   // The 'apiClient', 'date' and 'continuousClock' dependencies
