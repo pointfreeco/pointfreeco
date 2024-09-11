@@ -42,22 +42,44 @@ func testSignUp() {
 
 This helps make sure you never access a live dependency in tests, *and* forces you to prove that you know exactly which dependencies are being used in a particular execution flow. This makes your tests stronger and acts as documentation for what is involved to run your feature.
 
-This has always worked with XCTest, but it will now behave the same in a `@Test` case too. Further, one can also leverage [test traits](https://developer.apple.com/documentation/testing/traits) from Swift’s Testing framework to override dependencies at a high level:
+This has always worked with XCTest, but it will now behave the same in a `@Test` case too.
+
+Further, one can also leverage an experimental Swift Testing [trait](https://developer.apple.com/documentation/testing/traits) to override dependencies at a high level:
 
 ```swift
-@Test(
+import DependenciesTestSupport
+
+@Suite(
   .dependency(\.apiClient, .failsOnSignUp),
   .dependency(\.date.now, Date(timeIntervalSince1970: 1234567890)),
   .dependency(\.continuousClock, .immediate)  
 )
-func feature() {
-  let model = SignUpModel()
+struct FeatureTests {
   // The 'apiClient', 'date' and 'continuousClock' dependencies
   // are all overridden in this scope.
 }
 ```
 
-By using the `.dependency` test trait we can guarantee that dependencies will be overridden for the entire duration of the test. This makes it very easy to upfront declare your dependencies for your tests, and then the body of your test function can focus just on the testing logic. And even better: all of this is compatible with Swift Testing’s “parallel by default” test runner! Multiple tests can run in parallel and use our dependencies library without worry of dependencies bleeding over from test to test.
+> Note: Due to a [Swift bug](https://github.com/swiftlang/swift/issues/76409), traits will not compile inline if they contain closures:
+>
+> ```swift:2:fail
+> @Suite(
+>   .dependency(\.apiClient.fetchUser, { .mock })
+> )
+> struct FeatureTests { … }
+> ```
+>
+> You can work around this bug by defining the closure _outside_ of the `@Test` or `@Suite` macro:
+>
+> ```swift:3:pass
+> private let fetchMockUser: @Sendable (Int) async throws -> User = { .mock }
+> @Suite(
+>   .dependency(\.apiClient.fetchUser, fetchMockUser)
+> )
+> struct FeatureTests { … }
+> ```
+
+By using the `.dependency` test trait we can guarantee that dependencies will be overridden for the entire duration of a test or suite. This makes it very easy to upfront declare your dependencies for your tests, and then the body of your test function can focus just on the testing logic. And even better: all of this is compatible with Swift Testing’s “parallel by default” test runner! Multiple tests can run in parallel and use our dependencies library without worry of dependencies bleeding over from test to test.
 
 We have even brought this functionality to SwiftUI previews! Using [preview traits](https://developer.apple.com/documentation/swiftui/preview(_:traits:_:body:)) one can do the following to override dependencies for a preview:
 
@@ -83,7 +105,7 @@ These dependencies will remain overridden for the entire duration of the preview
 
 One of the biggest selling points of the Composable Architecture is its [broad testing capabilities](https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/testing). You can test how every little piece of state changes in your feature, as well as how every effect executes and feeds data back into the system. When there is a mismatch between the expected and actual state of your feature a beautifully formatted failure message is presented in Xcode.
 
-And now this works when writing tests in Swift’s Testing framework while still keeping compatibility with Xcode’ XCTest framework. This means you can immediately start writing tests with Swift’s shiny, new testing framework for your Composable Architecture features and everything will work just as you expect.
+And now this works when writing tests in Swift’s Testing framework while still keeping compatibility with Xcode’s XCTest framework. This means you can immediately start writing tests with Swift’s shiny, new testing framework for your Composable Architecture features and everything will work just as you expect.
 
 ## Issue Reporting
 
