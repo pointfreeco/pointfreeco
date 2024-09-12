@@ -1,4 +1,4 @@
-We maintain many [open-source projects](http://github.com/pointfreeco) that thousands of developers and companies depend on, and they collectively receive over a million clones on a bi-weekly basis. It is important for us to keep each one updated with the newest advancements in the Swift language, Apple’s platforms (iOS/macOS/watchOS/tvOS/visionOS), as well as Apple’s development environment (Xcode).
+We maintain many [open-source projects](http://github.com/pointfreeco) that thousands of developers and companies clone over a million times on a bi-weekly basis. It is important for us to keep each one updated with the newest advancements in the Swift language, Apple’s platforms (iOS, macOS, visionOS, etc.), as well as Apple’s development environment (Xcode).
 
 And so to celebrate the official release of Xcode 16 and Swift 6.0, we are happy to announce that every single one of our libraries is ready for the future, and we didn’t drop support for any older Swift versions or Apple platforms!
 
@@ -28,10 +28,8 @@ One of the most powerful features of our Dependencies library is that it forces 
 ```swift
 func testSignUp() {
   …
-  
   // Implementation of this method uses an APIClient
   model.signUpButtonTapped()
-  
   …
 }
 ```
