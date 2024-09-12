@@ -168,5 +168,6 @@ extension BlogPost {
     .post0149_SwiftNav,
     .post0150_TCAUIKit,
     .post0151_CrossPlatformSwift,
+    .post0152_Xcode16,
   ]
 }
