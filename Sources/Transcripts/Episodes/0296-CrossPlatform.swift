@@ -15,7 +15,7 @@ extension Episode {
       // TODO
     ],
     sequence: 296,
-    subtitle: "One More Thing, Part 2",
+    subtitle: "Persistence",
     title: "Cross-Platform Swift",
     trailerVideo: .init(
       bytesLength: 44_400_000,

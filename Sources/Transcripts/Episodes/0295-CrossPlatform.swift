@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep295_crossPlatform = Episode(
     blurb: """
-      TODO
+      We've already covered a lot of ground and could have ended the series last week, but let's do a few more things to show just how powerful cross-platform domain modeling can be by adding a _new_ feature to our cross-platform application and see just how easy it is to integrate with SwiftUI, UIKit, _and_ WebAssembly.
       """,
     codeSampleDirectory: "0295-cross-platform-pt5",
     exercises: _exercises,
@@ -15,7 +15,7 @@ extension Episode {
       // TODO
     ],
     sequence: 295,
-    subtitle: "One More Thing, Part 1",
+    subtitle: "New Features",
     title: "Cross-Platform Swift",
     trailerVideo: .init(
       bytesLength: 68_000_000,
