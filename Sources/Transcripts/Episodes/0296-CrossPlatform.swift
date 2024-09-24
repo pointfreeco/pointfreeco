@@ -5,7 +5,7 @@ extension Episode {
     blurb: """
       We round out our series with one more feature: the ability for our users to manage a list of their favorite facts. It will allow us to explore a complex side effect, persistence, and show how the same Swift code can save and load data across iOS app launches _and_ web page refreshes.
       """,
-    codeSampleDirectory: "0296-cross-platform-pt5",
+    codeSampleDirectory: "0296-cross-platform-pt7",
     exercises: _exercises,
     id: 296,
     length: 53 * 60 + 1,
