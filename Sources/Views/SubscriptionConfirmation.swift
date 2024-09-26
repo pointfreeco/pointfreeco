@@ -988,6 +988,7 @@ public let currencyFormatter: NumberFormatter = {
   // Workaround for https://bugs.swift.org/browse/SR-7481
   formatter.minimumIntegerDigits = 1
   formatter.numberStyle = .currency
+  formatter.locale = Locale(identifier: "en_US_POSIX")
   return formatter
 }()
 
