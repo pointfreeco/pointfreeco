@@ -31,9 +31,6 @@ func authMiddleware(
     return await gitHubCallbackResponse(conn.map(const(code .*. redirect .*. unit)))
       .performAsync()
 
-  case .gitHubFailureLanding(code: let code, redirect: let redirect):
-    return await gitHubFailureLanding(code: code, redirect: redirect, conn.map { _ in () })
-
   case let .login(redirect):
     return await loginSignUpMiddleware(
       redirect: redirect,
@@ -44,9 +41,6 @@ func authMiddleware(
   case .logout:
     return await logoutResponse(conn.map(const(unit)))
       .performAsync()
-
-  case .overrideGitHubAccount(code: let code, redirect: let redirect):
-    return await overrideGitHubAccount(code: code, redirect: redirect, conn.map { _ in () })
 
   case let .signUp(redirect):
     return await loginSignUpMiddleware(
@@ -191,20 +185,19 @@ private func gitHubAuthTokenMiddleware(
       $0.writeSessionCookie { $0.user = .standard(user.id) }
     }
   } catch let error as GitHubUser.AlreadyRegistered {
-    return conn.redirect(to: .auth(.gitHubFailureLanding(code: code, redirect: redirect)))
-//    {
-//      $0.flash(
-//        .error,
-//        """
-//        The primary email address associated with your GitHub account, \(error.email.rawValue), is \
-//        already registered with Point-Free under a different \
-//        [GitHub account](https://github.com/settings) account.
-//
-//        Log into the GitHub account associated with your Point-Free account before trying again, \
-//        or contact <support@pointfree.co>.
-//        """
-//      )
-//    }
+    return conn.redirect(to: .home) {
+      $0.flash(
+        .error,
+        """
+        The primary email address associated with your GitHub account, \(error.email.rawValue), is \
+        already registered with Point-Free under a different \
+        [GitHub account](https://github.com/settings) account.
+        
+        Log into the GitHub account associated with your Point-Free account before trying again, \
+        or contact <support@pointfree.co>.
+        """
+      )
+    }
   } catch {
     await fireAndForget {
       try await sendEmail(
@@ -286,55 +279,4 @@ private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
     )
   )
   .absoluteString
-}
-
-private func gitHubFailureLanding(
-  code: String,
-  redirect: String?,
-  _ conn: Conn<StatusLineOpen, Void>
-) async -> Conn<ResponseEnded, Data> {
-  @Dependency(\.database) var database
-  @Dependency(\.gitHub) var gitHub
-
-  do {
-    let accessToken = try await accessToken(code: code)
-    async let gitHubUser = gitHub.fetchUser(accessToken)
-    async let email = gitHub.fetchEmails(accessToken).first(where: \.primary).unwrap().email
-    let existingUser = try await database.fetchUser(email: email)
-    return conn
-      .writeStatus(.ok)
-      .respondV2(
-        layoutData: SimplePageLayoutData(
-          title: "Update your GitHub account?"
-        )
-      ) {
-        GitHubFailureView()
-        }
-
-//        """
-//        The primary email address associated with your GitHub account, \(error.email.rawValue), is \
-//        already registered with Point-Free under a different \
-//        [GitHub account](https://github.com/settings) account.
-//        
-//        Log into the GitHub account associated with your Point-Free account before trying again, \
-//        or contact <support@pointfree.co>.
-//        """
-//    let user = database.fetchUser
-
-//    let user = try await fetchOrRegisterUser(env: env)
-//    try await refreshStripeSubscription(for: user)
-//    return conn.redirect(to: redirect ?? siteRouter.path(for: .home)) {
-//      $0.writeSessionCookie { $0.user = .standard(user.id) }
-//    }
-  } catch {
-    fatalError()
-  }
-}
-
-private func overrideGitHubAccount(
-  code: String,
-  redirect: String?,
-  _ conn: Conn<StatusLineOpen, Void>
-) async -> Conn<ResponseEnded, Data> {
-  fatalError()
 }

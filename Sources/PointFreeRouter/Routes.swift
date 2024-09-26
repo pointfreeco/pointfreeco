@@ -78,8 +78,6 @@ public indirect enum SiteRoute: Equatable {
     case logout
     case gitHubAuth(redirect: String?)
     case gitHubCallback(code: String?, redirect: String?)
-    case gitHubFailureLanding(code: String, redirect: String?)
-    case overrideGitHubAccount(code: String, redirect: String?)
     case signUp(redirect: String?)
   }
 
@@ -788,16 +786,6 @@ private struct AuthRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.Auth.gitHubFailureLanding)) {
-        Path { "github-failure" }
-        Query {
-          Field("code")
-          Optionally {
-            Field("redirect")
-          }
-        }
-      }
-
       Route(.case(SiteRoute.Auth.login)) {
         Path { "login" }
         Query {
@@ -809,17 +797,6 @@ private struct AuthRouter: ParserPrinter {
 
       Route(.case(SiteRoute.Auth.logout)) {
         Path { "logout" }
-      }
-
-      Route(.case(SiteRoute.Auth.overrideGitHubAccount)) {
-        Method.post
-        Path { "github-override" }
-        Query {
-          Field("code")
-          Optionally {
-            Field("redirect")
-          }
-        }
       }
 
       Route(.case(SiteRoute.Auth.signUp)) {
