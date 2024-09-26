@@ -77,3 +77,11 @@ public struct LoginSignUpView: HTML {
     .inlineStyle("background", "linear-gradient(#121212, #291a40)")
   }
 }
+
+public struct GitHubFailureView: HTML {
+  public init() {}
+
+  public var body: some HTML {
+    "GitHub failure :("
+  }
+}

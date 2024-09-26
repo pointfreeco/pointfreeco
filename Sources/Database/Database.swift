@@ -93,6 +93,8 @@ public struct Client {
   public var fetchTeamInvite: (_ id: TeamInvite.ID) async throws -> TeamInvite
   public var fetchTeamInvites: (_ inviterID: Models.User.ID) async throws -> [TeamInvite]
   @DependencyEndpoint(method: "fetchUser")
+  public var fetchUserByEmail: (_ email: EmailAddress) async throws -> Models.User
+  @DependencyEndpoint(method: "fetchUser")
   public var fetchUserByGitHub: (_ gitHubID: GitHubUser.ID) async throws -> Models.User
   @DependencyEndpoint(method: "fetchUser")
   public var fetchUserById: (_ id: Models.User.ID) async throws -> Models.User

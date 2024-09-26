@@ -13,10 +13,49 @@ import PostgresNIO
 import Prelude
 import Tuple
 import UrlFormEncoding
+import Views
 
 #if canImport(FoundationNetworking)
   import FoundationNetworking
 #endif
+
+func authMiddleware(
+  _ conn: Conn<StatusLineOpen, SiteRoute.Auth>
+) async -> Conn<ResponseEnded, Data> {
+  switch conn.data {
+  case let .gitHubAuth(redirect):
+    return await loginResponse(conn.map(const(redirect)))
+      .performAsync()
+
+  case let .gitHubCallback(code, redirect):
+    return await gitHubCallbackResponse(conn.map(const(code .*. redirect .*. unit)))
+      .performAsync()
+
+  case .gitHubFailureLanding(code: let code, redirect: let redirect):
+    return await gitHubFailureLanding(code: code, redirect: redirect, conn.map { _ in () })
+
+  case let .login(redirect):
+    return await loginSignUpMiddleware(
+      redirect: redirect,
+      type: .login,
+      conn.map(const(()))
+    )
+
+  case .logout:
+    return await logoutResponse(conn.map(const(unit)))
+      .performAsync()
+
+  case .overrideGitHubAccount(code: let code, redirect: let redirect):
+    return await overrideGitHubAccount(code: code, redirect: redirect, conn.map { _ in () })
+
+  case let .signUp(redirect):
+    return await loginSignUpMiddleware(
+      redirect: redirect,
+      type: .signUp,
+      conn.map(const(()))
+    )
+  }
+}
 
 let gitHubCallbackResponse =
   requireLoggedOutUser
@@ -89,7 +128,8 @@ private func fetchOrRegisterUser(env: GitHubUserEnvelope) async throws -> Models
   @Dependency(\.database) var database
 
   do {
-    return try await database.fetchUser(gitHubID: env.gitHubUser.id)
+    let user = try await database.fetchUser(gitHubID: env.gitHubUser.id)
+    return user
   } catch {
     return try await registerUser(env: env)
   }
@@ -99,6 +139,7 @@ extension GitHubUser {
   public struct AlreadyRegistered: Error {
     let email: EmailAddress
   }
+  public struct InvalidCode: Error {}
 }
 
 private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
@@ -122,7 +163,11 @@ private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
       )
     }
     return user
-  } catch let PostgresError.server(error) where error.fields[.constraintName] == "users_email_key" {
+  } catch let error as PSQLError
+    where
+    error.serverInfo?[.constraintName] == "users_email_key"
+    && error.serverInfo?[.routine] == "_bt_check_unique"
+  {
     throw GitHubUser.AlreadyRegistered(email: email)
   }
 }
@@ -146,19 +191,20 @@ private func gitHubAuthTokenMiddleware(
       $0.writeSessionCookie { $0.user = .standard(user.id) }
     }
   } catch let error as GitHubUser.AlreadyRegistered {
-    return conn.redirect(to: .home) {
-      $0.flash(
-        .error,
-        """
-        The primary email address associated with your GitHub account, \(error.email.rawValue), is \
-        already registered with Point-Free under a different \
-        [GitHub account](https://github.com/settings) account.
-
-        Log into the GitHub account associated with your Point-Free account before trying again, \
-        or contact <support@pointfree.co>.
-        """
-      )
-    }
+    return conn.redirect(to: .auth(.gitHubFailureLanding(code: code, redirect: redirect)))
+//    {
+//      $0.flash(
+//        .error,
+//        """
+//        The primary email address associated with your GitHub account, \(error.email.rawValue), is \
+//        already registered with Point-Free under a different \
+//        [GitHub account](https://github.com/settings) account.
+//
+//        Log into the GitHub account associated with your Point-Free account before trying again, \
+//        or contact <support@pointfree.co>.
+//        """
+//      )
+//    }
   } catch {
     await fireAndForget {
       try await sendEmail(
@@ -207,6 +253,14 @@ private func requireAccessToken<A>(
   }
 }
 
+private func accessToken(code: String) async throws -> AccessToken {
+  @Dependency(\.gitHub) var gitHub
+  return try await gitHub.fetchAuthToken(code: code).either(
+    { _ in throw GitHubUser.InvalidCode() },
+    { $0 }
+  )
+}
+
 private func refreshStripeSubscription(for user: Models.User) async throws {
   @Dependency(\.database) var database
   @Dependency(\.stripe) var stripe
@@ -232,4 +286,55 @@ private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
     )
   )
   .absoluteString
+}
+
+private func gitHubFailureLanding(
+  code: String,
+  redirect: String?,
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+  @Dependency(\.gitHub) var gitHub
+
+  do {
+    let accessToken = try await accessToken(code: code)
+    async let gitHubUser = gitHub.fetchUser(accessToken)
+    async let email = gitHub.fetchEmails(accessToken).first(where: \.primary).unwrap().email
+    let existingUser = try await database.fetchUser(email: email)
+    return conn
+      .writeStatus(.ok)
+      .respondV2(
+        layoutData: SimplePageLayoutData(
+          title: "Update your GitHub account?"
+        )
+      ) {
+        GitHubFailureView()
+        }
+
+//        """
+//        The primary email address associated with your GitHub account, \(error.email.rawValue), is \
+//        already registered with Point-Free under a different \
+//        [GitHub account](https://github.com/settings) account.
+//        
+//        Log into the GitHub account associated with your Point-Free account before trying again, \
+//        or contact <support@pointfree.co>.
+//        """
+//    let user = database.fetchUser
+
+//    let user = try await fetchOrRegisterUser(env: env)
+//    try await refreshStripeSubscription(for: user)
+//    return conn.redirect(to: redirect ?? siteRouter.path(for: .home)) {
+//      $0.writeSessionCookie { $0.user = .standard(user.id) }
+//    }
+  } catch {
+    fatalError()
+  }
+}
+
+private func overrideGitHubAccount(
+  code: String,
+  redirect: String?,
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  fatalError()
 }
