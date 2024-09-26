@@ -52,26 +52,6 @@ public indirect enum SiteRoute: Equatable {
   case teamInviteCode(TeamInviteCode)
   case webhooks(Webhooks)
 
-  public static func login(redirect: String?) -> Self {
-    .auth(.login(redirect: redirect))
-  }
-
-  public static var logout: Self {
-    .auth(.logout)
-  }
-
-  public static func gitHubCallback(code: String?, redirect: String?) -> Self {
-    .auth(.gitHubCallback(code: code, redirect: redirect))
-  }
-
-  public static func gitHubAuth(redirect: String?) -> Self {
-    .auth(.gitHubAuth(redirect: redirect))
-  }
-
-  public static func signUp(redirect: String?) -> Self {
-    .auth(.signUp(redirect: redirect))
-  }
-
   @CasePathable
   public enum Auth: Equatable {
     case login(redirect: String?)

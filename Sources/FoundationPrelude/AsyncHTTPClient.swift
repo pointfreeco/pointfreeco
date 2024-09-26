@@ -15,7 +15,7 @@ extension DependencyValues {
   }
 }
 
-extension HTTPClient: DependencyKey {
+extension HTTPClient: @retroactive DependencyKey {
   public static var liveValue: HTTPClient {
     @Dependency(\.mainEventLoopGroup) var eventLoopGroup
     return HTTPClient(eventLoopGroupProvider: .shared(eventLoopGroup))

@@ -1389,7 +1389,7 @@ private var logoutView: Node {
       .a(
         attributes: [
           .class([Class.pf.components.button(color: .black)]),
-          .href(siteRouter.path(for: .logout)),
+          .href(siteRouter.path(for: .auth(.logout))),
         ],
         "Logout"
       )

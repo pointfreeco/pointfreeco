@@ -85,12 +85,12 @@ func logoutResponse(
 
 extension Conn where Step == StatusLineOpen {
   public func loginAndRedirect() -> Conn<ResponseEnded, Data> {
-    self.redirect(to: .gitHubAuth(redirect: self.request.url?.absoluteString))
+    self.redirect(to: .auth(.gitHubAuth(redirect: self.request.url?.absoluteString)))
   }
 }
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
-  conn |> redirect(to: .gitHubAuth(redirect: conn.request.url?.absoluteString))
+  conn |> redirect(to: .auth(.gitHubAuth(redirect: conn.request.url?.absoluteString)))
 }
 
 private func requireLoggedOutUser<A>(
@@ -122,8 +122,7 @@ private func fetchOrRegisterUser(env: GitHubUserEnvelope) async throws -> Models
   @Dependency(\.database) var database
 
   do {
-    let user = try await database.fetchUser(gitHubID: env.gitHubUser.id)
-    return user
+    return try await database.fetchUser(gitHubID: env.gitHubUser.id)
   } catch {
     return try await registerUser(env: env)
   }
@@ -133,7 +132,6 @@ extension GitHubUser {
   public struct AlreadyRegistered: Error {
     let email: EmailAddress
   }
-  public struct InvalidCode: Error {}
 }
 
 private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
@@ -231,7 +229,7 @@ private func requireAccessToken<A>(
         case let .right(.right(token)):
           return conn.map(const(token .*. conn.data.second)) |> middleware
         case let .right(.left(error)) where error.error == .badVerificationCode:
-          return conn |> PointFree.redirect(to: .gitHubAuth(redirect: redirect))
+          return conn |> PointFree.redirect(to: .auth(.gitHubAuth(redirect: redirect)))
         case .right(.left), .left:
           return conn
             |> PointFree.redirect(
@@ -244,14 +242,6 @@ private func requireAccessToken<A>(
         }
       }
   }
-}
-
-private func accessToken(code: String) async throws -> AccessToken {
-  @Dependency(\.gitHub) var gitHub
-  return try await gitHub.fetchAuthToken(code: code).either(
-    { _ in throw GitHubUser.InvalidCode() },
-    { $0 }
-  )
 }
 
 private func refreshStripeSubscription(for user: Models.User) async throws {
@@ -274,7 +264,7 @@ private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
   return GitHubRouter().url(
     for: .authorize(
       clientId: gitHubClientId,
-      redirectUri: siteRouter.url(for: .gitHubCallback(code: nil, redirect: redirect)),
+      redirectUri: siteRouter.url(for: .auth(.gitHubCallback(code: nil, redirect: redirect))),
       scope: "user:email"
     )
   )
