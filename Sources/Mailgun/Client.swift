@@ -128,7 +128,7 @@ private func runMailgun<A>(
   return { mailgunRequest in
     guard let baseUrl = URL(string: "https://api.mailgun.net")
     else { throw MailgunError() }
-    guard var mailgunRequest = dump(mailgunRequest)
+    guard var mailgunRequest = mailgunRequest
     else { throw MailgunError() }
 
     mailgunRequest.rawValue.set(baseUrl: baseUrl)

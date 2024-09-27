@@ -8,17 +8,22 @@ import Models
 import PointFreeDependencies
 import PointFreeRouter
 import Styleguide
+import StyleguideV2
 
 func emailPreview(
   _ conn: Conn<StatusLineOpen, EmailTemplate?>
 ) async -> Conn<ResponseEnded, Data> {
 
-  conn
-    .writeStatus(.ok)
-    .respond(
-      view: emailPreviewView,
-      layoutData: { .init(data: $0, title: "Email preview") }
-    )
+  HTMLLocals.$isCustomTagSupported.withValue(false) {
+    HTMLLocals.$isFlexSupported.withValue(false) {
+      conn
+        .writeStatus(.ok)
+        .respond(
+          view: emailPreviewView,
+          layoutData: { .init(data: $0, title: "Email preview") }
+        )
+    }
+  }
 }
 
 private func emailPreviewView(selectedTemplate: EmailTemplate?) -> Node {
@@ -74,7 +79,7 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
       newPricing: Pricing(billing: .yearly, quantity: 7)
     )
   case .welcomeEmail1:
-    return Node { WelcomeEmail_Week1(user: blob) }
+    return Node { WelcomeEmailWeek1(user: blob) }
   case .welcomeEmail2:
     return welcomeEmail2Content(user: blob)
   case .welcomeEmail3:

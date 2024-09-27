@@ -1,5 +1,24 @@
 import Markdown
 
+@resultBuilder
+public enum StringBuilder {
+  public static func buildPartialBlock(first: String) -> String {
+    first
+  }
+  public static func buildPartialBlock(accumulated: String, next: String) -> String {
+    accumulated + "\n" + next
+  }
+  public static func buildEither(first component: String) -> String {
+    component
+  }
+  public static func buildEither(second component: String) -> String {
+    component
+  }
+  public static func buildOptional(_ component: String?) -> String {
+    component ?? ""
+  }
+}
+
 public struct HTMLMarkdown: HTML {
   public struct Section {
     public let title: String
@@ -32,26 +51,20 @@ public struct HTMLMarkdown: HTML {
     self.tableOfContents = converter.tableOfContents
   }
 
-  public init(previewOnly: Bool = false, _ markdown: () -> String) {
+  public init(previewOnly: Bool = false, @StringBuilder _ markdown: () -> String) {
     self.init(markdown(), previewOnly: previewOnly)
   }
 
   public var body: some HTML {
     blockTag("pf-markdown") {
-      VStack(spacing: 0.5) {
-        content
-          .inlineStyle(
-            "content",
-            previewOnly ? nil : #""❖""#,
-            pre: "article",
-            pseudo: .is("p") + .lastOfType + .after
-          )
-          .inlineStyle(
-            "margin-left",
-            previewOnly ? nil : "0.5rem",
-            pre: "article",
-            pseudo: .is("p") + .lastOfType + .after
-          )
+      HTMLGroup {
+        if HTMLLocals.isFlexSupported {
+          VStack(spacing: 0.5) {
+            _content
+          }
+        } else {
+          _content
+        }
       }
       .inlineStyle(
         "mask-image",
@@ -59,6 +72,22 @@ public struct HTMLMarkdown: HTML {
       )
     }
     .inlineStyle("display", "block")
+  }
+
+  private var _content: some HTML {
+    content
+      .inlineStyle(
+        "content",
+        previewOnly ? nil : #""❖""#,
+        pre: "article",
+        pseudo: .is("p") + .lastOfType + .after
+      )
+      .inlineStyle(
+        "margin-left",
+        previewOnly ? nil : "0.5rem",
+        pre: "article",
+        pseudo: .is("p") + .lastOfType + .after
+      )
   }
 }
 
@@ -354,7 +383,7 @@ private struct HTMLConverter: MarkupVisitor {
         visit(child)
       }
     }
-    .flexContainer(direction: "column", rowGap: "0.5rem")
+//    .flexContainer(direction: "column", rowGap: "0.5rem")
   }
 
   @HTMLBuilder
@@ -418,7 +447,7 @@ private struct HTMLConverter: MarkupVisitor {
   private mutating func render(
     tag: HTMLTag,
     cells: some Sequence<Markdown.Table.Cell>,
-    columnAlignments: [Table.ColumnAlignment?]
+    columnAlignments: [Markdown.Table.ColumnAlignment?]
   ) -> AnyHTML {
     var column = 0
     for cell in cells {
@@ -457,13 +486,13 @@ private struct HTMLConverter: MarkupVisitor {
         visit(child)
       }
     }
-    .flexContainer(direction: "column", rowGap: "0.5rem")
+//    .flexContainer(direction: "column", rowGap: "0.5rem")
     .inlineStyle("margin-bottom", "0")
     .inlineStyle("margin-top", "0")
   }
 }
 
-extension Table.ColumnAlignment {
+extension Markdown.Table.ColumnAlignment {
   fileprivate var attributeValue: String {
     switch self {
     case .center: "center"
@@ -615,7 +644,7 @@ public struct Timestamp: HTML {
         .inlineStyle("width", "3.25rem", media: .desktop)
       }
     }
-    .flexContainer(direction: "column-reverse", rowGap: "0.5rem", media: .mobile)
+//    .flexContainer(direction: "column-reverse", rowGap: "0.5rem", media: .mobile)
   }
 }
 
