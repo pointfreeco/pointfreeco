@@ -2,7 +2,7 @@ GET http://localhost:8080/account/invoices
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 48820
+Content-Length: 48825
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2075,7 +2075,7 @@ html {
                           col-m
                           col-m-4">
                 <div>
-                  1/31/18
+                  Jan 31, 2018
                 </div>
               </div>
               <div class="end-align
