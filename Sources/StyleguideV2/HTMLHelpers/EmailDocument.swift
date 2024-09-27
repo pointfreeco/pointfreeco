@@ -1,34 +1,29 @@
 import Dependencies
 
-public protocol HTMLDocument: HTML {
-  associatedtype Head: HTML
-  @HTMLBuilder
-  var head: Head { get }
+public protocol EmailDocument: HTML {
 }
 
-extension HTMLDocument {
+extension EmailDocument {
   public static func _render(_ html: Self, into printer: inout HTMLPrinter) {
-    @Dependency(\.htmlPrinter) var htmlPrinter
-    var bodyPrinter = htmlPrinter
+    @Dependency(\.emailPrinter) var emailPrinter
+    var bodyPrinter = emailPrinter
     Content._render(html.body, into: &bodyPrinter)
-    Document
+    Email
       ._render(
-        Document(head: html.head, stylesheet: bodyPrinter.stylesheet, bodyBytes: bodyPrinter.bytes),
+        Email(stylesheet: bodyPrinter.stylesheet, bodyBytes: bodyPrinter.bytes),
         into: &printer
       )
   }
 }
 
-private struct Document<Head: HTML>: HTML {
-  let head: Head
+private struct Email: HTML {
   let stylesheet: String
   let bodyBytes: ContiguousArray<UInt8>
 
   var body: some HTML {
-    Doctype()
     html {
       tag("head") {
-        head
+        BaseStyles()
         style {
           stylesheet
         }
@@ -37,6 +32,5 @@ private struct Document<Head: HTML>: HTML {
         HTMLRaw(bodyBytes)
       }
     }
-    .attribute("lang", "en")
   }
 }

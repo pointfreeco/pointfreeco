@@ -74,7 +74,7 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
       newPricing: Pricing(billing: .yearly, quantity: 7)
     )
   case .welcomeEmail1:
-    return welcomeEmail1Content(user: blob)
+    return Node { WelcomeEmail_Week1(user: blob) }
   case .welcomeEmail2:
     return welcomeEmail2Content(user: blob)
   case .welcomeEmail3:

@@ -74,9 +74,21 @@ public struct HTMLVoidTag: ExpressibleByStringLiteral {
 }
 
 public func tag<T: HTML>(
-  _ tag: String, @HTMLBuilder _ content: () -> T = { HTMLEmpty() }
+  _ tag: String,
+  @HTMLBuilder _ content: () -> T = { HTMLEmpty() }
 ) -> HTMLElement<T> {
   HTMLElement(tag: tag, content: content)
+}
+
+public func blockTag<T>(
+  _ customTag: String,
+  @HTMLBuilder _ content: () -> T = { HTMLEmpty() }
+) -> HTMLElement<T> {
+  if HTMLLocals.isCustomTagSupported {
+    return tag(customTag, content)
+  } else {
+    return tag("div", content)
+  }
 }
 
 public var a: HTMLTag { #function }

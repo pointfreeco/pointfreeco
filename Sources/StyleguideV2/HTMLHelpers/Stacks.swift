@@ -16,7 +16,7 @@ public struct HStack<Content: HTML>: HTML {
   }
 
   public var body: some HTML {
-    tag("pf-hstack") {
+    blockTag("pf-hstack") {
       content
     }
     .inlineStyle("align-items", alignment.rawValue)
@@ -43,7 +43,7 @@ public struct VStack<Content: HTML>: HTML {
   }
 
   public var body: some HTML {
-    tag("pf-vstack") {
+    blockTag("pf-vstack") {
       content
     }
     .inlineStyle("align-items", alignment.rawValue)
@@ -81,7 +81,7 @@ public struct VerticalAlignment: RawRepresentable {
 public struct Spacer: HTML {
   public init() {}
   public var body: some HTML {
-    tag("pf-spacer").grow()
+    blockTag("pf-spacer").grow()
   }
 }
 
@@ -129,7 +129,7 @@ public struct LazyVGrid<Content: HTML>: HTML {
 
   public var body: some HTML {
     columns.reduce(
-      tag("pf-vgrid") {
+      blockTag("pf-vgrid") {
         content
       }
       .inlineStyle("width", "100%")
