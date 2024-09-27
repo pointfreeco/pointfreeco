@@ -1,98 +1,28 @@
 import Markdown
 
-public struct HTMLMarkdown: HTML {
-  public struct Section {
-    public let title: String
-    public let id: String
-    public let level: Int
-    public let timestamp: Timestamp?
-
-    public var anchor: String {
-      "#\(id)"
-    }
-
-    public init(title: String, id: String, level: Int, timestamp: Timestamp?) {
-      self.title = title
-      self.id = id
-      self.level = level
-      self.timestamp = timestamp
-    }
-  }
-
+public struct EmailMarkdown: HTML {
   public let markdown: String
-  public let previewOnly: Bool
-  public let tableOfContents: [Section]
   public let content: AnyHTML
 
-  public init(_ markdown: String, previewOnly: Bool = false) {
-    self.markdown = markdown
-    self.previewOnly = previewOnly
-    var converter = HTMLConverter(previewOnly: previewOnly)
-    self.content = converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
-    self.tableOfContents = converter.tableOfContents
-  }
-
-  public init(previewOnly: Bool = false, @StringBuilder _ markdown: () -> String) {
-    self.init(markdown(), previewOnly: previewOnly)
+  public init(@StringBuilder _ markdown: () -> String) {
+    self.markdown = markdown()
+    var visitor = Visitor()
+    self.content = visitor.visit(Document(parsing: self.markdown, options: .parseBlockDirectives))
   }
 
   public var body: some HTML {
-    blockTag("pf-markdown") {
-      HTMLGroup {
-        if HTMLLocals.isFlexSupported {
-          VStack(spacing: 0.5) {
-            _content
-          }
-        } else {
-          _content
-        }
-      }
-      .inlineStyle(
-        "mask-image",
-        previewOnly ? "linear-gradient(to bottom,black 50%,transparent 100%)" : nil
-      )
-    }
-    .inlineStyle("display", "block")
-  }
-
-  private var _content: some HTML {
     content
-      .inlineStyle(
-        "content",
-        previewOnly ? nil : #""❖""#,
-        pre: "article",
-        pseudo: .is("p") + .lastOfType + .after
-      )
-      .inlineStyle(
-        "margin-left",
-        previewOnly ? nil : "0.5rem",
-        pre: "article",
-        pseudo: .is("p") + .lastOfType + .after
-      )
   }
 }
 
-private struct HTMLConverter: MarkupVisitor {
+private struct Visitor: MarkupVisitor {
   typealias Result = AnyHTML
-
-  let previewOnly: Bool
-
-  init(previewOnly: Bool) {
-    self.previewOnly = previewOnly
-  }
-
-  private var currentTimestamp: Timestamp?
-  private var currentSection: (title: String, id: String, level: Int)?
   private var ids: Set<Slug> = []
-  var tableOfContents: [HTMLMarkdown.Section] = []
 
   @HTMLBuilder
   mutating func defaultVisit(_ markup: any Markup) -> AnyHTML {
     for child in markup.children {
-      let html = visit(child)
-      if previewOnly ? tableOfContents.count <= 1 : true {
-        html
-      }
+      visit(child)
     }
   }
 
@@ -100,82 +30,21 @@ private struct HTMLConverter: MarkupVisitor {
   mutating func visitBlockDirective(_ blockDirective: Markdown.BlockDirective) -> AnyHTML {
     switch blockDirective.name {
     case "Button":
-      VStack(alignment: .center) {
-        Button(color: .purple) {
-          for child in blockDirective.children {
-            visit(child)
+      TableRow {
+        TableData {
+          Button(color: .purple) {
+            for child in blockDirective.children {
+              visit(child)
+            }
           }
+          .href(blockDirective.argumentText.segments.map(\.trimmedText).joined(separator: " "))
+          .inlineStyle("margin", "0.5rem 0")
         }
-        .href(blockDirective.argumentText.segments.map(\.trimmedText).joined(separator: " "))
-        .inlineStyle("margin", "0.5rem 0")
+        .attribute("colspan", "99")
       }
 
     case "Comment":
       HTMLEmpty()
-
-    case "T":
-      /*
-       TODO: Find/replace transcripts
-
-       FIND:
-       ^\[\d{2}:\d{2}:\d{2}\] # (.*)$
-
-       REPLACE:
-       ## $1
-
-       ---
-
-       FIND:
-       ^\[(\d{2}:\d{2}:\d{2})\] \*\*([^:]+):\*\*
-
-       REPLACE:
-       @T($1, $2)
-       (\n)
-
-       ---
-
-       FIND:
-       ^\[(\d{2}:\d{2}:\d{2})\]
-
-       REPLACE:
-       @T($1)
-       (\n)
-       */
-      let segments = blockDirective.argumentText.segments
-        .map(\.trimmedText)
-        .joined()
-        .split(separator: ", ")
-
-      if let segment = segments.first {
-        let timestamp = Timestamp(
-          format: String(segment),
-          speaker: segments.dropFirst().first.map { String($0) }
-        )
-        let _ = currentTimestamp = timestamp
-        timestamp
-        if let currentSection {
-          let _ = tableOfContents.append(
-            HTMLMarkdown.Section(
-              title: currentSection.title,
-              id: currentSection.id,
-              level: currentSection.level,
-              timestamp: timestamp
-            )
-          )
-          let _ = self.currentSection = nil
-        }
-      }
-
-    case "Video":
-      video {
-        tag("source")
-          .attribute("src", value(forArgument: "source", block: blockDirective))
-      }
-      .attribute("poster", value(forArgument: "poster", block: blockDirective))
-      .attribute("controls")
-      .attribute("playsinline")
-      .inlineStyle("object-fit", "cover")
-      .inlineStyle("margin-bottom", "1rem")
 
     default:
       for child in blockDirective.children {
@@ -197,14 +66,22 @@ private struct HTMLConverter: MarkupVisitor {
     } else {
       let style = BlockQuoteStyle(blockName: aside.kind.displayName)
       blockquote {
-        VStack(spacing: 0.5) {
-          strong {
-            HTMLText(aside.kind.displayName)
+        Table {
+          TableRow {
+            TableData {
+              strong {
+                HTMLText(aside.kind.displayName)
+              }
+              .color(style.borderColor)
+            }
           }
-          .color(style.borderColor)
 
           for child in aside.content {
-            visit(child)
+            TableRow {
+              TableData {
+                visit(child)
+              }
+            }
           }
         }
       }
@@ -292,13 +169,12 @@ private struct HTMLConverter: MarkupVisitor {
       }
       .color(.offBlack.dark(.offWhite))
     }
-    .inlineStyle("margin-left", "-2.25rem")
-    .inlineStyle("margin-left", "-2.5rem", media: .desktop)
-    .inlineStyle("padding-left", "2.25rem")
-    .inlineStyle("padding-left", "2.5rem", media: .desktop)
+//    .inlineStyle("margin-left", "-2.25rem")
+//    .inlineStyle("margin-left", "-2.5rem", media: .desktop)
+//    .inlineStyle("padding-left", "2.25rem")
+//    .inlineStyle("padding-left", "2.5rem", media: .desktop)
+    .inlineStyle("padding", "0.5rem 0")
     .inlineStyle("position", "relative")
-
-    let _ = currentSection = (title: heading.plainText, id: id, level: heading.level)
   }
 
   @HTMLBuilder
@@ -309,12 +185,10 @@ private struct HTMLConverter: MarkupVisitor {
   @HTMLBuilder
   mutating func visitImage(_ image: Markdown.Image) -> AnyHTML {
     if let source = image.source {
-      VStack(alignment: .center) {
-        Link(href: source) {
-          Image(source: source, description: image.title ?? "")
-            .inlineStyle("margin", "0 1rem")
-            .inlineStyle("border-radius", "6px")
-        }
+      Link(href: source) {
+        Image(source: source, description: image.title ?? "")
+          .inlineStyle("margin", "0 1rem")
+          .inlineStyle("border-radius", "6px")
       }
     }
   }
@@ -349,10 +223,8 @@ private struct HTMLConverter: MarkupVisitor {
   @HTMLBuilder
   mutating func visitListItem(_ listItem: Markdown.ListItem) -> AnyHTML {
     li {
-      VStack(spacing: 0.5) {
-        for child in listItem.children {
-          visit(child)
-        }
+      for child in listItem.children {
+        visit(child)
       }
     }
   }
@@ -364,7 +236,21 @@ private struct HTMLConverter: MarkupVisitor {
         visit(child)
       }
     }
-//    .flexContainer(direction: "column", rowGap: "0.5rem")
+    .inlineStyle("margin-bottom", "0")
+    .inlineStyle("margin-top", "0")
+    .inlineStyle("padding", "0 0 1rem 1rem")
+  }
+
+  @HTMLBuilder
+  mutating func visitUnorderedList(_ unorderedList: Markdown.UnorderedList) -> AnyHTML {
+    ul {
+      for child in unorderedList.children {
+        visit(child)
+      }
+    }
+    .inlineStyle("margin-bottom", "0")
+    .inlineStyle("margin-top", "0")
+    .inlineStyle("padding", "0 0 1rem 1rem")
   }
 
   @HTMLBuilder
@@ -375,7 +261,7 @@ private struct HTMLConverter: MarkupVisitor {
       }
     }
     .inlineStyle("line-height", "1.5")
-    .inlineStyle("padding", "0")
+    .inlineStyle("padding", "0 0 0.5rem 0", pseudo: .not(.lastChild))
     .inlineStyle("margin", "0")
   }
 
@@ -459,18 +345,6 @@ private struct HTMLConverter: MarkupVisitor {
     }
     .inlineStyle("margin", "1rem 0 2rem")
   }
-
-  @HTMLBuilder
-  mutating func visitUnorderedList(_ unorderedList: Markdown.UnorderedList) -> AnyHTML {
-    ul {
-      for child in unorderedList.children {
-        visit(child)
-      }
-    }
-//    .flexContainer(direction: "column", rowGap: "0.5rem")
-    .inlineStyle("margin-bottom", "0")
-    .inlineStyle("margin-top", "0")
-  }
 }
 
 extension Markdown.Table.ColumnAlignment {
@@ -541,77 +415,6 @@ extension DiagnosticLevel {
     case "Warning": self = .warning
     default: return nil
     }
-  }
-}
-
-public struct Timestamp: HTML {
-  public var hour: Int
-  public var minute: Int
-  public var second: Int
-  public var speaker: String?
-
-  public init?(format: String, speaker: String?) {
-    let components = format.split(separator: ":")
-    guard let second = components.last.flatMap({ Int($0) }) else { return nil }
-    self.hour = components.dropLast(2).last.flatMap { Int($0) } ?? 0
-    self.minute = components.dropLast().last.flatMap { Int($0) } ?? 0
-    self.second = second
-    self.speaker = speaker
-  }
-
-  public var duration: Int {
-    hour * 60 * 60 + minute * 60 + second
-  }
-
-  public var id: String {
-    "t\(duration)"
-  }
-
-  public var anchor: String {
-    "#\(id)"
-  }
-
-  public func formatted() -> String {
-    var formatted = hour > 0 ? "\(hour):" : ""
-    formatted.append("\(hour > 0 && minute < 10 ? "0" : "")\(minute):")
-    formatted.append("\(second < 10 ? "0" : "")\(second)")
-    return formatted
-  }
-
-  public var body: some HTML {
-    div {
-      if let speaker {
-        strong {
-          HTMLText(speaker)
-        }
-        .color(.gray500)
-        .inlineStyle("font-size", "0.875rem")
-        .inlineStyle("line-height", "1", media: .desktop)
-        .inlineStyle("position", "relative", media: .desktop)
-        .inlineStyle("text-transform", "uppercase")
-        .inlineStyle("top", "0.5rem", media: .desktop)
-      }
-
-      let duration = self.duration
-      div {
-        div {
-          Link(href: anchor) {
-            HTMLText(formatted())
-          }
-          .attribute("data-timestamp", "\(duration)")
-        }
-        .fontStyle(.body(.small))
-        .linkStyle(LinkStyle(color: .gray800.dark(.gray300), underline: nil))
-        .attribute("id", id)
-        .inlineStyle("font-variant-numeric", "tabular-nums")
-        .inlineStyle("line-height", "3", media: .desktop)
-        .inlineStyle("margin-left", "-4rem", media: .desktop)
-        .inlineStyle("position", "absolute", media: .desktop)
-        .inlineStyle("text-align", "right", media: .desktop)
-        .inlineStyle("width", "3.25rem", media: .desktop)
-      }
-    }
-//    .flexContainer(direction: "column-reverse", rowGap: "0.5rem", media: .mobile)
   }
 }
 

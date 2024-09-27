@@ -146,7 +146,7 @@ struct WelcomeEmailWeek1: EmailDocument {
     Table {
       TableRow {
         TableData {
-          HTMLMarkdown {
+          EmailMarkdown {
             """
             ## 👋 Howdy!!
             
