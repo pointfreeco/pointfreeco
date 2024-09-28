@@ -1,4 +1,4 @@
-FROM swift:5.10 as build
+FROM swift:6.0 as build
 
 RUN apt-get --fix-missing update
 RUN apt-get install -y build-essential cmake libpq-dev libz-dev python-is-python3
@@ -13,7 +13,7 @@ COPY Tests ./Tests
 RUN swift build -j 1 --configuration release --product Server -Xswiftc -g \
   && swift build -j 1 --configuration release --product Runner -Xswiftc -g
 
-FROM swift:5.10-slim
+FROM swift:6.0-slim
 
 RUN apt-get update
 RUN apt-get install -y libpq-dev libssl-dev libz-dev openssl
