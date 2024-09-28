@@ -1,10 +1,6 @@
 import Dependencies
 
 public protocol EmailDocument: HTML {
-  var preheader: String { get }
-}
-extension EmailDocument {
-  public var preheader: String { "" }
 }
 
 extension EmailDocument {
@@ -16,8 +12,7 @@ extension EmailDocument {
       ._render(
         Email(
           bodyBytes: bodyPrinter.bytes,
-          stylesheet: bodyPrinter.stylesheet,
-          preheader: html.preheader
+          stylesheet: bodyPrinter.stylesheet
         ),
         into: &printer
       )
@@ -27,7 +22,6 @@ extension EmailDocument {
 private struct Email: HTML {
   let bodyBytes: ContiguousArray<UInt8>
   let stylesheet: String
-  let preheader: String
 
   var body: some HTML {
     html {
@@ -43,18 +37,6 @@ private struct Email: HTML {
           .attribute("content", "width=device-width, initial-scale=1.0, viewport-fit=cover")
       }
       tag("body") {
-        span {
-          HTMLText(preheader)
-        }
-        .color(.init(rawValue: "transparent"))
-        .inlineStyle("display", "none")
-        .inlineStyle("opacity", "0")
-        .inlineStyle("width", "0")
-        .inlineStyle("height", "0")
-        .inlineStyle("max-width", "0")
-        .inlineStyle("max-height", "0")
-        .inlineStyle("overflow", "hidden")
-
         HTMLRaw(bodyBytes)
       }
       .attribute("bgcolor", "#ffffff")

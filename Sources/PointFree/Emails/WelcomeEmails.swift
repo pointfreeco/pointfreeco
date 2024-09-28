@@ -17,6 +17,18 @@ struct WelcomeEmail<Content: HTML>: EmailDocument {
   }
 
   var body: some HTML {
+    span {
+      HTMLText(preheader)
+    }
+    .color(.init(rawValue: "transparent"))
+    .inlineStyle("display", "none")
+    .inlineStyle("opacity", "0")
+    .inlineStyle("width", "0")
+    .inlineStyle("height", "0")
+    .inlineStyle("maxWidth", "0")
+    .inlineStyle("maxHeight", "0")
+    .inlineStyle("overflow", "hidden")
+
     Table {
       content
 
