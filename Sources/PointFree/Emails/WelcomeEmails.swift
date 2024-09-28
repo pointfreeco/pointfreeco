@@ -237,10 +237,10 @@ struct WelcomeEmailWeek3: HTML {
           """
           ## 👋 Hiya!
           
-          It's been \(weeksOrMonths) since you signed up for 
+          It's been a few weeks since you signed up for 
           [Point-Free](\(siteRouter.url(for: .home))) and we wanted to reach out in the hope that we 
-          might make a subscriber out of you yet. So, we've added an **episode credit** to your account,
-          allowing you to watch _any_ subscriber-only episode on our site for free.
+          might make a subscriber out of you yet. So, we've added an **episode credit** to your 
+          account, allowing you to watch _any_ subscriber-only episode on our site for free.
           
           If you're having trouble deciding on an episode, here are a few of the most popular 
           collections on our site:
@@ -253,13 +253,6 @@ struct WelcomeEmailWeek3: HTML {
         }
       }
     }
-  }
-
-  var weeksOrMonths: String {
-    let distance = user.createdAt.distance(to: date())
-    return distance < (60*60*24*30) ? "a few weeks"
-    : distance < (60*60*24*30*6) ? "a few months"
-    : "awhile"
   }
 }
 

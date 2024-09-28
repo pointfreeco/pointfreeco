@@ -90,7 +90,6 @@ extension TeamInvite {
 
 extension Models.User {
   public static let mock = Models.User(
-    createdAt: Date(timeIntervalSinceReferenceDate: 1234567890),
     email: "hello@pointfree.co",
     episodeCreditCount: 0,
     gitHubUserId: 1,

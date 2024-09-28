@@ -136,7 +136,6 @@ extension EmailTemplate {
 }
 
 private let blob = User(
-  createdAt: Date(timeIntervalSinceReferenceDate: 1234567890),
   email: "blob@pointfree.co",
   episodeCreditCount: 1,
   gitHubUserId: 1,
@@ -151,7 +150,6 @@ private let blob = User(
 )
 
 private let blobJr = User(
-  createdAt: Date(timeIntervalSinceReferenceDate: 1234567890),
   email: "blob.jr@pointfree.co",
   episodeCreditCount: 1,
   gitHubUserId: 1,
