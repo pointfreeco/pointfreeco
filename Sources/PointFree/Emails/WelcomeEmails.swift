@@ -34,11 +34,11 @@ struct WelcomeEmail<Content: HTML>: EmailDocument {
     .inlineStyle("maxHeight", "0")
     .inlineStyle("overflow", "hidden")
 
-    Table {
+    table {
       content
 
-      TableRow {
-        TableData {
+      tr {
+        td {
           Button(color: .purple) {
             "Subscribe to Point-Free"
           }
@@ -49,8 +49,8 @@ struct WelcomeEmail<Content: HTML>: EmailDocument {
         .inlineStyle("text-align", "center")
       }
 
-      TableRow {
-        TableData {
+      tr {
+        td {
           EmailMarkdown {
             """
             Your hosts,
@@ -61,8 +61,8 @@ struct WelcomeEmail<Content: HTML>: EmailDocument {
         }
       }
 
-      TableRow {
-        TableData {
+      tr {
+        td {
           div {
             EmailMarkdown {
               """
@@ -90,12 +90,13 @@ struct WelcomeEmail<Content: HTML>: EmailDocument {
         }
       }
     }
+    .attribute("role", "presentation")
     .attribute("height", "100%")
     .attribute("width", "100%")
+    .attribute("border-collapse", "collapse")
+    .attribute("border-spacing", "0 0.5rem")
+    .attribute("align", "center")
     .inlineStyle("display", "block")
-    .borderCollapse("collapse")
-    .borderSpacing("0 0.5rem")
-    .align("center")
     .inlineStyle("width", "100%")
     .inlineStyle("max-width", "600px")
     .inlineStyle("margin", "0 auto")
@@ -119,8 +120,8 @@ struct WelcomeEmailWeek1: HTML {
   let user: User
 
   var body: some HTML {
-    TableRow {
-      TableData {
+    tr {
+      td {
         EmailMarkdown {
           """
           ## 👋 Howdy!
@@ -184,8 +185,8 @@ struct WelcomeEmailWeek2: HTML {
   ]
 
   var body: some HTML {
-    TableRow {
-      TableData {
+    tr {
+      td {
         EmailMarkdown {
           """
           ## Hey there!
@@ -231,8 +232,8 @@ struct WelcomeEmailWeek3: HTML {
   let user: User
 
   var body: some HTML {
-    TableRow {
-      TableData {
+    tr {
+      td {
         EmailMarkdown {
           """
           ## 👋 Hiya!

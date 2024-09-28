@@ -76,6 +76,7 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
 final class WelcomeEmailTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
+    //SnapshotTesting.isRecording = true
   }
 
   @MainActor
