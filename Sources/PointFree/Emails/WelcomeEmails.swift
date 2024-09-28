@@ -229,7 +229,7 @@ Architecture](https://www.pointfree.co/collections/composable-architecture)
 * [Dependencies](https://www.pointfree.co/collections/dependencies)
 * [UIKit](https://www.pointfree.co/collections/uikit)
 * [Cross-platform Swift](https://www.pointfree.co/collections/cross-platform-swift)
-* _[And a whole lot more](https://www.pointfree.co/collections)…_
+* _[And a whole lot more…](https://www.pointfree.co/collections)_
 
 """
 
