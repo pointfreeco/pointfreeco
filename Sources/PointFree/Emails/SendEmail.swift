@@ -12,6 +12,7 @@ import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Styleguide
+import StyleguideV2
 
 public let supportEmail: EmailAddress = "Point-Free <support@pointfree.co>"
 public let mgDomain = "mg.pointfree.co"
@@ -90,8 +91,6 @@ public func prepareEmail(
     headers: headers
   )
 }
-
-import StyleguideV2
 
 public func prepareEmailV2(
   from: EmailAddress = supportEmail,
