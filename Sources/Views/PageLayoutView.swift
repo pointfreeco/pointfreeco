@@ -8,6 +8,7 @@ import Models
 import PointFreeDependencies
 import PointFreeRouter
 import Styleguide
+import StyleguideV2
 import Transcripts
 
 // TODO: should all of this be in @Dependency?
