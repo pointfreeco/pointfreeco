@@ -15,14 +15,12 @@ func emailPreview(
 ) async -> Conn<ResponseEnded, Data> {
 
   HTMLLocals.$isCustomTagSupported.withValue(false) {
-    HTMLLocals.$isFlexSupported.withValue(false) {
-      conn
-        .writeStatus(.ok)
-        .respond(
-          view: emailPreviewView,
-          layoutData: { .init(data: $0, title: "Email preview") }
-        )
-    }
+    conn
+      .writeStatus(.ok)
+      .respond(
+        view: emailPreviewView,
+        layoutData: { .init(data: $0, title: "Email preview") }
+      )
   }
 }
 
@@ -81,9 +79,9 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
   case .welcomeEmail1:
     return Node { WelcomeEmailWeek1(user: blob) }
   case .welcomeEmail2:
-    return welcomeEmail2Content(user: blob)
+    return Node { WelcomeEmailWeek2(user: blob) }
   case .welcomeEmail3:
-    return welcomeEmail3Content(user: blob)
+    return Node { WelcomeEmailWeek3(user: blob) }
   }
 }
 
@@ -121,6 +119,7 @@ extension EmailTemplate {
 }
 
 private let blob = User(
+  createdAt: Date(timeIntervalSinceReferenceDate: 1234567890),
   email: "blob@pointfree.co",
   episodeCreditCount: 1,
   gitHubUserId: 1,
@@ -135,6 +134,7 @@ private let blob = User(
 )
 
 private let blobJr = User(
+  createdAt: Date(timeIntervalSinceReferenceDate: 1234567890),
   email: "blob.jr@pointfree.co",
   episodeCreditCount: 1,
   gitHubUserId: 1,

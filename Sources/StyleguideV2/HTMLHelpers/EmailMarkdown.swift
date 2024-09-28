@@ -173,7 +173,7 @@ private struct Visitor: MarkupVisitor {
 //    .inlineStyle("margin-left", "-2.5rem", media: .desktop)
 //    .inlineStyle("padding-left", "2.25rem")
 //    .inlineStyle("padding-left", "2.5rem", media: .desktop)
-    .inlineStyle("padding", "0.5rem 0")
+    .inlineStyle("padding", "1rem 0 0.5rem 0")
     .inlineStyle("position", "relative")
   }
 
@@ -250,7 +250,7 @@ private struct Visitor: MarkupVisitor {
     }
     .inlineStyle("margin-bottom", "0")
     .inlineStyle("margin-top", "0")
-    .inlineStyle("padding", "0 0 1rem 1rem")
+    .inlineStyle("padding", "0.5rem 0 0.5rem 1rem")
   }
 
   @HTMLBuilder
@@ -260,8 +260,10 @@ private struct Visitor: MarkupVisitor {
         visit(child)
       }
     }
+    .color(.black)
+    .fontStyle(.body(.regular))
     .inlineStyle("line-height", "1.5")
-    .inlineStyle("padding", "0 0 0.5rem 0", pseudo: .not(.lastChild))
+    .inlineStyle("padding", "0 0 0.5rem 0")
     .inlineStyle("margin", "0")
   }
 

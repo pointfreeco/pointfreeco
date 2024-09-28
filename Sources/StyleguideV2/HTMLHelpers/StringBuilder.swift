@@ -15,4 +15,7 @@ public enum StringBuilder {
   public static func buildOptional(_ component: String?) -> String {
     component ?? ""
   }
+  public static func buildArray(_ components: [String]) -> String {
+    components.joined(separator: "\n")
+  }
 }

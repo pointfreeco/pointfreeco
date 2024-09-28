@@ -18,5 +18,4 @@ extension Never: HTML {
 
 public enum HTMLLocals {
   @TaskLocal public static var isCustomTagSupported = true
-  @TaskLocal public static var isFlexSupported = true
 }

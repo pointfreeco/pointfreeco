@@ -38,14 +38,8 @@ public struct HTMLMarkdown: HTML {
 
   public var body: some HTML {
     blockTag("pf-markdown") {
-      HTMLGroup {
-        if HTMLLocals.isFlexSupported {
-          VStack(spacing: 0.5) {
-            _content
-          }
-        } else {
-          _content
-        }
+      VStack(spacing: 0.5) {
+        _content
       }
       .inlineStyle(
         "mask-image",

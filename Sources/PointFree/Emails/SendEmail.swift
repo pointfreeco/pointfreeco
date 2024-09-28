@@ -111,9 +111,7 @@ public func prepareEmailV2(
   @Dependency(\.siteRouter) var siteRouter
 
   let html = HTMLLocals.$isCustomTagSupported.withValue(false) {
-    HTMLLocals.$isFlexSupported.withValue(false) {
-      String(decoding: content.render(), as: UTF8.self)
-    }
+    String(decoding: content.render(), as: UTF8.self)
   }
 
   let headers: [(String, String)] =

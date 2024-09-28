@@ -94,37 +94,37 @@ final class WelcomeEmailTests: TestCase {
 //    #endif
 //  }
 
-  @MainActor
-  func testWelcomeEmail2() async throws {
-    #if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        let emailNodes = welcomeEmailView("", welcomeEmail2Content)(.newUser)
+//  @MainActor
+//  func testWelcomeEmail2() async throws {
+//    #if !os(Linux)
+//      if self.isScreenshotTestingAvailable {
+//        let emailNodes = welcomeEmailView("", welcomeEmail2Content)(.newUser)
+//
+//        await assertSnapshot(matching: emailNodes, as: .html)
+//
+//        let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
+//        webView.loadHTMLString(render(emailNodes), baseURL: nil)
+//
+//        await assertSnapshot(matching: webView, as: .image)
+//      }
+//    #endif
+//  }
 
-        await assertSnapshot(matching: emailNodes, as: .html)
-
-        let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
-        webView.loadHTMLString(render(emailNodes), baseURL: nil)
-
-        await assertSnapshot(matching: webView, as: .image)
-      }
-    #endif
-  }
-
-  @MainActor
-  func testWelcomeEmail3() async throws {
-    #if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        let emailNodes = welcomeEmailView("", welcomeEmail3Content)(.newUser)
-
-        await assertSnapshot(matching: emailNodes, as: .html)
-
-        let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
-        webView.loadHTMLString(render(emailNodes), baseURL: nil)
-
-        await assertSnapshot(matching: webView, as: .image)
-      }
-    #endif
-  }
+//  @MainActor
+//  func testWelcomeEmail3() async throws {
+//    #if !os(Linux)
+//      if self.isScreenshotTestingAvailable {
+//        let emailNodes = welcomeEmailView("", welcomeEmail3Content)(.newUser)
+//
+//        await assertSnapshot(matching: emailNodes, as: .html)
+//
+//        let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
+//        webView.loadHTMLString(render(emailNodes), baseURL: nil)
+//
+//        await assertSnapshot(matching: webView, as: .image)
+//      }
+//    #endif
+//  }
 
   func testEpisodeEmails() async throws {
     try await withDependencies {

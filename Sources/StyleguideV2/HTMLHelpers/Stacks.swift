@@ -43,25 +43,14 @@ public struct VStack<Content: HTML>: HTML {
   }
 
   public var body: some HTML {
-    if HTMLLocals.isFlexSupported {
-      blockTag("pf-vstack") {
-        content
-      }
-      .inlineStyle("align-items", alignment.rawValue)
-      .inlineStyle("display", "flex")
-      .inlineStyle("flex-direction", "column")
-      .inlineStyle("max-width", "100%")
-      .inlineStyle("row-gap", spacing == 0 ? "0" : "\(spacing ?? .defaultSpacing)rem")
-    } else {
-      blockTag("pf-vstack") {
-        content
-      }
-//      .inlineStyle("align-items", alignment.rawValue)
-//      .inlineStyle("display", "flex")
-//      .inlineStyle("flex-direction", "column")
-//      .inlineStyle("max-width", "100%")
-//      .inlineStyle("row-gap", spacing == 0 ? "0" : "\(spacing ?? .defaultSpacing)rem")
+    blockTag("pf-vstack") {
+      content
     }
+    .inlineStyle("align-items", alignment.rawValue)
+    .inlineStyle("display", "flex")
+    .inlineStyle("flex-direction", "column")
+    .inlineStyle("max-width", "100%")
+    .inlineStyle("row-gap", spacing == 0 ? "0" : "\(spacing ?? .defaultSpacing)rem")
   }
 }
 

@@ -6,6 +6,7 @@ import Stripe
 import Tagged
 
 public struct User: Decodable, Equatable, Identifiable {
+  public var createdAt: Date
   public var email: EmailAddress
   public var episodeCreditCount: Int
   public var gitHubUserId: GitHubUser.ID
@@ -19,6 +20,7 @@ public struct User: Decodable, Equatable, Identifiable {
   public var subscriptionId: Subscription.ID?
 
   public init(
+    createdAt: Date,
     email: EmailAddress,
     episodeCreditCount: Int,
     gitHubUserId: GitHubUser.ID,
@@ -31,6 +33,7 @@ public struct User: Decodable, Equatable, Identifiable {
     rssSalt: RssSalt,
     subscriptionId: Subscription.ID?
   ) {
+    self.createdAt = createdAt
     self.email = email
     self.episodeCreditCount = episodeCreditCount
     self.gitHubUserId = gitHubUserId
@@ -48,6 +51,7 @@ public struct User: Decodable, Equatable, Identifiable {
   public typealias RssSalt = Tagged<(Self, rssSalt: ()), String>
 
   public enum CodingKeys: String, CodingKey {
+    case createdAt = "created_at"
     case email
     case episodeCreditCount = "episode_credit_count"
     case gitHubUserId = "github_user_id"
