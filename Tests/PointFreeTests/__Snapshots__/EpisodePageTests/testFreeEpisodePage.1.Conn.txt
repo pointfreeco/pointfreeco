@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 142757
+Content-Length: 143229
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -460,6 +460,9 @@ article div:hover > * > .display-Vk1P81{display:initial}
   .grid-template-columns-RehC04{grid-template-columns:minmax(0, 1fr)}
   .row-gap-GuM2x3{row-gap:1.0rem}
   .top-RSlUg4{top:2px}
+  .display-S6VUZ{display:flex}
+  .flex-direction-5DQpO1{flex-direction:column-reverse}
+  .row-gap-UV0PN{row-gap:0.5rem}
   .padding-top-bS1Ay3{padding-top:2.0rem}
   .padding-left-bS1Ay3{padding-left:2.0rem}
   .padding-bottom-bS1Ay3{padding-bottom:2.0rem}
@@ -694,7 +697,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </p>
               <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">In this episode we’ll cover a few kinds of side effects, show why they’re so difficult to test, why they don’t compose, and try to address these problems in a nice way.
               </p>
-              <div class="content-xD6dy1 margin-left-rhxaL1">
+              <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
                   <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t43"><a data-timestamp="43" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t43">0:43</a>
                   </div>
@@ -839,7 +842,7 @@ logs.forEach { print($0) }
               </pre>
               <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We may not want the caller to have side effects, though, so it may have to pass them along, as well. And maybe <em>its</em> caller doesn’t want to have side effects, and so on! This sounds like a messy problem, but there are nice ways to solve it. Before we can solve <em>that</em> problem, though, we need to understand <em>this</em> one in detail.
               </p>
-              <div class="content-xD6dy1 margin-left-rhxaL1">
+              <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
                   <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t495"><a data-timestamp="495" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t495">8:15</a>
                   </div>
@@ -1042,7 +1045,7 @@ computeAndPrint >=> computeAndPrint >=> computeAndPrint
               </p>
               <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We’ve introduced a new operator, so it’s time to justify its addition to our code.
               </p>
-              <ol class="content-xD6dy1 margin-left-rhxaL1">
+              <ol class="content-xD6dy1 margin-left-rhxaL1 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3">
                 <li>
                   <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
                     <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Does this operator have existing meaning in Swift? Nope. There’s no chance of overloading existing meaning.
@@ -1168,7 +1171,7 @@ greet(at: Date(), name: "Blob")
 greet(name: "Blob")
 </code>
               </pre>
-              <div class="content-xD6dy1 margin-left-rhxaL1">
+              <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
                   <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t1355"><a data-timestamp="1355" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t1355">22:35</a>
                   </div>
@@ -1295,7 +1298,7 @@ formatter.string(for: 1234.6)  // "1,234"
               </p>
               <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Swift also has “value” types. This is Swift’s answer to controlling mutation. When you assign a value, you get a brand new copy to work with for the given scope. All mutations are local and anything else holding onto the same value upstream won’t see these changes.
               </p>
-              <div class="content-xD6dy1 margin-left-rhxaL1">
+              <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
                   <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t1773"><a data-timestamp="1773" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t1773">29:33</a>
                   </div>
@@ -1451,7 +1454,7 @@ config.formatter.string(from: 1234.6)  // "1,234"
               </pre>
               <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">And there’s our bug again, but the code involved now has a lot of syntax that screams “mutation” and it makes this kind of bug much easier to track down.
               </p>
-              <div class="content-xD6dy1 margin-left-rhxaL1">
+              <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
                   <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t2082"><a data-timestamp="2082" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t2082">34:42</a>
                   </div>
@@ -1585,7 +1588,7 @@ config |> inoutDecimalStyle &lt;> inoutCurrencyStyle
               </p>
               <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">We’ve solved this problem at the cost of yet another operator, so it’s time to check the boxes.
               </p>
-              <ol class="content-xD6dy1 margin-left-rhxaL1">
+              <ol class="content-xD6dy1 margin-left-rhxaL1 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3">
                 <li>
                   <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
                     <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Does this operator exist in Swift? Nope, so no potential for confusion there.

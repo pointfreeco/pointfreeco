@@ -2,7 +2,7 @@ GET http://localhost:8080/privacy
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 44877
+Content-Length: 44928
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -348,7 +348,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
         </div>
         <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Point-Free, Inc. collects and uses Users personal information for the following purposes:
         </p>
-        <ul class="content-xD6dy1 margin-left-rhxaL1 margin-bottom-FBkWQ3 margin-top-FBkWQ3">
+        <ul class="content-xD6dy1 margin-left-rhxaL1 margin-bottom-FBkWQ3 margin-top-FBkWQ3 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3">
           <li>
             <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
               <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">To personalize user experience: to understand how our Users as a group use the Site.

@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 67488
+Content-Length: 67666
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -442,6 +442,9 @@ article div:hover > * > .display-Vk1P81{display:initial}
   .grid-template-columns-RehC04{grid-template-columns:minmax(0, 1fr)}
   .row-gap-GuM2x3{row-gap:1.0rem}
   .top-RSlUg4{top:2px}
+  .display-S6VUZ{display:flex}
+  .flex-direction-5DQpO1{flex-direction:column-reverse}
+  .row-gap-UV0PN{row-gap:0.5rem}
   .padding-top-bS1Ay3{padding-top:2.0rem}
   .padding-left-bS1Ay3{padding-left:2.0rem}
   .padding-bottom-bS1Ay3{padding-bottom:2.0rem}
@@ -671,7 +674,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </p>
               <p class="line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">In this episode we’ll cover a few kinds of side effects, show why they’re so difficult to test, why they don’t compose, and try to address these problems in a nice way.
               </p>
-              <div>
+              <div class="display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
                   <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t43"><a data-timestamp="43" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t43">0:43</a>
                   </div>

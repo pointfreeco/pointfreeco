@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 67104
+Content-Length: 67340
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -447,6 +447,9 @@ article div:hover > * > .display-Vk1P81{display:initial}
   .grid-template-columns-RehC04{grid-template-columns:minmax(0, 1fr)}
   .row-gap-GuM2x3{row-gap:1.0rem}
   .top-RSlUg4{top:2px}
+  .display-S6VUZ{display:flex}
+  .flex-direction-5DQpO1{flex-direction:column-reverse}
+  .row-gap-UV0PN{row-gap:0.5rem}
   .padding-top-bS1Ay3{padding-top:2.0rem}
   .padding-left-bS1Ay3{padding-left:2.0rem}
   .padding-bottom-bS1Ay3{padding-bottom:2.0rem}
@@ -754,7 +757,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               <pre class="margin-FBkWQ3 margin-bottom-NKv2f3 overflow-x-u7yQf2 padding-wKavA3 border-radius-xypJ01 color-K2J0r1 color-jj5LZ background-color-c5ixr2 background-color-xnERS1"><code class="language-swift">square(incr(2))  // 9
 </code>
               </pre>
-              <div>
+              <div class="display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
                   <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t68"><a data-timestamp="68" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t68">1:08</a>
                   </div>
@@ -785,7 +788,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               <pre class="margin-FBkWQ3 margin-bottom-NKv2f3 overflow-x-u7yQf2 padding-wKavA3 border-radius-xypJ01 color-K2J0r1 color-jj5LZ background-color-c5ixr2 background-color-xnERS1"><code class="language-swift">2.incr().square()  // 9
 </code>
               </pre>
-              <div>
+              <div class="display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
                   <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t110"><a data-timestamp="110" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t110">1:50</a>
                   </div>

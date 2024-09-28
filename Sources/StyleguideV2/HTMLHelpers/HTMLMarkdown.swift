@@ -39,7 +39,19 @@ public struct HTMLMarkdown: HTML {
   public var body: some HTML {
     tag("pf-markdown") {
       VStack(spacing: 0.5) {
-        _content
+        content
+          .inlineStyle(
+            "content",
+            previewOnly ? nil : #""❖""#,
+            pre: "article",
+            pseudo: .is("p") + .lastOfType + .after
+          )
+          .inlineStyle(
+            "margin-left",
+            previewOnly ? nil : "0.5rem",
+            pre: "article",
+            pseudo: .is("p") + .lastOfType + .after
+          )
       }
       .inlineStyle(
         "mask-image",
@@ -47,22 +59,6 @@ public struct HTMLMarkdown: HTML {
       )
     }
     .inlineStyle("display", "block")
-  }
-
-  private var _content: some HTML {
-    content
-      .inlineStyle(
-        "content",
-        previewOnly ? nil : #""❖""#,
-        pre: "article",
-        pseudo: .is("p") + .lastOfType + .after
-      )
-      .inlineStyle(
-        "margin-left",
-        previewOnly ? nil : "0.5rem",
-        pre: "article",
-        pseudo: .is("p") + .lastOfType + .after
-      )
   }
 }
 
@@ -358,7 +354,7 @@ private struct HTMLConverter: MarkupVisitor {
         visit(child)
       }
     }
-//    .flexContainer(direction: "column", rowGap: "0.5rem")
+    .flexContainer(direction: "column", rowGap: "0.5rem")
   }
 
   @HTMLBuilder
@@ -461,7 +457,7 @@ private struct HTMLConverter: MarkupVisitor {
         visit(child)
       }
     }
-//    .flexContainer(direction: "column", rowGap: "0.5rem")
+    .flexContainer(direction: "column", rowGap: "0.5rem")
     .inlineStyle("margin-bottom", "0")
     .inlineStyle("margin-top", "0")
   }
@@ -605,7 +601,7 @@ public struct Timestamp: HTML {
         .inlineStyle("width", "3.25rem", media: .desktop)
       }
     }
-//    .flexContainer(direction: "column-reverse", rowGap: "0.5rem", media: .mobile)
+    .flexContainer(direction: "column-reverse", rowGap: "0.5rem", media: .mobile)
   }
 }
 
