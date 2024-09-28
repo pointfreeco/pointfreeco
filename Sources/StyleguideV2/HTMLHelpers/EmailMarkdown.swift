@@ -17,7 +17,6 @@ public struct EmailMarkdown: HTML {
 
 private struct Visitor: MarkupVisitor {
   typealias Result = AnyHTML
-  private var ids: Set<Slug> = []
 
   @HTMLBuilder
   mutating func defaultVisit(_ markup: any Markup) -> AnyHTML {
@@ -135,44 +134,12 @@ private struct Visitor: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitHeading(_ heading: Markdown.Heading) -> AnyHTML {
-    let id = ids.slug(for: heading.plainText)
-
-    a {}
-      .attribute("id", id)
-      .inlineStyle("display", "block")
-      .inlineStyle("position", "relative")
-      .inlineStyle("top", "-5em")
-      .inlineStyle("top", "-0.5em", media: .desktop)
-      .inlineStyle("visibility", "hidden")
-
-    div {
-      Header(heading.level + 2) {
-        for child in heading.children {
-          visit(child)
-        }
-
-        Link(href: "#\(id)") {
-          SVG("Link") {
-            """
-            <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg>
-            """
-          }
-        }
-        .linkColor(.gray800.dark(.gray300))
-        .inlineStyle("display", "none")
-        .inlineStyle("display", "initial", pre: "article div:hover > * >")
-        .inlineStyle("left", "0")
-        .inlineStyle("position", "absolute")
-        .inlineStyle("text-align", "center")
-        .inlineStyle("top", "2px", media: .mobile)
-        .inlineStyle("width", "2.5rem")
+    Header(heading.level + 2) {
+      for child in heading.children {
+        visit(child)
       }
-      .color(.offBlack.dark(.offWhite))
     }
-//    .inlineStyle("margin-left", "-2.25rem")
-//    .inlineStyle("margin-left", "-2.5rem", media: .desktop)
-//    .inlineStyle("padding-left", "2.25rem")
-//    .inlineStyle("padding-left", "2.5rem", media: .desktop)
+    .color(.offBlack.dark(.offWhite))
     .inlineStyle("padding", "1rem 0 0.5rem 0")
     .inlineStyle("position", "relative")
   }

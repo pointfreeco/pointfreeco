@@ -45,14 +45,13 @@ private func emailPreviewView(selectedTemplate: EmailTemplate?) -> Node {
         .fragment(options(selectedTemplate: selectedTemplate))
       )
     ),
-    .div(
+    .iframe(
       attributes: [
-        .class([Class.padding([.mobile: [.all: 2], .desktop: [.all: 4]])])
-      ],
-      selectedTemplate
-        .map(email(selectedTemplate:))
-        ?? []
-    ),
+        .init("srcdoc", render(selectedTemplate.map(email(selectedTemplate:)) ?? [])),
+        .width(.pct(100)),
+        .height(.pct(100)),
+      ]
+    )
   ]
 }
 
@@ -77,11 +76,11 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
       newPricing: Pricing(billing: .yearly, quantity: 7)
     )
   case .welcomeEmail1:
-    return Node { WelcomeEmailWeek1(user: blob) }
+    return Node { WelcomeEmail { WelcomeEmailWeek1(user: blob) } }
   case .welcomeEmail2:
-    return Node { WelcomeEmailWeek2(user: blob) }
+    return Node { WelcomeEmail { WelcomeEmailWeek2(user: blob) } }
   case .welcomeEmail3:
-    return Node { WelcomeEmailWeek3(user: blob) }
+    return Node { WelcomeEmail { WelcomeEmailWeek3(user: blob) } }
   }
 }
 
