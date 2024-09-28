@@ -28,20 +28,6 @@ private struct Visitor: MarkupVisitor {
   @HTMLBuilder
   mutating func visitBlockDirective(_ blockDirective: Markdown.BlockDirective) -> AnyHTML {
     switch blockDirective.name {
-    case "Button":
-      TableRow {
-        TableData {
-          Button(color: .purple) {
-            for child in blockDirective.children {
-              visit(child)
-            }
-          }
-          .href(blockDirective.argumentText.segments.map(\.trimmedText).joined(separator: " "))
-          .inlineStyle("margin", "0.5rem 0")
-        }
-        .attribute("colspan", "99")
-      }
-
     case "Comment":
       HTMLEmpty()
 
@@ -50,77 +36,6 @@ private struct Visitor: MarkupVisitor {
         visit(child)
       }
     }
-  }
-
-  @HTMLBuilder
-  mutating func visitBlockQuote(_ blockQuote: Markdown.BlockQuote) -> AnyHTML {
-    let aside = Aside(blockQuote)
-    if let level = DiagnosticLevel(aside: aside) {
-      Diagnostic(level: level) {
-        for child in aside.content {
-          visit(child)
-        }
-      }
-      .inlineStyle("padding", "0 1rem")
-    } else {
-      let style = BlockQuoteStyle(blockName: aside.kind.displayName)
-      blockquote {
-        Table {
-          TableRow {
-            TableData {
-              strong {
-                HTMLText(aside.kind.displayName)
-              }
-              .color(style.borderColor)
-            }
-          }
-
-          for child in aside.content {
-            TableRow {
-              TableData {
-                visit(child)
-              }
-            }
-          }
-        }
-      }
-      .color(.offBlack.dark(.offWhite))
-      .backgroundColor(style.backgroundColor)
-      .inlineStyle("border", "2px solid \(style.borderColor.rawValue)")
-      .inlineStyle("border", "2px solid \(style.borderColor.darkValue!)", media: .dark)
-      .inlineStyle("border-radius", "6px")
-      .inlineStyle("margin", "0.5rem 0")
-      .inlineStyle("padding", "1rem 1.5rem")
-    }
-  }
-
-  @HTMLBuilder
-  mutating func visitCodeBlock(_ codeBlock: Markdown.CodeBlock) -> AnyHTML {
-    let language: (class: String, dataLine: String?)? = codeBlock.language.map {
-      let languageInfo = $0.split(separator: ":", maxSplits: 2)
-      let language = languageInfo[0]
-      let dataLine = languageInfo.dropFirst().first
-      let highlightColor = languageInfo.dropFirst(2).first
-      return (
-        class: "language-\(language)\(highlightColor.map { " highlight-\($0)" } ?? "")",
-        dataLine: dataLine.map { String($0) }
-      )
-    }
-    pre {
-      code {
-        HTMLText(codeBlock.code)
-      }
-      .attribute("class", language?.class)
-      .linkUnderline(true)
-    }
-    .attribute("data-line", language?.dataLine)
-    .backgroundColor(.offWhite.dark(.offBlack))
-    .color(.black.dark(.gray900))
-    .inlineStyle("margin", "0")
-    .inlineStyle("margin-bottom", "0.5rem")
-    .inlineStyle("overflow-x", "auto")
-    .inlineStyle("padding", "1rem 1.5rem")
-    .inlineStyle("border-radius", "6px")
   }
 
   @HTMLBuilder

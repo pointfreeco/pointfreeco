@@ -51,8 +51,8 @@ private struct Email: HTML {
         .inlineStyle("opacity", "0")
         .inlineStyle("width", "0")
         .inlineStyle("height", "0")
-        .inlineStyle("maxWidth", "0")
-        .inlineStyle("maxHeight", "0")
+        .inlineStyle("max-width", "0")
+        .inlineStyle("max-height", "0")
         .inlineStyle("overflow", "hidden")
 
         HTMLRaw(bodyBytes)

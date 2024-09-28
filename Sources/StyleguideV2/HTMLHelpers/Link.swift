@@ -19,6 +19,7 @@ public struct Link<Label: HTML>: HTML {
   public var body: some HTML {
     a { label }
       .attribute("href", href)
+      .color(linkStyle.color)
       .color(linkStyle.color, .visited)
       .color(linkStyle.color, .link)
       .inlineStyle(

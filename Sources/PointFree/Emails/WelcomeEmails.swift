@@ -54,6 +54,7 @@ struct WelcomeEmail<Content: HTML>: EmailDocument {
     .inlineStyle("max-width", "600px")
     .inlineStyle("margin", "0 auto")
     .inlineStyle("clear", "both")
+    .linkStyle(LinkStyle(color: .purple, underline: true))
   }
 }
 
