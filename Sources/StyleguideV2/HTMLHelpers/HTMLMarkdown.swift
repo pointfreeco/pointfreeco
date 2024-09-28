@@ -37,7 +37,7 @@ public struct HTMLMarkdown: HTML {
   }
 
   public var body: some HTML {
-    blockTag("pf-markdown") {
+    tag("pf-markdown") {
       VStack(spacing: 0.5) {
         _content
       }

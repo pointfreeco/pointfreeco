@@ -13,15 +13,12 @@ import StyleguideV2
 func emailPreview(
   _ conn: Conn<StatusLineOpen, EmailTemplate?>
 ) async -> Conn<ResponseEnded, Data> {
-
-  HTMLLocals.$isCustomTagSupported.withValue(false) {
-    conn
-      .writeStatus(.ok)
-      .respond(
-        view: emailPreviewView,
-        layoutData: { .init(data: $0, title: "Email preview") }
-      )
-  }
+  conn
+    .writeStatus(.ok)
+    .respond(
+      view: emailPreviewView,
+      layoutData: { .init(data: $0, title: "Email preview") }
+    )
 }
 
 private func emailPreviewView(selectedTemplate: EmailTemplate?) -> Node {

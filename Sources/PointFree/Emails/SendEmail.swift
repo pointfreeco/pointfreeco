@@ -109,9 +109,7 @@ public func prepareEmailV2(
   @Dependency(\.mailgun) var mailgun
   @Dependency(\.siteRouter) var siteRouter
 
-  let html = HTMLLocals.$isCustomTagSupported.withValue(false) {
-    String(decoding: content.render(), as: UTF8.self)
-  }
+  let html = String(decoding: content.render(), as: UTF8.self)
 
   let headers: [(String, String)] =
   unsubscribeData

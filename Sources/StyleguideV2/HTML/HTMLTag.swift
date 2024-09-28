@@ -80,17 +80,6 @@ public func tag<T: HTML>(
   HTMLElement(tag: tag, content: content)
 }
 
-public func blockTag<T>(
-  _ customTag: String,
-  @HTMLBuilder _ content: () -> T = { HTMLEmpty() }
-) -> HTMLElement<T> {
-  if HTMLLocals.isCustomTagSupported {
-    return tag(customTag, content)
-  } else {
-    return tag("div", content)
-  }
-}
-
 public var a: HTMLTag { #function }
 public var abbr: HTMLTag { #function }
 public var acronym: HTMLTag { #function }
