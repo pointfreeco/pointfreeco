@@ -1,19 +1,24 @@
 import Dependencies
 import Models
+import IssueReporting
 import PointFreeRouter
 import StyleguideV2
 
 struct WelcomeEmail<Content: HTML>: EmailDocument {
   let content: Content
   let preheader: String
+  let user: User
+  @Dependency(\.envVars.appSecret) var appSecret
   @Dependency(\.siteRouter) var siteRouter
 
   init(
     preheader: String = "",
+    user: User,
     @HTMLBuilder content: () -> Content
   ) {
     self.content = content()
     self.preheader = preheader
+    self.user = user
   }
 
   var body: some HTML {
@@ -35,7 +40,7 @@ struct WelcomeEmail<Content: HTML>: EmailDocument {
       TableRow {
         TableData {
           Button(color: .purple) {
-            "Subscribe to Point-Free!"
+            "Subscribe to Point-Free"
           }
           .attribute("href", siteRouter.url(for: .pricingLanding))
           .inlineStyle("margin", "1rem 0rem")
@@ -55,6 +60,35 @@ struct WelcomeEmail<Content: HTML>: EmailDocument {
           }
         }
       }
+
+      TableRow {
+        TableData {
+          div {
+            EmailMarkdown {
+              """
+              Contact us via email at [support@pointfree.co](mailto:support@pointfree.co), 
+              [Twitter](http://x.com/pointfreeco), or on 
+              [Mastodon](https://hachyderm.io/@pointfreeco). Our postal address: 139 Skillman #5C, 
+              Brooklyn, NY 11211.
+              
+              """
+              if let unsubscribeURL {
+                """
+                You are receiving this email because you recently signed up for Point-Free. If you no 
+                longer wish to receive emails like this, you can unsubscribe 
+                [here](\(unsubscribeURL)).
+                """
+              }
+            }
+            .color(.gray300)
+            .fontStyle(.body(.small))
+            .linkColor(.offBlack)
+          }
+          .backgroundColor(.gray900)
+          .inlineStyle("padding", "2rem 2rem 1.5rem 2rem")
+          .inlineStyle("margin", "2rem 0")
+        }
+      }
     }
     .attribute("height", "100%")
     .attribute("width", "100%")
@@ -67,6 +101,16 @@ struct WelcomeEmail<Content: HTML>: EmailDocument {
     .inlineStyle("margin", "0 auto")
     .inlineStyle("clear", "both")
     .linkStyle(LinkStyle(color: .purple, underline: true))
+  }
+
+  var unsubscribeURL: String? {
+    let unsubscribeURL = (try? ExpressUnsubscribe().print((user.id, .welcomeEmails)))
+          .flatMap({ Encrypted(String($0), with: appSecret) })
+          .map({ siteRouter.url(for: .expressUnsubscribe(payload: $0)) })
+    if unsubscribeURL == nil {
+      reportIssue("Failed to generate unsubscribe link for user \(user.id)")
+    }
+    return unsubscribeURL
   }
 }
 

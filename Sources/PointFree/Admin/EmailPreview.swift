@@ -76,11 +76,32 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
       newPricing: Pricing(billing: .yearly, quantity: 7)
     )
   case .welcomeEmail1:
-    return Node { WelcomeEmail(preheader: "This is the preheader") { WelcomeEmailWeek1(user: blob) } }
+    return Node {
+      WelcomeEmail(
+        preheader: "This is the preheader",
+        user: blob
+      ) {
+        WelcomeEmailWeek1(user: blob)
+      }
+    }
   case .welcomeEmail2:
-    return Node { WelcomeEmail(preheader: "This is the preheader") { WelcomeEmailWeek2(user: blob) } }
+    return Node {
+      WelcomeEmail(
+        preheader: "This is the preheader",
+        user: blob
+      ) {
+        WelcomeEmailWeek2(user: blob)
+      }
+    }
   case .welcomeEmail3:
-    return Node { WelcomeEmail(preheader: "This is the preheader") { WelcomeEmailWeek3(user: blob) } }
+    return Node {
+      WelcomeEmail(
+        preheader: "This is the preheader",
+        user: blob
+      ) {
+        WelcomeEmailWeek3(user: blob)
+      }
+    }
   }
 }
 

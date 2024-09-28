@@ -84,7 +84,8 @@ func welcomeEmail1(_ user: User) -> Email {
         Use your episode credit to unlock any subscriber-only episode!
         """ : """
         Explore our most popular episodes and join our vibrant Slack community!
-        """
+        """,
+      user: user
     ) {
       WelcomeEmailWeek1(user: user)
     }
@@ -101,7 +102,8 @@ func welcomeEmail2(_ user: User) -> Email {
     content: WelcomeEmail(
       preheader: """
         Explore our \(freeEpisodeCount) free episodes!
-        """
+        """,
+      user: user
     ) {
       WelcomeEmailWeek2(user: user)
     }
@@ -116,7 +118,8 @@ func welcomeEmail3(_ user: User) -> Email {
     content: WelcomeEmail(
       preheader: """
         Level up your engineering skills with a subscription to Point-Free.
-        """
+        """,
+      user: user
     ) {
       WelcomeEmailWeek3(user: user)
     }
