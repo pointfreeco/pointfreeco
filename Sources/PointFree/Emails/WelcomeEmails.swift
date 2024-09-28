@@ -159,8 +159,8 @@ struct WelcomeEmailWeek1: HTML {
           Join today to discuss episodes with other community members, ask questions about our 
           episodes or open source projects, and more.
           
-          When you're ready to subscribe for yourself _or_ your team, visit [our subscribe
-          page](\(siteRouter.url(for: .pricingLanding)))!
+          When you're ready to subscribe for yourself _or_ your team, visit our subscribe
+          page:
           """
         }
       }
@@ -217,8 +217,7 @@ struct WelcomeEmailWeek2: HTML {
           """
           
           If you have any questions, don't hesitate to reply to this [email](support@pointfree.co). 
-          When you're ready to subscribe for yourself _or_ your team, visit 
-          [our subscribe page](\(siteRouter.url(for: .pricingLanding))):
+          When you're ready to subscribe for yourself _or_ your team, visit our subscribe page:
           """
         }
       }
@@ -249,8 +248,7 @@ struct WelcomeEmailWeek3: HTML {
           popularCollectionsList
           """
           If you have any questions, don't hesitate to reply to this [email](support@pointfree.co). 
-          When you're ready to subscribe for yourself _or_ your team, visit 
-          [our subscribe page](\(siteRouter.url(for: .pricingLanding))):
+          When you're ready to subscribe for yourself _or_ your team, visit our subscribe page:
           """
         }
       }
