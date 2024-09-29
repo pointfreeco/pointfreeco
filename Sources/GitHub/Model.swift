@@ -14,7 +14,7 @@ public struct AccessToken: Codable {
   }
 }
 
-public struct OAuthError: Codable {
+public struct OAuthError: Codable, Swift.Error {
   public var description: String
   public var error: Error
   public var errorUri: String

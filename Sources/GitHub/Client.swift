@@ -15,7 +15,9 @@ import Tagged
 @DependencyClient
 public struct Client {
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
-  public var fetchAuthToken: (_ code: String) async throws -> Either<OAuthError, AccessToken>
+  public var fetchAuthToken: (_ code: String) async throws(OAuthError) -> AccessToken = { _ in
+    throw OAuthError(description: "", error: .badVerificationCode, errorUri: "")
+  }
 
   /// Fetches a GitHub user's emails.
   public var fetchEmails: (_ accessToken: AccessToken) async throws -> [GitHubUser.Email]

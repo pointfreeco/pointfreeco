@@ -28,8 +28,7 @@ func authMiddleware(
       .performAsync()
 
   case let .gitHubCallback(code, redirect):
-    return await gitHubCallbackResponse(conn.map(const(code .*. redirect .*. unit)))
-      .performAsync()
+    return await gitHubCallbackResponse(code: code, redirect: redirect, conn.map(const(())))
 
   case let .login(redirect):
     return await loginSignUpMiddleware(
@@ -51,10 +50,46 @@ func authMiddleware(
   }
 }
 
-let gitHubCallbackResponse =
-  requireLoggedOutUser
-  <<< requireAuthCodeAndAccessToken
-  <| { conn in IO { await gitHubAuthTokenMiddleware(conn) } }
+func gitHubCallbackResponse(
+  code: String?,
+  redirect: String?,
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.gitHub) var gitHub
+
+  guard currentUser == nil
+  else {
+    return conn
+      .redirect(to: .account()) {
+        $0.flash(.warning, "You’re already logged in.")
+      }
+  }
+  guard let code
+  else {
+    return conn
+      .redirect(to: .auth(.login(redirect: nil))) {
+        $0.flash(.warning, "GitHub code wasn't found :(")
+      }
+  }
+  do {
+    let accessToken = try await gitHub.fetchAuthToken(code: code).right
+    return await gitHubAuthTokenMiddleware(accessToken: accessToken, redirect: redirect, conn)
+  } catch let error as OAuthError.Error {
+    return await conn
+      .redirect(to: .auth(.gitHubAuth(redirect: redirect)))
+  } catch {
+    return conn
+      .redirect(to: .home) {
+        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+      }
+  }
+}
+
+//let gitHubCallbackResponse =
+//  requireLoggedOutUser
+//  <<< requireAuthCodeAndAccessToken
+//  <| { conn in IO { await gitHubAuthTokenMiddleware(conn) } }
 
 private let requireAuthCodeAndAccessToken:
   MT<Tuple2<String?, String?>, Tuple2<GitHub.AccessToken, String?>> =
@@ -99,7 +134,6 @@ private func requireLoggedOutUser<A>(
 
   return { conn in
     @Dependency(\.currentUser) var currentUser
-    @Dependency(\.database) var database
     guard currentUser == nil
     else {
       return conn
@@ -166,17 +200,17 @@ private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
 
 /// Exchanges a GitHub code for an access token and loads the user's data.
 private func gitHubAuthTokenMiddleware(
-  _ conn: Conn<StatusLineOpen, Tuple2<GitHub.AccessToken, String?>>
+  accessToken: GitHub.AccessToken,
+  redirect: String?,
+  _ conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.gitHub) var gitHub
   @Dependency(\.siteRouter) var siteRouter
 
-  let (token, redirect) = lower(conn.data)
-
   do {
-    let gitHubUser = try await gitHub.fetchUser(token)
-    let env = GitHubUserEnvelope(accessToken: token, gitHubUser: gitHubUser)
+    let gitHubUser = try await gitHub.fetchUser(accessToken)
+    let env = GitHubUserEnvelope(accessToken: accessToken, gitHubUser: gitHubUser)
     let user = try await fetchOrRegisterUser(env: env)
     try await refreshStripeSubscription(for: user)
     return conn.redirect(to: redirect ?? siteRouter.path(for: .home)) {
