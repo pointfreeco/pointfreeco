@@ -61,7 +61,6 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.2.2"),
   ],
   targets: [
-
     .target(
       name: "Database",
       dependencies: [
@@ -545,5 +544,6 @@ var package = Package(
     .target(
       name: "WebPreview"
     ),
-  ]
+  ],
+  swiftLanguageModes: [.v5]
 )
