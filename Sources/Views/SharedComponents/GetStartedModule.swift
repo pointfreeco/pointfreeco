@@ -22,7 +22,7 @@ struct GetStartedModule: HTML {
         from our newsletter.
         """,
       ctaTitle: "Sign up for free →",
-      ctaURL: siteRouter.path(for: .signUp(redirect: nil)),
+      ctaURL: siteRouter.path(for: .auth(.signUp(redirect: nil))),
       secondaryCTATitle: "View plans and pricing",
       secondaryCTAURL: siteRouter.path(for: .pricingLanding),
       style: style

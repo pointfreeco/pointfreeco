@@ -41,7 +41,7 @@ public struct LoginSignUpView: HTML {
           }
           .attribute(
             "href",
-            siteRouter.path(for: .gitHubAuth(redirect: redirect))
+            siteRouter.path(for: .auth(.gitHubAuth(redirect: redirect)))
           )
           div {
             Paragraph {

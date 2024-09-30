@@ -28,27 +28,29 @@ public struct PointFreeRouter: ParserPrinter {
   }
 
   public func gitHubAuthPath(redirect: SiteRoute? = nil) -> String {
-    self.path(for: .gitHubAuth(redirect: redirect.map(self.url(for:))))
+    self.path(for: .auth(.gitHubAuth(redirect: redirect.map(self.url(for:)))))
   }
 
   public func loginPath(redirect: SiteRoute? = nil) -> String {
     guard
       let redirect,
-      !redirect.is(\.login) && !redirect.is(\.signUp)
+      !redirect.is(\.auth.login),
+      !redirect.is(\.auth.signUp)
     else {
-      return self.path(for: .login(redirect: nil))
+      return self.path(for: .auth(.login(redirect: nil)))
     }
-    return self.path(for: .login(redirect: url(for: redirect)))
+    return self.path(for: .auth(.login(redirect: url(for: redirect))))
   }
 
   public func signUpPath(redirect: SiteRoute? = nil) -> String {
     guard
       let redirect,
-      !redirect.is(\.login) && !redirect.is(\.signUp)
+      !redirect.is(\.auth.login),
+      !redirect.is(\.auth.signUp)
     else {
-      return self.path(for: .signUp(redirect: nil))
+      return self.path(for: .auth(.signUp(redirect: nil)))
     }
-    return self.path(for: .signUp(redirect: url(for: redirect)))
+    return self.path(for: .auth(.signUp(redirect: url(for: redirect))))
   }
 }
 

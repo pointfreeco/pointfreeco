@@ -19,6 +19,7 @@ public indirect enum SiteRoute: Equatable {
   case admin(Admin = .index)
   case api(Api)
   case appleDeveloperMerchantIdDomainAssociation
+  case auth(Auth)
   case blog(Blog = .index)
   case clips(ClipsRoute)
   case collections(Collections = .index)
@@ -30,18 +31,13 @@ public indirect enum SiteRoute: Equatable {
   case expressUnsubscribe(payload: Encrypted<String>)
   case expressUnsubscribeReply(MailgunForwardPayload)
   case feed(Feed)
-  case gitHubAuth(redirect: String?)
-  case gitHubCallback(code: String?, redirect: String?)
   case home
   case invite(Invite)
   case live(Live)
-  case login(redirect: String?)
-  case logout
   case pricingLanding
   case privacy
   case resume
   case robots
-  case signUp(redirect: String?)
   case slackInvite
   case subscribe(SubscribeData? = nil)
   case subscribeConfirmation(
@@ -55,6 +51,15 @@ public indirect enum SiteRoute: Equatable {
   case team(Team)
   case teamInviteCode(TeamInviteCode)
   case webhooks(Webhooks)
+
+  @CasePathable
+  public enum Auth: Equatable {
+    case login(redirect: String?)
+    case logout
+    case gitHubAuth(redirect: String?)
+    case gitHubCallback(code: String?, redirect: String?)
+    case signUp(redirect: String?)
+  }
 
   public enum Blog: Equatable {
     case feed
@@ -480,6 +485,10 @@ struct SiteRouter: ParserPrinter {
         }
       }
 
+      Route(.case(SiteRoute.auth)) {
+        AuthRouter()
+      }
+
       Route(.case(SiteRoute.blog)) {
         Path { "blog" }
         BlogRouter()
@@ -568,18 +577,6 @@ struct SiteRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.gitHubCallback)) {
-        Path { "github-auth" }
-        Query {
-          Optionally {
-            Field("code")
-          }
-          Optionally {
-            Field("redirect")
-          }
-        }
-      }
-
       Route(.case(SiteRoute.invite)) {
         Path { "invites" }
         InviteRouter()
@@ -588,28 +585,6 @@ struct SiteRouter: ParserPrinter {
       Route(.case(SiteRoute.live)) {
         Path { "live" }
         LiveRouter()
-      }
-
-      Route(.case(SiteRoute.gitHubAuth)) {
-        Path { "authenticate" }
-        Query {
-          Optionally {
-            Field("redirect")
-          }
-        }
-      }
-
-      Route(.case(SiteRoute.login)) {
-        Path { "login" }
-        Query {
-          Optionally {
-            Field("redirect")
-          }
-        }
-      }
-
-      Route(.case(SiteRoute.logout)) {
-        Path { "logout" }
       }
 
       Route(.case(SiteRoute.pricingLanding)) {
@@ -622,15 +597,6 @@ struct SiteRouter: ParserPrinter {
 
       Route(.case(SiteRoute.resume)) {
         Path { "resume" }
-      }
-
-      Route(.case(SiteRoute.signUp)) {
-        Path { "signup" }
-        Query {
-          Optionally {
-            Field("redirect")
-          }
-        }
       }
 
       Route(.case(SiteRoute.subscribe)) {
@@ -773,5 +739,54 @@ struct FilterConversion<Base: Conversion>: Conversion {
   func unapply(_ output: Base.Output) throws -> Base.Input {
     guard try self.predicate(output) else { throw False() }
     return try self.base.unapply(output)
+  }
+}
+
+private struct AuthRouter: ParserPrinter {
+  var body: some Router<SiteRoute.Auth> {
+    OneOf {
+      Route(.case(SiteRoute.Auth.gitHubAuth)) {
+        Path { "authenticate" }
+        Query {
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
+      Route(.case(SiteRoute.Auth.gitHubCallback)) {
+        Path { "github-auth" }
+        Query {
+          Optionally {
+            Field("code")
+          }
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
+      Route(.case(SiteRoute.Auth.login)) {
+        Path { "login" }
+        Query {
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
+      Route(.case(SiteRoute.Auth.logout)) {
+        Path { "logout" }
+      }
+
+      Route(.case(SiteRoute.Auth.signUp)) {
+        Path { "signup" }
+        Query {
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+    }
   }
 }

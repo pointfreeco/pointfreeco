@@ -140,6 +140,9 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await appleDeveloperMerchantIdDomainAssociationMiddleware(conn)
       .performAsync()
 
+  case let .auth(auth):
+    return await authMiddleware(conn.map { _ in auth })
+
   case let .blog(subRoute):
     return await blogMiddleware(conn: conn.map { _ in subRoute })
 
@@ -234,10 +237,6 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await giftsMiddleware(conn.map(const(giftsRoute)))
       .performAsync()
 
-  case let .gitHubCallback(code, redirect):
-    return await gitHubCallbackResponse(conn.map(const(code .*. redirect .*. unit)))
-      .performAsync()
-
   case .home:
     return await homeMiddleware(conn.map(const(())))
 
@@ -271,21 +270,6 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
   case let .live(liveRoute):
     return await liveMiddleware(conn.map(const(liveRoute)))
 
-  case let .gitHubAuth(redirect):
-    return await loginResponse(conn.map(const(redirect)))
-      .performAsync()
-
-  case let .login(redirect):
-    return await loginSignUpMiddleware(
-      redirect: redirect,
-      type: .login,
-      conn.map(const(()))
-    )
-
-  case .logout:
-    return await logoutResponse(conn.map(const(unit)))
-      .performAsync()
-
   case .pricingLanding:
     return await pricingMiddleware(conn.map { _ in })
 
@@ -307,13 +291,6 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
           #User-Agent: GPTBot
           #Disallow: /
           """)
-
-  case let .signUp(redirect):
-    return await loginSignUpMiddleware(
-      redirect: redirect,
-      type: .signUp,
-      conn.map(const(()))
-    )
 
   case .slackInvite:
     @Dependency(\.envVars) var envVars
