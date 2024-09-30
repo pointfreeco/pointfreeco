@@ -396,7 +396,7 @@ extension Client {
         let daysAgo = weeksAgo * 7
         let startDate: SQLQueryString = "CURRENT_DATE - INTERVAL '\(raw: "\(daysAgo)") DAY'"
         let endDate: SQLQueryString = "CURRENT_DATE - INTERVAL '\(raw: "\(daysAgo - 1)") DAY'"
-        
+
         return try await pool.sqlDatabase.all(
           """
           SELECT
