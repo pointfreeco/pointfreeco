@@ -2075,7 +2075,7 @@ html {
                           col-m
                           col-m-4">
                 <div>
-                  1/31/18
+                  Jan 31, 2018
                 </div>
               </div>
               <div class="end-align

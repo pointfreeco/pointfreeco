@@ -86,7 +86,7 @@ private func progressMiddleware(
       userID: currentUser.id
     )
   } catch {
-    reportIssue()
+    reportIssue(error, "Failed to update episode progress.")
   }
 
   return conn.writeStatus(.ok).empty()

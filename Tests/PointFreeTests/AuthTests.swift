@@ -36,7 +36,8 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     } operation: {
       let result = await siteMiddleware(
         connection(
-          from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
+          from: request(
+            to: .auth(.gitHubCallback(code: "deabeef", redirect: "/")), session: .loggedOut)
         )
       )
       await assertSnapshot(matching: result, as: .conn)
@@ -68,7 +69,8 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     } operation: {
       let result = await siteMiddleware(
         connection(
-          from: request(to: .gitHubCallback(code: "deabeef", redirect: "/"), session: .loggedOut)
+          from: request(
+            to: .auth(.gitHubCallback(code: "deabeef", redirect: "/")), session: .loggedOut)
         )
       )
       await assertSnapshot(matching: result, as: .conn)
@@ -85,7 +87,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testAuth() async throws {
-    let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+    let auth = request(to: .auth(.gitHubCallback(code: "deadbeef", redirect: nil)))
     let conn = connection(from: auth)
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -96,14 +98,43 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     @Dependency(\.siteRouter) var siteRouter
 
     let login = request(
-      to: .gitHubAuth(
-        redirect: siteRouter.url(for: .episodes(.episode(param: .right(42), .show())))
+      to: .auth(
+        .gitHubAuth(
+          redirect: siteRouter.url(for: .episodes(.episode(param: .right(42), .show())))
+        )
       ),
       session: .loggedIn
     )
     let conn = connection(from: login)
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+  }
+
+  @MainActor
+  func testRegisterWithDuplicateEmail() async throws {
+    _ = try await database.registerUser(
+      withGitHubEnvelope: GitHubUserEnvelope(
+        accessToken: AccessToken(accessToken: "gh-deadbeef"),
+        gitHubUser: GitHubUser(
+          createdAt: Date(),
+          id: 999,
+          name: "Blob"
+        )
+      ),
+      email: "blob@pointfree.co",
+      now: Date.init
+    )
+
+    let gitHubUserEnvelope = GitHubUserEnvelope.mock
+    await withDependencies {
+      $0.gitHub.fetchUser = { _ in gitHubUserEnvelope.gitHubUser }
+      $0.gitHub.fetchAuthToken = { _ in .right(gitHubUserEnvelope.accessToken) }
+      $0.gitHub.fetchEmails = { _ in [GitHubUser.Email(email: "blob@pointfree.co", primary: true)] }
+    } operation: {
+      let auth = request(to: .auth(.gitHubCallback(code: "deadbeef", redirect: nil)))
+      let conn = connection(from: auth)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
   }
 }
 
@@ -119,7 +150,7 @@ class AuthTests: TestCase {
     await withDependencies {
       $0.gitHub.fetchAuthToken = { _ in throw unit }
     } operation: {
-      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+      let auth = request(to: .auth(.gitHubCallback(code: "deadbeef", redirect: nil)))
       let conn = connection(from: auth)
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
@@ -132,7 +163,7 @@ class AuthTests: TestCase {
         .left(.init(description: "", error: .badVerificationCode, errorUri: ""))
       }
     } operation: {
-      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+      let auth = request(to: .auth(.gitHubCallback(code: "deadbeef", redirect: nil)))
       let conn = connection(from: auth)
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
@@ -148,9 +179,11 @@ class AuthTests: TestCase {
       @Dependency(\.siteRouter) var siteRouter
 
       let auth = request(
-        to: .gitHubCallback(
-          code: "deadbeef",
-          redirect: siteRouter.url(for: .episodes(.episode(param: .right(42), .show())))
+        to: .auth(
+          .gitHubCallback(
+            code: "deadbeef",
+            redirect: siteRouter.url(for: .episodes(.episode(param: .right(42), .show())))
+          )
         )
       )
       let conn = connection(from: auth)
@@ -163,7 +196,7 @@ class AuthTests: TestCase {
     await withDependencies {
       $0.gitHub.fetchUser = { _ in throw unit }
     } operation: {
-      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+      let auth = request(to: .auth(.gitHubCallback(code: "deadbeef", redirect: nil)))
       let conn = connection(from: auth)
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
@@ -177,7 +210,7 @@ class AuthTests: TestCase {
         throw GitHubUser.AlreadyRegistered(email: "blob@example.org")
       }
     } operation: {
-      let auth = request(to: .gitHubCallback(code: "deadbeef", redirect: nil))
+      let auth = request(to: .auth(.gitHubCallback(code: "deadbeef", redirect: nil)))
       let conn = connection(from: auth)
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
@@ -185,7 +218,7 @@ class AuthTests: TestCase {
 
   @MainActor
   func testLogin() async throws {
-    let login = request(to: .gitHubAuth(redirect: nil))
+    let login = request(to: .auth(.gitHubAuth(redirect: nil)))
     let conn = connection(from: login)
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -193,7 +226,7 @@ class AuthTests: TestCase {
 
   @MainActor
   func testLogin_AlreadyLoggedIn() async throws {
-    let login = request(to: .gitHubAuth(redirect: nil), session: .loggedIn)
+    let login = request(to: .auth(.gitHubAuth(redirect: nil)), session: .loggedIn)
     let conn = connection(from: login)
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -201,7 +234,7 @@ class AuthTests: TestCase {
 
   @MainActor
   func testLogout() async throws {
-    let conn = connection(from: request(to: .logout))
+    let conn = connection(from: request(to: .auth(.logout)))
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }

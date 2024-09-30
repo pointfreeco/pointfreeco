@@ -13,10 +13,43 @@ import PostgresNIO
 import Prelude
 import Tuple
 import UrlFormEncoding
+import Views
 
 #if canImport(FoundationNetworking)
   import FoundationNetworking
 #endif
+
+func authMiddleware(
+  _ conn: Conn<StatusLineOpen, SiteRoute.Auth>
+) async -> Conn<ResponseEnded, Data> {
+  switch conn.data {
+  case let .gitHubAuth(redirect):
+    return await loginResponse(conn.map(const(redirect)))
+      .performAsync()
+
+  case let .gitHubCallback(code, redirect):
+    return await gitHubCallbackResponse(conn.map(const(code .*. redirect .*. unit)))
+      .performAsync()
+
+  case let .login(redirect):
+    return await loginSignUpMiddleware(
+      redirect: redirect,
+      type: .login,
+      conn.map(const(()))
+    )
+
+  case .logout:
+    return await logoutResponse(conn.map(const(unit)))
+      .performAsync()
+
+  case let .signUp(redirect):
+    return await loginSignUpMiddleware(
+      redirect: redirect,
+      type: .signUp,
+      conn.map(const(()))
+    )
+  }
+}
 
 let gitHubCallbackResponse =
   requireLoggedOutUser
@@ -52,12 +85,12 @@ func logoutResponse(
 
 extension Conn where Step == StatusLineOpen {
   public func loginAndRedirect() -> Conn<ResponseEnded, Data> {
-    self.redirect(to: .gitHubAuth(redirect: self.request.url?.absoluteString))
+    self.redirect(to: .auth(.gitHubAuth(redirect: self.request.url?.absoluteString)))
   }
 }
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
-  conn |> redirect(to: .gitHubAuth(redirect: conn.request.url?.absoluteString))
+  conn |> redirect(to: .auth(.gitHubAuth(redirect: conn.request.url?.absoluteString)))
 }
 
 private func requireLoggedOutUser<A>(
@@ -122,7 +155,11 @@ private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
       )
     }
     return user
-  } catch let PostgresError.server(error) where error.fields[.constraintName] == "users_email_key" {
+  } catch let error as PSQLError
+    where
+    error.serverInfo?[.constraintName] == "users_email_key"
+    && error.serverInfo?[.routine] == "_bt_check_unique"
+  {
     throw GitHubUser.AlreadyRegistered(email: email)
   }
 }
@@ -192,7 +229,7 @@ private func requireAccessToken<A>(
         case let .right(.right(token)):
           return conn.map(const(token .*. conn.data.second)) |> middleware
         case let .right(.left(error)) where error.error == .badVerificationCode:
-          return conn |> PointFree.redirect(to: .gitHubAuth(redirect: redirect))
+          return conn |> PointFree.redirect(to: .auth(.gitHubAuth(redirect: redirect)))
         case .right(.left), .left:
           return conn
             |> PointFree.redirect(
@@ -227,7 +264,7 @@ private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
   return GitHubRouter().url(
     for: .authorize(
       clientId: gitHubClientId,
-      redirectUri: siteRouter.url(for: .gitHubCallback(code: nil, redirect: redirect)),
+      redirectUri: siteRouter.url(for: .auth(.gitHubCallback(code: nil, redirect: redirect))),
       scope: "user:email"
     )
   )

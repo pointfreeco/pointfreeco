@@ -3,7 +3,7 @@ import Foundation
 import Prelude
 
 // TODO: bake into Either or remove
-extension Either: Monoid where R: Monoid {
+extension Either: @retroactive Monoid where R: Monoid {
   public static var empty: Either {
     return pure(R.empty)
   }
