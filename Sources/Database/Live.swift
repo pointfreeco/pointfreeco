@@ -323,6 +323,16 @@ extension Client {
           """
         )
       },
+      fetchUserByEmail: { email in
+        try await pool.sqlDatabase.first(
+          """
+          SELECT *
+          FROM "users"
+          WHERE "email" ILIKE \(bind: email)
+          LIMIT 1
+          """
+        )
+      },
       fetchUserByGitHub: { gitHubUserId in
         try await pool.sqlDatabase.first(
           """

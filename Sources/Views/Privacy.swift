@@ -13,7 +13,7 @@ public struct PrivacyAndTerms: HTML {
     PageHeader(title: "Privacy Policy & Terms") {
     }
 
-    PageModule.init(theme: .content) {
+    PageModule(theme: .content) {
       HTMLMarkdown(
         """
         ## Personal identification information

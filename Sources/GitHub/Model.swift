@@ -2,11 +2,29 @@ import EmailAddress
 import Foundation
 import Tagged
 
-public struct AccessToken: Codable {
+public struct AccessToken: Codable, Equatable, RawRepresentable {
   public var accessToken: String
 
   public init(accessToken: String) {
     self.accessToken = accessToken
+  }
+
+  public init(from decoder: any Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.accessToken = try container.decode(String.self, forKey: .accessToken)
+  }
+
+  public func encode(to encoder: any Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(accessToken, forKey: .accessToken)
+  }
+
+  public init?(rawValue: String) {
+    self.accessToken = rawValue
+  }
+
+  public var rawValue: String {
+    accessToken
   }
 
   private enum CodingKeys: String, CodingKey {
@@ -39,11 +57,18 @@ public struct OAuthError: Codable, Swift.Error {
 
 public struct GitHubUser: Codable, Identifiable {
   public var createdAt: Date
+  public var login: String
   public var id: Tagged<Self, Int>
   public var name: String?
 
-  public init(createdAt: Date, id: ID, name: String?) {
+  public init(
+    createdAt: Date,
+    login: String,
+    id: ID,
+    name: String?
+  ) {
     self.createdAt = createdAt
+    self.login = login
     self.id = id
     self.name = name
   }
@@ -60,6 +85,7 @@ public struct GitHubUser: Codable, Identifiable {
 
   private enum CodingKeys: String, CodingKey {
     case createdAt = "created_at"
+    case login
     case id
     case name
   }

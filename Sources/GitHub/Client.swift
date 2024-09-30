@@ -15,15 +15,16 @@ import Tagged
 @DependencyClient
 public struct Client {
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
-  public var fetchAuthToken: (_ code: String) async throws(OAuthError) -> AccessToken = { _ in
-    throw OAuthError(description: "", error: .badVerificationCode, errorUri: "")
-  }
+  public var fetchAuthToken: (_ code: String) async throws -> AccessToken
 
   /// Fetches a GitHub user's emails.
   public var fetchEmails: (_ accessToken: AccessToken) async throws -> [GitHubUser.Email]
 
   /// Fetches a GitHub user from an access token.
   public var fetchUser: (_ accessToken: AccessToken) async throws -> GitHubUser
+
+  @DependencyEndpoint(method: "fetchUser")
+  public var fetchUserByUserID: (_ id: GitHubUser.ID, _ accessToken: AccessToken) async throws -> GitHubUser
 }
 
 extension Client {
@@ -31,11 +32,10 @@ extension Client {
   public typealias Secret = Tagged<(Self, secret: ()), String>
 
   public init(clientId: ID, clientSecret: Secret) {
-    @Dependency(\.logger) var logger
     self.init(
       fetchAuthToken: { code in
         try await jsonDataTask(
-          with: fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret)(code),
+          with: fetchGitHubAuthToken(clientId: clientId, clientSecret: clientSecret, code: code),
           decoder: gitHubJsonDecoder
         )
       },
@@ -44,35 +44,34 @@ extension Client {
       },
       fetchUser: {
         try await jsonDataTask(with: fetchGitHubUser(with: $0), decoder: gitHubJsonDecoder)
+      },
+      fetchUserByUserID: { userID, accessToken in
+        try await jsonDataTask(with: fetchGitHubUser(id: userID, with: accessToken), decoder: gitHubJsonDecoder)
       }
     )
   }
 }
 
 func fetchGitHubAuthToken(
-  clientId: Client.ID, clientSecret: Client.Secret
-)
-  -> (String) throws
-  -> DecodableHTTPClientRequest<Either<OAuthError, AccessToken>>
-{
-
-  return { code in
-    var request = HTTPClientRequest(url: "https://github.com/login/oauth/access_token")
-    request.method = .POST
-    request.headers.add(name: "accept", value: "application/json")
-    request.headers.add(name: "content-type", value: "application/json")
-    request.body = .bytes(
-      .init(
-        data: try gitHubJsonEncoder.encode([
-          "client_id": clientId.rawValue,
-          "client_secret": clientSecret.rawValue,
-          "code": code,
-          "accept": "json",
-        ])
-      )
+  clientId: Client.ID,
+  clientSecret: Client.Secret,
+  code: String
+) -> DecodableHTTPClientRequest<AccessToken> {
+  var request = HTTPClientRequest(url: "https://github.com/login/oauth/access_token")
+  request.method = .POST
+  request.headers.add(name: "accept", value: "application/json")
+  request.headers.add(name: "content-type", value: "application/json")
+  request.body = .bytes(
+    .init(
+      data: try! gitHubJsonEncoder.encode([
+        "client_id": clientId.rawValue,
+        "client_secret": clientSecret.rawValue,
+        "code": code,
+        "accept": "json",
+      ])
     )
-    return DecodableHTTPClientRequest(request)
-  }
+  )
+  return DecodableHTTPClientRequest(request)
 }
 
 func fetchGitHubEmails(token: AccessToken) -> DecodableHTTPClientRequest<[GitHubUser.Email]> {
@@ -83,6 +82,13 @@ func fetchGitHubUser(
   with token: AccessToken
 ) -> DecodableHTTPClientRequest<GitHubUser> {
   apiDataTask("user", token: token)
+}
+
+func fetchGitHubUser(
+  id: GitHubUser.ID,
+  with token: AccessToken
+) -> DecodableHTTPClientRequest<GitHubUser> {
+  apiDataTask("user/\(id)", token: token)
 }
 
 private func apiDataTask<A>(_ path: String, token: AccessToken) -> DecodableHTTPClientRequest<A> {

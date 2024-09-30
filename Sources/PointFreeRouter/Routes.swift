@@ -54,10 +54,11 @@ public indirect enum SiteRoute: Equatable {
 
   @CasePathable
   public enum Auth: Equatable {
-    case login(redirect: String?)
-    case logout
+    case failureLanding(accessToken: AccessToken, redirect: String?)
     case gitHubAuth(redirect: String?)
     case gitHubCallback(code: String?, redirect: String?)
+    case login(redirect: String?)
+    case logout
     case signUp(redirect: String?)
   }
 
@@ -742,9 +743,20 @@ struct FilterConversion<Base: Conversion>: Conversion {
   }
 }
 
+import GitHub
+
 private struct AuthRouter: ParserPrinter {
   var body: some Router<SiteRoute.Auth> {
     OneOf {
+      Route(.case(SiteRoute.Auth.failureLanding)) {
+        Path { "github-failure" }
+        Query {
+          Field("accessToken", .string.representing(GitHub.AccessToken.self))
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
       Route(.case(SiteRoute.Auth.gitHubAuth)) {
         Path { "authenticate" }
         Query {
