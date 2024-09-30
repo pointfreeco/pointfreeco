@@ -9,7 +9,8 @@ extension Client {
   ) -> Self {
     Self(
       addUserIdToSubscriptionId: {
-        userId, subscriptionId in
+        userId,
+        subscriptionId in
         try await pool.sqlDatabase.run(
           """
           UPDATE "users"
@@ -395,7 +396,7 @@ extension Client {
         let daysAgo = weeksAgo * 7
         let startDate: SQLQueryString = "CURRENT_DATE - INTERVAL '\(raw: "\(daysAgo)") DAY'"
         let endDate: SQLQueryString = "CURRENT_DATE - INTERVAL '\(raw: "\(daysAgo - 1)") DAY'"
-
+        
         return try await pool.sqlDatabase.all(
           """
           SELECT
@@ -985,13 +986,22 @@ extension Client {
           """
         )
       },
-      updateUser: { userId, name, email, episodeCreditCount, rssSalt in
+      updateUser: {
+        userId,
+        name,
+        email,
+        episodeCreditCount,
+        gitHubUserID,
+        gitHubAccessToken,
+        rssSalt in
         try await pool.sqlDatabase.run(
           """
           UPDATE "users"
           SET "name" = COALESCE(\(bind: name), "name"),
             "email" = COALESCE(\(bind: email), "email"),
             "episode_credit_count" = COALESCE(\(bind: episodeCreditCount), "episode_credit_count"),
+            "github_user_id" = COALESCE(\(bind: gitHubUserID), "github_user_id"),
+            "github_access_token" = COALESCE(\(bind: gitHubAccessToken?.accessToken), "github_access_token"),
             "rss_salt" = COALESCE(\(bind: rssSalt), "rss_salt")
           WHERE "id" = \(bind: userId)
           """

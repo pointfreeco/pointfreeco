@@ -1,25 +1,29 @@
+import Dependencies
 import EmailAddress
 import GitHub
 import Models
+import PointFreeRouter
 import StyleguideV2
 
 public struct GitHubFailureView: HTML {
-  let accessToken: AccessToken
+  @Dependency(\.siteRouter) var siteRouter
+
   let email: EmailAddress
   let existingGitHubUser: GitHubUser
+  let newAccessToken: AccessToken
   let newGitHubUser: GitHubUser
   let redirect: String?
 
   public init(
-    accessToken: AccessToken,
     email: EmailAddress,
     existingGitHubUser: GitHubUser,
+    newAccessToken: AccessToken,
     newGitHubUser: GitHubUser,
     redirect: String?
   ) {
-    self.accessToken = accessToken
     self.email = email
     self.existingGitHubUser = existingGitHubUser
+    self.newAccessToken = newAccessToken
     self.newGitHubUser = newGitHubUser
     self.redirect = redirect
   }
@@ -32,19 +36,31 @@ public struct GitHubFailureView: HTML {
       VStack(spacing: 2) {
         HTMLMarkdown {
           """
-          While logging into your account we detected a problem. The primary email address 
-          associated with your GitHub account, \(email), is already registered with Point-Free 
-          under a different [GitHub account](http://github.com/\(existingGitHubUser.login)).
+          While logging into your account we detected a problem. You logged in with the GitHub
+          account **[@\(newGitHubUser.login)](http://github.com/\(newGitHubUser.login))** 
+          which has a primary email address **\(email)**. However, that email was already registered
+          on Point-Free under the GitHub account
+          **[@\(existingGitHubUser.login)](http://github.com/\(existingGitHubUser.login))**.
           
-          Would you like to update your Point-Free account to use this 
-          [GitHub account](http://github.com/\(newGitHubUser.login)) instead?
+          Would you like to update your Point-Free account to use the GitHub account
+          **[@\(newGitHubUser.login)](http://github.com/\(newGitHubUser.login))** instead?
           """
         }
 
         HStack(alignment: .center) {
-          Button(color: .purple) {
-            "Update GitHub account"
+          form {
+            Button(tag: "input", color: .purple)
+              .attribute("value", "Use @\(newGitHubUser.login) for login")
+              .attribute("type", "submit")
           }
+          .attribute(
+            "action",
+            siteRouter.path(
+              for: .auth(.updateGitHub(accessToken: newAccessToken, redirect: redirect))
+            )
+          )
+          .attribute("method", "post")
+
           Link(href: "mailto:support@pointfree.co") {
             "Contact support"
           }
@@ -55,10 +71,3 @@ public struct GitHubFailureView: HTML {
     .linkStyle(LinkStyle(color: .offBlack.dark(.offWhite), underline: true))
   }
 }
-
-//The primary email address associated with your GitHub account, \(error.email.rawValue), is \
-//already registered with Point-Free under a different \
-//[GitHub account](https://github.com/settings) account.
-//
-//                 Log into the GitHub account associated with your Point-Free account before trying again, \
-//                 or contact <support@pointfree.co>.

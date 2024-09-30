@@ -145,6 +145,8 @@ public struct Client {
       _ name: String?,
       _ emailAddress: EmailAddress?,
       _ episodeCreditCount: Int?,
+      _ gitHubUserID: GitHubUser.ID?,
+      _ gitHubAccessToken: AccessToken?,
       _ rssSalt: Models.User.RssSalt?
     ) async throws -> Void
   public var upsertUser:
@@ -185,6 +187,8 @@ public struct Client {
     email: EmailAddress? = nil,
     emailSettings: [EmailSetting.Newsletter]? = nil,
     episodeCreditCount: Int? = nil,
+    gitHubUserID: GitHubUser.ID? = nil,
+    githubAccessToken: AccessToken? = nil,
     rssSalt: Models.User.RssSalt? = nil
   ) async throws {
     try await self.updateUser(
@@ -192,6 +196,8 @@ public struct Client {
       name: name,
       emailAddress: email,
       episodeCreditCount: episodeCreditCount,
+      gitHubUserID: gitHubUserID,
+      gitHubAccessToken: githubAccessToken,
       rssSalt: rssSalt
     )
     try await self.updateEmailSettings(newsletters: emailSettings, userID: id)

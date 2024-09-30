@@ -60,6 +60,7 @@ public indirect enum SiteRoute: Equatable {
     case login(redirect: String?)
     case logout
     case signUp(redirect: String?)
+    case updateGitHub(accessToken: AccessToken, redirect: String?)
   }
 
   public enum Blog: Equatable {
@@ -794,6 +795,17 @@ private struct AuthRouter: ParserPrinter {
       Route(.case(SiteRoute.Auth.signUp)) {
         Path { "signup" }
         Query {
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
+      Route(.case(SiteRoute.Auth.updateGitHub)) {
+        Method.post
+        Path { "update-github"}
+        Query {
+          Field("acccess_token", .string.representing(AccessToken.self))
           Optionally {
             Field("redirect")
           }

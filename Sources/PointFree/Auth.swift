@@ -52,6 +52,51 @@ func authMiddleware(
       type: .signUp,
       conn.map(const(()))
     )
+
+  case .updateGitHub(let accessToken, let redirect):
+    return await updateGitHub(
+      accessToken: accessToken,
+      redirect: redirect,
+      conn: conn.map(const(()))
+    )
+  }
+}
+
+private func updateGitHub(
+  accessToken: AccessToken,
+  redirect: String?,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+  @Dependency(\.date) var date
+  @Dependency(\.gitHub) var gitHub
+  @Dependency(\.siteRouter) var siteRouter
+
+  do {
+    let newGitHubUser = try await gitHub.fetchUser(accessToken: accessToken)
+    let email = try await gitHub.fetchEmails(accessToken).first(where: \.primary).unwrap().email
+    let existingUser = try await database.fetchUser(email: email)
+    _ = try await database.updateUser(
+      id: existingUser.id,
+      gitHubUserID: newGitHubUser.id,
+      githubAccessToken: accessToken
+    )
+    return conn
+      .redirect(to: redirect ?? siteRouter.path(for: .home)) {
+        $0
+          .writeSessionCookie {
+            $0.flash = Flash(
+              .notice,
+              "Your GitHub account has been updated to @\(newGitHubUser.login)."
+            )
+            $0.user = .standard(existingUser.id)
+          }
+    }
+  } catch {
+    return conn
+      .redirect(to: .home) {
+        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+      }
   }
 }
 
@@ -79,9 +124,9 @@ private func failureLanding(
         )
       ) {
         GitHubFailureView(
-          accessToken: accessToken,
           email: email,
           existingGitHubUser: existingGitHubUser,
+          newAccessToken: accessToken,
           newGitHubUser: newGitHubUser,
           redirect: redirect
         )
