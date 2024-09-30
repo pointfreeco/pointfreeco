@@ -36,7 +36,8 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     } operation: {
       let result = await siteMiddleware(
         connection(
-          from: request(to: .auth(.gitHubCallback(code: "deabeef", redirect: "/")), session: .loggedOut)
+          from: request(
+            to: .auth(.gitHubCallback(code: "deabeef", redirect: "/")), session: .loggedOut)
         )
       )
       await assertSnapshot(matching: result, as: .conn)
@@ -68,7 +69,8 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     } operation: {
       let result = await siteMiddleware(
         connection(
-          from: request(to: .auth(.gitHubCallback(code: "deabeef", redirect: "/")), session: .loggedOut)
+          from: request(
+            to: .auth(.gitHubCallback(code: "deabeef", redirect: "/")), session: .loggedOut)
         )
       )
       await assertSnapshot(matching: result, as: .conn)
@@ -107,7 +109,6 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
-
 
   @MainActor
   func testRegisterWithDuplicateEmail() async throws {

@@ -190,7 +190,7 @@ private func gitHubAuthTokenMiddleware(
         The primary email address associated with your GitHub account, \(error.email.rawValue), is \
         already registered with Point-Free under a different \
         [GitHub account](https://github.com/settings) account.
-        
+
         Log into the GitHub account associated with your Point-Free account before trying again, \
         or contact <support@pointfree.co>.
         """
