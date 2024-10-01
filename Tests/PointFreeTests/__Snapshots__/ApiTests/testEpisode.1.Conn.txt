@@ -31,8 +31,8 @@ X-XSS-Protection: 1; mode=block
     "bytesLength" : 500000000,
     "downloadUrl" : {
       "s3" : {
-        "hd720" : "TODO",
         "hd1080" : "TODO",
+        "hd720" : "TODO",
         "sd540" : "TODO"
       }
     },

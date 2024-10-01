@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 32813
+Content-Length: 33276
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -125,6 +125,7 @@ body, html {
 .display-mFpu24{display:inline}
 .color-dwzNH2:link{color:#a8a8a8}
 .color-hzlcf:visited{color:#a8a8a8}
+.color-Vt0a43{color:#a8a8a8}
 .padding-left-IOMPq3:not(:first-child){padding-left:1rem}
 .font-size-RTPM71{font-size:0.875rem}
 .color-C4SO14:visited{color:#974dff}
@@ -203,10 +204,10 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .text-decoration-8r95N:hover{text-decoration:none}
 .color-T7UxR2:link{color:#121212}
 .color-IVYQy2:visited{color:#121212}
+.color-K2J0r1{color:#121212}
 .margin-top-EvtWd3:not(:first-child){margin-top:1.5rem}
 .margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
 .font-size-Xin5E2{font-size:1.5rem}
-.color-Vt0a43{color:#a8a8a8}
 .padding-sjJTB1{padding:0.5rem 1.5rem 1.5rem}
 .row-gap-FBkWQ3{row-gap:0}
 .color-OpZD03{color:#666666}
@@ -232,6 +233,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .line-height-B6FIc2{line-height:1.45}
 .color-H59Xg3:link{color:#79f2b0}
 .color-tgLLb3:visited{color:#79f2b0}
+.color-ov8tN1{color:#79f2b0}
 .display-mqllb2{display:grid}
 .grid-template-columns-hE9y01{grid-template-columns:minmax(0, 1fr) minmax(0, 2fr)}
 .font-size-xlo1p4{font-size:0.75rem}
@@ -283,6 +285,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   .border-bottom-a7wnM{border-bottom:1px solid #3d3d3d}
   .color-3tgnX1:link{color:#fff}
   .color-fIiIX2:visited{color:#fff}
+  .color-wVkSF3{color:#fff}
   .color-Cn4Oi1{color:#666666}
   .color-5uscm3{color:#a8a8a8}
 }
@@ -293,13 +296,13 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 <nav class="width-C8uWv position-0RTpx2 top-dcqqP z-index-yn1UK1 background-K2J0r1">
   <div class="padding-hS6a7 padding-dR5Tt4 max-width-P6HnV margin-gEzmi display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-ymXQt align-items-CdPBO2 background-K2J0r1"><a class="line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/"><img alt="Point-Free" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"></a>
     <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
-      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/collections">Collections</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">Collections</a>
       </li>
-      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/pricing">Pricing</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/pricing">Pricing</a>
       </li>
-      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/blog">Blog</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/blog">Blog</a>
       </li>
-      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/gifts">Gifts</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/gifts">Gifts</a>
       </li>
     </ul>
     <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
@@ -309,13 +312,13 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </li>
     </ul><input class="display-Wl0y44" id="menu-checkbox" type="checkbox"><label class="cursor-xmR5l display-Nvbu41 cursor-xmR5l user-select-Wl0y44" id="menu-icon" for="menu-checkbox"><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-SUDJi1 top-xEdC7 transform-0hcgW2"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 transform-kZtH24 background-WytRx3"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-YwIIn top-i3LWY2 transform-BHskb"></span></label>
     <ul class="margin-FBkWQ3 display-Wl0y44 display-sAbis3 flex-grow-tzL8I2 flex-shrink-tzL8I2 flex-basis-C8uWv padding-left-E4tBw4 list-style-type-Wl0y44 color-nbn0i3">
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/collections">Collections</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">Collections</a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/pricing">Pricing</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/pricing">Pricing</a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/blog">Blog</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/blog">Blog</a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/gifts">Gifts</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/gifts">Gifts</a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/login?redirect=http://localhost:8080/collections">Login</a>
       </li>
@@ -339,7 +342,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
-      <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 padding-PJnmd4 text-align-CdPBO2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-8r95N color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2" href="/collections/functions"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 padding-PJnmd4 text-align-CdPBO2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-8r95N color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/collections/functions"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="0.5" width="64" height="64" rx="32" fill="url(#paint0_linear_733_2369)"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M35.5 17.0259L50.474 31.9999L35.5 46.9739L20.526 31.9999L35.5 17.0259ZM33.0043 34.4956C34.3178 35.8091 36.5883 35.9029 37.9957 34.4956C39.4218 33.0695 39.3092 30.8177 37.9957 29.5042C36.6822 28.1907 34.4304 28.0781 33.0043 29.5042C31.597 30.9116 31.6908 33.1821 33.0043 34.4956ZM29.5883 17.1141L31.0883 18.6141L17.6143 32.0881L31.0883 45.5622L29.5883 47.0622L14.6143 32.0881L29.5883 17.1141Z" fill="white"/>
 <defs>
@@ -392,15 +395,15 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </p>
     </div>
     <div class="text-align-GE99b width-C8uWv"><a class="margin-top-H64QF2 display-qrAHi font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/signup">Sign up for free →</a>
-    </div><a class="text-align-GE99b font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/pricing">View plans and pricing</a>
+    </div><a class="text-align-GE99b font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/pricing">View plans and pricing</a>
   </div>
 </div>
 <footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
   <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
-      <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3" href="/">Point-Free</a>
+      <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3 color-nbn0i3" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-hE9y01 row-gap-83zzS1">
@@ -408,17 +411,17 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
         <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/pricing">Pricing</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/pricing">Pricing</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/gifts">Gifts</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/">Videos</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/">Videos</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/collections">Collections</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">Collections</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/clips">Clips</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/clips">Clips</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/blog">Blog</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/blog">Blog</a>
           </li>
         </ol>
       </div>
@@ -426,22 +429,22 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
         <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">More
         </h5>
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/about">About Us</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/about">About Us</a>
           </li>
-          <li rel="me"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
+          <li rel="me"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://www.twitter.com/pointfreeco">Twitter</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="https://www.twitter.com/pointfreeco">Twitter</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://github.com/pointfreeco">GitHub</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="https://github.com/pointfreeco">GitHub</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="mailto:support@pointfree.co">Contact Us</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="mailto:support@pointfree.co">Contact Us</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/privacy">Privacy Policy</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/privacy">Privacy Policy</a>
           </li>
         </ol>
       </div>
     </pf-vgrid>
-    <p class="padding-top-GuM2x3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
+    <p class="padding-top-GuM2x3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
     </p>
   </pf-vgrid>
 </footer>

@@ -55,6 +55,7 @@ public indirect enum SiteRoute: Equatable {
   @CasePathable
   public enum Auth: Equatable {
     case failureLanding(accessToken: AccessToken, redirect: String?)
+    case logout
     case gitHubAuth(redirect: String?)
     case gitHubCallback(code: String?, redirect: String?)
     case login(redirect: String?)

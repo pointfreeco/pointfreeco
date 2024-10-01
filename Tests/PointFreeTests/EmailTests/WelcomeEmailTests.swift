@@ -8,6 +8,7 @@ import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
+import StyleguideV2
 import XCTest
 
 @testable import GitHub
@@ -75,55 +76,70 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
 final class WelcomeEmailTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
-    //SnapshotTesting.isRecording=true
+    //SnapshotTesting.isRecording = true
   }
 
   @MainActor
   func testWelcomeEmail1() async throws {
-    #if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        let emailNodes = welcomeEmailView("", welcomeEmail1Content)(.newUser)
+    if self.isScreenshotTestingAvailable {
+      let emailDocument = WelcomeEmail(user: .newUser) {
+        WelcomeEmailWeek1(user: .newUser)
+      }
 
-        await assertSnapshot(matching: emailNodes, as: .html)
+      await assertSnapshot(matching: emailDocument, as: .emailDocument)
 
+      #if !os(Linux)
         let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
-        webView.loadHTMLString(render(emailNodes), baseURL: nil)
+        webView.loadHTMLString(
+          String(decoding: emailDocument.render(), as: UTF8.self),
+          baseURL: nil
+        )
 
         await assertSnapshot(matching: webView, as: .image)
-      }
-    #endif
+      #endif
+    }
   }
 
   @MainActor
   func testWelcomeEmail2() async throws {
-    #if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        let emailNodes = welcomeEmailView("", welcomeEmail2Content)(.newUser)
+    if self.isScreenshotTestingAvailable {
+      let emailDocument = WelcomeEmail(user: .newUser) {
+        WelcomeEmailWeek2(user: .newUser)
+      }
 
-        await assertSnapshot(matching: emailNodes, as: .html)
+      await assertSnapshot(matching: emailDocument, as: .emailDocument)
 
+      #if !os(Linux)
         let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
-        webView.loadHTMLString(render(emailNodes), baseURL: nil)
+        webView.loadHTMLString(
+          String(decoding: emailDocument.render(), as: UTF8.self),
+          baseURL: nil
+        )
 
         await assertSnapshot(matching: webView, as: .image)
-      }
-    #endif
+      #endif
+    }
   }
 
   @MainActor
   func testWelcomeEmail3() async throws {
-    #if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        let emailNodes = welcomeEmailView("", welcomeEmail3Content)(.newUser)
+    if self.isScreenshotTestingAvailable {
+      let emailDocument = WelcomeEmail(user: .newUser) {
+        WelcomeEmailWeek3(user: .newUser)
+      }
 
-        await assertSnapshot(matching: emailNodes, as: .html)
+      await assertSnapshot(matching: emailDocument, as: .emailDocument)
 
+      #if !os(Linux)
         let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: 600, height: 800))
-        webView.loadHTMLString(render(emailNodes), baseURL: nil)
+        webView.loadHTMLString(
+          String(decoding: emailDocument.render(), as: UTF8.self),
+          baseURL: nil
+        )
 
         await assertSnapshot(matching: webView, as: .image)
-      }
-    #endif
+      #endif
+    }
   }
 
   func testEpisodeEmails() async throws {
@@ -132,5 +148,14 @@ final class WelcomeEmailTests: TestCase {
     } operation: {
       _ = try await sendWelcomeEmails()
     }
+  }
+}
+
+extension Snapshotting where Value: EmailDocument, Format == String {
+  public static var emailDocument: Snapshotting {
+    var snapshotting = SimplySnapshotting.lines
+      .pullback { (doc: Value) in String(decoding: doc.render(), as: UTF8.self) }
+    snapshotting.pathExtension = "html"
+    return snapshotting
   }
 }

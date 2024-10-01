@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 123588
+Content-Length: 125475
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -263,6 +263,7 @@ Prism.languages.insertBefore('swift', 'string-literal', {
 .display-mFpu24{display:inline}
 .color-dwzNH2:link{color:#a8a8a8}
 .color-hzlcf:visited{color:#a8a8a8}
+.color-Vt0a43{color:#a8a8a8}
 .padding-left-IOMPq3:not(:first-child){padding-left:1rem}
 .font-size-RTPM71{font-size:0.875rem}
 .color-QZ6Yg3:visited{color:#fff}
@@ -366,7 +367,6 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .color-py8mM2:visited{color:#171717}
 .font-variant-numeric-vLOwL2{font-variant-numeric:tabular-nums}
 .max-width-dnNPN1{max-width:1rem}
-.color-Vt0a43{color:#a8a8a8}
 .text-transform-RqT8X1{text-transform:uppercase}
 .letter-spacing-fGWfX2{letter-spacing:0.54pt}
 .margin-bottom-cPmaw:not(:last-child){margin-bottom:0.3rem}
@@ -419,6 +419,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
 .line-height-B6FIc2{line-height:1.45}
 .color-H59Xg3:link{color:#79f2b0}
 .color-tgLLb3:visited{color:#79f2b0}
+.color-ov8tN1{color:#79f2b0}
 .column-gap-83zzS1{column-gap:1.0rem}
 .display-mqllb2{display:grid}
 .grid-template-columns-hE9y01{grid-template-columns:minmax(0, 1fr) minmax(0, 2fr)}
@@ -426,6 +427,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
 .line-height-9Xzre{line-height:1.25}
 .color-d8fIz1:link{color:#974dff}
 .color-C4SO14:visited{color:#974dff}
+.color-cemJK2{color:#974dff}
 .color-OpZD03{color:#666666}
 @media only screen and (max-width: 831px){
   .position-0RTpx2{position:sticky}
@@ -491,10 +493,12 @@ article div:hover > * > .display-Vk1P81{display:initial}
   .color-D9CPB:visited{color:#fafafa}
   .color-atKCn2:link{color:#575757}
   .color-WJrrA4:visited{color:#575757}
+  .color-ni0lz2{color:#575757}
   .color-Cn4Oi1{color:#666666}
   .color-VoDZ9{color:#ccc}
   .color-9rBiP:link{color:#555555}
   .color-CwERD1:visited{color:#555555}
+  .color-lJpf9{color:#555555}
   .color-jj5LZ{color:#f6f6f6}
   .background-color-xnERS1{background-color:#171717}
   .border-9UVoJ3{border:0.5px solid #FFC0C044}
@@ -512,13 +516,13 @@ article div:hover > * > .display-Vk1P81{display:initial}
 <nav class="width-C8uWv position-0RTpx2 top-dcqqP z-index-yn1UK1 background-K2J0r1">
   <div class="padding-hS6a7 padding-dR5Tt4 max-width-P6HnV margin-gEzmi display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-ymXQt align-items-CdPBO2 background-K2J0r1"><a class="line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/"><img alt="Point-Free" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"></a>
     <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
-      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/episodes">Episodes</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/episodes">Episodes</a>
       </li>
-      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/collections">Collections</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">Collections</a>
       </li>
-      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/blog">Blog</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/blog">Blog</a>
       </li>
-      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/gifts">Gifts</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/gifts">Gifts</a>
       </li>
     </ul>
     <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
@@ -526,13 +530,13 @@ article div:hover > * > .display-Vk1P81{display:initial}
       </li>
     </ul><input class="display-Wl0y44" id="menu-checkbox" type="checkbox"><label class="cursor-xmR5l display-Nvbu41 cursor-xmR5l user-select-Wl0y44" id="menu-icon" for="menu-checkbox"><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-SUDJi1 top-xEdC7 transform-0hcgW2"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 transform-kZtH24 background-WytRx3"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-YwIIn top-i3LWY2 transform-BHskb"></span></label>
     <ul class="margin-FBkWQ3 display-Wl0y44 display-sAbis3 flex-grow-tzL8I2 flex-shrink-tzL8I2 flex-basis-C8uWv padding-left-E4tBw4 list-style-type-Wl0y44 color-nbn0i3">
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/episodes">Episodes</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/episodes">Episodes</a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/collections">Collections</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">Collections</a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/blog">Blog</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/blog">Blog</a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="/gifts">Gifts</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/gifts">Gifts</a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/account">Account</a>
       </li>
@@ -579,73 +583,73 @@ article div:hover > * > .display-Vk1P81{display:initial}
             </div>
             <ul class="padding-left-E4tBw4 list-style-type-Wl0y44 width-C8uWv margin-FBkWQ3 display-BvS8W3 flex-direction-7gclL row-gap-FxsCt1">
               <li>
-                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB" href="#introduction">
+                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="#introduction">
                   <pf-markdown class="display-ix08W2">
                     <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
                       <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Introduction
                       </p>
                     </pf-vstack>
-                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4" data-timestamp="68" href="#t68">1:08</a>
+                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4 color-Vt0a43 color-ni0lz2" data-timestamp="68" href="#t68">1:08</a>
                 </pf-hstack>
               </li>
               <li>
-                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB" href="#introducing">
+                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="#introducing">
                   <pf-markdown class="display-ix08W2">
                     <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
                       <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Introducing |>
                       </p>
                     </pf-vstack>
-                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4" data-timestamp="141" href="#t141">2:21</a>
+                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4 color-Vt0a43 color-ni0lz2" data-timestamp="141" href="#t141">2:21</a>
                 </pf-hstack>
               </li>
               <li>
-                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB" href="#operator-interlude">
+                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="#operator-interlude">
                   <pf-markdown class="display-ix08W2">
                     <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
                       <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Operator interlude
                       </p>
                     </pf-vstack>
-                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4" data-timestamp="294" href="#t294">4:54</a>
+                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4 color-Vt0a43 color-ni0lz2" data-timestamp="294" href="#t294">4:54</a>
                 </pf-hstack>
               </li>
               <li>
-                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB" href="#what-about-autocompletion">
+                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="#what-about-autocompletion">
                   <pf-markdown class="display-ix08W2">
                     <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
                       <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">What about autocompletion?
                       </p>
                     </pf-vstack>
-                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4" data-timestamp="458" href="#t458">7:38</a>
+                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4 color-Vt0a43 color-ni0lz2" data-timestamp="458" href="#t458">7:38</a>
                 </pf-hstack>
               </li>
               <li>
-                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB" href="#introducing">
+                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="#introducing">
                   <pf-markdown class="display-ix08W2">
                     <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
                       <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Introducing >>>
                       </p>
                     </pf-vstack>
-                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4" data-timestamp="537" href="#t537">8:57</a>
+                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4 color-Vt0a43 color-ni0lz2" data-timestamp="537" href="#t537">8:57</a>
                 </pf-hstack>
               </li>
               <li>
-                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB" href="#method-composition">
+                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="#method-composition">
                   <pf-markdown class="display-ix08W2">
                     <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
                       <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Method composition
                       </p>
                     </pf-vstack>
-                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4" data-timestamp="779" href="#t779">12:59</a>
+                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4 color-Vt0a43 color-ni0lz2" data-timestamp="779" href="#t779">12:59</a>
                 </pf-hstack>
               </li>
               <li>
-                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB" href="#what-s-the-point">
+                <pf-hstack class="justify-content-ymXQt font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><a class="line-height-z5kUh3 word-break-HP7td3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="#what-s-the-point">
                   <pf-markdown class="display-ix08W2">
                     <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
                       <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">What’s the point?
                       </p>
                     </pf-vstack>
-                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4" data-timestamp="1113" href="#t1113">18:33</a>
+                  </pf-markdown></a><a class="font-variant-numeric-vLOwL2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-atKCn2 color-hzlcf color-WJrrA4 color-Vt0a43 color-ni0lz2" data-timestamp="1113" href="#t1113">18:33</a>
                 </pf-hstack>
               </li>
             </ul>
@@ -653,7 +657,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
           <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-NKv2f3">
             <div class="margin-top-B7Alk3 filter-OPc2q flex-basis-yLOVS3 text-align-CdPBO2"><img class="max-width-dnNPN1" alt src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBmaWxsPSIjRkZGIiBkPSJNLTc3LTE0MDNIOTQ3djM1ODNILTc3eiIvPjxwYXRoIGQ9Ik0xMS44MzMzIDUuNUg4LjV2LTVoLTV2NUguMTY2N0w2IDExLjMzMzMgMTEuODMzMyA1LjV6TS4xNjY3IDEzdjEuNjY2N2gxMS42NjY2VjEzSC4xNjY3eiIgZmlsbD0iIzAwMCIvPjwvZz48L3N2Zz4=">
             </div>
-            <div><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB" href="#downloads">
+            <div><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="#downloads">
               <h5 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Downloads
               </h5></a>
             </div>
@@ -664,7 +668,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
           </h6>
           <div>
             <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-NKv2f3"><img class="margin-top-B7Alk3 filter-OPc2q flex-basis-yLOVS3" alt src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik04IDE0LjVsNi00LjUtNi00LjV2OXpNMTAgMEM0LjQ4IDAgMCA0LjQ4IDAgMTBzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE1LjUyIDAgMTAgMHptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjMTIxMjEyIi8+CiAgPC9nPgo8L3N2Zz4=">
-              <div><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB" href="/episodes/ep2-proof-in-functions">
+              <div><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="/episodes/ep2-proof-in-functions">
                 <h5 class="word-wrap-aqIE4 margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Proof in Functions
                 </h5></a>
               </div>
@@ -677,7 +681,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
           <pf-markdown class="color-PJVOr3 color-VoDZ9 display-ix08W2">
             <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="introduction"></a>
               <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
-                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Introduction<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#introduction"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Introduction<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#introduction"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
                 </h4>
               </div>
               <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Thanks for joining us for the first episode of Point-Free! Point-Free is going to cover a lot of functional programming concepts so let’s start by defining what a function is: a computation with an input and output.
@@ -713,7 +717,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t68"><a data-timestamp="68" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t68">1:08</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t68"><a data-timestamp="68" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t68">1:08</a>
                   </div>
                 </div>
               </div>
@@ -744,19 +748,19 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t110"><a data-timestamp="110" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t110">1:50</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t110"><a data-timestamp="110" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t110">1:50</a>
                   </div>
                 </div>
               </div>
               <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">This reads nicely from left-to-right whereas free functions read from inside-out, and it takes more mental work to see that we call <code>incr</code> before we call <code>square</code>. This is probably why free functions are less common in Swift. A very simple expression is much more difficult to read using traditional function calls. We can imagine that a more complicated nest of function calls would be all the more difficult to unpack. Methods don’t have this problem.
               </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="introducing"></a>
               <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
-                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Introducing |><a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#introducing"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Introducing |><a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#introducing"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
                 </h4>
               </div>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t141"><a data-timestamp="141" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t141">2:21</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t141"><a data-timestamp="141" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t141">2:21</a>
                   </div>
                 </div>
               </div>
@@ -767,7 +771,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t154"><a data-timestamp="154" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t154">2:34</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t154"><a data-timestamp="154" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t154">2:34</a>
                   </div>
                 </div>
               </div>
@@ -782,7 +786,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t170"><a data-timestamp="170" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t170">2:50</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t170"><a data-timestamp="170" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t170">2:50</a>
                   </div>
                 </div>
               </div>
@@ -800,7 +804,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t206"><a data-timestamp="206" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t206">3:26</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t206"><a data-timestamp="206" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t206">3:26</a>
                   </div>
                 </div>
               </div>
@@ -821,7 +825,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t230"><a data-timestamp="230" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t230">3:50</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t230"><a data-timestamp="230" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t230">3:50</a>
                   </div>
                 </div>
               </div>
@@ -834,7 +838,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t240"><a data-timestamp="240" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t240">4:00</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t240"><a data-timestamp="240" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t240">4:00</a>
                   </div>
                 </div>
               </div>
@@ -849,7 +853,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t260"><a data-timestamp="260" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t260">4:20</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t260"><a data-timestamp="260" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t260">4:20</a>
                   </div>
                 </div>
               </div>
@@ -862,7 +866,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t275"><a data-timestamp="275" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t275">4:35</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t275"><a data-timestamp="275" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t275">4:35</a>
                   </div>
                 </div>
               </div>
@@ -877,12 +881,12 @@ article div:hover > * > .display-Vk1P81{display:initial}
 </code>
               </pre><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="operator-interlude"></a>
               <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
-                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Operator interlude<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#operator-interlude"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Operator interlude<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#operator-interlude"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
                 </h4>
               </div>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t294"><a data-timestamp="294" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t294">4:54</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t294"><a data-timestamp="294" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t294">4:54</a>
                   </div>
                 </div>
               </div>
@@ -897,7 +901,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t354"><a data-timestamp="354" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t354">5:54</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t354"><a data-timestamp="354" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t354">5:54</a>
                   </div>
                 </div>
               </div>
@@ -910,7 +914,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t394"><a data-timestamp="394" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t394">6:34</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t394"><a data-timestamp="394" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t394">6:34</a>
                   </div>
                 </div>
               </div>
@@ -941,12 +945,12 @@ article div:hover > * > .display-Vk1P81{display:initial}
               <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Our <code>|></code> operator ticks all these boxes.
               </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="what-about-autocompletion"></a>
               <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
-                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">What about autocompletion?<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#what-about-autocompletion"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">What about autocompletion?<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#what-about-autocompletion"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
                 </h4>
               </div>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t458"><a data-timestamp="458" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t458">7:38</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t458"><a data-timestamp="458" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t458">7:38</a>
                   </div>
                 </div>
               </div>
@@ -964,12 +968,12 @@ article div:hover > * > .display-Vk1P81{display:initial}
               <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">This is at the top-level, though, so we lose some of the scoping we get with method completion. Still, there’s nothing preventing our IDEs from understanding that, given a value and <code>|></code>, should autocomplete functions that take that value as input. Hopefully this will get better with newer versions of Xcode.
               </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="introducing"></a>
               <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
-                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Introducing >>><a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#introducing"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Introducing >>><a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#introducing"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
                 </h4>
               </div>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t537"><a data-timestamp="537" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t537">8:57</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t537"><a data-timestamp="537" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t537">8:57</a>
                   </div>
                 </div>
               </div>
@@ -980,7 +984,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t565"><a data-timestamp="565" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t565">9:25</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t565"><a data-timestamp="565" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t565">9:25</a>
                   </div>
                 </div>
               </div>
@@ -997,7 +1001,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t572"><a data-timestamp="572" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t572">9:32</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t572"><a data-timestamp="572" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t572">9:32</a>
                   </div>
                 </div>
               </div>
@@ -1010,7 +1014,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t628"><a data-timestamp="628" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t628">10:28</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t628"><a data-timestamp="628" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t628">10:28</a>
                   </div>
                 </div>
               </div>
@@ -1023,7 +1027,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t640"><a data-timestamp="640" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t640">10:40</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t640"><a data-timestamp="640" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t640">10:40</a>
                   </div>
                 </div>
               </div>
@@ -1034,7 +1038,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t647"><a data-timestamp="647" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t647">10:47</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t647"><a data-timestamp="647" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t647">10:47</a>
                   </div>
                 </div>
               </div>
@@ -1045,7 +1049,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t653"><a data-timestamp="653" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t653">10:53</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t653"><a data-timestamp="653" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t653">10:53</a>
                   </div>
                 </div>
               </div>
@@ -1092,7 +1096,7 @@ PUBLIC "-//W3C//DTD SVG 1.1//EN"
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t692"><a data-timestamp="692" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t692">11:32</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t692"><a data-timestamp="692" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t692">11:32</a>
                   </div>
                 </div>
               </div>
@@ -1103,7 +1107,7 @@ PUBLIC "-//W3C//DTD SVG 1.1//EN"
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t710"><a data-timestamp="710" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t710">11:50</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t710"><a data-timestamp="710" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t710">11:50</a>
                   </div>
                 </div>
               </div>
@@ -1132,12 +1136,12 @@ PUBLIC "-//W3C//DTD SVG 1.1//EN"
               <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Looks like <code>>>></code> ticks all our boxes!
               </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="method-composition"></a>
               <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
-                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Method composition<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#method-composition"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Method composition<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#method-composition"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
                 </h4>
               </div>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t779"><a data-timestamp="779" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t779">12:59</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t779"><a data-timestamp="779" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t779">12:59</a>
                   </div>
                 </div>
               </div>
@@ -1157,7 +1161,7 @@ PUBLIC "-//W3C//DTD SVG 1.1//EN"
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t805"><a data-timestamp="805" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t805">13:25</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t805"><a data-timestamp="805" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t805">13:25</a>
                   </div>
                 </div>
               </div>
@@ -1170,7 +1174,7 @@ PUBLIC "-//W3C//DTD SVG 1.1//EN"
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t851"><a data-timestamp="851" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t851">14:11</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t851"><a data-timestamp="851" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t851">14:11</a>
                   </div>
                 </div>
               </div>
@@ -1195,7 +1199,7 @@ incr().square()
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t890"><a data-timestamp="890" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t890">14:50</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t890"><a data-timestamp="890" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t890">14:50</a>
                   </div>
                 </div>
               </div>
@@ -1211,7 +1215,7 @@ incr().square()
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t924"><a data-timestamp="924" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t924">15:24</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t924"><a data-timestamp="924" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t924">15:24</a>
                   </div>
                 </div>
               </div>
@@ -1222,7 +1226,7 @@ incr().square()
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t943"><a data-timestamp="943" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t943">15:43</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t943"><a data-timestamp="943" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t943">15:43</a>
                   </div>
                 </div>
               </div>
@@ -1233,7 +1237,7 @@ incr().square()
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t951"><a data-timestamp="951" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t951">15:51</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t951"><a data-timestamp="951" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t951">15:51</a>
                   </div>
                 </div>
               </div>
@@ -1245,7 +1249,7 @@ incr().square()
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t961"><a data-timestamp="961" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t961">16:01</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t961"><a data-timestamp="961" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t961">16:01</a>
                   </div>
                 </div>
               </div>
@@ -1258,7 +1262,7 @@ incr().square()
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t986"><a data-timestamp="986" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t986">16:26</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t986"><a data-timestamp="986" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t986">16:26</a>
                   </div>
                 </div>
               </div>
@@ -1272,7 +1276,7 @@ incr().square()
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t999"><a data-timestamp="999" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t999">16:39</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t999"><a data-timestamp="999" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t999">16:39</a>
                   </div>
                 </div>
               </div>
@@ -1285,19 +1289,19 @@ incr().square()
               </pre>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t1051"><a data-timestamp="1051" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t1051">17:31</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t1051"><a data-timestamp="1051" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t1051">17:31</a>
                   </div>
                 </div>
               </div>
               <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">This is really cool! We can see a relationship that our composition operator has with <code>map</code> that would have been difficult to see with methods. Here, <code>map</code> distributes over <code>>>></code> composition: the composition of <code>map</code> twice over two functions is the composition of two functions over a <code>map</code>. There are a lot of patterns like this and we’ll be exploring them in the future!
               </p><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="what-s-the-point"></a>
               <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
-                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">What’s the point?<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#what-s-the-point"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
+                <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">What’s the point?<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#what-s-the-point"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
                 </h4>
               </div>
               <div class="content-xD6dy1 margin-left-rhxaL1 display-S6VUZ flex-direction-5DQpO1 row-gap-UV0PN">
                 <div>
-                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t1113"><a data-timestamp="1113" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1" href="#t1113">18:33</a>
+                  <div class="font-variant-numeric-vLOwL2 line-height-B4ojl2 margin-left-xuQdp2 position-9Qeuv2 text-align-mMP5l4 width-TNVhF4 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71" id="t1113"><a data-timestamp="1113" class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#t1113">18:33</a>
                   </div>
                 </div>
               </div>
@@ -1347,7 +1351,7 @@ incr().square()
           <div>
             <h5 class="margin-RBdUg4 margin-FBkWQ3 margin-top-ukUO62 margin-bottom-yQEjs3 font-size-83zzS1 font-weight-SywJI1 line-height-EHclK1">Sample code
             </h5>
-            <div class="margin-top-FxsCt1"><a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB" href="https://github.com/pointfreeco/episode-code-samples/tree/main/ep1-type-safe-html">
+            <div class="margin-top-FxsCt1"><a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="https://github.com/pointfreeco/episode-code-samples/tree/main/ep1-type-safe-html">
               <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-NKv2f3"><img class="filter-MGnxR1 height-6PqSI horizontal-align-cvXVf vertical-align-cvXVf width-6PqSI" alt src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSJjdXJyZW50Q29sb3IiIGFyaWEtbGFiZWxsZWRieT0ic2ltcGxlaWNvbnMtZ2l0aHViLWljb24iIHJvbGU9ImltZyIgdmlld0JveD0iMCAwIDI0IDI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZSBpZD0ic2ltcGxlaWNvbnMtZ2l0aHViLWljb24iPkdpdEh1YiBpY29uPC90aXRsZT48cGF0aCBkPSJNMTIgLjI5N2MtNi42MyAwLTEyIDUuMzczLTEyIDEyIDAgNS4zMDMgMy40MzggOS44IDguMjA1IDExLjM4NS42LjExMy44Mi0uMjU4LjgyLS41NzcgMC0uMjg1LS4wMS0xLjA0LS4wMTUtMi4wNC0zLjMzOC43MjQtNC4wNDItMS42MS00LjA0Mi0xLjYxQzQuNDIyIDE4LjA3IDMuNjMzIDE3LjcgMy42MzMgMTcuN2MtMS4wODctLjc0NC4wODQtLjcyOS4wODQtLjcyOSAxLjIwNS4wODQgMS44MzggMS4yMzYgMS44MzggMS4yMzYgMS4wNyAxLjgzNSAyLjgwOSAxLjMwNSAzLjQ5NS45OTguMTA4LS43NzYuNDE3LTEuMzA1Ljc2LTEuNjA1LTIuNjY1LS4zLTUuNDY2LTEuMzMyLTUuNDY2LTUuOTMgMC0xLjMxLjQ2NS0yLjM4IDEuMjM1LTMuMjItLjEzNS0uMzAzLS41NC0xLjUyMy4xMDUtMy4xNzYgMCAwIDEuMDA1LS4zMjIgMy4zIDEuMjMuOTYtLjI2NyAxLjk4LS4zOTkgMy0uNDA1IDEuMDIuMDA2IDIuMDQuMTM4IDMgLjQwNSAyLjI4LTEuNTUyIDMuMjg1LTEuMjMgMy4yODUtMS4yMy42NDUgMS42NTMuMjQgMi44NzMuMTIgMy4xNzYuNzY1Ljg0IDEuMjMgMS45MSAxLjIzIDMuMjIgMCA0LjYxLTIuODA1IDUuNjI1LTUuNDc1IDUuOTIuNDIuMzYuODEgMS4wOTYuODEgMi4yMiAwIDEuNjA2LS4wMTUgMi44OTYtLjAxNSAzLjI4NiAwIC4zMTUuMjEuNjkuODI1LjU3QzIwLjU2NSAyMi4wOTIgMjQgMTcuNTkyIDI0IDEyLjI5N2MwLTYuNjI3LTUuMzczLTEyLTEyLTEyIi8+PC9zdmc+">ep1-type-safe-html
               </pf-hstack></a>
             </div>
@@ -1406,9 +1410,9 @@ incr().square()
 <footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
   <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
-      <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3" href="/">Point-Free</a>
+      <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3 color-nbn0i3" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-hE9y01 row-gap-83zzS1">
@@ -1416,17 +1420,17 @@ incr().square()
         <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/pricing">Pricing</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/pricing">Pricing</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/gifts">Gifts</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/">Videos</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/">Videos</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/collections">Collections</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">Collections</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/clips">Clips</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/clips">Clips</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/blog">Blog</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/blog">Blog</a>
           </li>
         </ol>
       </div>
@@ -1434,22 +1438,22 @@ incr().square()
         <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">More
         </h5>
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/about">About Us</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/about">About Us</a>
           </li>
-          <li rel="me"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
+          <li rel="me"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://www.twitter.com/pointfreeco">Twitter</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="https://www.twitter.com/pointfreeco">Twitter</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="https://github.com/pointfreeco">GitHub</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="https://github.com/pointfreeco">GitHub</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="mailto:support@pointfree.co">Contact Us</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="mailto:support@pointfree.co">Contact Us</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14" href="/privacy">Privacy Policy</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/privacy">Privacy Policy</a>
           </li>
         </ol>
       </div>
     </pf-vgrid>
-    <p class="padding-top-GuM2x3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
+    <p class="padding-top-GuM2x3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03">© 2018 Point-Free, Inc. All rights are reserved for the videos and transcripts on this site. All other content is licensed under <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>, and the underlying <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="https://github.com/pointfreeco/pointfreeco">source code</a> to run this site is licensed under the <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="https://github.com/pointfreeco/pointfreeco/blob/main/LICENSE">MIT License</a>.
     </p>
   </pf-vgrid>
 </footer>

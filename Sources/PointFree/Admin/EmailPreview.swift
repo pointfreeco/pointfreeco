@@ -8,11 +8,11 @@ import Models
 import PointFreeDependencies
 import PointFreeRouter
 import Styleguide
+import StyleguideV2
 
 func emailPreview(
   _ conn: Conn<StatusLineOpen, EmailTemplate?>
 ) async -> Conn<ResponseEnded, Data> {
-
   conn
     .writeStatus(.ok)
     .respond(
@@ -42,14 +42,13 @@ private func emailPreviewView(selectedTemplate: EmailTemplate?) -> Node {
         .fragment(options(selectedTemplate: selectedTemplate))
       )
     ),
-    .div(
+    .iframe(
       attributes: [
-        .class([Class.padding([.mobile: [.all: 2], .desktop: [.all: 4]])])
-      ],
-      selectedTemplate
-        .map(email(selectedTemplate:))
-        ?? []
-    ),
+        .init("srcdoc", render(selectedTemplate.map(email(selectedTemplate:)) ?? [])),
+        .width(.pct(100)),
+        .height(.pct(100)),
+      ]
+    )
   ]
 }
 
@@ -74,11 +73,32 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
       newPricing: Pricing(billing: .yearly, quantity: 7)
     )
   case .welcomeEmail1:
-    return welcomeEmail1Content(user: blob)
+    return Node {
+      WelcomeEmail(
+        preheader: "This is the preheader",
+        user: blob
+      ) {
+        WelcomeEmailWeek1(user: blob)
+      }
+    }
   case .welcomeEmail2:
-    return welcomeEmail2Content(user: blob)
+    return Node {
+      WelcomeEmail(
+        preheader: "This is the preheader",
+        user: blob
+      ) {
+        WelcomeEmailWeek2(user: blob)
+      }
+    }
   case .welcomeEmail3:
-    return welcomeEmail3Content(user: blob)
+    return Node {
+      WelcomeEmail(
+        preheader: "This is the preheader",
+        user: blob
+      ) {
+        WelcomeEmailWeek3(user: blob)
+      }
+    }
   }
 }
 
