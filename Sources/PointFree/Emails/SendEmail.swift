@@ -12,6 +12,7 @@ import PointFreePrelude
 import PointFreeRouter
 import Prelude
 import Styleguide
+import StyleguideV2
 
 public let supportEmail: EmailAddress = "Point-Free <support@pointfree.co>"
 public let mgDomain = "mg.pointfree.co"
@@ -81,6 +82,67 @@ public func prepareEmail(
       ? subject
       : "[\(envVars.appEnv)] " + subject,
     text: plain,
+    html: html,
+    testMode: nil,
+    tracking: nil,
+    trackingClicks: nil,
+    trackingOpens: nil,
+    domain: domain,
+    headers: headers
+  )
+}
+
+public func prepareEmailV2(
+  from: EmailAddress = supportEmail,
+  to: [EmailAddress],
+  cc: [EmailAddress]? = nil,
+  bcc: [EmailAddress]? = nil,
+  subject: String,
+  unsubscribeData: (User.ID, EmailSetting.Newsletter)? = nil,
+  content: some HTML,
+  domain: String = mgDomain
+)
+-> Email
+{
+  @Dependency(\.envVars) var envVars
+  @Dependency(\.logger) var logger
+  @Dependency(\.mailgun) var mailgun
+  @Dependency(\.siteRouter) var siteRouter
+
+  let html = String(decoding: content.render(), as: UTF8.self)
+
+  let headers: [(String, String)] =
+  unsubscribeData
+    .map { userId, newsletter in
+      guard
+        let unsubEmail = mailgun.unsubscribeEmail(
+          fromUserId: userId, andNewsletter: newsletter),
+        let unsubUrl = (try? ExpressUnsubscribe().print((userId, newsletter)))
+          .flatMap({ Encrypted(String($0), with: envVars.appSecret) })
+          .map({ siteRouter.url(for: .expressUnsubscribe(payload: $0)) })
+      else {
+        logger.log(.error, "Failed to generate unsubscribe link for user \(userId)")
+        return []
+      }
+
+      return [
+        (
+          "List-Unsubscribe",
+          "<mailto:\(unsubEmail)>, <\(unsubUrl)>"
+        )
+      ]
+    }
+  ?? []
+
+  return Email(
+    from: from,
+    to: to,
+    cc: cc,
+    bcc: bcc,
+    subject: envVars.appEnv == .production
+    ? subject
+    : "[\(envVars.appEnv)] " + subject,
+    text: html,
     html: html,
     testMode: nil,
     tracking: nil,

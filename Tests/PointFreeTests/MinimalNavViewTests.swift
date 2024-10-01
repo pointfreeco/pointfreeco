@@ -9,6 +9,7 @@ import PointFreeTestSupport
 import Prelude
 import SnapshotTesting
 import Styleguide
+import StyleguideV2
 import Views
 import XCTest
 

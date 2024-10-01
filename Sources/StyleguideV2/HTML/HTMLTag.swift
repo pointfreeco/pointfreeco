@@ -74,7 +74,8 @@ public struct HTMLVoidTag: ExpressibleByStringLiteral {
 }
 
 public func tag<T: HTML>(
-  _ tag: String, @HTMLBuilder _ content: () -> T = { HTMLEmpty() }
+  _ tag: String,
+  @HTMLBuilder _ content: () -> T = { HTMLEmpty() }
 ) -> HTMLElement<T> {
   HTMLElement(tag: tag, content: content)
 }

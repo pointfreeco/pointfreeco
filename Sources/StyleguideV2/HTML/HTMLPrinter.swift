@@ -31,7 +31,11 @@ public struct HTMLPrinter {
       }
       for (className, style) in styles {
         sheet.append(currentIndentation)
-        sheet.append("\(className){\(style)}")
+        if configuration.forceImportant {
+          sheet.append("\(className){\(style) !important}")
+        } else {
+          sheet.append("\(className){\(style)}")
+        }
         sheet.append(configuration.newline)
       }
     }
@@ -39,11 +43,13 @@ public struct HTMLPrinter {
   }
 
   public struct Configuration {
+    let forceImportant: Bool
     let indentation: String
     let newline: String
 
-    public static let `default` = Self(indentation: "", newline: "")
-    public static let pretty = Self(indentation: "  ", newline: "\n")
+    public static let `default` = Self(forceImportant: false, indentation: "", newline: "")
+    public static let pretty = Self(forceImportant: false, indentation: "  ", newline: "\n")
+    public static let email = Self(forceImportant: true, indentation: "", newline: "")
   }
 }
 
@@ -70,10 +76,20 @@ extension DependencyValues {
     get { self[HTMLPrinterKey.self] }
     set { self[HTMLPrinterKey.self] = newValue }
   }
+  public var emailPrinter: HTMLPrinter {
+    get { self[EmailPrinterKey.self] }
+    set { self[EmailPrinterKey.self] = newValue }
+  }
 }
 
 private enum HTMLPrinterKey: DependencyKey {
   static var liveValue: HTMLPrinter { HTMLPrinter() }
+  static var previewValue: HTMLPrinter { HTMLPrinter(.pretty) }
+  static var testValue: HTMLPrinter { HTMLPrinter(.pretty) }
+}
+
+private enum EmailPrinterKey: DependencyKey {
+  static var liveValue: HTMLPrinter { HTMLPrinter(.email) }
   static var previewValue: HTMLPrinter { HTMLPrinter(.pretty) }
   static var testValue: HTMLPrinter { HTMLPrinter(.pretty) }
 }

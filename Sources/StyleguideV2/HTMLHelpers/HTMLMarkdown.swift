@@ -32,7 +32,7 @@ public struct HTMLMarkdown: HTML {
     self.tableOfContents = converter.tableOfContents
   }
 
-  public init(previewOnly: Bool = false, _ markdown: () -> String) {
+  public init(previewOnly: Bool = false, @StringBuilder _ markdown: () -> String) {
     self.init(markdown(), previewOnly: previewOnly)
   }
 
@@ -418,7 +418,7 @@ private struct HTMLConverter: MarkupVisitor {
   private mutating func render(
     tag: HTMLTag,
     cells: some Sequence<Markdown.Table.Cell>,
-    columnAlignments: [Table.ColumnAlignment?]
+    columnAlignments: [Markdown.Table.ColumnAlignment?]
   ) -> AnyHTML {
     var column = 0
     for cell in cells {
@@ -463,7 +463,7 @@ private struct HTMLConverter: MarkupVisitor {
   }
 }
 
-extension Table.ColumnAlignment {
+extension Markdown.Table.ColumnAlignment {
   fileprivate var attributeValue: String {
     switch self {
     case .center: "center"
@@ -483,20 +483,6 @@ extension HTMLBuilder {
   fileprivate static func buildFinalResult(_ component: some HTML) -> AnyHTML {
     AnyHTML(component)
   }
-}
-
-public struct AnyHTML: HTML {
-  let base: any HTML
-  init(_ base: any HTML) {
-    self.base = base
-  }
-  public static func _render(_ html: AnyHTML, into printer: inout HTMLPrinter) {
-    func render<T: HTML>(_ html: T) {
-      T._render(html, into: &printer)
-    }
-    render(html.base)
-  }
-  public var body: Never { fatalError() }
 }
 
 private struct BlockQuoteStyle {
