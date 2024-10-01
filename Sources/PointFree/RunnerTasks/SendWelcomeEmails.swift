@@ -80,9 +80,11 @@ func welcomeEmail1(_ user: User) -> Email {
     subject: "Thanks for signing up to Point-Free!",
     unsubscribeData: (user.id, .welcomeEmails),
     content: WelcomeEmail(
-      preheader: user.episodeCreditCount > 0 ? """
+      preheader: user.episodeCreditCount > 0
+        ? """
         Use your episode credit to unlock any subscriber-only episode!
-        """ : """
+        """
+        : """
         Explore our most popular episodes and join our vibrant Slack community!
         """,
       user: user

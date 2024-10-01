@@ -48,7 +48,7 @@ private func emailPreviewView(selectedTemplate: EmailTemplate?) -> Node {
         .width(.pct(100)),
         .height(.pct(100)),
       ]
-    )
+    ),
   ]
 }
 
