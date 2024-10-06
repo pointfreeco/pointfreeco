@@ -82,9 +82,7 @@ final class WelcomeEmailTests: TestCase {
   @MainActor
   func testWelcomeEmail1() async throws {
     if self.isScreenshotTestingAvailable {
-      let emailDocument = WelcomeEmail(user: .newUser) {
-        WelcomeEmailWeek1(user: .newUser)
-      }
+      let emailDocument = WelcomeEmailWeek1(user: .newUser)
 
       await assertSnapshot(matching: emailDocument, as: .emailDocument)
 
@@ -103,9 +101,7 @@ final class WelcomeEmailTests: TestCase {
   @MainActor
   func testWelcomeEmail2() async throws {
     if self.isScreenshotTestingAvailable {
-      let emailDocument = WelcomeEmail(user: .newUser) {
-        WelcomeEmailWeek2(user: .newUser)
-      }
+      let emailDocument = WelcomeEmailWeek2(freeEpisodeCount: 100, user: .newUser)
 
       await assertSnapshot(matching: emailDocument, as: .emailDocument)
 
@@ -124,9 +120,7 @@ final class WelcomeEmailTests: TestCase {
   @MainActor
   func testWelcomeEmail3() async throws {
     if self.isScreenshotTestingAvailable {
-      let emailDocument = WelcomeEmail(user: .newUser) {
-        WelcomeEmailWeek3(user: .newUser)
-      }
+      let emailDocument = WelcomeEmailWeek3(user: .newUser)
 
       await assertSnapshot(matching: emailDocument, as: .emailDocument)
 

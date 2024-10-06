@@ -4,9 +4,10 @@ import Prelude
 
 extension Client {
   public static let mock = Client(
-    fetchAuthToken: { _ in .right(.mock) },
+    fetchAuthToken: { _ in .mock },
     fetchEmails: { _ in [.mock] },
-    fetchUser: { _ in .mock }
+    fetchUser: { _ in .mock },
+    fetchUserByUserID: { _, _ in .mock }
   )
 }
 
@@ -19,6 +20,7 @@ extension AccessToken {
 extension GitHubUser {
   public static let mock = GitHubUser(
     createdAt: .init(timeIntervalSince1970: 1_234_543_210),
+    login: "blob",
     id: 1,
     name: "Blob"
   )

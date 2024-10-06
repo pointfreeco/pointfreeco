@@ -1,6 +1,7 @@
 import CustomDump
 import Dependencies
 import EmailAddress
+import GitHub
 import InlineSnapshotTesting
 import Mailgun
 import Models
@@ -1019,7 +1020,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     try await self.database.registerUser(
       withGitHubEnvelope: .init(
         accessToken: .init(accessToken: "deadbeef-blob"),
-        gitHubUser: .init(createdAt: .mock, id: 1, name: "Blob")
+        gitHubUser: GitHubUser(createdAt: .mock, login: "blob", id: 1, name: "Blob")
       ),
       email: "blob@pointfree.co",
       now: { .mock }
@@ -1030,7 +1031,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     try await self.database.registerUser(
       withGitHubEnvelope: .init(
         accessToken: .init(accessToken: "deadbeef-blob-sr"),
-        gitHubUser: .init(createdAt: .mock, id: 2, name: "Blob Sr")
+        gitHubUser: GitHubUser(createdAt: .mock, login: "blob-sr", id: 2, name: "Blob Sr")
       ),
       email: "blob.sr@pointfree.co",
       now: { .mock }

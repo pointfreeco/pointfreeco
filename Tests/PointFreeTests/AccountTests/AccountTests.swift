@@ -28,11 +28,16 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await self.database.registerUser(
       withGitHubEnvelope: .init(
         accessToken: .init(accessToken: "deadbeef-currentUser"),
-        gitHubUser: .init(
-          createdAt: .init(timeIntervalSince1970: 1_234_543_210), id: 1, name: "Blob")
+        gitHubUser: GitHubUser(
+          createdAt: .init(timeIntervalSince1970: 1_234_543_210),
+          login: "blob",
+          id: 1,
+          name: "Blob"
+        )
       ),
       email: "blob@pointfree.co",
-      now: { .mock }
+      now: { .mock
+      }
     )
 
     _ = try await self.database.createEnterpriseEmail("blob@corporate.com", currentUser.id)
@@ -40,11 +45,16 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
     let owner = try await self.database.registerUser(
       withGitHubEnvelope: .init(
         accessToken: .init(accessToken: "deadbeef-owner"),
-        gitHubUser: .init(
-          createdAt: .init(timeIntervalSince1970: 1_234_543_210), id: 2, name: "Owner")
+        gitHubUser: GitHubUser(
+          createdAt: .init(timeIntervalSince1970: 1_234_543_210),
+          login: "owner",
+          id: 2,
+          name: "Owner"
+        )
       ),
       email: "owner@pointfree.co",
-      now: { .mock }
+      now: { .mock
+      }
     )
 
     let subscription = try await self.database.createSubscription(
@@ -72,11 +82,16 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
     let currentUser = try await self.database.registerUser(
       withGitHubEnvelope: .init(
         accessToken: .init(accessToken: "deadbeef-currentUser"),
-        gitHubUser: .init(
-          createdAt: .init(timeIntervalSince1970: 1_234_543_210), id: 1, name: "Blob")
+        gitHubUser: GitHubUser(
+          createdAt: .init(timeIntervalSince1970: 1_234_543_210),
+          login: "blob",
+          id: 1,
+          name: "Blob"
+        )
       ),
       email: "blob@pointfree.co",
-      now: { .mock }
+      now: { .mock
+      }
     )
     let subscription = try await self.database.createSubscription(
       Stripe.Subscription.mock,
@@ -119,7 +134,7 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
     let teammate = try await self.database.registerUser(
       withGitHubEnvelope: GitHubUserEnvelope(
         accessToken: AccessToken(accessToken: "deadbeef"),
-        gitHubUser: .init(createdAt: Date(), id: 123, name: "Blob Jr.")),
+        gitHubUser: GitHubUser(createdAt: Date(), login: "blob-jr", id: 123, name: "Blob Jr.")),
       email: "blob.jr@pointfree.co",
       now: Date.init
     )

@@ -40,6 +40,7 @@ extension Client {
     fetchSubscriptionTeammatesByOwnerId: { _ in [.mock] },
     fetchTeamInvite: { _ in .mock },
     fetchTeamInvites: { _ in [] },
+    fetchUserByEmail: { _ in .mock },
     fetchUserByGitHub: { _ in .mock },
     fetchUserById: { id in update(.mock) { $0.id = id } },
     fetchUserByReferralCode: { code in update(.mock) { $0.referralCode = code } },
@@ -58,7 +59,7 @@ extension Client {
     updateGift: { _, _ in .fulfilled },
     updateGiftStatus: { _, _, _ in .fulfilled },
     updateStripeSubscription: { _ in .mock },
-    updateUser: { _, _, _, _, _ in },
+    updateUser: { _, _, _, _, _, _, _ in },
     upsertUser: { _, _, _ in .mock }
   )
 }

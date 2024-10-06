@@ -32,7 +32,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     try await withDependencies {
       $0.date.now = now
       $0.gitHub.fetchUser = { _ in gitHubUserEnvelope.gitHubUser }
-      $0.gitHub.fetchAuthToken = { _ in .right(gitHubUserEnvelope.accessToken) }
+      $0.gitHub.fetchAuthToken = { _ in gitHubUserEnvelope.accessToken }
     } operation: {
       let result = await siteMiddleware(
         connection(
@@ -64,7 +64,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     try await withDependencies {
       $0.date.now = now
       $0.gitHub.fetchUser = { _ in gitHubUserEnvelope.gitHubUser }
-      $0.gitHub.fetchAuthToken = { _ in .right(gitHubUserEnvelope.accessToken) }
+      $0.gitHub.fetchAuthToken = { _ in gitHubUserEnvelope.accessToken }
     } operation: {
       let result = await siteMiddleware(
         connection(
@@ -116,6 +116,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
         accessToken: AccessToken(accessToken: "gh-deadbeef"),
         gitHubUser: GitHubUser(
           createdAt: Date(),
+          login: "blob",
           id: 999,
           name: "Blob"
         )
@@ -127,7 +128,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     let gitHubUserEnvelope = GitHubUserEnvelope.mock
     await withDependencies {
       $0.gitHub.fetchUser = { _ in gitHubUserEnvelope.gitHubUser }
-      $0.gitHub.fetchAuthToken = { _ in .right(gitHubUserEnvelope.accessToken) }
+      $0.gitHub.fetchAuthToken = { _ in gitHubUserEnvelope.accessToken }
       $0.gitHub.fetchEmails = { _ in [GitHubUser.Email(email: "blob@pointfree.co", primary: true)] }
     } operation: {
       let auth = request(to: .auth(.gitHubCallback(code: "deadbeef", redirect: nil)))
@@ -159,7 +160,7 @@ class AuthTests: TestCase {
   func testAuth_WithFetchAuthTokenBadVerificationCode() async throws {
     await withDependencies {
       $0.gitHub.fetchAuthToken = { _ in
-        .left(.init(description: "", error: .badVerificationCode, errorUri: ""))
+        throw OAuthError(description: "", error: .badVerificationCode, errorUri: "")
       }
     } operation: {
       let auth = request(to: .auth(.gitHubCallback(code: "deadbeef", redirect: nil)))
@@ -172,7 +173,7 @@ class AuthTests: TestCase {
   func testAuth_WithFetchAuthTokenBadVerificationCodeRedirect() async throws {
     await withDependencies {
       $0.gitHub.fetchAuthToken = { _ in
-        .left(.init(description: "", error: .badVerificationCode, errorUri: ""))
+        throw OAuthError(description: "", error: .badVerificationCode, errorUri: "")
       }
     } operation: {
       @Dependency(\.siteRouter) var siteRouter

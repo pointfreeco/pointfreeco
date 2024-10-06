@@ -6,6 +6,7 @@ public enum EmailTemplate: String, CaseIterable {
   case joinTeamConfirmation
   case newTeammateJoined
   case ownerNewTeammateJoined
+  case updateGitHubAccount
   case welcomeEmail1
   case welcomeEmail2
   case welcomeEmail3

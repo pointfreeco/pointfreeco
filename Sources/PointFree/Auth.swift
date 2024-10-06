@@ -364,3 +364,99 @@ private func refreshStripeSubscription(for user: Models.User) async throws {
     .fetchSubscription(subscription.stripeSubscriptionId)
   _ = try await database.updateStripeSubscription(stripeSubscription)
 }
+
+import StyleguideV2
+
+struct GitHubAccountUpdateEmail: EmailDocument {
+  let newGitHubUser: GitHubUser
+
+  var body: some HTML {
+    SimpleEmailLayout(
+      preheader: """
+        The GitHub user for your Point-Free account has been updated to @\(newGitHubUser.login)
+        """
+    ) {
+      tr {
+        td {
+          EmailMarkdown {
+          """
+          ## Your GitHub account has been updated
+          
+          Hi there, the GitHub user for your Point-Free account has been updated to
+          **[@\(newGitHubUser.login)](http://github.com/\(newGitHubUser.login))**. If you did not
+          request this change, or you do not recognize the GitHub account
+          [@\(newGitHubUser.login)](http://github.com/\(newGitHubUser.login)), please
+          [contact us](mailto:support@pointfree.co) immediately.
+          """
+          }
+        }
+      }
+    }
+  }
+}
+
+struct SimpleEmailLayout<Content: HTML>: HTML {
+  let content: Content
+  let preheader: String
+  @Dependency(\.envVars.appSecret) var appSecret
+  @Dependency(\.siteRouter) var siteRouter
+
+  init(
+    preheader: String = "",
+    @HTMLBuilder content: () -> Content
+  ) {
+    self.content = content()
+    self.preheader = preheader
+  }
+
+  var body: some HTML {
+    span {
+      HTMLText(preheader)
+    }
+    .color(.init(rawValue: "transparent"))
+    .inlineStyle("display", "none")
+    .inlineStyle("opacity", "0")
+    .inlineStyle("width", "0")
+    .inlineStyle("height", "0")
+    .inlineStyle("maxWidth", "0")
+    .inlineStyle("maxHeight", "0")
+    .inlineStyle("overflow", "hidden")
+
+    table {
+      content
+
+      tr {
+        td {
+          div {
+            EmailMarkdown {
+              """
+              Contact us via email at [support@pointfree.co](mailto:support@pointfree.co), 
+              [Twitter](http://x.com/pointfreeco), or on 
+              [Mastodon](https://hachyderm.io/@pointfreeco). Our postal address: 139 Skillman #5C, 
+              Brooklyn, NY 11211.
+              """
+            }
+            .color(.gray300)
+            .fontStyle(.body(.small))
+            .linkColor(.offBlack)
+          }
+          .backgroundColor(.gray900)
+          .inlineStyle("padding", "2rem 2rem 1.5rem 2rem")
+          .inlineStyle("margin", "2rem 0")
+        }
+      }
+    }
+    .attribute("role", "presentation")
+    .attribute("height", "100%")
+    .attribute("width", "100%")
+    .attribute("border-collapse", "collapse")
+    .attribute("border-spacing", "0 0.5rem")
+    .attribute("align", "center")
+    .inlineStyle("display", "block")
+    .inlineStyle("width", "100%")
+    .inlineStyle("max-width", "600px")
+    .inlineStyle("margin", "0 auto")
+    .inlineStyle("clear", "both")
+    .linkStyle(LinkStyle(color: .purple, underline: true))
+  }
+}
