@@ -1,8 +1,8 @@
-GET http://localhost:8080/github-failure?accessToken=deadbeef
+GET http://localhost:8080/github-failure?accessToken=deadbeef-new
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 27939
+Content-Length: 27987
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -100,8 +100,8 @@ body, html {
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@pointfreeco">
-    <meta property="og:url" content="http://localhost:8080/github-failure?accessToken=deadbeef">
-    <meta name="twitter:url" content="http://localhost:8080/github-failure?accessToken=deadbeef"><script src="https://plausible.io/js/script.js" defer data-domain="pointfree.co"></script>
+    <meta property="og:url" content="http://localhost:8080/github-failure?accessToken=deadbeef-new">
+    <meta name="twitter:url" content="http://localhost:8080/github-failure?accessToken=deadbeef-new"><script src="https://plausible.io/js/script.js" defer data-domain="pointfree.co"></script>
     <style>
 .width-C8uWv{width:100%}
 .z-index-yn1UK1{z-index:9999}
@@ -274,9 +274,9 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </li>
     </ul>
     <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
-      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/login?redirect=http://localhost:8080/github-failure?accessToken%3Ddeadbeef" class="font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Login</a>
+      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/login?redirect=http://localhost:8080/github-failure?accessToken%3Ddeadbeef-new" class="font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Login</a>
       </li>
-      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/signup?redirect=http://localhost:8080/github-failure?accessToken%3Ddeadbeef" class="font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Sign up</a>
+      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/signup?redirect=http://localhost:8080/github-failure?accessToken%3Ddeadbeef-new" class="font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Sign up</a>
       </li>
     </ul><input class="display-Wl0y44" id="menu-checkbox" type="checkbox"><label class="cursor-xmR5l display-Nvbu41 cursor-xmR5l user-select-Wl0y44" id="menu-icon" for="menu-checkbox"><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-SUDJi1 top-xEdC7 transform-0hcgW2"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 transform-kZtH24 background-WytRx3"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-YwIIn top-i3LWY2 transform-BHskb"></span></label>
     <ul class="margin-FBkWQ3 display-Wl0y44 display-sAbis3 flex-grow-tzL8I2 flex-shrink-tzL8I2 flex-basis-C8uWv padding-left-E4tBw4 list-style-type-Wl0y44 color-nbn0i3">
@@ -288,9 +288,9 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/gifts">Gifts</a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/login?redirect=http://localhost:8080/github-failure?accessToken%3Ddeadbeef">Login</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/login?redirect=http://localhost:8080/github-failure?accessToken%3Ddeadbeef-new">Login</a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/signup?redirect=http://localhost:8080/github-failure?accessToken%3Ddeadbeef">Sign up</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/signup?redirect=http://localhost:8080/github-failure?accessToken%3Ddeadbeef-new">Sign up</a>
       </li>
     </ul>
   </div>
@@ -312,14 +312,14 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
     <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-QgYLk2">
       <pf-markdown class="display-ix08W2">
         <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">While logging into your account we detected a problem. You logged in with the GitHub account <strong><a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="http://github.com/blob">@blob</a></strong> which has a primary email address <strong>hello@pointfree.co</strong>. However, that email was already registered on Point-Free under the GitHub account <strong><a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="http://github.com/blob">@blob</a></strong>.
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">While logging into your account we detected a problem. You logged in with the GitHub account <strong><a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="http://github.com/blob-new">@blob-new</a></strong> which has a primary email address <strong>hello@pointfree.co</strong>. However, that email was already registered on Point-Free under the GitHub account <strong><a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="http://github.com/blob">@blob</a></strong>.
           </p>
-          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Would you like to update your Point-Free account to use the GitHub account <strong><a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="http://github.com/blob">@blob</a></strong> instead?
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Would you like to update your Point-Free account to use the GitHub account <strong><a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="http://github.com/blob-new">@blob-new</a></strong> instead?
           </p>
         </pf-vstack>
       </pf-markdown>
       <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
-        <form action="/update-github?acccess_token=deadbeef" method="post"><input value="Use @blob for login" type="submit" class="font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">
+        <form action="/update-github?acccess_token=deadbeef-new" method="post"><input value="Use @blob-new for login" type="submit" class="font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">
         </form><a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="mailto:support@pointfree.co">Contact support</a>
       </pf-hstack>
     </pf-vstack>

@@ -102,7 +102,7 @@ public func prepareEmailV2(
   content: some HTML,
   domain: String = mgDomain
 )
--> Email
+  -> Email
 {
   @Dependency(\.envVars) var envVars
   @Dependency(\.logger) var logger
@@ -112,7 +112,7 @@ public func prepareEmailV2(
   let html = String(decoding: content.render(), as: UTF8.self)
 
   let headers: [(String, String)] =
-  unsubscribeData
+    unsubscribeData
     .map { userId, newsletter in
       guard
         let unsubEmail = mailgun.unsubscribeEmail(
@@ -132,7 +132,7 @@ public func prepareEmailV2(
         )
       ]
     }
-  ?? []
+    ?? []
 
   return Email(
     from: from,
@@ -140,8 +140,8 @@ public func prepareEmailV2(
     cc: cc,
     bcc: bcc,
     subject: envVars.appEnv == .production
-    ? subject
-    : "[\(envVars.appEnv)] " + subject,
+      ? subject
+      : "[\(envVars.appEnv)] " + subject,
     text: html,
     html: html,
     testMode: nil,

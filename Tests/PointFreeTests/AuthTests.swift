@@ -1,7 +1,7 @@
 import Dependencies
 import Either
-import InlineSnapshotTesting
 import HttpPipeline
+import InlineSnapshotTesting
 import PointFreePrelude
 import PointFreeRouter
 import PointFreeTestSupport
@@ -220,28 +220,40 @@ class AuthTests: TestCase {
 
   @MainActor
   func testAuth_GitHubFailureLanding() async throws {
-    let auth = request(
-      to: .auth(
-        .failureLanding(
-          accessToken: AccessToken(accessToken: "deadbeef"),
-          redirect: nil
+    await withDependencies {
+      $0.gitHub.fetchUser = { accessToken in
+        if accessToken.accessToken == "deadbeef-new" {
+          return GitHubUser(createdAt: Date(), login: "blob-new", id: 42, name: "Blob New")
+        } else {
+          XCTFail("Unrecognized access token.")
+          return .mock
+        }
+      }
+      _ = $0
+    } operation: {
+      let auth = request(
+        to: .auth(
+          .failureLanding(
+            accessToken: AccessToken(accessToken: "deadbeef-new"),
+            redirect: nil
+          )
         )
       )
-    )
-    let conn = connection(from: auth)
-    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      let conn = connection(from: auth)
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
 
-    #if !os(Linux)
-      if self.isScreenshotTestingAvailable {
-        await assertSnapshots(
-          matching: await siteMiddleware(conn),
-          as: [
-            "desktop": .connWebView(size: .init(width: 1100, height: 2000)),
-            "mobile": .connWebView(size: .init(width: 500, height: 2000)),
-          ]
-        )
-      }
-    #endif
+      #if !os(Linux)
+        if self.isScreenshotTestingAvailable {
+          await assertSnapshots(
+            matching: await siteMiddleware(conn),
+            as: [
+              "desktop": .connWebView(size: .init(width: 1100, height: 2000)),
+              "mobile": .connWebView(size: .init(width: 500, height: 2000)),
+            ]
+          )
+        }
+      #endif
+    }
   }
 
   @MainActor
