@@ -299,5 +299,6 @@ extension Episode {
     .ep294_crossPlatform,
     .ep295_crossPlatform,
     .ep296_crossPlatform,
+    .ep297_equatable,
   ]
 }
