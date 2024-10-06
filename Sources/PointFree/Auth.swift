@@ -5,6 +5,7 @@ import EmailAddress
 import Foundation
 import GitHub
 import HttpPipeline
+import Mailgun
 import Models
 import PointFreeDependencies
 import PointFreePrelude
@@ -69,6 +70,7 @@ private func updateGitHub(
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
   @Dependency(\.date) var date
+  @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.gitHub) var gitHub
   @Dependency(\.siteRouter) var siteRouter
 
@@ -76,11 +78,35 @@ private func updateGitHub(
     let newGitHubUser = try await gitHub.fetchUser(accessToken: accessToken)
     let email = try await gitHub.fetchEmails(accessToken).first(where: \.primary).unwrap().email
     let existingUser = try await database.fetchUser(email: email)
+    let existingAccessToken = existingUser.gitHubAccessToken
     _ = try await database.updateUser(
       id: existingUser.id,
       gitHubUserID: newGitHubUser.id,
       githubAccessToken: accessToken
     )
+    await fireAndForget {
+      let email = try await gitHub
+        .fetchEmails(accessToken: AccessToken(accessToken: existingAccessToken))
+        .first(where: \.primary)
+        .unwrap()
+        .email
+      let html = String(decoding: Data(), as: UTF8.self)
+      do {
+        _ = try await send(
+          email: Email(
+            from: "support@pointfree.co",
+            to: [email],
+            subject: "Your GitHub account has been updated",
+            text: html,
+            html: html,
+            domain: mgDomain
+          )
+        )
+      } catch {
+        print(error)
+        print("!!!")
+      }
+    }
     return conn
       .redirect(to: redirect ?? siteRouter.path(for: .home)) {
         $0

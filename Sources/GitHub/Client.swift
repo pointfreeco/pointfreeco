@@ -22,6 +22,9 @@ public struct Client {
 
   /// Fetches a GitHub user from an access token.
   public var fetchUser: (_ accessToken: AccessToken) async throws -> GitHubUser
+
+  @DependencyEndpoint(method: "fetchUser")
+  public var fetchUserByUserID: (_ id: GitHubUser.ID, _ accessToken: AccessToken) async throws -> GitHubUser
 }
 
 extension Client {
@@ -41,6 +44,9 @@ extension Client {
       },
       fetchUser: {
         try await jsonDataTask(with: fetchGitHubUser(with: $0), decoder: gitHubJsonDecoder)
+      },
+      fetchUserByUserID: { userID, accessToken in
+        try await jsonDataTask(with: fetchGitHubUser(id: userID, with: accessToken), decoder: gitHubJsonDecoder)
       }
     )
   }
