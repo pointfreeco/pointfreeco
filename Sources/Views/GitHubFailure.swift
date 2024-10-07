@@ -10,20 +10,17 @@ public struct GitHubFailureView: HTML {
 
   let email: EmailAddress
   let existingGitHubUser: GitHubUser
-  let newAccessToken: AccessToken
   let newGitHubUser: GitHubUser
   let redirect: String?
 
   public init(
     email: EmailAddress,
     existingGitHubUser: GitHubUser,
-    newAccessToken: AccessToken,
     newGitHubUser: GitHubUser,
     redirect: String?
   ) {
     self.email = email
     self.existingGitHubUser = existingGitHubUser
-    self.newAccessToken = newAccessToken
     self.newGitHubUser = newGitHubUser
     self.redirect = redirect
   }
@@ -56,7 +53,7 @@ public struct GitHubFailureView: HTML {
           .attribute(
             "action",
             siteRouter.path(
-              for: .auth(.updateGitHub(accessToken: newAccessToken, redirect: redirect))
+              for: .auth(.updateGitHub(redirect: redirect))
             )
           )
           .attribute("method", "post")

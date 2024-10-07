@@ -24,9 +24,8 @@ func authMiddleware(
   _ conn: Conn<StatusLineOpen, SiteRoute.Auth>
 ) async -> Conn<ResponseEnded, Data> {
   switch conn.data {
-  case .failureLanding(accessToken: let accessToken, redirect: let redirect):
+  case .failureLanding(redirect: let redirect):
     return await failureLanding(
-      accessToken: accessToken,
       redirect: redirect,
       conn: conn.map(const(()))
     )
@@ -54,9 +53,8 @@ func authMiddleware(
       conn.map(const(()))
     )
 
-  case .updateGitHub(let accessToken, let redirect):
+  case .updateGitHub(let redirect):
     return await updateGitHub(
-      accessToken: accessToken,
       redirect: redirect,
       conn: conn.map(const(()))
     )
@@ -64,7 +62,6 @@ func authMiddleware(
 }
 
 private func updateGitHub(
-  accessToken: AccessToken,
   redirect: String?,
   conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
@@ -73,6 +70,13 @@ private func updateGitHub(
   @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.gitHub) var gitHub
   @Dependency(\.siteRouter) var siteRouter
+
+  guard let accessToken = conn.request.session.gitHubAccessToken else {
+    return conn
+      .redirect(to: .home) {
+        $0.flash(.error, "We could not update your GitHub account. Please try again.")
+      }
+  }
 
   do {
     let newGitHubUser = try await gitHub.fetchUser(accessToken: accessToken)
@@ -90,7 +94,10 @@ private func updateGitHub(
         .first(where: \.primary)
         .unwrap()
         .email
-      let html = String(decoding: Data(), as: UTF8.self)
+      let html = String(
+        decoding: GitHubAccountUpdateEmail(newGitHubUser: newGitHubUser).render(),
+        as: UTF8.self
+      ) 
       do {
         _ = try await send(
           email: Email(
@@ -103,8 +110,7 @@ private func updateGitHub(
           )
         )
       } catch {
-        print(error)
-        print("!!!")
+        reportIssue(error, "Unable to send email: \"Your GitHub account has been updated\"")
       }
     }
     return conn
@@ -115,6 +121,7 @@ private func updateGitHub(
               .notice,
               "Your GitHub account has been updated to @\(newGitHubUser.login)."
             )
+            $0.gitHubAccessToken = nil
             $0.user = .standard(existingUser.id)
           }
     }
@@ -127,12 +134,18 @@ private func updateGitHub(
 }
 
 private func failureLanding(
-  accessToken: AccessToken,
   redirect: String?,
   conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
   @Dependency(\.gitHub) var gitHub
+
+  guard let accessToken = conn.request.session.gitHubAccessToken else {
+    return conn
+      .redirect(to: .home) {
+        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+      }
+  }
 
   do {
     let email = try await gitHub.fetchEmails(accessToken).first(where: \.primary).unwrap().email
@@ -152,7 +165,6 @@ private func failureLanding(
         GitHubFailureView(
           email: email,
           existingGitHubUser: existingGitHubUser,
-          newAccessToken: accessToken,
           newGitHubUser: newGitHubUser,
           redirect: redirect
         )
@@ -329,15 +341,12 @@ private func gitHubAuthTokenMiddleware(
       $0.writeSessionCookie { $0.user = .standard(user.id) }
     }
   } catch is GitHubUser.AlreadyRegistered {
-    return await conn
-      .redirect(
-        to: .auth(
-          .failureLanding(
-            accessToken: accessToken,
-            redirect: redirect
-          )
-        )
-      )
+    return conn
+      .redirect(to: .auth(.failureLanding(redirect: redirect))) {
+        $0.writeSessionCookie {
+          $0.gitHubAccessToken = accessToken
+        }
+      }
   } catch {
     await fireAndForget {
       try await sendEmail(
