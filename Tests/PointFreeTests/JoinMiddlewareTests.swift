@@ -1,6 +1,7 @@
 import CustomDump
 import Dependencies
 import EmailAddress
+import GitHub
 import InlineSnapshotTesting
 import Mailgun
 import Models
@@ -1017,10 +1018,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
 
   private func registerBlob() async throws -> User {
     try await self.database.registerUser(
-      withGitHubEnvelope: .init(
-        accessToken: .init(accessToken: "deadbeef-blob"),
-        gitHubUser: .init(createdAt: .mock, id: 1, name: "Blob")
-      ),
+      accessToken: "deadbeef-blob",
+      gitHubUser: GitHubUser(createdAt: .mock, login: "blob", id: 1, name: "Blob"),
       email: "blob@pointfree.co",
       now: { .mock }
     )
@@ -1028,10 +1027,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
 
   private func registerBlobSr() async throws -> User {
     try await self.database.registerUser(
-      withGitHubEnvelope: .init(
-        accessToken: .init(accessToken: "deadbeef-blob-sr"),
-        gitHubUser: .init(createdAt: .mock, id: 2, name: "Blob Sr")
-      ),
+      accessToken: "deadbeef-blob-sr",
+      gitHubUser: GitHubUser(createdAt: .mock, login: "blob-sr", id: 2, name: "Blob Sr"),
       email: "blob.sr@pointfree.co",
       now: { .mock }
     )

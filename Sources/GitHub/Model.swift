@@ -2,19 +2,9 @@ import EmailAddress
 import Foundation
 import Tagged
 
-public struct AccessToken: Codable {
-  public var accessToken: String
+public typealias GitHubAccessToken = Tagged<((), accessToken: ()), String>
 
-  public init(accessToken: String) {
-    self.accessToken = accessToken
-  }
-
-  private enum CodingKeys: String, CodingKey {
-    case accessToken = "access_token"
-  }
-}
-
-public struct OAuthError: Codable {
+public struct OAuthError: Codable, Swift.Error {
   public var description: String
   public var error: Error
   public var errorUri: String
@@ -39,11 +29,18 @@ public struct OAuthError: Codable {
 
 public struct GitHubUser: Codable, Identifiable {
   public var createdAt: Date
+  public var login: String
   public var id: Tagged<Self, Int>
   public var name: String?
 
-  public init(createdAt: Date, id: ID, name: String?) {
+  public init(
+    createdAt: Date,
+    login: String,
+    id: ID,
+    name: String?
+  ) {
     self.createdAt = createdAt
+    self.login = login
     self.id = id
     self.name = name
   }
@@ -60,17 +57,8 @@ public struct GitHubUser: Codable, Identifiable {
 
   private enum CodingKeys: String, CodingKey {
     case createdAt = "created_at"
+    case login
     case id
     case name
-  }
-}
-
-public struct GitHubUserEnvelope: Codable {
-  public var accessToken: AccessToken
-  public var gitHubUser: GitHubUser
-
-  public init(accessToken: AccessToken, gitHubUser: GitHubUser) {
-    self.accessToken = accessToken
-    self.gitHubUser = gitHubUser
   }
 }

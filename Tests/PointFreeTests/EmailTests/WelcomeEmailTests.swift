@@ -23,8 +23,9 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
 
   func testIncrementEpisodeCredits() async throws {
     for id in [1, 2, 3] {
-      var env = GitHubUserEnvelope.mock
-      env.gitHubUser.id = .init(rawValue: id)
+      var gitHubUser = GitHubUser.mock
+      gitHubUser.id = GitHubUser.ID(rawValue: id)
+      let accessToken = GitHubAccessToken.mock
       let ids = try await self.database.execute(
         """
         INSERT INTO "users" (
@@ -36,9 +37,9 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
           "created_at"
         ) VALUES (
           \(bind: "\(id)@pointfree.co"),
-          \(bind: env.gitHubUser.id),
-          \(bind: env.accessToken.accessToken),
-          \(bind: env.gitHubUser.name),
+          \(bind: gitHubUser.id),
+          \(bind: accessToken),
+          \(bind: gitHubUser.name),
           1,
           CURRENT_DATE - INTERVAL '\(raw: "\(id * 7)") DAY' + INTERVAL '12 HOUR'
         ) RETURNING "id"
@@ -82,9 +83,7 @@ final class WelcomeEmailTests: TestCase {
   @MainActor
   func testWelcomeEmail1() async throws {
     if self.isScreenshotTestingAvailable {
-      let emailDocument = WelcomeEmail(user: .newUser) {
-        WelcomeEmailWeek1(user: .newUser)
-      }
+      let emailDocument = WelcomeEmailWeek1(user: .newUser)
 
       await assertSnapshot(matching: emailDocument, as: .emailDocument)
 
@@ -103,9 +102,7 @@ final class WelcomeEmailTests: TestCase {
   @MainActor
   func testWelcomeEmail2() async throws {
     if self.isScreenshotTestingAvailable {
-      let emailDocument = WelcomeEmail(user: .newUser) {
-        WelcomeEmailWeek2(user: .newUser)
-      }
+      let emailDocument = WelcomeEmailWeek2(freeEpisodeCount: 100, user: .newUser)
 
       await assertSnapshot(matching: emailDocument, as: .emailDocument)
 
@@ -124,9 +121,7 @@ final class WelcomeEmailTests: TestCase {
   @MainActor
   func testWelcomeEmail3() async throws {
     if self.isScreenshotTestingAvailable {
-      let emailDocument = WelcomeEmail(user: .newUser) {
-        WelcomeEmailWeek3(user: .newUser)
-      }
+      let emailDocument = WelcomeEmailWeek3(user: .newUser)
 
       await assertSnapshot(matching: emailDocument, as: .emailDocument)
 

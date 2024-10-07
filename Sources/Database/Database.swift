@@ -93,6 +93,8 @@ public struct Client {
   public var fetchTeamInvite: (_ id: TeamInvite.ID) async throws -> TeamInvite
   public var fetchTeamInvites: (_ inviterID: Models.User.ID) async throws -> [TeamInvite]
   @DependencyEndpoint(method: "fetchUser")
+  public var fetchUserByEmail: (_ email: EmailAddress) async throws -> Models.User
+  @DependencyEndpoint(method: "fetchUser")
   public var fetchUserByGitHub: (_ gitHubID: GitHubUser.ID) async throws -> Models.User
   @DependencyEndpoint(method: "fetchUser")
   public var fetchUserById: (_ id: Models.User.ID) async throws -> Models.User
@@ -143,11 +145,14 @@ public struct Client {
       _ name: String?,
       _ emailAddress: EmailAddress?,
       _ episodeCreditCount: Int?,
+      _ gitHubUserID: GitHubUser.ID?,
+      _ gitHubAccessToken: GitHubAccessToken?,
       _ rssSalt: Models.User.RssSalt?
     ) async throws -> Void
   public var upsertUser:
     (
-      _ gitHubUserEnvelope: GitHubUserEnvelope,
+      _ accessToken: GitHubAccessToken,
+      _ gitHubUser: GitHubUser,
       _ emailAddress: EmailAddress,
       _ date: @escaping () -> Date
     ) async throws -> Models.User
@@ -161,12 +166,14 @@ public struct Client {
   }
 
   public func registerUser(
-    withGitHubEnvelope envelope: GitHubUserEnvelope,
+    accessToken: GitHubAccessToken,
+    gitHubUser: GitHubUser,
     email: EmailAddress,
     now: @escaping () -> Date
   ) async throws -> User {
     let user = try await self.upsertUser(
-      gitHubUserEnvelope: envelope,
+      accessToken: accessToken,
+      gitHubUser: gitHubUser,
       emailAddress: email,
       date: now
     )
@@ -183,6 +190,8 @@ public struct Client {
     email: EmailAddress? = nil,
     emailSettings: [EmailSetting.Newsletter]? = nil,
     episodeCreditCount: Int? = nil,
+    gitHubUserID: GitHubUser.ID? = nil,
+    githubAccessToken: GitHubAccessToken? = nil,
     rssSalt: Models.User.RssSalt? = nil
   ) async throws {
     try await self.updateUser(
@@ -190,6 +199,8 @@ public struct Client {
       name: name,
       emailAddress: email,
       episodeCreditCount: episodeCreditCount,
+      gitHubUserID: gitHubUserID,
+      gitHubAccessToken: githubAccessToken,
       rssSalt: rssSalt
     )
     try await self.updateEmailSettings(newsletters: emailSettings, userID: id)

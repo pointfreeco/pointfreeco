@@ -9,7 +9,8 @@ extension Client {
   ) -> Self {
     Self(
       addUserIdToSubscriptionId: {
-        userId, subscriptionId in
+        userId,
+        subscriptionId in
         try await pool.sqlDatabase.run(
           """
           UPDATE "users"
@@ -320,6 +321,16 @@ extension Client {
           SELECT "created_at", "email", "id", "inviter_user_id"
           FROM "team_invites"
           WHERE "inviter_user_id" = \(bind: inviterId)
+          """
+        )
+      },
+      fetchUserByEmail: { email in
+        try await pool.sqlDatabase.first(
+          """
+          SELECT *
+          FROM "users"
+          WHERE "email" ILIKE \(bind: email)
+          LIMIT 1
           """
         )
       },
@@ -975,29 +986,38 @@ extension Client {
           """
         )
       },
-      updateUser: { userId, name, email, episodeCreditCount, rssSalt in
+      updateUser: {
+        userId,
+        name,
+        email,
+        episodeCreditCount,
+        gitHubUserID,
+        gitHubAccessToken,
+        rssSalt in
         try await pool.sqlDatabase.run(
           """
           UPDATE "users"
           SET "name" = COALESCE(\(bind: name), "name"),
             "email" = COALESCE(\(bind: email), "email"),
             "episode_credit_count" = COALESCE(\(bind: episodeCreditCount), "episode_credit_count"),
+            "github_user_id" = COALESCE(\(bind: gitHubUserID), "github_user_id"),
+            "github_access_token" = COALESCE(\(bind: gitHubAccessToken), "github_access_token"),
             "rss_salt" = COALESCE(\(bind: rssSalt), "rss_salt")
           WHERE "id" = \(bind: userId)
           """
         )
       },
-      upsertUser: { envelope, email, now in
+      upsertUser: { accessToken, gitHubUser, email, now in
         try await pool.sqlDatabase.first(
           """
           INSERT INTO "users"
           ("email", "github_user_id", "github_access_token", "name", "episode_credit_count")
           VALUES (
             \(bind: email),
-            \(bind: envelope.gitHubUser.id),
-            \(bind: envelope.accessToken.accessToken),
-            \(bind: envelope.gitHubUser.name),
-            \(bind: now().timeIntervalSince(envelope.gitHubUser.createdAt) < 60*60*24*7 ? 0 : 1)
+            \(bind: gitHubUser.id),
+            \(bind: accessToken),
+            \(bind: gitHubUser.name),
+            \(bind: now().timeIntervalSince(gitHubUser.createdAt) < 60*60*24*7 ? 0 : 1)
           )
           ON CONFLICT ("github_user_id") DO UPDATE
           SET "github_access_token" = $3, "name" = $4

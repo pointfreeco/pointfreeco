@@ -236,7 +236,7 @@ class PrivateRssTests: TestCase {
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in throw unit }
-      $0.database.updateUser = { _, _, _, _, _ in XCTFail("The user should not be updated.") }
+      $0.database.updateUser = { _, _, _, _, _, _, _ in XCTFail("The user should not be updated.") }
       $0.envVars.rssUserAgentWatchlist = ["blob"]
     } operation: {
       var req = request(
@@ -434,7 +434,7 @@ class PrivateRssTests: TestCase {
     await withDependencies {
       $0.calendar = .init(identifier: .gregorian)
       $0.database.fetchUserByRssSalt = { _ in throw unit }
-      $0.database.updateUser = { _, _, _, _, _ in
+      $0.database.updateUser = { _, _, _, _, _, _, _ in
         XCTFail("The user should not be updated.")
       }
       $0.envVars.rssUserAgentWatchlist = ["blob"]

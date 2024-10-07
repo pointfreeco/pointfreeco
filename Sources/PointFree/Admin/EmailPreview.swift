@@ -1,6 +1,7 @@
 import Dependencies
 import Foundation
 import FunctionalCss
+import GitHub
 import Html
 import HtmlCssSupport
 import HttpPipeline
@@ -72,33 +73,23 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
       owner: blobJr,
       newPricing: Pricing(billing: .yearly, quantity: 7)
     )
+  case .updateGitHubAccount:
+    return Node {
+      GitHubAccountUpdateEmail(
+        newGitHubUser: GitHubUser(
+          createdAt: Date(),
+          login: "mbrandonw",
+          id: 135203,
+          name: "Brandon Williams"
+        )
+      )
+    }
   case .welcomeEmail1:
-    return Node {
-      WelcomeEmail(
-        preheader: "This is the preheader",
-        user: blob
-      ) {
-        WelcomeEmailWeek1(user: blob)
-      }
-    }
+    return Node { WelcomeEmailWeek1(user: blob) }
   case .welcomeEmail2:
-    return Node {
-      WelcomeEmail(
-        preheader: "This is the preheader",
-        user: blob
-      ) {
-        WelcomeEmailWeek2(user: blob)
-      }
-    }
+    return Node { WelcomeEmailWeek2(freeEpisodeCount: 123, user: blob) }
   case .welcomeEmail3:
-    return Node {
-      WelcomeEmail(
-        preheader: "This is the preheader",
-        user: blob
-      ) {
-        WelcomeEmailWeek3(user: blob)
-      }
-    }
+    return Node { WelcomeEmailWeek3(user: blob) }
   }
 }
 
@@ -120,17 +111,19 @@ extension EmailTemplate {
   var displayName: String {
     switch self {
     case .joinTeamConfirmation:
-      return "Join team confirmation"
+      "Join team confirmation"
     case .newTeammateJoined:
-      return "New teammate joined"
+      "New teammate joined"
     case .ownerNewTeammateJoined:
-      return "Notify owner new teammate joined"
+      "Notify owner new teammate joined"
+    case .updateGitHubAccount:
+      "Update GitHub account"
     case .welcomeEmail1:
-      return "Welcome Email #1"
+      "Welcome Email #1"
     case .welcomeEmail2:
-      return "Welcome Email #2"
+      "Welcome Email #2"
     case .welcomeEmail3:
-      return "Welcome Email #3"
+      "Welcome Email #3"
     }
   }
 }

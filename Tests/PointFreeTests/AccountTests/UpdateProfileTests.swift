@@ -25,7 +25,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   @MainActor
   func testUpdateNameAndEmail() async throws {
     var user = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock }
     )
     user.referralCode = "deadbeef"
 
@@ -64,7 +64,7 @@ class UpdateProfileIntegrationTests: LiveDatabaseTestCase {
   @MainActor
   func testUpdateEmailSettings() async throws {
     let user = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock }
     )
     let emailSettings = try await self.database.fetchEmailSettings(userID: user.id)
 

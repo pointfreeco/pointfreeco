@@ -87,11 +87,14 @@ extension URLRequest {
   }
 }
 
+import GitHub
+
 public struct Session: Equatable {
   public var flash: Flash?
+  public var gitHubAccessToken: GitHubAccessToken?
   public var user: User?
 
-  public static let empty = Session(flash: nil, user: nil)
+  public static let empty = Session()
 
   public var userId: Models.User.ID? {
     switch self.user {
@@ -162,6 +165,7 @@ public struct Session: Equatable {
 extension Session: Codable {
   private enum CodingKeys: CodingKey {
     case flash
+    case gitHubAccessToken
     case user
     case userId
   }
@@ -169,6 +173,7 @@ extension Session: Codable {
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encodeIfPresent(self.flash, forKey: .flash)
+    try container.encodeIfPresent(gitHubAccessToken, forKey: .gitHubAccessToken)
     switch self.user {
     case let .some(.standard(userId)):
       try container.encode(userId, forKey: .userId)
@@ -183,6 +188,10 @@ extension Session: Codable {
     let container = try decoder.container(keyedBy: CodingKeys.self)
 
     self.flash = try container.decodeIfPresent(Flash.self, forKey: .flash)
+    self.gitHubAccessToken = try container.decodeIfPresent(
+      GitHubAccessToken.self,
+      forKey: .gitHubAccessToken
+    )
     self.user =
       (try? container.decode(Models.User.ID.self, forKey: .userId)).map(User.standard)
       ?? (try? container.decode(Session.User.self, forKey: .user))

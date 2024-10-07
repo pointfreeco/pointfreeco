@@ -79,18 +79,7 @@ func welcomeEmail1(_ user: User) -> Email {
     to: [user.email],
     subject: "Thanks for signing up to Point-Free!",
     unsubscribeData: (user.id, .welcomeEmails),
-    content: WelcomeEmail(
-      preheader: user.episodeCreditCount > 0
-        ? """
-        Use your episode credit to unlock any subscriber-only episode!
-        """
-        : """
-        Explore our most popular episodes and join our vibrant Slack community!
-        """,
-      user: user
-    ) {
-      WelcomeEmailWeek1(user: user)
-    }
+    content: WelcomeEmailWeek1(user: user)
   )
 }
 
@@ -101,14 +90,7 @@ func welcomeEmail2(_ user: User) -> Email {
     to: [user.email],
     subject: "Free episodes on Point-Free",
     unsubscribeData: (user.id, .welcomeEmails),
-    content: WelcomeEmail(
-      preheader: """
-        Explore our \(freeEpisodeCount) free episodes!
-        """,
-      user: user
-    ) {
-      WelcomeEmailWeek2(user: user)
-    }
+    content: WelcomeEmailWeek2(freeEpisodeCount: freeEpisodeCount, user: user)
   )
 }
 
@@ -117,14 +99,7 @@ func welcomeEmail3(_ user: User) -> Email {
     to: [user.email],
     subject: "Here's a free episode!",
     unsubscribeData: (user.id, .welcomeEmails),
-    content: WelcomeEmail(
-      preheader: """
-        Level up your engineering skills with a subscription to Point-Free.
-        """,
-      user: user
-    ) {
-      WelcomeEmailWeek3(user: user)
-    }
+    content: WelcomeEmailWeek3(user: user)
   )
 }
 

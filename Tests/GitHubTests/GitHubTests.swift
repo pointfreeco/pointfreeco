@@ -11,9 +11,12 @@ final class GitHubTests: TestCase {
   @MainActor
   func testRequests() async throws {
     let fetchAuthToken = fetchGitHubAuthToken(
-      clientId: "deadbeef-client-id", clientSecret: "deadbeef-client-secret")
-    try await assertSnapshot(
-      matching: fetchAuthToken("deadbeef").rawValue,
+      clientId: "deadbeef-client-id",
+      clientSecret: "deadbeef-client-secret",
+      code: "deadbeef"
+    )
+    await assertSnapshot(
+      matching: fetchAuthToken.rawValue,
       as: .raw,
       named: "fetch-auth-token"
     )

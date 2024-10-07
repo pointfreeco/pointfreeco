@@ -31,7 +31,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscribeData = SubscribeData.individualMonthly
     subscribeData.coupon = "deadbeef"
 
-    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, .mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -57,7 +57,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
     var subscribeData = SubscribeData.teamYearly(quantity: 4)
     subscribeData.coupon = "deadbeef"
 
-    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, .mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -77,7 +77,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testHappyPath() async throws {
-    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, .mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -116,7 +116,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testHappyPath_Yearly() async throws {
-    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, .mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -155,7 +155,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testHappyPath_Team() async throws {
-    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, .mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -190,7 +190,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testHappyPath_Team_OwnerIsNotTakingSeat() async throws {
-    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, .mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -232,14 +232,14 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   @MainActor
   func testHappyPath_Referral_Monthly() async throws {
     let referrer = try await self.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
+      .upsertUser(.mock, update(.mock) { $0.id = 1 }, "referrer@pointfree.co", { .mock })
 
     /*let referrerSubscription*/_ = try await self.database.createSubscription(
       .mock, referrer.id, true, nil
     )
 
     let referred = try await self.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
+      .upsertUser(.mock, update(.mock) { $0.id = 2 }, "referred@pointfree.co", { .mock })
 
     var session = Session.loggedIn
     session.user = .standard(referred.id)
@@ -306,13 +306,13 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   @MainActor
   func testHappyPath_Referral_Yearly() async throws {
     let referrer = try await self.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
+      .upsertUser(.mock, update(.mock) { $0.id = 1 }, "referrer@pointfree.co", { .mock })
 
     /*let referrerSubscription*/_ =
       try await self.database.createSubscription(.mock, referrer.id, true, nil)
 
     let referred = try await self.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
+      .upsertUser(.mock, update(.mock) { $0.id = 2 }, "referred@pointfree.co", { .mock })
 
     var session = Session.loggedIn
     session.user = .standard(referred.id)
@@ -370,7 +370,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testHappyPath_RegionalDiscount() async throws {
-    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, .mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -432,7 +432,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testUnhappyPath_RegionalDiscount() async throws {
-    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, .mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -490,14 +490,14 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   @MainActor
   func testRegionalDiscountWithReferral_Monthly() async throws {
     let referrer = try await self.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
+      .upsertUser(.mock, update(.mock) { $0.id = 1 }, "referrer@pointfree.co", { .mock })
 
     /*let referrerSubscription*/_ = try await self.database.createSubscription(
       .mock, referrer.id, true, nil
     )
 
     let referred = try await self.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
+      .upsertUser(.mock, update(.mock) { $0.id = 2 }, "referred@pointfree.co", { .mock })
 
     var session = Session.loggedIn
     session.user = .standard(referred.id)
@@ -582,14 +582,14 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
   @MainActor
   func testRegionalDiscountWithReferral_Yearly() async throws {
     let referrer = try await self.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 1 }, "referrer@pointfree.co", { .mock })
+      .upsertUser(.mock, update(.mock) { $0.id = 1 }, "referrer@pointfree.co", { .mock })
 
     /*let referrerSubscription*/_ = try await self.database.createSubscription(
       .mock, referrer.id, true, nil
     )
 
     let referred = try await self.database
-      .upsertUser(update(.mock) { $0.gitHubUser.id = 2 }, "referred@pointfree.co", { .mock })
+      .upsertUser(.mock, update(.mock) { $0.id = 2 }, "referred@pointfree.co", { .mock })
 
     var session = Session.loggedIn
     session.user = .standard(referred.id)
@@ -673,7 +673,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testSubscribingWithRegionalDiscountAndCoupon() async throws {
-    let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let user = try await self.database.upsertUser(.mock, .mock, "hello@pointfree.co", { .mock })
     var session = Session.loggedIn
     session.user = .standard(user.id)
 
@@ -734,7 +734,7 @@ final class SubscribeTests: TestCase {
       var subscribeData = SubscribeData.individualMonthly
       subscribeData.coupon = "deadbeef"
 
-      let user = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+      let user = try await self.database.upsertUser(.mock, .mock, "hello@pointfree.co", { .mock })
       var session = Session.loggedIn
       session.user = .standard(user.id)
 

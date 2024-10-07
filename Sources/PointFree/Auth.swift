@@ -5,6 +5,7 @@ import EmailAddress
 import Foundation
 import GitHub
 import HttpPipeline
+import Mailgun
 import Models
 import PointFreeDependencies
 import PointFreePrelude
@@ -23,13 +24,17 @@ func authMiddleware(
   _ conn: Conn<StatusLineOpen, SiteRoute.Auth>
 ) async -> Conn<ResponseEnded, Data> {
   switch conn.data {
+  case .failureLanding(redirect: let redirect):
+    return await failureLanding(
+      redirect: redirect,
+      conn: conn.map(const(()))
+    )
+
   case let .gitHubAuth(redirect):
-    return await loginResponse(conn.map(const(redirect)))
-      .performAsync()
+    return await loginResponse(redirect: redirect, conn: conn.map(const(())))
 
   case let .gitHubCallback(code, redirect):
-    return await gitHubCallbackResponse(conn.map(const(code .*. redirect .*. unit)))
-      .performAsync()
+    return await gitHubCallbackResponse(code: code, redirect: redirect, conn.map(const(())))
 
   case let .login(redirect):
     return await loginSignUpMiddleware(
@@ -39,8 +44,7 @@ func authMiddleware(
     )
 
   case .logout:
-    return await logoutResponse(conn.map(const(unit)))
-      .performAsync()
+    return await logoutResponse(conn.map(const(())))
 
   case let .signUp(redirect):
     return await loginSignUpMiddleware(
@@ -48,39 +52,208 @@ func authMiddleware(
       type: .signUp,
       conn.map(const(()))
     )
+
+  case .updateGitHub(let redirect):
+    return await updateGitHub(
+      redirect: redirect,
+      conn: conn.map(const(()))
+    )
   }
 }
 
-let gitHubCallbackResponse =
-  requireLoggedOutUser
-  <<< requireAuthCodeAndAccessToken
-  <| { conn in IO { await gitHubAuthTokenMiddleware(conn) } }
-
-private let requireAuthCodeAndAccessToken:
-  MT<Tuple2<String?, String?>, Tuple2<GitHub.AccessToken, String?>> =
-    filterMap(require1 >>> pure, or: map(const(unit)) >>> missingGitHubAuthCodeMiddleware)
-    <<< requireAccessToken
-
-/// Middleware to run when the GitHub auth code is missing.
-private let missingGitHubAuthCodeMiddleware: M<Prelude.Unit> =
-  writeStatus(.badRequest)
-  >=> respond(text: "GitHub code wasn't found :(")
-
-/// Redirects to GitHub authorization and attaches the redirect specified in the connection data.
-let loginResponse: M<String?> =
-  requireLoggedOutUser
-  <| { $0 |> redirect(to: gitHubAuthorizationUrl(withRedirect: $0.data)) }
-
-func logoutResponse(
-  _ conn: Conn<StatusLineOpen, Prelude.Unit>
-) -> IO<Conn<ResponseEnded, Data>> {
+private func updateGitHub(
+  redirect: String?,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+  @Dependency(\.date) var date
+  @Dependency(\.fireAndForget) var fireAndForget
+  @Dependency(\.gitHub) var gitHub
   @Dependency(\.siteRouter) var siteRouter
 
-  return conn
-    |> redirect(
-      to: siteRouter.path(for: .home),
-      headersMiddleware: writeSessionCookieMiddleware { $0.user = nil }
+  guard let accessToken = conn.request.session.gitHubAccessToken else {
+    return conn
+      .redirect(to: .home) {
+        $0.flash(.error, "We could not update your GitHub account. Please try again.")
+      }
+  }
+
+  do {
+    let newGitHubUser = try await gitHub.fetchUser(accessToken: accessToken)
+    let email = try await gitHub.fetchEmails(accessToken).first(where: \.primary).unwrap().email
+    let existingUser = try await database.fetchUser(email: email)
+    let existingAccessToken = existingUser.gitHubAccessToken
+    _ = try await database.updateUser(
+      id: existingUser.id,
+      gitHubUserID: newGitHubUser.id,
+      githubAccessToken: accessToken
     )
+    await fireAndForget {
+      let email = try await gitHub
+        .fetchEmails(accessToken: existingAccessToken)
+        .first(where: \.primary)
+        .unwrap()
+        .email
+      let html = String(
+        decoding: GitHubAccountUpdateEmail(newGitHubUser: newGitHubUser).render(),
+        as: UTF8.self
+      ) 
+      do {
+        _ = try await send(
+          email: Email(
+            from: "support@pointfree.co",
+            to: [email, "brandon@pointfree.co"],
+            subject: "Your GitHub account has been updated",
+            text: html,
+            html: html,
+            domain: mgDomain
+          )
+        )
+      } catch {
+        reportIssue(error, "Unable to send email: \"Your GitHub account has been updated\"")
+      }
+    }
+    return conn
+      .redirect(to: redirect ?? siteRouter.path(for: .home)) {
+        $0
+          .writeSessionCookie {
+            $0.flash = Flash(
+              .notice,
+              "Your GitHub account has been updated to @\(newGitHubUser.login)."
+            )
+            $0.gitHubAccessToken = nil
+            $0.user = .standard(existingUser.id)
+          }
+    }
+  } catch {
+    return conn
+      .redirect(to: .home) {
+        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+      }
+  }
+}
+
+private func failureLanding(
+  redirect: String?,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+  @Dependency(\.gitHub) var gitHub
+
+  guard let accessToken = conn.request.session.gitHubAccessToken else {
+    return conn
+      .redirect(to: .home) {
+        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+      }
+  }
+
+  do {
+    let email = try await gitHub.fetchEmails(accessToken).first(where: \.primary).unwrap().email
+    let newGitHubUser = try await gitHub.fetchUser(accessToken: accessToken)
+    let existingUser = try await database.fetchUser(email: email)
+    let existingGitHubUser = try await gitHub.fetchUser(
+      id: existingUser.gitHubUserId,
+      accessToken: accessToken
+    )
+    return conn
+      .writeStatus(.ok)
+      .respondV2(
+        layoutData: SimplePageLayoutData(
+          title: "GitHub login"
+        )
+      ) {
+        GitHubFailureView(
+          email: email,
+          existingGitHubUser: existingGitHubUser,
+          newGitHubUser: newGitHubUser,
+          redirect: redirect
+        )
+      }
+  } catch {
+    return conn
+      .redirect(to: .home) {
+        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+      }
+  }
+}
+
+private func gitHubCallbackResponse(
+  code: String?,
+  redirect: String?,
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.gitHub) var gitHub
+
+  guard currentUser == nil
+  else {
+    return conn
+      .redirect(to: .account()) {
+        $0.flash(.warning, "You’re already logged in.")
+      }
+  }
+  guard let code
+  else {
+    return conn
+      .redirect(to: .auth(.login(redirect: nil))) {
+        $0.flash(.warning, "GitHub code wasn't found :(")
+      }
+  }
+  do {
+    let accessToken = try await gitHub.fetchAuthToken(code: code).accessToken
+    return await gitHubAuthTokenMiddleware(
+      code: code,
+      accessToken: accessToken,
+      redirect: redirect,
+      conn
+    )
+  } catch let error as OAuthError where error.error == .badVerificationCode {
+    return await conn
+      .redirect(to: .auth(.gitHubAuth(redirect: redirect)))
+  } catch {
+    return conn
+      .redirect(to: .home) {
+        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+      }
+  }
+}
+
+private func loginResponse(
+  redirect: String?,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.envVars.gitHub.clientId) var gitHubClientId
+
+  guard currentUser == nil
+  else {
+    return conn
+      .redirect(to: .account()) {
+        $0.flash(.warning, "You’re already logged in.")
+      }
+  }
+
+  let url = GitHubRouter().url(
+    for: .authorize(
+      clientId: gitHubClientId,
+      redirectUri: siteRouter.url(for: .auth(.gitHubCallback(code: nil, redirect: redirect))),
+      scope: "user:email"
+    )
+  )
+  .absoluteString
+
+  return await conn
+    .redirect(to: url)
+}
+
+private func logoutResponse(
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  conn
+    .redirect(to: .home) {
+      $0.writeSessionCookie { $0.user = nil }
+    }
 }
 
 extension Conn where Step == StatusLineOpen {
@@ -93,22 +266,6 @@ public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<Resp
   conn |> redirect(to: .auth(.gitHubAuth(redirect: conn.request.url?.absoluteString)))
 }
 
-private func requireLoggedOutUser<A>(
-  _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
-) -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
-
-  return { conn in
-    @Dependency(\.currentUser) var currentUser
-    @Dependency(\.database) var database
-    guard currentUser == nil
-    else {
-      return conn
-        |> redirect(to: .account(), headersMiddleware: flash(.warning, "You’re already logged in."))
-    }
-    return middleware(conn)
-  }
-}
-
 public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
   -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
 {
@@ -118,13 +275,19 @@ public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
     .map { conn.map(const($0 .*. conn.data.second)) }
 }
 
-private func fetchOrRegisterUser(env: GitHubUserEnvelope) async throws -> Models.User {
+private func fetchOrRegisterUser(
+  accessToken: GitHubAccessToken,
+  gitHubUser: GitHubUser
+) async throws -> Models.User {
   @Dependency(\.database) var database
 
   do {
-    return try await database.fetchUser(gitHubID: env.gitHubUser.id)
+    return try await database.fetchUser(gitHubID: gitHubUser.id)
   } catch {
-    return try await registerUser(env: env)
+    return try await registerUser(
+      accessToken: accessToken,
+      gitHubUser: gitHubUser
+    )
   }
 }
 
@@ -134,16 +297,20 @@ extension GitHubUser {
   }
 }
 
-private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
+private func registerUser(
+  accessToken: GitHubAccessToken,
+  gitHubUser: GitHubUser
+) async throws -> Models.User {
   @Dependency(\.database) var database
   @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.gitHub) var gitHub
   @Dependency(\.date.now) var now
 
-  let email = try await gitHub.fetchEmails(env.accessToken).first(where: \.primary).unwrap().email
+  let email = try await gitHub.fetchEmails(accessToken).first(where: \.primary).unwrap().email
   do {
     let user = try await database.registerUser(
-      withGitHubEnvelope: env,
+      accessToken: accessToken,
+      gitHubUser: gitHubUser,
       email: email,
       now: { now }
     )
@@ -151,7 +318,7 @@ private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
       try await sendEmail(
         to: [email],
         subject: "Point-Free Registration",
-        content: inj2(registrationEmailView(env.gitHubUser))
+        content: inj2(registrationEmailView(gitHubUser))
       )
     }
     return user
@@ -166,36 +333,29 @@ private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
 
 /// Exchanges a GitHub code for an access token and loads the user's data.
 private func gitHubAuthTokenMiddleware(
-  _ conn: Conn<StatusLineOpen, Tuple2<GitHub.AccessToken, String?>>
+  code: String,
+  accessToken: GitHubAccessToken,
+  redirect: String?,
+  _ conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.gitHub) var gitHub
   @Dependency(\.siteRouter) var siteRouter
 
-  let (token, redirect) = lower(conn.data)
-
   do {
-    let gitHubUser = try await gitHub.fetchUser(token)
-    let env = GitHubUserEnvelope(accessToken: token, gitHubUser: gitHubUser)
-    let user = try await fetchOrRegisterUser(env: env)
+    let gitHubUser = try await gitHub.fetchUser(accessToken)
+    let user = try await fetchOrRegisterUser(accessToken: accessToken, gitHubUser: gitHubUser)
     try await refreshStripeSubscription(for: user)
     return conn.redirect(to: redirect ?? siteRouter.path(for: .home)) {
       $0.writeSessionCookie { $0.user = .standard(user.id) }
     }
-  } catch let error as GitHubUser.AlreadyRegistered {
-    return conn.redirect(to: .home) {
-      $0.flash(
-        .error,
-        """
-        The primary email address associated with your GitHub account, \(error.email.rawValue), is \
-        already registered with Point-Free under a different \
-        [GitHub account](https://github.com/settings) account.
-
-        Log into the GitHub account associated with your Point-Free account before trying again, \
-        or contact <support@pointfree.co>.
-        """
-      )
-    }
+  } catch is GitHubUser.AlreadyRegistered {
+    return conn
+      .redirect(to: .auth(.failureLanding(redirect: redirect))) {
+        $0.writeSessionCookie {
+          $0.gitHubAccessToken = accessToken
+        }
+      }
   } catch {
     await fireAndForget {
       try await sendEmail(
@@ -207,40 +367,6 @@ private func gitHubAuthTokenMiddleware(
     return conn.redirect(to: .home) {
       $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
     }
-  }
-}
-
-private func requireAccessToken<A>(
-  _ middleware: @escaping Middleware<
-    StatusLineOpen, ResponseEnded, T3<GitHub.AccessToken, String?, A>, Data
-  >
-)
-  -> Middleware<StatusLineOpen, ResponseEnded, T3<String, String?, A>, Data>
-{
-  @Dependency(\.gitHub) var gitHub
-
-  return { conn in
-    let (code, redirect) = (get1(conn.data), get2(conn.data))
-
-    return EitherIO { try await gitHub.fetchAuthToken(code) }
-      .run
-      .flatMap { errorOrToken in
-        switch errorOrToken {
-        case let .right(.right(token)):
-          return conn.map(const(token .*. conn.data.second)) |> middleware
-        case let .right(.left(error)) where error.error == .badVerificationCode:
-          return conn |> PointFree.redirect(to: .auth(.gitHubAuth(redirect: redirect)))
-        case .right(.left), .left:
-          return conn
-            |> PointFree.redirect(
-              to: .home,
-              headersMiddleware: flash(
-                .error,
-                "We were not able to log you in with GitHub. Please try again."
-              )
-            )
-        }
-      }
   }
 }
 
@@ -257,16 +383,98 @@ private func refreshStripeSubscription(for user: Models.User) async throws {
   _ = try await database.updateStripeSubscription(stripeSubscription)
 }
 
-private func gitHubAuthorizationUrl(withRedirect redirect: String?) -> String {
-  @Dependency(\.siteRouter) var siteRouter
-  @Dependency(\.envVars.gitHub.clientId) var gitHubClientId
+import StyleguideV2
 
-  return GitHubRouter().url(
-    for: .authorize(
-      clientId: gitHubClientId,
-      redirectUri: siteRouter.url(for: .auth(.gitHubCallback(code: nil, redirect: redirect))),
-      scope: "user:email"
-    )
-  )
-  .absoluteString
+struct GitHubAccountUpdateEmail: EmailDocument {
+  let newGitHubUser: GitHubUser
+
+  var body: some HTML {
+    SimpleEmailLayout(
+      preheader: """
+        The GitHub user for your Point-Free account has been updated to @\(newGitHubUser.login)
+        """
+    ) {
+      tr {
+        td {
+          EmailMarkdown {
+          """
+          ## Your GitHub account has been updated
+          
+          Hi there, the GitHub user for your Point-Free account has been updated to
+          **[@\(newGitHubUser.login)](http://github.com/\(newGitHubUser.login))**. If you did not
+          request this change, or you do not recognize the GitHub account
+          [@\(newGitHubUser.login)](http://github.com/\(newGitHubUser.login)), please
+          [contact us](mailto:support@pointfree.co) immediately.
+          """
+          }
+        }
+      }
+    }
+  }
+}
+
+struct SimpleEmailLayout<Content: HTML>: HTML {
+  let content: Content
+  let preheader: String
+  @Dependency(\.envVars.appSecret) var appSecret
+  @Dependency(\.siteRouter) var siteRouter
+
+  init(
+    preheader: String = "",
+    @HTMLBuilder content: () -> Content
+  ) {
+    self.content = content()
+    self.preheader = preheader
+  }
+
+  var body: some HTML {
+    span {
+      HTMLText(preheader)
+    }
+    .color(.init(rawValue: "transparent"))
+    .inlineStyle("display", "none")
+    .inlineStyle("opacity", "0")
+    .inlineStyle("width", "0")
+    .inlineStyle("height", "0")
+    .inlineStyle("maxWidth", "0")
+    .inlineStyle("maxHeight", "0")
+    .inlineStyle("overflow", "hidden")
+
+    table {
+      content
+
+      tr {
+        td {
+          div {
+            EmailMarkdown {
+              """
+              Contact us via email at [support@pointfree.co](mailto:support@pointfree.co), 
+              [Twitter](http://x.com/pointfreeco), or on 
+              [Mastodon](https://hachyderm.io/@pointfreeco). Our postal address: 139 Skillman #5C, 
+              Brooklyn, NY 11211.
+              """
+            }
+            .color(.gray300)
+            .fontStyle(.body(.small))
+            .linkColor(.offBlack)
+          }
+          .backgroundColor(.gray900)
+          .inlineStyle("padding", "2rem 2rem 1.5rem 2rem")
+          .inlineStyle("margin", "2rem 0")
+        }
+      }
+    }
+    .attribute("role", "presentation")
+    .attribute("height", "100%")
+    .attribute("width", "100%")
+    .attribute("border-collapse", "collapse")
+    .attribute("border-spacing", "0 0.5rem")
+    .attribute("align", "center")
+    .inlineStyle("display", "block")
+    .inlineStyle("width", "100%")
+    .inlineStyle("max-width", "600px")
+    .inlineStyle("margin", "0 auto")
+    .inlineStyle("clear", "both")
+    .linkStyle(LinkStyle(color: .purple, underline: true))
+  }
 }
