@@ -17,7 +17,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 
   override func setUp() async throws {
     try await super.setUp()
-//    SnapshotTesting.isRecording = true
+    //    SnapshotTesting.isRecording = true
   }
 
   @MainActor
@@ -155,7 +155,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 class AuthTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
-//    SnapshotTesting.isRecording = true
+    //    SnapshotTesting.isRecording = true
   }
 
   @MainActor

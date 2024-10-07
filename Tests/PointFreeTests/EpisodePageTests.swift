@@ -37,7 +37,8 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
       $0.episodes = { [episode] }
     } operation: {
       let user = try await self.database
-        .registerUser(accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock })
+        .registerUser(
+          accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock })
       try await self.database.updateUser(id: user.id, episodeCreditCount: 1)
 
       let credit = EpisodeCredit(episodeSequence: episode.sequence, userId: user.id)
@@ -128,7 +129,8 @@ class EpisodePageIntegrationTests: LiveDatabaseTestCase {
       $0.episodes = { [episode] }
     } operation: {
       let user = try await self.database
-        .registerUser(accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock })
+        .registerUser(
+          accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock })
       _ = try await self.database.updateUser(id: user.id, episodeCreditCount: 1)
       try await self.database.redeemEpisodeCredit(episode.sequence, user.id)
 

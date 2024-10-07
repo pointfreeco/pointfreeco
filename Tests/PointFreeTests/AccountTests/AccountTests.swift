@@ -34,7 +34,8 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
         name: "Blob"
       ),
       email: "blob@pointfree.co",
-      now: { .mock
+      now: {
+        .mock
       }
     )
 
@@ -49,7 +50,8 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
         name: "Owner"
       ),
       email: "owner@pointfree.co",
-      now: { .mock
+      now: {
+        .mock
       }
     )
 
@@ -84,7 +86,8 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
         name: "Blob"
       ),
       email: "blob@pointfree.co",
-      now: { .mock
+      now: {
+        .mock
       }
     )
     let subscription = try await self.database.createSubscription(

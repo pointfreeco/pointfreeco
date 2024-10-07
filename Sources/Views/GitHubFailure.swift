@@ -38,7 +38,7 @@ public struct GitHubFailureView: HTML {
           which has a primary email address **\(email)**. However, that email was already registered
           on Point-Free under the GitHub account
           **[@\(existingGitHubUser.login)](http://github.com/\(existingGitHubUser.login))**.
-          
+
           Would you like to update your Point-Free account to use the GitHub account
           **[@\(newGitHubUser.login)](http://github.com/\(newGitHubUser.login))** instead?
           """

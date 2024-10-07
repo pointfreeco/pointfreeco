@@ -2,6 +2,7 @@ import CasePaths
 import Either
 import EmailAddress
 import Foundation
+import GitHub
 import Models
 import Prelude
 import Stripe
@@ -744,8 +745,6 @@ struct FilterConversion<Base: Conversion>: Conversion {
   }
 }
 
-import GitHub
-
 private struct AuthRouter: ParserPrinter {
   var body: some Router<SiteRoute.Auth> {
     OneOf {
@@ -802,7 +801,7 @@ private struct AuthRouter: ParserPrinter {
 
       Route(.case(SiteRoute.Auth.updateGitHub)) {
         Method.post
-        Path { "update-github"}
+        Path { "update-github" }
         Query {
           Optionally {
             Field("redirect")

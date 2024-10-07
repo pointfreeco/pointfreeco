@@ -24,10 +24,11 @@ public struct Client {
   public var fetchUser: (_ accessToken: GitHubAccessToken) async throws -> GitHubUser
 
   @DependencyEndpoint(method: "fetchUser")
-  public var fetchUserByUserID: (
-    _ id: GitHubUser.ID,
-    _ accessToken: GitHubAccessToken
-  ) async throws -> GitHubUser
+  public var fetchUserByUserID:
+    (
+      _ id: GitHubUser.ID,
+      _ accessToken: GitHubAccessToken
+    ) async throws -> GitHubUser
 
   public struct AuthTokenResponse: Codable {
     public var accessToken: GitHubAccessToken
@@ -59,7 +60,8 @@ extension Client {
         try await jsonDataTask(with: fetchGitHubUser(with: $0), decoder: gitHubJsonDecoder)
       },
       fetchUserByUserID: { userID, accessToken in
-        try await jsonDataTask(with: fetchGitHubUser(id: userID, with: accessToken), decoder: gitHubJsonDecoder)
+        try await jsonDataTask(
+          with: fetchGitHubUser(id: userID, with: accessToken), decoder: gitHubJsonDecoder)
       }
     )
   }

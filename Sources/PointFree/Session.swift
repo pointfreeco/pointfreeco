@@ -1,5 +1,6 @@
 import Dependencies
 import Foundation
+import GitHub
 import HttpPipeline
 import Models
 import Prelude
@@ -86,8 +87,6 @@ extension URLRequest {
       ?? .empty
   }
 }
-
-import GitHub
 
 public struct Session: Equatable {
   public var flash: Flash?
