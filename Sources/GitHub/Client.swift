@@ -30,12 +30,9 @@ public struct Client {
   ) async throws -> GitHubUser
 
   public struct AuthTokenResponse: Codable {
-    public var accessToken: String
-    public init(_ accessToken: String) {
+    public var accessToken: GitHubAccessToken
+    public init(_ accessToken: GitHubAccessToken) {
       self.accessToken = accessToken
-    }
-    public var toGitHubAccessToken: GitHubAccessToken {
-      GitHubAccessToken(rawValue: accessToken)
     }
     private enum CodingKeys: String, CodingKey {
       case accessToken = "access_token"

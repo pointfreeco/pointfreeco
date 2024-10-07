@@ -33,7 +33,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     try await withDependencies {
       $0.date.now = now
       $0.gitHub.fetchUser = { _ in gitHubUser }
-      $0.gitHub.fetchAuthToken = { _ in Client.AuthTokenResponse(accessToken.rawValue) }
+      $0.gitHub.fetchAuthToken = { _ in Client.AuthTokenResponse(accessToken) }
     } operation: {
       let result = await siteMiddleware(
         connection(
@@ -66,7 +66,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     try await withDependencies {
       $0.date.now = now
       $0.gitHub.fetchUser = { _ in gitHubUser }
-      $0.gitHub.fetchAuthToken = { _ in Client.AuthTokenResponse(accessToken.rawValue) }
+      $0.gitHub.fetchAuthToken = { _ in Client.AuthTokenResponse(accessToken) }
     } operation: {
       let result = await siteMiddleware(
         connection(

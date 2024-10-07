@@ -200,7 +200,7 @@ private func gitHubCallbackResponse(
       }
   }
   do {
-    let accessToken = try await gitHub.fetchAuthToken(code: code).toGitHubAccessToken
+    let accessToken = try await gitHub.fetchAuthToken(code: code).accessToken
     return await gitHubAuthTokenMiddleware(
       code: code,
       accessToken: accessToken,
