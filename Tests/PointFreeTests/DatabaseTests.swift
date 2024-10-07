@@ -17,7 +17,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
   @Dependency(\.database) var database
 
   func testUpsertUser_FetchUserById() async throws {
-    let userA = try await self.database.upsertUser(.mock, "hello@pointfree.co", { .mock })
+    let userA = try await self.database.upsertUser(.mock, .mock, "hello@pointfree.co", { .mock })
     let userB = try await self.database.fetchUserById(userA.id)
     XCTAssertEqual(userA.id, userB.id)
     XCTAssertEqual("hello@pointfree.co", userB.email.rawValue)
@@ -25,7 +25,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
   func testFetchEnterpriseAccount() async throws {
     let user = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "blob@pointfree.co", now: { .mock }
     )
     let subscription = try await self.database.createSubscription(.mock, user.id, true, nil)
 
@@ -49,7 +49,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
   func testCreateSubscription_OwnerIsNotTakingSeat() async throws {
     let user = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
     _ = try await self.database.createSubscription(.mock, user.id, false, nil)
@@ -61,7 +61,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
   func testCreateSubscription_OwnerIsTakingSeat() async throws {
     let user = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
     let subscription = try await self.database.createSubscription(.mock, user.id, true, nil)
@@ -73,7 +73,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
   func testUpdateEpisodeProgress() async throws {
     let user = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
     _ = try await self.database.updateEpisodeProgress(1, 20, false, user.id)
@@ -119,7 +119,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
   func testUpdateEpisodeProgress_IsFinished() async throws {
     let episodeSequence: Episode.Sequence = 1
     let user = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
     _ = try await self.database.updateEpisodeProgress(episodeSequence, 99, true, user.id)
@@ -157,7 +157,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
   func testUpdateEpisodeProgresses() async throws {
     let user = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
     _ = try await self.database.updateEpisodeProgress(1, 90, true, user.id)
@@ -204,7 +204,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let episodeSequence: Episode.Sequence = 1
 
     let user = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
     _ = try await self.database.updateEpisodeProgress(episodeSequence, progress, false, user.id)
@@ -229,7 +229,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let episodeSequence: Episode.Sequence = 1
 
     let user = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "blob@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
     do {

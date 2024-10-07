@@ -2,7 +2,7 @@ User(
   email: Tagged(rawValue: "hello@pointfree.co"),
   episodeCreditCount: 1,
   gitHubUserId: Tagged(rawValue: 1),
-  gitHubAccessToken: "deadbeef",
+  gitHubAccessToken: Tagged(rawValue: "deadbeef"),
   id: Tagged(rawValue: UUID(00000000-0000-0000-0000-000000000001)),
   isAdmin: false,
   name: "Blob",

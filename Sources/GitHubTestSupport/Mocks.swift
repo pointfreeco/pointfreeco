@@ -1,19 +1,20 @@
 import Either
 import GitHub
 import Prelude
+import Tagged
 
 extension Client {
   public static let mock = Client(
-    fetchAuthToken: { _ in .mock },
+    fetchAuthToken: { _ in Client.AuthTokenResponse("deadbeef") },
     fetchEmails: { _ in [.mock] },
     fetchUser: { _ in .mock },
     fetchUserByUserID: { _, _ in .mock }
   )
 }
 
-extension AccessToken {
-  public static let mock = AccessToken(
-    accessToken: "deadbeef"
+extension GitHubAccessToken {
+  public static let mock = Self(
+    rawValue: "deadbeef"
   )
 }
 
@@ -23,13 +24,6 @@ extension GitHubUser {
     login: "blob",
     id: 1,
     name: "Blob"
-  )
-}
-
-extension GitHubUserEnvelope {
-  public static let mock = GitHubUserEnvelope(
-    accessToken: .mock,
-    gitHubUser: .mock
   )
 }
 

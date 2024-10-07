@@ -31,6 +31,9 @@ public struct Client {
 
   public struct AuthTokenResponse: Codable {
     public var accessToken: String
+    public init(_ accessToken: String) {
+      self.accessToken = accessToken
+    }
     public var toGitHubAccessToken: GitHubAccessToken {
       GitHubAccessToken(rawValue: accessToken)
     }

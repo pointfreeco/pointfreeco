@@ -28,7 +28,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   @MainActor
   func testSendInvite_HappyPath() async throws {
     let inviterUser = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock }
     )
 
     _ = try await self.database.createSubscription(.teamYearly, inviterUser.id, true, nil)
@@ -48,7 +48,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   @MainActor
   func testSendInvite_UnhappyPath_NoSeats() async throws {
     let inviterUser = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock }
     )
 
     let sub = update(Stripe.Subscription.teamYearly) { $0.quantity = 2 }
@@ -71,7 +71,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   @MainActor
   func testResendInvite_HappyPath() async throws {
     let currentUser = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock }
     )
 
     let teamInvite = try await self.database
@@ -89,7 +89,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
   @MainActor
   func testRevokeInvite_HappyPath() async throws {
     let currentUser = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock }
     )
 
     let teamInvite = try await self.database
@@ -109,15 +109,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testRevokeInvite_CurrentUserIsNotInviter() async throws {
-    var env = GitHubUserEnvelope.mock
-    env.gitHubUser.id = 1
+    var gitHubUser = GitHubUser.mock
+    gitHubUser.id = 1
     let currentUser = try await self.database.registerUser(
-      withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: gitHubUser, email: "hello@pointfree.co", now: { .mock }
     )
 
-    env.gitHubUser.id = 2
+    gitHubUser.id = 2
     let inviterUser = try await self.database.registerUser(
-      withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: gitHubUser, email: "inviter@pointfree.co", now: { .mock }
     )
 
     let teamInvite = try await self.database
@@ -137,15 +137,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testAcceptInvitation_HappyPath() async throws {
-    var env = GitHubUserEnvelope.mock
-    env.gitHubUser.id = 1
+    var gitHubUser = GitHubUser.mock
+    gitHubUser.id = 1
     let currentUser = try await self.database.registerUser(
-      withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: gitHubUser, email: "hello@pointfree.co", now: { .mock }
     )
 
-    env.gitHubUser.id = 2
+    gitHubUser.id = 2
     let inviterUser = try await self.database.registerUser(
-      withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: gitHubUser, email: "inviter@pointfree.co", now: { .mock }
     )
 
     _ = try await self.database
@@ -172,15 +172,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testAcceptInvitation_InviterIsNotSubscriber() async throws {
-    var env = GitHubUserEnvelope.mock
-    env.gitHubUser.id = 1
+    var gitHubUser = GitHubUser.mock
+    gitHubUser.id = 1
     let currentUser = try await self.database.registerUser(
-      withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: gitHubUser, email: "hello@pointfree.co", now: { .mock }
     )
 
-    env.gitHubUser.id = 2
+    gitHubUser.id = 2
     let inviterUser = try await self.database.registerUser(
-      withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: gitHubUser, email: "inviter@pointfree.co", now: { .mock }
     )
 
     let teamInvite = try await self.database
@@ -200,15 +200,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testAcceptInvitation_InviterHasInactiveStripeSubscription() async throws {
-    var env = GitHubUserEnvelope.mock
-    env.gitHubUser.id = 1
+    var gitHubUser = GitHubUser.mock
+    gitHubUser.id = 1
     let currentUser = try await self.database.registerUser(
-      withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: gitHubUser, email: "hello@pointfree.co", now: { .mock }
     )
 
-    env.gitHubUser.id = 2
+    gitHubUser.id = 2
     let inviterUser = try await self.database.registerUser(
-      withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: gitHubUser, email: "inviter@pointfree.co", now: { .mock }
     )
 
     _ = try await self.database
@@ -235,15 +235,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testAcceptInvitation_InviterHasCancelingStripeSubscription() async throws {
-    var env = GitHubUserEnvelope.mock
-    env.gitHubUser.id = 1
+    var gitHubUser = GitHubUser.mock
+    gitHubUser.id = 1
     let currentUser = try await self.database.registerUser(
-      withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: gitHubUser, email: "hello@pointfree.co", now: { .mock }
     )
 
-    env.gitHubUser.id = 2
+    gitHubUser.id = 2
     let inviterUser = try await self.database.registerUser(
-      withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: gitHubUser, email: "inviter@pointfree.co", now: { .mock }
     )
 
     _ = try await self.database.createSubscription(
@@ -275,7 +275,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       $0.database.fetchSubscriptionTeammatesByOwnerId = { _ in [.mock, .mock] }
     } operation: {
       let currentUser = try await self.database.upsertUser(
-        .mock, "hello@pointfree.co", { .mock })
+        .mock, .mock, "hello@pointfree.co", { .mock })
 
       var stripeSubscription = Stripe.Subscription.teamYearly
       stripeSubscription.quantity = 2
@@ -315,15 +315,15 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
   @MainActor
   func testResendInvite_CurrentUserIsNotInviter() async throws {
-    var env = GitHubUserEnvelope.mock
-    env.gitHubUser.id = 1
+    var gitHubUser = GitHubUser.mock
+    gitHubUser.id = 1
     let currentUser = try await self.database.registerUser(
-      withGitHubEnvelope: env, email: "hello@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: gitHubUser, email: "hello@pointfree.co", now: { .mock }
     )
 
-    env.gitHubUser.id = 2
+    gitHubUser.id = 2
     let inviterUser = try await self.database.registerUser(
-      withGitHubEnvelope: env, email: "inviter@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: gitHubUser, email: "inviter@pointfree.co", now: { .mock }
     )
 
     let teamInvite = try await self.database

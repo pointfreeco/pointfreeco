@@ -1,5 +1,5 @@
 GET http://localhost:8080/github-failure
-Cookie: pf_session={"gitHubAccessToken":{"access_token":"deadbeef-new"}}
+Cookie: pf_session={"gitHubAccessToken":"deadbeef-new"}
 
 200 OK
 Content-Length: 27802

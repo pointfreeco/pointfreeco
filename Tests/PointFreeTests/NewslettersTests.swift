@@ -30,7 +30,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
   @MainActor
   func testExpressUnsubscribe() async throws {
     let user = try await self.database.registerUser(
-      withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+      accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock }
     )
 
     let payload = try XCTUnwrap(
@@ -66,7 +66,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
   func testExpressUnsubscribeReply() async throws {
     #if !os(Linux)
       let user = try await self.database.registerUser(
-        withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+        accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock }
       )
 
       let unsubEmail = self.mailgun.unsubscribeEmail(
@@ -108,7 +108,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
   func testExpressUnsubscribeReply_IncorrectSignature() async throws {
     #if !os(Linux)
       let user = try await self.database.registerUser(
-        withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+        accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock }
       )
 
       let unsubEmail = self.mailgun.unsubscribeEmail(
@@ -150,7 +150,7 @@ class NewslettersIntegrationTests: LiveDatabaseTestCase {
   func testExpressUnsubscribeReply_UnknownNewsletter() async throws {
     #if !os(Linux)
       let user = try await self.database.registerUser(
-        withGitHubEnvelope: .mock, email: "hello@pointfree.co", now: { .mock }
+        accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock }
       )
 
       let payload = encrypted(

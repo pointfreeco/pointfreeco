@@ -23,8 +23,9 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
 
   func testIncrementEpisodeCredits() async throws {
     for id in [1, 2, 3] {
-      var env = GitHubUserEnvelope.mock
-      env.gitHubUser.id = .init(rawValue: id)
+      var gitHubUser = GitHubUser.mock
+      gitHubUser.id = GitHubUser.ID(rawValue: id)
+      let accessToken = GitHubAccessToken.mock
       let ids = try await self.database.execute(
         """
         INSERT INTO "users" (
@@ -36,9 +37,9 @@ final class WelcomeEmailIntegrationTests: LiveDatabaseTestCase {
           "created_at"
         ) VALUES (
           \(bind: "\(id)@pointfree.co"),
-          \(bind: env.gitHubUser.id),
-          \(bind: env.accessToken.accessToken),
-          \(bind: env.gitHubUser.name),
+          \(bind: gitHubUser.id),
+          \(bind: accessToken),
+          \(bind: gitHubUser.name),
           1,
           CURRENT_DATE - INTERVAL '\(raw: "\(id * 7)") DAY' + INTERVAL '12 HOUR'
         ) RETURNING "id"
