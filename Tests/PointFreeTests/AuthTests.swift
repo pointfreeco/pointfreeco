@@ -143,7 +143,7 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
 class AuthTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
-    //SnapshotTesting.isRecording = true
+//    SnapshotTesting.isRecording = true
   }
 
   @MainActor
@@ -213,7 +213,22 @@ class AuthTests: TestCase {
     } operation: {
       let auth = request(to: .auth(.gitHubCallback(code: "deadbeef", redirect: nil)))
       let conn = connection(from: auth)
-      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+      await assertInlineSnapshot(of: await siteMiddleware(conn), as: .conn) {
+        """
+        GET http://localhost:8080/github-auth?code=deadbeef
+        Cookie: pf_session={}
+
+        302 Found
+        Location: /github-failure
+        Referrer-Policy: strict-origin-when-cross-origin
+        Set-Cookie: pf_session={"gitHubAccessToken":{"access_token":"deadbeef"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+        """
+      }
     }
   }
 
@@ -231,12 +246,8 @@ class AuthTests: TestCase {
       _ = $0
     } operation: {
       let auth = request(
-        to: .auth(
-          .failureLanding(
-            accessToken: AccessToken(accessToken: "deadbeef-new"),
-            redirect: nil
-          )
-        )
+        to: .auth(.failureLanding(redirect: nil)),
+        session: Session(gitHubAccessToken: AccessToken(accessToken: "deadbeef-new"))
       )
       let conn = connection(from: auth)
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
@@ -274,18 +285,14 @@ class AuthTests: TestCase {
       }
     } operation: {
       let auth = request(
-        to: .auth(
-          .updateGitHub(
-            accessToken: AccessToken(accessToken: "deadbeef-new"),
-            redirect: nil
-          )
-        )
+        to: .auth(.updateGitHub(redirect: nil)),
+        session: Session(gitHubAccessToken: AccessToken(accessToken: "deadbeef-new"))
       )
       let conn = connection(from: auth)
       await assertInlineSnapshot(of: await siteMiddleware(conn), as: .conn) {
         """
-        POST http://localhost:8080/update-github?acccess_token=deadbeef-new
-        Cookie: pf_session={}
+        POST http://localhost:8080/update-github
+        Cookie: pf_session={"gitHubAccessToken":{"access_token":"deadbeef-new"}}
 
         302 Found
         Location: /
