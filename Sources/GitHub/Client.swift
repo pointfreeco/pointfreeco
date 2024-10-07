@@ -15,16 +15,29 @@ import Tagged
 @DependencyClient
 public struct Client {
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
-  public var fetchAuthToken: (_ code: String) async throws -> AccessToken
+  public var fetchAuthToken: (_ code: String) async throws -> AuthTokenResponse
 
   /// Fetches a GitHub user's emails.
-  public var fetchEmails: (_ accessToken: AccessToken) async throws -> [GitHubUser.Email]
+  public var fetchEmails: (_ accessToken: GitHubAccessToken) async throws -> [GitHubUser.Email]
 
   /// Fetches a GitHub user from an access token.
-  public var fetchUser: (_ accessToken: AccessToken) async throws -> GitHubUser
+  public var fetchUser: (_ accessToken: GitHubAccessToken) async throws -> GitHubUser
 
   @DependencyEndpoint(method: "fetchUser")
-  public var fetchUserByUserID: (_ id: GitHubUser.ID, _ accessToken: AccessToken) async throws -> GitHubUser
+  public var fetchUserByUserID: (
+    _ id: GitHubUser.ID,
+    _ accessToken: GitHubAccessToken
+  ) async throws -> GitHubUser
+
+  public struct AuthTokenResponse: Codable {
+    public var accessToken: String
+    public var toGitHubAccessToken: GitHubAccessToken {
+      GitHubAccessToken(rawValue: accessToken)
+    }
+    private enum CodingKeys: String, CodingKey {
+      case accessToken = "access_token"
+    }
+  }
 }
 
 extension Client {
@@ -56,7 +69,7 @@ func fetchGitHubAuthToken(
   clientId: Client.ID,
   clientSecret: Client.Secret,
   code: String
-) -> DecodableHTTPClientRequest<AccessToken> {
+) -> DecodableHTTPClientRequest<Client.AuthTokenResponse> {
   var request = HTTPClientRequest(url: "https://github.com/login/oauth/access_token")
   request.method = .POST
   request.headers.add(name: "accept", value: "application/json")
@@ -74,27 +87,30 @@ func fetchGitHubAuthToken(
   return DecodableHTTPClientRequest(request)
 }
 
-func fetchGitHubEmails(token: AccessToken) -> DecodableHTTPClientRequest<[GitHubUser.Email]> {
+func fetchGitHubEmails(token: GitHubAccessToken) -> DecodableHTTPClientRequest<[GitHubUser.Email]> {
   apiDataTask("user/emails", token: token)
 }
 
 func fetchGitHubUser(
-  with token: AccessToken
+  with token: GitHubAccessToken
 ) -> DecodableHTTPClientRequest<GitHubUser> {
   apiDataTask("user", token: token)
 }
 
 func fetchGitHubUser(
   id: GitHubUser.ID,
-  with token: AccessToken
+  with token: GitHubAccessToken
 ) -> DecodableHTTPClientRequest<GitHubUser> {
   apiDataTask("user/\(id)", token: token)
 }
 
-private func apiDataTask<A>(_ path: String, token: AccessToken) -> DecodableHTTPClientRequest<A> {
+private func apiDataTask<A>(
+  _ path: String,
+  token: GitHubAccessToken
+) -> DecodableHTTPClientRequest<A> {
   var request = HTTPClientRequest(url: "https://api.github.com/\(path)")
   request.headers.add(name: "accept", value: "application/vnd.github.v3+json")
-  request.headers.add(name: "authorization", value: "token \(token.accessToken)")
+  request.headers.add(name: "authorization", value: "token \(token.rawValue)")
   return DecodableHTTPClientRequest(rawValue: request)
 }
 

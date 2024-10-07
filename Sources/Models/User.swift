@@ -9,7 +9,7 @@ public struct User: Decodable, Equatable, Identifiable {
   public var email: EmailAddress
   public var episodeCreditCount: Int
   public var gitHubUserId: GitHubUser.ID
-  public var gitHubAccessToken: String
+  public var gitHubAccessToken: GitHubAccessToken
   public var id: Tagged<Self, UUID>
   public var isAdmin: Bool
   public var name: String?
@@ -22,7 +22,7 @@ public struct User: Decodable, Equatable, Identifiable {
     email: EmailAddress,
     episodeCreditCount: Int,
     gitHubUserId: GitHubUser.ID,
-    gitHubAccessToken: String,
+    gitHubAccessToken: GitHubAccessToken,
     id: ID,
     isAdmin: Bool,
     name: String?,

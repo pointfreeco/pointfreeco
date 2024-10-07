@@ -91,7 +91,7 @@ import GitHub
 
 public struct Session: Equatable {
   public var flash: Flash?
-  public var gitHubAccessToken: AccessToken?
+  public var gitHubAccessToken: GitHubAccessToken?
   public var user: User?
 
   public static let empty = Session()
@@ -189,7 +189,7 @@ extension Session: Codable {
 
     self.flash = try container.decodeIfPresent(Flash.self, forKey: .flash)
     self.gitHubAccessToken = try container.decodeIfPresent(
-      AccessToken.self,
+      GitHubAccessToken.self,
       forKey: .gitHubAccessToken
     )
     self.user =

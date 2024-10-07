@@ -2,35 +2,7 @@ import EmailAddress
 import Foundation
 import Tagged
 
-public struct AccessToken: Codable, Equatable, RawRepresentable {
-  public var accessToken: String
-
-  public init(accessToken: String) {
-    self.accessToken = accessToken
-  }
-
-  public init(from decoder: any Decoder) throws {
-    let container = try decoder.container(keyedBy: CodingKeys.self)
-    self.accessToken = try container.decode(String.self, forKey: .accessToken)
-  }
-
-  public func encode(to encoder: any Encoder) throws {
-    var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(accessToken, forKey: .accessToken)
-  }
-
-  public init?(rawValue: String) {
-    self.accessToken = rawValue
-  }
-
-  public var rawValue: String {
-    accessToken
-  }
-
-  private enum CodingKeys: String, CodingKey {
-    case accessToken = "access_token"
-  }
-}
+public typealias GitHubAccessToken = Tagged<((), accessToken: ()), String>
 
 public struct OAuthError: Codable, Swift.Error {
   public var description: String
@@ -88,15 +60,5 @@ public struct GitHubUser: Codable, Identifiable {
     case login
     case id
     case name
-  }
-}
-
-public struct GitHubUserEnvelope: Codable {
-  public var accessToken: AccessToken
-  public var gitHubUser: GitHubUser
-
-  public init(accessToken: AccessToken, gitHubUser: GitHubUser) {
-    self.accessToken = accessToken
-    self.gitHubUser = gitHubUser
   }
 }

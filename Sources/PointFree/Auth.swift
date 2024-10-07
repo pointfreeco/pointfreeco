@@ -90,7 +90,7 @@ private func updateGitHub(
     )
     await fireAndForget {
       let email = try await gitHub
-        .fetchEmails(accessToken: AccessToken(accessToken: existingAccessToken))
+        .fetchEmails(accessToken: existingAccessToken)
         .first(where: \.primary)
         .unwrap()
         .email
@@ -102,7 +102,7 @@ private func updateGitHub(
         _ = try await send(
           email: Email(
             from: "support@pointfree.co",
-            to: [email],
+            to: [email, "brandon@pointfree.co"],
             subject: "Your GitHub account has been updated",
             text: html,
             html: html,
@@ -200,7 +200,7 @@ private func gitHubCallbackResponse(
       }
   }
   do {
-    let accessToken = try await gitHub.fetchAuthToken(code: code)
+    let accessToken = try await gitHub.fetchAuthToken(code: code).toGitHubAccessToken
     return await gitHubAuthTokenMiddleware(
       code: code,
       accessToken: accessToken,
@@ -275,13 +275,19 @@ public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
     .map { conn.map(const($0 .*. conn.data.second)) }
 }
 
-private func fetchOrRegisterUser(env: GitHubUserEnvelope) async throws -> Models.User {
+private func fetchOrRegisterUser(
+  accessToken: GitHubAccessToken,
+  gitHubUser: GitHubUser
+) async throws -> Models.User {
   @Dependency(\.database) var database
 
   do {
-    return try await database.fetchUser(gitHubID: env.gitHubUser.id)
+    return try await database.fetchUser(gitHubID: gitHubUser.id)
   } catch {
-    return try await registerUser(env: env)
+    return try await registerUser(
+      accessToken: accessToken,
+      gitHubUser: gitHubUser
+    )
   }
 }
 
@@ -291,16 +297,20 @@ extension GitHubUser {
   }
 }
 
-private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
+private func registerUser(
+  accessToken: GitHubAccessToken,
+  gitHubUser: GitHubUser
+) async throws -> Models.User {
   @Dependency(\.database) var database
   @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.gitHub) var gitHub
   @Dependency(\.date.now) var now
 
-  let email = try await gitHub.fetchEmails(env.accessToken).first(where: \.primary).unwrap().email
+  let email = try await gitHub.fetchEmails(accessToken).first(where: \.primary).unwrap().email
   do {
     let user = try await database.registerUser(
-      withGitHubEnvelope: env,
+      accessToken: accessToken,
+      gitHubUser: gitHubUser,
       email: email,
       now: { now }
     )
@@ -308,7 +318,7 @@ private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
       try await sendEmail(
         to: [email],
         subject: "Point-Free Registration",
-        content: inj2(registrationEmailView(env.gitHubUser))
+        content: inj2(registrationEmailView(gitHubUser))
       )
     }
     return user
@@ -324,7 +334,7 @@ private func registerUser(env: GitHubUserEnvelope) async throws -> Models.User {
 /// Exchanges a GitHub code for an access token and loads the user's data.
 private func gitHubAuthTokenMiddleware(
   code: String,
-  accessToken: GitHub.AccessToken,
+  accessToken: GitHubAccessToken,
   redirect: String?,
   _ conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
@@ -334,8 +344,7 @@ private func gitHubAuthTokenMiddleware(
 
   do {
     let gitHubUser = try await gitHub.fetchUser(accessToken)
-    let env = GitHubUserEnvelope(accessToken: accessToken, gitHubUser: gitHubUser)
-    let user = try await fetchOrRegisterUser(env: env)
+    let user = try await fetchOrRegisterUser(accessToken: accessToken, gitHubUser: gitHubUser)
     try await refreshStripeSubscription(for: user)
     return conn.redirect(to: redirect ?? siteRouter.path(for: .home)) {
       $0.writeSessionCookie { $0.user = .standard(user.id) }
