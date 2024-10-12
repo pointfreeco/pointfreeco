@@ -15,7 +15,7 @@ extension Episode {
       .init(
         blurb: """
           > A type that can be hashed into a `Hasher` to produce an integer hash value.
-          
+
           Documentation for the Swift protocol.
           """,
         link: "https://developer.apple.com/documentation/swift/equatable",
@@ -24,7 +24,7 @@ extension Episode {
       .init(
         blurb: """
           > A type that can be compared for value equality.
-          
+
           Documentation for the Swift protocol.
           """,
         link: "https://developer.apple.com/documentation/swift/equatable",
@@ -33,7 +33,7 @@ extension Episode {
       .init(
         blurb: """
           > In mathematics, an equivalence relation is a binary relation that is reflexive, symmetric and transitive.
-          
+
           The Wikipedia page defining an "equivalence relation," a mathematical concept underpinning Swift's `Equatable` protocol.
           """,
         link: "https://en.wikipedia.org/wiki/Equivalence_relation",
@@ -50,7 +50,7 @@ extension Episode {
         hd720: "0298-trailer-720p-1c53a0cc6d6c4d3f90230763b3b5274a",
         sd540: "0298-trailer-540p-721011e6161541c19dc9da193d9cf680"
       ),
-      vimeoId: 1018714670
+      vimeoId: 1_018_714_670
     )
   )
 }
