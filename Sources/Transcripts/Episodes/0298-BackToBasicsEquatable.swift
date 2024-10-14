@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep298_equatable = Episode(
     blurb: """
-      While the documentation for `Equatable` requires that conformances "must satisfy three conditions" _and_ be "substitutable," there are conformances in the Standard Library that run afoul, but for pragmatic reasons. Let's explore them and then dive deeper into a related protocol: `Hashable`.
+      While the documentation for `Equatable` discusses the notions of "equivalence relation" _and_ "substitutability", there are conformances in the Standard Library that run afoul, but for pragmatic reasons. Let’s explore them and then dive deeper into a related protocol: `Hashable`.
       """,
     codeSampleDirectory: "0298-back-to-basics-equatable-pt2",
     exercises: _exercises,
