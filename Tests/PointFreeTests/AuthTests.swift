@@ -2,6 +2,7 @@ import Dependencies
 import Either
 import HttpPipeline
 import InlineSnapshotTesting
+import Models
 import PointFreePrelude
 import PointFreeRouter
 import PointFreeTestSupport
@@ -328,6 +329,43 @@ class AuthTests: TestCase {
 
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
+
+  #if !os(Linux)
+    @MainActor
+    func testLogin_StripeFailure() async throws {
+      await withIssueReporters([]) {
+        await withDependencies {
+          $0.gitHub.fetchUser = { _ in .mock }
+          $0.stripe.fetchSubscription = { _ in
+            struct Error: Swift.Error {}
+            throw Error()
+          }
+        } operation: {
+          let auth = request(to: .auth(.gitHubCallback(code: "deadbeef", redirect: nil)))
+          let conn = connection(from: auth)
+          XCTExpectFailure {
+            $0.compactDescription.contains("GitHub Auth: Refresh stripe failed")
+          }
+          await assertInlineSnapshot(of: await siteMiddleware(conn), as: .conn) {
+            """
+            GET http://localhost:8080/github-auth?code=deadbeef
+            Cookie: pf_session={}
+
+            302 Found
+            Location: /
+            Referrer-Policy: strict-origin-when-cross-origin
+            Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+            X-Content-Type-Options: nosniff
+            X-Download-Options: noopen
+            X-Frame-Options: SAMEORIGIN
+            X-Permitted-Cross-Domain-Policies: none
+            X-XSS-Protection: 1; mode=block
+            """
+          }
+        }
+      }
+    }
+  #endif
 
   @MainActor
   func testLogin_AlreadyLoggedIn() async throws {

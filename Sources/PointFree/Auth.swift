@@ -359,7 +359,9 @@ private func gitHubAuthTokenMiddleware(
   do {
     let gitHubUser = try await gitHub.fetchUser(accessToken)
     let user = try await fetchOrRegisterUser(accessToken: accessToken, gitHubUser: gitHubUser)
-    try await refreshStripeSubscription(for: user)
+    await notifyError("GitHub Auth: Refresh stripe failed") {
+      try await refreshStripeSubscription(for: user)
+    }
     return conn.redirect(to: redirect ?? siteRouter.path(for: .home)) {
       $0.writeSessionCookie { $0.user = .standard(user.id) }
     }
@@ -385,7 +387,7 @@ private func gitHubAuthTokenMiddleware(
   }
 }
 
-private func refreshStripeSubscription(for user: Models.User) async throws {
+func refreshStripeSubscription(for user: Models.User) async throws {
   @Dependency(\.database) var database
   @Dependency(\.stripe) var stripe
 
