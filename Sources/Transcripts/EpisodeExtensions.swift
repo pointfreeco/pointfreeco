@@ -20,7 +20,7 @@ extension Episode {
 
   public var fullVideo: Video {
     let video = self._fullVideo ?? Episode.allPrivateVideos[self.id]
-    assert(video != nil, "Missing full video for episode #\(self.id) (\(self.title))!")
+    precondition(video != nil, "Missing full video for episode #\(self.id) (\(self.title))!")
     return video!
   }
 }
