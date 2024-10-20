@@ -756,7 +756,7 @@ public struct PrismJSHead: HTML {
         Prism.languages.swift['class-name']
       ];
       Prism.languages.swift.keyword = [
-        /\b(any|macro)\b/,
+        /\b(any|macro|sending)\b/,
         /\b((iOS|macOS|tvOS|watchOS|visionOS)(|ApplicationExtension)|swift)\b/,
         Prism.languages.swift.keyword
       ];
