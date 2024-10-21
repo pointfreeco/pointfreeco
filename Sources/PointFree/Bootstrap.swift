@@ -19,6 +19,26 @@ public func bootstrap() async {
   await fireAndForget {
     await updateCollectionClips()
   }
+
+  await fireAndForget {
+    @Dependency(\.episodes) var episodes
+    @Dependency(\.database) var database
+    _ = try! await database.execute(
+        """
+        TRUNCATE "search_episodes"
+        """
+    )
+    for episode in episodes() {
+      _ = try! await database.execute(
+        """
+        INSERT INTO "search_episodes" 
+        ("sequence", "title", "content") 
+        VALUES 
+        (\(bind: episode.sequence), \(bind: episode.fullTitle), \(bind: episode.transcript ?? ""))
+        """
+      )
+    }
+  }
 }
 
 private func connectToPostgres() async {

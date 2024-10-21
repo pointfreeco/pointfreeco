@@ -890,6 +890,24 @@ extension Client {
           )
           """
         )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "search_episodes" (
+            "sequence" integer PRIMARY KEY NOT NULL,
+            "title" character varying NOT NULL,
+            "content" character varying NOT NULL
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE INDEX IF NOT EXISTS "search_episodes_index_content" 
+          ON "search_episodes"
+          USING GIN(
+            (setweight(to_tsvector('english', content), 'B'))
+          )
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(
