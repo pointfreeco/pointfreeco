@@ -21,8 +21,9 @@ extension Episode.Collection {
         coreLessons: [
           .init(episode: .ep297_equatable),
           .init(episode: .ep298_equatable),
+          .init(episode: .ep299_equatable),
+          .init(episode: .ep300_equatable),
         ],
-        isFinished: false,
         isHidden: false,
         related: [],
         title: "Equatable and Hashable",
