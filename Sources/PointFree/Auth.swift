@@ -105,7 +105,7 @@ private func updateGitHub(
         _ = try await send(
           email: Email(
             from: "support@pointfree.co",
-            to: [email, "brandon@pointfree.co"],
+            to: [email],
             subject: "Your GitHub account has been updated",
             text: html,
             html: html,
