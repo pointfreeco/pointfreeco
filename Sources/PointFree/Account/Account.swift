@@ -32,106 +32,73 @@ private func fetchAccountData<I>(
 ) -> IO<Conn<I, AccountData>> {
   @Dependency(\.database) var database
   @Dependency(\.stripe) var stripe
+  @Dependency(\.fireAndForget) var fireAndForget
 
   let (user, subscriberState) = lower(conn.data)
 
-  let subscription = EitherIO {
-    try await database.fetchSubscription(user: user)
-  }
-
-  let owner =
-    subscription
-    .flatMap { subscription in
-      EitherIO { try await database.fetchUser(id: subscription.userId) }
+  return IO { () -> AccountData in
+    await fireAndForget {
+      try await refreshStripeSubscription(for: user)
     }
 
-  let stripeSubscription =
-    subscription
-    .map(\.stripeSubscriptionId)
-    .flatMap { id in EitherIO { try await stripe.fetchSubscription(id: id) } }
+    let subscription = try? await database.fetchSubscription(user: user)
+    let stripeSubscription = if let stripeSubscriptionID = subscription?.stripeSubscriptionId {
+      try? await stripe.fetchSubscription(id: stripeSubscriptionID)
+    } else {
+      Stripe.Subscription?.none
+    }
 
-  let upcomingInvoice =
-    stripeSubscription
-    .flatMap { stripeSubscription in
-      EitherIO {
-        guard stripeSubscription.isRenewing else { throw unit }
-        return try await stripe.fetchUpcomingInvoice(customerID: stripeSubscription.customer.id)
+    async let paymentMethod: Either<any CardProtocol, PaymentMethod>? = {
+      if let card = stripeSubscription?.customer.right?.defaultCard {
+        .left(card)
+      } else if let defaultPaymentMethod = stripeSubscription?.customer.right?.invoiceSettings.defaultPaymentMethod {
+        try? await .right(stripe.fetchPaymentMethod(id: defaultPaymentMethod))
+      } else {
+        nil
       }
-    }
-
-  let paymentMethod: EitherIO<Error, Either<any CardProtocol, PaymentMethod>?> =
-    stripeSubscription
-    .flatMap { subscription in
-      EitherIO<Error, Either<any CardProtocol, PaymentMethod>?> {
-        guard let customer = subscription.customer.right else { return nil }
-        if let card = customer.defaultCard {
-          return .left(card)
-        } else if let paymentMethod = customer.invoiceSettings.defaultPaymentMethod {
-          return try await .right(stripe.fetchPaymentMethod(id: paymentMethod))
-        } else {
-          return nil
-        }
+    }()
+    async let owner = {
+      if let userID = subscription?.userId {
+        try? await database.fetchUser(id: userID)
+      } else {
+        User?.none
       }
-    }
+    }()
+    async let upcomingInvoice = {
+      if let customID = stripeSubscription?.customer.id {
+        try? await stripe.fetchUpcomingInvoice(customerID: customID)
+      } else {
+        Invoice?.none
+      }
+    }()
+    async let emailSettings = {
+      (try? await database.fetchEmailSettings(userID: user.id)) ?? []
+    }()
+    async let episodeCredits = {
+      (try? await database.fetchEpisodeCredits(userID: user.id)) ?? []
+    }()
+    async let teamInvites = {
+      (try? await database.fetchTeamInvites(inviterID: user.id)) ?? []
+    }()
+    async let teammates = {
+      (try? await database.fetchSubscriptionTeammates(ownerID: user.id)) ?? []
+    }()
 
-  let everything:
-    Parallel<
-      (
-        [EmailSetting],
-        [EpisodeCredit],
-        Either<any CardProtocol, PaymentMethod>?,
-        Stripe.Subscription?,
-        Models.Subscription?,
-        User?,
-        [TeamInvite],
-        [User],
-        Invoice?
-      )
-    > = zip9(
-      IO { (try? await database.fetchEmailSettings(userID: user.id)) ?? [] }
-        .parallel,
-
-      IO { (try? await database.fetchEpisodeCredits(userID: user.id)) ?? [] }
-        .parallel,
-
-      paymentMethod.run.map { $0.right ?? nil }.parallel,
-
-      stripeSubscription.run.map(\.right).parallel,
-
-      subscription.run.map(\.right).parallel,
-
-      owner.run.map(\.right).parallel,
-
-      IO { (try? await database.fetchTeamInvites(inviterID: user.id)) ?? [] }.parallel,
-
-      IO { (try? await database.fetchSubscriptionTeammates(ownerID: user.id)) ?? [] }
-        .parallel,
-
-      upcomingInvoice.run.map(\.right).parallel
+    return await AccountData(
+      currentUser: user,
+      emailSettings: emailSettings,
+      episodeCredits: episodeCredits,
+      paymentMethod: paymentMethod,
+      stripeSubscription: stripeSubscription,
+      subscriberState: subscriberState,
+      subscription: subscription,
+      subscriptionOwner: owner,
+      teamInvites: teamInvites,
+      teammates: teammates,
+      upcomingInvoice: upcomingInvoice
     )
-
-  return
-    everything
-    .map {
-      conn.map(
-        const(
-          AccountData(
-            currentUser: user,
-            emailSettings: $0,
-            episodeCredits: $1,
-            paymentMethod: $2,
-            stripeSubscription: $3,
-            subscriberState: subscriberState,
-            subscription: $4,
-            subscriptionOwner: $5,
-            teamInvites: $6,
-            teammates: $7,
-            upcomingInvoice: $8
-          )
-        )
-      )
-    }
-    .sequential
+  }
+  .map { conn.map(const($0)) }
 }
 
 func requireStripeSubscription<A>(
