@@ -42,16 +42,19 @@ private func fetchAccountData<I>(
     }
 
     let subscription = try? await database.fetchSubscription(user: user)
-    let stripeSubscription = if let stripeSubscriptionID = subscription?.stripeSubscriptionId {
-      try? await stripe.fetchSubscription(id: stripeSubscriptionID)
-    } else {
-      Stripe.Subscription?.none
-    }
+    let stripeSubscription =
+      if let stripeSubscriptionID = subscription?.stripeSubscriptionId {
+        try? await stripe.fetchSubscription(id: stripeSubscriptionID)
+      } else {
+        Stripe.Subscription?.none
+      }
 
     async let paymentMethod: Either<any CardProtocol, PaymentMethod>? = {
       if let card = stripeSubscription?.customer.right?.defaultCard {
         .left(card)
-      } else if let defaultPaymentMethod = stripeSubscription?.customer.right?.invoiceSettings.defaultPaymentMethod {
+      } else if let defaultPaymentMethod = stripeSubscription?.customer.right?.invoiceSettings
+        .defaultPaymentMethod
+      {
         try? await .right(stripe.fetchPaymentMethod(id: defaultPaymentMethod))
       } else {
         nil
