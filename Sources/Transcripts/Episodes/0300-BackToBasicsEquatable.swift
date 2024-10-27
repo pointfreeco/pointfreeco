@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep300_equatable = Episode(
     blurb: """
-      TODO
+      We zoom out a bit to get a greater appreciation for how `Equatable` and `Hashable` are used throughout the greater language and ecosystem, including actors, standard library types, SwiftUI, and more.
       """,
     codeSampleDirectory: "0300-back-to-basics-equatable-pt4",
     exercises: _exercises,
