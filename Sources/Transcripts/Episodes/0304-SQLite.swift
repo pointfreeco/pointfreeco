@@ -16,7 +16,7 @@ extension Episode {
         blurb: "The SQLite home page",
         link: "https://www.sqlite.org",
         title: "SQLite"
-      ),
+      )
     ],
     sequence: 304,
     subtitle: "SwiftUI",
