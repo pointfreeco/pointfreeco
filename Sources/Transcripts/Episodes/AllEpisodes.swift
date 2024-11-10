@@ -304,5 +304,8 @@ extension Episode {
     .ep299_equatable,
     .ep300_equatable,
     .ep301_sqlite,
+    .ep302_sqlite,
+    .ep303_sqlite,
+    .ep304_sqlite,
   ]
 }
