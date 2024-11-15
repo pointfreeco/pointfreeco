@@ -118,7 +118,7 @@ public func simplePageLayout<A>(
           ghosterBanner(),
           pastDueBanner,
           (layoutData.flash.map(flashView) ?? []),
-          announcementBanner(.wwdc24),
+          announcementBanner(.blackFriday24),
           liveStreamBanner,
           emergencyModeBanner(emergencyMode, layoutData),
           navView(style: layoutData.style),
@@ -179,24 +179,36 @@ private var liveStreamBanner: Node {
 struct Banner {
   let endAt: Date
   let markdownContent: String
-  let shouldShow: (SubscriberState, SiteRoute) -> Bool
+  let shouldShow: (SiteRoute) -> Bool
   let startAt: Date
 
-  static let wwdc24 = Self(
-    endAt: yearMonthDayFormatter.date(from: "2024-06-19")!,
+  static var allBanners: [Self] {
+    @Dependency(\.currentRoute) var currentRoute
+    @Dependency(\.date.now) var now
+    @Dependency(\.subscriberState) var subscriberState
+    @Dependency(\.envVars.appEnv) var appEnv
+
+    let banners: [Self] = [.blackFriday24]
+    return banners.filter { banner in
+      return
+        appEnv == .development
+      || !subscriberState.isActive
+          && banner.shouldShow(currentRoute)
+          && (banner.startAt...banner.endAt).contains(now)
+    }
+  }
+
+  static let blackFriday24 = Self(
+    endAt: yearMonthDayFormatter.date(from: "2024-12-06")!,
     markdownContent: ###"""
-      **🎉 WWDC '24 Sale!** Save 25% when you [subscribe today](/discounts/dubdub24).
+      **🎉 Black Friday Sale!** Save 30% when you [subscribe today](/discounts/black-friday-2024).
       """###,
-    shouldShow: { subscriberState, route in
-      if subscriberState.isActiveSubscriber {
+    shouldShow: { route in
+      if case .subscribeConfirmation = route {
         return false
-      } else if case .subscribeConfirmation = route {
+      } else if case .blog(.show(.left("153-black-friday-sale-30-off-point-free"))) = route {
         return false
-      } else if case .blog(.show(.left("142-10-years-of-swift-25-off-point-free"))) = route {
-        return false
-      } else if case .blog(.show(.left("144-10-years-of-swift-25-off-point-free"))) = route {
-        return false
-      } else if case .blog(.show(.right(142))) = route {
+      } else if case .blog(.show(.right(153))) = route {
         return false
       } else if case .teamInviteCode = route {
         return false
@@ -204,7 +216,7 @@ struct Banner {
         return true
       }
     },
-    startAt: yearMonthDayFormatter.date(from: "2024-06-06")!
+    startAt: yearMonthDayFormatter.date(from: "2024-11-18")!
   )
 }
 
@@ -216,7 +228,9 @@ private func announcementBanner(_ banner: Banner? = nil) -> Node {
 
   guard let banner = banner
   else { return [] }
-  guard banner.shouldShow(subscriberState, currentRoute)
+  guard
+    !subscriberState.isActive,
+    banner.shouldShow(currentRoute)
   else { return [] }
   guard (banner.startAt...banner.endAt).contains(now)
   else { return [] }

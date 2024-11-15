@@ -19,7 +19,7 @@ extension Episode {
       )
     ],
     sequence: 304,
-    subtitle: "SwiftUI",
+    subtitle: "Observation",
     title: "SQLite",
     trailerVideo: .init(
       bytesLength: 0,

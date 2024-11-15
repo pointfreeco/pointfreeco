@@ -140,7 +140,13 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     if shouldShowLiveBanner {
       LiveStreamBanner()
     }
-    // TODO: Announcement banner
+    for banner in Banner.allBanners {
+      AnnouncementBanner {
+        HTMLMarkdown {
+          banner.markdownContent
+        }
+      }
+    }
     NavBar()
     content
     if !layoutData.style.isMinimal {
@@ -584,6 +590,30 @@ struct TopBanner<Content: HTML>: HTML {
       .fontStyle(.body(.small))
     }
     .backgroundColor(style.backgroundColor)
+  }
+}
+
+struct AnnouncementBanner<Content: HTML>: HTML {
+  let content: Content
+
+  init(@HTMLBuilder content: () -> Content) {
+    self.content = content()
+  }
+
+  var body: some HTML {
+    div {
+      div {
+        content
+      }
+      .color(.offWhite)
+      .linkStyle(LinkStyle(color: .offWhite, underline: true))
+      .inlineStyle("margin", "0 auto")
+      .inlineStyle("max-width", "1280px")
+      .inlineStyle("padding", "3rem")
+      .inlineStyle("text-align", "center")
+      .fontScale(.h5)
+    }
+    .backgroundColor(.purple)
   }
 }
 

@@ -28,6 +28,27 @@ extension Episode.Collection {
         related: [],
         title: "Equatable and Hashable",
         whereToGoFromHere: nil
+      ),
+      .init(
+        alternateSlug: nil,
+        blurb: #"""
+          SQLite is one of the most well-crafted, battle-tested, widely-deployed pieces of software 
+          in history, and it's a great fit for apps with more complex persistence needs than user 
+          defaults or a JSON file. Let's get familiar with the library, starting with a crash course 
+          in interacting with C code from Swift, and ending with an overview of a popular Swift
+          library for interfacing with SQLite called [GRDB](http://github.com/groue/GRDB.swift).
+          """#,
+        coreLessons: [
+          .init(episode: .ep301_sqlite),
+          .init(episode: .ep302_sqlite),
+          .init(episode: .ep303_sqlite),
+          .init(episode: .ep304_sqlite),
+        ],
+        isFinished: false,
+        isHidden: false,
+        related: [],
+        title: "SQLite",
+        whereToGoFromHere: nil
       )
     ],
     title: "Back to basics"
