@@ -54,12 +54,12 @@ functionality.
 
 ## [Cross-Platform Swift][cross-platform-collection]
 
-Our personal favorite series from the year, we explored what Swift looks like on platforms other
-than Apple's. The primary platform we explore is WebAssembly (Wasm) where we show how to 
-build a Swift application that runs in a web browser. The application involves complex side effects
-(timers and network requests) as well as navigation (alerts and modals), and it's built in 100%
-pure, cross-platform Swift. This means that with a little bit of extra work the application could be 
-further ported to Windows, Linux, and beyond!
+Our personal favorite series from the year, we explored what Swift looks like on [platforms other
+than Apple's][cross-platform-collection]. The primary platform we explore is WebAssembly (Wasm) 
+where we show how to build a Swift application that runs in a web browser. The application involves 
+complex side effects (timers and network requests) as well as navigation (alerts and modals), and 
+it's built in 100% pure, cross-platform Swift. This means that with a little bit of extra work the 
+application could be further ported to Windows, Linux, and beyond!
 
 And while this series may seem like it is merely about writing code that runs in a browser, the
 true impetus of this series is to explore advance domain modeling techniques. By writing the logic
@@ -69,93 +69,50 @@ but the payoffs are huge.
 
 [cross-platform-collection]: /collections/cross-platform-swift 
 
-## Modern UIKit
+## [Modern UIKit][uikit-collection]
 
-## Shared State in the Composable Architecture
+Most people didn't expect us to dedicate a series of episodes on ["Modern UIKit"][uikit-collection]
+in the year 2024, but that's exactly what we did. SwiftUI may be all the rage these days, but that 
+doesn't mean you won't occassionally need to dip your toes into the UIKit waters. Whether it be to 
+access some functionality not yet available in SwiftUI, or for performance reasons 
+(`UICollectionView` 😍), you will eventually find yourself subclassing `UIViewController`, and then
+the question becomes: what is the most modern way to do this?
 
-<!--
+Our "Modern UIKit" covers a variety of topics to help you modernize your usage of UIKit and get
+the most out of the framework. This includes how to use Swift's powerful Obervation framework with
+UIKit (including the `@Observable` macro), state-driven navigation that looks similar to SwiftUI
+(including stack-based navigation), and bindings for UI controls. By the end of this series we
+can write UIKit applications in a style that looks quite similar to SwiftUI and removes a lot of
+the pain when dealing with UIKit.
 
-## [Modern SwiftUI][modern-swiftui]
+[uikit-collection]: /collections/uikit
 
-At the beginning of the year we finished our [7-part series][modern-swiftui] on what we feel it 
-takes to build a modern SwiftUI application. We took inspiration from one of Apple's own moderately 
-complex demos, [Scrumdinger][scrumdinger], and we rebuilt it with a focus on domain modeling for 
-navigation, side effects, dependencies and testing. By the end we were able to accomplish things in 
-our code base that were not so easy in Apple's, such as deep-linking, more cohesive previews, and 
-simple unit testing.
+## [Shared State in the Composable Architecture][sharing-collection]
 
-We ended up open-sourcing the application we built, which we call [SyncUps][syncups]. We also 
-encouraged others to share how they like to build modern, complex SwiftUI applications by rebuilding
-Apple's Scrumdinger in the style of their choice, and sharing with the community.
+This year we added a powerful tool that our viewers were clamoring for, and that is sharing state
+amongst features in a [Composable Architecture][tca-gh] application. Sharing state in Composable
+Architecture applications can be tricky because the library prefers one to model domains with
+value types rather than reference types. The benefits of doing so are huge (no spooky actions at a
+distance, easy testing, …), but it does complicate sharing state since value types are copied when 
+passed around.
 
-Our [Modern SwiftUI][modern-swiftui] series ended long before the release of Swift 5.9's Observation
-framework, and so we could not use any of those tools during the episodes. But we later had a 
-[dedicated episode][observation-in-practice] to refactoring the SyncUps app to use the new 
-`@Observable` macro. We found that we could delete a lot of code and simplify a lot of things, 
-although we did run into one gnarly gotcha with the Observation framework.
+So, we built a tool called [`@Shared`][sharing-docs] that allows one to still embrace value types 
+while getting many of the benefits of reference types. And even better, we further built the notion
+of persistence into `@Shared` so that you can also immediately persist your state in user defaults,
+the file system, or any storage system of your choice.  
 
-## [Composable Architecture 1.0][tca-1.0-collection]
-
-After more than 3 years of development we [finally released 1.0][tca-1.0-blog] of the Composable 
-Architecture. To celebrate we released a [7-part series of episodes][tca-1.0-collection] to 
-build a moderately complex app from scratch and show how to best make use of many of the tools
-that come with the library.
-
-And the app we built was directly inspired from our [Modern SwiftUI][modern-swiftui] series where
-we rebuilt Apple's [Scrumdinger][scrumdinger] application. But this time we rebuilt it with the
-Composable Architecture, and saw a number of benefits, including the ability to use value types
-for domain modeling instead of reference types, simpler composition and navigation APIs, and
-truly powerful and exhaustive testing.
-
-## [Deep dive into `@Observable`][observation-collection]
-
-Most recently this year we dove _deep_ into the new Observation framework in Swift 5.9 in a 
-[4-part series][observation-collection]:
-
-* We showed off the past tools, pre-Observation, and demonstrated that while they got the job done 
-  there was a lot to be desired. 
-* Then we showed off what the new tools were capable of, and it was quite amazing. You can build 
-  your SwiftUI features in a simpler, more naive manner, and everything somehow just magically
-  works! We even dipped our toes into the actual open source code in the Observation framework so
-  that we could get a better understanding of how everything works.
-* However, the Observation tools do have some gotchas, so we dedicated an entire episode to just 
-  that so that you can best wield the tools. Otherwise you run the risk of over-observing state or 
-  glitchy views.
-* And finally we explored a theoretical future of what `@Observable` could look like if it were
-  allowed to be applied to structs. There are a lot of reasons to want that, but unfortunately it's
-  just not quite possible in Swift today.
-
-## [Reliable Async Testing][reliable-testing]
-
-One of the best new features to be added to Swift in the past few years was concurrency. It makes 
-complex asynchronous code short and succinct, it provides all new tools for making concurrent code 
-safe, and it unlocks all new patterns that were previously difficult to imagine.
-
-However, testing code involving Swift's new asynchronous tools remained elusive. It seems the moment
-you introduce the `async` or `await` keyword to your code you open up Pandora's box of
-non-determinism and flakiness in your code that is nearly impossible to test. You are forced to
-sprinkle `Task.yield`s or `Task.sleep`s throughout your tests just to push things forward and assert
-on how your feature is behaving.
-
-Reliably testing async code was such a problem that we started a 
-[discussion][realiable-testing-forums] on the Swift forums to see what could be done about the 
-situation…and unfortunately there's not much. At least not much in the way of official tools 
-provided by Swift.
-
-But, over the course of [5 episodes][reliable-testing] we broken down why testing async code in 
-Swift is so difficult, and provided a solution. We even packaged the tool up into an
-[open-source library][concurrency-extras-gh] that can help any code base test their async code
-in a fast and non-deterministic manner.
-
--->
-
+[sharing-collection]: /collections/composable-architecture/sharing-and-persisting-state
+[tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
+[sharing-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/sharingstate
 
 ## Subscribe today!
 
 This only scratches the surface of what we covered in 2024, and we have plenty of exciting topics 
-planned for 2025, including bringing `@Observable` to the Composable Architecture, a new fundamental 
-change to the Composable Architecture that will unlock capabilities currently impossible, and 
-perhaps we will even start to explore some server-side Swift. 😀
+planned for 2025, TODO 
+
+<!--including bringing `@Observable` to the Composable Architecture, a new fundamental -->
+<!--change to the Composable Architecture that will unlock capabilities currently impossible, and -->
+<!--perhaps we will even start to explore some server-side Swift. 😀-->
 
 Be sure to [subscribe today][black-friday-sale] to get access to all of this and more. The
 offer is valid for only a few days, so you better hurry!
