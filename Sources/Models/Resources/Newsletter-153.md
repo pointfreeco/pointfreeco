@@ -1,6 +1,7 @@
-We do this only a few times a year: we‘re having a 
-[rare, Point-Free sale](/discounts/black-friday-2024)
-this Black Friday by offering 30% off the first year of your subscription!
+Point-Free offers some of the most advanced and original Swift content out there. It will help you
+bring your expertise of the Swift language to the next level, and starting today we're have a 
+[Black Friday sale](/discounts/black-friday-2024), which gives you **30% off** the first year
+of your subscription.
 
 @Button(/discounts/black-friday-2024) {
   Subscribe today!
@@ -8,30 +9,22 @@ this Black Friday by offering 30% off the first year of your subscription!
 
 Once subscribed you'll get instant access to all [304 episodes][pf] (190 hours of video and
 growing!) of original Point-Free content. This includes popular [collections][collections] that were
-created or expanded this year, as well as all of the material we have planned for 2025!
-
-We offer some of the most advanced and original Swift content that will help bring your expertise
-of the Swift language to the next level. Here are just a few of our additions from this year:
-
-<!--
-SQLite
-Back to basics: Equatable and Hashable
-Cross-Platform Swift
-Modern UIKit
-Shared State
--->
+created or expanded this year, as well as all of the material we have planned for 2025! Here are 
+just a few of our additions from this year:
 
 ## [Back to Basics: Equatable & Hashable][eq-hash-collection]
 
-This year we began a new type of episode arc on Point-Free called "Back to Basics". In these 
-episodes we will break down a foundational concept in Swift into its simplest components so that
-we can achieve an expertise understanding of the topic. We began with a seemingly simple subject:
-the [`Equatable` and `Hashable`][eq-hash-collection] protocols in Swift.
+This year we began a new type of episode arc on Point-Free called 
+["Back to Basics"][back-to-basics]. In these episodes we will break down a foundational concept in 
+Swift into its simplest components so that we can achieve an expertise understanding of the topic. 
+We began with a seemingly simple subject: the [`Equatable` and `Hashable`][eq-hash-collection] 
+protocols in Swift.
 
 However, looks can be deceiving. These protocols are not like most other protocols in the language.
 They have a very formal, mathematical specification, and if your implementation runs afoul of its
 semantics you will be in for a world of hurt. Reasonable looking code will have very unreasonable
-behavior.
+behavior. Watch this series to gain a deep understanding of how these protocols are meant to be 
+used.
 
 [eq-hash-collection]: /collections/back-to-basics/equatable-and-hashable
 [back-to-basics]: /collections/back-to-basics

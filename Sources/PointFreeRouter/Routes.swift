@@ -19,7 +19,6 @@ public indirect enum SiteRoute: Equatable {
   case account(Account = .index)
   case admin(Admin = .index)
   case api(Api)
-  case appleDeveloperMerchantIdDomainAssociation
   case auth(Auth)
   case blog(Blog = .index)
   case clips(ClipsRoute)
@@ -52,6 +51,7 @@ public indirect enum SiteRoute: Equatable {
   case team(Team)
   case teamInviteCode(TeamInviteCode)
   case webhooks(Webhooks)
+  case wellKnown(WellKnown)
 
   @CasePathable
   public enum Auth: Equatable {
@@ -157,6 +157,11 @@ public indirect enum SiteRoute: Equatable {
       case unknown(Event<Prelude.Unit>)
       case fatal
     }
+  }
+
+  public enum WellKnown {
+    case appleDeveloperMerchantIdDomainAssociation
+    case atProto
   }
 }
 
@@ -481,10 +486,19 @@ struct SiteRouter: ParserPrinter {
         APIRouter()
       }
 
-      Route(.case(SiteRoute.appleDeveloperMerchantIdDomainAssociation)) {
-        Path {
-          ".well-known"
-          "apple-developer-merchantid-domain-association"
+      Route(.case(SiteRoute.wellKnown)) {
+        Path { ".well-known" }
+        OneOf {
+          Route(.case(SiteRoute.WellKnown.appleDeveloperMerchantIdDomainAssociation)) {
+            Path {
+              "apple-developer-merchantid-domain-association"
+            }
+          }
+          Route(.case(SiteRoute.WellKnown.atProto)) {
+            Path {
+              "atproto-did"
+            }
+          }
         }
       }
 

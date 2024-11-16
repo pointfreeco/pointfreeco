@@ -136,9 +136,8 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return await apiMiddleware(conn.map(const(apiRoute)))
       .performAsync()
 
-  case .appleDeveloperMerchantIdDomainAssociation:
-    return await appleDeveloperMerchantIdDomainAssociationMiddleware(conn)
-      .performAsync()
+  case .wellKnown(let route):
+    return await wellKnown(route: route, conn: conn.map { _ in () })
 
   case let .auth(auth):
     return await authMiddleware(conn.map { _ in auth })
