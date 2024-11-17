@@ -101,11 +101,9 @@ the file system, or any storage system of your choice.
 ## Subscribe today!
 
 This only scratches the surface of what we covered in 2024, and we have plenty of exciting topics 
-planned for 2025, TODO 
-
-<!--including bringing `@Observable` to the Composable Architecture, a new fundamental -->
-<!--change to the Composable Architecture that will unlock capabilities currently impossible, and -->
-<!--perhaps we will even start to explore some server-side Swift. 😀-->
+planned for 2025, including a new series we are calling "Modern Persistence" showing how to approach
+persistence in apps with modern techniques, as well as a new fundamental change to the Composable 
+Architecture that will unlock capabilities currently impossible, and a lot more.
 
 Be sure to [subscribe today][black-friday-sale] to get access to all of this and more. The
 offer is valid for only a few days, so you better hurry!
