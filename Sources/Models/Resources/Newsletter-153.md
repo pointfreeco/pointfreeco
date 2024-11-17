@@ -1,5 +1,5 @@
 Point-Free offers some of the most advanced and original Swift content out there. It will help you
-bring your expertise of the Swift language to the next level, and starting today we're have a 
+bring your expertise of the Swift language to the next level, and starting today we're having a 
 [Black Friday sale](/discounts/black-friday-2024), which gives you **30% off** the first year
 of your subscription.
 
@@ -7,10 +7,9 @@ of your subscription.
   Subscribe today!
 }
 
-Once subscribed you'll get instant access to all [304 episodes][pf] (190 hours of video and
-growing!) of original Point-Free content. This includes popular [collections][collections] that were
-created or expanded this year, as well as all of the material we have planned for 2025! Here are 
-just a few of our additions from this year:
+Once subscribed you'll get instant access to all [304 episodes][pf] of original Point-Free content. 
+This includes popular [collections][collections] that were created or expanded this year, as well as 
+all of the material we have planned for 2025! Here are just a few of our additions from this year:
 
 ## [Back to Basics: Equatable & Hashable][eq-hash-collection]
 
