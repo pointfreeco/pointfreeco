@@ -15,7 +15,7 @@ all of the material we have planned for 2025! Here are just a few of our additio
 
 This year we began a new type of episode arc on Point-Free called 
 ["Back to Basics"][back-to-basics]. In these episodes we will break down a foundational concept in 
-Swift into its simplest components so that we can achieve an expertise understanding of the topic. 
+Swift into its simplest components so that we can achieve an expert understanding of the topic. 
 We began with a seemingly simple subject: the [`Equatable` and `Hashable`][eq-hash-collection] 
 protocols in Swift.
 
