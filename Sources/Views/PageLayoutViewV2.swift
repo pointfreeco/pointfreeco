@@ -611,7 +611,7 @@ struct AnnouncementBanner<Content: HTML>: HTML {
       .inlineStyle("max-width", "1280px")
       .inlineStyle("padding", "3rem")
       .inlineStyle("text-align", "center")
-      .fontScale(.h5)
+      .inlineStyle("font-size", "1.2rem")
     }
     .backgroundColor(.purple)
   }
