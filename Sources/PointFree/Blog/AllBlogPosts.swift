@@ -169,5 +169,6 @@ extension BlogPost {
     .post0150_TCAUIKit,
     .post0151_CrossPlatformSwift,
     .post0152_Xcode16,
+    .post0153_BlackFriday2024,
   ]
 }
