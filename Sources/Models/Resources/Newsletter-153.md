@@ -71,7 +71,7 @@ access some functionality not yet available in SwiftUI, or for performance reaso
 the question becomes: what is the most modern way to do this?
 
 Our "Modern UIKit" covers a variety of topics to help you modernize your usage of UIKit and get
-the most out of the framework. This includes how to use Swift's powerful Obervation framework with
+the most out of the framework. This includes how to use Swift's powerful Observation framework with
 UIKit (including the `@Observable` macro), state-driven navigation that looks similar to SwiftUI
 (including stack-based navigation), and bindings for UI controls. By the end of this series we
 can write UIKit applications in a style that looks quite similar to SwiftUI and removes a lot of
