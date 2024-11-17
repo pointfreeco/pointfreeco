@@ -46,12 +46,12 @@ functionality.
 
 ## [Cross-Platform Swift][cross-platform-collection]
 
-Our personal favorite series from the year, we explored what Swift looks like on [platforms other
-than Apple's][cross-platform-collection]. The primary platform we explored is WebAssembly (Wasm) 
-where we show how to build a Swift application that runs in a web browser. The application involves 
-complex side effects (timers, networking, persistence) as well as navigation (alerts and modals), 
-and it's built in 100% pure, cross-platform Swift. This means that with a little bit of extra work 
-the application could be further ported to Windows, Linux, and beyond!
+This is our personal favorite series from the year. We explored what Swift looks like on 
+[platforms other than Apple's][cross-platform-collection]. The primary platform we explored is 
+WebAssembly (Wasm) where we show how to build a Swift application that runs in a web browser. The 
+application involves complex side effects (timers, networking, persistence) as well as navigation 
+(alerts and modals), and it's built in 100% pure, cross-platform Swift. This means that with a 
+little bit of extra work the application could be further ported to Windows, Linux, and beyond!
 
 And while this series may seem like it is merely about writing code that runs in the browser, the
 true impetus of this series is to explore advance domain modeling techniques. By writing the logic
