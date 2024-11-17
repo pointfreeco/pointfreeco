@@ -49,7 +49,7 @@ extension Episode.Collection {
         related: [],
         title: "SQLite",
         whereToGoFromHere: nil
-      )
+      ),
     ],
     title: "Back to basics"
   )

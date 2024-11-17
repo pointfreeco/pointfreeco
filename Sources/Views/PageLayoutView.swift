@@ -192,7 +192,7 @@ struct Banner {
     return banners.filter { banner in
       return
         appEnv == .development
-      || !subscriberState.isActive
+        || !subscriberState.isActive
           && banner.shouldShow(currentRoute)
           && (banner.startAt...banner.endAt).contains(now)
     }
