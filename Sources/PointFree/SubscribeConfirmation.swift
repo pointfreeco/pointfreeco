@@ -58,7 +58,6 @@ private func validateReferralCode(
 
   return { conn in
     @Dependency(\.currentUser) var currentUser
-    @Dependency(\.subscriberState) var subscriberState
 
     let (lane, subscribeData, coupon) = lower(conn.data)
     guard
