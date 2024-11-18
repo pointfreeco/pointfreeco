@@ -515,6 +515,12 @@ public struct Timestamp: HTML {
 
   public init?(format: String, speaker: String?) {
     let components = format.split(separator: ":")
+    func adjustedSecond(_ format: Substring) -> Int? {
+      let secondsString = format.prefix(while: { ("0"..."9").contains($0) })
+      guard let seconds = Int(secondsString) else { return nil }
+      let offset = Int(format.dropFirst(secondsString.count)) ?? 0
+      return seconds + offset
+    }
     guard let second = components.last.flatMap({ Int($0) }) else { return nil }
     self.hour = components.dropLast(2).last.flatMap { Int($0) } ?? 0
     self.minute = components.dropLast().last.flatMap { Int($0) } ?? 0
