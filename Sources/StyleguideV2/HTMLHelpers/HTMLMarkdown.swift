@@ -521,7 +521,7 @@ public struct Timestamp: HTML {
       let offset = Int(format.dropFirst(secondsString.count)) ?? 0
       return seconds + offset
     }
-    guard let second = components.last.flatMap({ Int($0) }) else { return nil }
+    guard let second = components.last.flatMap(adjustedSecond) else { return nil }
     self.hour = components.dropLast(2).last.flatMap { Int($0) } ?? 0
     self.minute = components.dropLast().last.flatMap { Int($0) } ?? 0
     self.second = second
