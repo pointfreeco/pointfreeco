@@ -170,5 +170,6 @@ extension BlogPost {
     .post0151_CrossPlatformSwift,
     .post0152_Xcode16,
     .post0153_BlackFriday2024,
+    .post0154_BlackFriday2024,
   ]
 }
