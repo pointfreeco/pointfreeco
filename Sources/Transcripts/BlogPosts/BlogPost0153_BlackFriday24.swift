@@ -9,7 +9,7 @@ extension BlogPost {
       planned for 2025.
       """,
     coverImage: nil,
-    hidden: .yes,
+    hidden: .noUntil(yearMonthDayFormatter.date(from: "2024-11-21")!),
     hideFromSlackRSS: true,
     id: 153,
     publishedAt: yearMonthDayFormatter.date(from: "2024-11-18")!,
