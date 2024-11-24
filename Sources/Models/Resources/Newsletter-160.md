@@ -2,12 +2,20 @@ We are excited to announce a brand new open-source library: [Sharing][sharing-gh
 state among your app's features and external persistence layers, including user defaults, the file 
 system, and more.
 
+These tools were originally incubated in our [Composable Architecture][tca-gh] library, and have
+been used by thousands of developers for the past 6 months who provided invaluable feedback. We
+are excited to extract the tools out into their own dedicated library so that they can be used in 
+any iOS or macOS app, and even cross-platform! 
+
+[tca-gh]: https://github.com/pointfreeco/swift-composable-architecture
+
 ## Introducing @Shared
 
 The library comes with one primary tool, the `@Shared` property wrapper, which aids in sharing
 state with multiple parts of your application and persisting data to external storage systems, such
 as user defaults, the file system, and more. The tool works in a variety of contexts, such as 
-SwiftUI views, `@Observable` models, and UIKit view controllers, and it is completely unit testable.
+SwiftUI views, `@Observable` models, and UIKit view controllers, non-Apple platforms,
+and it is completely unit testable.
 
 As a simple example, you can have two different obsevable models hold onto a collection of 
 data that is also synchronized to the file system:
@@ -40,16 +48,16 @@ also update to hold the freshest data.
 
 The [`@Shared`][shared-article] property wrapper gives you a succinct and consistent way to persist 
 any kind of data in your application. The library comes with 3 strategies:
-[`appStorage`][app-storage-key-docs]), 
-[`fileStorage`][file-storage-key-docs]), and
-[`inMemory`][in-memory-key-docs]). 
+[`appStorage`][app-storage-key-docs], 
+[`fileStorage`][file-storage-key-docs], and
+[`inMemory`][in-memory-key-docs]. 
 
 [shared-article]: TODO
 [app-storage-key-docs]: TODO
 [file-storage-key-docs]: TODO
 [in-memory-key-docs]: TODO
 
-The [`appStorage`][app-storage-key-docs]) strategy is useful for store small
+The [`appStorage`][app-storage-key-docs] strategy is useful for store small
 pieces of simple data in user defaults, such as settings:
 
 ```swift
@@ -58,14 +66,14 @@ pieces of simple data in user defaults, such as settings:
 @Shared(.appStorage("userOrder")) var userOrder = UserOrder.name
 ```
 
-The [`fileStorage`][file-storage-key-docs]) strategy is useful
+The [`fileStorage`][file-storage-key-docs] strategy is useful
 for persisting more complex data types to the file system by serializing the data to bytes:
 
 ```swift
 @Shared(.fileStorage(.meetingsURL)) var meetings: [Meeting] = []
 ```
 
-And the [`inMemory`][in-memory-key-docs]) strategy is useful for sharing any kind
+And the [`inMemory`][in-memory-key-docs] strategy is useful for sharing any kind
 of data globably with the entire app, but it will be reset the next time the app is relaunched:
 
 ```swift
@@ -99,6 +107,8 @@ Similarly, if you need to use UIKit for a particular feature or have a legacy fe
 SwiftUI yet, then you can use `@Shared` directly in a view controller:
 
 ```swift
+import UIKit
+
 final class DebugMeetingsViewController: UIViewController {
   @Shared(.fileStorage(.meetingsURL)) var meetings: [Meeting] = []
   // ...
@@ -106,8 +116,8 @@ final class DebugMeetingsViewController: UIViewController {
 ```
 
 And to observe changes to `meetings` so that you can update the UI you can either use the 
-``Shared/publisher`` property or the `observe` tool from our Swift Navigation library. See 
-["Observing changes"][observation-docs] for more information.
+`publisher` property defined on `@Shared`, or the `observe` tool from our Swift Navigation library. 
+See ["Observing changes"][observation-docs] for more information.
 
 [observation-docs]: TODO
 
@@ -121,6 +131,40 @@ will only be seen by that test.
 See ["Testing"][testing-docs] for more information on how to test your features when using `@Shared`.
 
 [testing-docs]: TODO
+
+## Demos
+
+The [Sharing][sharing-gh] repo comes with _lots_ of examples to demonstrate how to solve common and
+complex problems with `@Shared`. Check out [this][examples-dir] directory to see them all,
+ including:
+
+  * [Case Studies][case-studies-dir]:
+    A number of case studies demonstrating the built-in features of the library.
+
+  * [FirebaseDemo][firebase-dir]:
+    A demo showing how shared state can be powered by a remote [Firebase][firebase] config.
+    
+  * [GRDBDemo][grdb-dir]:
+    A demo showing how shared state can be powered by SQLite in much the same way a view can be
+    powered by SwiftData's `@Query` property wrapper.
+  
+  * [WasmDemo][wasm-dir]:
+    A [SwiftWasm][swiftwasm] application that uses this library to share state with your web
+    browser's local storage.
+
+We also rebuilt Apple's [Scrumdinger][scrumdinger] demo application using modern, best practices for
+SwiftUI development, including using this library to share state and persist it to the file system.
+That demo can be found [here][syncups].
+
+[swiftwasm]: https://swiftwasm.org
+[case-studies-dir]: https://github.com/pointfreeco/swift-sharing/tree/main/Examples/Examples
+[grdb-dir]: TODO
+[firebase-dir]: https://github.com/pointfreeco/swift-sharing/tree/main/Examples/FirebaseDemo
+[wasm-dir]: https://github.com/pointfreeco/swift-sharing/tree/main/Examples/WasmDemo
+[examples-dir]: https://github.com/pointfreeco/swift-sharing/tree/main/Examples
+[firebase]: https://firebase.google.com
+[scrumdinger]: https://developer.apple.com/tutorials/app-dev-training/getting-started-with-scrumdinger
+[syncups]: https://github.com/pointfreeco/syncups
 
 ## Motivation
 
@@ -189,8 +233,13 @@ controllers, and even on non-Apple platforms.
 * It is built with testing in mind so that you can write unit tests for your features using 
 `@Shared` even though it is interacting with outside systems.
 
+And this is only scratching the surface of what `@Shared` is capable of.
+
 ## Get started today
 
-todo
+The [Sharing][sharing-gh] library is already battled tested because it has been used by thousands
+of developers for the past 6 months. Join them today by adding [Sharing][sharing-gh] to your project
+today, or checking out the [docs][sharing-docs].
 
+[sharing-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/main/documentation/sharing
 [sharing-gh]: https://github.com/pointfreeco/swift-sharing
