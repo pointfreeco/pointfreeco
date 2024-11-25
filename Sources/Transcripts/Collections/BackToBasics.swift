@@ -44,7 +44,6 @@ extension Episode.Collection {
           .init(episode: .ep303_sqlite),
           .init(episode: .ep304_sqlite),
         ],
-        isFinished: false,
         isHidden: false,
         related: [],
         title: "SQLite",
