@@ -204,6 +204,8 @@ how the Parsing library could have helped.
 
 # Examples from past Advents of Code
 
+Here is a detail explanation of how to attack some of the parsing problems from past Advents of
+Code:
 
 ## 2023, Day 4
 
