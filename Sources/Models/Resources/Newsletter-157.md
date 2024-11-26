@@ -1,4 +1,4 @@
-It's Cyber Monday and our [rare holiday sale](/discounts/black-friday-2024) is almost over!
+It's Cyber Monday and our [rare holiday sale](/discounts/cyber-monday-2024) is almost over!
 
 Subscribe today and gain instant access to hours of content covering advanced Swift topics,
 including:
@@ -16,9 +16,9 @@ And so much more!
 
 Point-Free offers some of the most advanced and original Swift content out there and will help you
 bring your expertise of the Swift language to the next level.
-[Subscribe today](/discounts/black-friday-2024) to take advantage of our **30% off** Black Friday
+[Subscribe today](/discounts/cyber-monday-2024) to take advantage of our **30% off** Cyber Monday
 sale!
 
-@Button(/discounts/black-friday-2024) {
+@Button(/discounts/cyber-monday-2024) {
   Save 30% today!
 }

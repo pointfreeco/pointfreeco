@@ -9,10 +9,10 @@ extension BlogPost {
       concurrency, generics, SwiftUI, domain modeling, testing, and so much more!
       """,
     coverImage: nil,
-    hidden: .yes,
+    hidden: .noUntil(yearMonthDayFormatter.date(from: "2024-11-29")!),
     hideFromSlackRSS: true,
     id: 155,
     publishedAt: yearMonthDayFormatter.date(from: "2024-11-27")!,
-    title: ""
+    title: "Learn advanced Swift and save 30%"
   )
 }

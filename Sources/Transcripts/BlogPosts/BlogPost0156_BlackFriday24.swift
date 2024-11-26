@@ -9,7 +9,7 @@ extension BlogPost {
       you level up your career.
       """,
     coverImage: nil,
-    hidden: .yes,
+    hidden: .noUntil(yearMonthDayFormatter.date(from: "2024-12-02")!),
     hideFromSlackRSS: true,
     id: 156,
     publishedAt: yearMonthDayFormatter.date(from: "2024-11-29")!,
