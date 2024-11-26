@@ -1,7 +1,7 @@
 import Foundation
 
 extension BlogPost {
-  public static let post0169_AoC24 = Self(
+  public static let post0160_AoC24 = Self(
     author: .pointfree,
     blurb: """
       Advent of Code is here! Each day's challenge starts with parsing input data, a crucial step \
