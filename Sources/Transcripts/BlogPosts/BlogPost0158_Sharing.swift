@@ -1,7 +1,7 @@
 import Foundation
 
 extension BlogPost {
-  public static let post0159_Sharing = Self(
+  public static let post0158_Sharing = Self(
     author: .pointfree,
     blurb: """
       We are excited to announce a brand new open-source library: Sharing. Instantly share state 
@@ -11,7 +11,7 @@ extension BlogPost {
     coverImage: nil,
     hidden: .no,
     hideFromSlackRSS: false,
-    id: 159,
+    id: 158,
     publishedAt: yearMonthDayFormatter.date(from: "2024-12-02")!,
     title: "Simple state sharing and persistence in Swift"
   )

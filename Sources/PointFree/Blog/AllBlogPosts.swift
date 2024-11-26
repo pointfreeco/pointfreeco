@@ -173,6 +173,6 @@ extension BlogPost {
     .post0154_BlackFriday2024,
     .post0156_BlackFriday2024,
     .post0157_BlackFriday2024,
-    .post0159_Sharing,
+    .post0158_Sharing,
   ]
 }
