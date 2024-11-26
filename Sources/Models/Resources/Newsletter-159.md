@@ -152,9 +152,9 @@ complex problems with `@Shared`. Check out [this][examples-dir] directory to see
     A [SwiftWasm][swiftwasm] application that uses this library to share state with your web
     browser's local storage.
 
-We also rebuilt Apple's [Scrumdinger][scrumdinger] demo application using modern, best practices for
-SwiftUI development, including using this library to share state and persist it to the file system.
-That demo can be found [here][syncups].
+  * [SyncUps][syncups]: We also rebuilt Apple's [Scrumdinger][scrumdinger] demo application using 
+    modern, best practices for SwiftUI development, including using this library to share state and 
+    persist it to the file system.
 
 [swiftwasm]: https://swiftwasm.org
 [case-studies-dir]: https://github.com/pointfreeco/swift-sharing/tree/main/Examples/Examples
