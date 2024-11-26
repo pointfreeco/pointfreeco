@@ -1,7 +1,7 @@
-Advent of Code is here! Each day's challenge starts with parsing input data, a crucial step 
-before tackling the real problem. With our [Swift Parsing][parsing-gh] library, you can effortlessly 
-transform the nebulous text into first-class Swift data types, allowing you to focus on 
-solving the real problem at hand!
+[Advent of Code](https://adventofcode.com) is here! Each day's challenge starts with parsing input 
+data, a crucial step before tackling the real problem. With our [Swift Parsing][parsing-gh] library, 
+you can effortlessly transform the nebulous text into first-class Swift data types, allowing you to 
+focus on solving the real problem at hand!
 
 Join us for a quick overview of how to use the Parsing library, as well as some examples of parsing
 input data from 2023's Advent of Code.
@@ -207,7 +207,7 @@ how the Parsing library could have helped.
 Here is a detail explanation of how to attack some of the parsing problems from past Advents of
 Code:
 
-## [2023, Day 4](https://adventofcode.com/2023/day/4)
+## [2023: Day 4](https://adventofcode.com/2023/day/4)
 
 Day 4 of 2023's Advent of Code asks you to process input data that looks like this:
 
@@ -375,7 +375,7 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
 try CardsParser().parse(input)  // [Card(number: 1, …),…]
 ```
 
-## [2023, Day 2](https://adventofcode.com/2023/day/2)
+## [2023: Day 2](https://adventofcode.com/2023/day/2)
 
 On day 2 of 2023's Advent of Code we are presented with some sample input data that looks like
 so:
@@ -391,9 +391,9 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
 Each line represents a "game", and multiple sets of cube reveals. For game 1 there are 3 cube 
 reveals, each separated by a semicolon:
 
-1.) The first reveal is 3 blue and 4 red.
-1.) The second reveal is 1 red, 2 green and 6 blue.
-1.) And the third reveal is just 2 green.
+1. The first reveal is 3 blue and 4 red.
+1. The second reveal is 1 red, 2 green and 6 blue.
+1. And the third reveal is just 2 green.
 
 The only colors that can be revealed are red, blue and green, and each cube reveal can specify any 
 number of colors.
@@ -407,7 +407,9 @@ We will start by defining the Swift data types that we want the parser to produc
 is an enum for the 3 possible colors:
 
 ```swift
-enum CubeColor: String, CaseIterable { case blue, green, red }
+enum CubeColor: String, CaseIterable { 
+  case blue, green, red 
+}
 ```
 
 Enums that are raw representable and `CaseIterable` get a special parser defined for them that
