@@ -207,7 +207,7 @@ how the Parsing library could have helped.
 Here is a detail explanation of how to attack some of the parsing problems from past Advents of
 Code:
 
-## 2023, Day 4
+## [2023, Day 4](https://adventofcode.com/2023/day/4)
 
 Day 4 of 2023's Advent of Code asks you to process input data that looks like this:
 
@@ -375,7 +375,7 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
 try CardsParser().parse(input)  // [Card(number: 1, …),…]
 ```
 
-## 2023, Day 2
+## [2023, Day 2](https://adventofcode.com/2023/day/2)
 
 On day 2 of 2023's Advent of Code we are presented with some sample input data that looks like
 so:
