@@ -3,9 +3,9 @@ import Foundation
 extension Episode {
   public static let ep305_sharing = Episode(
     blurb: """
-      "Sharing" is a brand new library for sharing state throughout your application and to external
-      systems like user defaults, the file system, and more. We start our tour of the library by
-      comparing it to a tool that inspired its design: SwiftUI's `@AppStorage`.
+      "Sharing" is a brand new library for sharing state throughout your application and to \
+      external systems like user defaults, the file system, and more. We start our tour of the \
+      library by comparing it to a tool that inspired its design: SwiftUI's `@AppStorage`.
       """,
     codeSampleDirectory: "0305-sharing-pt1",
     exercises: _exercises,
