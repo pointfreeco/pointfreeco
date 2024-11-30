@@ -171,6 +171,7 @@ extension BlogPost {
     .post0152_Xcode16,
     .post0153_BlackFriday2024,
     .post0154_BlackFriday2024,
+    .post0155_BlackFriday2024,
     .post0156_BlackFriday2024,
     .post0157_BlackFriday2024,
     .post0158_Sharing,
