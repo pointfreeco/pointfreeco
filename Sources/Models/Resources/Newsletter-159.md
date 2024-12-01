@@ -52,10 +52,11 @@ any kind of data in your application. The library comes with 3 strategies:
 [`fileStorage`][file-storage-key-docs], and
 [`inMemory`][in-memory-key-docs]. 
 
-[shared-article]: TODO
-[app-storage-key-docs]: TODO
-[file-storage-key-docs]: TODO
-[in-memory-key-docs]: TODO
+[shared-article]: https://swiftpackageindex.com/pointfreeco/swift-sharing/main/documentation/sharing/shared
+[app-storage-key-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/main/documentation/sharing/appstoragekey
+[file-storage-key-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/main/documentation/sharing/filestoragekey
+[in-memory-key-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/main/documentation/sharing/inmemorykey
+
 
 The [`appStorage`][app-storage-key-docs] strategy is useful for store small
 pieces of simple data in user defaults, such as settings:
@@ -83,7 +84,7 @@ of data globably with the entire app, but it will be reset the next time the app
 See ["Persistence strategies"][persistence-docs] for more information on leveraging the persistence 
 strategies that come with the library, as well as creating your own strategies.
 
-[persistence-docs]: TODO
+[persistence-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/main/documentation/sharing/persistencestrategies
 
 ### Use anywhere
 
@@ -119,7 +120,7 @@ And to observe changes to `meetings` so that you can update the UI you can eithe
 `publisher` property defined on `@Shared`, or the `observe` tool from our Swift Navigation library. 
 See ["Observing changes"][observation-docs] for more information.
 
-[observation-docs]: TODO
+[observation-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/main/documentation/sharing/observingchanges
 
 ### Testing shared state
 
@@ -130,7 +131,7 @@ will only be seen by that test.
 
 See ["Testing"][testing-docs] for more information on how to test your features when using `@Shared`.
 
-[testing-docs]: TODO
+[testing-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/main/documentation/sharing/testing
 
 ## Demos
 
@@ -158,7 +159,7 @@ complex problems with `@Shared`. Check out [this][examples-dir] directory to see
 
 [swiftwasm]: https://swiftwasm.org
 [case-studies-dir]: https://github.com/pointfreeco/swift-sharing/tree/main/Examples/Examples
-[grdb-dir]: TODO
+[grdb-dir]: https://github.com/pointfreeco/swift-sharing/tree/main/Examples/GRDBDemo
 [firebase-dir]: https://github.com/pointfreeco/swift-sharing/tree/main/Examples/FirebaseDemo
 [wasm-dir]: https://github.com/pointfreeco/swift-sharing/tree/main/Examples/WasmDemo
 [examples-dir]: https://github.com/pointfreeco/swift-sharing/tree/main/Examples
