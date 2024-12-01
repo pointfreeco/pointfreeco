@@ -610,7 +610,7 @@ struct GameParser: Parser {
 }
 ```
 
-One have one final parser to define, and it is the simplest. We will define a `GamesParser` that
+We have one final parser to define, and it is the simplest. We will define a `GamesParser` that
 is capable of parsing many games separated by newlines:
 
 ```swift
