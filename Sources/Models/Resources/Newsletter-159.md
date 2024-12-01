@@ -1,7 +1,7 @@
 [Advent of Code](https://adventofcode.com) is here! Each day's challenge starts with parsing input 
 data, a crucial step before tackling the real problem. With our [Swift Parsing][parsing-gh] library, 
-you can effortlessly transform the nebulous text into first-class Swift data types, allowing you to 
-focus on solving the real problem at hand!
+you can effortlessly transform nebulous text into first-class Swift data types, allowing you to 
+focus on solving the problem at hand!
 
 Join us for a quick overview of how to use the Parsing library, as well as some examples of parsing
 input data from 2023's Advent of Code.
@@ -9,15 +9,15 @@ input data from 2023's Advent of Code.
 # The basics of Swift Parsing
 
 Creating a parser with the Parsing library amounts to composing together simpler parsers that the
-library provides in order to form a larger, more complex parser. As an example, suppose you have
-a string of data that describes the properties of a user:
+library provides in order to form a larger, more complex parser. As an example, suppose you have a
+string of data that describes the properties of a user:
 
 ```swift
 let input = """
-1,Blob,true
-2,Blob Jr.,false
-3,Blob Sr.,true
-"""
+  1,Blob,true
+  2,Blob Jr.,false
+  3,Blob Sr.,true
+  """
 ```
 
 You want to parse this nebulous string into an array of `User` types in Swift. A good first step is
@@ -42,7 +42,7 @@ struct UserParser: Parser {
 }
 ```
 
-It has one requirement, which is a `body` property where we can specify the input the parser 
+It has one requirement, which is a `body` property where we can specify the input the parser
 consumes and its output:
 
 ```swift
@@ -53,12 +53,12 @@ struct UserParser: Parser {
 }
 ```
 
-We are using `Substring` for the input because it has an efficient API for consuming 
-characters without allocating brand new strings. This `body` property is where we can start listing
-the simpler parsers we want to use to consume little bits of data from the input.
+We are using `Substring` for the input because it has an efficient API for consuming characters
+without allocating brand new strings. This `body` property is where we can start listing the simpler
+parsers we want to use to consume little bits of data from the input.
 
-> Note: It is also possible to use lower level string representations such as `UTF8View`
-> and `UnicodeScalarView`. Working on those representations can be a lot more performant, but you
+> Note: It is also possible to use lower level string representations such as `UTF8View` and
+> `UnicodeScalarView`. Working on those representations can be a lot more performant, but you
 > have to take extra care for correctness.
 
 For example, we can start by parsing an integer from the front of the input. This can be done by
@@ -97,6 +97,20 @@ struct UserParser: Parser {
 }
 ```
 
+The `Prefix` parser's output is the same as its input, which is `Substring`, but we can further
+transform it to a `String` for the user's name using the `map` operator, which is similar to `map`
+on arrays and Combine publishers:
+
+```swift
+struct UserParser: Parser {
+  var body: some Parser<Substring, User> {
+    Int.parser()
+    ","
+    Prefix { $0 != "," }.map { String($0) }
+  }
+}
+```
+
 Once that parser consumes as much as it can we will have another comma left at the front of the 
 input, and so let's parse and consume that character:
 
@@ -105,21 +119,21 @@ struct UserParser: Parser {
   var body: some Parser<Substring, User> {
     Int.parser()
     ","
-    Prefix { $0 != "," }
+    Prefix { $0 != "," }.map { String($0) }
     ","
   }
 }
 ```
 
-Next we will parser the boolean at the end of the line using the `Bool.parser()` that comes with 
-the library:
+Next we will parse the boolean at the end of the line using the `Bool.parser()` that comes with the
+library:
 
 ```swift:7
 struct UserParser: Parser {
   var body: some Parser<Substring, User> {
     Int.parser()
     ","
-    Prefix { $0 != "," }
+    Prefix { $0 != "," }.map { String($0) }
     ","
     Bool.parser()
   }
@@ -142,7 +156,7 @@ struct UserParser: Parser {
     Parse(User.init) {
       Int.parser()
       ","
-      Prefix { $0 != "," }
+      Prefix { $0 != "," }.map { String($0) }
       ","
       Bool.parser()
     }
@@ -269,8 +283,7 @@ struct NumbersParser: Parser {
 However this does not compile because our parser is currently producing an array of integers, not
 a set:
 
-> Error: Return type of property 'body' requires the types '[Int]' and 'Set<Int>' be 
-> equivalent
+> Error: Return type of property 'body' requires the types '[Int]' and 'Set<Int>' be equivalent.
 
 This is happening because by default the `Many` parser produces an array. However, it is possible
 to configure `Many` to accumulate its results into any kind of data structure, not just arrays.
@@ -292,7 +305,7 @@ struct NumbersParser: Parser {
 ```
 
 The first argument specifies the type of data structure to be accumulated into, and the second
-argumnet is a closure that is invoked with each result obtained from the element parser.
+argument is a closure that is invoked with each result obtained from the element parser.
 
 With that done we can define a `CardParser` for processing an entire line from the input string.
 We can first parse the string "Card " (note the trailing space), then an integer, and then a colon:
