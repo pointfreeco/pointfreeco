@@ -206,7 +206,7 @@ let input = """
 3,Blob Sr.,true
 """
 
-try UsersParser().parser(input)  // [User(id: 1, …), User(id: 2, …), User(id: 3, …)]
+try UsersParser().parse(input)  // [User(id: 1, …), User(id: 2, …), User(id: 3, …)]
 ```
 
 That is the basics of crafting complex parsers with the Parsing library. There are more tricks
