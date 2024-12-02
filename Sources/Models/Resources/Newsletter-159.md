@@ -169,7 +169,7 @@ complex problems with `@Shared`. Check out [this][examples-dir] directory to see
 
 ## Motivation
 
-The primary motivation for our new Sharing library comes from Swift's magical and powerful 
+The primary motivation for our new Sharing library comes from SwiftUI's magical and powerful 
 `@AppStorage` tool. With very little work one can persist small bits of data to user defaults:
 
 ```swift
