@@ -8,7 +8,7 @@ extension BlogPost {
       among your app's features and external persistence layers, including user defaults, the file 
       system, and more.
       """,
-    coverImage: nil,
+    coverImage: "https://pointfreeco-blog.s3.amazonaws.com/posts/0159-sharing/sharing-poster.png",
     hidden: .no,
     hideFromSlackRSS: false,
     id: 159,
