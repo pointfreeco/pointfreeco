@@ -308,5 +308,8 @@ extension Episode {
     .ep303_sqlite,
     .ep304_sqlite,
     .ep305_sharing,
+    .ep306_sharing,
+    .ep307_sharing,
+    .ep308_sharing,
   ]
 }
