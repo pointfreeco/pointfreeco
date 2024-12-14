@@ -113,7 +113,10 @@ extension Episode.Collection.Section {
       etc.), and is testable and highly customizable.
       """#,
     coreLessons: [
-      .init(episode: .ep305_sharing)
+      .init(episode: .ep305_sharing),
+      .init(episode: .ep306_sharing),
+      .init(episode: .ep307_sharing),
+      .init(episode: .ep308_sharing),
     ],
     isFinished: false,
     related: [],
