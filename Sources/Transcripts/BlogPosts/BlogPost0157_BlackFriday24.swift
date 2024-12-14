@@ -9,7 +9,7 @@ extension BlogPost {
       generics to domain modeling and testing.
       """,
     coverImage: nil,
-    hidden: .no,
+    hidden: .noUntil(yearMonthDayFormatter.date(from: "2024-12-10")!),
     hideFromSlackRSS: true,
     id: 157,
     publishedAt: yearMonthDayFormatter.date(from: "2024-12-02")!,
