@@ -15,11 +15,6 @@ public func bootstrap() async {
   Episode.bootstrapPrivateEpisodes()
   print("  ✅ \(Episode.all.count) transcripts loaded")
 
-  let total = Episode.all.reduce(into: 0) { accumulator, episode in
-    accumulator += episode.sequence >= 263 ? dump(episode.length.rawValue, name: "length") : 0
-  }
-  print(total / 60 / 60)
-
   await connectToPostgres()
   await fireAndForget {
     await updateCollectionClips()
