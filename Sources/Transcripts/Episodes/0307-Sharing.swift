@@ -3,7 +3,10 @@ import Foundation
 extension Episode {
   public static let ep307_sharing = Episode(
     blurb: """
-      TODO
+      `@Shared` is far more than a glorified version of `@AppStorage`: it can be customized with \
+      additional persistence strategies, including the file storage strategy that comes with the \
+      library, which persists far more complex data than user defaults. We will create a complex, \
+      new feature that is powered by the file system.
       """,
     codeSampleDirectory: "0307-sharing-pt3",
     exercises: _exercises,
