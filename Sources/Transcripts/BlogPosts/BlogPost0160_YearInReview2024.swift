@@ -4,8 +4,8 @@ extension BlogPost {
   public static let post0160_YearInReview2024 = Self(
     author: .pointfree,
     blurb: """
-      TODO \
-      TODO
+      Point-Free year in review: 46 episodes, 292k unique visitors, 4 new open source projects, \
+      and a whole bunch more!
       """,
     coverImage: nil,
     hidden: .no,
