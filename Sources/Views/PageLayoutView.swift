@@ -118,7 +118,7 @@ public func simplePageLayout<A>(
           ghosterBanner(),
           pastDueBanner,
           (layoutData.flash.map(flashView) ?? []),
-          announcementBanner(.cyberMonday2024),
+          announcementBanner(.eoy2024),
           liveStreamBanner,
           emergencyModeBanner(emergencyMode, layoutData),
           navView(style: layoutData.style),
@@ -188,7 +188,7 @@ struct Banner {
     @Dependency(\.subscriberState) var subscriberState
     @Dependency(\.envVars.appEnv) var appEnv
 
-    let banners: [Self] = [.cyberMonday2024]
+    let banners: [Self] = [.eoy2024]
     return banners.filter { banner in
       return
         appEnv == .development
@@ -198,25 +198,25 @@ struct Banner {
     }
   }
 
-  static let cyberMonday2024 = Self(
-    endAt: yearMonthDayFormatter.date(from: "2024-12-08")!,
+  static let eoy2024 = Self(
+    endAt: yearMonthDayFormatter.date(from: "2024-01-05")!,
     markdownContent: ###"""
-      **🎉 Cyber Monday Sale!** Save 30% when you [subscribe today](/discounts/cyber-monday-2024).
+      **🎉 End-of-year Sale!** Save 25% when you [subscribe today](/discounts/eoy-2024).
       """###,
     shouldShow: { route in
       if case .subscribeConfirmation = route {
         return false
-      } else if case .blog(.show(.left("157-cyber-monday-last-chance-to-save"))) = route {
-        return false
-      } else if case .blog(.show(.right(157))) = route {
-        return false
+//      } else if case .blog(.show(.left("157-cyber-monday-last-chance-to-save"))) = route {
+//        return false
+//      } else if case .blog(.show(.right(157))) = route {
+//        return false
       } else if case .teamInviteCode = route {
         return false
       } else {
         return true
       }
     },
-    startAt: yearMonthDayFormatter.date(from: "2024-12-02")!
+    startAt: yearMonthDayFormatter.date(from: "2024-12-18")!
   )
 }
 
