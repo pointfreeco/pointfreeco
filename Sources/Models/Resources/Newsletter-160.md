@@ -52,7 +52,7 @@ an overview of some of our favorite episode arcs, open source updates, and blog 
 
 # Episodes
 
-## [Point-Free Live: Observation in Practice][pf-live-obs-in-practice]
+## Point-Free Live: Observation in Practice
 
 We began the year by celebrating our [6th birthday][pf-6] with a 
 [livestream][pf-live-obs-in-practice]. We showed off more superpowers from adding Observation tools 
@@ -80,7 +80,7 @@ and more.
 
 [shared-state-collection]: https://www.pointfree.co/collections/composable-architecture/sharing-and-persisting-state
 
-## [Modern UIKit][modern-uikit-collection]
+## Modern UIKit
 
 No one asked us to do a ["Modern UIKit"][modern-uikit-collection] series in the year 2024, but that
 doesn't mean there isn't a bunch of fascinating topics to explore! While SwiftUI may be powerful,
@@ -91,7 +91,7 @@ UI controls.
 
 [modern-uikit-collection]: https://www.pointfree.co/collections/uikit/modern-uikit
 
-## [Cross-platform Swift][cross-platform-collection]
+## Cross-platform Swift
 
 Swift builds for a variety of non-Apple platforms, including Windows, Linux, and WebAssembly (Wasm),
 which is exciting! But it does take work to write code that can actually run on non-Apple platforms.
@@ -102,7 +102,7 @@ app on iOS devices and in browsers with a single codebase.
 [cross-platform-collection]: https://www.pointfree.co/collections/cross-platform-swift
 [focus-areas-2025]: https://forums.swift.org/t/swift-language-focus-areas-heading-into-2025/76611
 
-## [Back to basics: Equatable and Hashable][eq-hash-collection]
+## Back to basics: Equatable and Hashable
 
 While we enjoy discussing advanced topics in Swift on Point-Free, it is nice to get 
 [back to basics][eq-hash-collection] every once in awhile. This year we explored everything
@@ -112,7 +112,7 @@ protocols are going to lead you to code with subtle bugs, or even code that will
 
 [eq-hash-collection]: https://www.pointfree.co/collections/back-to-basics/equatable-and-hashable
 
-## [SQLite][sqlite-collection]
+## SQLite
 
 In anticipation of episodes we have planned for the future, we decided to give a quick 
 [introduction to SQLite][sqlite-collection]. This includes how to interact directly with the SQLite
@@ -122,7 +122,7 @@ C library directly (unsafe pointers galore!), as well as how to use the popular 
 [grdb-gh]: http://github.com/groue/GRDB.swift
 [sqlite-collection]: https://www.pointfree.co/collections/back-to-basics/sqlite
 
-## [Tour of Sharing][sharing-tour-collection]
+## Tour of Sharing
 
 Our final series of the year gives a [tour][sharing-tour-collection] of an open source library that
 we also released at the end of the year: [Swift Sharing][swift-sharing-gh]. The tour builds a 
@@ -135,7 +135,7 @@ state.
 
 # Open source
 
-## [Perception][perception-gh]
+## Perception
 
 We kicked off the year with a bang by releasing [Perception][perception-gh], a library that 
 backports Swift's observation tools to older Apple platforms, all the way back to iOS 13. This was
@@ -144,7 +144,7 @@ Architecture, but ultimately realized it would help anyone building SwiftUI appl
 
 [perception-gh]: http://github.com/pointfreeco/swift-perception
 
-## [Issue Reporting][issue-reporting-gh]
+## Issue Reporting
 
 Reporting issues in apps is important, but the manner one reports can be difficult to get right.
 We want to be able to report issues in a way that is immediately noticeable yet not annoying or
@@ -153,7 +153,7 @@ your own custom issue reporters.
 
 [issue-reporting-gh]: http://github.com/pointfreeco/swift-issue-reporting
 
-## [Swift Navigation][swift-navigation-gh]
+## Swift Navigation
 
 Released as a brand new library, [Swift Navigation][swift-navigation-gh] evolved from our older
 library, SwiftUI Navigation. We realized that many of the tools we were builing for SwiftUI were
@@ -161,7 +161,7 @@ just as applicable to UIKit and even cross-platform Swift apps.
 
 [swift-navigation-gh]: http://github.com/pointfreeco/swift-navigation
 
-## [Sharing][sharing-gh]
+## Sharing
 
 We ended the year by releasing a powerful new library, [Swift Sharing][sharing-gh], which provides
 tools for sharing state amongst many features in an app and allowing that state to be persisted
@@ -173,7 +173,7 @@ foundation.
   
 # Blog posts
 
-## [Building an app in the Composable Architecture, from scratch][tca-tutorial-blog]
+## Building an app in the Composable Architecture, from scratch
 
 To celebrate the 4 year birthday of the Composable Architecture we released a 
 [brand new tutorial][tca-tutorial] that builds a moderately complex app from scratch using the
@@ -184,7 +184,7 @@ and a lot more.
 [tca-tutorial]: https://pointfreeco.github.io/swift-composable-architecture/main/tutorials/buildingsyncups
 [tca-tutorial-blog]: /blog/posts/138-building-an-app-in-the-composable-architecture-from-scratch
 
-## [This is what peak UIKit looks like][peak-uikit-blog]
+## This is what peak UIKit looks like
 
 Our [sneak peek][peak-uikit-blog] at a suite of new tools that allows one to build powerful, modern
 UIKit apps. This includes easy state observation for updating the UI, state-driven navigation,
@@ -193,7 +193,7 @@ and 2-way bindings for UI controls. Later in the year we ended up
 
 [peak-uikit-blog]: /blog/posts/140-this-is-what-peak-uikit-looks-like
 
-## [Composable Architecture Frequently Asked Questions][tca-faq-blog-post]
+## Composable Architecture Frequently Asked Questions
 
 Much ink has been spilled from the community about the pros and cons of the Composable Architecture,
 but often these articles are based on outdated information. We try to 
@@ -202,7 +202,7 @@ grievances and misunderstandings of the library.
 
 [tca-faq-blog-post]: /blog/posts/141-composable-architecture-frequently-asked-questions
 
-## [Swift Navigation: Powerful navigation tools for all Swift platforms][swift-nav-blog]
+## Swift Navigation: Powerful navigation tools for all Swift platforms
 
 The announcement [blog post][swift-nav-blog] for our new [Swift Navigation][swift-nav-gh] library.
 Learn a little bit about the powerful tools it provides for all Swift applications, including
@@ -211,7 +211,7 @@ those using SwiftUI, UIKit, and even cross-platform apps running on non-Apple pl
 [swift-nav-gh]: http://github.com/pointfreeco/swift-navigation
 [swift-nav-blog]: /blog/posts/149-swift-navigation-powerful-navigation-tools-for-all-swift-platforms
 
-## [Cross-Platform Swift: Building a Swift app for the browser][cross-platform-blog]
+## Cross-Platform Swift: Building a Swift app for the browser
 
 In this [blog post][cross-platform-blog] we give a quick overview on what it takes to build 
 cross-platform Swift code. In particular, we show how to build a Swift app for WebAssembly so that
@@ -219,7 +219,7 @@ we can run a pure Swift app in the browser.
 
 [cross-platform-blog]: /blog/posts/151-cross-platform-swift-building-a-swift-app-for-the-browser
 
-## [Point-Free is Xcode 16 ready][xcode-16-blog]
+## Point-Free is Xcode 16 ready
 
 From the first day of Xcode 16's release our libraries have been [ready][xcode-16-blog]. All of our 
 libraries were audited for complete compatibility to the strict concurrency checking of Swift 6 
@@ -228,9 +228,9 @@ simultaneously compatible with XCTest as well as Swift's new native Testing fram
 
 [xcode-16-blog]: /blog/posts/152-point-free-is-xcode-16-ready
 
-## [Parsing and the Advent of Code][parsing-advent]
+## Parsing and the Advent of Code
 
-Just a fun end-of-year [blog post][parsing-advent] where we show how to use our 
+Just a fun, end-of-year [blog post][parsing-advent] where we show how to use our 
 [Swift Parsing][parsing-gh] library to give a headstart on solving Advent of Code problems. The 
 majority of problems for the advent first involve parsing a textfile of input data into first class
 data types so that you can then actually solve the problem. This is something that our Parsing
