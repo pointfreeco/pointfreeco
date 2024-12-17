@@ -95,7 +95,7 @@ UI controls.
 
 Swift builds for a variety of non-Apple platforms, including Windows, Linux, and WebAssembly (Wasm),
 which is exciting! But it does take work to write code that can actually run on non-Apple platforms.
-In [this series][cross-platform-collection] we write cross-platform Swift code from scrach, and
+In [this series][cross-platform-collection] we write cross-platform Swift code from scratch, and
 show how by modeling your domains concisely and controlling your dependencies, you can run an
 app on iOS devices and in browsers with a single codebase. 
 
@@ -138,7 +138,7 @@ state.
 ## Perception
 
 We kicked off the year with a bang by releasing [Perception][perception-gh], a library that 
-backports Swift's observation tools to older Apple platforms, all the way back to iOS 13. This was
+back-ports Swift's observation tools to older Apple platforms, all the way back to iOS 13. This was
 a big effort for us that originated from us wanting to support observation tools in the Composable
 Architecture, but ultimately realized it would help anyone building SwiftUI applications.  
 
@@ -165,9 +165,9 @@ just as applicable to UIKit and even cross-platform Swift apps.
 
 We ended the year by releasing a powerful new library, [Swift Sharing][sharing-gh], which provides
 tools for sharing state amongst many features in an app and allowing that state to be persisted
-to external systems, such as `UserDefaults` and the file system. It has become one of our quickly
-adopted libraries ever released, and the community has already built powerful tools on top of its
-foundation.
+to external systems, such as `UserDefaults` and the file system. It has become one of our most
+quickly adopted libraries ever released, and the community has already built powerful tools on top
+of its foundation.
 
 [sharing-gh]: http://github.com/pointfreeco/swift-sharing
   
@@ -231,8 +231,8 @@ simultaneously compatible with XCTest as well as Swift's new native Testing fram
 ## Parsing and the Advent of Code
 
 Just a fun, end-of-year [blog post][parsing-advent] where we show how to use our 
-[Swift Parsing][parsing-gh] library to give a headstart on solving Advent of Code problems. The 
-majority of problems for the advent first involve parsing a textfile of input data into first class
+[Swift Parsing][parsing-gh] library to give a head start on solving Advent of Code problems. The 
+majority of problems for the advent first involve parsing a text file of input data into first class
 data types so that you can then actually solve the problem. This is something that our Parsing
 library excels at!
 
