@@ -199,7 +199,7 @@ struct Banner {
   }
 
   static let eoy2024 = Self(
-    endAt: yearMonthDayFormatter.date(from: "2024-01-05")!,
+    endAt: yearMonthDayFormatter.date(from: "2025-01-05")!,
     markdownContent: ###"""
       **🎉 End-of-year Sale!** Save 25% when you [subscribe today](/discounts/eoy-2024).
       """###,
