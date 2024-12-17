@@ -206,10 +206,14 @@ struct Banner {
     shouldShow: { route in
       if case .subscribeConfirmation = route {
         return false
-//      } else if case .blog(.show(.left("157-cyber-monday-last-chance-to-save"))) = route {
-//        return false
-//      } else if case .blog(.show(.right(157))) = route {
-//        return false
+      } else if case .blog(.show(.left("161-cyber-monday-last-chance-to-save"))) = route {
+        return false
+      } else if case .blog(.show(.right(161))) = route {
+        return false
+      } else if case .blog(.show(.left("162-cyber-monday-last-chance-to-save"))) = route {
+        return false
+      } else if case .blog(.show(.right(162))) = route {
+        return false
       } else if case .teamInviteCode = route {
         return false
       } else {
