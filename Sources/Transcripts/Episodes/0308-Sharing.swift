@@ -3,14 +3,16 @@ import Foundation
 extension Episode {
   public static let ep308_sharing = Episode(
     blurb: """
-      TODO
+      We close out our tour of the Sharing library by showing how easy it is to test code that uses
+      the `@Shared` property wrapper without worrying about values bleeding between tests and the
+      simulator. And we'll take the "in-memory" shared key for a spin by building one final feature.
       """,
     codeSampleDirectory: "0308-sharing-pt4",
     exercises: _exercises,
     id: 308,
     length: 28 * 60 + 37,
     permission: .subscriberOnly,
-    publishedAt: yearMonthDayFormatter.date(from: "2024-12-20")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2024-12-18")!,
     references: [
       .init(
         author: "Point-Free",
