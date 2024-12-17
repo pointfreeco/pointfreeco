@@ -11,7 +11,7 @@ extension BlogPost {
     hidden: .noUntil(yearMonthDayFormatter.date(from: "2025-01-05")!),
     hideFromSlackRSS: true,
     id: 162,
-    publishedAt: yearMonthDayFormatter.date(from: "2024-12-23")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2024-12-27")!,
     title: "End-of-year sale: 25% off Point-Free"
   )
 }
