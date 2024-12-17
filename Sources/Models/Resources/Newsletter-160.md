@@ -3,13 +3,13 @@ produced for 2024, so join us for a quick review of some of our favorite highlig
 We are also offering [25% off][eoy-discount] the first year for first-time subscribers. If you’ve 
 been on the fence on whether or not to subscribe, now is the time!
 
-[eoy-discount]: /discounts/2024-eoy
+[eoy-discount]: /discounts/eoy-2024
 
-@Button(/discounts/2024-eoy) {
+@Button(/discounts/eoy-2024) {
   Subscribe today!
 }
 
-[eoy-discount]: /discounts/2024-eoy
+[eoy-discount]: /discounts/eoy-2024
 
 # Highlights
 
@@ -248,8 +248,8 @@ To celebrate the end of the year we are also offering [25% off][eoy-discount] th
 for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now
 is the time!
 
-[eoy-discount]: /discounts/2024-eoy
+[eoy-discount]: /discounts/eoy-2024
 
-@Button(/discounts/2024-eoy) {
+@Button(/discounts/eoy-2024) {
   Subscribe today!
 }
