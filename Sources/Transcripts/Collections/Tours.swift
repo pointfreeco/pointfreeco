@@ -107,10 +107,7 @@ extension Episode.Collection.Section {
 
   static let sharing = Self(
     blurb: #"""
-      "Sharing" is an open source library for sharing state throughout your application and to \
-      external systems like user defaults, the file system, and more. It gives you a powerful \
-      tool that is usable from essentially anywhere in your app (views, controllers, models, \ 
-      etc.), and is testable and highly customizable.
+      "Sharing" is an open source library for sharing state throughout your application and to external systems like user defaults, the file system, and more. It gives you a powerful tool that is usable from essentially anywhere in your app (views, controllers, models, etc.), and is testable and highly customizable.
       """#,
     coreLessons: [
       .init(episode: .ep305_sharing),
@@ -118,7 +115,6 @@ extension Episode.Collection.Section {
       .init(episode: .ep307_sharing),
       .init(episode: .ep308_sharing),
     ],
-    isFinished: true,
     related: [],
     title: "Tour of Swift Sharing",
     whereToGoFromHere: nil
