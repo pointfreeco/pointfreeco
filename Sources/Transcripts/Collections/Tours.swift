@@ -118,7 +118,7 @@ extension Episode.Collection.Section {
       .init(episode: .ep307_sharing),
       .init(episode: .ep308_sharing),
     ],
-    isFinished: false,
+    isFinished: true,
     related: [],
     title: "Tour of Swift Sharing",
     whereToGoFromHere: nil
