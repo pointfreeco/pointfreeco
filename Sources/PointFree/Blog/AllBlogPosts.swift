@@ -179,5 +179,7 @@ extension BlogPost {
     .post0160_YearInReview2024,
     .post0161_EndOfYearSale,
     .post0162_EndOfYearSale,
+    .post0163_SharingForAll,
+//    .post0164_Sharing2,
   ]
 }
