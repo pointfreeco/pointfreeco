@@ -33,6 +33,7 @@ private func clipMiddleware(
       .respondV2(
         layoutData: SimplePageLayoutData(
           description: clip.blurb,
+          image: clip.posterURL,
           title: clip.title
         )
       ) {

@@ -35,7 +35,7 @@ public struct GiftsV2: HTML {
         PricingLane("6 months", annualPricePerMonth: 108) {
           "One-time payment"
         } features: {
-          li { "Full access for 3 months" }
+          li { "Full access for 6 months" }
           baseFeatures
         } callToAction: {
           Button(color: .purple) {

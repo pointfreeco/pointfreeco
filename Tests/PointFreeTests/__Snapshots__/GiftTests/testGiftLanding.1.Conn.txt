@@ -437,7 +437,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
                 </div>
               </pf-hstack>
               <ul class="font-size-RTPM71 margin-yiBeC4 padding-left-E4tBw4 list-style-type-Wl0y44 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3 color-I8WpG4 color-VoDZ9">
-                <li>Full access for 3 months
+                <li>Full access for 6 months
                 </li>
                 <li>All 0 episodes with transcripts
                 </li>

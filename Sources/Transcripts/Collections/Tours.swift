@@ -6,6 +6,7 @@ extension Episode.Collection {
       We've open sourced a lot of software on Point-Free, and every once in awhile we like to give casual tours of one of our projects. This gives us an opportunity to show of some features and discuss topics that are hard to glean from reading the README or documentation.
       """#,
     sections: [
+      .sharing,
       .tca1_0,
       .isowords,
       update(.parsing) {
@@ -101,6 +102,21 @@ extension Episode.Collection.Section {
     ],
     related: [],
     title: "The Composable Architecture",
+    whereToGoFromHere: nil
+  )
+
+  static let sharing = Self(
+    blurb: #"""
+      "Sharing" is an open source library for sharing state throughout your application and to external systems like user defaults, the file system, and more. It gives you a powerful tool that is usable from essentially anywhere in your app (views, controllers, models, etc.), and is testable and highly customizable.
+      """#,
+    coreLessons: [
+      .init(episode: .ep305_sharing),
+      .init(episode: .ep306_sharing),
+      .init(episode: .ep307_sharing),
+      .init(episode: .ep308_sharing),
+    ],
+    related: [],
+    title: "Tour of Swift Sharing",
     whereToGoFromHere: nil
   )
 }
