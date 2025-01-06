@@ -118,7 +118,6 @@ public func simplePageLayout<A>(
           ghosterBanner(),
           pastDueBanner,
           (layoutData.flash.map(flashView) ?? []),
-          announcementBanner(.eoy2024),
           liveStreamBanner,
           emergencyModeBanner(emergencyMode, layoutData),
           navView(style: layoutData.style),
@@ -188,7 +187,7 @@ struct Banner {
     @Dependency(\.subscriberState) var subscriberState
     @Dependency(\.envVars.appEnv) var appEnv
 
-    let banners: [Self] = [.eoy2024]
+    let banners: [Self] = []
     return banners.filter { banner in
       return
         appEnv == .development
