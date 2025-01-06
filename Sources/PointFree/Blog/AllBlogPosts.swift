@@ -180,6 +180,6 @@ extension BlogPost {
     .post0161_EndOfYearSale,
     .post0162_EndOfYearSale,
     .post0163_SharingForAll,
-    //    .post0164_Sharing2,
+    .post0164_Sharing2,
   ]
 }
