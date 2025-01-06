@@ -10,7 +10,7 @@ extension BlogPost {
     hidden: .no,
     hideFromSlackRSS: false,
     id: 163,
-    publishedAt: yearMonthDayFormatter.date(from: "2024-01-06")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2025-01-06")!,
     title: "Tour of Sharing: Free for all to watch!"
   )
 }
