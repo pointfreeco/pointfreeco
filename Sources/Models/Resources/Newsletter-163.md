@@ -20,7 +20,7 @@ but the state is never persisted. It is automatically cleared with each launch o
 These 3 persistence strategies allow you to easily persist and share state across your entire app,
 but it's also only half the story. The library allows one to build their own persistence strategies
 for speaking to other external storage systems. You can build one for SQLite, Firebase, API servers,
-and more… your imagination is the only limit!
+Wasm, and more… your imagination is the only limit!
 
 These topics will be the focus of next week's episode, but until then be sure to catch up on
 our "[Tour of Sharing][tour-of-sharing]" today! 
