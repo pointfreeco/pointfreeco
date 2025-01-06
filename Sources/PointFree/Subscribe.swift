@@ -20,7 +20,7 @@ let subscribeMiddleware =
   >>> { conn in IO { await subscribe(conn) } }
 
 private let validateUser: MT<Tuple2<User?, SubscribeData?>, Tuple2<User, SubscribeData?>> =
-  redirectActiveSubscribers(user: get1)
+  redirectActiveSubscribers
   <<< filterMap(require1 >>> pure, or: loginAndRedirectToPricing)
 
 private let validateSubscribeData:

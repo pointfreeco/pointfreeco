@@ -14,7 +14,8 @@ import Views
 
 public let subscribeConfirmation:
   M<Tuple3<Pricing.Lane, SubscribeConfirmationData, Stripe.Coupon?>> =
-    validateReferralCode
+    redirectActiveSubscribers
+    <<< validateReferralCode
     <| writeStatus(.ok)
     >=> map(lower)
     >>> respond(
@@ -180,38 +181,17 @@ private func fetchCoupon(_ couponId: Stripe.Coupon.ID?) -> IO<Stripe.Coupon?> {
 }
 
 func redirectActiveSubscribers<A>(
-  user: @escaping (A) -> User?
-)
-  -> (@escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>)
-  -> Middleware<StatusLineOpen, ResponseEnded, A, Data>
-{
-  @Dependency(\.database) var database
-
-  return { middleware in
-    return { conn in
-      let user = user(conn.data)
-
-      return EitherIO {
-        let subscription = try await database.fetchSubscription(user: user.unwrap())
-        guard subscription.stripeSubscriptionStatus != .canceled
-        else { throw unit }
-        return subscription
-      }
-      .run
-      .flatMap {
-        $0.either(
-          { _ in
-            middleware(conn)
-          },
-          { _ in
-            conn
-              |> redirect(
-                to: .account(),
-                headersMiddleware: flash(.notice, "You are now subscribed to Point-Free!")
-              )
-          }
+  middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, A, Data>
+) -> Middleware<StatusLineOpen, ResponseEnded, A, Data> {
+  return { conn in
+    @Dependency(\.subscriberState) var subscriberState
+    guard subscriberState.isNonSubscriber else {
+      return conn
+        |> redirect(
+          to: .account(),
+          headersMiddleware: flash(.notice, "You are already subscribed to Point-Free!")
         )
-      }
     }
+    return middleware(conn)
   }
 }
