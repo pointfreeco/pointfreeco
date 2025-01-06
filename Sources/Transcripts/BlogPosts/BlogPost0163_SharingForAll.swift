@@ -4,8 +4,7 @@ extension BlogPost {
   public static let post0163_SharingForAll = Self(
     author: .pointfree,
     blurb: """
-      TODO \
-      TODO
+      We are making the 4-part series "Tour of Sharing" free for everyone to watch!
       """,
     coverImage: nil,
     hidden: .no,
