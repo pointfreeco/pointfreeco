@@ -50,7 +50,7 @@ both have been revamped to allow for error handling and concurrency in their req
 
 ### Updates to loading
 
-The `load` requirement of ``SharedReaderKey`` in 1.0 was as simple as this:
+The `load` requirement of `SharedReaderKey` in 1.0 was as simple as this:
 
 ```swift
 func load(initialValue: Value?) -> Value?
@@ -65,7 +65,7 @@ this signature:
  3. It wasn't clear why `load` returned an optional, nor was it clear what would happen if one 
     returned `nil`.
 
-These problems are all fixed with the following updated signature for `load` in ``SharedReaderKey``:
+These problems are all fixed with the following updated signature for `load` in `SharedReaderKey`:
 
 ```swift
 func load(
@@ -77,21 +77,21 @@ func load(
 This fixes the above 3 problems in the following way:
 
  1. One can now load the value asynchronously, and when the value is finished loading it can be
-    fed back into the shared state by invoking a `resume` method on ``LoadContinuation``. Further,
-    there is a ``LoadContinuation/resume(throwing:)`` method for emitting a loading error.
+    fed back into the shared state by invoking a `resume` method on `LoadContinuation`. Further,
+    there is a `resume(throwing:)` method for emitting a loading error.
  2. The `context` argument knows the manner in which this `load` method is being invoked, _i.e._ the
     value is being loaded implicitly by initializing the `@Shared` property wrapper, or the value is
-    being loaded explicitly by invoking the ``SharedReader/load()`` method.
- 3. The ``LoadContinuation`` makes explicit the various ways one can resume when the load is 
-    complete. You can either invoke ``LoadContinuation/resume(returning:)`` if a value successfully 
-    loaded, or invoke ``LoadContinuation/resume(throwing:)`` if an error occurred, or invoke 
-    ``LoadContinuation/resumeReturningInitialValue()`` if no value was found in the external storage
+    being loaded explicitly by invoking `load()`.
+ 3. The `LoadContinuation` makes explicit the various ways one can resume when the load is complete.
+    You can either invoke `resume(returning:)` if a value successfully loaded, or invoke
+    `resume(throwing:)` if an error occurred, or invoke `resumeReturningInitialValue()` if no value
+    was found in the external storage
     and you want to use the initial value provided to `@Shared` when it was created.
 
 ### Updates to subscribing
 
-The `subscribe` requirement of ``SharedReaderKey`` has undergone changes similar to `load`. In 1.0
-the requirement was defined like so:
+The `subscribe` requirement of `SharedReaderKey` has undergone changes similar to `load`. In 1.0 the
+requirement was defined like so:
 
 ```swift
 func subscribe(
@@ -116,9 +116,9 @@ func subscribe(
 ) -> SharedSubscription
 ```
 
-This new version of `subscribe` is handed the ``LoadContext`` that lets you know the context of the
-subscription's creation, and the ``SharedSubscriber`` allows you to emit errors by invoking the
-``SharedSubscriber/yield(throwing:)`` method.
+This new version of `subscribe` is handed the `LoadContext` that lets you know the context of the
+subscription's creation, and the `SharedSubscriber` allows you to emit errors by invoking the
+`yield(throwing:)` method.
 
 ### Updates to saving
 
@@ -143,15 +143,13 @@ func save(
 )
 ```
 
-The ``SaveContext`` lets you know if the `save` is being invoked merely because the value of the
-`@Shared` state changed, or because of user initiation by explicitly invoking the ``Shared/save()``
-method. It is the latter case that you may want to bypass any throttling logic and save the data
-immediately.
+The `SaveContext` lets you know if the `save` is being invoked merely because the value of the
+`@Shared` state changed, or because of user initiation by explicitly invoking `save()`. It is the
+latter case that you may want to bypass any throttling logic and save the data immediately.
 
-And the ``SaveContinuation`` allows you to perform the saving logic asynchronously by resuming it
-after the saving work has finished. You can either invoke ``SaveContinuation/resume()`` to indicate
-that saving finished successfully, or ``SaveContinuation/resume(throwing:)`` to indicate that an
-error occurred.
+And the `SaveContinuation` allows you to perform the saving logic asynchronously by resuming it
+after the saving work has finished. You can either invoke `resume()` to indicate that saving
+finished successfully, or `resume(throwing:)` to indicate that an error occurred.
 
 ## A mostly backwards-compatible release
 
