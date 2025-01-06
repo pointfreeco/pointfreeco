@@ -12,6 +12,6 @@ extension BlogPost {
     hideFromSlackRSS: false,
     id: 164,
     publishedAt: yearMonthDayFormatter.date(from: "2025-01-07")!,
-    title: "Sharing 2.0"
+    title: "Sharing 2"
   )
 }
