@@ -42,6 +42,8 @@ if $todos.isLoading {
 }
 ```
 
+For a working example, see the new [API Client Demo][api-client-demo].
+
 ## Custom async throwing strategies
 
 Sharing's persistence strategies are powered by the `SharedKey` and `SharedReaderKey` protocols, and
@@ -163,6 +165,7 @@ related to new functionality that mostly affect third-party persistence strategi
 to the latest release.
 
 [sharing-gh]: https://github.com/pointfreeco/swift-sharing
-[load-docs]: TODO
-[subscribe-docs]: TODO
-[save-docs]: TODO
+[api-client-demo]: https://github.com/pointfreeco/swift-sharing/blob/main/Examples/APIClientDemo/ContentView.swift
+[load-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/2.0.0/documentation/sharing/sharedreaderkey/load(context:continuation:)
+[subscribe-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/2.0.0/documentation/sharing/sharedreaderkey/subscribe(context:continuation:)
+[save-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/2.0.0/documentation/sharing/sharedkey/save(_:context:continuation)
