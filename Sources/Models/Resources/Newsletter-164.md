@@ -169,6 +169,6 @@ to the latest release.
 
 [sharing-gh]: https://github.com/pointfreeco/swift-sharing
 [api-client-demo]: https://github.com/pointfreeco/swift-sharing/blob/main/Examples/APIClientDemo/ContentView.swift
-[load-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/2.0.0/documentation/sharing/sharedreaderkey/load(context:continuation:)
-[subscribe-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/2.0.0/documentation/sharing/sharedreaderkey/subscribe(context:continuation:)
-[save-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/2.0.0/documentation/sharing/sharedkey/save(_:context:continuation)
+[load-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/main/documentation/sharing/sharedreaderkey/load(context:continuation:)
+[subscribe-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/main/documentation/sharing/sharedreaderkey/subscribe(context:continuation:)
+[save-docs]: https://swiftpackageindex.com/pointfreeco/swift-sharing/main/documentation/sharing/sharedkey/save(_:context:continuation)
