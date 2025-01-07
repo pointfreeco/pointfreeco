@@ -33,7 +33,10 @@ if $todos.isLoading {
   ProgressView()
 } else if let loadError = $todos.loadError {
   ContentUnavailableView {
-    Label("Failed to load todos", systemImage: "checkmark.circle.badge.xmark")
+    Label(
+      "Failed to load todos",
+      systemImage: "checkmark.circle.badge.xmark"
+    )
   } description: {
     Text(loadError.localizedDescription)
   }
@@ -42,7 +45,7 @@ if $todos.isLoading {
 }
 ```
 
-For a working example, see the new [API Client Demo][api-client-demo].
+For a full, working example, see the repo's new [API Client Demo][api-client-demo].
 
 ## Custom async throwing strategies
 
