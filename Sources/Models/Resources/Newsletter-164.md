@@ -160,7 +160,19 @@ finished successfully, or `resume(throwing:)` to indicate that an error occurred
 
 If you are using Sharing's built-in strategies, including `appStorage`, `fileStorage`, and
 `inMemory`, Sharing 2.0 is for the most part a backwards-compatible update, with a few exceptions
-related to new functionality that mostly affect third-party persistence strategies.
+related to new functionality that mostly affect third-party persistence strategies. Be sure to 
+check out the [migration guide][sharing-migration] for more information.
+
+[sharing-migration]: https://swiftpackageindex.com/pointfreeco/swift-sharing/2.0.1/documentation/sharing/migratingto2.0
+
+## Composable Architecture 1.17.1
+
+The [Composable Architecture](http://github.com/pointfreeco/swift-composable-architecture) has
+also been updated to support the full range of Swift Sharing 0.1.0 through 2.0. This means you
+get to decide which version of Swift Sharing you want to use with the Composable Architecture.
+Be sure to check out the [migration guide][tca-migration] for more information.
+
+[tca-migration]: https://github.com/pointfreeco/swift-composable-architecture/blob/main/Sources/ComposableArchitecture/Documentation.docc/Articles/MigrationGuides/MigratingTo1.17.1.md
 
 ## Upgrade today
 
