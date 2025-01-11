@@ -311,5 +311,6 @@ extension Episode {
     .ep306_sharing,
     .ep307_sharing,
     .ep308_sharing,
+    .ep309_sqliteSharing,
   ]
 }
