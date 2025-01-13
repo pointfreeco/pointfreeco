@@ -3,6 +3,7 @@ extension Episode.Collection {
     .swiftUI,
     .backToBasics,
     .composableArchitecture,
+    .sqlite,
     .concurrency,
     .uiKit,
     .crossPlatform,
