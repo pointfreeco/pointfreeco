@@ -18,7 +18,7 @@ extension Episode.Collection {
           """,
         coreLessons: [
           .init(episode: .ep309_sqliteSharing)
-          .init(episode: .ep310_sqliteSharing),
+            .init(episode: .ep310_sqliteSharing)
           //          .init(episode: .ep311_sqliteSharing),
           //          .init(episode: .ep312_sqliteSharing),
         ],
