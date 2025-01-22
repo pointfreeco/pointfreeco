@@ -17,10 +17,10 @@ extension Episode.Collection {
           by SQLite too, and when done properly a lot of amazing powers are unlocked.
           """,
         coreLessons: [
-          .init(episode: .ep309_sqliteSharing)
-            .init(episode: .ep310_sqliteSharing)
-          //          .init(episode: .ep311_sqliteSharing),
-          //          .init(episode: .ep312_sqliteSharing),
+          .init(episode: .ep309_sqliteSharing),
+          .init(episode: .ep310_sqliteSharing),
+          .init(episode: .ep311_sqliteSharing),
+          .init(episode: .ep312_sqliteSharing),
         ],
         isFinished: false,
         isHidden: false,
