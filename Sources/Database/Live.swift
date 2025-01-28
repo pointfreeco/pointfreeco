@@ -890,6 +890,12 @@ extension Client {
           )
           """
         )
+        try await database.run(
+          """
+          ALTER TABLE "livestreams"
+          ADD COLUMN IF NOT EXISTS "live_description" character varying
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(
