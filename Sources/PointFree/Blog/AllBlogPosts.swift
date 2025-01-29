@@ -181,5 +181,6 @@ extension BlogPost {
     .post0162_EndOfYearSale,
     .post0163_SharingForAll,
     .post0164_Sharing2,
+    .post0165_PFAnniversary,
   ]
 }
