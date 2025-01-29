@@ -128,8 +128,8 @@ public func liveView() -> Node {
           ],
           .markdownBlock(
             activeLivestream.isLive
-            ? (activeLivestream.liveDescription ?? activeLivestream.description)
-            : activeLivestream.description
+              ? (activeLivestream.liveDescription ?? activeLivestream.description)
+              : activeLivestream.description
           )
         )
       )
