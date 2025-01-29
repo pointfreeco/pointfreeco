@@ -7,6 +7,7 @@ public struct Livestream: Codable, Identifiable {
   public let eventID: EventID
   public let isActive: Bool
   public let isLive: Bool
+  public let liveDescription: String?
   public let scheduledAt: Date?
   public let title: String
 
@@ -18,6 +19,7 @@ public struct Livestream: Codable, Identifiable {
     eventID: EventID,
     isActive: Bool,
     isLive: Bool,
+    liveDescription: String? = nil,
     scheduledAt: Date? = nil,
     title: String = ""
   ) {
@@ -26,6 +28,7 @@ public struct Livestream: Codable, Identifiable {
     self.eventID = eventID
     self.isActive = isActive
     self.isLive = isLive
+    self.liveDescription = liveDescription
     self.scheduledAt = scheduledAt
     self.title = title
   }
@@ -36,6 +39,7 @@ public struct Livestream: Codable, Identifiable {
     case eventID = "event_id"
     case isActive = "is_active"
     case isLive = "is_live"
+    case liveDescription = "live_description"
     case scheduledAt = "scheduled_at"
     case title
   }

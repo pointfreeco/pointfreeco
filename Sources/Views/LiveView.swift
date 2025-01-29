@@ -126,7 +126,11 @@ public func liveView() -> Node {
               Class.pf.type.body.regular,
             ])
           ],
-          .markdownBlock(activeLivestream.description)
+          .markdownBlock(
+            activeLivestream.isLive
+            ? (activeLivestream.liveDescription ?? activeLivestream.description)
+            : activeLivestream.description
+          )
         )
       )
     ),
@@ -182,7 +186,7 @@ public func liveView() -> Node {
 private let livestreamScheduledAtFormatter: DateFormatter = {
   let df = DateFormatter()
   df.dateStyle = .medium
-  df.timeStyle = .short
+  df.timeStyle = .none
   return df
 }()
 
