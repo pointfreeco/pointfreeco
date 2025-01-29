@@ -16,7 +16,7 @@ It might sound strange to say, but our libraries are as stable and well-designed
 
 ## Live Stream and Giveaway
 
-We are excited to announce that we are hosting a [live stream on February 14th](https://www.notion.so/1528b290427b801fa3eff614a60281fa?pvs=21) (Valentine's Day 😍) at 9am PST / 5pm GMT. And to celebrate our 7th anniversary we will be giving away 7 yearly subscriptions to Point-Free. Simply tune into the live stream to join the giveaway!
+We are excited to announce that we are hosting a [live stream on February 14th](/live) (Valentine's Day 😍) at 9am PST / 5pm GMT. And to celebrate our 7th anniversary we will be giving away 7 yearly subscriptions to Point-Free. Simply tune into the live stream to join the giveaway!
 
 We will be discussing some recent updates around our popular [Sharing](http://github.com/pointfreeco/swift-sharing) library, which brings powerful state sharing and persistence tools to apps no matter if you are using SwiftUI, UIKit, or AppKit. We will even be able to get into some topics that haven’t gotten much attention, such as how Sharing can be used for global navigation patterns, how it can be used with Firebase, and even how it can be used with cross-platform Swift, such as Wasm.
 
