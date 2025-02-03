@@ -22,7 +22,7 @@ extension Episode.Collection {
           .init(episode: .ep311_sqliteSharing),
           .init(episode: .ep312_sqliteSharing),
         ],
-        isFinished: false,
+        isFinished: true,
         isHidden: false,
         related: [],
         title: "Sharing with SQLite",
