@@ -182,5 +182,7 @@ extension BlogPost {
     .post0163_SharingForAll,
     .post0164_Sharing2,
     .post0165_PFAnniversary,
+    .post0166_WereLive,
+    .post0167_SharingGRDB,
   ]
 }
