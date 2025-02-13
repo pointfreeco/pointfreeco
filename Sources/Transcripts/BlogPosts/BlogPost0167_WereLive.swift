@@ -1,7 +1,7 @@
 import Foundation
 
 extension BlogPost {
-  public static let post0166_WereLive = Self(
+  public static let post0167_WereLive = Self(
     author: .pointfree,
     blurb: """
       Our live stream will be starting soon. Tune in now to watch us discuss our popular Sharing \
@@ -12,7 +12,7 @@ extension BlogPost {
     coverImage: nil,
     hidden: .noUntil(yearMonthDayFormatter.date(from: "2024-02-15")!),
     hideFromSlackRSS: false,
-    id: 166,
+    id: 167,
     publishedAt: yearMonthDayFormatter.date(from: "2024-02-14")!
       .addingTimeInterval(60 * 60 * 16),  // 4:00pm GMT
     title: "We’re going live soon!"

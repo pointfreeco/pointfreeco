@@ -1,7 +1,7 @@
 import Foundation
 
 extension BlogPost {
-  public static let post0167_SharingGRDB = Self(
+  public static let post0168_SharingGRDB = Self(
     author: .pointfree, 
     blurb: """
       We are excited to announce a new open source library that can serve as a SwiftData \
@@ -11,7 +11,7 @@ extension BlogPost {
     coverImage: nil,  
     hidden: .no,
     hideFromSlackRSS: false,
-    id: 167,
+    id: 168,
     publishedAt: yearMonthDayFormatter.date(from: "2025-02-14")!
       .addingTimeInterval(60 * 60 * 17),  // 5:00pm GMT
     title: "SharingGRDB: A SwiftData Alternative"
