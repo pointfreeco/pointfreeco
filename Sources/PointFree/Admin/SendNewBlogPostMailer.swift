@@ -166,7 +166,7 @@ private func sendEmail(
         EitherIO {
           try await sendEmail(
             to: [user.email],
-            subject: "\(subjectPrefix)Point-Free Pointer: \(post.title)",
+            subject: "\(subjectPrefix)\(post.title)",
             unsubscribeData: (user.id, .newBlogPost),
             content: inj2(nodes)
           )
