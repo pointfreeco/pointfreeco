@@ -1,4 +1,4 @@
-We will be [live](/live) at 9am PST / 5pm GMT! 
+We will be [live soon](/live), at 9am PST / 5pm GMT! 
 
 @Button(/live) {
   Join livestream

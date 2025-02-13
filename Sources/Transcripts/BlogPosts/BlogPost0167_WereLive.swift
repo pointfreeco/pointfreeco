@@ -10,10 +10,10 @@ extension BlogPost {
       yearly subscriptions to one of our viewers.
       """,
     coverImage: nil,
-    hidden: .noUntil(yearMonthDayFormatter.date(from: "2024-02-15")!),
+    hidden: .noUntil(yearMonthDayFormatter.date(from: "2025-02-16")!),
     hideFromSlackRSS: false,
     id: 167,
-    publishedAt: yearMonthDayFormatter.date(from: "2024-02-14")!
+    publishedAt: yearMonthDayFormatter.date(from: "2025-02-14")!
       .addingTimeInterval(60 * 60 * 16),  // 4:00pm GMT
     title: "We’re going live soon!"
   )
