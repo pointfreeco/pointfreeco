@@ -1,7 +1,8 @@
 We are excited to announce the release of a brand new open source library: 
 [SharingGRDB][sharing-grdb-gh]. It's an amalgamation of our [Sharing][sharing-gh] library and
 Gwendal Roué's [GRDB.swift][grdb], providing a suite of tools that can replace many usages
-of SwiftData while giving you direct access to the underlying SQLite.
+of SwiftData while giving you direct access to the underlying SQLite, including joins, aggregates,
+common table expressions (CVE's) and more!
 
 Join us for an overview the library, and be sure to check out the 
 [many case studies and demos][examples-gh] in the repo.
@@ -46,9 +47,49 @@ observed by SwiftUI so that views are recomputed when the external data changes,
 powered directly by SQLite using [Sharing][sharing-gh] and [GRDB][grdb], and is
 usable from UIKit, `@Observable` models, and more.
 
-> Note: It is not required to write queries as a raw SQL string, and a query builder can be used 
-> instead. For more information on SharingGRDB's querying capabilities, see 
+It is not required to write queries as a raw SQL string, though for simple queries it can be 
+quite handy. For more complex queries you are able to use GRDB's query builder API:
+
+```swift
+@SharedReader(.fetchAll(Items())) var items
+
+struct Items: FetchKeyRequest {
+  func fetch(_ db: Database) throws -> [Item] {
+    Item.all()
+      .filter(!Column("isArchived"))
+      .order(Column("title").desc)
+      .limit(100)
+      .fetch(db)
+  }
+}
+```
+
+For more information on SharingGRDB's querying capabilities, see 
 [Fetching model data][fetching-article].
+
+Further, unlike the `@Query` macro from SwiftData, you are not limited to using it only in 
+SwiftUI views. It can be used in `@Observable` classes, UIKit view controllers, and of course in
+SwiftUI views:
+
+```swift
+// Observable models
+@Observable class ItemsModel {
+  @SharedReader(.fetchAll(Items())) var items
+  // ...
+}
+
+// UIKit view controllers
+class ItemsViewController: UIViewController {
+  @SharedReader(.fetchAll(Items())) var items
+  // ...
+}
+
+// SwiftUI views
+struct ItemsView: View {
+  @State.SharedReader(.fetchAll(Items())) var items
+  // ...
+}
+```
 
 ## Quick start
 
