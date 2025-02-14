@@ -585,7 +585,7 @@ struct TopBanner<Content: HTML>: HTML {
       .linkStyle(LinkStyle(color: style.color, underline: true))
       .inlineStyle("margin", "0 auto")
       .inlineStyle("max-width", "1280px")
-      .inlineStyle("padding", "1rem 3rem 1rem")
+      .inlineStyle("padding", "2rem 3rem")
       .inlineStyle("text-align", "center")
       .fontStyle(.body(.small))
     }
