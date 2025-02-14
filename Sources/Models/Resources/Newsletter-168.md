@@ -18,7 +18,7 @@ SharingGRDB is lightweight replacement for SwiftData and the `@Query` macro.
 <th>SwiftData</th>
 </tr>
 <tr valign=top>
-<td width=415>
+<td width=50%>
       
 ```swift
 @SharedReader(
@@ -30,7 +30,7 @@ var items: [Item]
 ```
 
 </td>
-<td width=415>
+<td width=50%>
 
 ```swift
 @Query
@@ -63,17 +63,17 @@ in SwiftData:
 <th>SwiftData</th>
 </tr>
 <tr valign=top>
-<td width=415>
+<td width=50%>
 
 ```swift
 @main
 struct MyApp: App {
   init() {
     prepareDependencies {
-      let db = try! DatabaseQueue(
-        // Create/migrate a database 
-        // connection
-      )
+      let db =
+        try! DatabaseQueue(
+          // ...
+        )
       $0.defaultDatabase = db
     }
   }
@@ -82,20 +82,23 @@ struct MyApp: App {
 ```
 
 </td>
-<td width=415>
+<td width=50%>
 
 ```swift
 @main
 struct MyApp: App {
   let container = { 
-    // Create/configure a container
-    try! ModelContainer(/* ... */)
+    try! ModelContainer(
+      // ...
+    )
   }()
   
   var body: some Scene {
     WindowGroup {
       ContentView()
-        .modelContainer(container)
+        .modelContainer(
+          container
+        )
     }
   }
 }
@@ -125,7 +128,7 @@ a model context, via a property wrapper:
 <th>SwiftData</th>
 </tr>
 <tr valign=top>
-<td width=415>
+<td width=50%>
 
 ```swift
 @Dependency(\.defaultDatabase) 
@@ -138,7 +141,7 @@ try database.write { db in
 ```
 
 </td>
-<td width=415>
+<td width=50%>
 
 ```swift
 @Environment(\.modelContext) 
