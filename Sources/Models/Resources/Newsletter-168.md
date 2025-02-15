@@ -209,20 +209,13 @@ the [articles][articles] below to learn how to best utilize this library:
 * [Dynamic queries][dynamic-queryies-article]
 * [Comparison with SwiftData][comparison-swiftdata-article]
 
-[observing-article]: https://github.com/pointfreeco/sharing-grdb/blob/main/Sources/SharingGRDB/Documentation.docc/Articles/Observing.md 
-<!-- https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/observing -->
-[dynamic-queryies-article]: https://github.com/pointfreeco/sharing-grdb/blob/main/Sources/SharingGRDB/Documentation.docc/Articles/DynamicQueries.md 
-<!-- https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/dynamicqueries -->
-[articles]: https://github.com/pointfreeco/sharing-grdb/tree/main/Sources/SharingGRDB/Documentation.docc/Articles 
-<!-- https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb#Essentials -->
-[comparison-swiftdata-article]: https://github.com/pointfreeco/sharing-grdb/blob/main/Sources/SharingGRDB/Documentation.docc/Articles/ComparisonWithSwiftData.md 
-<!-- https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/comparisonwithswiftdata -->
-[fetching-article]: https://github.com/pointfreeco/sharing-grdb/blob/main/Sources/SharingGRDB/Documentation.docc/Articles/Fetching.md 
-<!-- https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/fetching -->
-[preparing-db-article]: https://github.com/pointfreeco/sharing-grdb/blob/main/Sources/SharingGRDB/Documentation.docc/Articles/PreparingDatabase.md 
-<!-- https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/preparingdatabase --> 
- [fetchall-docs]: https://github.com/pointfreeco/sharing-grdb/blob/main/Sources/SharingGRDB/FetchKey.swift#L84-L115
- <!-- https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/sharing/sharedreaderkey/fetchall(sql:arguments:database:animation:) -->
+[observing-article]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/observing 
+[dynamic-queryies-article]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/dynamicqueries 
+[articles]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb#Essentials 
+[comparison-swiftdata-article]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/comparisonwithswiftdata 
+[fetching-article]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/fetching 
+[preparing-db-article]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/preparingdatabase  
+ [fetchall-docs]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/sharing/sharedreaderkey/fetchall(sql:arguments:database:animation:) 
 
 ## SQLite knowledge required
 
