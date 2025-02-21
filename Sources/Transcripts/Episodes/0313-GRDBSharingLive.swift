@@ -9,7 +9,7 @@ extension Episode {
     exercises: _exercises,
     id: 313,
     length: 123 * 60 + 53,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2025-02-17")!,
     references: [
       .init(
