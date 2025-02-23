@@ -316,5 +316,6 @@ extension Episode {
     .ep311_sqliteSharing,
     .ep312_sqliteSharing,
     .ep313_pfLive_SharingGRDB,
+    .ep314_sqlBuilding,
   ]
 }
