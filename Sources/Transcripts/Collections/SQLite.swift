@@ -37,7 +37,7 @@ extension Episode.Collection {
           various syntaxes of SQL.
           """,
         coreLessons: [
-          .init(episode: .ep314_sqlBuilding),
+          .init(episode: .ep314_sqlBuilding)
         ],
         isFinished: false,
         isHidden: false,
