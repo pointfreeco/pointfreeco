@@ -28,6 +28,23 @@ extension Episode.Collection {
         title: "Sharing with SQLite",
         whereToGoFromHere: nil
       ),
+      Episode.Collection.Section(
+        blurb: """
+          SQL is one of the most powerful and concise programming languages ever invented, but it \
+          is usually written as a raw string in some other language, such as Swift, Javascript, \
+          Ruby, and so on. In this series we develop a SQL building library from scratch with a \
+          focus on type-safety and composability, and along the way we will dive deep into the \
+          various syntaxes of SQL.
+          """,
+        coreLessons: [
+          .init(episode: .ep314_sqlBuilding),
+        ],
+        isFinished: false,
+        isHidden: false,
+        related: [],
+        title: "SQL Building",
+        whereToGoFromHere: nil
+      ),
     ],
     title: "SQLite"
   )
