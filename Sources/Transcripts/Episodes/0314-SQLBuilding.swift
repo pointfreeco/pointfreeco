@@ -30,7 +30,7 @@ extension Episode {
           > A lightweight replacement for SwiftData and `@Query`.
           """,
         link: "https://github.com/pointfreeco/sharing-grdb",
-        title: "Sharing"
+        title: "SharingGRDB"
       ),
       .init(
         author: "Gwendal Roué",
