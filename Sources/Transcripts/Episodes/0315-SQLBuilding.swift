@@ -23,7 +23,8 @@ extension Episode {
           > expressions, or self. This proposal expands key path expression access to include static
           > properties of a type, i.e., metatype keypaths.
           """,
-        link: "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0438-metatype-keypath.md",
+        link:
+          "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0438-metatype-keypath.md",
         title: "Metatype Keypaths"
       ),
       .init(
@@ -62,7 +63,7 @@ extension Episode {
         hd720: "0315-trailer-720p-1fa7fb0525ea46829e04c3b62276b3bb",
         sd540: "0315-trailer-540p-05da8a5e93b74faf9faf6944a28a75a1"
       ),
-      vimeoId: 1060278072
+      vimeoId: 1_060_278_072
     )
   )
 }
