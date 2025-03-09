@@ -19,7 +19,7 @@ extension Episode {
         blurb: "The SQLite home page",
         link: "https://www.sqlite.org",
         title: "SQLite"
-      ),
+      )
     ],
     sequence: 317,
     subtitle: "Advanced Selects",
@@ -31,7 +31,7 @@ extension Episode {
         hd720: "0317-trailer-720p-e800785414c9487b80b0150bc7179837",
         sd540: "0317-trailer-540p-bb0b0b27c7164550978f66d098176b15"
       ),
-      vimeoId: 1063697836
+      vimeoId: 1_063_697_836
     )
   )
 }
