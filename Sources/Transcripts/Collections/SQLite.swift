@@ -39,6 +39,7 @@ extension Episode.Collection {
         coreLessons: [
           .init(episode: .ep314_sqlBuilding),
           .init(episode: .ep315_sqlBuilding),
+          .init(episode: .ep316_sqlBuilding),
         ],
         isFinished: false,
         isHidden: false,
