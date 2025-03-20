@@ -8,7 +8,7 @@ extension Episode {
       libraries use, we can do better. Let's introduce a more advanced syntax that leverages
       variadic generics and supports more complex query expressions.
       """,
-    codeSampleDirectory: "0317-sql-building-pt5",
+    codeSampleDirectory: "0317-sql-building-pt4",
     exercises: _exercises,
     id: 317,
     length: 28 * 60 + 44,
