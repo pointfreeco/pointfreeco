@@ -3,7 +3,10 @@ import Foundation
 extension Episode {
   public static let ep318_sqlBuilding = Episode(
     blurb: """
-      TODO
+      We add sorting to our SQL builder, which will give us a powerful, succinct \
+      syntax for controlling the order of results. We will start small but build up to \
+      parameter packs and even a custom result builder to get the most flexibility out \
+      of our API.
       """,
     codeSampleDirectory: "0318-sql-building-pt5",
     exercises: _exercises,
