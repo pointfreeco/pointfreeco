@@ -11,7 +11,7 @@ extension Episode {
     codeSampleDirectory: "0318-sql-building-pt5",
     exercises: _exercises,
     id: 318,
-    length: 28 * 60 + 44,
+    length: 48 * 60 + 28,
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2025-03-24")!,
     references: [
