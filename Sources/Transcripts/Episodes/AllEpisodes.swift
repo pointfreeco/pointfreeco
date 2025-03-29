@@ -321,5 +321,6 @@ extension Episode {
     .ep316_sqlBuilding,
     .ep317_sqlBuilding,
     .ep318_sqlBuilding,
+    .ep319_sqlBuilding,
   ]
 }
