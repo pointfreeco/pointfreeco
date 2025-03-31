@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep319_sqlBuilding = Episode(
     blurb: """
-      We tackle one of SQL'a most important aspects in our query builder: the `WHERE` clause, \
+      We tackle one of SQL's most important aspects in our query builder: the `WHERE` clause, \
       which filters the results of a query. And we will do so in a type-safe manner that prevents \
       us from writing nonsensical queries in Swift even when they are syntactically valid in SQL.
       """,
