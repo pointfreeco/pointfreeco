@@ -185,5 +185,6 @@ extension BlogPost {
     .post0166_LiveStreamReminder,
     .post0167_WereLive,
     .post0168_SharingGRDB,
+    .post0169_testScoping,
   ]
 }
