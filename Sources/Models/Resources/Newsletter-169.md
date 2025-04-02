@@ -2,7 +2,7 @@ Swift 6.1 and Xcode 16.3 are officially here, and with them come a few new featu
 
 This feature has allowed us to vastly improve three of our libraries, [Dependencies](http://github.com/pointfreeco/swift-dependencies), [SnapshotTesting](http://github.com/pointfreeco/swift-snapshot-testing), and [MacroTesting](http://github.com/pointfreeco/swift-macro-testing), all of which provide powerful testing tools. Join us for a quick overview of this new tool in Swift 6.1, as well as an explanation of why it has been so helpful for our libraries.
 
-# What are scoping traits?
+## What are scoping traits?
 
 When writing tests one often needs to perform a little bit of work before and after the test runs. In XCTest, the proprietary predecessor to Swift Testing, one can do this in the `setUp` and `tearDown` methods on `XCTestCase`:
 
@@ -31,7 +31,7 @@ import Testing
 
 @Suite struct FeatureTests: ~Copyable {
   init() {
-    print("After test is run...")
+    print("Before test is run...")
   }
   deinit {
     print("After test is run...")
@@ -42,7 +42,7 @@ import Testing
 
 However, these kinds of set-ups and tear-downs have limitations. They are what you might call “unstructured” testing tools in that they do not play nicely with the structured programming paradigm that we all known and love.
 
-For example, Swift provides a tool that allows us to model global state in a concurrency safe *and* structured programming safe manner, called [task locals](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0311-task-locals.md). Such a value can be declared like so:
+For example, Swift provides a tool that allows us to model global state in a concurrency-safe *and* structured programming-safe manner, called [task locals](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0311-task-locals.md). Such a value can be declared like so:
 
 ```swift
 @TaskLocal var count = 0
@@ -116,7 +116,7 @@ struct FeatureTests {
 }
 ```
 
-To unlock this syntax we can conform to the `TestTrait`, `SuiteTrait` and new `TestScoping` protocols:
+To unlock this syntax we can conform to the `TestTrait`, `SuiteTrait`, and new `TestScoping` protocols:
 
 ```swift
 struct CountTrait: TestTrait, SuiteTrait, TestScoping {
@@ -143,7 +143,7 @@ That is all it takes.
 
 Not only does this unlock a short syntax for safely overriding global variables for tests, but it also plays nicely with parallel testing. The new Swift Testing framework has taken the strong stance of running tests in parallel by default, *and* running all tests in a single process. This means that more than ever tests are not isolated and that the responsibility is on us to make sure that our app code and test code is built in a way that isolates access to shared, mutable state. Task locals are one of the most important tools we have towards this end, and so it is now great to see it is possible to write tests for code written in the proper manner.
 
-# Improving our libraries with scoping traits
+## Improving our libraries with scoping traits
 
 We have three main libraries that will benefit from the new `TestScoping` tool in Swift Testing: [Dependencies](http://github.com/pointfreeco/swift-dependencies), [SnapshotTesting](http://github.com/pointfreeco/swift-snapshot-testing) and [MacroTesting](http://github.com/pointfreeco/swift-macro-testing). All 3 libraries heavily use task locals, and so up until Swift 6.1 it has been difficult to support Swift Testing. We have had hacks in place for the past year to *mostly* support the new testing framework, but it did not work in all situations (in particular, parameterized tests and repeatedly run tests).
 
@@ -151,7 +151,7 @@ Here is how one can now use test scoping in order to write tests with each of ou
 
 ### Dependencies
 
-Our Dependencies library provides the tools for providing a global set of dependencies to your entire application in a concurrency safe manner. All dependencies are held inside a `@TaskLocal`, which immediately makes them safe to access from any thread, *and* makes them immediately possible to test in a concurrent environment.
+Our [Dependencies](http://github.com/pointfreeco/swift-dependencies) library provides the tools for providing a global set of dependencies to your entire application in a concurrency-safe manner. All dependencies are held inside a `@TaskLocal`, which immediately makes them safe to access from any thread, *and* makes them immediately possible to test in a concurrent environment.
 
 Overriding dependencies on a per-test basis was one of the [motivating examples](https://github.com/swiftlang/swift-evolution/blob/main/proposals/testing/0007-test-scoping-traits.md#supporting-scoped-access) for test scoping, and it works great with our Dependencies library. In order to provide an isolated set of dependencies to every test in a suite, simply apply the `.dependencies` trait:
 
@@ -230,6 +230,6 @@ struct MacroTests {
 }
 ```
 
-# Get started today
+## Get started today
 
 We have officially released new versions of all 3 libraries so that you can take advantage of these tools today: [Dependencies 1.9.0](https://github.com/pointfreeco/swift-dependencies/releases/tag/1.9.0), [SnapshotTesting 1.18.3](https://github.com/pointfreeco/swift-snapshot-testing/releases/tag/1.18.3), and [MacroTesting 0.6.1](https://github.com/pointfreeco/swift-macro-testing/releases/tag/0.6.1). Let us know what you think!
