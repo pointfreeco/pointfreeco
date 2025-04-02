@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 68216
+Content-Length: 68213
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -248,7 +248,7 @@ Prism.languages.insertBefore('swift', 'string-literal', {
 .font-size-RTPM71{font-size:0.875rem}
 .margin-gEzmi{margin:0 auto}
 .max-width-P6HnV{max-width:1280px}
-.padding-a93IR{padding:1rem 3rem 1rem}
+.padding-ibSCt2{padding:2rem 3rem}
 .text-align-CdPBO2{text-align:center}
 .color-K2J0r1{color:#121212}
 .text-decoration-gUV393:visited{text-decoration:underline}
@@ -520,7 +520,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
   </head>
   <body>
 <div class="background-color-QNGbR3 background-color-xnERS1">
-  <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 margin-gEzmi max-width-P6HnV padding-a93IR text-align-CdPBO2 color-K2J0r1 color-KO2jl1">Your subscription has been deactivated. Please contact us at <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-T7UxR2 color-KqOBa1 color-IVYQy2 color-HatMz4 color-K2J0r1 color-KO2jl1" href="mailto:support@pointfree.co">support@pointfree.co</a> to regain access to Point-Free.
+  <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 margin-gEzmi max-width-P6HnV padding-ibSCt2 text-align-CdPBO2 color-K2J0r1 color-KO2jl1">Your subscription has been deactivated. Please contact us at <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-T7UxR2 color-KqOBa1 color-IVYQy2 color-HatMz4 color-K2J0r1 color-KO2jl1" href="mailto:support@pointfree.co">support@pointfree.co</a> to regain access to Point-Free.
   </div>
 </div>
 <nav class="width-C8uWv position-0RTpx2 top-dcqqP z-index-yn1UK1 background-K2J0r1">
