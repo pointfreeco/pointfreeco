@@ -2,7 +2,7 @@ GET http://localhost:8080/collections/functions/functions-that-begin-with-a/ep1-
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 133767
+Content-Length: 133960
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -196,7 +196,7 @@ body, html {
     background-color: #87878A;
   }
 }
-    </style><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-swift.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-clike.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-css.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-diff.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-javascript.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-ruby.min.js"></script><script>Prism.languages.swift['class-name'] = [
+    </style><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-swift.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-clike.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-css.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-diff.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-javascript.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-ruby.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-sh.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-sql.min.js"></script><script>Prism.languages.swift['class-name'] = [
   /\b(_[A-Z]\w*)\b/,
   Prism.languages.swift['class-name']
 ];
