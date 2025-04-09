@@ -43,6 +43,7 @@ extension Episode.Collection {
           .init(episode: .ep317_sqlBuilding),
           .init(episode: .ep318_sqlBuilding),
           .init(episode: .ep319_sqlBuilding),
+          .init(episode: .ep320_sqlBuilding),
         ],
         isFinished: false,
         isHidden: false,
