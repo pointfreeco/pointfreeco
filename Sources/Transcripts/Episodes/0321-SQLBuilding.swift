@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep321_sqlBuilding = Episode(
     blurb: """
-      It’s time to support one of the most complicated part of SQL in our query building library: \
+      It’s time to support one of the most complicated parts of SQL in our query building library: \
       joins. We will design an API that is simple to use but leverages some seriously advanced \
       language features, including type-level parameter packs.
       """,
