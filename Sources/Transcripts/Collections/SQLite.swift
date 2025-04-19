@@ -49,6 +49,7 @@ extension Episode.Collection {
         ],
         isFinished: false,
         isHidden: false,
+        posterURL: "https://pointfreeco-production.s3.amazonaws.com/posters/structured-queries.png",
         related: [],
         title: "SQL Building",
         whereToGoFromHere: nil

@@ -8,10 +8,12 @@ how you persist and fetch data in your application.
 
 ## The `@Table` macro
 
-The primary innovation leveraged by the library is the new `@Table` macro, which unlocks a rich,
+The primary innovation leveraged by the library is the new [`@Table` macro][], which unlocks a rich,
 type-safe query building language, as well as a high-performance decoder for turning database
 primitives into first-class Swift data types. It serves a similar purpose to and syntax of
 SwiftData's `@Model` macro:
+
+[`@Table` macro]: https://swiftpackageindex.com/pointfreeco/swift-structured-queries/~/documentation/structuredqueriescore/definingyourschema
 
 <table>
 <tr>
@@ -174,7 +176,7 @@ string, but still in a safe manner.
 
 > Important: Although `#sql` gives you the ability to write hand-crafted SQL strings, it still
 > protects you from SQL injection, and you can still make use of the table definition data available
-> from your data type.
+> from your data type. See [Safe SQL Strings][] for more information.
 
 As a simple example, one can select the titles from all reminders like so:
 
@@ -187,9 +189,9 @@ As a simple example, one can select the titles from all reminders like so:
 var reminderTitles
 ```
 
-It is also possible to retain some schema-safety while writing SQL as a string. You can use string
-interpolation along with the static column properties that are defined on your table as well as the
-type of the table itself:
+It is also possible to retain schema-safety while writing SQL as a string. You can use string
+interpolation along with the static description of your schema provided by `@Table` in order to
+refer to its columns and table name:
 
 ```swift
 @SharedReader(
@@ -220,12 +222,12 @@ The `#sql` macro can also be used to introduce SQL strings into a query builder 
 of your choice:
 
 ```swift
-let searchTerm = "%order%"
+let searchTerm = "order"
 
 @SharedReader(
   .fetchAll(
     Reminder.where {
-      #sql("\($0.title) COLLATE NOCASE NOT LIKE '\(bind: searchTerm)'")
+      #sql("\($0.title) COLLATE NOCASE NOT LIKE '%\(bind: searchTerm)%'")
     }
   )
 )
@@ -233,10 +235,10 @@ var reminders
 ```
 
 But this only scratches the surface. The `#sql` macro also performs basic lint checks on the
-provided SQL string to catch syntax errors at compile time. See [Safe SQL Strings][safe-sql-article]
+provided SQL string to catch syntax errors at compile time. See [Safe SQL Strings][]
 for more information.
 
-[safe-sql-article]: https://swiftpackageindex.com/pointfreeco/swift-structured-queries/~/documentation/structuredqueriescore/safesqlstrings
+[Safe SQL Strings]: https://swiftpackageindex.com/pointfreeco/swift-structured-queries/~/documentation/structuredqueriescore/safesqlstrings
 
 ## Performance
 
@@ -249,7 +251,7 @@ taste of how it compares:
 
 ```
 Orders.fetchAll                          setup    rampup   duration
-  SQLite (Enlighter-generated)           0        0.144    7.183
+  Enlighter SQLite (1.4.10)              0        0.144    7.183
   Lighter (1.4.10)                       0        0.164    8.059
   SharingGRDB (0.2.0)                    0        0.172    8.511
   GRDB (7.4.1, manual decoding)          0        0.376    18.819

@@ -24,6 +24,7 @@ let collectionMiddleware: M<Episode.Collection.Slug> =
               data: collection,
               description: collection.blurb,
               extraStyles: collectionsStylesheet,
+              image: collection.posterURL,
               style: .base(.some(.minimal(.black))),
               title: collection.title
             )
