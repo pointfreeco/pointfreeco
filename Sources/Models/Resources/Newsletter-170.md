@@ -161,7 +161,10 @@ Our query builder also exposes the full range of SQL directly to you, while Swif
 details from you, instead providing its own query building language that can only perform a subset
 of the tasks that SQL can do.
 
-<!-- TODO: Insert/Update/Delete examples/comparisons -->
+Everything you can do with SwiftData, and more, can be done with SharingGRDB: from fetching data,
+to inserting, updating, and deleting it. See [Comparison with SwiftData][] for more.
+
+[Comparison with SwiftData]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/comparisonwithswiftdata
 
 ## Safe SQL strings
 
