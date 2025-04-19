@@ -89,10 +89,10 @@ var reminders
 ```swift
 @Query(
   filter: #Predicate<Reminder> {
-    $0.name.contains("get")
+    $0.title.contains("get")
       && $0.isCompleted
   },
-  sort: \Reminder.name
+  sort: \Reminder.title
 )
 var reminders: [Reminder]
 ```
@@ -207,7 +207,7 @@ var reminders
 
 Notice that this allows you to now decode the result into the full `Reminder` type.
 
-See ["Safe SQL Strings"][safe-sql-article] for more information about the `#sql` macro.
+See [Safe SQL Strings][safe-sql-article] for more information about the `#sql` macro.
 
 [safe-sql-article]: https://swiftpackageindex.com/pointfreeco/swift-structured-queries/~/documentation/structuredqueriescore/safesqlstrings
 
@@ -235,10 +235,11 @@ Orders.fetchAll                          setup    rampup   duration
 
 The reason we have been able to make great strides in the ergonomics and performance of SharingGRDB
 is because of another library we are releasing today: [StructuredQueries][]. It provides a suite of 
-tools that empower you to write safe, expressive, composable SQL with Swift, including the `@Table`
+tools that empowers you to write safe, expressive, composable SQL with Swift, including the `@Table`
 macro and its query building APIs, as well as the the `#sql` macro, all mentioned above.
 
-By simply attaching its macros to types that represent your database schema:
+You simply attach its macros to types that represent your database schema. Expanding on the earlier
+example:
 
 ```swift
 @Table
@@ -246,13 +247,13 @@ struct Reminder {
   let id: Int
   var title = ""
   var isCompleted = false
-  var priority: Int?
+  var priority: Priority?
   @Column(as: Date.ISO8601Representation?.self)
   var dueDate: Date?
 }
 ```
 
-You get instant access to its rich set of query building APIs, from simple:
+Surfaces a rich set of query building APIs, from simple:
 
 <table>
 <tr>
@@ -303,7 +304,7 @@ Reminder
   .where { !$0.isCompleted }
   .group(by: \.priority)
   .order { $0.priority.desc() }
-// => [(Int?, String)]
+// => [(Priority?, String)]
 ```
 
 </td>
@@ -323,9 +324,9 @@ ORDER BY "reminders"."priority" DESC
 </tr>
 </table>
 
-Its APIs help you avoid runtime issues caused by typos and type errors, but still embrace SQL for
+These APIs help you avoid runtime issues caused by typos and type errors, but still embrace SQL for
 what it is. StructuredQueries is not an ORM or a new query language you have to learn: its APIs are
-designed to read closely to the SQL it generates, though they are often more succinct, and always
+designed to read closely to the SQL it generates, though it is often more succinct, and always
 safer.
 
 The library supports building everything from `SELECT`, `INSERT`, `UPDATE`, and `DELETE` statements,
@@ -345,5 +346,5 @@ please [start a discussion][] and let us know of any challenges you encounter.
 ## Try it today!
 
 The 0.2.0 release of SharingGRDB is out _today_! Give it a spin and let us know what you think. Or,
-if you have any questions, start a 
-[discussion](https://github.com/pointfreeco/sharing-grdb/discussions).
+if you have any questions or comments, join our
+[discussions](https://github.com/pointfreeco/sharing-grdb/discussions).

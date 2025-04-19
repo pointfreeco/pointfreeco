@@ -39,7 +39,7 @@ struct NewsletterDetailModule: HTML {
         }
       }
       .inlineStyle("margin", "0 auto", media: .desktop)
-      .inlineStyle("width", "60%", media: .desktop)
+      .inlineStyle("width", "75%", media: .desktop)
     } title: {
       VStack {
         Link(destination: .blog(.show(.left(blogPost.slug)))) {

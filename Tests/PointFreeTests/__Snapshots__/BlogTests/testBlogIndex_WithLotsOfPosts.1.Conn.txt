@@ -2,7 +2,7 @@ GET http://localhost:8080/blog
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 41746
+Content-Length: 41748
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -403,7 +403,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   .padding-jFt024{padding:8rem 3rem}
   .margin-mBI0f2{margin:0 auto}
   .padding-EmXfB2{padding:4.0rem 3.0rem 4.0rem}
-  .width-GE6zR{width:60%}
+  .width-4RrPZ2{width:75%}
   .align-items-GE99b{align-items:center}
   .padding-top-OzbZs1{padding-top:8.0rem}
   .padding-left-OzbZs1{padding-left:8.0rem}
@@ -502,7 +502,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
         </div>
       </pf-vstack>
     </div>
-    <pf-vstack class="margin-mBI0f2 width-GE6zR align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NBsge3">
+    <pf-vstack class="margin-mBI0f2 width-4RrPZ2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NBsge3">
     </pf-vstack>
   </div>
 </div>
