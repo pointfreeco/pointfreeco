@@ -8,9 +8,10 @@ how you persist and fetch data in your application.
 
 ## The `@Table` macro
 
-The library leverages a new `@Table` macro, which unlocks a rich, type-safe query building language,
-as well as a high-performance decoder for turning database primitives into first-class Swift data
-types. It serves a similar purpose to and syntax of SwiftData's `@Model` macro:
+The primary innovation leveraged by the library is the new `@Table` macro, which unlocks a rich,
+type-safe query building language, as well as a high-performance decoder for turning database
+primitives into first-class Swift data types. It serves a similar purpose to and syntax of
+SwiftData's `@Model` macro:
 
 <table>
 <tr>
@@ -58,8 +59,8 @@ Some key differences:
   * The `@Model` version of `Reminder` does not need an `id` field because SwiftData provides a
     `persistentIdentifier` to each model.
     
-With `@Table` applied, `Reminder` gets instant access to a rich set of query building APIs that allow
-you to construct various queries using expressive Swift, similar to how SwiftData leverages
+With `@Table` applied, `Reminder` gets instant access to a powerful set of query building APIs that
+allow you to construct various queries using expressive Swift, similar to how SwiftData employs
 `#Predicate` and key paths in the `@Query` macro:
  
 <table>
@@ -127,8 +128,8 @@ error in SharingGRDB, but a runtime crash in SwiftData:
 @SharedReader(
   .fetchAll(
     Reminder.where {
-      // 🛑 'Reminder.Columns' has no
-      //     member 'isNotCompleted'
+      // 🛑 'Reminder.TableColumns' has
+      //     no member 'isNotCompleted'
       $0.isNotCompleted
     }
     .order(by: \.title)
@@ -164,9 +165,9 @@ of the tasks that SQL can do.
 
 ## Safe SQL strings
 
-It is also possible to write SQL directly as a string using the new `#sql` macro, but still in a
-safe manner. This can be useful for writing complex queries that may not be possible or easy to
-write with the query builder of this library.
+We never want our query builder to get in the way of writing a particular query. And so we provide
+the `#sql` macro, which allows you to dip out of query builder syntax and write SQL directly as a
+string, but still in a safe manner.
 
 > Important: Although `#sql` gives you the ability to write hand-crafted SQL strings, it still
 > protects you from SQL injection, and you can still make use of the table definition data available
@@ -176,7 +177,9 @@ As a simple example, one can select the titles from all reminders like so:
 
 ```swift
 @SharedReader(
-  #sql("SELECT title FROM reminders", as: String.self)
+  .fetchAll(
+    #sql("SELECT title FROM reminders", as: String.self)
+  )
 )
 var reminderTitles
 ```
@@ -187,7 +190,9 @@ type of the table itself:
 
 ```swift
 @SharedReader(
-  #sql("SELECT \(Reminder.title) FROM \(Reminder.self)", as: String.self)
+  .fetchAll(
+    #sql("SELECT \(Reminder.title) FROM \(Reminder.self)", as: String.self)
+  )
 )
 var reminderTitles
 ```
@@ -200,14 +205,34 @@ property:
 
 ```swift
 @SharedReader(
-  #sql("SELECT \(Reminder.columns) FROM \(Reminder.self)", as: Reminder.self)
+  .fetchAll(
+    #sql("SELECT \(Reminder.columns) FROM \(Reminder.self)", as: Reminder.self)
+  )
 )
 var reminders
 ```
 
 Notice that this allows you to now decode the result into the full `Reminder` type.
 
-See [Safe SQL Strings][safe-sql-article] for more information about the `#sql` macro.
+The `#sql` macro can also be used to introduce SQL strings into a query builder at the granularity
+of your choice:
+
+```swift
+let searchTerm = "%order%"
+
+@SharedReader(
+  .fetchAll(
+    Reminder.where {
+      #sql("\($0.title) COLLATE NOCASE NOT LIKE '\(bind: searchTerm)'")
+    }
+  )
+)
+var reminders
+```
+
+But this only scratches the surface. The `#sql` macro also performs basic lint checks on the
+provided SQL string to catch syntax errors at compile time. See [Safe SQL Strings][safe-sql-article]
+for more information.
 
 [safe-sql-article]: https://swiftpackageindex.com/pointfreeco/swift-structured-queries/~/documentation/structuredqueriescore/safesqlstrings
 
@@ -253,7 +278,7 @@ struct Reminder {
 }
 ```
 
-Surfaces a rich set of query building APIs, from simple:
+And it surfaces an expressive set of query building APIs, from simple:
 
 <table>
 <tr>
