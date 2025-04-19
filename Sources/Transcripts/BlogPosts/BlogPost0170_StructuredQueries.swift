@@ -10,8 +10,8 @@ extension BlogPost {
     coverImage: nil,  // TODO
     hidden: .no,  // todo
     hideFromSlackRSS: false,  // todo
-    id: 0,  // TODO
-    publishedAt: yearMonthDayFormatter.date(from: "2099-01-01")!,  // TODO
-    title: "TODO"
+    id: 170,
+    publishedAt: yearMonthDayFormatter.date(from: "2025-04-21")!,
+    title: "A fast, lightweight replacement for SwiftData"
   )
 }
