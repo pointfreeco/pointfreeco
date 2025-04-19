@@ -203,8 +203,7 @@ var reminderTitles
 This generates the same query as before, but now you have more static safety in referring to the 
 column names and table names of your types.
 
-You can even select all columns from the reminders table by using the ``Table/columns`` static
-property:
+You can even select all columns from the reminders table by using the `columns` static property:
 
 ```swift
 @SharedReader(
