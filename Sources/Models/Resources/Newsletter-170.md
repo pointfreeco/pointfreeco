@@ -157,16 +157,16 @@ var reminders: [Reminder]
 </table>
 
 Our query builder also exposes the full range of SQL directly to you, while SwiftData hides these
-details from you, instead providing its own query building language that can only perform a
-subset of the tasks that SQL can do.
+details from you, instead providing its own query building language that can only perform a subset
+of the tasks that SQL can do.
 
 <!-- TODO: Insert/Update/Delete examples/comparisons -->
 
 ## Safe SQL strings
 
-It is also possible to write SQl directly as a string using the `#sql` macro, but still in a safe 
-manner. This can be useful for writing complex queries that may not be possible or easy to write 
-with the query builder of this library.
+It is also possible to write SQL directly as a string using the new `#sql` macro, but still in a
+safe manner. This can be useful for writing complex queries that may not be possible or easy to
+write with the query builder of this library.
 
 > Important: Although `#sql` gives you the ability to write hand-crafted SQL strings, it still
 > protects you from SQL injection, and you can still make use of the table definition data available
@@ -213,9 +213,8 @@ See ["Safe SQL Strings"][safe-sql-article] for more information about the `#sql`
 
 ## Performance
 
-SharingGRDB leverages high-performance decoding from [StructuredQueries][] to
-turn fetched data into your Swift domain types, and has a performance profile similar to invoking
-SQLite's C APIs directly.
+SharingGRDB leverages high-performance decoding to turn fetched data into your Swift domain types,
+and has a performance profile similar to invoking SQLite's C APIs directly.
 
 See the following benchmarks against
 [Lighter's performance test suite](https://github.com/Lighter-swift/PerformanceTestSuite) for a
@@ -232,14 +231,14 @@ Orders.fetchAll                          setup    rampup   duration
   GRDB (7.4.1, Codable)                  0.002    1.07     53.326
 ```
 
-
-
 ## Made possible by StructuredQueries
 
 The reason we have been able to make great strides in the ergonomics and performance of SharingGRDB
 is because of another library we are releasing today: [StructuredQueries][]. It provides a suite of 
-tools that empower you to write safe, expressive, composable SQL with Swift. By simply attaching 
-macros to types that represent your database schema:
+tools that empower you to write safe, expressive, composable SQL with Swift, including the `@Table`
+macro and its query building APIs, as well as the the `#sql` macro, all mentioned above.
+
+By simply attaching its macros to types that represent your database schema:
 
 ```swift
 @Table
@@ -253,7 +252,7 @@ struct Reminder {
 }
 ```
 
-You get instant access to a rich set of query building APIs, from simple:
+You get instant access to its rich set of query building APIs, from simple:
 
 <table>
 <tr>
@@ -324,17 +323,24 @@ ORDER BY "reminders"."priority" DESC
 </tr>
 </table>
 
-These APIs help you avoid runtime issues caused by typos and type errors, but still embrace SQL for
+Its APIs help you avoid runtime issues caused by typos and type errors, but still embrace SQL for
 what it is. StructuredQueries is not an ORM or a new query language you have to learn: its APIs are
 designed to read closely to the SQL it generates, though they are often more succinct, and always
 safer.
 
 The library supports building everything from `SELECT`, `INSERT`, `UPDATE`, and `DELETE` statements,
 to recursive common table expressions. To learn more about building SQL with StructuredQueries,
-check out the
-[documentation](https://swiftpackageindex.com/pointfreeco/swift-structured-queries/~/documentation/structuredqueriescore/).
+check out the [documentation](https://swiftpackageindex.com/pointfreeco/swift-structured-queries/~/documentation/structuredqueriescore/).
+
+And while StructuredQueries' release is tuned to SQLite and specifically its SharingGRDB driver, the
+library is _general purpose_, and its query builder and decoder could interface with other databases
+(MySQL, Postgres, _etc._) and database libraries.
+
+If you are interested in building an integration of StructuredQueries with another database library,
+please [start a discussion][] and let us know of any challenges you encounter.
 
 [StructuredQueries]: http://github.com/pointfreeco/swift-structured-queries
+[start a discussion](https://github.com/pointfreeco/swift-structured-queries/discussions/new/choose)
 
 ## Try it today!
 
