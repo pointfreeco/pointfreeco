@@ -368,7 +368,7 @@ If you are interested in building an integration of StructuredQueries with anoth
 please [start a discussion][] and let us know of any challenges you encounter.
 
 [StructuredQueries]: http://github.com/pointfreeco/swift-structured-queries
-[start a discussion](https://github.com/pointfreeco/swift-structured-queries/discussions/new/choose)
+[start a discussion]: https://github.com/pointfreeco/swift-structured-queries/discussions/new/choose
 
 ## Try it today!
 
