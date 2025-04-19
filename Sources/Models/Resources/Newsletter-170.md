@@ -147,7 +147,7 @@ var reminders
     //    'isNotCompleted' on Reminder
     $0.isNotCompleted
   },
-  sort: \Reminder.name
+  sort: \Reminder.title
 )
 var reminders: [Reminder]
 ```
