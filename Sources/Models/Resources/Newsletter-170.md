@@ -1,8 +1,8 @@
 Today we are releasing a significant update to our [SharingGRDB][] library that offers a fast,
 ergonomic, and lightweight replacement for SwiftData, powered by SQL. It provides APIs similar to
 `@Model`, `@Query`, and `#Predicate`, but is tuned for direct access to the underlying database
-(something that SwiftData abstracts away), giving you more power, flexibility, and performance in 
-how you persist and fetch data in your application.
+(something that SwiftData abstracts away), giving you more power, more flexibility, and more
+performance in persisting and fetching data in your application.
 
 [SharingGRDB]: https://github.com/pointfreeco/sharing-grdb
 
@@ -160,11 +160,11 @@ var reminders: [Reminder]
 </table>
 
 Our query builder also exposes the full range of SQL directly to you, while SwiftData hides these
-details from you, instead providing its own query building language that can only perform a subset
-of the tasks that SQL can do.
+details and instead provides its own query building language that can only perform a subset of tasks
+that SQL can do.
 
-Everything you can do with SwiftData, and more, can be done with SharingGRDB: from fetching data,
-to inserting, updating, and deleting it. See [Comparison with SwiftData][] for more.
+Everything you can do with SwiftData, and more, can be done with SharingGRDB. See
+[Comparison with SwiftData][] for more.
 
 [Comparison with SwiftData]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/comparisonwithswiftdata
 
@@ -265,9 +265,9 @@ Orders.fetchAll                          setup    rampup   duration
 The reason we have been able to make great strides in the ergonomics and performance of SharingGRDB
 is because of another library we are releasing today: [StructuredQueries][]. It provides a suite of 
 tools that empowers you to write safe, expressive, composable SQL with Swift, including the `@Table`
-macro and its query building APIs, as well as the the `#sql` macro, all mentioned above.
+macro and its query building APIs, as well as the `#sql` macro, and much more.
 
-You simply attach its macros to types that represent your database schema. Expanding on the earlier
+You simply attach macros to types that represent your database schema. Expanding on the earlier
 example:
 
 ```swift
@@ -353,9 +353,9 @@ ORDER BY "reminders"."priority" DESC
 </tr>
 </table>
 
-These APIs help you avoid runtime issues caused by typos and type errors, but still embrace SQL for
-what it is. StructuredQueries is not an ORM or a new query language you have to learn: its APIs are
-designed to read closely to the SQL it generates, though it is often more succinct, and always
+These APIs help you avoid runtime issues caused by typos and type errors, but they still embrace SQL
+for what it is. StructuredQueries is not an ORM or a new query language you have to learn: its APIs
+are designed to read closely to the SQL it generates, though it is often more succinct, and always
 safer.
 
 The library supports building everything from `SELECT`, `INSERT`, `UPDATE`, and `DELETE` statements,
