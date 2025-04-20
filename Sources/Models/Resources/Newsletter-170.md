@@ -1,6 +1,6 @@
 Today we are releasing a significant update to our [SharingGRDB][] library that offers a fast,
 ergonomic, and lightweight replacement for SwiftData, powered by SQL. It provides APIs similar to
-`@Model`, `@Query`, and `#Predicate`, but is tuned for direct access to the underlying database
+`@Model`, `@Query`, and `#Predicate`, but is tuned to direct access to the underlying database
 (something that SwiftData abstracts away), giving you more power, more flexibility, and more
 performance in persisting and fetching data in your application.
 
@@ -9,8 +9,8 @@ performance in persisting and fetching data in your application.
 ## The `@Table` macro
 
 The primary innovation leveraged by the library is the new [`@Table` macro][], which unlocks a rich,
-type-safe query building language, as well as a high-performance decoder for turning database
-primitives into first-class Swift data types. It serves a similar purpose to and syntax of
+type-safe query building language, as well as a high-performance decoder for transforming database
+primitives into first-class Swift data types. It serves a similar purpose to (and syntax of)
 SwiftData's `@Model` macro:
 
 [`@Table` macro]: https://swiftpackageindex.com/pointfreeco/swift-structured-queries/~/documentation/structuredqueriescore/definingyourschema
@@ -56,7 +56,7 @@ class Reminder {
 
 Some key differences:
 
-  * The `@Table` macro works with struct data types, whereas `@Model` only works with classes.
+  * The `@Table` macro works with struct value types, whereas `@Model` only works with classes.
   * Because the `@Model` version of `Reminder` is a class it is necessary to provide an initializer.
   * The `@Model` version of `Reminder` does not need an `id` field because SwiftData provides a
     `persistentIdentifier` to each model.
@@ -111,8 +111,8 @@ models, UIKit view controllers, and more.
 
 [observing-changes-article]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/observing
 
-Note that our query builder maps to syntactically valid SQL, so you can have confidence it will work
-at compile time. Meanwhile, `#Predicate` can be wielded in ways that at best produce cryptic compile
+The query builder maps to syntactically valid SQL, so you can have confidence it will work at
+compile time. Meanwhile, `#Predicate` can be wielded in ways that at best produce cryptic compile
 time errors, and at worst crash at runtime.
 
 For example, using a computed property rather than a stored property in a query is a compiler 
