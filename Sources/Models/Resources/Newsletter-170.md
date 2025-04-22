@@ -107,7 +107,7 @@ are automatically observed by SwiftUI so that views are recomputed when the exte
 but SharingGRDB is [usable outside of the view][observing-changes-article]: in `@Observable` 
 models, UIKit view controllers, and more.
 
-[observing-changes-article]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/observing
+[observing-changes-article]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdbcore/observing
 
 The query builder maps to syntactically valid SQL, so you can have confidence it will work at
 compile time. Meanwhile, `#Predicate` can be wielded in ways that at best produce cryptic compile
@@ -162,7 +162,7 @@ that SQL can do.
 Everything you can do with SwiftData, and more, can be done with SharingGRDB. See
 [Comparison with SwiftData][] for more.
 
-[Comparison with SwiftData]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdb/comparisonwithswiftdata
+[Comparison with SwiftData]: https://swiftpackageindex.com/pointfreeco/sharing-grdb/main/documentation/sharinggrdbcore/comparisonwithswiftdata
 
 ## Safe SQL strings
 
