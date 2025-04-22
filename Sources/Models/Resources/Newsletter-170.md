@@ -226,9 +226,11 @@ let searchTerm = "order%"
 
 @SharedReader(
   .fetchAll(
-    Reminder.where {
-      #sql("\($0.title) COLLATE NOCASE NOT LIKE \(bind: searchTerm)")
-    }
+    Reminder
+      .where {
+        #sql("\($0.title) COLLATE NOCASE NOT LIKE \(bind: searchTerm)")
+      }
+      .order(by: \.title)
   )
 )
 var reminders
