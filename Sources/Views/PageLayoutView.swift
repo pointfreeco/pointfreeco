@@ -53,7 +53,8 @@ public struct SimplePageLayoutData<A> {
     self.extraHead = extraHead
     self.extraStyles = extraStyles
     self.flash = nil
-    self.image = image
+    self.image =
+      image
       ?? "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png"
     self.openGraphType = openGraphType
     self.style = style

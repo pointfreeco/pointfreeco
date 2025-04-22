@@ -2,7 +2,7 @@ import Foundation
 
 extension BlogPost {
   public static let post0170_StructuredQueries = Self(
-    author: .pointfree,  
+    author: .pointfree,
     blurb: """
       Replace SwiftData with a fast, ergonomic and lightweight suite of tools powered by SQL. \
       It provides APIs similar to @Model, @Query and #Predicate, but is tuned for direct access \
