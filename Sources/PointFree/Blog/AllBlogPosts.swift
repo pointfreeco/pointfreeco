@@ -186,5 +186,6 @@ extension BlogPost {
     .post0167_WereLive,
     .post0168_SharingGRDB,
     .post0169_testScoping,
+    .post0170_StructuredQueries,
   ]
 }

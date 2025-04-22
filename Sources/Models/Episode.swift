@@ -113,15 +113,18 @@ public struct Episode: Equatable, Identifiable {
 
   public struct Collection: Equatable {
     public var blurb: String
+    public var posterURL: String?
     public var sections: [Section]
     public var title: String
 
     public init(
       blurb: String,
+      posterURL: String? = nil,
       sections: [Section],
       title: String
     ) {
       self.blurb = blurb
+      self.posterURL = posterURL
       self.sections = sections
       self.title = title
     }
@@ -130,6 +133,7 @@ public struct Episode: Equatable, Identifiable {
       section: Section
     ) {
       self.blurb = section.blurb
+      self.posterURL = section.posterURL
       self.sections = [section]
       self.title = section.title
     }
@@ -156,6 +160,7 @@ public struct Episode: Equatable, Identifiable {
       public var coreLessons: [Lesson]
       public var isFinished: Bool
       public var isHidden: Bool
+      public var posterURL: String?
       public var related: [Related]
       public var title: String
       public var whereToGoFromHere: String?
@@ -166,6 +171,7 @@ public struct Episode: Equatable, Identifiable {
         coreLessons: [Lesson],
         isFinished: Bool = true,
         isHidden: Bool = false,
+        posterURL: String? = nil,
         related: [Related],
         title: String,
         whereToGoFromHere: String?
@@ -175,6 +181,7 @@ public struct Episode: Equatable, Identifiable {
         self.coreLessons = coreLessons
         self.isFinished = isFinished
         self.isHidden = isHidden
+        self.posterURL = posterURL
         self.related = related
         self.title = title
         self.whereToGoFromHere = whereToGoFromHere

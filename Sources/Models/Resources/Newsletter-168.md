@@ -1,3 +1,8 @@
+> Important: The SharingGRDB library has had a 
+> [big release](/170-a-fast-lightweight-replacement-for-swiftdata) since this blog post was first 
+> written that makes it easier to power feature state from complex queries. See the 
+> [announcement blog post](/170-a-fast-lightweight-replacement-for-swiftdata) for more details.
+
 We are excited to announce the release of a brand new open source library: 
 [SharingGRDB][sharing-grdb-gh]. It's an amalgamation of our [Sharing][sharing-gh] library and
 Gwendal Roué's [GRDB.swift][grdb], providing a suite of tools that can replace many usages

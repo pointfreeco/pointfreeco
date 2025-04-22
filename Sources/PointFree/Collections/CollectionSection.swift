@@ -22,6 +22,7 @@ let collectionSectionEndpoint: M<Tuple2<Episode.Collection, Episode.Collection.S
         data: (collection, section),
         description: section.blurb,
         extraStyles: collectionsStylesheet,
+        image: section.posterURL ?? collection.posterURL,
         style: .base(.some(.minimal(.black))),
         title: collection.title + " › " + section.title
       )
