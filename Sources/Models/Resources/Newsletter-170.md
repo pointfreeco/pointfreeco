@@ -74,14 +74,12 @@ allow you to construct various queries using expressive Swift, similar to how Sw
 <td width=50%>
 
 ```swift
-@SharedReader(
-  .fetchAll(
-    Reminder.where {
-      $0.title.contains("get")
-        && !$0.isCompleted
-    }
-    .order(by: \.title)
-  )
+@FetchAll(
+  Reminder.where {
+    $0.title.contains("get")
+      && !$0.isCompleted
+  }
+  .order(by: \.title)
 )
 var reminders
 ```
@@ -126,16 +124,14 @@ error in SharingGRDB, but a runtime crash in SwiftData:
 <tr valign=top>
 <td width=50%>
 
-```swift:4-5
-@SharedReader(
-  .fetchAll(
-    Reminder.where {
-      // 🛑 'Reminder.TableColumns' has
-      //     no member 'isNotCompleted'
-      $0.isNotCompleted
-    }
-    .order(by: \.title)
-  )
+```swift:3-4
+@FetchAll(
+  Reminder.where {
+    // 🛑 'Reminder.TableColumns' has
+    //     no member 'isNotCompleted'
+    $0.isNotCompleted
+  }
+  .order(by: \.title)
 )
 var reminders
 ```
@@ -181,10 +177,8 @@ string, but still in a safe manner.
 As a simple example, one can select the titles from all reminders like so:
 
 ```swift
-@SharedReader(
-  .fetchAll(
-    #sql("SELECT title FROM reminders", as: String.self)
-  )
+@FetchAll(
+  #sql("SELECT title FROM reminders", as: String.self)
 )
 var reminderTitles
 ```
@@ -194,10 +188,8 @@ interpolation along with the static description of your schema provided by `@Tab
 refer to its columns and table name:
 
 ```swift
-@SharedReader(
-  .fetchAll(
-    #sql("SELECT \(Reminder.title) FROM \(Reminder.self)", as: String.self)
-  )
+@FetchAll(
+  #sql("SELECT \(Reminder.title) FROM \(Reminder.self)", as: String.self)
 )
 var reminderTitles
 ```
@@ -208,10 +200,8 @@ column names and table names of your types.
 You can even select all columns from the reminders table by using the `columns` static property:
 
 ```swift
-@SharedReader(
-  .fetchAll(
-    #sql("SELECT \(Reminder.columns) FROM \(Reminder.self)", as: Reminder.self)
-  )
+@FetchAll(
+  #sql("SELECT \(Reminder.columns) FROM \(Reminder.self)", as: Reminder.self)
 )
 var reminders
 ```
@@ -224,14 +214,12 @@ of your choice:
 ```swift
 let searchTerm = "order%"
 
-@SharedReader(
-  .fetchAll(
-    Reminder
-      .where {
-        #sql("\($0.title) COLLATE NOCASE NOT LIKE \(bind: searchTerm)")
-      }
-      .order(by: \.title)
-  )
+@FetchAll(
+  Reminder
+    .where {
+      #sql("\($0.title) COLLATE NOCASE NOT LIKE \(bind: searchTerm)")
+    }
+    .order(by: \.title)
 )
 var reminders
 ```
