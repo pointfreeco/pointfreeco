@@ -41,7 +41,7 @@ public struct SimplePageLayoutData<A> {
       "Point-Free is a video series exploring advanced programming topics in Swift.",
     extraHead: ChildOf<Tag.Head> = [],
     extraStyles: Stylesheet = .empty,
-    image: String? = "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",
+    image: String? = nil,
     openGraphType: OpenGraphType = .website,
     style: Style = .base(.some(.minimal(.light))),
     title: String,
@@ -54,6 +54,7 @@ public struct SimplePageLayoutData<A> {
     self.extraStyles = extraStyles
     self.flash = nil
     self.image = image
+      ?? "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png"
     self.openGraphType = openGraphType
     self.style = style
     self.title = title
