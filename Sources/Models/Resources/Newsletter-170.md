@@ -91,7 +91,7 @@ var reminders
 @Query(
   filter: #Predicate<Reminder> {
     $0.title.contains("get")
-      && $0.isCompleted
+      && !$0.isCompleted
   },
   sort: \Reminder.title
 )
