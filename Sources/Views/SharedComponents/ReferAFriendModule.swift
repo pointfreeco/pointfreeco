@@ -5,7 +5,6 @@ import StyleguideV2
 struct ReferAFriendModule: HTML {
   let user: User
 
-  @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {

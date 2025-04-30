@@ -367,10 +367,7 @@ private struct CollectionsModule: HTML {
 private struct ReferAFriend: HTML {
   let currentUser: User
 
-  @Dependency(\.subscription) var subscription
-  @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.siteRouter) var siteRouter
-  @Dependency(\.subscriptionOwner) var subscriptionOwner
 
   var body: some HTML {
     if currentUserCanReferOthers {
