@@ -239,7 +239,8 @@ private func profileRowView(_ data: AccountData) -> Node {
 }
 
 private func emailSettingCheckboxes(
-  _ currentEmailSettings: [EmailSetting], _ subscriberState: SubscriberState
+  _ currentEmailSettings: [EmailSetting],
+  _ subscriberState: SubscriberState
 ) -> Node {
   let newsletters =
     subscriberState.isNonSubscriber
@@ -330,7 +331,8 @@ private func privateRssFeed(accountData: AccountData) -> Node {
           """
           Thanks for subscribing to Point-Free and supporting our efforts! We'd like to offer you an alternate way
           to consume our videos: an RSS feed that can be used with most podcast apps!
-          """),
+          """
+        ),
         .p(
           "The link below should work with most podcast apps out there today (please ",
           .a(
@@ -370,19 +372,19 @@ private func rssTerms(stripeSubscription: Stripe.Subscription?) -> Node {
     : []
 }
 
-func canUserReferOthers(subscriberState: SubscriberState) -> Bool {
-  subscriberState.isActive
-  && !subscriberState.isEnterpriseSubscriber
-  && subscriberState.isOwner
-  && subscriberState.deactivated == false
-  && !subscriberState.isTeammate
+var currentUserCanReferOthers: Bool {
+  @Dependency(\.subscriberState) var subscriberState
+  return subscriberState.isActive
+    && !subscriberState.isEnterpriseSubscriber
+    && subscriberState.isOwner
+    && subscriberState.deactivated == false
+    && !subscriberState.isTeammate
 }
 
 private func referAFriend(
   accountData: AccountData
 ) -> Node {
-  @Dependency(\.subscriberState) var subscriberState
-  guard canUserReferOthers(subscriberState: subscriberState)
+  guard currentUserCanReferOthers
   else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
@@ -422,7 +424,8 @@ private func referAFriend(
         .p(
           """
           Refer Point-Free to a friend! You'll both get one month free (an $18 credit) when they sign up from your personal referral link:
-          """),
+          """
+        ),
         copyToPasteboard(text: referralUrl, buttonColor: .black)
       )
     )
@@ -836,7 +839,8 @@ private func cancelAction(for subscription: Stripe.Subscription) -> Node {
           if (!confirm("Cancel your subscription? You will lose access to Point-Free at the end of the current billing period. Should you change your mind, you can reactivate your subscription at any time before this period ends.")) {
             return false
           }
-          """),
+          """
+      ),
     ],
     .button(
       attributes: [
@@ -879,7 +883,8 @@ private func mainAction(
       let amount = discount(subscription.quantity == 1 ? 168_00 : 144_00)
         .map { $0 * subscription.quantity }
       let formattedAmount = currencyFormatter.string(
-        from: NSNumber(value: Double(amount.rawValue) / 100))
+        from: NSNumber(value: Double(amount.rawValue) / 100)
+      )
       if paymentMethod != nil {
         return .form(
           attributes: [
@@ -890,7 +895,8 @@ private func mainAction(
                 if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?? "") immediately with a prorated refund for the time remaining in your billing period.")) {
                   return false
                 }
-                """),
+                """
+            ),
           ],
           .input(attributes: [
             .name("billing"),
@@ -921,7 +927,8 @@ private func mainAction(
       let amount = discount(subscription.quantity == 1 ? 18_00 : 16_00)
         .map { $0 * subscription.quantity }
       let formattedAmount = currencyFormatter.string(
-        from: NSNumber(value: Double(amount.rawValue) / 100))
+        from: NSNumber(value: Double(amount.rawValue) / 100)
+      )
       return .form(
         attributes: [
           .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
@@ -931,7 +938,8 @@ private func mainAction(
               if (!confirm("Switch to monthly billing? You will be charged \(formattedAmount ?? "") on a monthly basis at the end of your current billing period.")) {
                 return false
               }
-              """),
+              """
+          ),
         ],
         .input(attributes: [
           .name("billing"),
@@ -1009,7 +1017,8 @@ private func teammateRowView(_ currentUser: User, _ teammate: User) -> Node {
   return .gridRow(
     .gridColumn(sizes: [.mobile: 8], .p(.text(teammateLabel))),
     .gridColumn(
-      sizes: [.mobile: 4], attributes: [.class([Class.grid.end(.desktop)])],
+      sizes: [.mobile: 4],
+      attributes: [.class([Class.grid.end(.desktop)])],
       .form(
         attributes: [.action(siteRouter.path(for: .team(.remove(teammate.id)))), .method(.post)],
         .p(
@@ -1223,7 +1232,8 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
                 if (!confirm("Really invalidate the current invite link? Team mates will need an updated link to join.")) {
                   return false
                 }
-                """),
+                """
+            ),
           ],
           .button(
             attributes: [
@@ -1434,7 +1444,8 @@ private func copyToPasteboard(
             navigator.clipboard.writeText("\(text)");
             this.value = "Copied!";
             setTimeout(() => { this.value = "Copy"; }, 3000);
-            """),
+            """
+        ),
       ]
     )
   )

@@ -9,7 +9,7 @@ struct ReferAFriendModule: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    if canUserReferOthers(subscriberState: subscriberState) {
+    if currentUserCanReferOthers {
       div {
         VStack(alignment: .leading, spacing: 1) {
           div {

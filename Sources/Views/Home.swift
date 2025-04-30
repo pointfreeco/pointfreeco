@@ -375,7 +375,7 @@ private struct ReferAFriend: HTML {
   @Dependency(\.subscriptionOwner) var subscriptionOwner
 
   var body: some HTML {
-    if canUserReferOthers(subscriberState: subscriberState) {
+    if currentUserCanReferOthers {
       CallToActionHeader(
         title: "Refer a friend",
         blurb: """
