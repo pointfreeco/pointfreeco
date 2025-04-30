@@ -370,13 +370,19 @@ private func rssTerms(stripeSubscription: Stripe.Subscription?) -> Node {
     : []
 }
 
+func canUserReferOthers(subscriberState: SubscriberState) -> Bool {
+  subscriberState.isActive
+  && !subscriberState.isEnterpriseSubscriber
+  && subscriberState.isOwner
+  && subscriberState.deactivated == false
+  && !subscriberState.isTeammate
+}
+
 private func referAFriend(
   accountData: AccountData
 ) -> Node {
-  guard
-    accountData.isSubscriptionOwner,
-    accountData.stripeSubscription?.isCancellable == true,
-    !accountData.subscriberState.isEnterpriseSubscriber
+  @Dependency(\.subscriberState) var subscriberState
+  guard canUserReferOthers(subscriberState: subscriberState)
   else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
