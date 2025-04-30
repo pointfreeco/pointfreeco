@@ -357,7 +357,7 @@ private func validateReferrer(
     let invalidReferralReason: String?
     if subscribeData.pricing.lane != .personal {
       invalidReferralReason = "Referrals are allowed only for personal plans."
-    } else if user.referrerId == nil {
+    } else if user.referrerId != nil {
       invalidReferralReason = "You can only be referred a single time."
     } else {
       invalidReferralReason = nil
