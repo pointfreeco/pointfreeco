@@ -374,10 +374,9 @@ private func rssTerms(stripeSubscription: Stripe.Subscription?) -> Node {
 
 var currentUserCanReferOthers: Bool {
   @Dependency(\.subscriberState) var subscriberState
-  return subscriberState.isActive
-    && !subscriberState.isEnterpriseSubscriber
+  return subscriberState.isActiveSubscriber
     && subscriberState.isOwner
-    && subscriberState.deactivated == false
+    && !subscriberState.isEnterpriseSubscriber
     && !subscriberState.isTeammate
 }
 

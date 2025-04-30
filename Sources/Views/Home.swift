@@ -71,9 +71,7 @@ private struct LoggedIn: HTML {
     Clips(clips: clips)
     Divider()
     BlogPosts()
-    if subscriberState.isActiveSubscriber {
-      ReferAFriend(currentUser: currentUser)
-    }
+    ReferAFriend(currentUser: currentUser)
   }
 
   var inProgressEpisodes: [Episode] {
