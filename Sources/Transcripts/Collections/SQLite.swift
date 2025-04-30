@@ -47,7 +47,7 @@ extension Episode.Collection {
           .init(episode: .ep321_sqlBuilding),
           .init(episode: .ep322_sqlBuilding),
         ],
-        isFinished: false,
+        isFinished: true,
         isHidden: false,
         posterURL: "https://pointfreeco-production.s3.amazonaws.com/posters/structured-queries.png",
         related: [],
