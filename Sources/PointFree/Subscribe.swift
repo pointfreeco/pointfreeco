@@ -354,12 +354,17 @@ private func validateReferrer(
       return middleware(conn.map(const(user .*. subscribeData .*. nil .*. unit)))
     }
 
-    let isSubscribeDataValidForReferral =
-      subscribeData.pricing.lane == .personal
-      && user.referrerId == nil
+    let invalidReferralReason: String?
+    if subscribeData.pricing.lane != .personal {
+      invalidReferralReason = "Referrals are allowed only for personal plans."
+    } else if user.referrerId != nil {
+      invalidReferralReason = "You can only be referred a single time."
+    } else {
+      invalidReferralReason = nil
+    }
 
     return EitherIO {
-      guard isSubscribeDataValidForReferral else { throw unit }
+      guard invalidReferralReason == nil else { throw unit }
       let referrer = try await database.fetchUser(referralCode: referralCode)
       let subscription = try await database.fetchSubscription(ownerID: referrer.id)
       let stripeSubscription =
@@ -375,7 +380,7 @@ private func validateReferrer(
           return conn
             |> redirect(
               to: subscribeConfirmationWithSubscribeData(subscribeData),
-              headersMiddleware: flash(.error, "Invalid referral code.")
+              headersMiddleware: flash(.error, invalidReferralReason ?? "Invalid referral code.")
             )
         },
         { referrer in middleware(conn.map(const(user .*. subscribeData .*. referrer .*. unit))) }
