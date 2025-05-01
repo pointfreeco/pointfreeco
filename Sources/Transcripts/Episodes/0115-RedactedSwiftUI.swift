@@ -4,7 +4,7 @@ extension Episode {
   public static let ep115_redactions_pt1 = Episode(
     alternateSlug: "redacted-swiftui-the-problem",
     blurb: """
-      SwiftUI has introduced the concept of “████ed views”, which gives you a really nice way to ████ the text and images from views. This is really powerful, but just because the view has been ████ed it doesn't mean the logic has also been ████ed. We show why this is problematic and why we want to fix it.
+      SwiftUI has introduced the concept of “redacted views”, which gives you a really nice way to redact the text and images from views. This is really powerful, but just because the view has been redacted it doesn't mean the logic has also been redacted. We show why this is problematic and why we want to fix it.
       """,
     codeSampleDirectory: "0115-redacted-swiftui-pt1",
     exercises: _exercises,
@@ -88,7 +88,7 @@ extension Episode {
     ],
     sequence: 115,
     subtitle: "The Problem",
-    title: "█████ed SwiftUI",
+    title: "Redacted SwiftUI",
     trailerVideo: .init(
       bytesLength: 49_832_966,
       downloadUrls: .s3(
