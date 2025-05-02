@@ -346,8 +346,24 @@ private struct Clips: HTML {
 }
 
 private struct CollectionsModule: HTML {
-  @Dependency(\.collections) var collections
   @Dependency(\.siteRouter) var siteRouter
+  let collections: [Episode.Collection]
+
+  init() {
+    @Dependency(\.withRandomNumberGenerator) var withRandomNumberGenerator
+    collections = withRandomNumberGenerator {
+      [
+        .swiftUI,
+        .backToBasics,
+        .composableArchitecture,
+        .sqlite,
+        .concurrency,
+        .uiKit,
+        .macros,
+      ]
+        .shuffled(using: &$0)
+    }
+  }
 
   var body: some HTML {
     PageModule(
