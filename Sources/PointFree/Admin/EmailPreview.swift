@@ -61,6 +61,21 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
       code: "pointfree.co",
       currentUser: blob
     )
+  case .newEpisode:
+    @Dependency(\.episodes) var episodes
+    return newEpisodeEmail(
+      (
+        episodes().last!,
+        """
+        This is a test announcement for subscribers.  
+        """,
+        """
+        This is a test announcement for non-subscribers.
+        """,
+        blob
+      )
+    )
+
   case .newTeammateJoined:
     return newTeammateEmail(
       currentUser: blob,
@@ -112,6 +127,8 @@ extension EmailTemplate {
     switch self {
     case .joinTeamConfirmation:
       "Join team confirmation"
+    case .newEpisode:
+      "New episode"
     case .newTeammateJoined:
       "New teammate joined"
     case .ownerNewTeammateJoined:
