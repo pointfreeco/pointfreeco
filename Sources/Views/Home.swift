@@ -351,18 +351,21 @@ private struct CollectionsModule: HTML {
 
   init() {
     @Dependency(\.withRandomNumberGenerator) var withRandomNumberGenerator
-    collections = withRandomNumberGenerator {
-      [
-        .swiftUI,
-        .backToBasics,
-        .composableArchitecture,
-        .sqlite,
-        .concurrency,
-        .uiKit,
-        .macros,
-      ]
+    collections = Array(
+      withRandomNumberGenerator {
+        [
+          .swiftUI,
+          .backToBasics,
+          .composableArchitecture,
+          .sqlite,
+          .concurrency,
+          .uiKit,
+          .macros,
+        ]
         .shuffled(using: &$0)
-    }
+        .prefix(3)
+      }
+    )
   }
 
   var body: some HTML {
@@ -372,7 +375,7 @@ private struct CollectionsModule: HTML {
       theme: .content
     ) {
       LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
-        for (index, collection) in collections.prefix(3).enumerated() {
+        for (index, collection) in collections.enumerated() {
           CollectionCard(collection, index: index)
         }
       }
