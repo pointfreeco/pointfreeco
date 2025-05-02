@@ -957,7 +957,7 @@ private func total(
         : .gitHubLink(
           text: "Log in to Subscribe",
           type: .black,
-          href: siteRouter.signUpPath(
+          href: siteRouter.loginPath(
             redirect: coupon.map { SiteRoute.discounts(code: $0.id, nil) }
             ?? .subscribeConfirmation(
               lane: lane,
