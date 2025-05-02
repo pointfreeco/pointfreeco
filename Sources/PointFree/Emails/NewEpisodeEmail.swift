@@ -21,7 +21,7 @@ public let newEpisodeEmail =
       newsletter: .newEpisode,
       title: "New Point-Free Episode: \(episode.fullTitle)",
       preheader: episode.blurb,
-      template: .default(),
+      template: .default(includeHeaderImage: false),
       data: (
         episode,
         user.subscriptionId != nil

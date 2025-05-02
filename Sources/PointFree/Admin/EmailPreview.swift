@@ -38,7 +38,8 @@ private func emailPreviewView(selectedTemplate: EmailTemplate?) -> Node {
           .onchange(
             unsafe: """
               document.getElementById("email-form").submit();
-              """),
+              """
+          ),
         ],
         .fragment(options(selectedTemplate: selectedTemplate))
       )
@@ -61,17 +62,24 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
       code: "pointfree.co",
       currentUser: blob
     )
+  case .newBlogPost:
+    @Dependency(\.blogPosts) var blogPosts
+    return newBlogPostEmail(
+      (
+        blogPosts().last!,
+        "This is a test announcement for subscribers.",
+        "This is a test announcement for non-subscribers.",
+        blob
+      )
+    )
+
   case .newEpisode:
     @Dependency(\.episodes) var episodes
     return newEpisodeEmail(
       (
         episodes().last!,
-        """
-        This is a test announcement for subscribers.  
-        """,
-        """
-        This is a test announcement for non-subscribers.
-        """,
+        "This is a test announcement for subscribers.",
+        "This is a test announcement for non-subscribers.",
         blob
       )
     )
@@ -127,6 +135,8 @@ extension EmailTemplate {
     switch self {
     case .joinTeamConfirmation:
       "Join team confirmation"
+    case .newBlogPost:
+      "New blog post"
     case .newEpisode:
       "New episode"
     case .newTeammateJoined:

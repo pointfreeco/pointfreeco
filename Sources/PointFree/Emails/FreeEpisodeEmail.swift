@@ -19,7 +19,7 @@ let freeEpisodeEmail =
       newsletter: .newEpisode,
       title: "Point-Freebie: \(ep.fullTitle)",
       preheader: freeEpisodeBlurb,
-      template: .default(),
+      template: .default(includeHeaderImage: false),
       data: ep
     )
   }

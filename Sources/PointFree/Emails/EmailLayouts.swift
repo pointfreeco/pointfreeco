@@ -15,7 +15,7 @@ enum EmailLayoutTemplate {
 
     switch self {
     case .blog:
-      return assets.pointersEmailHeaderImgSrc
+      return nil
     case .default(includeHeaderImage: true):
       return assets.emailHeaderImgSrc
     case .default(includeHeaderImage: false):
