@@ -959,11 +959,11 @@ private func total(
           type: .black,
           href: siteRouter.loginPath(
             redirect: coupon.map { SiteRoute.discounts(code: $0.id, nil) }
-            ?? .subscribeConfirmation(
-              lane: lane,
-              referralCode: referrer?.referralCode,
-              useRegionalDiscount: useRegionalDiscount
-            )
+              ?? .subscribeConfirmation(
+                lane: lane,
+                referralCode: referrer?.referralCode,
+                useRegionalDiscount: useRegionalDiscount
+              )
           )
         )
     )
