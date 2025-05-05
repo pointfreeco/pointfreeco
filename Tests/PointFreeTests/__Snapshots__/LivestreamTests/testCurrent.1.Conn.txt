@@ -2,7 +2,7 @@ GET http://localhost:8080/live
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 50970
+Content-Length: 50963
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2031,7 +2031,7 @@ explore our open source libraries, and take questions from our viewers.">
               </li>
               <li class="m-pl2
                          inline">
-                <a href="/authenticate?redirect=http://localhost:8080/live"
+                <a href="/login?redirect=http://localhost:8080/live"
                    class="medium
                           cursor-pointer
                           nowrap

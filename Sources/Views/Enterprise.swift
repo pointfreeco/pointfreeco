@@ -19,7 +19,7 @@ public func enterpriseView(_ account: EnterpriseAccount) -> Node {
     .gitHubLink(
       text: "Sign in with GitHub",
       type: .white,
-      href: siteRouter.gitHubAuthPath(redirect: .enterprise(account.domain))
+      href: siteRouter.loginPath(redirect: .enterprise(account.domain))
     ),
   ]
 

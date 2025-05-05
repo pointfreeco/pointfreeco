@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 67541
+Content-Length: 67534
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -711,7 +711,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
             </h4>
             <p class="margin-bottom-dnNPN1 text-wrap-aqIE4 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Our Free plan includes 1 subscriber-only episode of your choice, plus weekly updates from our newsletter.
             </p>
-            <pf-vstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a href="/authenticate?redirect=http://localhost:8080/episodes/ep1-proof-in-functions" class="font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">
+            <pf-vstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a href="/login?redirect=http://localhost:8080/episodes/ep1-proof-in-functions" class="font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">
               <pf-hstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M10.4991 0C4.97773 0 0.5 4.3609 0.5 9.74072C0.5 14.0442 3.36504 17.6947 7.33876 18.9827C7.83908 19.0724 8.02141 18.7717 8.02141 18.5133C8.02141 18.2819 8.01281 17.6696 8.0079 16.857C5.22636 17.4454 4.63948 15.5511 4.63948 15.5511C4.18458 14.4257 3.52894 14.1261 3.52894 14.1261C2.621 13.5222 3.5977 13.5342 3.5977 13.5342C4.60142 13.6029 5.12936 14.5381 5.12936 14.5381C6.02135 16.0264 7.47013 15.5965 8.03983 15.3472C8.13068 14.7181 8.38913 14.2888 8.67459 14.0454C6.45414 13.7996 4.11951 12.9637 4.11951 9.23126C4.11951 8.16809 4.50933 7.29806 5.14901 6.61759C5.04587 6.37123 4.70271 5.38042 5.24723 4.0398C5.24723 4.0398 6.08642 3.77789 7.99685 5.03838C8.7943 4.82192 9.65007 4.71429 10.5003 4.71011C11.3499 4.71429 12.2051 4.82192 13.0038 5.03838C14.913 3.77789 15.7509 4.0398 15.7509 4.0398C16.2967 5.38042 15.9535 6.37123 15.851 6.61759C16.4919 7.29806 16.8786 8.16809 16.8786 9.23126C16.8786 12.9733 14.5403 13.7967 12.3131 14.0376C12.6716 14.3384 12.9915 14.9328 12.9915 15.8411C12.9915 17.1434 12.9792 18.194 12.9792 18.5133C12.9792 18.7741 13.1597 19.0772 13.6668 18.9821C17.6374 17.6912 20.5 14.043 20.5 9.74072C20.5 4.3609 16.0223 0 10.4991 0Z" fill="white"/>
 </svg>Sign in with GitHub

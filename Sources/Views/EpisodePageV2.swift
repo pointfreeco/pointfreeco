@@ -379,7 +379,7 @@ struct UnlockEpisodeCallout: HTML {
         }
         .attribute(
           "href",
-          siteRouter.gitHubAuthPath(redirect: currentRoute)
+          siteRouter.loginPath(redirect: currentRoute)
         )
       }
 
@@ -421,7 +421,7 @@ struct UnlockEpisodeCallout: HTML {
         if currentUser == nil {
           Paragraph {
             "Already a subscriber? "
-            Link("Log in", href: siteRouter.gitHubAuthPath(redirect: currentRoute))
+            Link("Log in", href: siteRouter.loginPath(redirect: currentRoute))
           }
         }
       } bar: {
@@ -455,7 +455,7 @@ struct UnlockEpisodeCallout: HTML {
         if currentUser == nil {
           Paragraph {
             "Already a subscriber? "
-            Link("Log in", href: siteRouter.gitHubAuthPath(redirect: currentRoute))
+            Link("Log in", href: siteRouter.loginPath(redirect: currentRoute))
           }
         }
       } bar: {

@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 57123
+Content-Length: 57116
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2037,7 +2037,7 @@ html {
               </li>
               <li class="m-pl2
                          inline">
-                <a href="/authenticate?redirect=http://localhost:8080/collections/functions"
+                <a href="/login?redirect=http://localhost:8080/collections/functions"
                    class="medium
                           cursor-pointer
                           nowrap

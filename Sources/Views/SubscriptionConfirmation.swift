@@ -957,13 +957,13 @@ private func total(
         : .gitHubLink(
           text: "Log in to Subscribe",
           type: .black,
-          href: siteRouter.gitHubAuthPath(
+          href: siteRouter.loginPath(
             redirect: coupon.map { SiteRoute.discounts(code: $0.id, nil) }
-              ?? .subscribeConfirmation(
-                lane: lane,
-                referralCode: referrer?.referralCode,
-                useRegionalDiscount: useRegionalDiscount
-              )
+            ?? .subscribeConfirmation(
+              lane: lane,
+              referralCode: referrer?.referralCode,
+              useRegionalDiscount: useRegionalDiscount
+            )
           )
         )
     )

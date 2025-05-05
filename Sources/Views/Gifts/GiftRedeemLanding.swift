@@ -181,7 +181,7 @@ private func loginOrRedeem(gift: Gift) -> Node {
     return .gitHubLink(
       text: "Log in to redeem",
       type: .black,
-      href: siteRouter.gitHubAuthPath(redirect: .gifts(.redeem(gift.id))),
+      href: siteRouter.loginPath(redirect: .gifts(.redeem(gift.id))),
       size: .regular,
       extraClasses:
         Class.display.block

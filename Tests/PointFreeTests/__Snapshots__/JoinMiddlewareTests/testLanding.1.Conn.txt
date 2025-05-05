@@ -2,7 +2,7 @@ GET http://localhost:8080/join/deadbeef
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 52376
+Content-Length: 52362
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2028,7 +2028,7 @@ html {
               </li>
               <li class="m-pl2
                          inline">
-                <a href="/authenticate?redirect=http://localhost:8080/join/deadbeef"
+                <a href="/login?redirect=http://localhost:8080/join/deadbeef"
                    class="medium
                           cursor-pointer
                           nowrap
@@ -2095,7 +2095,7 @@ access to all videos, transcripts, code samples and more.
                   You must be logged in to accept this invitation. Would you like to log in with GitHub?
                 </p>
                 <p class="m-pt3">
-                  <a href="/authenticate?redirect=http://localhost:8080/join/deadbeef"
+                  <a href="/login?redirect=http://localhost:8080/join/deadbeef"
                      class="medium
                             cursor-pointer
                             nowrap
