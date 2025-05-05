@@ -2,7 +2,7 @@ GET http://localhost:8080/
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 47453
+Content-Length: 57174
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -451,7 +451,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </h3><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">See all →</a>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
-      <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 padding-PJnmd4 text-align-CdPBO2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-8r95N color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/collections/functions"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 padding-PJnmd4 text-align-CdPBO2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-8r95N color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/collections/back-to-basics"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="0.5" width="64" height="64" rx="32" fill="url(#paint0_linear_733_2369)"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M35.5 17.0259L50.474 31.9999L35.5 46.9739L20.526 31.9999L35.5 17.0259ZM33.0043 34.4956C34.3178 35.8091 36.5883 35.9029 37.9957 34.4956C39.4218 33.0695 39.3092 30.8177 37.9957 29.5042C36.6822 28.1907 34.4304 28.0781 33.0043 29.5042C31.597 30.9116 31.6908 33.1821 33.0043 34.4956ZM29.5883 17.1141L31.0883 18.6141L17.6143 32.0881L31.0883 45.5622L29.5883 47.0622L14.6143 32.0881L29.5883 17.1141Z" fill="white"/>
 <defs>
@@ -462,7 +462,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 </defs>
 </svg>
         <div>
-          <h4 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Functions
+          <h4 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Back to basics
           </h4>
           <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Collection
           </div>
@@ -472,7 +472,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
             <div class="color-OpZD03 color-5uscm3">
               <pf-markdown class="display-ix08W2">
                 <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                  <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">This is the blurb for the collection. It can be as long as you want, and it <em>can</em> contain <code>markdown</code>.
+                  <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">The Swift language has grown over the years and become more and more powerful. It now boosts a comprehensive static type system (generics, existentials…), a suite of concurrency tools (actors, dynamic isolation…), and most recently even ownership capabilities (consuming, borrowing, non-copyable types…). In “Back to basics” we will focus on just one part of the language in order to uncover the deep theory behind that feature as well as provide concrete advice for writing real-world code.
                   </p>
                 </pf-vstack>
               </pf-markdown>
@@ -481,11 +481,89 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           <pf-hstack class="color-Vt0a43 color-Cn4Oi1 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
             <pf-hstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M6.66665 11.4999L10.6666 8.49992L6.66665 5.49992V11.4999ZM7.99998 1.83325C4.31998 1.83325 1.33331 4.81992 1.33331 8.49992C1.33331 12.1799 4.31998 15.1666 7.99998 15.1666C11.68 15.1666 14.6666 12.1799 14.6666 8.49992C14.6666 4.81992 11.68 1.83325 7.99998 1.83325ZM7.99998 13.8333C5.05998 13.8333 2.66665 11.4399 2.66665 8.49992C2.66665 5.55992 5.05998 3.16659 7.99998 3.16659C10.94 3.16659 13.3333 5.55992 13.3333 8.49992C13.3333 11.4399 10.94 13.8333 7.99998 13.8333Z" fill="currentColor"/>
-</svg>6 episodes
+</svg>8 episodes
             </pf-hstack>
             <pf-hstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
-</svg>2 hr 18 min
+</svg>4 hr 46 min
+            </pf-hstack>
+          </pf-hstack>
+        </pf-vstack>
+      </pf-vstack>
+      <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 padding-PJnmd4 text-align-CdPBO2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-8r95N color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/collections/swiftui"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" width="64" height="64" rx="32" fill="url(#paint0_linear_733_2369)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.5 17.0259L50.474 31.9999L35.5 46.9739L20.526 31.9999L35.5 17.0259ZM33.0043 34.4956C34.3178 35.8091 36.5883 35.9029 37.9957 34.4956C39.4218 33.0695 39.3092 30.8177 37.9957 29.5042C36.6822 28.1907 34.4304 28.0781 33.0043 29.5042C31.597 30.9116 31.6908 33.1821 33.0043 34.4956ZM29.5883 17.1141L31.0883 18.6141L17.6143 32.0881L31.0883 45.5622L29.5883 47.0622L14.6143 32.0881L29.5883 17.1141Z" fill="white"/>
+<defs>
+<linearGradient id="paint0_linear_733_2369" x1="0.5" y1="0" x2="64.5" y2="64" gradientUnits="userSpaceOnUse">
+<stop stop-color="#4cccff"/>
+<stop offset="1" stop-color="#fff080"/>
+</linearGradient>
+</defs>
+</svg>
+        <div>
+          <h4 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">SwiftUI
+          </h4>
+          <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Collection
+          </div>
+        </div></a>
+        <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+          <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
+            <div class="color-OpZD03 color-5uscm3">
+              <pf-markdown class="display-ix08W2">
+                <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                  <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">SwiftUI is Apple’s declarative successor to UIKit and AppKit, and provides a wonderful set of tools for building applications quickly and effectively. It also provides a wonderful opportunity to explore problems around architecture and composition.
+                  </p>
+                </pf-vstack>
+              </pf-markdown>
+            </div>
+          </pf-vstack>
+          <pf-hstack class="color-Vt0a43 color-Cn4Oi1 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
+            <pf-hstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.66665 11.4999L10.6666 8.49992L6.66665 5.49992V11.4999ZM7.99998 1.83325C4.31998 1.83325 1.33331 4.81992 1.33331 8.49992C1.33331 12.1799 4.31998 15.1666 7.99998 15.1666C11.68 15.1666 14.6666 12.1799 14.6666 8.49992C14.6666 4.81992 11.68 1.83325 7.99998 1.83325ZM7.99998 13.8333C5.05998 13.8333 2.66665 11.4399 2.66665 8.49992C2.66665 5.55992 5.05998 3.16659 7.99998 3.16659C10.94 3.16659 13.3333 5.55992 13.3333 8.49992C13.3333 11.4399 10.94 13.8333 7.99998 13.8333Z" fill="currentColor"/>
+</svg>37 episodes
+            </pf-hstack>
+            <pf-hstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
+</svg>23 hr 50 min
+            </pf-hstack>
+          </pf-hstack>
+        </pf-vstack>
+      </pf-vstack>
+      <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 padding-PJnmd4 text-align-CdPBO2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-8r95N color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/collections/concurrency"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" width="64" height="64" rx="32" fill="url(#paint0_linear_733_2369)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M35.5 17.0259L50.474 31.9999L35.5 46.9739L20.526 31.9999L35.5 17.0259ZM33.0043 34.4956C34.3178 35.8091 36.5883 35.9029 37.9957 34.4956C39.4218 33.0695 39.3092 30.8177 37.9957 29.5042C36.6822 28.1907 34.4304 28.0781 33.0043 29.5042C31.597 30.9116 31.6908 33.1821 33.0043 34.4956ZM29.5883 17.1141L31.0883 18.6141L17.6143 32.0881L31.0883 45.5622L29.5883 47.0622L14.6143 32.0881L29.5883 17.1141Z" fill="white"/>
+<defs>
+<linearGradient id="paint0_linear_733_2369" x1="0.5" y1="0" x2="64.5" y2="64" gradientUnits="userSpaceOnUse">
+<stop stop-color="#4cccff"/>
+<stop offset="1" stop-color="#974dff"/>
+</linearGradient>
+</defs>
+</svg>
+        <div>
+          <h4 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Concurrency
+          </h4>
+          <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Collection
+          </div>
+        </div></a>
+        <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+          <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
+            <div class="color-OpZD03 color-5uscm3">
+              <pf-markdown class="display-ix08W2">
+                <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                  <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Swift has many tools for concurrency, including threads, operation queues, dispatch queues, Combine and now first class tools built directly into the language. We start from the beginning to understand what the past tools excelled at and where they faultered in order to see why the new tools are so incredible.
+                  </p>
+                </pf-vstack>
+              </pf-markdown>
+            </div>
+          </pf-vstack>
+          <pf-hstack class="color-Vt0a43 color-Cn4Oi1 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
+            <pf-hstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6.66665 11.4999L10.6666 8.49992L6.66665 5.49992V11.4999ZM7.99998 1.83325C4.31998 1.83325 1.33331 4.81992 1.33331 8.49992C1.33331 12.1799 4.31998 15.1666 7.99998 15.1666C11.68 15.1666 14.6666 12.1799 14.6666 8.49992C14.6666 4.81992 11.68 1.83325 7.99998 1.83325ZM7.99998 13.8333C5.05998 13.8333 2.66665 11.4399 2.66665 8.49992C2.66665 5.55992 5.05998 3.16659 7.99998 3.16659C10.94 3.16659 13.3333 5.55992 13.3333 8.49992C13.3333 11.4399 10.94 13.8333 7.99998 13.8333Z" fill="currentColor"/>
+</svg>12 episodes
+            </pf-hstack>
+            <pf-hstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
+</svg>9 hr 3 min
             </pf-hstack>
           </pf-hstack>
         </pf-vstack>
