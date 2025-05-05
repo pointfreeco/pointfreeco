@@ -16,7 +16,7 @@ import XCTest
 
 class HomeTests: TestCase {
   override func invokeTest() {
-    //SnapshotTesting.isRecording=true
+//    SnapshotTesting.isRecording=true
     withDependencies {
       var e1 = Episode.ep10_aTaleOfTwoFlatMaps
       e1.permission = .subscriberOnly
