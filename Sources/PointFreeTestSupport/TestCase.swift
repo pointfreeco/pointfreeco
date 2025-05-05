@@ -33,7 +33,7 @@ open class TestCase: XCTestCase {
   override open func setUp() async throws {
     try await super.setUp()
     diffTool = "ksdiff"
-    SnapshotTesting.isRecording = true
+    //SnapshotTesting.isRecording = true
   }
 
   override open func tearDown() {
@@ -56,7 +56,7 @@ open class LiveDatabaseTestCase: XCTestCase {
   override open func setUp() async throws {
     try await super.setUp()
     diffTool = "ksdiff"
-    SnapshotTesting.isRecording = true
+    //SnapshotTesting.isRecording = true
     @Dependency(\.database) var database
     try await database.resetForTesting(pool: self.pool)
   }
