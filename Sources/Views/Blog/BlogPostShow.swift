@@ -26,24 +26,25 @@ public struct NewsletterDetail: HTML {
 struct NewsletterDetailModule: HTML {
   var blogPost: BlogPost
 
-  @Dependency(\.currentUser) var currentUser
-  @Dependency(\.episodes) var episodes
+  @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.date.now) var now
+  @Dependency(\.episodes) var episodes
   @Dependency(\.envVars.emergencyMode) var emergencyMode
   @Dependency(\.siteRouter) var siteRouter
-  @Dependency(\.currentRoute) var currentRoute
+  @Dependency(\.subscriberState) var subscriberState
 
   var body: some HTML {
     PageModule(theme: .content) {
       VStack(spacing: 3) {
-
-        if currentUser == nil {
+        if !subscriberState.isActiveSubscriber {
           let freeEpisodeCount = episodes().count(
-            where: { !$0.isSubscriberOnly(
-              currentDate: now,
-              emergencyMode: emergencyMode
-            )
-            })
+            where: {
+              !$0.isSubscriberOnly(
+                currentDate: now,
+                emergencyMode: emergencyMode
+              )
+            }
+          )
           CalloutModule(
             title: "Find this interesting?",
             subtitle: """
