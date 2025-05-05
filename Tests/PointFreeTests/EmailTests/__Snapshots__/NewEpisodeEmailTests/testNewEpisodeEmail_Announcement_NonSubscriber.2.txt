@@ -1,9 +1,6 @@
-
-
-> ##### Announcements
+#### Announcements
 
 <p>This is an announcement for NON-subscribers.</p>
-
 
 
 ### #2: Proof in Functions

@@ -19,7 +19,7 @@ let freeEpisodeEmail =
       newsletter: .newEpisode,
       title: "Point-Freebie: \(ep.fullTitle)",
       preheader: freeEpisodeBlurb,
-      template: .default(),
+      template: .default(includeHeaderImage: false),
       data: ep
     )
   }
@@ -38,13 +38,12 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
         attributes: [.valign(.top)],
         .div(
           attributes: [.class([Class.padding([.mobile: [.all: 0], .desktop: [.all: 2]])])],
-          .blockquote(
+          .div(
             attributes: [
               .class([
                 Class.padding([.mobile: [.all: 2]]),
                 Class.margin([.mobile: [.leftRight: 0, .topBottom: 3]]),
-                Class.pf.colors.bg.blue900,
-                Class.type.italic,
+                Class.pf.colors.bg.yellow,
               ])
             ],
             .text(freeEpisodeBlurb),

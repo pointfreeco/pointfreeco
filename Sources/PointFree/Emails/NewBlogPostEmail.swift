@@ -90,11 +90,10 @@ private func announcementView(announcement: String?) -> Node {
       .class([
         Class.padding([.mobile: [.all: 2]]),
         Class.margin([.mobile: [.leftRight: 0, .topBottom: 3]]),
-        Class.pf.colors.bg.blue900,
-        Class.type.italic,
+        Class.pf.colors.bg.yellow,
       ])
     ],
-    .h5(attributes: [.class([Class.pf.type.responsiveTitle5])], ["Announcements"]),
+    .h4(attributes: [.class([Class.pf.type.responsiveTitle4])], ["Announcements"]),
     .markdownBlock(announcement)
   )
 }

@@ -1,6 +1,4 @@
-
-
-> ##### Announcements
+> #### Announcements
 
 <p>Hey! You’re not a subscriber, but that’s ok. At least you’re interested in functional programming!</p>
 
