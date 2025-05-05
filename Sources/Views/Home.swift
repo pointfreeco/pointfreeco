@@ -361,6 +361,7 @@ private struct CollectionsModule: HTML {
           .concurrency,
           .uiKit,
           .macros,
+          .modernPersistence,
         ]
         .shuffled(using: &$0)
         .prefix(3)
