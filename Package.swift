@@ -43,6 +43,7 @@ var package = Package(
   dependencies: [
     .package(url: "https://github.com/apple/swift-collections", from: "1.1.0"),
     .package(url: "https://github.com/apple/swift-log", from: "1.5.0"),
+    .package(url: "https://github.com/Concoction/swift-syntax", branch: "main"),
     .package(url: "https://github.com/swiftlang/swift-markdown", from: "0.4.0"),
     .package(url: "https://github.com/apple/swift-nio", from: "2.61.0"),
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.19.0"),
