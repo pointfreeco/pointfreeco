@@ -1,5 +1,3 @@
-
-
 ### #2: Proof in Functions
 
  <http://localhost:8080/episodes/ep2-proof-in-functions><p>This is a short blurb to give a high-level overview of what the episode is about. It can only be plain

@@ -18,7 +18,7 @@ class FreeEpisodeEmailTests: TestCase {
 
   override func setUp() async throws {
     try await super.setUp()
-    //SnapshotTesting.isRecording = true
+//    SnapshotTesting.isRecording = true
   }
 
   @MainActor
