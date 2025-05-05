@@ -550,8 +550,8 @@ var package = Package(
 
 var platformSpecificDependencies: [Package.Dependency] {
   var dependencies: [Package.Dependency] = []
-#if canImport(Darwin)
-  dependencies.append(.package(url: "https://github.com/Concoction/swift-syntax", branch: "main"))
-#endif
+  #if canImport(Darwin)
+    dependencies.append(.package(url: "https://github.com/Concoction/swift-syntax", branch: "main"))
+  #endif
   return dependencies
 }
