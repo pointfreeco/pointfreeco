@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/object-oriented-programming
 Cookie: pf_session={}
 
 404 Not Found
-Content-Length: 48470
+Content-Length: 48463
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1998,7 +1998,7 @@ html {
               </li>
               <li class="m-pl2
                          inline">
-                <a href="/authenticate?redirect=http://localhost:8080/episodes/object-oriented-programming"
+                <a href="/login?redirect=http://localhost:8080/episodes/object-oriented-programming"
                    class="medium
                           cursor-pointer
                           nowrap

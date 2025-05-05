@@ -166,7 +166,7 @@ private func headerLinks(
       ? .gitHubLink(
         text: "Login",
         type: .black,
-        href: siteRouter.gitHubAuthPath(redirect: currentRoute)
+        href: siteRouter.loginPath(redirect: currentRoute)
       )
       : .a(
         attributes: [

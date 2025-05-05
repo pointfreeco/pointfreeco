@@ -2,7 +2,7 @@ GET http://localhost:8080/enterprise/blob.biz
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 51658
+Content-Length: 51644
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2028,7 +2028,7 @@ html {
               </li>
               <li class="m-pl2
                          inline">
-                <a href="/authenticate?redirect=http://localhost:8080/enterprise/blob.biz"
+                <a href="/login?redirect=http://localhost:8080/enterprise/blob.biz"
                    class="medium
                           cursor-pointer
                           nowrap
@@ -2090,7 +2090,7 @@ html {
             Point&#8209;Free
             .
           </p>
-          <a href="/authenticate?redirect=http://localhost:8080/enterprise/blob.biz"
+          <a href="/login?redirect=http://localhost:8080/enterprise/blob.biz"
              class="medium
                     cursor-pointer
                     nowrap

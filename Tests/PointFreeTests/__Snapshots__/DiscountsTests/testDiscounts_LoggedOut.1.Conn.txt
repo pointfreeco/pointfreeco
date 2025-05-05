@@ -2,7 +2,7 @@ GET http://localhost:8080/discounts/blobfest
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 61910
+Content-Length: 61896
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2086,7 +2086,7 @@ html {
               </li>
               <li class="m-pl2
                          inline">
-                <a href="/authenticate?redirect=http://localhost:8080/discounts/blobfest"
+                <a href="/login?redirect=http://localhost:8080/discounts/blobfest"
                    class="medium
                           cursor-pointer
                           nowrap
@@ -2457,7 +2457,7 @@ window.addEventListener("load", function() {
         </div>
         <div class="end-m
                     col-m">
-          <a href="/authenticate?redirect=http://localhost:8080/discounts/coupon-deadbeef"
+          <a href="/login?redirect=http://localhost:8080/discounts/coupon-deadbeef"
              class="medium
                     cursor-pointer
                     nowrap

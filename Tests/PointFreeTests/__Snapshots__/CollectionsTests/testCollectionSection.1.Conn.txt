@@ -3,7 +3,7 @@ Authorization: Basic aGVsbG86d29ybGQ=
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 65350
+Content-Length: 65343
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2037,7 +2037,7 @@ html {
               </li>
               <li class="m-pl2
                          inline">
-                <a href="/authenticate?redirect=http://localhost:8080/collections/functions/functions-that-begin-with-b"
+                <a href="/login?redirect=http://localhost:8080/collections/functions/functions-that-begin-with-b"
                    class="medium
                           cursor-pointer
                           nowrap

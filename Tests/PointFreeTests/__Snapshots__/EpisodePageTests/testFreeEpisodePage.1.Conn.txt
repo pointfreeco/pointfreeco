@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 143430
+Content-Length: 143423
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -679,7 +679,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
             <p class="margin-bottom-dnNPN1 text-wrap-aqIE4 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Access all past and future episodes when you become a subscriber.
             </p>
             <pf-vstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a href="/pricing" class="font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">See plans and pricing</a>
-              <p class="padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Already a subscriber? <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/authenticate?redirect=http://localhost:8080/episodes/ep2-proof-in-functions">Log in</a>
+              <p class="padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Already a subscriber? <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/login?redirect=http://localhost:8080/episodes/ep2-proof-in-functions">Log in</a>
               </p>
             </pf-vstack>
           </pf-vstack>
