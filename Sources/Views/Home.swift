@@ -106,11 +106,10 @@ private struct LoggedOut: HTML {
       style: .gradient
     )
     Companies()
-    WhatToExpect()
     FreeEpisodes()
     Divider()
     EpisodesModule()
-    Divider()
+    WhatToExpect()
     CollectionsModule()
     if !clips.isEmpty {
       Divider()
