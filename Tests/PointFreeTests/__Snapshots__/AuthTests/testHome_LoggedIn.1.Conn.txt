@@ -2,7 +2,7 @@ GET http://localhost:8080/
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 57174
+Content-Length: 57341
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -194,10 +194,12 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .align-items-0Zubr3{align-items:baseline}
 .padding-bottom-Xin5E2{padding-bottom:1.5rem}
 .flex-wrap-RLKFg3{flex-wrap:nowrap}
+.justify-content-cQlZY2{justify-content:start}
 .color-K2J0r1{color:#121212}
 .margin-top-EvtWd3:not(:first-child){margin-top:1.5rem}
 .margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
 .font-size-QgYLk2{font-size:2.0rem}
+.margin-left-83zzS1{margin-left:1.0rem}
 .color-d8fIz1:link{color:#974dff}
 .color-C4SO14:visited{color:#974dff}
 .color-cemJK2{color:#974dff}
@@ -364,9 +366,9 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 </pf-vstack>
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-ymXQt align-items-CdPBO2">
+    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
       <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">All episodes
-      </h3><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">See all →</a>
+      </h3><a class="margin-left-83zzS1 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">See all →</a>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
       <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/episodes/ep1-type-safe-html-in-swift"><img class="width-C8uWv max-width-C8uWv" loading="lazy" src alt></a>
@@ -446,9 +448,9 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 </div>
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-ymXQt align-items-CdPBO2">
+    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
       <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Collections
-      </h3><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">See all →</a>
+      </h3><a class="margin-left-83zzS1 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">See all →</a>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
       <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 padding-PJnmd4 text-align-CdPBO2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-8r95N color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/collections/back-to-basics"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -574,9 +576,9 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 <hr class="border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-5uXnK3">
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-ymXQt align-items-CdPBO2">
+    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
       <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Clips
-      </h3><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/clips">See all →</a>
+      </h3><a class="margin-left-83zzS1 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/clips">See all →</a>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
     </pf-vgrid>
@@ -585,9 +587,9 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 <hr class="border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-5uXnK3">
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-ymXQt align-items-CdPBO2">
+    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
       <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Newsletter
-      </h3><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/blog">See all →</a>
+      </h3><a class="margin-left-83zzS1 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/blog">See all →</a>
     </div>
     <ul class="padding-left-E4tBw4 list-style-type-Wl0y44">
       <li>
