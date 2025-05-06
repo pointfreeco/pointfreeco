@@ -78,12 +78,13 @@ public struct PageModule<Title: HTML, Content: HTML>: HTML {
         if let seeAllURL {
           Link("See all →", href: seeAllURL)
             .linkColor(.purple)
+            .margin(left: .small)
         }
       }
       .flexContainer(
         direction: "row",
         wrap: "nowrap",
-        justification: seeAllURL == nil ? "center" : "space-between",
+        justification: seeAllURL == nil ? "center" : "start",
         itemAlignment: "center"
       )
       .flexItem(basis: "100%")

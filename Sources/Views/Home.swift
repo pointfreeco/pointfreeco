@@ -55,6 +55,7 @@ private struct LoggedIn: HTML {
     }
     if !inProgressEpisodes.isEmpty {
       InProgressEpisodes(episodes: Array(inProgressEpisodes))
+      Divider()
     }
     if !subscriberState.isActiveSubscriber {
       FreeEpisodes()
@@ -106,11 +107,10 @@ private struct LoggedOut: HTML {
       style: .gradient
     )
     Companies()
-    WhatToExpect()
     FreeEpisodes()
     Divider()
     EpisodesModule()
-    Divider()
+    WhatToExpect()
     CollectionsModule()
     if !clips.isEmpty {
       Divider()
