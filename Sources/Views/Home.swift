@@ -55,6 +55,7 @@ private struct LoggedIn: HTML {
     }
     if !inProgressEpisodes.isEmpty {
       InProgressEpisodes(episodes: Array(inProgressEpisodes))
+      Divider()
     }
     if !subscriberState.isActiveSubscriber {
       FreeEpisodes()
