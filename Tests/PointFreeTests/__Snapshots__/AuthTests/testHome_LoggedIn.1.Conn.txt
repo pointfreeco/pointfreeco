@@ -2,7 +2,7 @@ GET http://localhost:8080/
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 57341
+Content-Length: 57541
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -225,6 +225,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .color-PJVOr3{color:#242424}
 .color-GPfER1{color:#555555}
 .margin-top-dnNPN1{margin-top:1rem}
+.row-gap-FxsCt1{row-gap:0.25rem}
 .padding-8K2qP3{padding:1.0rem 1.25rem}
 .padding-PJnmd4{padding:2rem 1.5rem}
 .text-decoration-8r95N:hover{text-decoration:none}
@@ -440,10 +441,16 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       <h3 class="color-PJVOr3 color-r4foZ2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Give the gift of Point-Free
       </h3>
     </div>
-    <div>
-      <p class="max-width-ytOzz2 color-GPfER1 color-VoDZ9 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Purchase a gift subscription of 3, 6, or 12 months for a friend, colleague or loved one.
-      </p>
-    </div><a class="margin-top-dnNPN1 font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/gifts">See gifts options</a>
+    <div class="color-GPfER1 color-VoDZ9">
+      <pf-markdown class="max-width-ytOzz2 color-PJVOr3 color-VoDZ9 display-ix08W2">
+        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Purchase a gift subscription of 3, 6, or 12 months for a friend, colleague or loved one.
+          </p>
+        </pf-vstack>
+      </pf-markdown>
+    </div>
+    <pf-vstack class="margin-top-dnNPN1 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FxsCt1"><a href="/gifts" class="font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">See gifts options</a>
+    </pf-vstack>
   </pf-vstack>
 </div>
 <div class="background-color-nbn0i3 background-color-dMv2U1">

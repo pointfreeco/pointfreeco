@@ -2,7 +2,7 @@ GET http://localhost:8080/
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 127900
+Content-Length: 127830
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -209,15 +209,19 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .width-meMxa{width:100px}
 .height-95uPW3{height:60px}
 .object-fit-QHxeh4{object-fit:contain}
-.background-color-nbn0i3{background-color:#fff}
+.background-color-c5ixr2{background-color:#fafafa}
 .justify-content-n56cj2{justify-content:flex-start}
-.padding-bottom-Xin5E2{padding-bottom:1.5rem}
-.justify-content-cQlZY2{justify-content:start}
-.color-K2J0r1{color:#121212}
+.padding-bottom-NBsge3{padding-bottom:3.0rem}
+.color-BoTGL{color:#171717}
 .margin-top-EvtWd3:not(:first-child){margin-top:1.5rem}
 .margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
 .font-size-QgYLk2{font-size:2.0rem}
-.margin-left-83zzS1{margin-left:1.0rem}
+.padding-FJnJ04{padding:2.5%}
+.color-K2J0r1{color:#121212}
+.font-size-Xin5E2{font-size:1.5rem}
+.color-GPfER1{color:#555555}
+.background-color-nbn0i3{background-color:#fff}
+.padding-bottom-Xin5E2{padding-bottom:1.5rem}
 .box-shadow-91xof{box-shadow:0 2px 10px -2px rgba(0,0,0,0.3)}
 .border-radius-YwIIn{border-radius:5px}
 .margin-yehVj4{margin:1rem 0 2rem 0}
@@ -226,7 +230,6 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .border-bottom-9YkDE1{border-bottom:1px solid #e8e8e8}
 .padding-sjJTB1{padding:0.5rem 1.5rem 1.5rem}
 .row-gap-FBkWQ3{row-gap:0}
-.font-size-Xin5E2{font-size:1.5rem}
 .color-T7UxR2:link{color:#121212}
 .color-IVYQy2:visited{color:#121212}
 .color-OpZD03{color:#666666}
@@ -242,11 +245,6 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .color-vig5A3:link{color:currentColor}
 .color-vZTTa3:visited{color:currentColor}
 .color-4IpZj1{color:currentColor}
-.background-color-c5ixr2{background-color:#fafafa}
-.padding-bottom-NBsge3{padding-bottom:3.0rem}
-.color-BoTGL{color:#171717}
-.padding-FJnJ04{padding:2.5%}
-.color-GPfER1{color:#555555}
 .padding-PJnmd4{padding:2rem 1.5rem}
 .text-decoration-8r95N:hover{text-decoration:none}
 .row-gap-NBsge3{row-gap:3.0rem}
@@ -303,12 +301,12 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   .height-wjv553{height:60px}
   .column-gap-ZNGkd1{column-gap:1.0rem}
   .display-jdJkm4{display:grid}
-  .grid-template-columns-oWJr1{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)}
-  .row-gap-ZNGkd1{row-gap:1.0rem}
   .grid-template-columns-AWWfa{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
+  .row-gap-ZNGkd1{row-gap:1.0rem}
   .padding-YB9JG:nth-child(even){padding:0rem 1.5rem 4rem 0}
   .padding-CTEDv4:nth-child(odd){padding:0rem 0 4rem 1.5rem}
   .padding-gRWSc1{padding:7.5%}
+  .grid-template-columns-oWJr1{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)}
   .display-fTgPl1{display:block}
   .padding-top-ujLNr4{padding-top:4.0rem}
   .padding-left-ujLNr4{padding-left:4.0rem}
@@ -318,8 +316,10 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   .font-size-Fb6s54{font-size:0.875rem}
 }
 @media (prefers-color-scheme: dark){
-  .background-color-dMv2U1{background-color:#121212}
+  .background-color-xnERS1{background-color:#171717}
   .color-GOHNR{color:#fafafa}
+  .color-r4foZ2{color:#d8d8d8}
+  .background-color-dMv2U1{background-color:#121212}
   .border-bSHu21{border:1px #353535 solid}
   .background-color-Hakcq1{background-color:#242424}
   .border-bottom-a7wnM{border-bottom:1px solid #3d3d3d}
@@ -329,8 +329,6 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   .color-wVkSF3{color:#fff}
   .color-5uscm3{color:#a8a8a8}
   .border-top-MR1dZ1{border-top:1px solid #555555}
-  .background-color-xnERS1{background-color:#171717}
-  .color-r4foZ2{color:#d8d8d8}
   .border-qEa5h2{border:1px solid #353535}
   .background-color-lJpf9{background-color:#555555}
 }
@@ -410,11 +408,53 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
     </div>
   </div>
 </div>
+<div class="background-color-c5ixr2 background-color-xnERS1">
+  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+    <div class="padding-bottom-NBsge3 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-CdPBO2 align-items-CdPBO2">
+      <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">What to expect
+      </h3>
+    </div>
+    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
+      <pf-vstack class="padding-YB9JG padding-CTEDv4 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="padding-FJnJ04 padding-gRWSc1 max-width-C8uWv max-width-C8uWv" loading="lazy" src="https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg" alt>
+        <div>
+          <h4 class="text-align-GE99b color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">New content regularly
+          </h4>
+        </div>
+        <p class="text-align-GE99b color-GPfER1 color-r4foZ2 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">We dissect some of the most important and interesting topics in Swift programming frequently, and deliver them straight to your inbox.
+        </p>
+      </pf-vstack>
+      <pf-vstack class="padding-YB9JG padding-CTEDv4 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="padding-FJnJ04 padding-gRWSc1 max-width-C8uWv max-width-C8uWv" loading="lazy" src="https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg" alt>
+        <div>
+          <h4 class="text-align-GE99b color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Wide variety of topics
+          </h4>
+        </div>
+        <p class="text-align-GE99b color-GPfER1 color-r4foZ2 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">We cover both abstract ideas and practical concepts you can start using in your code base immediately.
+        </p>
+      </pf-vstack>
+      <pf-vstack class="padding-YB9JG padding-CTEDv4 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="padding-FJnJ04 padding-gRWSc1 max-width-C8uWv max-width-C8uWv" loading="lazy" src="https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg" alt>
+        <div>
+          <h4 class="text-align-GE99b color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Playground downloads
+          </h4>
+        </div>
+        <p class="text-align-GE99b color-GPfER1 color-r4foZ2 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Download a fully-functioning Swift playground from the episode so you can experiment with the concepts discussed.
+        </p>
+      </pf-vstack>
+      <pf-vstack class="padding-YB9JG padding-CTEDv4 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="padding-FJnJ04 padding-gRWSc1 max-width-C8uWv max-width-C8uWv" loading="lazy" src="https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg" alt>
+        <div>
+          <h4 class="text-align-GE99b color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Video transcripts
+          </h4>
+        </div>
+        <p class="text-align-GE99b color-GPfER1 color-r4foZ2 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump directly to that point in the video.
+        </p>
+      </pf-vstack>
+    </pf-vgrid>
+  </div>
+</div>
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
+    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-ymXQt align-items-CdPBO2">
       <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Free episodes
-      </h3><a class="margin-left-83zzS1 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/free">See all →</a>
+      </h3><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/free">See all →</a>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
       <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/episodes/ep1-type-safe-html-in-swift"><img class="width-C8uWv max-width-C8uWv" loading="lazy" src alt></a>
@@ -455,9 +495,9 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 <hr class="border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-5uXnK3">
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
+    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-ymXQt align-items-CdPBO2">
       <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">All episodes
-      </h3><a class="margin-left-83zzS1 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">See all →</a>
+      </h3><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">See all →</a>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
       <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/episodes/ep1-type-safe-html-in-swift"><img class="width-C8uWv max-width-C8uWv" loading="lazy" src alt></a>
@@ -527,53 +567,12 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
     </pf-vgrid>
   </div>
 </div>
-<div class="background-color-c5ixr2 background-color-xnERS1">
-  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <div class="padding-bottom-NBsge3 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-CdPBO2 align-items-CdPBO2">
-      <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">What to expect
-      </h3>
-    </div>
-    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
-      <pf-vstack class="padding-YB9JG padding-CTEDv4 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="padding-FJnJ04 padding-gRWSc1 max-width-C8uWv max-width-C8uWv" loading="lazy" src="https://d3rccdn33rt8ze.cloudfront.net/pricing/regular-updates.jpg" alt>
-        <div>
-          <h4 class="text-align-GE99b color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">New content regularly
-          </h4>
-        </div>
-        <p class="text-align-GE99b color-GPfER1 color-r4foZ2 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">We dissect some of the most important and interesting topics in Swift programming frequently, and deliver them straight to your inbox.
-        </p>
-      </pf-vstack>
-      <pf-vstack class="padding-YB9JG padding-CTEDv4 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="padding-FJnJ04 padding-gRWSc1 max-width-C8uWv max-width-C8uWv" loading="lazy" src="https://d3rccdn33rt8ze.cloudfront.net/pricing/episode-topics.jpg" alt>
-        <div>
-          <h4 class="text-align-GE99b color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Wide variety of topics
-          </h4>
-        </div>
-        <p class="text-align-GE99b color-GPfER1 color-r4foZ2 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">We cover both abstract ideas and practical concepts you can start using in your code base immediately.
-        </p>
-      </pf-vstack>
-      <pf-vstack class="padding-YB9JG padding-CTEDv4 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="padding-FJnJ04 padding-gRWSc1 max-width-C8uWv max-width-C8uWv" loading="lazy" src="https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg" alt>
-        <div>
-          <h4 class="text-align-GE99b color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Playground downloads
-          </h4>
-        </div>
-        <p class="text-align-GE99b color-GPfER1 color-r4foZ2 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Download a fully-functioning Swift playground from the episode so you can experiment with the concepts discussed.
-        </p>
-      </pf-vstack>
-      <pf-vstack class="padding-YB9JG padding-CTEDv4 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="padding-FJnJ04 padding-gRWSc1 max-width-C8uWv max-width-C8uWv" loading="lazy" src="https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg" alt>
-        <div>
-          <h4 class="text-align-GE99b color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Video transcripts
-          </h4>
-        </div>
-        <p class="text-align-GE99b color-GPfER1 color-r4foZ2 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">We transcribe each video by hand so you can search and reference easily. Click on a timestamp to jump directly to that point in the video.
-        </p>
-      </pf-vstack>
-    </pf-vgrid>
-  </div>
-</div>
+<hr class="border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-5uXnK3">
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
+    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-ymXQt align-items-CdPBO2">
       <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Collections
-      </h3><a class="margin-left-83zzS1 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">See all →</a>
+      </h3><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">See all →</a>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
       <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 padding-PJnmd4 text-align-CdPBO2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-8r95N color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/collections/back-to-basics"><svg width="65" height="64" viewBox="0 0 65 64" fill="none" xmlns="http://www.w3.org/2000/svg">
