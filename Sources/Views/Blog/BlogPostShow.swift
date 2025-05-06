@@ -26,9 +26,41 @@ public struct NewsletterDetail: HTML {
 struct NewsletterDetailModule: HTML {
   var blogPost: BlogPost
 
+  @Dependency(\.currentRoute) var currentRoute
+  @Dependency(\.date.now) var now
+  @Dependency(\.episodes) var episodes
+  @Dependency(\.envVars.emergencyMode) var emergencyMode
+  @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
+
   var body: some HTML {
     PageModule(theme: .content) {
       VStack(spacing: 3) {
+        if !subscriberState.isActiveSubscriber {
+          let freeEpisodeCount = episodes().count(
+            where: {
+              !$0.isSubscriberOnly(
+                currentDate: now,
+                emergencyMode: emergencyMode
+              )
+            }
+          )
+          CalloutModule(
+            title: "Find this interesting?",
+            subtitle: """
+              Get started with our free plan, which includes **1 subscriber-only** episode of your \
+              choice, access to **\(freeEpisodeCount) free** episodes with transcripts and code \
+              samples, and weekly updates from our newsletter.
+              """,
+            ctaTitle: "Sign up for free →",
+            ctaURL: siteRouter.path(
+              for: .auth(.signUp(redirect: siteRouter.url(for: currentRoute)))
+            ),
+            secondaryCTATitle: "View plans and pricing",
+            secondaryCTAURL: siteRouter.path(for: .pricingLanding),
+            backgroundColor: PointFreeColor(rawValue: "#e6f9f1", darkValue: "#0f1f1b")
+          )
+        }
         if let content = blogPost.content {
           article {
             HTMLMarkdown(content)

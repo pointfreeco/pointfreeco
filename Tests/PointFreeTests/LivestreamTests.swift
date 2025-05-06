@@ -23,7 +23,7 @@ import XCTest
 class LivestreamTests: TestCase {
   override func setUp() {
     super.setUp()
-    //sisRecording = true
+    //isRecording = true
   }
 
   @MainActor

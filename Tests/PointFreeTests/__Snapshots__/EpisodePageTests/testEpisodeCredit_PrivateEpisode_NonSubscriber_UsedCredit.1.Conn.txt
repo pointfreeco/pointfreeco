@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 129616
+Content-Length: 129950
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1396,10 +1396,16 @@ incr().square()
       <h3 class="color-PJVOr3 color-r4foZ2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Upgrade your plan
       </h3>
     </div>
-    <div>
-      <p class="max-width-ytOzz2 color-GPfER1 color-VoDZ9 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">Access all past and future episodes.
-      </p>
-    </div><a class="margin-top-dnNPN1 font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/pricing">See plans and pricing</a>
+    <div class="color-GPfER1 color-VoDZ9">
+      <pf-markdown class="max-width-ytOzz2 color-PJVOr3 color-VoDZ9 display-ix08W2">
+        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Access all past and future episodes.
+          </p>
+        </pf-vstack>
+      </pf-markdown>
+    </div>
+    <pf-vstack class="margin-top-dnNPN1 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FxsCt1"><a href="/pricing" class="font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">See plans and pricing</a>
+    </pf-vstack>
   </pf-vstack>
 </div><script>window.addEventListener("load", function(event) {
   const iframe = document.querySelector("iframe")

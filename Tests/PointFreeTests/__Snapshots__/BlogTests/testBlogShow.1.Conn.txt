@@ -2,7 +2,7 @@ GET http://localhost:8080/blog/posts/0-mock-blog-post
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 32014
+Content-Length: 34690
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -333,6 +333,20 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .padding-FBkWQ3{padding:0}
 .color-I8WpG4{color:#808080}
 .row-gap-NBsge3{row-gap:3.0rem}
+.padding-pRWYM{padding:4rem 2rem}
+.background-color-EHdfF2{background-color:#e6f9f1}
+.align-items-cQlZY2{align-items:start}
+.color-PJVOr3{color:#242424}
+.color-GPfER1{color:#555555}
+.margin-top-dnNPN1{margin-top:1rem}
+.row-gap-FxsCt1{row-gap:0.25rem}
+.font-size-83zzS1{font-size:1.0rem}
+.padding-8K2qP3{padding:1.0rem 1.25rem}
+.font-weight-evfWi1{font-weight:normal}
+.text-decoration-gUV393:visited{text-decoration:underline}
+.text-decoration-tfb0F1:link{text-decoration:underline}
+.color-miorV3:link{color:#242424}
+.color-niHfY3:visited{color:#242424}
 .background-CEcmK3{background:linear-gradient(#121212, #291a40)}
 .padding-top-P1piO2{padding-top:4.0rem}
 .padding-left-QgYLk2{padding-left:2.0rem}
@@ -343,17 +357,12 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .font-size-NBsge3{font-size:3.0rem}
 .max-width-3zifi{max-width:40rem}
 .color-KmPrN{color:#ccc}
-.font-weight-evfWi1{font-weight:normal}
-.font-size-83zzS1{font-size:1.0rem}
 .padding-bottom-yQEjs3:not(:last-child){padding-bottom:0.5rem}
 .padding-top-FBkWQ3{padding-top:0}
 .padding-left-FBkWQ3{padding-left:0}
 .padding-right-FBkWQ3{padding-right:0}
 .margin-top-H64QF2{margin-top:3rem}
 .display-qrAHi{display:inline-block}
-.padding-8K2qP3{padding:1.0rem 1.25rem}
-.text-decoration-gUV393:visited{text-decoration:underline}
-.text-decoration-tfb0F1:link{text-decoration:underline}
 .background-color-K2J0r1{background-color:#121212}
 .align-items-Dq4Oc4{align-items:first baseline}
 .font-size-yLOVS3{font-size:1.25rem}
@@ -390,7 +399,10 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   .margin-mBI0f2{margin:0 auto}
   .padding-EmXfB2{padding:4.0rem 3.0rem 4.0rem}
   .width-4RrPZ2{width:75%}
+  .padding-fDGSU2{padding:0 2rem}
+  .padding-rKBkb1{padding:4rem 3rem}
   .align-items-GE99b{align-items:center}
+  .max-width-ytOzz2{max-width:40rem}
   .padding-top-OzbZs1{padding-top:8.0rem}
   .padding-left-OzbZs1{padding-left:8.0rem}
   .padding-bottom-OzbZs1{padding-bottom:8.0rem}
@@ -412,6 +424,11 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   .color-GOHNR{color:#fafafa}
   .color-Jm6Xp1:link{color:#fafafa}
   .color-D9CPB:visited{color:#fafafa}
+  .background-color-HqmCl4{background-color:#0f1f1b}
+  .color-r4foZ2{color:#d8d8d8}
+  .color-VoDZ9{color:#ccc}
+  .color-vpp6I3:link{color:#ccc}
+  .color-LzNVD4:visited{color:#ccc}
 }
 
     </style>
@@ -468,6 +485,24 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </pf-vstack>
     </div>
     <pf-vstack class="margin-mBI0f2 width-4RrPZ2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NBsge3">
+      <div class="background-color-nbn0i3 background-color-dMv2U1 padding-fDGSU2 max-width-C8uWv">
+        <pf-vstack class="padding-pRWYM padding-rKBkb1 background-color-EHdfF2 background-color-HqmCl4 max-width-P6HnV margin-gEzmi align-items-GE99b align-items-cQlZY2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+          <div>
+            <h3 class="color-PJVOr3 color-r4foZ2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Find this interesting?
+            </h3>
+          </div>
+          <div class="color-GPfER1 color-VoDZ9">
+            <pf-markdown class="max-width-ytOzz2 color-PJVOr3 color-VoDZ9 display-ix08W2">
+              <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Get started with our free plan, which includes <strong>1 subscriber-only</strong> episode of your choice, access to <strong>1 free</strong> episodes with transcripts and code samples, and weekly updates from our newsletter.
+                </p>
+              </pf-vstack>
+            </pf-markdown>
+          </div>
+          <pf-vstack class="margin-top-dnNPN1 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FxsCt1"><a href="/signup?redirect=http://localhost:8080/blog/posts/0-mock-blog-post" class="font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">Sign up for free →</a><a class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-vpp6I3 color-niHfY3 color-LzNVD4 color-PJVOr3 color-VoDZ9" href="/pricing">View plans and pricing</a>
+          </pf-vstack>
+        </pf-vstack>
+      </div>
     </pf-vstack>
   </div>
 </div>
