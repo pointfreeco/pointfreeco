@@ -8,7 +8,7 @@ extension Episode {
     codeSampleDirectory: "0325-modern-persistence-pt3",
     exercises: _exercises,
     id: 325,
-    length: 0 * 60 + 0,  // TODO
+    length: 46 * 60 + 56,
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2025-05-19")!,
     references: [
@@ -24,16 +24,16 @@ extension Episode {
       ),
     ],
     sequence: 325,
-    subtitle: "Schemas",
+    subtitle: "Reminders Lists, Part 2",
     title: "Modern Persistence",
     trailerVideo: .init(
-      bytesLength: 0,  // TODO
+      bytesLength: 62_500_000,
       downloadUrls: .s3(
-        hd1080: "0325-trailer-1080p-TODO",
-        hd720: "0325-trailer-720p-TODO",
-        sd540: "0325-trailer-540p-TODO"
+        hd1080: "0325-trailer-1080p-64dfe445b69e4045bf3060cc9bab888b",
+        hd720: "0325-trailer-720p-fb85f7a2288e4727966f142b6b55e75c",
+        sd540: "0325-trailer-540p-eda2db6b85874e6fa7b6ce4b0555d776"
       ),
-      vimeoId: 0  // TODO
+      vimeoId: 1082678534
     )
   )
 }
