@@ -62,7 +62,7 @@ private func handleFailedPayment(
       }
 
       if stripeSubscription.quantity >= 5
-        || stripeSubscription.created < now.addingTimeInterval(-2*365*24*60*60)
+        || stripeSubscription.created < now.addingTimeInterval(-2 * 365 * 24 * 60 * 60)
       {
         await fireAndForget {
           try await sendEmail(
