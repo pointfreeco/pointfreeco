@@ -45,6 +45,7 @@ private func handleFailedPayment(
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
   @Dependency(\.fireAndForget) var fireAndForget
+  @Dependency(\.date.now) var now
   @Dependency(\.stripe) var stripe
 
   do {
@@ -58,6 +59,26 @@ private func handleFailedPayment(
 
       await fireAndForget {
         try await sendPastDueEmail(to: user)
+      }
+
+      if stripeSubscription.quantity >= 5
+        || stripeSubscription.created < now.addingTimeInterval(-2*365*24*60*60)
+      {
+        await fireAndForget {
+          try await sendEmail(
+            to: adminEmails,
+            subject: "[PointFree Warning] Churning Subscription",
+            content: inj1(
+              """
+              An important subscription is churning:
+
+              - Owner: \(user.email.description)
+              - Seats: \(stripeSubscription.quantity)
+              - Subscriber since: \(stripeSubscription.created)
+              """
+            )
+          )
+        }
       }
     }
     return conn.head(.ok)
