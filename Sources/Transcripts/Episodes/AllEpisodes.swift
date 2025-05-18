@@ -327,6 +327,6 @@ extension Episode {
     .ep322_sqlBuilding,
     .ep323_modernPersistence,
     .ep324_modernPersistence,
-    //    .ep325_modernPersistence,
+    .ep325_modernPersistence,
   ]
 }

@@ -3,7 +3,10 @@ import Foundation
 extension Episode {
   public static let ep325_modernPersistence = Episode(
     blurb: """
-      TODO
+      We flesh out the reminders lists feature using advanced queries that aggregate reminders \
+      counts and bundle results up into a custom type _via_ the `@Selection` macro. And we show \
+      how "drafts"—a unique feature of StructuredQueries—allow us to create and update values \
+      using the same view, all without sacrificing the preciseness of our domain model.
       """,
     codeSampleDirectory: "0325-modern-persistence-pt3",
     exercises: _exercises,
