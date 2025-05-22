@@ -21,6 +21,7 @@ public struct EnvVars: Codable {
   public var appSecret: AppSecret
   public var baseUrl: URL
   public var basicAuth: BasicAuth
+  public var cloudflare: Cloudflare
   public var emergencyMode: Bool
   public var gitHub: GitHub
   public var mailgun: Mailgun
@@ -37,6 +38,7 @@ public struct EnvVars: Codable {
     appSecret: AppSecret = "deadbeefdeadbeefdeadbeefdeadbeef",
     baseUrl: URL = URL(string: "http://localhost:8080")!,
     basicAuth: BasicAuth = BasicAuth(),
+    cloudflare: Cloudflare = Cloudflare(),
     emergencyMode: Bool = false,
     gitHub: GitHub = GitHub(),
     mailgun: Mailgun = Mailgun(),
@@ -52,6 +54,7 @@ public struct EnvVars: Codable {
     self.appSecret = appSecret
     self.baseUrl = baseUrl
     self.basicAuth = basicAuth
+    self.cloudflare = cloudflare
     self.emergencyMode = emergencyMode
     self.gitHub = gitHub
     self.mailgun = mailgun
@@ -98,6 +101,19 @@ public struct EnvVars: Codable {
     private enum CodingKeys: String, CodingKey {
       case username = "BASIC_AUTH_USERNAME"
       case password = "BASIC_AUTH_PASSWORD"
+    }
+  }
+
+  public struct Cloudflare: Codable {
+    public var accountID: String
+    public var streamAPIKey: String
+    public init(accountID: String = "deadbeef", streamAPIKey: String = "deadbeef") {
+      self.accountID = accountID
+      self.streamAPIKey = streamAPIKey
+    }
+    private enum CodingKeys: String, CodingKey {
+      case accountID = "CLOUDFLARE_ACCOUNT_ID"
+      case streamAPIKey = "CLOUDFLARE_STREAM_API_KEY"
     }
   }
 
@@ -184,6 +200,7 @@ extension EnvVars {
     self.appSecret = try container.decode(AppSecret.self, forKey: .appSecret)
     self.baseUrl = try container.decode(URL.self, forKey: .baseUrl)
     self.basicAuth = try .init(from: decoder)
+    self.cloudflare = try Cloudflare(from: decoder)
     self.emergencyMode = try container.decodeIfPresent(String.self, forKey: .emergencyMode) == "1"
     self.gitHub = try .init(from: decoder)
     self.mailgun = try .init(from: decoder)

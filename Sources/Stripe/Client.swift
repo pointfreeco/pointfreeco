@@ -86,7 +86,7 @@ public struct Client {
   @DependencyEndpoint(method: "update")
   public var updateSubscription:
     (_ subscription: Subscription, _ planID: Plan.ID, _ quantity: Int) async throws -> Subscription
-  public var js: String
+  public var js: String = ""
 }
 
 extension Client {

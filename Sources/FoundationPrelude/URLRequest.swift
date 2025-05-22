@@ -105,6 +105,7 @@ let timeoutInterval = 25
 public enum Method {
   case get([String: Any])
   case post([String: Any])
+  case postData(Data)
   case delete([String: String])
 }
 
@@ -116,6 +117,8 @@ extension URLRequest {
     case let .post(params):
       self.httpMethod = "POST"
       self.attach(formData: params)
+    case .postData:
+      fatalError()
     case let .delete(params):
       self.httpMethod = "DELETE"
       self.attach(formData: params)

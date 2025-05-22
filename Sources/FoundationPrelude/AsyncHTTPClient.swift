@@ -7,6 +7,7 @@ import NIOCore
 import NIODependencies
 import NIOFoundationCompat
 import Tagged
+import UrlFormEncoding
 
 extension DependencyValues {
   public var httpClient: HTTPClient {
@@ -58,4 +59,27 @@ public func dataTask(
     .execute(request, timeout: .seconds(Int64(timeoutInterval)), logger: logger)
   let bytes = try await response.body.collect(upTo: 12 * 1024 * 1024)
   return (bytes, response)
+}
+
+extension HTTPClientRequest {
+  public mutating func attach(method: Method) {
+    switch method {
+    case .get:
+      self.method = .GET
+    case let .post(params):
+      self.method = .POST
+      self.attach(formData: params)
+    case .postData(let data):
+      self.method = .POST
+      self.body = .bytes(data, length: .known(Int64(data.count)))
+    case let .delete(params):
+      self.method = .DELETE
+      self.attach(formData: params)
+    }
+  }
+
+  public mutating func attach(formData: [String: Any]) {
+    let data = Data(urlFormEncode(value: formData).utf8)
+    self.body = .bytes(data, length: .known(Int64(data.count)))
+  }
 }

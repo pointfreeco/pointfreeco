@@ -11,6 +11,7 @@ var package = Package(
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
+    .library(name: "Cloudflare", targets: ["Cloudflare"]),
     .library(name: "Database", targets: ["Database"]),
     .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
     .library(name: "DecodableRequest", targets: ["DecodableRequest"]),
@@ -61,6 +62,15 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.2.2"),
   ],
   targets: [
+    .target(
+      name: "Cloudflare",
+      dependencies: [
+        "DecodableRequest",
+        "FoundationPrelude",
+        .product(name: "Dependencies", package: "swift-dependencies"),
+        .product(name: "DependenciesMacros", package: "swift-dependencies"),
+      ]
+    ),
     .target(
       name: "Database",
       dependencies: [
@@ -277,6 +287,7 @@ var package = Package(
     .target(
       name: "PointFree",
       dependencies: [
+        "Cloudflare",
         "Database",
         "EnvVars",
         "EmailAddress",
@@ -414,6 +425,7 @@ var package = Package(
     .executableTarget(
       name: "Server",
       dependencies: [
+        "Cloudflare",
         "PointFree"
       ]
     ),
