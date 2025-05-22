@@ -31,7 +31,7 @@ public struct EnvVars: Codable {
   public var rssUserAgentWatchlist: [String]
   public var slackInviteURL: String
   public var stripe: Stripe
-  public var vimeoBearer: String
+  public var vimeo: Vimeo
 
   public init(
     appEnv: AppEnv = .development,
@@ -48,7 +48,7 @@ public struct EnvVars: Codable {
     rssUserAgentWatchlist: [String] = [],
     slackInviteURL: String = "http://slack.com",
     stripe: Stripe = Stripe(),
-    vimeoBearer: String = ""
+    vimeo: Vimeo = Vimeo()
   ) {
     self.appEnv = appEnv
     self.appSecret = appSecret
@@ -64,7 +64,7 @@ public struct EnvVars: Codable {
     self.rssUserAgentWatchlist = rssUserAgentWatchlist
     self.slackInviteURL = slackInviteURL
     self.stripe = stripe
-    self.vimeoBearer = vimeoBearer
+    self.vimeo = vimeo
   }
 
   private enum CodingKeys: String, CodingKey {
@@ -76,7 +76,6 @@ public struct EnvVars: Codable {
     case rssUserAgentWatchlist = "RSS_USER_AGENT_WATCHLIST"
     case regionalDiscountCouponId = "REGIONAL_DISCOUNT_COUPON_ID"
     case slackInviteURL = "PF_COMMUNITY_SLACK_INVITE_URL"
-    case vimeoBearer = "VIMEO_BEARER"
   }
 
   public enum AppEnv: String, Codable {
@@ -190,6 +189,24 @@ public struct EnvVars: Codable {
       case secretKey = "STRIPE_SECRET_KEY"
     }
   }
+
+  public struct Vimeo: Codable {
+    public var bearer: String
+    public var userId: String
+
+    public init(
+      bearer: String = "deadbeef",
+      userId: String = "0"
+    ) {
+      self.bearer = bearer
+      self.userId = userId
+    }
+
+    private enum CodingKeys: String, CodingKey {
+      case bearer = "VIMEO_BEARER"
+      case userId = "VIMEO_USER_ID"
+    }
+  }
 }
 
 extension EnvVars {
@@ -213,7 +230,7 @@ extension EnvVars {
       .map(String.init)
     self.slackInviteURL = try container.decode(String.self, forKey: .slackInviteURL)
     self.stripe = try .init(from: decoder)
-    self.vimeoBearer = try container.decode(String.self, forKey: .vimeoBearer)
+    self.vimeo = try .init(from: decoder)
   }
 
   public func encode(to encoder: Encoder) throws {
@@ -234,7 +251,7 @@ extension EnvVars {
     try container.encode(self.regionalDiscountCouponId, forKey: .regionalDiscountCouponId)
     try container.encode(self.slackInviteURL, forKey: .slackInviteURL)
     try self.stripe.encode(to: encoder)
-    try container.encode(self.vimeoBearer, forKey: .vimeoBearer)
+    try self.vimeo.encode(to: encoder)
   }
 }
 
@@ -269,19 +286,20 @@ extension EnvVars: DependencyKey {
       .flatMap { try? decoder.decode([String: String].self, from: $0) }
       ?? [:]
 
-    let localEnvVarDict =
-      (try? Data(contentsOf: envFilePath))
-      .flatMap { try? decoder.decode([String: String].self, from: $0) }
-      ?? [:]
+    let localEnvVarDict = withErrorReporting {
+      try decoder.decode([String: String].self, from: Data(contentsOf: envFilePath))
+    }
+    ?? [:]
 
     let envVarDict =
       defaultEnvVarDict
       .merging(localEnvVarDict, uniquingKeysWith: { $1 })
       .merging(ProcessInfo.processInfo.environment, uniquingKeysWith: { $1 })
 
-    return (try? JSONSerialization.data(withJSONObject: envVarDict))
-      .flatMap { try? decoder.decode(EnvVars.self, from: $0) }
-      ?? Self()
+    return withErrorReporting {
+      try decoder.decode(EnvVars.self, from: JSONSerialization.data(withJSONObject: envVarDict))
+    }
+    ?? Self()
   }
 
   public static var testValue: EnvVars {

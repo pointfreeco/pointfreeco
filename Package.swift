@@ -11,6 +11,7 @@ var package = Package(
   products: [
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
+    .executable(name: "migrate-vimeo-to-cloudflare", targets: ["migrate-vimeo-to-cloudflare"]),
     .library(name: "Cloudflare", targets: ["Cloudflare"]),
     .library(name: "Database", targets: ["Database"]),
     .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
@@ -39,6 +40,7 @@ var package = Package(
     .library(name: "Syndication", targets: ["Syndication"]),
     .library(name: "Transcripts", targets: ["Transcripts"]),
     .library(name: "Views", targets: ["Views"]),
+    .library(name: "Vimeo", targets: ["Vimeo"]),
     .library(name: "WebPreview", targets: ["WebPreview"]),
   ],
   dependencies: platformSpecificDependencies + [
@@ -418,7 +420,7 @@ var package = Package(
     .executableTarget(
       name: "Runner",
       dependencies: [
-        "PointFree"
+        "PointFree",
       ]
     ),
 
@@ -426,7 +428,7 @@ var package = Package(
       name: "Server",
       dependencies: [
         "Cloudflare",
-        "PointFree"
+        "PointFree",
       ]
     ),
 
@@ -554,8 +556,28 @@ var package = Package(
     ),
 
     .target(
+      name: "Vimeo",
+      dependencies: [
+        "DecodableRequest",
+        "FoundationPrelude",
+        .product(name: "AsyncHTTPClient", package: "async-http-client"),
+        .product(name: "Dependencies", package: "swift-dependencies"),
+        .product(name: "DependenciesMacros", package: "swift-dependencies"),
+      ]
+    ),
+
+    .target(
       name: "WebPreview"
     ),
+
+    .executableTarget(
+      name: "migrate-vimeo-to-cloudflare",
+      dependencies: [
+        "Cloudflare",
+        "PointFree",
+        "Vimeo",
+      ]
+    )
   ],
   swiftLanguageModes: [.v5]
 )
