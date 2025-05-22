@@ -16,9 +16,9 @@ extension Episode.Collection {
           features, such as foreign keys, triggers, common table expressions, and more. 
           """,
         coreLessons: [
-          .init(episode: .ep323_modernPersistence)
-          //          .init(episode: .ep324_modernPersistence),
-          //          .init(episode: .ep325_modernPersistence),
+          Section.Lesson(episode: .ep323_modernPersistence),
+          Section.Lesson(episode: .ep324_modernPersistence),
+          Section.Lesson(episode: .ep325_modernPersistence),
         ],
         isFinished: false,
         isHidden: false,
