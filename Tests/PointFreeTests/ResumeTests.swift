@@ -122,7 +122,7 @@ class ResumeTests: TestCase {
             trailerVideo: Episode.Video(
               bytesLength: 1,
               downloadUrls: .s3(hd1080: "", hd720: "", sd540: ""),
-              vimeoId: 1
+              id: "deadbeef"
             )
           )
         ]
@@ -178,7 +178,7 @@ class ResumeTests: TestCase {
             trailerVideo: Episode.Video(
               bytesLength: 1,
               downloadUrls: .s3(hd1080: "", hd720: "", sd540: ""),
-              vimeoId: 1
+              id: "deadbeef"
             )
           ),
           Episode(
@@ -192,7 +192,7 @@ class ResumeTests: TestCase {
             trailerVideo: Episode.Video(
               bytesLength: 1,
               downloadUrls: .s3(hd1080: "", hd720: "", sd540: ""),
-              vimeoId: 1
+              id: "deadbeef"
             )
           ),
         ]
