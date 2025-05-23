@@ -13,18 +13,19 @@ public func bootstrap() async {
   await withErrorReporting {
     let videos = try await cloudflare.videos()
     print("videos", videos)
-    let firstVideo = videos[0]
-    print("firstVideo", firstVideo)
+    for video in videos.result {
 
-    print(try await cloudflare.updateDetails(
-      firstVideo.uid,
-      Cloudflare.Video.PublicDetails(
-        channelLink: "https://www.pointfree.co", 
-        logo: "https://pbs.twimg.com/profile_images/907799692339269634/wQEf0_2N_400x400.jpg",
-        shareLink: "https://www.pointfree.co",
-        title: "Hello!"
-      )
-    ))
+    }
+
+//    print(try await cloudflare.editVideo(
+//      firstVideo.uid,
+//      Cloudflare.Video.PublicDetails(
+//        channelLink: "https://www.pointfree.co", 
+//        logo: "https://pbs.twimg.com/profile_images/907799692339269634/wQEf0_2N_400x400.jpg",
+//        shareLink: "https://www.pointfree.co",
+//        title: "Hello!"
+//      )
+//    ))
   }
 
   print("⚠️ Bootstrapping PointFree...")

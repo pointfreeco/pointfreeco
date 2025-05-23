@@ -8,6 +8,7 @@ public struct VideoEnvelope: Codable {
 
 public struct Video: Codable {
   public let uid: String
+  public let meta: [String: String]
   public let publicDetails: PublicDetails
   public let size: Int
 

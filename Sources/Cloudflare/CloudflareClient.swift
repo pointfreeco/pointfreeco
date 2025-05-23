@@ -7,45 +7,88 @@ import FoundationPrelude
 
 @DependencyClient
 public struct CloudflareClient: Sendable {
-  public let updateDetails:
-    @Sendable (
-      _ videoID: String,
-      _ publicDetails: Video.PublicDetails
-    ) async throws -> Video.PublicDetails
-  public let videos: @Sendable () async throws -> [Video]
+  public var copy: @Sendable (String) async throws -> DirectUploadEnvelope
+  public var editVideo: @Sendable (EditArguments) async throws -> VideoEnvelope
+  public var video: @Sendable (String) async throws -> VideoEnvelope
+  public var videos: @Sendable () async throws -> VideosEnvelope
+
+  public struct EditArguments: Codable {
+    public var videoID: String
+    public var allowedOrigins: [String]
+    public var meta: [String: String]
+    public var publicDetails: Video.PublicDetails
+    public var thumbnailTimestampPct: Double
+    public init(
+      videoID: String,
+      allowedOrigins: [String],
+      meta: [String : String],
+      publicDetails: Video.PublicDetails,
+      thumbnailTimestampPct: Double
+    ) {
+      self.videoID = videoID
+      self.allowedOrigins = allowedOrigins
+      self.meta = meta
+      self.publicDetails = publicDetails
+      self.thumbnailTimestampPct = thumbnailTimestampPct
+    }
+  }
+  public struct DirectUploadEnvelope: Codable {
+    public var result: Result
+    public struct Result: Codable {
+      public var uid: String
+    }
+  }
 }
 
 extension CloudflareClient: TestDependencyKey {
   private struct SomeError: Error {}
-  // TODO: why isn't @DependencyClient working?
-  public static let testValue = Self(
-    updateDetails: { _, _ in throw SomeError() },
-    videos: { throw SomeError() }
-  )
+  public static let testValue = Self()
 }
 
 extension CloudflareClient {
   public static func live(accountID: String, apiToken: String) -> Self {
     Self(
-      updateDetails: { videoID, publicDetails in
-        (try await cloudflareRequest(
+      copy: { url in
+        try await cloudflareRequest(
           accountID: accountID,
           apiToken: apiToken,
-          path: "stream/\(videoID)",
-          method: .postData(
-            JSONEncoder().encode(["publicDetails": publicDetails])
-          )
-        ) as VideoEnvelope)
-        .result
-        .publicDetails
+          path: "stream/copy",
+          method: .postData(JSONEncoder().encode(["url": url]))
+        )
+      },
+      editVideo: { arguments in
+        let existingMetadata = try await cloudflareRequest(
+          accountID: accountID,
+          apiToken: apiToken,
+          path: "stream/\(arguments.videoID)",
+          as: VideoEnvelope.self
+        )
+          .result.meta
+        var arguments = arguments
+        arguments.meta = arguments.meta.merging(existingMetadata, uniquingKeysWith: { $1 })
+        return try await cloudflareRequest(
+          accountID: accountID,
+          apiToken: apiToken,
+          path: "stream/\(arguments.videoID)",
+          method: .postData(JSONEncoder().encode(arguments))
+        )
+      },
+      video: { videoID in
+        try await cloudflareRequest(
+          accountID: accountID,
+          apiToken: apiToken,
+          path: "stream/\(videoID)"
+        )
       },
       videos: {
-        (try await cloudflareRequest(
+        try await cloudflareRequest(
           accountID: accountID,
           apiToken: apiToken,
-          path: "stream"
-        ) as VideosEnvelope)
-        .result
+          path: "stream",
+          method: .get([
+            "asc": false
+          ])
+        )
       }
     )
   }
@@ -55,7 +98,8 @@ private func cloudflareRequest<A: Decodable>(
   accountID: String,
   apiToken: String,
   path: String,
-  method: FoundationPrelude.Method = .get([:])
+  method: FoundationPrelude.Method = .get([:]),
+  as: A.Type = A.self
 ) async throws -> A {
   var components = URLComponents(url: URL(string: path)!, resolvingAgainstBaseURL: false)!
   if case let .get(params) = method {

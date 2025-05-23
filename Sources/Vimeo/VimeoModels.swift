@@ -19,6 +19,7 @@ public struct VideosEnvelope: Decodable, Equatable {
 public struct Video: Decodable, Equatable {
   public typealias ID = Tagged<Self, Int>
 
+  public let uri: String
   public let createdTime: Date
   public let description: String?
   public let download: [Download]
@@ -28,6 +29,7 @@ public struct Video: Decodable, Equatable {
   public let type: VideoType
 
   public init(
+    uri: String,
     createdTime: Date,
     description: String?,
     download: [Download],
@@ -36,6 +38,7 @@ public struct Video: Decodable, Equatable {
     privacy: Privacy,
     type: VideoType
   ) {
+    self.uri = uri
     self.createdTime = createdTime
     self.description = description
     self.download = download
@@ -43,6 +46,10 @@ public struct Video: Decodable, Equatable {
     self.privacy = privacy
     self.pictures = pictures
     self.type = type
+  }
+
+  public var id: Int {
+    Int(uri.dropFirst(8)) ?? 0
   }
 
   public struct Download: Decodable, Equatable {
