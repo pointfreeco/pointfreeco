@@ -61,7 +61,6 @@ struct VimeoCloudflareMigration {
         ?? episodesByTrailerVimeoID[vimeoID].map { (true, $0) }
     }
 
-
     var warnings: [String] = []
     var issues: [String] = []
     func reportWarning(_ warning: String) {
@@ -161,6 +160,7 @@ func editVideo(
         "name": episode.cloudflareInternalName(isTrailer: isTrailer),
         "vimeoID": vimeoVideo.id.description,
         "episodeSequence": episode.sequence.description,
+        "kind": isTrailer ? "trailer" : "episode"
       ],
       publicDetails: Video.PublicDetails(
         channelLink: "https://www.pointfree.co",
