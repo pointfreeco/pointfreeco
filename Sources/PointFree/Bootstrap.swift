@@ -7,25 +7,30 @@ import Models
 public func bootstrap() async {
   IssueReporters.current += [.adminEmail]
 
+  @Dependency(\.episodes) var episodes
   @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(CloudflareClient.self) var cloudflare
 
-  await withErrorReporting {
-    let videos = try await cloudflare.videos()
-    print("videos", videos)
-    for video in videos.result {
-
+  await fireAndForget {
+    await withErrorReporting {
+      let videos = try await cloudflare.videos()
+      for video in videos.result {
+        let episode = episodes().first(where: {
+          $0.fullVideo.cloudflareID == video.uid
+          || $0.trailerVideo.cloudflareID == video.uid
+        })
+        if let episode {
+          let isTrailer = episode.trailerVideo.cloudflareID == video.uid
+          try await cloudflare.editVideo(
+            cloudflareVideoID: video.uid,
+            vimeoVideo: nil,
+            episode: episode,
+            isTrailer: isTrailer
+          )
+          try await Task.sleep(for: .seconds(0.5))
+        }
+      }
     }
-
-//    print(try await cloudflare.editVideo(
-//      firstVideo.uid,
-//      Cloudflare.Video.PublicDetails(
-//        channelLink: "https://www.pointfree.co", 
-//        logo: "https://pbs.twimg.com/profile_images/907799692339269634/wQEf0_2N_400x400.jpg",
-//        shareLink: "https://www.pointfree.co",
-//        title: "Hello!"
-//      )
-//    ))
   }
 
   print("⚠️ Bootstrapping PointFree...")

@@ -357,6 +357,11 @@ public struct Episode: Equatable, Identifiable {
       return id.rawValue
     }
 
+    public var cloudflareID: Cloudflare.Video.ID? {
+      guard case .cloudflare(let id) = id else { return nil }
+      return id
+    }
+
     public init(
       bytesLength: Int,
       downloadUrls: DownloadUrls,

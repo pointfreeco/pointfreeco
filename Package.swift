@@ -305,6 +305,7 @@ var package = Package(
         "Styleguide",
         "Syndication",
         "Views",
+        "Vimeo",
         .product(name: "Css", package: "swift-web"),
         .product(name: "CssReset", package: "swift-web"),
         .product(name: "CustomDump", package: "swift-custom-dump"),

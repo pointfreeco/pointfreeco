@@ -12,11 +12,12 @@ public struct Video: Codable {
   public typealias ID = Tagged<Self, String>
 
   public let uid: ID
+  public let allowedOrigins: [String]
   public let meta: [String: String]
   public let publicDetails: PublicDetails
   public let size: Int
 
-  public struct PublicDetails: Codable {
+  public struct PublicDetails: Codable, Equatable {
     public let channelLink: String?
     public let logo: String?
     public let shareLink: String?

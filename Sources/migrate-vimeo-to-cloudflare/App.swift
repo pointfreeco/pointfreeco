@@ -26,8 +26,6 @@ struct VimeoCloudflareMigration {
     Episode.bootstrapPrivateEpisodes()
 
     let cloudflareVideos = try await cloudflare.videos()
-    let cloudflareVideoByID = Dictionary(grouping: cloudflareVideos.result, by: \.uid)
-      .compactMapValues(\.first)
 
     print("⏳ Loading Vimeo videos")
     let startPage = 1
@@ -48,10 +46,6 @@ struct VimeoCloudflareMigration {
     }
     print("✅ Loaded \(vimeoVideos.count) Vimeo videos")
 
-    let vimeoVideosByID = Dictionary(grouping: vimeoVideos, by: \.id)
-      .compactMapValues(\.first)
-    let episodesBySequence = Dictionary(grouping: episodes(), by: \.sequence)
-      .compactMapValues(\.first)
     let episodesByVimeoID = Dictionary(grouping: episodes(), by: \.fullVideo.vimeoId)
       .compactMapValues(\.first)
     let episodesByTrailerVimeoID = Dictionary(grouping: episodes(), by: \.trailerVideo.vimeoId)
@@ -84,7 +78,6 @@ struct VimeoCloudflareMigration {
     }
 
     for vimeoVideo in vimeoVideos {
-      try await Task.sleep(for: .seconds(1))
       guard let (isTrailer, episode) = episode(for: vimeoVideo.id)
       else {
         reportWarning(
@@ -104,6 +97,7 @@ struct VimeoCloudflareMigration {
         )
         continue
       }
+      try await Task.sleep(for: .seconds(1))
       guard
         let cloudflareVideo = cloudflareVideos.result.first(where: {
           $0.meta["vimeoID"] == String(vimeoVideo.id)
@@ -115,7 +109,7 @@ struct VimeoCloudflareMigration {
           """
         )
         let uploadEnvelope = try await cloudflare.copy(downloadURL.link)
-        try await editVideo(
+        try await cloudflare.editVideo(
           cloudflareVideoID: uploadEnvelope.result.uid,
           vimeoVideo: vimeoVideo,
           episode: episode,
@@ -123,64 +117,12 @@ struct VimeoCloudflareMigration {
         )
         continue
       }
-      try await editVideo(
-        cloudflareVideoID: cloudflareVideo.uid,
+      try await cloudflare.editVideo(
+        cloudflareVideo: cloudflareVideo,
         vimeoVideo: vimeoVideo,
         episode: episode,
         isTrailer: isTrailer
       )
     }
-  }
-}
-
-func editVideo(
-  cloudflareVideoID: Cloudflare.Video.ID,
-  vimeoVideo: Vimeo.Video,
-  episode: Episode,
-  isTrailer: Bool
-) async throws {
-  @Dependency(CloudflareClient.self) var cloudflare
-  @Dependency(\.siteRouter) var siteRouter
-  print(
-    """
-    🔄 Refreshing Cloudflare video (\(cloudflareVideoID)) with Vimeo video "\(vimeoVideo.name)" \
-    (\(vimeoVideo.id))
-    """
-  )
-  _ = try await cloudflare.editVideo(
-    .init(
-      videoID: cloudflareVideoID,
-      allowedOrigins: [
-        "pointfree.co",
-        "www.pointfree.co",
-        "localhost:8080",
-        "127.0.0.1:8080",
-      ],
-      meta: [
-        "name": episode.cloudflareInternalName(isTrailer: isTrailer),
-        "vimeoID": vimeoVideo.id.description,
-        "episodeSequence": episode.sequence.description,
-        "kind": isTrailer ? "trailer" : "episode"
-      ],
-      publicDetails: Video.PublicDetails(
-        channelLink: "https://www.pointfree.co",
-        logo:
-          "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/81e7ec77-9dd7-4d5f-85fc-4a3a95c6f100/public",
-        shareLink: siteRouter.url(for: .episodes(.show(episode))),
-        title: episode.cloudflarePublicName(isTrailer: isTrailer)
-      ),
-      thumbnailTimestampPct: 0.5
-    )
-  )
-}
-
-extension Episode {
-  func cloudflareInternalName(isTrailer: Bool) -> String {
-    """
-    #\(sequence) \(isTrailer ? "(Trailer)" : "") \(fullTitle)
-    """
-  }
-  func cloudflarePublicName(isTrailer: Bool) -> String {
-    (isTrailer ? "Trailer: " : "") + fullTitle
   }
 }
