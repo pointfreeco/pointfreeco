@@ -28,8 +28,27 @@ struct VimeoCloudflareMigration {
     let cloudflareVideos = try await cloudflare.videos()
     let cloudflareVideoByID = Dictionary(grouping: cloudflareVideos.result, by: \.uid)
       .compactMapValues(\.first)
-    let vimeoVideos = try await vimeo.videos(page: 1, perPage: 5)
-    let vimeoVideosByID = Dictionary(grouping: vimeoVideos.data, by: \.id)
+
+    print("⏳ Loading Vimeo videos")
+    let startPage = 1
+    let perPage = 100
+    let pageCount = try await {
+      Int(ceil(Double(try await vimeo.videos(page: nil, perPage: 1).total) / Double(perPage)))
+    }()
+    let vimeoVideos = try await withThrowingTaskGroup { group in
+      for page in startPage...pageCount {
+        group.addTask {
+          print("   Loading batch \(page)...")
+          let batch = try await vimeo.videos(page: page, perPage: perPage)
+          return batch.data
+        }
+      }
+      return try await group .reduce(into: []) { $0 += $1 }
+    }
+    print("ℹ️ Loaded \(vimeoVideos.count) Vimeo videos")
+    return
+
+    let vimeoVideosByID = Dictionary(grouping: vimeoVideos, by: \.id)
       .compactMapValues(\.first)
     let episodesBySequence = Dictionary(grouping: episodes(), by: \.sequence)
       .compactMapValues(\.first)
@@ -42,7 +61,7 @@ struct VimeoCloudflareMigration {
         ?? episodesByTrailerVimeoID[vimeoID].map { (true, $0) }
     }
 
-    for vimeoVideo in vimeoVideos.data {
+    for vimeoVideo in vimeoVideos {
       guard let (isTrailer, episode) = episode(for: vimeoVideo.id)
       else {
         print(
