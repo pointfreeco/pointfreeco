@@ -9,17 +9,17 @@ import FoundationPrelude
 public struct CloudflareClient: Sendable {
   public var copy: @Sendable (String) async throws -> DirectUploadEnvelope
   public var editVideo: @Sendable (EditArguments) async throws -> VideoEnvelope
-  public var video: @Sendable (String) async throws -> VideoEnvelope
+  public var video: @Sendable (Cloudflare.Video.ID) async throws -> VideoEnvelope
   public var videos: @Sendable () async throws -> VideosEnvelope
 
   public struct EditArguments: Codable {
-    public var videoID: String
+    public var videoID: Cloudflare.Video.ID
     public var allowedOrigins: [String]
     public var meta: [String: String]
     public var publicDetails: Video.PublicDetails
     public var thumbnailTimestampPct: Double
     public init(
-      videoID: String,
+      videoID: Cloudflare.Video.ID,
       allowedOrigins: [String],
       meta: [String : String],
       publicDetails: Video.PublicDetails,
@@ -35,7 +35,7 @@ public struct CloudflareClient: Sendable {
   public struct DirectUploadEnvelope: Codable {
     public var result: Result
     public struct Result: Codable {
-      public var uid: String
+      public var uid: Cloudflare.Video.ID
     }
   }
 }

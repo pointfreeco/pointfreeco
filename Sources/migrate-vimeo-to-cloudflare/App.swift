@@ -92,7 +92,7 @@ struct VimeoCloudflareMigration {
 }
 
 func editVideo(
-  cloudflareVideoID: String,
+  cloudflareVideoID: Cloudflare.Video.ID,
   vimeoVideo: Vimeo.Video,
   episode: Episode,
   isTrailer: Bool

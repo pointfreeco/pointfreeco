@@ -1,3 +1,5 @@
+import Tagged
+
 public struct VideosEnvelope: Codable {
   public let result: [Video]
 }
@@ -7,7 +9,9 @@ public struct VideoEnvelope: Codable {
 }
 
 public struct Video: Codable {
-  public let uid: String
+  public typealias ID = Tagged<Self, String>
+
+  public let uid: ID
   public let meta: [String: String]
   public let publicDetails: PublicDetails
   public let size: Int
