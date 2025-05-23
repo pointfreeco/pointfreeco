@@ -10,11 +10,10 @@ struct VimeoCloudflareMigration {
   static func main() async throws {
     prepareDependencies {
       $0.envVars.baseUrl = URL(string: "https://www.pointfree.co")!
-      $0[CloudflareClient.self] =
-        .live(
-          accountID: $0.envVars.cloudflare.accountID,
-          apiToken: $0.envVars.cloudflare.streamAPIKey
-        )
+      $0[CloudflareClient.self] = .live(
+        accountID: $0.envVars.cloudflare.accountID,
+        apiToken: $0.envVars.cloudflare.streamAPIKey
+      )
       $0.vimeoClient = .live(
         bearer: $0.envVars.vimeo.bearer,
         userId: $0.envVars.vimeo.userId
@@ -68,10 +67,9 @@ struct VimeoCloudflareMigration {
           $0.meta["vimeoID"] == String(vimeoVideo.id)
         })
       else {
-        // TODO: Figure out trailers
         print(
           """
-          ⬆️ Uploading Vimeo video "\(vimeoVideo.name)" (\(vimeoVideo.id)) to Cloudflare
+          ⬆️ Copying Vimeo video "\(vimeoVideo.name)" (\(vimeoVideo.id)) to Cloudflare
           """
         )
         let uploadEnvelope = try await cloudflare.copy(downloadURL.link)
@@ -103,7 +101,8 @@ func editVideo(
   @Dependency(\.siteRouter) var siteRouter
   print(
     """
-    🔄 Refreshing Cloudflare video (\(cloudflareVideoID)) with Vimeo video "\(vimeoVideo.name)" (\(vimeoVideo.id))
+    🔄 Refreshing Cloudflare video (\(cloudflareVideoID)) with Vimeo video "\(vimeoVideo.name)" \
+    (\(vimeoVideo.id))
     """
   )
   _ = try await cloudflare.editVideo(

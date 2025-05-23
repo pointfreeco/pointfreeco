@@ -25,7 +25,6 @@ public struct Video: Decodable, Equatable {
   public let download: [Download]
   public let name: String
   public let pictures: Pictures
-  public let privacy: Privacy
   public let type: VideoType
 
   public init(
@@ -35,7 +34,6 @@ public struct Video: Decodable, Equatable {
     download: [Download],
     name: String,
     pictures: Pictures,
-    privacy: Privacy,
     type: VideoType
   ) {
     self.uri = uri
@@ -43,7 +41,6 @@ public struct Video: Decodable, Equatable {
     self.description = description
     self.download = download
     self.name = name
-    self.privacy = privacy
     self.pictures = pictures
     self.type = type
   }
@@ -72,19 +69,6 @@ public struct Video: Decodable, Equatable {
 
     public init(baseLink: String) {
       self.baseLink = baseLink
-    }
-  }
-
-  public struct Privacy: Decodable, Equatable {
-    public let view: View?
-
-    public init(view: View?) {
-      self.view = view
-    }
-
-    public enum View: String, Decodable {
-      case anybody
-      case disable
     }
   }
 
