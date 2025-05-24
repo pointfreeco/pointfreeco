@@ -65,7 +65,7 @@ extension CloudflareClient {
         )
           .result.meta
         var arguments = arguments
-        arguments.meta = arguments.meta.merging(existingMetadata, uniquingKeysWith: { $1 })
+        arguments.meta = existingMetadata.merging(arguments.meta, uniquingKeysWith: { $1 })
         return try await cloudflareRequest(
           accountID: accountID,
           apiToken: apiToken,

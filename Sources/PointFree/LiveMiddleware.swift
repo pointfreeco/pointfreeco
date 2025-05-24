@@ -6,6 +6,7 @@ import PointFreeDependencies
 import PointFreeRouter
 import Prelude
 import Views
+import Vimeo
 
 func liveMiddleware(
   _ conn: Conn<StatusLineOpen, Live>
@@ -50,7 +51,7 @@ private func currentLivestream(
 }
 
 private func stream(
-  _ conn: Conn<StatusLineOpen, VimeoVideo.ID>
+  _ conn: Conn<StatusLineOpen, Vimeo.Video.ID>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
   do {

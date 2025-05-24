@@ -4,6 +4,7 @@ import Dependencies
 import Foundation
 import Tagged
 import TaggedTime
+import Vimeo
 
 public struct Episode: Equatable, Identifiable {
   public var alternateSlug: String?
@@ -338,7 +339,7 @@ public struct Episode: Equatable, Identifiable {
   public struct Video: Codable, Equatable {
     public enum ID: Codable, Equatable {
       case cloudflare(Cloudflare.Video.ID)
-      case vimeo(VimeoVideo.ID)
+      case vimeo(Vimeo.Video.ID)
     }
 
     public var bytesLength: Int
@@ -380,7 +381,7 @@ public struct Episode: Equatable, Identifiable {
     ) {
       self.bytesLength = bytesLength
       self.downloadUrl = downloadUrls
-      self.id = .vimeo(VimeoVideo.ID(vimeoId))
+      self.id = .vimeo(Vimeo.Video.ID(vimeoId))
     }
 
     public enum DownloadUrls: Codable, Equatable {

@@ -123,6 +123,7 @@ private func coreLesson(
   section: Episode.Collection.Section,
   lesson: Episode.Collection.Section.Lesson
 ) -> Node {
+  @Dependency(\.envVars.baseUrl) var baseURL
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
@@ -130,7 +131,7 @@ private func coreLesson(
   let url: String
   switch lesson {
   case .clip(let clip):
-    url = siteRouter.path(for: .clips(.clip(videoID: clip.vimeoVideoID)))
+    url = siteRouter.path(for: .clips(.clip(clip)))
   case .episode(let episode):
     url = siteRouter.path(
       for: .collections(

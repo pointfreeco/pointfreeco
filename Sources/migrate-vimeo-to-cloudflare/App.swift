@@ -20,9 +20,17 @@ struct VimeoCloudflareMigration {
       )
     }
 
+    @Dependency(\.envVars.appEnv) var appEnv
     @Dependency(\.episodes) var episodes
     @Dependency(CloudflareClient.self) var cloudflare
     @Dependency(\.vimeoClient) var vimeo
+
+    guard appEnv == .production
+    else {
+      struct MigrationMustRunInProductionEnvironment: Error {}
+      throw MigrationMustRunInProductionEnvironment()
+    }
+
     Episode.bootstrapPrivateEpisodes()
 
     let cloudflareVideos = try await cloudflare.videos()
@@ -31,7 +39,7 @@ struct VimeoCloudflareMigration {
     let startPage = 1
     let perPage = 100
     let pageCount = try await {
-      Int(ceil(Double(try await vimeo.videos(page: nil, perPage: 1).total) / Double(perPage)))
+      Int(ceil(Double(try await vimeo.videos(page: 3, perPage: 1).total) / Double(perPage)))
     }()
     let vimeoVideos = try await withThrowingTaskGroup { group in
       for page in startPage...pageCount {
@@ -42,7 +50,7 @@ struct VimeoCloudflareMigration {
           return batch.data
         }
       }
-      return try await group .reduce(into: []) { $0 += $1 }
+      return try await group.reduce(into: []) { $0 += $1 }
     }
     print("✅ Loaded \(vimeoVideos.count) Vimeo videos")
 
@@ -50,9 +58,11 @@ struct VimeoCloudflareMigration {
       .compactMapValues(\.first)
     let episodesByTrailerVimeoID = Dictionary(grouping: episodes(), by: \.trailerVideo.vimeoId)
       .compactMapValues(\.first)
-    func episode(for vimeoID: Int) -> (isTrailer: Bool, episode: Episode)? {
-      episodesByVimeoID[vimeoID].map { (false, $0) }
-        ?? episodesByTrailerVimeoID[vimeoID].map { (true, $0) }
+    func episode(for vimeoID: Vimeo.Video.ID) -> (
+      kind: CloudflareClient.MetaVideoKind, episode: Episode
+    )? {
+      episodesByVimeoID[vimeoID.rawValue].map { (.episode, $0) }
+        ?? episodesByTrailerVimeoID[vimeoID.rawValue].map { (.trailer, $0) }
     }
 
     var warnings: [String] = []
@@ -78,21 +88,25 @@ struct VimeoCloudflareMigration {
     }
 
     for vimeoVideo in vimeoVideos {
-      guard let (isTrailer, episode) = episode(for: vimeoVideo.id)
+
+      guard let downloadURL = vimeoVideo.download?.first(where: { $0.rendition == .p1080 })
+      else {
+        reportIssue(
+          """
+          🛑 Vimeo video "\(vimeoVideo.name)" (\(vimeoVideo.id)) does not have 1080p. Investigate.
+          """
+        )
+        continue
+      }
+      // 🛑🛑🛑🛑🛑🛑🛑🛑 TODO: REMOVE
+      return
+
+      guard let (kind, episode) = episode(for: vimeoVideo.id)
       else {
         reportWarning(
           """
           ⚠️ Vimeo video "\(vimeoVideo.name)" (\(vimeoVideo.id)) does not have an associated \
           episode.
-          """
-        )
-        continue
-      }
-      guard let downloadURL = vimeoVideo.download.first(where: { $0.rendition == .p1080 })
-      else {
-        reportIssue(
-          """
-          🛑 Vimeo video "\(vimeoVideo.name)" (\(vimeoVideo.id)) does not have 1080p. Investigate.
           """
         )
         continue
@@ -109,19 +123,19 @@ struct VimeoCloudflareMigration {
           """
         )
         let uploadEnvelope = try await cloudflare.copy(downloadURL.link)
-        try await cloudflare.editVideo(
+        _ = try await cloudflare.editVideo(
           cloudflareVideoID: uploadEnvelope.result.uid,
           vimeoVideo: vimeoVideo,
           episode: episode,
-          isTrailer: isTrailer
+          kind: kind
         )
         continue
       }
-      try await cloudflare.editVideo(
+      _ = try await cloudflare.editVideo(
         cloudflareVideo: cloudflareVideo,
         vimeoVideo: vimeoVideo,
         episode: episode,
-        isTrailer: isTrailer
+        kind: kind
       )
     }
   }

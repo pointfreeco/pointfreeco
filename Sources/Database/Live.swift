@@ -126,18 +126,25 @@ extension Client {
           """
         )
       },
-      fetchClipByVimeoVideoID: { vimeoVideoID in
-        try await pool.sqlDatabase.first(
-          """
-          SELECT * FROM "clips" where "vimeo_video_id" = \(bind: vimeoVideoID)
-          """
+      fetchClipByCloudflareVideoID: { cloudflareVideoID in
+        return try await pool.sqlDatabase.first(
+            """
+            SELECT * FROM "clips" where "cloudflare_video_id" = \(bind: cloudflareVideoID)
+            """
         )
       },
-      fetchClips: {
+      fetchClipByVimeoVideoID: { vimeoVideoID in
+          try await pool.sqlDatabase.first(
+            """
+            SELECT * FROM "clips" where "vimeo_video_id" = \(bind: vimeoVideoID)
+            """
+          )
+      },
+      fetchClips: { includeHidden in
         try await pool.sqlDatabase.all(
           """
           SELECT * from "clips"
-          WHERE "order" >= 0
+          WHERE "order" >= \(bind: includeHidden ? -1 : 0)
           ORDER BY "order" ASC
           """
         )
@@ -894,6 +901,18 @@ extension Client {
           """
           ALTER TABLE "livestreams"
           ADD COLUMN IF NOT EXISTS "live_description" character varying
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "clips"
+          ADD COLUMN IF NOT EXISTS "cloudflare_video_id" character varying
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "clips" 
+          ALTER COLUMN "vimeo_video_id" DROP NOT NULL
           """
         )
       },

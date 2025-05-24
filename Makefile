@@ -121,6 +121,9 @@ linux-start:
 env-local:
 	heroku config --json -a pointfreeco-local > .pf-env
 
+env-prod:
+	heroku config --json -a pointfreeco > .pf-env
+
 deploy-local:
 	@heroku container:login
 	@heroku container:push web -a pointfreeco-local

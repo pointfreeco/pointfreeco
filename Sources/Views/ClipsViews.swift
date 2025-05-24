@@ -60,13 +60,20 @@ public struct ClipView: HTML {
   }
 
   public var body: some HTML {
+    let videoID: Episode.Video.ID = if let cloudflareVideoID = clip.cloudflareVideoID {
+      .cloudflare(cloudflareVideoID)
+    } else if let vimeoVideoID = clip.vimeoVideoID {
+      .vimeo(vimeoVideoID)
+    } else {
+      .vimeo(0)
+    }
     VideoHeader(
       title: clip.title,
       subtitle: """
         Episode Clip • \(headerDateFormatter.string(from: clip.createdAt))
         """,
       blurb: clip.description,
-      videoID: .vimeo(clip.vimeoVideoID),
+      videoID: videoID,
       poster: clip.posterURL,
       progress: nil,
       trackProgress: false

@@ -76,11 +76,13 @@ var package = Package(
     .target(
       name: "Database",
       dependencies: [
+        "Cloudflare",
         "EmailAddress",
         "GitHub",
         "Models",
         "PointFreePrelude",
         "Stripe",
+        "Vimeo",
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "DependenciesMacros", package: "swift-dependencies"),
         .product(name: "Logging", package: "swift-log"),
@@ -241,9 +243,11 @@ var package = Package(
     .target(
       name: "Models",
       dependencies: [
+        "Cloudflare",
         "EmailAddress",
         "GitHub",
         "Stripe",
+        "Vimeo",
         .product(name: "CasePaths", package: "swift-case-paths"),
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Overture", package: "swift-overture"),

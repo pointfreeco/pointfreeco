@@ -22,7 +22,7 @@ public struct Video: Decodable, Equatable {
   public let uri: String
   public let createdTime: Date
   public let description: String?
-  public let download: [Download]
+  public let download: [Download]?
   public let name: String
   public let pictures: Pictures
 
@@ -30,7 +30,7 @@ public struct Video: Decodable, Equatable {
     uri: String,
     createdTime: Date,
     description: String?,
-    download: [Download],
+    download: [Download]?,
     name: String,
     pictures: Pictures
   ) {
@@ -42,8 +42,8 @@ public struct Video: Decodable, Equatable {
     self.pictures = pictures
   }
 
-  public var id: Int {
-    Int(uri.dropFirst(8)) ?? 0
+  public var id: ID {
+    ID(rawValue: Int(uri.dropFirst(8)) ?? 0)
   }
 
   public struct Download: Decodable, Equatable {
