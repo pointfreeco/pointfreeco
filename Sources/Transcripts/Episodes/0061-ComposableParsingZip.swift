@@ -30,7 +30,7 @@ extension Episode {
         hd720: "0061-trailer-720p-d37c409b28c44751ac8554eaf51d6045",
         sd540: "0061-trailer-540p-41549ab898624e6597ae3f62cfa3b7b4"
       ),
-      vimeoId: 349_951_712
+      id: "4d24a809b2b87980337cdffb33b59c3d"
     )
   )
 }

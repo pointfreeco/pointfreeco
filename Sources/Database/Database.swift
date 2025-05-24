@@ -1,3 +1,4 @@
+import Cloudflare
 import Dependencies
 import DependenciesMacros
 import EmailAddress
@@ -9,6 +10,7 @@ import PointFreePrelude
 import PostgresKit
 import Stripe
 import Tagged
+import Vimeo
 
 @DependencyClient
 public struct Client {
@@ -52,8 +54,10 @@ public struct Client {
   public var execute: (_ sql: SQLQueryString) async throws -> [SQLRow]
   public var fetchAdmins: () async throws -> [Models.User]
   @DependencyEndpoint(method: "fetchClip")
-  public var fetchClipByVimeoVideoID: (_ vimeoVideoID: VimeoVideo.ID) async throws -> Clip
-  public var fetchClips: () async throws -> [Clip]
+  public var fetchClipByCloudflareVideoID: (_ cloudflareVideoID: Cloudflare.Video.ID) async throws -> Clip
+  @DependencyEndpoint(method: "fetchClip")
+  public var fetchClipByVimeoVideoID: (_ vimeoVideoID: Vimeo.Video.ID) async throws -> Clip
+  public var fetchClips: (_ includeHidden: Bool) async throws -> [Clip]
   @DependencyEndpoint(method: "fetchEmailSettings")
   public var fetchEmailSettingsForUserId: (_ userID: Models.User.ID) async throws -> [EmailSetting]
   @DependencyEndpoint(method: "fetchEnterpriseAccount")
@@ -239,6 +243,19 @@ public struct Client {
       )
     }
   #endif
+}
+
+extension Client {
+  public func fetchClip(_ clip: Clip) async throws -> Clip {
+    if let vimeoVideoID = clip.vimeoVideoID {
+      return try await fetchClip(vimeoVideoID: vimeoVideoID)
+    } else if let cloudflareVideoID = clip.cloudflareVideoID {
+      return try await fetchClip(cloudflareVideoID: cloudflareVideoID)
+    } else {
+      struct NoVideoID: Error {}
+      throw NoVideoID()
+    }
+  }
 }
 
 extension Client: TestDependencyKey {

@@ -23,7 +23,7 @@ func homeMiddleware(
     creditCount = 0
   }
 
-  let clips = (try? await database.fetchClips()) ?? []
+  let clips = (try? await database.fetchClips(includeHidden: false)) ?? []
 
   return
     conn

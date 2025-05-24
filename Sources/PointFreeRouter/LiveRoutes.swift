@@ -1,9 +1,10 @@
 import Models
 import URLRouting
+import Vimeo
 
 public enum Live: Equatable {
   case current
-  case stream(id: VimeoVideo.ID)
+  case stream(id: Vimeo.Video.ID)
 }
 
 struct LiveRouter: ParserPrinter {
@@ -14,7 +15,7 @@ struct LiveRouter: ParserPrinter {
       Route(.case(Live.stream(id:))) {
         Path {
           "streams"
-          Digits().map(.representing(VimeoVideo.ID.self))
+          Digits().map(.representing(Vimeo.Video.ID.self))
         }
       }
     }

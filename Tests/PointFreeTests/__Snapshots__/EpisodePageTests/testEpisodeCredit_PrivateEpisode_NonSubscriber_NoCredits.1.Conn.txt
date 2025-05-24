@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 68201
+Content-Length: 68366
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -331,8 +331,11 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .padding-bottom-1VZj64{padding-bottom:4rem}
 .box-shadow-yJzQS2{box-shadow:0rem 1rem 20px rgba(0,0,0,0.2)}
 .padding-bottom-MI04k{padding-bottom:56.25%}
-.height-C8uWv{height:100%}
+.border-Wl0y44{border:none}
 .position-X8qzJ{position:absolute}
+.top-FBkWQ3{top:0}
+.left-FBkWQ3{left:0}
+.height-C8uWv{height:100%}
 .background-color-nbn0i3{background-color:#fff}
 .padding-bFon03{padding:4.0rem 2.0rem 4.0rem}
 .justify-content-n56cj2{justify-content:flex-start}
@@ -390,7 +393,6 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .margin-left-SH03u1{margin-left:-2.25rem}
 .padding-left-5jRhu{padding-left:2.25rem}
 article div:hover > * > .display-Vk1P81{display:initial}
-.left-FBkWQ3{left:0}
 .width-Wr637{width:2.5rem}
 .text-decoration-gUV393:visited{text-decoration:underline}
 .text-decoration-tfb0F1:link{text-decoration:underline}
@@ -401,7 +403,6 @@ article div:hover > * > .display-Vk1P81{display:initial}
 .padding-wKavA3{padding:1rem 1.5rem}
 .color-K2J0r1{color:#121212}
 .margin-iSoPp2{margin:5rem 0 2.5rem}
-.border-Wl0y44{border:none}
 .border-top-S35Gp4{border-top:1px solid #ccc}
 .margin-5uXnK3{margin:0 30%}
 .margin-top-1VZj64{margin-top:4rem}
@@ -569,8 +570,54 @@ article div:hover > * > .display-Vk1P81{display:initial}
   <div class="max-width-P6HnV width-C8uWv margin-gEzmi">
     <div class="box-shadow-yJzQS2 margin-JRgcV">
       <div class="width-C8uWv position-Pjz1G2 padding-bottom-MI04k">
-        <iframe class="width-C8uWv height-C8uWv position-X8qzJ" src="https://player.vimeo.com/video/123456?pip=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen>
-        </iframe><script async src="https://player.vimeo.com/api/player.js"></script>
+        <iframe class="border-Wl0y44 position-X8qzJ top-FBkWQ3 left-FBkWQ3 width-C8uWv height-C8uWv" src="https://customer-deadbeef.cloudflarestream.com/deadbeef/iframe?poster=&startTime=" loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen>
+        </iframe><script async src="https://embed.cloudflarestream.com/embed/sdk.latest.js"></script><script>window.addEventListener("load", function(event) {
+  const iframe = document.querySelector("iframe")
+  const player = new Stream(iframe)
+  const trackProgress = false
+
+  jump(window.location.hash, false)
+
+  let lastSeenPercent = 0
+  if (trackProgress) {
+    player.addEventListener("timeupdate", function(data) {
+      if (Math.abs(data.percent - lastSeenPercent) >= 0.01) {
+        lastSeenPercent = data.percent
+
+        const httpRequest = new XMLHttpRequest()
+        httpRequest.open(
+          "POST",
+          window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
+        )
+        httpRequest.send()
+      }
+    })
+  }
+
+  document.addEventListener("click", function(event) {
+    const target = event.target
+    const time = Number(target.dataset.timestamp)
+    if (target.tagName != "A") { return }
+    if (target.dataset.timestamp == undefined) { return }
+    if (time < 0) { return }
+    if (isElementVisible(iframe)) { event.preventDefault() }
+    player.currentTime = time
+    player.play()
+
+    function isElementVisible(element) {
+      const rect = element.getBoundingClientRect()
+      const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight)
+      return rect.bottom >= 0 && rect.top < viewHeight
+    }
+  })
+
+  function jump(hash, play) {
+    const time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "")
+    if (time <= 0) { return }
+    player.currentTime = time
+    if (play) { player.play() }
+  }
+})</script>
       </div>
     </div>
   </div>
@@ -860,53 +907,7 @@ logs.forEach { print($0) }
     <pf-vstack class="margin-top-dnNPN1 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FxsCt1"><a href="/pricing" class="font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">See plans and pricing</a>
     </pf-vstack>
   </pf-vstack>
-</div><script>window.addEventListener("load", function(event) {
-  const iframe = document.querySelector("iframe")
-  const player = new Vimeo.Player(iframe)
-  const trackProgress = false
-
-  jump(window.location.hash, false)
-
-  let lastSeenPercent = 0
-  if (trackProgress) {
-    player.on('timeupdate', function(data) {
-      if (Math.abs(data.percent - lastSeenPercent) >= 0.01) {
-        lastSeenPercent = data.percent
-
-        const httpRequest = new XMLHttpRequest()
-        httpRequest.open(
-          "POST",
-          window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
-        )
-        httpRequest.send()
-      }
-    })
-  }
-
-  document.addEventListener("click", function(event) {
-    const target = event.target
-    const time = Number(target.dataset.timestamp)
-    if (target.tagName != "A") { return }
-    if (target.dataset.timestamp == undefined) { return }
-    if (time < 0) { return }
-    if (isElementVisible(iframe)) { event.preventDefault() }
-    player.setCurrentTime(time)
-    player.play()
-
-    function isElementVisible(element) {
-      const rect = element.getBoundingClientRect()
-      const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight)
-      return rect.bottom >= 0 && rect.top < viewHeight
-    }
-  })
-
-  function jump(hash, play) {
-    const time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "")
-    if (time <= 0) { return }
-    player.setCurrentTime(time)
-    if (play) { player.play() }
-  }
-})</script>
+</div>
 <footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
   <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">

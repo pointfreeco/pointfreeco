@@ -43,7 +43,7 @@ private let subscriberOnlyEpisode = Episode(
       hd720: "TODO",
       sd540: "TODO"
     ),
-    vimeoId: 1_234_567_890
+    id: "deadbeef"
   ),
   id: 2,
   image: "",
@@ -59,7 +59,7 @@ private let subscriberOnlyEpisode = Episode(
       hd720: "TODO",
       sd540: "TODO"
     ),
-    vimeoId: 123456
+    id: "deadbeef"
   )
 )
 
@@ -76,7 +76,7 @@ private let freeEpisode = Episode(
       hd720: "TODO",
       sd540: "TODO"
     ),
-    vimeoId: 1_234_567_890
+    id: "deadbeef"
   ),
   id: 1,
   image: "",

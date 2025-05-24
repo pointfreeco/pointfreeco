@@ -2,7 +2,7 @@ GET http://localhost:8080/live/streams/42
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 29635
+Content-Length: 31119
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -339,7 +339,53 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
     <div class="box-shadow-yJzQS2 margin-JRgcV">
       <div class="width-C8uWv position-Pjz1G2 padding-bottom-MI04k">
         <iframe class="width-C8uWv height-C8uWv position-X8qzJ" src="https://player.vimeo.com/video/42?pip=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen>
-        </iframe><script async src="https://player.vimeo.com/api/player.js"></script>
+        </iframe><script async src="https://player.vimeo.com/api/player.js"></script><script>window.addEventListener("load", function(event) {
+  const iframe = document.querySelector("iframe")
+  const player = new Vimeo.Player(iframe)
+  const trackProgress = false
+
+  jump(window.location.hash, false)
+
+  let lastSeenPercent = 0
+  if (trackProgress) {
+    player.on('timeupdate', function(data) {
+      if (Math.abs(data.percent - lastSeenPercent) >= 0.01) {
+        lastSeenPercent = data.percent
+
+        const httpRequest = new XMLHttpRequest()
+        httpRequest.open(
+          "POST",
+          window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
+        )
+        httpRequest.send()
+      }
+    })
+  }
+
+  document.addEventListener("click", function(event) {
+    const target = event.target
+    const time = Number(target.dataset.timestamp)
+    if (target.tagName != "A") { return }
+    if (target.dataset.timestamp == undefined) { return }
+    if (time < 0) { return }
+    if (isElementVisible(iframe)) { event.preventDefault() }
+    player.setCurrentTime(time)
+    player.play()
+
+    function isElementVisible(element) {
+      const rect = element.getBoundingClientRect()
+      const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight)
+      return rect.bottom >= 0 && rect.top < viewHeight
+    }
+  })
+
+  function jump(hash, play) {
+    const time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "")
+    if (time <= 0) { return }
+    player.setCurrentTime(time)
+    if (play) { player.play() }
+  }
+})</script>
       </div>
     </div>
   </div>

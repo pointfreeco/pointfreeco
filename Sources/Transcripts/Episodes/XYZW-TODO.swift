@@ -25,7 +25,7 @@ extension Episode {
         hd720: "<#xyzw#>-trailer-720p-<#deadbeef#>",
         sd540: "<#xyzw#>-trailer-540p-<#deadbeef#>"
       ),
-      vimeoId: 0  // TODO
+      id: "<#TODO#>"
     )
   )
 }

@@ -14,7 +14,7 @@ extension Episode {
         hd720: "0150-720p-8787cf7fabce45e4981350082f4d7d09",
         sd540: "0150-540p-595a809711ed4474bfa3936324aa9aa0"
       ),
-      vimeoId: 561_903_110
+      id: "b2bb8d5a9c2aa0e5b2e78490e848eef9"
     ),
     id: 150,
     length: 60 * 60 + 10,
@@ -33,7 +33,7 @@ extension Episode {
         hd720: "0150-trailer-720p-ea5178e5616d4001bc8af167869c26c2",
         sd540: "0150-trailer-540p-1c8dcdd3cc924e83aa71b6e38e4eb76e"
       ),
-      vimeoId: 565_590_780
+      id: "462cf1b71859a92a86aa57b1ac149f66"
     )
   )
 }

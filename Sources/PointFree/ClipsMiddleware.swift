@@ -10,38 +10,40 @@ import Views
 func clipsMiddleware(
   _ conn: Conn<StatusLineOpen, ClipsRoute>
 ) async -> Conn<ResponseEnded, Data> {
-  switch conn.data {
-  case let .clip(videoID: videoID):
-    return await clipMiddleware(videoID: videoID, conn: conn.map(const(())))
+  @Dependency(\.database) var database
+  do {
+    switch conn.data {
+    case let .cloudflareClip(videoID: videoID):
+      let clip = try await database.fetchClip(cloudflareVideoID: videoID)
+      return await clipMiddleware(clip: clip, conn: conn.map(const(())))
 
-  case .clips:
-    return await clipsMiddleware(conn.map(const(())))
+    case let .vimeoClip(videoID: videoID):
+      let clip = try await database.fetchClip(vimeoVideoID: videoID)
+      return await clipMiddleware(clip: clip, conn: conn.map(const(())))
+
+    case .clips:
+      return await clipsMiddleware(conn.map(const(())))
+    }
+  } catch {
+    return await routeNotFoundMiddleware(conn).performAsync()
   }
 }
 
 private func clipMiddleware(
-  videoID: VimeoVideo.ID,
+  clip: Clip,
   conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
-  @Dependency(\.database) var database
-  do {
-    let clip = try await database.fetchClip(vimeoVideoID: videoID)
-
-    return
-      conn
-      .writeStatus(.ok)
-      .respondV2(
-        layoutData: SimplePageLayoutData(
-          description: clip.blurb,
-          image: clip.posterURL,
-          title: clip.title
-        )
-      ) {
-        ClipView(clip: clip)
-      }
-  } catch {
-    return await routeNotFoundMiddleware(conn).performAsync()
-  }
+  conn
+    .writeStatus(.ok)
+    .respondV2(
+      layoutData: SimplePageLayoutData(
+        description: clip.blurb,
+        image: clip.posterURL,
+        title: clip.title
+      )
+    ) {
+      ClipView(clip: clip)
+    }
 }
 
 private func clipsMiddleware(
@@ -49,7 +51,7 @@ private func clipsMiddleware(
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
   do {
-    let clips = try await database.fetchClips()
+    let clips = try await database.fetchClips(includeHidden: false)
 
     return
       conn
