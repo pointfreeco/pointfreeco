@@ -1,11 +1,15 @@
 import Tagged
 
-public struct VideosEnvelope: Codable {
-  public let result: [Video]
+public struct Envelope<Result: Codable>: Codable {
+  public let result: Result
 }
 
-public struct VideoEnvelope: Codable {
-  public let result: Video
+public struct Image: Codable {
+  public typealias ID = Tagged<Self, String>
+  public let id: ID
+  public let filename: String
+  public let meta: [String: String]?
+  public let variants: [String]
 }
 
 public struct Video: Codable {

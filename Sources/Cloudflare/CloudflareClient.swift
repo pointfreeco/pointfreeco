@@ -7,12 +7,15 @@ import FoundationPrelude
 
 @DependencyClient
 public struct CloudflareClient: Sendable {
-  public var copy: @Sendable (String) async throws -> DirectUploadEnvelope
-  public var editVideo: @Sendable (EditArguments) async throws -> VideoEnvelope
-  public var video: @Sendable (Cloudflare.Video.ID) async throws -> VideoEnvelope
-  public var videos: @Sendable () async throws -> VideosEnvelope
+  public var copy: @Sendable (String) async throws -> Envelope<DirectUploadResult>
+  public var editVideo: @Sendable (EditVideoArguments) async throws -> Envelope<Video>
+  public var images: @Sendable (_ perPage: Int, _ page: Int) async throws -> Envelope<ImagesEnvelope>
+  public var uploadImage:
+    @Sendable (_ url: String, _ metadata: [String: String]) async throws -> Envelope<Image>
+  public var video: @Sendable (Cloudflare.Video.ID) async throws -> Envelope<Video>
+  public var videos: @Sendable () async throws -> Envelope<[Video]>
 
-  public struct EditArguments: Codable {
+  public struct EditVideoArguments: Codable {
     public var videoID: Cloudflare.Video.ID
     public var allowedOrigins: [String]
     public var meta: [String: String]
@@ -21,7 +24,7 @@ public struct CloudflareClient: Sendable {
     public init(
       videoID: Cloudflare.Video.ID,
       allowedOrigins: [String],
-      meta: [String : String],
+      meta: [String: String],
       publicDetails: Video.PublicDetails,
       thumbnailTimestampPct: Double
     ) {
@@ -32,11 +35,11 @@ public struct CloudflareClient: Sendable {
       self.thumbnailTimestampPct = thumbnailTimestampPct
     }
   }
-  public struct DirectUploadEnvelope: Codable {
-    public var result: Result
-    public struct Result: Codable {
-      public var uid: Cloudflare.Video.ID
-    }
+  public struct DirectUploadResult: Codable {
+    public var uid: Cloudflare.Video.ID
+  }
+  public struct ImagesEnvelope: Codable {
+    public let images: [Image]
   }
 }
 
@@ -61,9 +64,9 @@ extension CloudflareClient {
           accountID: accountID,
           apiToken: apiToken,
           path: "stream/\(arguments.videoID)",
-          as: VideoEnvelope.self
+          as: Envelope<Video>.self
         )
-          .result.meta
+        .result.meta
         var arguments = arguments
         arguments.meta = existingMetadata.merging(arguments.meta, uniquingKeysWith: { $1 })
         return try await cloudflareRequest(
@@ -71,6 +74,46 @@ extension CloudflareClient {
           apiToken: apiToken,
           path: "stream/\(arguments.videoID)",
           method: .postData(JSONEncoder().encode(arguments))
+        )
+      },
+      images: { perPage, page in
+        try await cloudflareRequest(
+          accountID: accountID,
+          apiToken: apiToken,
+          path: "images/v1",
+          method: .get([
+            "page": page,
+            "per_page": perPage
+          ])
+        )
+      },
+      uploadImage: { url, metadata in
+        let boundary = "PointFree_\(UUID().uuidString)"
+        return try await cloudflareRequest(
+          accountID: accountID,
+          apiToken: apiToken,
+          path: "images/v1",
+          method: .postData(
+            Data(
+              """
+              --\(boundary)\r
+              Content-Disposition: form-data; name="url"
+              Content-Type: text/plain; charset=utf-8\r
+              \r
+              \(url)\r
+              --\(boundary)\r
+              Content-Disposition: form-data; name="metadata"\r
+              Content-Type: application/json\r
+              \r
+              \(String(decoding: JSONEncoder().encode(metadata), as: UTF8.self))\r
+              --\(boundary)--
+              """
+              .utf8
+            ),
+            extraHeaders: [
+              "Content-Type": "multipart/form-data; boundary=\(boundary)"
+            ]
+          )
         )
       },
       video: { videoID in

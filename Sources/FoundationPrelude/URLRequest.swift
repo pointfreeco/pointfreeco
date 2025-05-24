@@ -105,7 +105,7 @@ let timeoutInterval = 25
 public enum Method {
   case get([String: Any])
   case post([String: Any])
-  case postData(Data)
+  case postData(Data, extraHeaders: [String: String] = [:])
   case delete([String: String])
 }
 

@@ -66,10 +66,11 @@ extension HTTPClientRequest {
     switch method {
     case .get:
       self.method = .GET
-    case let .post(params):
+    case .post(let params):
       self.method = .POST
       self.attach(formData: params)
-    case .postData(let data):
+    case .postData(let data, extraHeaders: let extraHeaders):
+      self.headers.add(contentsOf: extraHeaders.map { ($0, $1) })
       self.method = .POST
       self.body = .bytes(data, length: .known(Int64(data.count)))
     case let .delete(params):
