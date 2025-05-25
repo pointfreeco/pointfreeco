@@ -66,7 +66,7 @@ public struct ClipView: HTML {
         Episode Clip • \(headerDateFormatter.string(from: clip.createdAt))
         """,
       blurb: clip.description,
-      videoID: .cloudflare(clip.cloudflareVideoID),
+      videoID: clip.cloudflareVideoID,
       poster: clip.posterURL,
       progress: nil,
       trackProgress: false

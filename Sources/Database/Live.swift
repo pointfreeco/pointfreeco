@@ -133,13 +133,6 @@ extension Client {
           """
         )
       },
-      fetchClipByVimeoVideoID: { vimeoVideoID in
-        try await pool.sqlDatabase.first(
-          """
-          SELECT * FROM "clips" where "vimeo_video_id" = \(bind: vimeoVideoID)
-          """
-        )
-      },
       fetchClips: { includeHidden in
         try await pool.sqlDatabase.all(
           """

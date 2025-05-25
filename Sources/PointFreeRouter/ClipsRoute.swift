@@ -2,7 +2,6 @@ import Cloudflare
 import IssueReporting
 import Models
 import URLRouting
-import Vimeo
 
 public enum ClipsRoute: Equatable {
   case clip(cloudflareVideoID: Cloudflare.Video.ID)

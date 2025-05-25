@@ -4,7 +4,6 @@ import Dependencies
 import Foundation
 import Tagged
 import TaggedTime
-import Vimeo
 
 public struct Episode: Equatable, Identifiable {
   public var alternateSlug: String?
@@ -336,32 +335,16 @@ public struct Episode: Equatable, Identifiable {
     }
   }
 
-  public struct Video: Codable, Equatable {
-    public enum ID: Codable, Equatable {
-      case cloudflare(Cloudflare.Video.ID)
-      @available(*, deprecated)
-      case vimeo(Vimeo.Video.ID)
-    }
-
+  public struct Video: Codable, Equatable, Identifiable {
     public var bytesLength: Int
-    public var id: ID
     public var downloadUrl: DownloadUrls
+    public var id: Cloudflare.Video.ID
 
     public func downloadUrl(_ quality: Quality) -> String {
       switch (self.downloadUrl, quality) {
       case let (.s3(_, filename, _), .hd720), let (.s3(_, _, filename), .sd540):
         return "https://pointfreeco-episodes-processed.s3.amazonaws.com/\(filename).mp4"
       }
-    }
-
-    public var vimeoId: Int? {
-      guard case let .vimeo(id) = id else { return nil }
-      return id.rawValue
-    }
-
-    public var cloudflareID: Cloudflare.Video.ID? {
-      guard case .cloudflare(let id) = id else { return nil }
-      return id
     }
 
     public init(
@@ -371,7 +354,7 @@ public struct Episode: Equatable, Identifiable {
     ) {
       self.bytesLength = bytesLength
       self.downloadUrl = downloadUrls
-      self.id = .cloudflare(id)
+      self.id = id
     }
 
     public enum DownloadUrls: Codable, Equatable {

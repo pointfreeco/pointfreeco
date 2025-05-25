@@ -9,7 +9,6 @@ var package = Package(
     .macOS(.v14)
   ],
   products: [
-    .executable(name: "migrate-vimeo-to-cloudflare", targets: ["migrate-vimeo-to-cloudflare"]),
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
     .library(name: "Cloudflare", targets: ["Cloudflare"]),
@@ -40,7 +39,6 @@ var package = Package(
     .library(name: "Syndication", targets: ["Syndication"]),
     .library(name: "Transcripts", targets: ["Transcripts"]),
     .library(name: "Views", targets: ["Views"]),
-    .library(name: "Vimeo", targets: ["Vimeo"]),
     .library(name: "WebPreview", targets: ["WebPreview"]),
   ],
   dependencies: platformSpecificDependencies + [
@@ -82,7 +80,6 @@ var package = Package(
         "Models",
         "PointFreePrelude",
         "Stripe",
-        "Vimeo",
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "DependenciesMacros", package: "swift-dependencies"),
         .product(name: "Logging", package: "swift-log"),
@@ -247,7 +244,6 @@ var package = Package(
         "EmailAddress",
         "GitHub",
         "Stripe",
-        "Vimeo",
         .product(name: "CasePaths", package: "swift-case-paths"),
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Overture", package: "swift-overture"),
@@ -309,7 +305,6 @@ var package = Package(
         "Styleguide",
         "Syndication",
         "Views",
-        "Vimeo",
         .product(name: "Css", package: "swift-web"),
         .product(name: "CssReset", package: "swift-web"),
         .product(name: "CustomDump", package: "swift-custom-dump"),
@@ -561,27 +556,7 @@ var package = Package(
     ),
 
     .target(
-      name: "Vimeo",
-      dependencies: [
-        "DecodableRequest",
-        "FoundationPrelude",
-        .product(name: "AsyncHTTPClient", package: "async-http-client"),
-        .product(name: "Dependencies", package: "swift-dependencies"),
-        .product(name: "DependenciesMacros", package: "swift-dependencies"),
-      ]
-    ),
-
-    .target(
       name: "WebPreview"
-    ),
-
-    .executableTarget(
-      name: "migrate-vimeo-to-cloudflare",
-      dependencies: [
-        "Cloudflare",
-        "PointFree",
-        "Vimeo",
-      ]
     ),
   ],
   swiftLanguageModes: [.v5]
