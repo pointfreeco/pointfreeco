@@ -10,7 +10,7 @@ struct VideoHeader: HTML {
   let subtitle: String
   let blurb: String
   let videoID: Episode.Video.ID
-  let adURL: String?
+  var adURL: String?
   let poster: String
   let progress: Progress?
   let trackProgress: Bool

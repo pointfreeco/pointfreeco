@@ -1,10 +1,10 @@
 import Tagged
 
-public struct Envelope<Result: Codable>: Codable {
+public struct Envelope<Result: Decodable>: Decodable {
   public let result: Result
 }
 
-public struct Image: Codable {
+public struct Image: Decodable {
   public typealias ID = Tagged<Self, String>
   public let id: ID
   public let filename: String
@@ -12,12 +12,12 @@ public struct Image: Codable {
   public let variants: [String]
 }
 
-public struct Video: Codable {
+public struct Video: Decodable {
   public typealias ID = Tagged<Self, String>
 
   public let uid: ID
   public let allowedOrigins: [String]
-  public let meta: [String: String]
+  public let meta: [String: String]?
   public let publicDetails: PublicDetails
   public let size: Int
 
@@ -37,13 +37,6 @@ public struct Video: Codable {
       self.logo = logo
       self.shareLink = shareLink
       self.title = title
-    }
-
-    private enum CodingKeys: String, CodingKey {
-      case channelLink = "channel_link"
-      case logo = "logo"
-      case shareLink = "share_link"
-      case title = "title"
     }
   }
 }

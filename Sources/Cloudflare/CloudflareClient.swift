@@ -15,7 +15,7 @@ public struct CloudflareClient: Sendable {
   public var video: @Sendable (Cloudflare.Video.ID) async throws -> Envelope<Video>
   public var videos: @Sendable () async throws -> Envelope<[Video]>
 
-  public struct EditVideoArguments: Codable {
+  public struct EditVideoArguments: Encodable {
     public var videoID: Cloudflare.Video.ID
     public var allowedOrigins: [String]
     public var meta: [String: String]
@@ -35,10 +35,10 @@ public struct CloudflareClient: Sendable {
       self.thumbnailTimestampPct = thumbnailTimestampPct
     }
   }
-  public struct DirectUploadResult: Codable {
+  public struct DirectUploadResult: Decodable {
     public var uid: Cloudflare.Video.ID
   }
-  public struct ImagesEnvelope: Codable {
+  public struct ImagesEnvelope: Decodable {
     public let images: [Image]
   }
 }
@@ -68,7 +68,7 @@ extension CloudflareClient {
         )
         .result.meta
         var arguments = arguments
-        arguments.meta = existingMetadata.merging(arguments.meta, uniquingKeysWith: { $1 })
+        arguments.meta = (existingMetadata ?? [:]).merging(arguments.meta, uniquingKeysWith: { $1 })
         return try await cloudflareRequest(
           accountID: accountID,
           apiToken: apiToken,
@@ -162,5 +162,11 @@ private func cloudflareRequest<A: Decodable>(
   request.headers.add(name: "Authorization", value: "Bearer \(apiToken)")
 
   @Dependency(\.httpClient) var httpClient
-  return try await jsonDataTask(with: request)
+  return try await jsonDataTask(with: request, decoder: jsonDecoder)
 }
+
+let jsonDecoder = {
+  let decoder = JSONDecoder()
+  decoder.keyDecodingStrategy = .convertFromSnakeCase
+  return decoder
+}()
