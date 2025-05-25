@@ -21,7 +21,7 @@
   ),
   [5]: (
     key: "DATABASE_URL",
-    value: "postgres://hello:world@localhost:5432/pointfreeco"
+    value: "postgres://pointfreeco:@localhost:5432/pointfreeco_development"
   ),
   [6]: (
     key: "EMERGENCY_MODE",
@@ -45,7 +45,7 @@
   ),
   [11]: (
     key: "PF_COMMUNITY_SLACK_INVITE_URL",
-    value: "http://slack.com"
+    value: "https://join.slack.com/t/pointfreecommunity/shared_invite/zt-1o8l02r36-lygnfRjdoCZA3GtpG9bo_Q"
   ),
   [12]: (
     key: "PORT",
@@ -57,7 +57,7 @@
   ),
   [14]: (
     key: "RSS_USER_AGENT_WATCHLIST",
-    value: "blob,gob"
+    value: ""
   ),
   [15]: (
     key: "STRIPE_ENDPOINT_SECRET",
@@ -74,5 +74,9 @@
   [18]: (
     key: "VIMEO_BEARER",
     value: "deadbeef"
+  ),
+  [19]: (
+    key: "VIMEO_USER_ID",
+    value: "1234567890"
   )
 ]
