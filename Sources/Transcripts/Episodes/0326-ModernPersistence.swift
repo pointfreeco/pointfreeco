@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep326_modernPersistence = Episode(
     blurb: """
-      TODO
+      We begin building the "reminders" part of Apple's Reminders app, including listing, \
+      creating, updating, and deleting them. We will also add persistent filters and sorts, per \
+      list, all powered by a complex, dynamic query.
       """,
     codeSampleDirectory: "0326-modern-persistence-pt4",
     exercises: _exercises,
