@@ -6,10 +6,10 @@ extension Episode.Collection {
         .init(
           blurb: livestreamBlurb,
           coreLessons: [
-            .episode(.ep221_pfLive_dependenciesStacks),
-            .episode(.ep267_pfLive_observationInPractice),
-            .clip(Clip(vimeoVideoID: 944_549_956)),
             .episode(.ep313_pfLive_SharingGRDB),
+            .clip(Clip(cloudflareVideoID: "d27a2cd4d124d031f0fa4bde2b84bca0")),
+            .episode(.ep267_pfLive_observationInPractice),
+            .episode(.ep221_pfLive_dependenciesStacks),
           ],
           related: [],
           title: "Livestreams",

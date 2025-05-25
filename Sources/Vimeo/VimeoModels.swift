@@ -1,6 +1,7 @@
 import Foundation
 import Tagged
 
+@available(*, deprecated)
 public struct VideosEnvelope: Decodable, Equatable {
   public let data: [Video]
   public let page: Int
@@ -16,6 +17,7 @@ public struct VideosEnvelope: Decodable, Equatable {
   }
 }
 
+@available(*, deprecated)
 public struct Video: Decodable, Equatable {
   public typealias ID = Tagged<Self, Int>
 

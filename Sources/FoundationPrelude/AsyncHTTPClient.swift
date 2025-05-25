@@ -79,7 +79,7 @@ extension HTTPClientRequest {
     }
   }
 
-  public mutating func attach(formData: [String: Any]) {
+  private mutating func attach(formData: [String: Any]) {
     let data = Data(urlFormEncode(value: formData).utf8)
     self.body = .bytes(data, length: .known(Int64(data.count)))
   }

@@ -14,9 +14,6 @@ func liveMiddleware(
   switch conn.data {
   case .current:
     return await currentLivestream(conn.map(const(())))
-
-  case let .stream(id: id):
-    return await stream(conn.map(const(id)))
   }
 }
 
@@ -48,26 +45,4 @@ private func currentLivestream(
         )
       }
     )
-}
-
-private func stream(
-  _ conn: Conn<StatusLineOpen, Vimeo.Video.ID>
-) async -> Conn<ResponseEnded, Data> {
-  @Dependency(\.database) var database
-  do {
-    let clip = try await database.fetchClip(vimeoVideoID: conn.data)
-    return
-      conn
-      .writeStatus(.ok)
-      .respondV2(
-        layoutData: SimplePageLayoutData(
-          description: clip.blurb,
-          title: clip.title
-        )
-      ) {
-        ClipView(clip: clip)
-      }
-  } catch {
-    return await routeNotFoundMiddleware(conn).performAsync()
-  }
 }

@@ -339,6 +339,7 @@ public struct Episode: Equatable, Identifiable {
   public struct Video: Codable, Equatable {
     public enum ID: Codable, Equatable {
       case cloudflare(Cloudflare.Video.ID)
+      @available(*, deprecated)
       case vimeo(Vimeo.Video.ID)
     }
 
@@ -371,17 +372,6 @@ public struct Episode: Equatable, Identifiable {
       self.bytesLength = bytesLength
       self.downloadUrl = downloadUrls
       self.id = .cloudflare(id)
-    }
-
-    @available(*, deprecated)
-    public init(
-      bytesLength: Int,
-      downloadUrls: DownloadUrls,
-      vimeoId: Int
-    ) {
-      self.bytesLength = bytesLength
-      self.downloadUrl = downloadUrls
-      self.id = .vimeo(Vimeo.Video.ID(vimeoId))
     }
 
     public enum DownloadUrls: Codable, Equatable {

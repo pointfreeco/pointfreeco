@@ -6,6 +6,7 @@ import Vimeo
 
 public enum ClipsRoute: Equatable {
   case cloudflareClip(videoID: Cloudflare.Video.ID)
+  @available(*, deprecated)
   case vimeoClip(videoID: Vimeo.Video.ID)
   case clips
 

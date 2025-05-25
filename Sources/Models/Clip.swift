@@ -14,24 +14,10 @@ public struct Clip: Codable, Equatable {
   public let order: Int
   public let posterURL: String
   public let title: String
+  @available(*, deprecated)
   public let vimeoVideoID: Vimeo.Video.ID?
 
   public typealias ID = Tagged<Self, UUID>
-
-  public init(
-    vimeoVideoID: Vimeo.Video.ID
-  ) {
-    self.id = ID(rawValue: UUID())
-    self.blurb = ""
-    self.cloudflareVideoID = nil
-    self.createdAt = Date(timeIntervalSince1970: 0)
-    self.description = ""
-    self.duration = 0
-    self.order = 0
-    self.posterURL = "image.png"
-    self.title = ""
-    self.vimeoVideoID = vimeoVideoID
-  }
 
   public init(
     cloudflareVideoID: Cloudflare.Video.ID
@@ -48,6 +34,7 @@ public struct Clip: Codable, Equatable {
     self.vimeoVideoID = nil
   }
 
+  @available(*, deprecated)
   public init(
     id: ID,
     blurb: String,

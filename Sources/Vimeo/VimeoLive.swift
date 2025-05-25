@@ -6,7 +6,9 @@ import FoundationPrelude
 import Logging
 import Tagged
 
+@available(*, deprecated)
 extension VimeoClient {
+  @available(*, deprecated)
   public static func live(bearer: String, userId: String) -> Self {
     return Self(
       video: { try await dataTask(bearer: bearer, path: "videos/\($0)") },

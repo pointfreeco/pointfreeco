@@ -179,7 +179,6 @@ private func updateCloudflareImages() async throws {
     guard cloudflareImagesByEpisodeSequence[episode.sequence.description] == nil
     else {
       print("  ⏩ Skipping image upload to Cloudflare: Episode \(episode.sequence)")
-      print("")
       continue
     }
     let imageURL = String(

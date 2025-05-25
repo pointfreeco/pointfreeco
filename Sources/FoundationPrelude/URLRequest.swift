@@ -117,7 +117,12 @@ extension URLRequest {
     case let .post(params):
       self.httpMethod = "POST"
       self.attach(formData: params)
-    case .postData:
+    case .postData(let data, extraHeaders: let extraHeaders):
+      self.httpMethod = "POST"
+      self.allHTTPHeaderFields = self.allHTTPHeaderFields ?? [:]
+      self.allHTTPHeaderFields?.merge(extraHeaders, uniquingKeysWith: { $1 })
+
+      self.httpBody = data
       fatalError()
     case let .delete(params):
       self.httpMethod = "DELETE"

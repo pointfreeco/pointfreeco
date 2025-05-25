@@ -9,9 +9,9 @@ var package = Package(
     .macOS(.v14)
   ],
   products: [
+    .executable(name: "migrate-vimeo-to-cloudflare", targets: ["migrate-vimeo-to-cloudflare"]),
     .executable(name: "Runner", targets: ["Runner"]),
     .executable(name: "Server", targets: ["Server"]),
-    .executable(name: "migrate-vimeo-to-cloudflare", targets: ["migrate-vimeo-to-cloudflare"]),
     .library(name: "Cloudflare", targets: ["Cloudflare"]),
     .library(name: "Database", targets: ["Database"]),
     .library(name: "DatabaseTestSupport", targets: ["DatabaseTestSupport"]),
