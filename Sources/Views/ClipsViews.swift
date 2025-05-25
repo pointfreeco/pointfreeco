@@ -66,8 +66,10 @@ public struct ClipView: HTML {
         Episode Clip • \(headerDateFormatter.string(from: clip.createdAt))
         """,
       blurb: clip.description,
-      vimeoVideoID: clip.vimeoVideoID,
-      progress: nil
+      videoID: .cloudflare(clip.cloudflareVideoID),
+      poster: clip.posterURL,
+      progress: nil,
+      trackProgress: false
     )
 
     if !subscriberState.isActiveSubscriber {
@@ -113,6 +115,7 @@ public struct ClipView: HTML {
         blurb: """
           We often need to perform async work when there is no async context, such as in SwiftUI button action closures. In such cases it seems that you have no choice but to spin up an unstructured Task, but you may have heard that doing so it bad. So what are you to do? Well, there is an easy answer…
           """,
+        cloudflareVideoID: "deadbeef",
         createdAt: Date(),
         description: """
           We often need to perform async work when there is no async context, such as in SwiftUI button action closures. In such cases it seems that you have no choice but to spin up an unstructured Task, but you may have heard that doing so it bad. So what are you to do? Well, there is an easy answer…
@@ -121,8 +124,7 @@ public struct ClipView: HTML {
         order: 1,
         posterURL:
           "https://i.vimeocdn.com/video/1864209432-b580f900f7a12b935e0e8c7028c124b5d15c8f80efb688445312650c9b973910-d",
-        title: "How should you perform async work in a non-async context?",
-        vimeoVideoID: 790_482_468
+        title: "How should you perform async work in a non-async context?"
       )
     }
   }

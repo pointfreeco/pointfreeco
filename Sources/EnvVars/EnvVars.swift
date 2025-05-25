@@ -21,6 +21,7 @@ public struct EnvVars: Codable {
   public var appSecret: AppSecret
   public var baseUrl: URL
   public var basicAuth: BasicAuth
+  public var cloudflare: Cloudflare
   public var emergencyMode: Bool
   public var gitHub: GitHub
   public var mailgun: Mailgun
@@ -30,13 +31,14 @@ public struct EnvVars: Codable {
   public var rssUserAgentWatchlist: [String]
   public var slackInviteURL: String
   public var stripe: Stripe
-  public var vimeoBearer: String
+  public var vimeo: Vimeo
 
   public init(
     appEnv: AppEnv = .development,
     appSecret: AppSecret = "deadbeefdeadbeefdeadbeefdeadbeef",
     baseUrl: URL = URL(string: "http://localhost:8080")!,
     basicAuth: BasicAuth = BasicAuth(),
+    cloudflare: Cloudflare = Cloudflare(),
     emergencyMode: Bool = false,
     gitHub: GitHub = GitHub(),
     mailgun: Mailgun = Mailgun(),
@@ -46,12 +48,13 @@ public struct EnvVars: Codable {
     rssUserAgentWatchlist: [String] = [],
     slackInviteURL: String = "http://slack.com",
     stripe: Stripe = Stripe(),
-    vimeoBearer: String = ""
+    vimeo: Vimeo = Vimeo()
   ) {
     self.appEnv = appEnv
     self.appSecret = appSecret
     self.baseUrl = baseUrl
     self.basicAuth = basicAuth
+    self.cloudflare = cloudflare
     self.emergencyMode = emergencyMode
     self.gitHub = gitHub
     self.mailgun = mailgun
@@ -61,7 +64,7 @@ public struct EnvVars: Codable {
     self.rssUserAgentWatchlist = rssUserAgentWatchlist
     self.slackInviteURL = slackInviteURL
     self.stripe = stripe
-    self.vimeoBearer = vimeoBearer
+    self.vimeo = vimeo
   }
 
   private enum CodingKeys: String, CodingKey {
@@ -73,7 +76,6 @@ public struct EnvVars: Codable {
     case rssUserAgentWatchlist = "RSS_USER_AGENT_WATCHLIST"
     case regionalDiscountCouponId = "REGIONAL_DISCOUNT_COUPON_ID"
     case slackInviteURL = "PF_COMMUNITY_SLACK_INVITE_URL"
-    case vimeoBearer = "VIMEO_BEARER"
   }
 
   public enum AppEnv: String, Codable {
@@ -98,6 +100,26 @@ public struct EnvVars: Codable {
     private enum CodingKeys: String, CodingKey {
       case username = "BASIC_AUTH_USERNAME"
       case password = "BASIC_AUTH_PASSWORD"
+    }
+  }
+
+  public struct Cloudflare: Codable {
+    public var accountID: String
+    public var customerSubdomain: String
+    public var streamAPIKey: String
+    public init(
+      accountID: String = "deadbeef",
+      customerSubdomain: String = "customer-deadbeef.cloudflarestream.com",
+      streamAPIKey: String = "deadbeef"
+    ) {
+      self.accountID = accountID
+      self.customerSubdomain = customerSubdomain
+      self.streamAPIKey = streamAPIKey
+    }
+    private enum CodingKeys: String, CodingKey {
+      case accountID = "CLOUDFLARE_ACCOUNT_ID"
+      case customerSubdomain = "CLOUDFLARE_CUSTOMER_SUBDOMAIN"
+      case streamAPIKey = "CLOUDFLARE_STREAM_API_KEY"
     }
   }
 
@@ -174,6 +196,24 @@ public struct EnvVars: Codable {
       case secretKey = "STRIPE_SECRET_KEY"
     }
   }
+
+  public struct Vimeo: Codable {
+    public var bearer: String
+    public var userId: String
+
+    public init(
+      bearer: String = "deadbeef",
+      userId: String = "0"
+    ) {
+      self.bearer = bearer
+      self.userId = userId
+    }
+
+    private enum CodingKeys: String, CodingKey {
+      case bearer = "VIMEO_BEARER"
+      case userId = "VIMEO_USER_ID"
+    }
+  }
 }
 
 extension EnvVars {
@@ -184,6 +224,7 @@ extension EnvVars {
     self.appSecret = try container.decode(AppSecret.self, forKey: .appSecret)
     self.baseUrl = try container.decode(URL.self, forKey: .baseUrl)
     self.basicAuth = try .init(from: decoder)
+    self.cloudflare = try Cloudflare(from: decoder)
     self.emergencyMode = try container.decodeIfPresent(String.self, forKey: .emergencyMode) == "1"
     self.gitHub = try .init(from: decoder)
     self.mailgun = try .init(from: decoder)
@@ -196,7 +237,7 @@ extension EnvVars {
       .map(String.init)
     self.slackInviteURL = try container.decode(String.self, forKey: .slackInviteURL)
     self.stripe = try .init(from: decoder)
-    self.vimeoBearer = try container.decode(String.self, forKey: .vimeoBearer)
+    self.vimeo = try .init(from: decoder)
   }
 
   public func encode(to encoder: Encoder) throws {
@@ -217,7 +258,7 @@ extension EnvVars {
     try container.encode(self.regionalDiscountCouponId, forKey: .regionalDiscountCouponId)
     try container.encode(self.slackInviteURL, forKey: .slackInviteURL)
     try self.stripe.encode(to: encoder)
-    try container.encode(self.vimeoBearer, forKey: .vimeoBearer)
+    try self.vimeo.encode(to: encoder)
   }
 }
 
@@ -247,28 +288,29 @@ extension EnvVars: DependencyKey {
       .deletingLastPathComponent()
       .appendingPathComponent(".pf-env")
 
-    let defaultEnvVarDict =
-      (try? encoder.encode(EnvVars()))
-      .flatMap { try? decoder.decode([String: String].self, from: $0) }
-      ?? [:]
+    let defaultEnvVarDict = withErrorReporting {
+      try decoder.decode([String: String].self, from: encoder.encode(Self()))
+    }
+    ?? [:]
 
-    let localEnvVarDict =
-      (try? Data(contentsOf: envFilePath))
-      .flatMap { try? decoder.decode([String: String].self, from: $0) }
-      ?? [:]
+    let localEnvVarDict = withErrorReporting {
+      try decoder.decode([String: String].self, from: Data(contentsOf: envFilePath))
+    }
+    ?? [:]
 
     let envVarDict =
       defaultEnvVarDict
       .merging(localEnvVarDict, uniquingKeysWith: { $1 })
       .merging(ProcessInfo.processInfo.environment, uniquingKeysWith: { $1 })
 
-    return (try? JSONSerialization.data(withJSONObject: envVarDict))
-      .flatMap { try? decoder.decode(EnvVars.self, from: $0) }
-      ?? Self()
+    return withErrorReporting {
+      try decoder.decode(Self.self, from: JSONSerialization.data(withJSONObject: envVarDict))
+    }
+    ?? Self()
   }
 
   public static var testValue: EnvVars {
-    var envVars = EnvVars()
+    var envVars = Self()
     envVars.appEnv = EnvVars.AppEnv.testing
     envVars.postgres.databaseUrl = "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
     return envVars

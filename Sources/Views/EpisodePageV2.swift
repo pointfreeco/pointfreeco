@@ -114,14 +114,14 @@ public struct EpisodeDetail: HTML {
         • \(isSubscriberOnly ? "Subscriber-Only" : "Free Episode")
         """,
       blurb: episode.blurb,
-      vimeoVideoID: VimeoVideo.ID(
-        rawValue: permission.isViewable
-          ? episode.fullVideo.vimeoId
-          : episode.trailerVideo.vimeoId
-      ),
+      videoID: permission.isViewable
+        ? episode.fullVideo.id
+        : episode.trailerVideo.id,
+      poster: episode.image,
       progress: episodePageData.episodeProgress.map {
         .init(percent: $0, seconds: episode.length.rawValue)
-      }
+      },
+      trackProgress: permission.isViewable
     )
 
     if let transcript {
@@ -250,58 +250,6 @@ public struct EpisodeDetail: HTML {
       GetStartedModule(style: .gradient)
     } else if subscriberState.isNonSubscriber {
       UpgradeModule()
-    }
-
-    script {
-      #"""
-      window.addEventListener("load", function(event) {
-        const iframe = document.querySelector("iframe")
-        const player = new Vimeo.Player(iframe)
-        const trackProgress = \#(permission.isViewable)
-
-        jump(window.location.hash, false)
-
-        let lastSeenPercent = 0
-        if (trackProgress) {
-          player.on('timeupdate', function(data) {
-            if (Math.abs(data.percent - lastSeenPercent) >= 0.01) {
-              lastSeenPercent = data.percent
-
-              const httpRequest = new XMLHttpRequest()
-              httpRequest.open(
-                "POST",
-                window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
-              )
-              httpRequest.send()
-            }
-          })
-        }
-
-        document.addEventListener("click", function(event) {
-          const target = event.target
-          const time = Number(target.dataset.timestamp)
-          if (target.tagName != "A") { return }
-          if (target.dataset.timestamp == undefined) { return }
-          if (time < 0) { return }
-          if (isElementVisible(iframe)) { event.preventDefault() }
-          player.setCurrentTime(time)
-          player.play()
-
-          function isElementVisible(element) {
-            const rect = element.getBoundingClientRect()
-            const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight)
-            return rect.bottom >= 0 && rect.top < viewHeight
-          }
-        })
-
-        function jump(hash, play) {
-          const time = +((/^#t(\d+)$/.exec(hash) || [])[1] || "")
-          if (time <= 0) { return }
-          player.setCurrentTime(time)
-          if (play) { player.play() }
-        }
-      })
-      """#
     }
   }
 }

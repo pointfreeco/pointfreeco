@@ -1,3 +1,4 @@
+import Cloudflare
 import Dependencies
 import Foundation
 import HttpPipeline
@@ -8,12 +9,11 @@ import Prelude
 @main
 struct Server {
   static func main() async throws {
-    @Dependency(\.envVars) var envVars
-    @Dependency(\.mainEventLoopGroup) var eventLoopGroup: any EventLoopGroup
-
-    // Bootstrap
     await PointFree.bootstrap()
 
+    @Dependency(\.envVars) var envVars
+    @Dependency(\.mainEventLoopGroup) var eventLoopGroup: any EventLoopGroup
+    
     // Server
     run(
       siteMiddleware,

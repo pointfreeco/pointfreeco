@@ -1,8 +1,10 @@
 import CasePaths
+import Cloudflare
 import Dependencies
 import Foundation
 import Tagged
 import TaggedTime
+import Vimeo
 
 public struct Episode: Equatable, Identifiable {
   public var alternateSlug: String?
@@ -335,8 +337,14 @@ public struct Episode: Equatable, Identifiable {
   }
 
   public struct Video: Codable, Equatable {
+    public enum ID: Codable, Equatable {
+      case cloudflare(Cloudflare.Video.ID)
+      @available(*, deprecated)
+      case vimeo(Vimeo.Video.ID)
+    }
+
     public var bytesLength: Int
-    public var vimeoId: Int
+    public var id: ID
     public var downloadUrl: DownloadUrls
 
     public func downloadUrl(_ quality: Quality) -> String {
@@ -346,18 +354,24 @@ public struct Episode: Equatable, Identifiable {
       }
     }
 
-    public var streamingSource: String {
-      "https://player.vimeo.com/video/\(self.vimeoId)?pip=1"
+    public var vimeoId: Int? {
+      guard case let .vimeo(id) = id else { return nil }
+      return id.rawValue
+    }
+
+    public var cloudflareID: Cloudflare.Video.ID? {
+      guard case .cloudflare(let id) = id else { return nil }
+      return id
     }
 
     public init(
       bytesLength: Int,
       downloadUrls: DownloadUrls,
-      vimeoId: Int
+      id: Cloudflare.Video.ID
     ) {
       self.bytesLength = bytesLength
       self.downloadUrl = downloadUrls
-      self.vimeoId = vimeoId
+      self.id = .cloudflare(id)
     }
 
     public enum DownloadUrls: Codable, Equatable {

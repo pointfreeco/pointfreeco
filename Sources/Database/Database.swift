@@ -1,3 +1,4 @@
+import Cloudflare
 import Dependencies
 import DependenciesMacros
 import EmailAddress
@@ -9,6 +10,7 @@ import PointFreePrelude
 import PostgresKit
 import Stripe
 import Tagged
+import Vimeo
 
 @DependencyClient
 public struct Client {
@@ -52,8 +54,11 @@ public struct Client {
   public var execute: (_ sql: SQLQueryString) async throws -> [SQLRow]
   public var fetchAdmins: () async throws -> [Models.User]
   @DependencyEndpoint(method: "fetchClip")
-  public var fetchClipByVimeoVideoID: (_ vimeoVideoID: VimeoVideo.ID) async throws -> Clip
-  public var fetchClips: () async throws -> [Clip]
+  public var fetchClipByCloudflareVideoID: (_ cloudflareVideoID: Cloudflare.Video.ID) async throws -> Clip
+  @available(*, deprecated)
+  @DependencyEndpoint(method: "fetchClip")
+  public var fetchClipByVimeoVideoID: (_ vimeoVideoID: Vimeo.Video.ID) async throws -> Clip
+  public var fetchClips: (_ includeHidden: Bool) async throws -> [Clip]
   @DependencyEndpoint(method: "fetchEmailSettings")
   public var fetchEmailSettingsForUserId: (_ userID: Models.User.ID) async throws -> [EmailSetting]
   @DependencyEndpoint(method: "fetchEnterpriseAccount")
