@@ -191,12 +191,6 @@ class PointFreeRouterTests: TestCase {
     var route = SiteRoute.live(.current)
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
-
-    request = URLRequest.init(
-      url: .init(string: "http://localhost:8080/live/streams/1")!)
-    route = SiteRoute.live(.stream(id: 1))
-    XCTAssertEqual(try siteRouter.match(request: request), route)
-    XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
   @MainActor

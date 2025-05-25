@@ -906,7 +906,7 @@ extension Client {
         try await database.run(
           """
           ALTER TABLE "clips"
-          ADD COLUMN IF NOT EXISTS "cloudflare_video_id" character varying NOT NULL
+          ADD COLUMN IF NOT EXISTS "cloudflare_video_id" character varying NOT NULL DEFAULT ''
           """
         )
         try await database.run(
