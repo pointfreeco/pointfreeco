@@ -123,7 +123,6 @@ private func coreLesson(
   section: Episode.Collection.Section,
   lesson: Episode.Collection.Section.Lesson
 ) -> Node {
-  @Dependency(\.envVars.baseUrl) var baseURL
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
