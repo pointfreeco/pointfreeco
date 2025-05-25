@@ -288,10 +288,10 @@ extension EnvVars: DependencyKey {
       .deletingLastPathComponent()
       .appendingPathComponent(".pf-env")
 
-    let defaultEnvVarDict =
-      (try? encoder.encode(EnvVars()))
-      .flatMap { try? decoder.decode([String: String].self, from: $0) }
-      ?? [:]
+    let defaultEnvVarDict = withErrorReporting {
+      try decoder.decode([String: String].self, from: encoder.encode(Self()))
+    }
+    ?? [:]
 
     let localEnvVarDict = withErrorReporting {
       try decoder.decode([String: String].self, from: Data(contentsOf: envFilePath))
@@ -304,13 +304,13 @@ extension EnvVars: DependencyKey {
       .merging(ProcessInfo.processInfo.environment, uniquingKeysWith: { $1 })
 
     return withErrorReporting {
-      try decoder.decode(EnvVars.self, from: JSONSerialization.data(withJSONObject: envVarDict))
+      try decoder.decode(Self.self, from: JSONSerialization.data(withJSONObject: envVarDict))
     }
     ?? Self()
   }
 
   public static var testValue: EnvVars {
-    var envVars = EnvVars()
+    var envVars = Self()
     envVars.appEnv = EnvVars.AppEnv.testing
     envVars.postgres.databaseUrl = "postgres://pointfreeco:@localhost:5432/pointfreeco_test"
     return envVars
