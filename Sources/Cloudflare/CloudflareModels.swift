@@ -26,7 +26,7 @@ public struct Video: Decodable {
     public let logo: String?
     public let shareLink: String?
     public let title: String?
-    
+
     public init(
       channelLink: String? = nil,
       logo: String? = nil,

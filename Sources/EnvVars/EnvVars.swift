@@ -288,15 +288,17 @@ extension EnvVars: DependencyKey {
       .deletingLastPathComponent()
       .appendingPathComponent(".pf-env")
 
-    let defaultEnvVarDict = withErrorReporting {
-      try decoder.decode([String: String].self, from: encoder.encode(Self()))
-    }
-    ?? [:]
+    let defaultEnvVarDict =
+      withErrorReporting {
+        try decoder.decode([String: String].self, from: encoder.encode(Self()))
+      }
+      ?? [:]
 
-    let localEnvVarDict = withErrorReporting {
-      try decoder.decode([String: String].self, from: Data(contentsOf: envFilePath))
-    }
-    ?? [:]
+    let localEnvVarDict =
+      withErrorReporting {
+        try decoder.decode([String: String].self, from: Data(contentsOf: envFilePath))
+      }
+      ?? [:]
 
     let envVarDict =
       defaultEnvVarDict
@@ -306,7 +308,7 @@ extension EnvVars: DependencyKey {
     return withErrorReporting {
       try decoder.decode(Self.self, from: JSONSerialization.data(withJSONObject: envVarDict))
     }
-    ?? Self()
+      ?? Self()
   }
 
   public static var testValue: EnvVars {

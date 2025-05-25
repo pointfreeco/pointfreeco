@@ -425,7 +425,7 @@ var package = Package(
     .executableTarget(
       name: "Runner",
       dependencies: [
-        "PointFree",
+        "PointFree"
       ]
     ),
 
@@ -582,7 +582,7 @@ var package = Package(
         "PointFree",
         "Vimeo",
       ]
-    )
+    ),
   ],
   swiftLanguageModes: [.v5]
 )

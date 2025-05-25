@@ -59,7 +59,10 @@ struct VideoHeader: HTML {
               iframe()
                 .attribute("src", src)
                 .attribute("loading", "lazy")
-                .attribute("allow", "accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;")
+                .attribute(
+                  "allow",
+                  "accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                )
                 .attribute("allowfullscreen")
                 .inlineStyle("border", "none")
                 .inlineStyle("position", "absolute")

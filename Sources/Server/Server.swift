@@ -13,7 +13,7 @@ struct Server {
 
     @Dependency(\.envVars) var envVars
     @Dependency(\.mainEventLoopGroup) var eventLoopGroup: any EventLoopGroup
-    
+
     // Server
     run(
       siteMiddleware,

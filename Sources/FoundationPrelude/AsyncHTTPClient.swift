@@ -69,7 +69,7 @@ extension HTTPClientRequest {
     case .post(let params):
       self.method = .POST
       self.attach(formData: params)
-    case .postData(let data, extraHeaders: let extraHeaders):
+    case .postData(let data, let extraHeaders):
       self.headers.add(contentsOf: extraHeaders.map { ($0, $1) })
       self.method = .POST
       self.body = .bytes(data, length: .known(Int64(data.count)))

@@ -27,7 +27,8 @@ class EnvVarTests: TestCase {
       "GITHUB_CLIENT_SECRET": "deadbeef-client-secret",
       "MAILGUN_DOMAIN": "mg.domain.com",
       "MAILGUN_PRIVATE_API_KEY": "deadbeef-mg-api-key",
-      "PF_COMMUNITY_SLACK_INVITE_URL": "https://join.slack.com/t/pointfreecommunity/shared_invite/zt-1o8l02r36-lygnfRjdoCZA3GtpG9bo_Q",
+      "PF_COMMUNITY_SLACK_INVITE_URL":
+        "https://join.slack.com/t/pointfreecommunity/shared_invite/zt-1o8l02r36-lygnfRjdoCZA3GtpG9bo_Q",
       "PORT": "8080",
       "REGIONAL_DISCOUNT_COUPON_ID": "regional-discount",
       "RSS_USER_AGENT_WATCHLIST": "",
@@ -35,7 +36,7 @@ class EnvVarTests: TestCase {
       "STRIPE_PUBLISHABLE_KEY": "pk_test",
       "STRIPE_SECRET_KEY": "sk_test",
       "VIMEO_BEARER": "deadbeef",
-      "VIMEO_USER_ID": "1234567890"
+      "VIMEO_USER_ID": "1234567890",
     ]
 
     let envVars = try JSONDecoder()

@@ -54,7 +54,8 @@ public struct Client {
   public var execute: (_ sql: SQLQueryString) async throws -> [SQLRow]
   public var fetchAdmins: () async throws -> [Models.User]
   @DependencyEndpoint(method: "fetchClip")
-  public var fetchClipByCloudflareVideoID: (_ cloudflareVideoID: Cloudflare.Video.ID) async throws -> Clip
+  public var fetchClipByCloudflareVideoID:
+    (_ cloudflareVideoID: Cloudflare.Video.ID) async throws -> Clip
   @available(*, deprecated)
   @DependencyEndpoint(method: "fetchClip")
   public var fetchClipByVimeoVideoID: (_ vimeoVideoID: Vimeo.Video.ID) async throws -> Clip

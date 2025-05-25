@@ -9,7 +9,8 @@ import FoundationPrelude
 public struct CloudflareClient: Sendable {
   public var copy: @Sendable (String) async throws -> Envelope<DirectUploadResult>
   public var editVideo: @Sendable (EditVideoArguments) async throws -> Envelope<Video>
-  public var images: @Sendable (_ perPage: Int, _ page: Int) async throws -> Envelope<ImagesEnvelope>
+  public var images:
+    @Sendable (_ perPage: Int, _ page: Int) async throws -> Envelope<ImagesEnvelope>
   public var uploadImage:
     @Sendable (_ url: String, _ metadata: [String: String]) async throws -> Envelope<Image>
   public var video: @Sendable (Cloudflare.Video.ID) async throws -> Envelope<Video>
@@ -83,7 +84,7 @@ extension CloudflareClient {
           path: "images/v1",
           method: .get([
             "page": page,
-            "per_page": perPage
+            "per_page": perPage,
           ])
         )
       },

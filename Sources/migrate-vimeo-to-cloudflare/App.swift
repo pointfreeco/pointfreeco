@@ -37,59 +37,59 @@ struct VimeoCloudflareMigration {
 
     let cloudflareVideos = try await cloudflare.videos()
 
-//    print("⏳ Loading Vimeo videos")
-//    let startPage = 1
-//    let perPage = 100
-//    let pageCount = try await {
-//      Int(ceil(Double(try await vimeo.videos(page: 3, perPage: 1).total) / Double(perPage)))
-//    }()
-//    let vimeoVideos = try await withThrowingTaskGroup { group in
-//      for page in startPage...pageCount {
-//        group.addTask {
-//          print("   ℹ️ Loading batch \(page)...")
-//          defer { print("   ℹ️ Loaded batch \(page)!") }
-//          let batch = try await retry(delay: .seconds(1)) {
-//            try await vimeo.videos(page: page, perPage: perPage)
-//          }
-//          return batch.data
-//        }
-//      }
-//      return try await group.reduce(into: []) { $0 += $1 }
-//    }
-//    print("✅ Loaded \(vimeoVideos.count) Vimeo videos")
-//
-//    let episodesByVimeoID = Dictionary(grouping: episodes(), by: \.fullVideo.vimeoId)
-//      .compactMapValues(\.first)
-//    let episodesByTrailerVimeoID = Dictionary(grouping: episodes(), by: \.trailerVideo.vimeoId)
-//      .compactMapValues(\.first)
-//    func episode(for vimeoID: Vimeo.Video.ID) -> (
-//      kind: CloudflareClient.MetaVideoKind, episode: Episode
-//    )? {
-//      episodesByVimeoID[vimeoID.rawValue].map { (.episode, $0) }
-//        ?? episodesByTrailerVimeoID[vimeoID.rawValue].map { (.trailer, $0) }
-//    }
-//
-//    var warnings: [String] = []
-//    var issues: [String] = []
-//    func reportWarning(_ warning: String) {
-//      warnings.append(warning)
-//      print(warning)
-//    }
-//    func reportIssue(_ issue: String) {
-//      issues.append(issue)
-//      IssueReporting.reportIssue(issue)
-//    }
-//    defer {
-//      print("Migration finished!")
-//      if !warnings.isEmpty {
-//        print("Warnings:")
-//        print(warnings.map { "  \($0)" }.joined(separator: "\n"))
-//      }
-//      if !issues.isEmpty {
-//        print("Issues:")
-//        print(issues.map { "  \($0)" }.joined(separator: "\n"))
-//      }
-//    }
+    //    print("⏳ Loading Vimeo videos")
+    //    let startPage = 1
+    //    let perPage = 100
+    //    let pageCount = try await {
+    //      Int(ceil(Double(try await vimeo.videos(page: 3, perPage: 1).total) / Double(perPage)))
+    //    }()
+    //    let vimeoVideos = try await withThrowingTaskGroup { group in
+    //      for page in startPage...pageCount {
+    //        group.addTask {
+    //          print("   ℹ️ Loading batch \(page)...")
+    //          defer { print("   ℹ️ Loaded batch \(page)!") }
+    //          let batch = try await retry(delay: .seconds(1)) {
+    //            try await vimeo.videos(page: page, perPage: perPage)
+    //          }
+    //          return batch.data
+    //        }
+    //      }
+    //      return try await group.reduce(into: []) { $0 += $1 }
+    //    }
+    //    print("✅ Loaded \(vimeoVideos.count) Vimeo videos")
+    //
+    //    let episodesByVimeoID = Dictionary(grouping: episodes(), by: \.fullVideo.vimeoId)
+    //      .compactMapValues(\.first)
+    //    let episodesByTrailerVimeoID = Dictionary(grouping: episodes(), by: \.trailerVideo.vimeoId)
+    //      .compactMapValues(\.first)
+    //    func episode(for vimeoID: Vimeo.Video.ID) -> (
+    //      kind: CloudflareClient.MetaVideoKind, episode: Episode
+    //    )? {
+    //      episodesByVimeoID[vimeoID.rawValue].map { (.episode, $0) }
+    //        ?? episodesByTrailerVimeoID[vimeoID.rawValue].map { (.trailer, $0) }
+    //    }
+    //
+    //    var warnings: [String] = []
+    //    var issues: [String] = []
+    //    func reportWarning(_ warning: String) {
+    //      warnings.append(warning)
+    //      print(warning)
+    //    }
+    //    func reportIssue(_ issue: String) {
+    //      issues.append(issue)
+    //      IssueReporting.reportIssue(issue)
+    //    }
+    //    defer {
+    //      print("Migration finished!")
+    //      if !warnings.isEmpty {
+    //        print("Warnings:")
+    //        print(warnings.map { "  \($0)" }.joined(separator: "\n"))
+    //      }
+    //      if !issues.isEmpty {
+    //        print("Issues:")
+    //        print(issues.map { "  \($0)" }.joined(separator: "\n"))
+    //      }
+    //    }
 
     await withErrorReporting {
       try await updateCloudflareImages()
@@ -174,7 +174,7 @@ private func updateCloudflareImages() async throws {
     grouping: cloudflareImages.result.images,
     by: \.meta?["episodeSequence"]
   )
-    .compactMapValues(\.first)
+  .compactMapValues(\.first)
   for episode in episodes() {
     guard cloudflareImagesByEpisodeSequence[episode.sequence.description] == nil
     else {

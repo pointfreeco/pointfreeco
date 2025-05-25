@@ -128,17 +128,17 @@ extension Client {
       },
       fetchClipByCloudflareVideoID: { cloudflareVideoID in
         return try await pool.sqlDatabase.first(
-            """
-            SELECT * FROM "clips" where "cloudflare_video_id" = \(bind: cloudflareVideoID)
-            """
+          """
+          SELECT * FROM "clips" where "cloudflare_video_id" = \(bind: cloudflareVideoID)
+          """
         )
       },
       fetchClipByVimeoVideoID: { vimeoVideoID in
-          try await pool.sqlDatabase.first(
-            """
-            SELECT * FROM "clips" where "vimeo_video_id" = \(bind: vimeoVideoID)
-            """
-          )
+        try await pool.sqlDatabase.first(
+          """
+          SELECT * FROM "clips" where "vimeo_video_id" = \(bind: vimeoVideoID)
+          """
+        )
       },
       fetchClips: { includeHidden in
         try await pool.sqlDatabase.all(

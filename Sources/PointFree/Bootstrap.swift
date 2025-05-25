@@ -112,7 +112,7 @@ private func updateCloudflareVideos() async throws {
     for video in videos.result {
       let episode = episodes().first(where: {
         $0.fullVideo.cloudflareID == video.uid
-        || $0.trailerVideo.cloudflareID == video.uid
+          || $0.trailerVideo.cloudflareID == video.uid
       })
       let clip = clips.first(where: { $0.cloudflareVideoID == video.uid })
       if let episode {

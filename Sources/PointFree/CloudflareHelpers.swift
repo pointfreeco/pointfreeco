@@ -101,9 +101,9 @@ extension CloudflareClient {
         || allowedOrigins != cloudflareVideo?.allowedOrigins
     else {
       print(
-      """
-      ⏩ Skipping Cloudflare \(kind.rawValue) (\(cloudflareVideoID)) update. Nothing changed.
-      """
+        """
+        ⏩ Skipping Cloudflare \(kind.rawValue) (\(cloudflareVideoID)) update. Nothing changed.
+        """
       )
       return false
     }
@@ -196,6 +196,6 @@ extension Clip {
       "vimeoID": vimeoVideoID?.description,
       "kind": CloudflareClient.MetaVideoKind.clip.rawValue,
     ]
-      .compactMapValues(\.self)
+    .compactMapValues(\.self)
   }
 }
