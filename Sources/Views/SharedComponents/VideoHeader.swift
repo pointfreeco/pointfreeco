@@ -10,6 +10,7 @@ struct VideoHeader: HTML {
   let subtitle: String
   let blurb: String
   let videoID: Episode.Video.ID
+  let adURL: String?
   let poster: String
   let progress: Progress?
   let trackProgress: Bool
@@ -203,7 +204,11 @@ struct VideoHeader: HTML {
     case .cloudflare(let id):
       @Dependency(\.envVars.cloudflare.customerSubdomain) var customerSubdomain
       let timestamp = seconds.map { "&startTime=\($0)s" } ?? ""
-      return "https://\(customerSubdomain)/\(id)/iframe?poster=\(poster)&startTime=\(timestamp)"
+      var src = "https://\(customerSubdomain)/\(id)/iframe?poster=\(poster)&startTime=\(timestamp)"
+      if let adURL {
+        src.append("&ad-url=\(adURL)")
+      }
+      return src
     case .vimeo(let id):
       let timestamp = seconds.map { "#\($0)s" } ?? ""
       return "https://player.vimeo.com/video/\(id)?pip=1\(timestamp)"
