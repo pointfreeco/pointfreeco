@@ -246,19 +246,6 @@ public struct Client {
   #endif
 }
 
-extension Client {
-  public func fetchClip(_ clip: Clip) async throws -> Clip {
-    if let vimeoVideoID = clip.vimeoVideoID {
-      return try await fetchClip(vimeoVideoID: vimeoVideoID)
-    } else if let cloudflareVideoID = clip.cloudflareVideoID {
-      return try await fetchClip(cloudflareVideoID: cloudflareVideoID)
-    } else {
-      struct NoVideoID: Error {}
-      throw NoVideoID()
-    }
-  }
-}
-
 extension Client: TestDependencyKey {
   public static let testValue = Self()
 }

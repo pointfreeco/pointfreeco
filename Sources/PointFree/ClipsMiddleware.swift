@@ -13,12 +13,8 @@ func clipsMiddleware(
   @Dependency(\.database) var database
   do {
     switch conn.data {
-    case let .cloudflareClip(videoID: videoID):
-      let clip = try await database.fetchClip(cloudflareVideoID: videoID)
-      return await clipMiddleware(clip: clip, conn: conn.map(const(())))
-
-    case let .vimeoClip(videoID: videoID):
-      let clip = try await database.fetchClip(vimeoVideoID: videoID)
+    case let .clip(cloudflareVideoID: cloudflareVideoID):
+      let clip = try await database.fetchClip(cloudflareVideoID: cloudflareVideoID)
       return await clipMiddleware(clip: clip, conn: conn.map(const(())))
 
     case .clips:

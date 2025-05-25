@@ -123,7 +123,7 @@ public struct ClipCard: HTML {
   public var body: some HTML {
     Card {
       Header(4) {
-        Link(destination: .clips(.clip(clip))) {
+        Link(destination: .clips(.clip(cloudflareVideoID: clip.cloudflareVideoID))) {
           HTMLText(clip.title)
         }
         .linkColor(.black.dark(.white))
@@ -134,7 +134,7 @@ public struct ClipCard: HTML {
         .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
         .inlineStyle("margin-top", "1rem")
     } header: {
-      Link(destination: .clips(.clip(clip))) {
+      Link(destination: .clips(.clip(cloudflareVideoID: clip.cloudflareVideoID))) {
         Image(source: clip.posterURL, description: "")
           .attribute("loading", "lazy")
           .inlineStyle("width", "100%")

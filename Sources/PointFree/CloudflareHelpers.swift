@@ -61,7 +61,7 @@ extension CloudflareClient {
       vimeoVideo: nil,
       meta: clip.cloudflareMeta(vimeoVideoID: vimeoVideoID),
       publicDetails: clip.cloudflarePublicDetails(
-        url: siteRouter.url(for: .clips(.clip(clip)))
+        url: siteRouter.url(for: .clips(.clip(cloudflareVideoID: cloudflareVideo.uid)))
       ),
       kind: .clip
     )
@@ -79,7 +79,7 @@ extension CloudflareClient {
       vimeoVideo: nil,
       meta: clip.cloudflareMeta(vimeoVideoID: vimeoVideoID),
       publicDetails: clip.cloudflarePublicDetails(
-        url: siteRouter.url(for: .clips(.clip(clip)))
+        url: siteRouter.url(for: .clips(.clip(cloudflareVideoID: cloudflareVideoID)))
       ),
       kind: .clip
     )
@@ -96,7 +96,7 @@ extension CloudflareClient {
     @Dependency(CloudflareClient.self) var cloudflare
     @Dependency(\.siteRouter) var siteRouter
     guard
-      meta.keys.contains(where: { meta[$0]! != cloudflareVideo?.meta[$0] })
+      meta.keys.contains(where: { meta[$0]! != cloudflareVideo?.meta?[$0] })
         || publicDetails != cloudflareVideo?.publicDetails
         || allowedOrigins != cloudflareVideo?.allowedOrigins
     else {

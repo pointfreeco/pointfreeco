@@ -32,7 +32,7 @@ public func bootstrap() async {
   }
 }
 
-public func connectToPostgres() async {
+private func connectToPostgres() async {
   @Dependency(\.envVars.postgres.databaseUrl) var databaseUrl
   @Dependency(\.database.migrate) var migrate
 
@@ -70,7 +70,7 @@ private func updateCollectionClips() async {
         switch lesson {
         case .clip(let clip):
           do {
-            let clip = try await database.fetchClip(clip)
+            let clip = try await database.fetchClip(cloudflareVideoID: clip.cloudflareVideoID)
             lesson = .clip(clip)
           } catch {
             print("    ❌ Clip error: \(error)")
@@ -105,10 +105,10 @@ private func updateCloudflareVideos() async throws {
   }
 
   await withErrorReporting {
-    let clips = try await database.fetchClips(includeHidden: true)
-
     // TODO: Paginate to make sure we get all. Currently this endpoint is limited to 1,000 videos.
     let videos = try await cloudflare.videos()
+    let clips = try await database.fetchClips(includeHidden: true)
+
     for video in videos.result {
       let episode = episodes().first(where: {
         $0.fullVideo.cloudflareID == video.uid
@@ -131,7 +131,7 @@ private func updateCloudflareVideos() async throws {
         let didUpdate = try await retry {
           try await cloudflare.editVideo(
             cloudflareVideo: video,
-            vimeoVideoID: clip.vimeoVideoID,
+            vimeoVideoID: nil,
             clip: clip
           )
         }
