@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 136186
+Content-Length: 136231
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -567,13 +567,14 @@ article div:hover > * > .display-Vk1P81{display:initial}
   let lastSeenPercent = 0
   if (trackProgress) {
     player.addEventListener("timeupdate", function(data) {
-      if (Math.abs(data.percent - lastSeenPercent) >= 0.01) {
-        lastSeenPercent = data.percent
+      const percent = player.currentTime / player.duration;
+      if (Math.abs(percent - lastSeenPercent) >= 0.01) {
+        lastSeenPercent = percent
 
         const httpRequest = new XMLHttpRequest()
         httpRequest.open(
           "POST",
-          window.location.pathname + "/progress?percent=" + Math.round(data.percent * 100)
+          window.location.pathname + "/progress?percent=" + Math.round(percent * 100)
         )
         httpRequest.send()
       }
