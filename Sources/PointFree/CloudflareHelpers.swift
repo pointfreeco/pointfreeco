@@ -132,7 +132,7 @@ extension Episode {
   }
 
   public func cloudflareMeta(
-    kind: CloudflareClient.MetaVideoKind,
+    kind: CloudflareClient.MetaVideoKind
   ) -> [String: String] {
     [
       "name": cloudflareInternalName(kind: kind),
