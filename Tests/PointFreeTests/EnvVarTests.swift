@@ -34,7 +34,7 @@ class EnvVarTests: TestCase {
       "RSS_USER_AGENT_WATCHLIST": "",
       "STRIPE_ENDPOINT_SECRET": "whsec_test",
       "STRIPE_PUBLISHABLE_KEY": "pk_test",
-      "STRIPE_SECRET_KEY": "sk_test"
+      "STRIPE_SECRET_KEY": "sk_test",
     ]
 
     let envVars = try JSONDecoder()

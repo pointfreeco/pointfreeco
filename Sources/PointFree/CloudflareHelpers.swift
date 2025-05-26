@@ -167,6 +167,6 @@ extension Clip {
       "name": cloudflareInternalName,
       "kind": CloudflareClient.MetaVideoKind.clip.rawValue,
     ]
-      .compactMapValues(\.self)
+    .compactMapValues(\.self)
   }
 }

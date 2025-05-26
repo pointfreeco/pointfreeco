@@ -140,7 +140,8 @@ struct VideoHeader: HTML {
     let seconds = progress.map { Int(Double($0.seconds * $0.percent) / 100) }
     @Dependency(\.envVars.cloudflare.customerSubdomain) var customerSubdomain
     let timestamp = seconds.map { "&startTime=\($0)s" } ?? ""
-    var src = "https://\(customerSubdomain)/\(videoID)/iframe?poster=\(poster)&startTime=\(timestamp)"
+    var src =
+      "https://\(customerSubdomain)/\(videoID)/iframe?poster=\(poster)&startTime=\(timestamp)"
     if let adURL {
       src.append("&ad-url=\(adURL)")
     }
