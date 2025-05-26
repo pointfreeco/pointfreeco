@@ -17,7 +17,6 @@ extension Client {
     execute: { _ in throw unit },
     fetchAdmins: { [] },
     fetchClipByCloudflareVideoID: { _ in throw unit },
-    fetchClipByVimeoVideoID: { _ in throw unit },
     fetchClips: { _ in throw unit },
     fetchEmailSettingsForUserId: { _ in [.mock] },
     fetchEnterpriseAccountForDomain: { _ in .mock },

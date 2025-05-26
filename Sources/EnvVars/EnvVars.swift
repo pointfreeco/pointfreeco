@@ -31,7 +31,6 @@ public struct EnvVars: Codable {
   public var rssUserAgentWatchlist: [String]
   public var slackInviteURL: String
   public var stripe: Stripe
-  public var vimeo: Vimeo
 
   public init(
     appEnv: AppEnv = .development,
@@ -47,8 +46,7 @@ public struct EnvVars: Codable {
     regionalDiscountCouponId: Coupon.ID = "regional-discount",
     rssUserAgentWatchlist: [String] = [],
     slackInviteURL: String = "http://slack.com",
-    stripe: Stripe = Stripe(),
-    vimeo: Vimeo = Vimeo()
+    stripe: Stripe = Stripe()
   ) {
     self.appEnv = appEnv
     self.appSecret = appSecret
@@ -64,7 +62,6 @@ public struct EnvVars: Codable {
     self.rssUserAgentWatchlist = rssUserAgentWatchlist
     self.slackInviteURL = slackInviteURL
     self.stripe = stripe
-    self.vimeo = vimeo
   }
 
   private enum CodingKeys: String, CodingKey {
@@ -196,24 +193,6 @@ public struct EnvVars: Codable {
       case secretKey = "STRIPE_SECRET_KEY"
     }
   }
-
-  public struct Vimeo: Codable {
-    public var bearer: String
-    public var userId: String
-
-    public init(
-      bearer: String = "deadbeef",
-      userId: String = "0"
-    ) {
-      self.bearer = bearer
-      self.userId = userId
-    }
-
-    private enum CodingKeys: String, CodingKey {
-      case bearer = "VIMEO_BEARER"
-      case userId = "VIMEO_USER_ID"
-    }
-  }
 }
 
 extension EnvVars {
@@ -237,7 +216,6 @@ extension EnvVars {
       .map(String.init)
     self.slackInviteURL = try container.decode(String.self, forKey: .slackInviteURL)
     self.stripe = try .init(from: decoder)
-    self.vimeo = try .init(from: decoder)
   }
 
   public func encode(to encoder: Encoder) throws {
@@ -258,7 +236,6 @@ extension EnvVars {
     try container.encode(self.regionalDiscountCouponId, forKey: .regionalDiscountCouponId)
     try container.encode(self.slackInviteURL, forKey: .slackInviteURL)
     try self.stripe.encode(to: encoder)
-    try self.vimeo.encode(to: encoder)
   }
 }
 

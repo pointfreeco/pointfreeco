@@ -10,7 +10,6 @@ import PointFreePrelude
 import PostgresKit
 import Stripe
 import Tagged
-import Vimeo
 
 @DependencyClient
 public struct Client {
@@ -56,9 +55,6 @@ public struct Client {
   @DependencyEndpoint(method: "fetchClip")
   public var fetchClipByCloudflareVideoID:
     (_ cloudflareVideoID: Cloudflare.Video.ID) async throws -> Clip
-  @available(*, deprecated)
-  @DependencyEndpoint(method: "fetchClip")
-  public var fetchClipByVimeoVideoID: (_ vimeoVideoID: Vimeo.Video.ID) async throws -> Clip
   public var fetchClips: (_ includeHidden: Bool) async throws -> [Clip]
   @DependencyEndpoint(method: "fetchEmailSettings")
   public var fetchEmailSettingsForUserId: (_ userID: Models.User.ID) async throws -> [EmailSetting]

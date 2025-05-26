@@ -6,7 +6,6 @@ import PointFreeDependencies
 import PointFreeRouter
 import Prelude
 import Views
-import Vimeo
 
 func liveMiddleware(
   _ conn: Conn<StatusLineOpen, Live>

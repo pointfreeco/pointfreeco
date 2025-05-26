@@ -53,7 +53,7 @@ private func connectToPostgres() async {
 private func updateCollectionClips() async {
   print("  ⏳ Updating collection clips")
   defer {
-    print("  ✅ Vimeo collection updated!")
+    print("  ✅ Collections updated!")
   }
 
   @Dependency(\.collections) var collections
@@ -111,17 +111,16 @@ private func updateCloudflareVideos() async throws {
 
     for video in videos.result {
       let episode = episodes().first(where: {
-        $0.fullVideo.cloudflareID == video.uid
-          || $0.trailerVideo.cloudflareID == video.uid
+        $0.fullVideo.id == video.uid
+          || $0.trailerVideo.id == video.uid
       })
       let clip = clips.first(where: { $0.cloudflareVideoID == video.uid })
       if let episode {
         let didUpdate = try await retry {
           try await cloudflare.editVideo(
             cloudflareVideo: video,
-            vimeoVideo: nil,
             episode: episode,
-            kind: episode.trailerVideo.cloudflareID == video.uid ? .trailer : .episode
+            kind: episode.trailerVideo.id == video.uid ? .trailer : .episode
           )
         }
         if didUpdate {
@@ -131,7 +130,6 @@ private func updateCloudflareVideos() async throws {
         let didUpdate = try await retry {
           try await cloudflare.editVideo(
             cloudflareVideo: video,
-            vimeoVideoID: nil,
             clip: clip
           )
         }

@@ -70,13 +70,5 @@
   [17]: (
     key: "STRIPE_SECRET_KEY",
     value: "sk_test"
-  ),
-  [18]: (
-    key: "VIMEO_BEARER",
-    value: "deadbeef"
-  ),
-  [19]: (
-    key: "VIMEO_USER_ID",
-    value: "1234567890"
   )
 ]
