@@ -81,9 +81,7 @@ struct VideoHeader: HTML {
                 jump(window.location.hash, false)
 
                 let lastSeenPercent = 0
-                console.log(trackProgress);
                 if (trackProgress) {
-                  console.log("tracking progress");
                   player.addEventListener("timeupdate", function(data) {
                     const percent = player.currentTime / player.duration;
                     if (Math.abs(percent - lastSeenPercent) >= 0.01) {
