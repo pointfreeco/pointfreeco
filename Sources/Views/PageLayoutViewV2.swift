@@ -140,13 +140,14 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     if shouldShowLiveBanner {
       LiveStreamBanner()
     }
-    for banner in Banner.allBanners {
-      AnnouncementBanner {
-        HTMLMarkdown {
-          banner.markdownContent
-        }
-      }
-    }
+    WWDCBanner()
+    //    for banner in Banner.allBanners {
+    //      AnnouncementBanner {
+    //        HTMLMarkdown {
+    //          banner.markdownContent
+    //        }
+    //      }
+    //    }
     NavBar()
     content
     if !layoutData.style.isMinimal {
@@ -239,11 +240,16 @@ struct MenuButton: HTML {
       span {}
         .inlineStyle("top", index == 0 ? nil : "\(index * 5)px")
         .inlineStyle(
-          "top", index == 0 ? nil : index == 1 ? "-5px" : "0", pre: "input:checked ~ #menu-icon"
+          "top",
+          index == 0 ? nil : index == 1 ? "-5px" : "0",
+          pre: "input:checked ~ #menu-icon"
         )
         .inlineStyle("transform", "rotate(\(index * 45)deg)", pre: "input:checked ~ #menu-icon")
         .inlineStyle(
-          "background", index == 0 ? "transparent" : nil, pre: "input:checked ~ #menu-icon")
+          "background",
+          index == 0 ? "transparent" : nil,
+          pre: "input:checked ~ #menu-icon"
+        )
     }
   }
 }
@@ -590,6 +596,86 @@ struct TopBanner<Content: HTML>: HTML {
       .fontStyle(.body(.small))
     }
     .backgroundColor(style.backgroundColor)
+  }
+}
+
+struct WWDCBanner: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    div {
+      LazyVGrid(columns: [.desktop: [1, 1]]) {
+        VStack(spacing: 0) {
+          div {
+            "WWDC WEEK"
+          }
+          .inlineStyle("font-weight", "1000")
+          .inlineStyle("font-size", "3.5rem")
+          .inlineStyle("margin-bottom", "-3.5rem")
+          div {
+            "SALE"
+          }
+          .inlineStyle("font-weight", "1000")
+          .inlineStyle("font-size", "10rem")
+        }
+        .inlineStyle("margin-top", "3.5rem")
+
+        VStack {
+          VStack(alignment: .center, spacing: 0) {
+            HStack(alignment: .center, spacing: 0) {
+              div { "30" }
+                .inlineStyle("font-weight", "1000")
+                .inlineStyle("font-size", "10rem")
+              VStack(alignment: .leading, spacing: 0) {
+                div { "%" }
+                  .inlineStyle("margin-bottom", "-2rem")
+                  .inlineStyle("font-weight", "700")
+                  .inlineStyle("font-size", "5rem")
+                div { "off" }
+                  .inlineStyle("font-weight", "700")
+                  .inlineStyle("font-size", "3rem")
+              }
+            }
+            .inlineStyle("margin-bottom", "-2rem")
+            div {
+              HTMLText("Point-Free for 1 year")
+            }
+            .inlineStyle("font-weight", "1000")
+            .inlineStyle("font-size", "1.5rem")
+          }
+          HStack {
+            Spacer()
+            Button(color: .purple, size: .large) {
+              span {
+                "Buy now"
+              }
+              .padding(leftRight: .medium)
+            }
+            .attribute(
+              "href",
+              siteRouter.path(for: .discounts(code: "wwdc-2025", .yearly))
+            )
+            Spacer()
+          }
+          div {
+            HTMLText("Limited time only")
+          }
+          .inlineStyle("font-size", "1rem")
+          //.fontStyle(.body(.small))
+        }
+      }
+      .color(.offBlack)
+      .linkStyle(LinkStyle(color: .offWhite, underline: true))
+      .inlineStyle("margin", "0 auto")
+      .inlineStyle("max-width", "1280px")
+      .inlineStyle("padding", "5rem")
+      .inlineStyle("text-align", "center")
+      .inlineStyle("font-size", "1.2rem")
+    }
+    .inlineStyle(
+      "background",
+      "linear-gradient(135deg, #fff080 0%, #4cccff 20%, #79f2b0 80%, #974dff 100%)"
+    )
   }
 }
 
