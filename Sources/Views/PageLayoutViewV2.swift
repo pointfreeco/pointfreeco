@@ -32,10 +32,12 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     self.cssConfig = cssConfig
   }
 
+  @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.date.now) var now
   @Dependency(\.shouldShowLiveBanner) var shouldShowLiveBanner
   @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
 
   public var head: some HTML {
     tag("title") { HTMLText(layoutData.title) }
@@ -140,14 +142,13 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     if shouldShowLiveBanner {
       LiveStreamBanner()
     }
-    WWDCBanner()
-    //    for banner in Banner.allBanners {
-    //      AnnouncementBanner {
-    //        HTMLMarkdown {
-    //          banner.markdownContent
-    //        }
-    //      }
-    //    }
+    if !subscriberState.isActive {
+      if currentRoute == .home || currentRoute == .blog(.index) {
+        WWDCBanner()
+      } else {
+        MinimalWWDCBanner()
+      }
+    }
     NavBar()
     content
     if !layoutData.style.isMinimal {
@@ -599,6 +600,75 @@ struct TopBanner<Content: HTML>: HTML {
   }
 }
 
+struct MinimalWWDCBanner: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    div {
+      HStack(alignment: .lastTextBaseline, spacing: 2) {
+        Spacer()
+        VStack(alignment: .leading, spacing: -0.2) {
+          div {
+            "WWDC WEEK"
+          }
+          .inlineStyle("font-weight", "1000")
+          .inlineStyle("font-size", "2.3rem")
+          .inlineStyle("margin-bottom", "-1.5rem")
+          div {
+            "SALE"
+          }
+          .inlineStyle("font-weight", "1000")
+          .inlineStyle("font-size", "6rem")
+        }
+        .inlineStyle("margin-top", "0.75rem")
+
+        VStack(alignment: .center, spacing: 0) {
+          HStack(alignment: .center, spacing: 0) {
+            div { "30" }
+              .inlineStyle("font-weight", "1000")
+              .inlineStyle("font-size", "4rem")
+            VStack(alignment: .leading, spacing: 0) {
+              div { "%" }
+                .inlineStyle("margin-bottom", "-0.5rem")
+                .inlineStyle("font-weight", "700")
+                .inlineStyle("font-size", "2rem")
+              div { "off" }
+                .inlineStyle("font-weight", "700")
+                .inlineStyle("font-size", "1rem")
+            }
+          }
+          HStack {
+            Spacer()
+            Button(color: .purple) {
+              span {
+                "Buy now"
+              }
+              .padding(leftRight: .small)
+            }
+            .attribute(
+              "href",
+              siteRouter.path(for: .discounts(code: "wwdc-2025", .yearly))
+            )
+            Spacer()
+          }
+        }
+        Spacer()
+      }
+      .color(.offBlack)
+      .linkStyle(LinkStyle(color: .offWhite, underline: true))
+      .inlineStyle("margin", "0 auto")
+      .inlineStyle("max-width", "1280px")
+      .inlineStyle("padding", "2rem 2rem")
+      .inlineStyle("text-align", "center")
+      .inlineStyle("font-size", "1.2rem")
+    }
+    .inlineStyle(
+      "background",
+      "linear-gradient(135deg, #fff080 0%, #4cccff 20%, #79f2b0 80%, #974dff 100%)"
+    )
+  }
+}
+
 struct WWDCBanner: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
@@ -620,15 +690,17 @@ struct WWDCBanner: HTML {
 
           HStack(spacing: 1) {
             HTMLForEach(
-              ["CloudKit",
-               "SwiftUI",
-               "Architecture"]
-              + [
-                "Persistence",
-                "Navigation",
-                "SQLite",
-                "Concurrency",
-              ].shuffled()
+              [
+                "CloudKit",
+                "SwiftUI",
+                "Architecture",
+              ]
+                + [
+                  "Persistence",
+                  "Navigation",
+                  "SQLite",
+                  "Concurrency",
+                ].shuffled()
                 + [
                   "Macros",
                   "Dependencies",

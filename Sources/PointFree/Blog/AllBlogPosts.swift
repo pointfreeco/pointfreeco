@@ -188,5 +188,6 @@ extension BlogPost {
     .post0169_testScoping,
     .post0170_StructuredQueries,
     .post0171_MitigatingSwiftSyntax,
+    .post0172_WWDC,
   ]
 }

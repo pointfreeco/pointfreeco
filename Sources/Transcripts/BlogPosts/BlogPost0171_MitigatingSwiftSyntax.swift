@@ -10,7 +10,7 @@ extension BlogPost {
     hidden: .no,
     hideFromSlackRSS: false,
     id: 171,
-    publishedAt: yearMonthDayFormatter.date(from: "2025-05-27")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2025-05-28")!,
     title: "Mitigating SwiftSyntax build times"
   )
 }
