@@ -142,8 +142,9 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     if shouldShowLiveBanner {
       LiveStreamBanner()
     }
-    if !subscriberState.isActive {
-      if currentRoute == .home || currentRoute == .blog(.index) {
+    if !subscriberState.isActive && !currentRoute.is(\.subscribeConfirmation) {
+      if currentRoute.is(\.home) || currentRoute.is(\.blog.index)
+      {
         WWDCBanner()
       } else {
         MinimalWWDCBanner()
@@ -647,7 +648,7 @@ struct MinimalWWDCBanner: HTML {
             }
             .attribute(
               "href",
-              siteRouter.path(for: .discounts(code: "wwdc-2025", .yearly))
+              siteRouter.path(for: .discounts(code: "dubdub25", .yearly))
             )
             Spacer()
           }
@@ -753,7 +754,7 @@ struct WWDCBanner: HTML {
             }
             .attribute(
               "href",
-              siteRouter.path(for: .discounts(code: "wwdc-2025", .yearly))
+              siteRouter.path(for: .discounts(code: "dubdub25", .yearly))
             )
             Spacer()
           }
@@ -761,7 +762,6 @@ struct WWDCBanner: HTML {
             HTMLText("Limited time only")
           }
           .inlineStyle("font-size", "1rem")
-          //.fontStyle(.body(.small))
         }
       }
       .color(.offBlack)

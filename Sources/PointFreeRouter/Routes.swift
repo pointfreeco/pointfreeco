@@ -64,6 +64,7 @@ public indirect enum SiteRoute: Equatable {
     case updateGitHub(redirect: String?)
   }
 
+  @CasePathable
   public enum Blog: Equatable {
     case feed
     case index

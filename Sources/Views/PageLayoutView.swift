@@ -202,18 +202,10 @@ struct Banner {
   static let wwdc2025 = Self(
     endAt: yearMonthDayFormatter.date(from: "2025-06-09")!,
     markdownContent: ###"""
-      **🎉 WWDC Sale!** Save 30% when you [subscribe today](/discounts/wwdc-2025).
+      **🎉 WWDC Sale!** Save 30% when you [subscribe today](/discounts/dubdub25).
       """###,
     shouldShow: { route in
       if case .subscribeConfirmation = route {
-        return false
-      } else if case .blog(.show(.left("TODO"))) = route {
-        return false
-      } else if case .blog(.show(.right(0/*TODO*/))) = route {
-        return false
-      } else if case .blog(.show(.left("TODO"))) = route {
-        return false
-      } else if case .blog(.show(.right(0/*TODO*/))) = route {
         return false
       } else if case .teamInviteCode = route {
         return false
@@ -221,7 +213,7 @@ struct Banner {
         return true
       }
     },
-    startAt: yearMonthDayFormatter.date(from: "2025-05-31")!
+    startAt: yearMonthDayFormatter.date(from: "2025-05-28")!
   )
 }
 
