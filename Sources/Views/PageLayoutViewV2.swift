@@ -605,7 +605,7 @@ struct WWDCBanner: HTML {
   var body: some HTML {
     div {
       LazyVGrid(columns: [.desktop: [1, 1]]) {
-        VStack(spacing: 0) {
+        VStack(alignment: .center, spacing: 0) {
           div {
             "WWDC WEEK"
           }
@@ -617,8 +617,36 @@ struct WWDCBanner: HTML {
           }
           .inlineStyle("font-weight", "1000")
           .inlineStyle("font-size", "10rem")
+
+          HStack(spacing: 1) {
+            HTMLForEach(
+              ["CloudKit",
+               "SwiftUI",
+               "Architecture"]
+              + [
+                "Persistence",
+                "Navigation",
+                "SQLite",
+                "Concurrency",
+              ].shuffled()
+                + [
+                  "Macros",
+                  "Dependencies",
+                  "Livestreams",
+                  "Testing",
+                  "Cross-Platform",
+                ].shuffled()
+            ) { topic in
+              span { HTMLText(topic) }
+            }
+          }
+          .inlineStyle("font-size", "1rem")
+          .inlineStyle("font-weight", "300")
+          .inlineStyle("justify-content", "center")
+          .inlineStyle("flex-wrap", "wrap")
+          .inlineStyle("row-gap", "0.5rem")
         }
-        .inlineStyle("margin-top", "3.5rem")
+        .inlineStyle("margin-top", "1.5rem")
 
         VStack {
           VStack(alignment: .center, spacing: 0) {
@@ -640,7 +668,7 @@ struct WWDCBanner: HTML {
             div {
               HTMLText("Point-Free for 1 year")
             }
-            .inlineStyle("font-weight", "1000")
+            .inlineStyle("font-weight", "800")
             .inlineStyle("font-size", "1.5rem")
           }
           HStack {
