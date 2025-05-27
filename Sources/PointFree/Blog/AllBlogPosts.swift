@@ -187,5 +187,6 @@ extension BlogPost {
     .post0168_SharingGRDB,
     .post0169_testScoping,
     .post0170_StructuredQueries,
+    .post0171_MitigatingSwiftSyntax,
   ]
 }
