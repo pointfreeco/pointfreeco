@@ -12,7 +12,7 @@ extension BlogPost {
     hidden: .no,
     hideFromSlackRSS: false,
     id: 170,
-    publishedAt: yearMonthDayFormatter.date(from: "2025-06-04")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2025-04-22")!,
     title: "A fast, lightweight replacement for SwiftData"
   )
 }
