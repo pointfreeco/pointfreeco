@@ -200,7 +200,7 @@ struct Banner {
   }
 
   static let wwdc2025 = Self(
-    endAt: yearMonthDayFormatter.date(from: "2025-06-09")!,
+    endAt: yearMonthDayFormatter.date(from: "2025-06-16")!,
     markdownContent: ###"""
       **🎉 WWDC Sale!** Save 30% when you [subscribe today](/discounts/dubdub25).
       """###,
@@ -213,7 +213,7 @@ struct Banner {
         return true
       }
     },
-    startAt: yearMonthDayFormatter.date(from: "2025-05-28")!
+    startAt: yearMonthDayFormatter.date(from: "2025-06-04")!
   )
 }
 

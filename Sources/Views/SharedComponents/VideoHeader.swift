@@ -10,7 +10,7 @@ struct VideoHeader: HTML {
   let subtitle: String
   let blurb: String
   let videoID: Episode.Video.ID
-  var adURL: String? = "https://opencdn.b-cdn.net/pub/5.0/e-v-1/vmap_ad_sample.xml"
+  var adURL: String?
   let poster: String
   let progress: Progress?
   let trackProgress: Bool
