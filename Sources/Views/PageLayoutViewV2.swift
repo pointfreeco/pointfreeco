@@ -636,13 +636,15 @@ struct MinimalWWDCBanner: HTML {
               div { "off" }
                 .inlineStyle("font-weight", "700")
                 .inlineStyle("font-size", "1rem")
+                .inlineStyle("position", "relative")
+                .inlineStyle("top", "-0.125rem")
             }
           }
           HStack {
             Spacer()
             Button(color: .purple) {
               span {
-                "Buy now"
+                "Subscribe now"
               }
               .padding(leftRight: .small)
             }
@@ -741,14 +743,14 @@ struct WWDCBanner: HTML {
             div {
               HTMLText("Point-Free for 1 year")
             }
-            .inlineStyle("font-weight", "800")
+            .inlineStyle("font-weight", "700")
             .inlineStyle("font-size", "1.5rem")
           }
           HStack {
             Spacer()
             Button(color: .purple, size: .large) {
               span {
-                "Buy now"
+                "Subscribe now"
               }
               .padding(leftRight: .medium)
             }
@@ -762,6 +764,7 @@ struct WWDCBanner: HTML {
             HTMLText("Limited time only")
           }
           .inlineStyle("font-size", "1rem")
+          .inlineStyle("font-weight", "300")
         }
       }
       .color(.offBlack)
