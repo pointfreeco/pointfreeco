@@ -48,10 +48,10 @@ struct NewsletterDetailModule: HTML {
           CalloutModule(
             title: "Find this interesting?",
             subtitle: """
-                        Get started with our free plan, which includes **1 subscriber-only** episode of your \
-                        choice, access to **\(freeEpisodeCount) free** episodes with transcripts and code \
-                        samples, and weekly updates from our newsletter.
-                        """,
+              Get started with our free plan, which includes **1 subscriber-only** episode of your \
+              choice, access to **\(freeEpisodeCount) free** episodes with transcripts and code \
+              samples, and weekly updates from our newsletter.
+              """,
             ctaTitle: "Sign up for free →",
             ctaURL: siteRouter.path(
               for: .auth(.signUp(redirect: siteRouter.url(for: currentRoute)))
