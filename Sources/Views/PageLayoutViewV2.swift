@@ -143,8 +143,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
       LiveStreamBanner()
     }
     if !subscriberState.isActive && !currentRoute.is(\.subscribeConfirmation) {
-      if currentRoute.is(\.home) || currentRoute.is(\.blog.index)
-      {
+      if currentRoute.is(\.home) || currentRoute.is(\.blog.index) {
         WWDCBanner()
       } else {
         MinimalWWDCBanner()
