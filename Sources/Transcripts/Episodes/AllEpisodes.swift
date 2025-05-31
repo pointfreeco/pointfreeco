@@ -329,5 +329,6 @@ extension Episode {
     .ep324_modernPersistence,
     .ep325_modernPersistence,
     .ep326_modernPersistence,
+    .ep327_modernPersistence,
   ]
 }

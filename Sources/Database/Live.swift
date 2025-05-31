@@ -1034,7 +1034,7 @@ extension Client {
             \(bind: gitHubUser.id),
             \(bind: accessToken),
             \(bind: gitHubUser.name),
-            \(bind: now().timeIntervalSince(gitHubUser.createdAt) < 60*60*24*7 ? 0 : 1)
+            \(bind: now().timeIntervalSince(gitHubUser.createdAt) < 60*60*24*30 ? 0 : 1)
           )
           ON CONFLICT ("github_user_id") DO UPDATE
           SET "github_access_token" = $3, "name" = $4
