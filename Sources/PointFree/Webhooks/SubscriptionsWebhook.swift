@@ -61,7 +61,7 @@ private func handleFailedPayment(
         try await sendPastDueEmail(to: user)
       }
 
-      if stripeSubscription.quantity >= 5 {
+      if stripeSubscription.quantity >= 3 {
         await fireAndForget {
           try await sendEmail(
             to: adminEmails,
