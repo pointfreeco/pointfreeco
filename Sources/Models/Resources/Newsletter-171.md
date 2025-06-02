@@ -1,49 +1,29 @@
 There is a long-standing problem in the Apple ecosystem that makes using of one of Swift’s most powerful features, macros, incur a tremendous cost on your build times. To use macros one must first build [SwiftSyntax](http://github.com/swiftlang/swift-syntax/) from scratch, which takes approximately ~20 seconds in development and over 4 minutes in release. This cost is too much for many to bear, and so many developers simply cannot use any libraries that make use of macros or introduce macros into their own codebase.
 
-We [brought this to the attention](https://forums.swift.org/t/macro-adoption-concerns-around-swiftsyntax/66588) of the greater Swift community before macros were officially released, and [subsequent threads](https://forums.swift.org/t/compilation-extremely-slow-since-macros-adoption/67921) have become a hotbed for members of the community to vent their frustrations. But, while we wait for an official solution from Apple, a few Swift community members took matters into their own hands.
+Well, that was until Xcode 16.4! This most recent release of Xcode has brought [pre-compiled binaries of SwiftSyntax][swift-forums-post] to the toolchain so that macros no longer need to build SwiftSyntax. Join us for a quick overview of how to take advantage of this new feature of Swift to slim down your build times.
 
-# Static SwiftSyntax
+[swift-forums-post]: https://forums.swift.org/t/preview-swift-syntax-prebuilts-for-macros/80202
 
-[Vatsal Manot](https://github.com/vmanot) and [John Holdsworth](https://github.com/johnno1962) are both prolific open source contributors and maintainers, and with the help of a few other community members ([Kohki Miki](https://github.com/giginet), [Kabir Oberai](https://github.com/kabiroberai), [Yume](https://github.com/yume190)) they have figured out a way to provide a [statically built SwiftSyntax](https://github.com/swift-precompiled/swift-syntax) to a project that achieves 3 main goals:
+# Pre-built SwiftSyntax
 
-- Xcode and SPM will use the statically built SwiftSyntax framework instead of building from scratch.
-- It does not require 3rd party libraries to make any changes to their code. They will continue depending on swiftlang/swift-syntax in their Package.swift.
-- 1st parties wanting to use the statically built SwiftSyntax need to perform only one step a single time.
+To take advantage of pre-built SwiftSyntax in Xcode one has to use Xcode 16.4 and enable the 
+following defaults value: 
 
-Sound too good to be true? Well, they seem to have achieved the impossible, and Vatsal Manot has been generous enough to maintain an open source repo of precompiled Swift frameworks: [swift-precompiled/swift-syntax](https://github.com/swift-precompiled/swift-syntax).
+```
+defaults write com.apple.dt.Xcode IDEPackageEnablePrebuilts YES
+```
 
-The steps to integrate this statically built version of SwiftSyntax into your project depends on how your project is set up:
+After that Xcode should skip compiling SwiftSyntax from source and start using the pre-compiled 
+version that can be downloaded from the internet.
 
-- If you have an SPM package in your Xcode project, then you can simply add a dependency on swift-precompiled/swift-syntax pointed to the “release/6.1” branch:
-    
-    ```swift
-    dependencies: [
-      .package(
-        url: "https://github.com/swift-precompiled/swift-syntax",
-        branch: "release/6.1"
-      )
-      …
-    ]
-    ```
-    
-    Other releases of SwiftSyntax are also provided besides just 6.1.
-    
-- If you do not have an SPM package in your Xcode project, then navigate to the “Package Dependencies” tab of your project settings, and add a dependency on https://github.com/swift-precompiled/swift-syntax:
-    
-    ![](https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/f6c98d3d-6811-4eb8-f9b3-81d57e549600/public)
-    
-    **Note:** You do not need to add any of SwiftSyntax’s libraries to your app targets. It is only necessary to have a dependency on this specific repository.
-    
+If you are building or testing your library from the command line, then you must further
+pass the `--enable-experimental-prebuilts` flag to your command:
 
-Once that is done Xcode will stop depending on swiftlang/swift-syntax and instead depend on swift-precompiled/swift-syntax. This means the source code of SwiftSyntax is no longer in your project, and could not be compiled even if Xcode wanted. Instead, Xcode will not use the pre-built frameworks provided by swift-precompiled/swift-syntax.
+```
+swift build --enable-experimental-prebuilts
+```
 
-> Important: We have found that it is sometimes necessary to reset package caches after adding swift-precompiled/swift-syntax in order for Xcode to correctly pick up the new static library.
-
-You can see this directly in Xcode by expanding the swift-syntax package in the sidebar to see that it only contains the prebuilt frameworks:
-
-![](https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/f6da3769-2ece-4a8a-9958-94a791fdfb00/public)
-
-That is all takes to get Xcode and SPM to use prebuilt binaries for SwiftSyntax and greatly reduce the compile times of your projects.
+That's all it takes! 
 
 # Benchmark and caveats
 
@@ -61,44 +41,178 @@ It is worth mentioning a number of caveats with this. You will not necessarily i
 
 However, where the precompiled SwiftSyntax will *really* shine is when building smaller feature modules for tests and Xcode previews. These are situations in which the time to compile SwiftSyntax is much greater than the feature code being compiled, and so you can expect much faster feedback loops.
 
-# What’s the catch?
 
-You may be wondering what the catch is. This seems too good to be true!
+# Being a good citizen in the land of SwiftSyntax
 
-As of writing this, there are only two gotchas to be aware of:
+Now that one of the biggest hindrances to macros has been fixed we expect the ecosystem of 
+macros to thrive much more. And because of that we want to remind all developers who are thinking
+about packaging up a macro to distribute to the community to please take the time to 
+[Be a good citizen in the land of SwiftSyntax][citizen]. We wrote about this at length nearly 2
+years ago, but we have repeated the most important parts below:  
 
-- First of all, this trick only works for Apple platforms and does not work for Linux, Windows, etc. Those platforms will need to continue building SwiftSyntax from scratch for the time being. If you have a cross-platform project, then you will need to conditionally include the precompiled SwiftSyntax repo only on Apple platforms:
+[citizen]: /blog/posts/116-being-a-good-citizen-in-the-land-of-swiftsyntax
+
+## Be as flexible as possible in your dependence on SwiftSyntax
+
+SwiftSyntax has an interesting versioning scheme where major versions correspond to minor
+versions of Swift (_i.e._ SwiftSyntax 600.0 corresponds to Swift 6.0 and SwiftSyntax 601.0
+corresponds to Swift 6.1). This can complicate how libraries depend on SwiftSyntax.
+
+In order to avoid dependency graph nightmares, where you are unable to update or use a package due
+to conflicting dependency versions, we suggest being as flexible in your dependency on SwiftSyntax
+as possible. 
+
+This means that rather than depending on SwiftSyntax by saying you are willing to accept any minor
+version within a particular major version, as Xcode’s macro template does by default:
+
+```swift:3
+.package(
+  url: "https://github.com/apple/swift-syntax",
+  from: "510.0.0"
+)
+```
+
+…you should instead accept a range of major versions like so:
+
+```swift:3
+.package(
+  url: "https://github.com/apple/swift-syntax",
+  "508.0.0"..<"602.0.0"
+)
+```
+
+This allows people to depend on your package who are still stuck on version 508 of SwiftSyntax,
+while also allowing those who can target 509, 600 and 601 to use your library.
+
+In practice it can be quite difficult to support multiple major versions of SwiftSyntax. After all,
+SwiftSyntax has complete freedom to make as many breaking changes as it wants between 508 and 509.
+However, there are a few things you can do to mitigate these complexities.
+
+ 1. First, SwiftSyntax provides an empty library for every minor version of Swift less than or equal
+    to the one that SwiftSyntax is currently targeting. For example, in version 509 right now there
+    is a
+    [SwiftSyntax509 module](https://github.com/apple/swift-syntax/tree/27db1374d173cb595b52e75a6821bcb6d088873a/Sources/SwiftSyntax509).
+    And once version 510 is released there will be both a SwiftSyntax509 and SwiftSyntax510 module
+    provided.
+
+    This gives you the ability to conditionally write code depending on which version of SwiftSyntax
+    is currently being compiled using `#if canImport`. For example, the
+    [`SourceLocationConverter`](https://github.com/apple/swift-syntax/blob/27db1374d173cb595b52e75a6821bcb6d088873a/Sources/SwiftSyntax/SourceLocation.swift#L160)
+    API had a slight naming change in its API between version 508 and 509, and so in order to
+    support both we can do the following:
     
     ```swift
-    var platformSpecificDependencies: [Package.Dependency] {
-      var dependencies: [Package.Dependency] = []
-      #if canImport(Darwin)
-        dependencies.append(
-          .package(
-            url: "https://github.com/swift-precompiled/swift-syntax",
-            branch: "release/6.1"
-          )
-        )
-      #endif
-      return dependencies
-    }
+    #if canImport(SwiftSyntax509)
+      let converter = SourceLocationConverter(
+        fileName: filePath, tree: sourceFile
+      )
+    #else
+      let converter = SourceLocationConverter(
+        file: filePath, tree: sourceFile
+      )
+    #endif
     ```
     
-- Second, this trick does currently generate an SPM warning that seems scary at first:
+    Note that in version 509 the initializer uses the `fileName` argument name, whereas in 508 it
+    uses just `file`.
     
-    > Warning: 'swift-structured-queries' dependency on 'swiftlang/swift-syntax' conflicts with dependency on 'swift-precompiled/swift-syntax' which has the same identity 'swift-syntax'. this will be escalated to an error in future versions of SwiftPM.
+    This does mean that you will need to sprinkle in liberal helpings of `canImport` to get your
+    code compiling for all versions, but as library authors we are already used to that since we
+    often need to use `#if swift(<=)` for similar reasons.
     
-    The problem is that the project is now depending on two repositories with the swift-syntax name. However, Xcode and SPM seem to consistently take the one that is defined at the highest level, such as the app target, and that is why swift-precompiled/swift-syntax is chosen over swiftlang/swift-syntax.
-    
-    It is possible that someday in the future SPM may become more strict and turn this warning into an error. That would simply mean this trick no longer works, and you will have to remove your dependence on swift-precompiled/swift-syntax on go back to building SwiftSyntax from scratch. Or perhaps Apple will have a solution to this problem by then!
+ 2. Second, if it is too complex to update all uses of SwiftSyntax so that you are using the correct
+    APIs across multiple versions, you can always omit entire swaths of functionality in your library
+    using `canImport`. For example, if your library uses SwiftSyntax for just a small bit of added
+    functionality, but it is not critical to the core of your library, then you can consider
+    guarding the entire functionality behind `#if canImport(SwiftSyntax509)`. That way SPM can
+    continue resolving the dependency graph, and people can use your library, but they just won't
+    have access to all of its functionality unless they can use the newest version of SwiftSyntax.
 
-# Tips
+In fact, we have had these exact situations come up in just the past. Gwendal Roué,
+maintainer of the very popular open source library [GRDB](https://github.com/groue/GRDB.swift),
+released a [new project](https://github.com/groue/GRDBSnapshotTesting) that added support for our
+[SnapshotTesting](https://github.com/pointfreeco/swift-snapshot-testing) library to GRDB. In essence
+it allows you to snapshot test your database contents, schemas, migrations, and queries.
 
-A few things to keep in mind when using swift-precompiled/SwiftSyntax:
+In theory this works out just fine, but Gwendal quickly came across a
+[problem](https://github.com/pointfreeco/swift-snapshot-testing/discussions/794) when trying to use
+his new library in a personal project of his. Our SnapshotTesting library depended on SwiftSyntax
+509 in order to provide an
+[inline snapshot testing tool](https://www.pointfree.co/blog/posts/113-inline-snapshot-testing), but
+Gwendal also depended on Apple’s
+[OpenAPIGenerator](https://github.com/apple/swift-openapi-generator) library, which
+[depended](https://github.com/apple/swift-openapi-generator/blob/4c8ed5cec75ccf7f3c48f744b44bafb93235f492/Package.swift#L56-L59)
+on SwiftSyntax 508. That means that our library and Apple’s can never be used at the same time.
 
-- Do not use swift-precompiled/swift-syntax in library code. Library code should continue using swiftlang/swift-syntax, and really only Xcode app targets should ever depend on swift-precompiled/swift-syntax.
-- If the expanded swift-syntax package in the Xcode side bar does not look like the above screenshot, then try reseting the caches in Xcode (right click “Package Dependencies” in sidebar, and click “Reset Package Caches”).
+Luckily there was an easy fix that makes both libraries better citizens in the land of SwiftSyntax.
+The OpenAPIGenerator library’s dependence on SwiftSyntax could be relaxed to `508..<510` with one
+small change to the library
+([see the PR here](https://github.com/apple/swift-openapi-generator/pull/331)). And our
+SnapshotTesting library’s dependence on SwiftSyntax could also be relaxed to `508..<510`, but we
+decided to omit the inline snapshot testing functionality for people who were not able to target
+version 509 ([see the PR here](https://github.com/pointfreeco/swift-snapshot-testing/pull/795)). It
+was simply too big of a burden to support both 508 and 509 at the same time in this case, and so we
+felt omitting it in 508 was a reasonable compromise.
 
-# Save time today!
+With those changes, both libraries are now better citizens in the Swift ecosystem. They are
+compatible with each other, and there is a much smaller chance of them conflicting with a 3rd
+library that also needs access to SwiftSyntax.
 
-We feel that this trick for using a statically compiled SwiftSyntax is stable enough that we recommend you giving it a shot in your own codebases. We have started using it in the [Point-Free codebase](https://github.com/pointfreeco/pointfreeco/pull/968), and we will use it more moving forward.
+## Update your libraries to new versions of SwiftSyntax as soon as possible
+
+When new, major versions of SwiftSyntax come out, you should release a new version of your library
+as soon as possible supporting the new version. In the coming months we will inevitably see a
+release of Swift 5.10, and there is already
+[work being done](https://github.com/apple/swift-syntax/compare/release/5.10...main) to support new
+syntax in the SwiftSyntax library.
+
+When version 510 of the library is finally
+[released](https://github.com/apple/swift-syntax/releases), you should update your library to
+support a larger range of SwiftSyntax versions. If you currently support version 508, then you
+would update like so:
+
+```swift:3
+.package(
+  url: "https://github.com/apple/swift-syntax",
+  "508.0.0"..<"511.0.0"
+)
+```
+
+And if you currently only support 509, like if you are a macro library, then you would update like
+so:
+
+```swift:3
+.package(
+  url: "https://github.com/apple/swift-syntax",
+  "509.0.0"..<"511.0.0"
+)
+```
+
+That will help prevent your library from being a bottleneck when users try to update their packages
+or add a new package to their project.
+
+## Create separate libraries that depend on SwiftSyntax
+
+The above tips all have to do with preventing dependency graph resolution problems. There is also
+the problem of build times when depending on SwiftSyntax, whether directly or indirectly.
+
+Library authors can also help in this situation. Unless SwiftSyntax is absolutely crucial to your
+core library, you should consider moving any code that uses SwiftSyntax into its own opt-in library
+within your package. That allows people to use your core library without incurring the SwiftSyntax
+compilation costs, and only if they want access to the tools that need SwiftSyntax will they incur
+that cost.
+
+This is what we did in our SnapshotTesting library. When we released our
+[new inline snapshot testing tool](https://www.pointfree.co/blog/posts/113-inline-snapshot-testing),
+we decided to put it into a
+[separate library](https://github.com/pointfreeco/swift-snapshot-testing/blob/bb0ea08db8e73324fe6c3727f755ca41a23ff2f4/Package.swift#L27-L38)
+from the core snapshot testing library. That means people using our library will not unwittingly
+incur a compilation cost when they update to the newest version of SnapshotTesting. They will incur
+that cost only if they want access to InlineSnapshotTesting.
+
+This advice does not apply to libraries whose primary reason to exist is to provide a macro. In such
+libraries you have no choice but to depend on SwiftSyntax directly. However, if a macro is being
+*added* to an existing library, and that macro is not 100% necessary to use your library, then
+putting it into its own target will go a long way.
+
+
