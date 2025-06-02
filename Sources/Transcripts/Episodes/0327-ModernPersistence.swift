@@ -10,7 +10,7 @@ extension Episode {
     codeSampleDirectory: "0327-modern-persistence-pt5",
     exercises: _exercises,
     id: 327,
-    length: (1 * 60 * 60) + (16 * 60) + 11,
+    length: 4571,
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2025-06-02")!,
     references: [
