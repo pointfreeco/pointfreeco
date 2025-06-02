@@ -14,12 +14,12 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2025-06-02")!,
     references: [
-      .init(
+      Reference(
         blurb: "A fast, lightweight replacement for SwiftData, powered by SQL.",
         link: "https://github.com/pointfreeco/sharing-grdb",
         title: "SharingGRDB"
       ),
-      .init(
+      Reference(
         blurb: "A library for building SQL in a safe, expressive, and composable manner.",
         link: "https://github.com/pointfreeco/swift-structured-queries",
         title: "StructuredQueries"
@@ -28,7 +28,7 @@ extension Episode {
     sequence: 327,
     subtitle: "Reminders Detail, Part 2",
     title: "Modern Persistence",
-    trailerVideo: .init(
+    trailerVideo: Video(
       bytesLength: 43_700_000,
       downloadUrls: .s3(
         hd1080: "0327-trailer-1080p-1675d9fb116e4274a6aa1cb731d74a9b",
