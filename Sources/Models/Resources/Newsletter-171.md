@@ -190,29 +190,3 @@ so:
 
 That will help prevent your library from being a bottleneck when users try to update their packages
 or add a new package to their project.
-
-## Create separate libraries that depend on SwiftSyntax
-
-The above tips all have to do with preventing dependency graph resolution problems. There is also
-the problem of build times when depending on SwiftSyntax, whether directly or indirectly.
-
-Library authors can also help in this situation. Unless SwiftSyntax is absolutely crucial to your
-core library, you should consider moving any code that uses SwiftSyntax into its own opt-in library
-within your package. That allows people to use your core library without incurring the SwiftSyntax
-compilation costs, and only if they want access to the tools that need SwiftSyntax will they incur
-that cost.
-
-This is what we did in our SnapshotTesting library. When we released our
-[new inline snapshot testing tool](https://www.pointfree.co/blog/posts/113-inline-snapshot-testing),
-we decided to put it into a
-[separate library](https://github.com/pointfreeco/swift-snapshot-testing/blob/bb0ea08db8e73324fe6c3727f755ca41a23ff2f4/Package.swift#L27-L38)
-from the core snapshot testing library. That means people using our library will not unwittingly
-incur a compilation cost when they update to the newest version of SnapshotTesting. They will incur
-that cost only if they want access to InlineSnapshotTesting.
-
-This advice does not apply to libraries whose primary reason to exist is to provide a macro. In such
-libraries you have no choice but to depend on SwiftSyntax directly. However, if a macro is being
-*added* to an existing library, and that macro is not 100% necessary to use your library, then
-putting it into its own target will go a long way.
-
-
