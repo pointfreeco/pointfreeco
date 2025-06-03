@@ -679,7 +679,7 @@ struct WWDCBanner: HTML {
       LazyVGrid(columns: [.desktop: [1, 1]]) {
         VStack(alignment: .center, spacing: 0) {
           div {
-             HTMLRaw("WWDC&nbsp;WEEK")
+            HTMLRaw("WWDC&nbsp;WEEK")
           }
           .inlineStyle("font-weight", "1000")
           .inlineStyle("font-size", "3.5rem")
