@@ -142,13 +142,13 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     if shouldShowLiveBanner {
       LiveStreamBanner()
     }
-    //    if !subscriberState.isActive && !currentRoute.is(\.subscribeConfirmation) {
-    //      if currentRoute.is(\.home) || currentRoute.is(\.blog.index) {
-    //        WWDCBanner()
-    //      } else {
-    //        MinimalWWDCBanner()
-    //      }
-    //    }
+    if !subscriberState.isActive && !currentRoute.is(\.subscribeConfirmation) {
+      if currentRoute.is(\.home) || currentRoute.is(\.blog.index) {
+        WWDCBanner()
+      } else {
+        MinimalWWDCBanner()
+      }
+    }
     NavBar()
     content
     if !layoutData.style.isMinimal {
@@ -609,7 +609,7 @@ struct MinimalWWDCBanner: HTML {
         Spacer()
         VStack(alignment: .leading, spacing: -0.2) {
           div {
-            "WWDC WEEK"
+            HTMLRaw("WWDC&nbsp;WEEK")
           }
           .inlineStyle("font-weight", "1000")
           .inlineStyle("font-size", "2.3rem")
@@ -679,7 +679,7 @@ struct WWDCBanner: HTML {
       LazyVGrid(columns: [.desktop: [1, 1]]) {
         VStack(alignment: .center, spacing: 0) {
           div {
-            "WWDC WEEK"
+             HTMLRaw("WWDC&nbsp;WEEK")
           }
           .inlineStyle("font-weight", "1000")
           .inlineStyle("font-size", "3.5rem")

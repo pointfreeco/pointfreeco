@@ -213,7 +213,7 @@ struct Banner {
         return true
       }
     },
-    startAt: yearMonthDayFormatter.date(from: "2025-06-04")!
+    startAt: yearMonthDayFormatter.date(from: "2025-06-03")!
   )
 }
 
