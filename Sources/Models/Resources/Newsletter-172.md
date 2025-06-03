@@ -13,9 +13,13 @@ many advanced topics of Swift and SwiftUI, including:
 * **Modern Persistence**
 
   Our [current ambitious series][modern-persistence-collection] series of episodes asks "What should
-  the persistence layer in a modern application look like?" We attach this problem head on by 
+  the persistence layer in a modern application look like?" We attack this problem head on by 
   rebuilding Apple's Reminders app from scratch, and we do not shy away from its most complex 
   features, including complex schemas, foreign key relationships, queries, and more.
+  
+  And soon we will be attacking 
+  [multi-device synchronization](https://x.com/pointfreeco/status/1925944881853174212) of SQLite 
+  databases and sharing data with other users. You won't want to miss it!
 
 * **SQLite**
 
