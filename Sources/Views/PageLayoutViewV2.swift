@@ -605,56 +605,17 @@ struct MinimalWWDCBanner: HTML {
 
   var body: some HTML {
     div {
-      HStack(alignment: .lastTextBaseline, spacing: 2) {
-        Spacer()
-        VStack(alignment: .leading, spacing: -0.2) {
-          div {
-            HTMLRaw("WWDC&nbsp;WEEK")
-          }
-          .inlineStyle("font-weight", "1000")
-          .inlineStyle("font-size", "2.3rem")
-          .inlineStyle("margin-bottom", "-1.5rem")
-          div {
-            "SALE"
-          }
-          .inlineStyle("font-weight", "1000")
-          .inlineStyle("font-size", "6rem")
+      HTMLGroup {
+        HStack(alignment: .lastTextBaseline, spacing: 2) {
+          Spacer()
+          core
+          Spacer()
         }
-        .inlineStyle("margin-top", "0.75rem")
-
+        .inlineStyle("display", "none", media: .mobile)
         VStack(alignment: .center, spacing: 0) {
-          HStack(alignment: .center, spacing: 0) {
-            div { "30" }
-              .inlineStyle("font-weight", "1000")
-              .inlineStyle("font-size", "4rem")
-            VStack(alignment: .leading, spacing: 0) {
-              div { "%" }
-                .inlineStyle("margin-bottom", "-0.5rem")
-                .inlineStyle("font-weight", "700")
-                .inlineStyle("font-size", "2rem")
-              div { "off" }
-                .inlineStyle("font-weight", "700")
-                .inlineStyle("font-size", "1rem")
-                .inlineStyle("position", "relative")
-                .inlineStyle("top", "-0.125rem")
-            }
-          }
-          HStack {
-            Spacer()
-            Button(color: .purple) {
-              span {
-                "Subscribe now"
-              }
-              .padding(leftRight: .small)
-            }
-            .attribute(
-              "href",
-              siteRouter.path(for: .discounts(code: "dubdub25", .yearly))
-            )
-            Spacer()
-          }
+          core
         }
-        Spacer()
+        .inlineStyle("display", "none", media: .desktop)
       }
       .color(.offBlack)
       .linkStyle(LinkStyle(color: .offWhite, underline: true))
@@ -668,6 +629,57 @@ struct MinimalWWDCBanner: HTML {
       "background",
       "linear-gradient(135deg, #fff080 0%, #4cccff 20%, #79f2b0 80%, #974dff 100%)"
     )
+  }
+
+  @HTMLBuilder
+  var core: some HTML {
+    VStack(alignment: .leading, spacing: -0.2) {
+      div {
+        HTMLRaw("WWDC&nbsp;WEEK")
+      }
+      .inlineStyle("font-weight", "1000")
+      .inlineStyle("font-size", "2.3rem")
+      .inlineStyle("margin-bottom", "-1.5rem")
+      div {
+        "SALE"
+      }
+      .inlineStyle("font-weight", "1000")
+      .inlineStyle("font-size", "6rem")
+    }
+    .inlineStyle("margin-top", "0.75rem")
+
+    VStack(alignment: .center, spacing: 0) {
+      HStack(alignment: .center, spacing: 0) {
+        div { "30" }
+          .inlineStyle("font-weight", "1000")
+          .inlineStyle("font-size", "4rem")
+        VStack(alignment: .leading, spacing: 0) {
+          div { "%" }
+            .inlineStyle("margin-bottom", "-0.5rem")
+            .inlineStyle("font-weight", "700")
+            .inlineStyle("font-size", "2rem")
+          div { "off" }
+            .inlineStyle("font-weight", "700")
+            .inlineStyle("font-size", "1rem")
+            .inlineStyle("position", "relative")
+            .inlineStyle("top", "-0.125rem")
+        }
+      }
+      HStack {
+        Spacer()
+        Button(color: .purple) {
+          span {
+            "Subscribe now"
+          }
+          .padding(leftRight: .small)
+        }
+        .attribute(
+          "href",
+          siteRouter.path(for: .discounts(code: "dubdub25", .yearly))
+        )
+        Spacer()
+      }
+    }
   }
 }
 
