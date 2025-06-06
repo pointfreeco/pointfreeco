@@ -20,6 +20,7 @@ extension Episode.Collection {
           Section.Lesson(episode: .ep324_modernPersistence),
           Section.Lesson(episode: .ep325_modernPersistence),
           Section.Lesson(episode: .ep326_modernPersistence),
+          Section.Lesson(episode: .ep327_modernPersistence),
         ],
         isFinished: false,
         isHidden: false,
