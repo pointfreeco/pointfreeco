@@ -189,5 +189,6 @@ extension BlogPost {
     .post0170_StructuredQueries,
     .post0171_MitigatingSwiftSyntax,
     .post0172_WWDC,
+    .post0173_WWDC,
   ]
 }
