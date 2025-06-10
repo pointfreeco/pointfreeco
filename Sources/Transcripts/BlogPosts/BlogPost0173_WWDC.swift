@@ -14,6 +14,6 @@ extension BlogPost {
     hideFromSlackRSS: true,
     id: 173,
     publishedAt: yearMonthDayFormatter.date(from: "2025-06-10")!,
-    title: "WWDC Sale: 30% of your first year of Point-Free"
+    title: "Get 30% off Point-Free to celebrate WWDC week! 🎉"
   )
 }
