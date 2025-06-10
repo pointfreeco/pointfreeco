@@ -45,21 +45,21 @@ struct NewsletterDetailModule: HTML {
               )
             }
           )
-//          CalloutModule(
-//            title: "Find this interesting?",
-//            subtitle: """
-//              Get started with our free plan, which includes **1 subscriber-only** episode of your \
-//              choice, access to **\(freeEpisodeCount) free** episodes with transcripts and code \
-//              samples, and weekly updates from our newsletter.
-//              """,
-//            ctaTitle: "Sign up for free →",
-//            ctaURL: siteRouter.path(
-//              for: .auth(.signUp(redirect: siteRouter.url(for: currentRoute)))
-//            ),
-//            secondaryCTATitle: "View plans and pricing",
-//            secondaryCTAURL: siteRouter.path(for: .pricingLanding),
-//            backgroundColor: PointFreeColor(rawValue: "#e6f9f1", darkValue: "#0f1f1b")
-//          )
+          //          CalloutModule(
+          //            title: "Find this interesting?",
+          //            subtitle: """
+          //              Get started with our free plan, which includes **1 subscriber-only** episode of your \
+          //              choice, access to **\(freeEpisodeCount) free** episodes with transcripts and code \
+          //              samples, and weekly updates from our newsletter.
+          //              """,
+          //            ctaTitle: "Sign up for free →",
+          //            ctaURL: siteRouter.path(
+          //              for: .auth(.signUp(redirect: siteRouter.url(for: currentRoute)))
+          //            ),
+          //            secondaryCTATitle: "View plans and pricing",
+          //            secondaryCTAURL: siteRouter.path(for: .pricingLanding),
+          //            backgroundColor: PointFreeColor(rawValue: "#e6f9f1", darkValue: "#0f1f1b")
+          //          )
         }
         if let content = blogPost.content {
           article {
