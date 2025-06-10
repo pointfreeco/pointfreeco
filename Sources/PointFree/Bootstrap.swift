@@ -24,12 +24,12 @@ public func bootstrap() async {
   print("  ✅ \(Episode.all.count) transcripts loaded")
 
   await connectToPostgres()
-//  await fireAndForget {
-//    await updateCollectionClips()
-//  }
-//  await fireAndForget {
-//    try await updateCloudflareVideos()
-//  }
+  //  await fireAndForget {
+  //    await updateCollectionClips()
+  //  }
+  //  await fireAndForget {
+  //    try await updateCloudflareVideos()
+  //  }
 }
 
 private func connectToPostgres() async {
