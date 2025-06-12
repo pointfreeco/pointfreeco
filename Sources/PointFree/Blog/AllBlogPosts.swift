@@ -190,5 +190,6 @@ extension BlogPost {
     .post0171_MitigatingSwiftSyntax,
     .post0172_WWDC,
     .post0173_WWDC,
+    .post0174_SwiftDataComparisonFree,
   ]
 }
