@@ -191,5 +191,6 @@ extension BlogPost {
     .post0172_WWDC,
     .post0173_WWDC,
     .post0174_SwiftDataComparisonFree,
+    post0175_LivestreamModernPersistence,
   ]
 }
