@@ -142,13 +142,13 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     if shouldShowLiveBanner {
       LiveStreamBanner()
     }
-//    if !subscriberState.isActive && !currentRoute.is(\.subscribeConfirmation) {
-//      if currentRoute.is(\.home) || currentRoute.is(\.blog.index) {
-//        WWDCBanner()
-//      } else {
-//        MinimalWWDCBanner()
-//      }
-//    }
+    //    if !subscriberState.isActive && !currentRoute.is(\.subscribeConfirmation) {
+    //      if currentRoute.is(\.home) || currentRoute.is(\.blog.index) {
+    //        WWDCBanner()
+    //      } else {
+    //        MinimalWWDCBanner()
+    //      }
+    //    }
     NavBar()
     content
     if !layoutData.style.isMinimal {
