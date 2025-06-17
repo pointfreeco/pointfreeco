@@ -8,7 +8,8 @@ extension BlogPost {
       how to seamlessly synchronize your app's data across many devices, including sharing data \
       with other iCloud useres.
       """,
-    coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/22a21fcd-723e-44c1-06f8-bfe0264e0900/public",
+    coverImage:
+      "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/22a21fcd-723e-44c1-06f8-bfe0264e0900/public",
     hidden: .no,
     hideFromSlackRSS: false,
     id: 175,
