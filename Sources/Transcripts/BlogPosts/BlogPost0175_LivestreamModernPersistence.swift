@@ -6,7 +6,7 @@ extension BlogPost {
     blurb: """
       We are hosting a live stream on June 25th to unveil our vision for modern persistence. Learn \
       how to seamlessly synchronize your app's data across many devices, including sharing data \
-      with other iCloud useres.
+      with other iCloud users.
       """,
     coverImage:
       "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/22a21fcd-723e-44c1-06f8-bfe0264e0900/public",

@@ -44,7 +44,7 @@ CloudKit so that the data is available on the user's devices.
 > In most situations one can easily migrate their schemas to make them compatible with 
 > synchronization.
 
-Further, sharing data with other iCloud users is also support. To share a record with another user 
+Further, sharing data with other iCloud users is also supported. To share a record with another user 
 one must first create a `CKShare`. Our library provides a method on `SyncEngine` for generating a 
 `CKShare` for a record, and that value can be stored in a view to drive a sheet to display a 
 `UICloudSharingController`:
