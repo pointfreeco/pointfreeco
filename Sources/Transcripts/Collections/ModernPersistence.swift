@@ -23,7 +23,7 @@ extension Episode.Collection {
           Section.Lesson(episode: .ep327_modernPersistence),
           Section.Lesson(episode: .ep328_modernPersistence),
         ],
-        isFinished: false,
+        isFinished: true,
         isHidden: false,
         related: [],
         title: "Modern Persistence",
