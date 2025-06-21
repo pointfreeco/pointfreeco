@@ -10,7 +10,7 @@ extension BlogPost {
       """,
     coverImage:
       "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/7903112b-fc0b-41d8-4322-c19334bc2b00/public",
-    hidden: .no,
+    hidden: .yes,
     hideFromSlackRSS: true,
     id: 173,
     publishedAt: yearMonthDayFormatter.date(from: "2025-06-10")!,
