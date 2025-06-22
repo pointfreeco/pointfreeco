@@ -7,10 +7,10 @@ But we feel that the future can be sooner rather than later. We are working on a
 our popular [SQLite persistence library](http://github.com/pointfreeco/sharing-grdb) that brings 
 seamless CloudKit synchronization and more. To give a sneak peek to these tools, and to demonstrate 
 our vision for [modern persistence](/collections/modern-persistence) on Apple's platforms, we are 
-hosting a live stream on June 25th at 9am PST (5pm GTM). Be sure to tune in!
+hosting a live stream on June 25th at 9am PDT (5pm GTM). Be sure to tune in!
 
 @Button(/live) {
-  Watch June 25 @ 9am PST (5pm GMT)
+  Watch June 25 @ 9am PDT (5pm GMT)
 }
 
 ## SQLite and CloudKit synchronization
@@ -91,7 +91,7 @@ is going to have _a lot_ of questions, and in order to best prioritize Q&A durin
 we highly recommend submitting your questions early. Q&A is already open on our live stream page:
 
 @Button(/live) {
-  Watch June 25 @ 9am PST (5pm GMT)
+  Watch June 25 @ 9am PDT (5pm GMT)
 }
 
 Be sure to tune in!
