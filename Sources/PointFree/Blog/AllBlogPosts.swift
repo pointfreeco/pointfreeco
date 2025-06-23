@@ -192,7 +192,8 @@ extension BlogPost {
     .post0173_WWDC,
     .post0174_SwiftDataComparisonFree,
     .post0175_LivestreamModernPersistence,
-    .post0176_LiveStreamReminder,
-    .post0177_WereLive,
+    .post0176_TypeSafeTriggers,
+    .post0177_LiveStreamReminder,
+    .post0178_WereLive,
   ]
 }

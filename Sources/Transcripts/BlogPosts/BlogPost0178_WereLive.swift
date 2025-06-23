@@ -1,7 +1,7 @@
 import Foundation
 
 extension BlogPost {
-  public static let post0177_WereLive = Self(
+  public static let post0178_WereLive = Self(
     author: .pointfree,
     blurb: """
       Our live stream will be starting soon. Tune in now to watch us discuss the new CloudKit \

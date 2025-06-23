@@ -1,22 +1,14 @@
-We will be [live soon](/live), at 9am PST / 4pm GMT! 
+In less than 48 hours we are going live! Join us at 9am PDT (4pm GMT) where we will discuss
+the powerful new CloudKit synchronization tools coming to our popular SwiftData alternative:
+[SharingGRDB]. During the live stream we will add synchronization to an existing app with SQLite
+persistence, and show to enable sharing of data with other iCloud users. It only takes a few lines
+of code, and it feels almost magical!
 
-@Button(/live) {
-  Join livestream
-}
-
-We will be discussing some of the following:
-
-* A **sneak peek** at the new CloudKit synchronization tools coming to our popular SwiftData
-alternative: [SharingGRDB]. In just a few lines of code you can unlock synchronization across
-all of your user's devices.
-* We will also demo how to make it possible for your users to **share their data** with other iCloud
-users for collaboration.
-* We will show how easy it is to use these tools by **live coding** a brand new demo and adding
-both synchronization and sharing to the app. It will seem like magic! 
-* We will **answer as many questions** from our viewers as humanly possible. You can already add your
-question to the [Q&A](/live) (enter a user name and then tap "Ask") and upvote any other questions
-that you are interested in.
-
-You're not going to want to miss this!
+We have also already [opened the Q&A](/live) for questions from our community. Feel free to ask
+us anything about our libraries, our episodes, WWDC25, or really anything!
 
 [SharingGRDB]: https://github.com/pointfreeco/sharing-grdb
+
+@Button(/live) {
+  Watch June 25 @ 9am PDT (4pm GMT)
+}

@@ -1,10 +1,10 @@
 import Foundation
 
 extension BlogPost {
-  public static let post0176_LiveStreamReminder = Self(
+  public static let post0177_LiveStreamReminder = Self(
     author: .pointfree,
     blurb: """
-      In less than 48 hours we are going live! Join us at 9am PST / 5pm GMT where we will discuss \
+      In less than 24 hours we are going live! Join us at 9am PDT / 4pm GMT where we will discuss \
       the new CloudKit synchronization tools we are bringing to our popular SwiftData alternative: \
       SharingGRDB.
       """,
@@ -12,7 +12,7 @@ extension BlogPost {
     hidden: .no,
     hideFromSlackRSS: false,
     id: 176,
-    publishedAt: yearMonthDayFormatter.date(from: "2025-06-23")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2025-06-24")!,
     title: "Live stream reminder: A SwiftData alternative with CloudKit synchronization"
   )
 }
