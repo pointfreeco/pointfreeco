@@ -5,7 +5,7 @@ extension BlogPost {
     author: .pointfree,
     blurb: """
       We are excited to release version 0.8.0 of our powerful query building library: \
-      StructuredQueries. It brings all new tools for building type-safe and schema-safe triggers \ 
+      StructuredQueries. It brings all new tools for building type-safe and schema-safe triggers \
       in SQLite databases. 
       """,
     coverImage: nil,
