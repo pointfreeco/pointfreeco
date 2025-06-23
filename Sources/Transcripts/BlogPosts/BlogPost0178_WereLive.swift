@@ -12,7 +12,7 @@ extension BlogPost {
     hidden: .noUntil(yearMonthDayFormatter.date(from: "2025-06-26")!),
     hideFromSlackRSS: false,
     id: 178,
-    publishedAt: yearMonthDayFormatter.date(from: "2025-02-25")!
+    publishedAt: yearMonthDayFormatter.date(from: "2025-06-25")!
       .addingTimeInterval(60 * 60 * 16),  // 4:00pm GMT
     title: "We’re going live soon!"
   )
