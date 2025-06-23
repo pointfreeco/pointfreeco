@@ -1,4 +1,4 @@
-We are excited to release version 0.7.0 of our powerful query building library: [Structured Queries](http://github.com/pointfreeco/swift-structured-queries). It brings all new tools for building type-safe and schema-safe triggers in SQLite databases. Join us for a quick overview of this feature, and be sure to [update your dependencies](release link) to get access to these tools.
+We are excited to release version 0.7.0 of our powerful query building library: [StructuredQueries](http://github.com/pointfreeco/swift-structured-queries). It brings all new tools for building type-safe and schema-safe triggers in SQLite databases. Join us for a quick overview of this feature, and be sure to [update your dependencies](release link) to get access to these tools.
 
 # Triggers
 
@@ -13,26 +13,26 @@ CREATE TEMPORARY TRIGGER "nonEmptyRemindersLists"
 AFTER DELETE ON "remindersLists"
 FOR EACH ROW WHEN NOT (EXISTS (SELECT * FROM "remindersLists"))
 BEGIN
-	INSERT INTO "remindersLists"
-	("id", "color", "title")
-	VALUES
-	(NULL, 0xffaaff00, 'Personal');
+  INSERT INTO "remindersLists"
+  ("id", "color", "title")
+  VALUES
+  (NULL, 0xffaaff00, 'Personal');
 END
 ```
 
 It’s incredible how compact and declarative this SQL is, and it has a global view of the database. No matter what caused a row to be deleted from “remindersLists”, this trigger will see the deletion and be able to react to it.
 
-Further, with version 0.7.0 of [Structured Queries](http://github.com/pointfreeco/swift-structured-queries) we now can create these kinds of statements using a powerful, type-safe and schema-safe Swift syntax:
+Further, with version 0.7.0 of [StructuredQueries](http://github.com/pointfreeco/swift-structured-queries) we now can create these kinds of statements using a powerful, type-safe and schema-safe Swift syntax:
 
 ```swift
 RemindersList.createTemporaryTrigger(
-	"nonEmptyRemindersLists",
+  "nonEmptyRemindersLists",
   after: .delete { old in
     RemindersList.insert { 
       RemindersList.Draft(title: "Personal") 
      }
   } when: { old in
-    !RemindersList.all.exists()
+    !RemindersList.exists()
   }
 )
 ```
@@ -41,4 +41,8 @@ This generates the same SQL, but each step of the way Swift has our back to make
 
 # Get started today
 
-This is just the basics of creating triggers in SQL. For more information be sure to checkout our newest series of episodes, [Persistence Callbacks](todo), and update to version 0.7.0 of Structured Queries to start using these tools!
+This is just the basics of creating triggers in SQL. We plan to devote episodes to this topic very
+soon, and these techniques form the basis of our upcoming [CloudKit synchronization] tools. In the 
+meantime be sure to update to version 0.7.0 of StructuredQueries to start using these tools!
+
+[CloudKit Synchronization]: /blog/posts/175-upcoming-live-stream-a-vision-for-modern-persistence

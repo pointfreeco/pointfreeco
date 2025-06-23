@@ -11,7 +11,7 @@ extension BlogPost {
     coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/22a21fcd-723e-44c1-06f8-bfe0264e0900/public",
     hidden: .no,
     hideFromSlackRSS: false,
-    id: 176,
+    id: 177,
     publishedAt: yearMonthDayFormatter.date(from: "2025-06-24")!,
     title: "Live stream reminder: A SwiftData alternative with CloudKit synchronization"
   )
