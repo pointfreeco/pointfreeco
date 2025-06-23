@@ -1,4 +1,4 @@
-We are excited to release version 0.7.0 of our powerful query building library: [StructuredQueries](http://github.com/pointfreeco/swift-structured-queries). It brings all new tools for building type-safe and schema-safe triggers in SQLite databases. Join us for a quick overview of this feature, and be sure to [update your dependencies](release link) to gain access to these tools.
+We are excited to release version 0.8.0 of our powerful query building library: [StructuredQueries](http://github.com/pointfreeco/swift-structured-queries). It brings all new tools for building type-safe and schema-safe triggers in SQLite databases. Join us for a quick overview of this feature, and be sure to [update your dependencies](https://github.com/pointfreeco/swift-structured-queries/releases/tag/0.8.0) to gain access to these tools.
 
 # Triggers
 
@@ -22,7 +22,7 @@ END
 
 It’s incredible how compact and declarative this SQL is, and it gives you a global view of the database. No matter what caused a row to be deleted from “remindersLists”, this trigger will see the deletion and be able to react to it.
 
-With version 0.7.0 of [StructuredQueries](http://github.com/pointfreeco/swift-structured-queries), you can now create these kinds of statements using a powerful, type-safe, and schema-safe Swift syntax.
+With version 0.8.0 of [StructuredQueries](http://github.com/pointfreeco/swift-structured-queries), you can now create these kinds of statements using a powerful, type-safe, and schema-safe Swift syntax.
 
 ```swift
 RemindersList.createTemporaryTrigger(
@@ -43,6 +43,6 @@ This generates the same SQL, but each step of the way Swift has our back to make
 
 This is just the basics of creating triggers in SQL. We plan to devote episodes to this topic very
 soon, and these techniques form the basis of our upcoming [CloudKit synchronization] tools. In the 
-meantime be sure to update to version 0.7.0 of StructuredQueries to start using these tools!
+meantime be sure to update to version 0.8.0 of StructuredQueries to start using these tools!
 
 [CloudKit Synchronization]: /blog/posts/175-upcoming-live-stream-a-vision-for-modern-persistence

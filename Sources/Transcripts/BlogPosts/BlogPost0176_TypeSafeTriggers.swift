@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0176_TypeSafeTriggers = Self(
     author: .pointfree,
     blurb: """
-      We are excited to release version 0.7.0 of our powerful query building library: \
+      We are excited to release version 0.8.0 of our powerful query building library: \
       StructuredQueries. It brings all new tools for building type-safe and schema-safe triggers \ 
       in SQLite databases. 
       """,
