@@ -907,6 +907,17 @@ extension Client {
           ALTER TABLE "clips" DROP COLUMN IF EXISTS "vimeo_video_id" 
           """
         )
+        try await database.run(
+          """
+          ALTER TABLE "livestreams" 
+          ADD COLUMN IF NOT EXISTS "video_id" character varying NOT NULL DEFAULT '' 
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "livestreams" DROP COLUMN IF EXISTS "event_id" 
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(

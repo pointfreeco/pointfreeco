@@ -8,11 +8,14 @@ import Prelude
 import Styleguide
 
 public func liveView() -> Node {
+  @Dependency(\.envVars.baseUrl) var baseURL
   @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.currentUser) var currentUser
+  @Dependency(\.envVars.youtubeChannelID) var youtubeChannelID
   @Dependency(\.livestreams) var livestreams
   @Dependency(\.siteRouter) var siteRouter
 
+  let host = baseURL.host() ?? "localhost"
   guard let activeLivestream = livestreams.first(where: { $0.isActive })
   else { return [] }
 
@@ -48,9 +51,9 @@ public func liveView() -> Node {
   } else {
     dateNode = []
   }
-  let loginNode: Node
-  if currentUser == nil, !activeLivestream.isLive {
-    loginNode = .gridRow(
+  let ctaNode: Node
+  if currentUser == nil && !activeLivestream.isLive {
+    ctaNode = .gridRow(
       attributes: [
         .class([
           Class.grid.middle(.desktop),
@@ -76,8 +79,36 @@ public func liveView() -> Node {
         )
       )
     )
+  } else if activeLivestream.isLive {
+    ctaNode = .gridRow(
+      attributes: [
+        .class([
+          Class.grid.middle(.desktop),
+          Class.padding([
+            .desktop: [.leftRight: 5],
+            .mobile: [.leftRight: 3, .bottom: 4],
+          ]),
+        ]),
+        .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
+      ],
+      .gridColumn(
+        sizes: [.mobile: 12],
+        attributes: [
+          .class([
+            Class.type.align.center
+          ])
+        ],
+        .a(
+          attributes: [
+            .href("https://youtube.com/live/\(activeLivestream.videoID)"),
+            .class([Class.pf.components.button(color: .purple)]),
+          ],
+          "Watch on YouTube →"
+        )
+      )
+    )
   } else {
-    loginNode = []
+    ctaNode = []
   }
 
   return .div(
@@ -97,7 +128,7 @@ public func liveView() -> Node {
             .mobile: [
               .leftRight: 3,
               .top: 4,
-              .bottom: currentUser != nil || activeLivestream.isLive ? 4 : 3,
+              .bottom: activeLivestream.isLive ? 4 : 3,
             ],
           ]),
         ]),
@@ -135,7 +166,7 @@ public func liveView() -> Node {
       )
     ),
 
-    loginNode,
+    ctaNode,
 
     .gridRow(
       attributes: [
@@ -153,7 +184,7 @@ public func liveView() -> Node {
         .raw(
           """
           <div style="padding:56.25% 0 0 0;position:relative;">
-            <iframe src="https://vimeo.com/event/\(activeLivestream.eventID)/embed"
+            <iframe src="https://www.youtube.com/embed/live_stream?channel=\(youtubeChannelID)"
                     frameborder="0"
                     allow="autoplay; fullscreen; picture-in-picture"
                     allowfullscreen
@@ -171,7 +202,7 @@ public func liveView() -> Node {
         ],
         .raw(
           """
-          <iframe src="https://vimeo.com/event/\(activeLivestream.eventID)/chat/"
+          <iframe src="https://www.youtube.com/live_chat?v=\(activeLivestream.videoID)&embed_domain=\(host)"
                   width="100%"
                   height="100%"
                   frameborder="0"

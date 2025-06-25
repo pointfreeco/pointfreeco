@@ -515,16 +515,19 @@ public struct PastDueBanner: HTML {
 public struct LiveStreamBanner: HTML {
   public var body: some HTML {
     TopBanner(style: .live) {
-      span {
-        "●"
-      }
-      .color(.red)
-      .inlineStyle("animation", "Pulse 3s linear infinite")
-      .inlineStyle("margin-right", "0.5rem")
+      HTMLGroup {
+        span {
+          "●"
+        }
+        .color(.red)
+        .inlineStyle("animation", "Pulse 3s linear infinite")
+        .inlineStyle("margin-right", "0.5rem")
 
-      "We’re live! "
-      Link("Watch the stream →", destination: .live(.current))
-        .linkStyle(LinkStyle(color: .white, underline: nil))
+        span { "We’re live! " }
+        Link("Watch the stream →", destination: .live(.current))
+          .linkStyle(LinkStyle(color: .white, underline: nil))
+      }
+      .fontScale(.h5)
     }
   }
 }
