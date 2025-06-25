@@ -79,7 +79,7 @@ public func liveView() -> Node {
         )
       )
     )
-  } else if activeLivestream.isLive {
+  } else if currentUser != nil {
     ctaNode = .gridRow(
       attributes: [
         .class([
