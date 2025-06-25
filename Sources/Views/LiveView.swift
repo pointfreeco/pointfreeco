@@ -52,7 +52,7 @@ public func liveView() -> Node {
     dateNode = []
   }
   let ctaNode: Node
-  if currentUser == nil && !activeLivestream.isLive {
+  if currentUser == nil, !activeLivestream.isLive {
     ctaNode = .gridRow(
       attributes: [
         .class([
