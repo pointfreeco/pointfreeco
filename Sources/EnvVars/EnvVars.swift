@@ -31,6 +31,7 @@ public struct EnvVars: Codable {
   public var rssUserAgentWatchlist: [String]
   public var slackInviteURL: String
   public var stripe: Stripe
+  public var youtubeChannelID: String
 
   public init(
     appEnv: AppEnv = .development,
@@ -46,7 +47,8 @@ public struct EnvVars: Codable {
     regionalDiscountCouponId: Coupon.ID = "regional-discount",
     rssUserAgentWatchlist: [String] = [],
     slackInviteURL: String = "http://slack.com",
-    stripe: Stripe = Stripe()
+    stripe: Stripe = Stripe(),
+    youtubeChannelID: String = "deadbeef"
   ) {
     self.appEnv = appEnv
     self.appSecret = appSecret
@@ -62,6 +64,7 @@ public struct EnvVars: Codable {
     self.rssUserAgentWatchlist = rssUserAgentWatchlist
     self.slackInviteURL = slackInviteURL
     self.stripe = stripe
+    self.youtubeChannelID = youtubeChannelID
   }
 
   private enum CodingKeys: String, CodingKey {
@@ -73,6 +76,7 @@ public struct EnvVars: Codable {
     case rssUserAgentWatchlist = "RSS_USER_AGENT_WATCHLIST"
     case regionalDiscountCouponId = "REGIONAL_DISCOUNT_COUPON_ID"
     case slackInviteURL = "PF_COMMUNITY_SLACK_INVITE_URL"
+    case youtubeChannelID = "YOUTUBE_CHANNEL_ID"
   }
 
   public enum AppEnv: String, Codable {
@@ -216,6 +220,7 @@ extension EnvVars {
       .map(String.init)
     self.slackInviteURL = try container.decode(String.self, forKey: .slackInviteURL)
     self.stripe = try .init(from: decoder)
+    self.youtubeChannelID = try container.decode(String.self, forKey: .youtubeChannelID)
   }
 
   public func encode(to encoder: Encoder) throws {
@@ -236,6 +241,7 @@ extension EnvVars {
     try container.encode(self.regionalDiscountCouponId, forKey: .regionalDiscountCouponId)
     try container.encode(self.slackInviteURL, forKey: .slackInviteURL)
     try self.stripe.encode(to: encoder)
+    try container.encode(self.youtubeChannelID, forKey: .youtubeChannelID)
   }
 }
 

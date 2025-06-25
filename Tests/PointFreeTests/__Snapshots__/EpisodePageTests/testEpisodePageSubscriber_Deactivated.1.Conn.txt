@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 68616
+Content-Length: 68602
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -570,7 +570,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
   <div class="max-width-P6HnV width-C8uWv margin-gEzmi">
     <div class="box-shadow-yJzQS2 margin-JRgcV">
       <div class="width-C8uWv position-Pjz1G2 padding-bottom-MI04k">
-        <iframe class="border-Wl0y44 position-X8qzJ top-FBkWQ3 left-FBkWQ3 width-C8uWv height-C8uWv" src="https://customer-deadbeef.cloudflarestream.com/deadbeef/iframe?poster=&startTime=" loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen>
+        <iframe class="border-Wl0y44 position-X8qzJ top-FBkWQ3 left-FBkWQ3 width-C8uWv height-C8uWv" src="https://customer-deadbeef.cloudflarestream.com/deadbeef/iframe?poster=&" loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen>
         </iframe><script async src="https://embed.cloudflarestream.com/embed/sdk.latest.js"></script><script>window.addEventListener("load", function(event) {
   const iframe = document.querySelector("iframe")
   const player = new Stream(iframe)

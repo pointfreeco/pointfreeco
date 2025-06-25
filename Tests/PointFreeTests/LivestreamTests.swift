@@ -33,9 +33,9 @@ class LivestreamTests: TestCase {
         [
           Livestream(
             id: Livestream.ID(uuidString: "00000000-0000-0000-0000-000000000000")!,
-            eventID: 42,
             isActive: true,
-            isLive: true
+            isLive: true,
+            videoID: "deadbeef"
           )
         ]
       }
@@ -68,9 +68,9 @@ class LivestreamTests: TestCase {
         [
           Livestream(
             id: Livestream.ID(uuidString: "00000000-0000-0000-0000-000000000000")!,
-            eventID: 42,
             isActive: true,
-            isLive: true
+            isLive: true,
+            videoID: "deadbeef"
           )
         ]
       }
