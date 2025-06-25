@@ -2,7 +2,7 @@ GET http://localhost:8080/live
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 50963
+Content-Length: 51881
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2102,14 +2102,44 @@ explore our open source libraries, and take questions from our viewers.">
           </div>
         </div>
       </div>
+      <div class="middle-d
+                  d-pl5
+                  d-pr5
+                  m-pb4
+                  m-pl3
+                  m-pr3
+                  row"
+           style="max-width:1080px;
+                  margin-right:auto;
+                  margin-left:auto">
+        <div class="center
+                    col-m
+                    col-m-12">
+          <a href="https://youtube.com/live/deadbeef"
+             class="medium
+                    cursor-pointer
+                    nowrap
+                    btn-normal
+                    border-none
+                    text-decoration-none
+                    pf-link-white
+                    fg-white
+                    bg-purple
+                    h5
+                    m-pl2
+                    m-pr2">
+            Watch on YouTube →
+          </a>
+        </div>
+      </div>
       <div class="bg-black
                   row">
         <div class="center-d
                     col-m
-                    col-d-9
+                    col-d-8
                     col-m-12">
           <div style="padding:56.25% 0 0 0;position:relative;">
-  <iframe src="https://vimeo.com/event/42/embed"
+  <iframe src="https://www.youtube.com/embed/live_stream?channel=deadbeef"
           frameborder="0"
           allow="autoplay; fullscreen; picture-in-picture"
           allowfullscreen
@@ -2119,13 +2149,13 @@ explore our open source libraries, and take questions from our viewers.">
         </div>
         <div class="center-d
                     col-m
-                    col-d-3
+                    col-d-4
                     col-m-12">
-          <iframe src="https://vimeo.com/event/42/chat/"
+          <iframe src="https://www.youtube.com/live_chat?v=deadbeef&embed_domain=localhost"
         width="100%"
         height="100%"
         frameborder="0"
-        style="min-height: 30rem;">
+        style="min-height: 40rem;">
 </iframe>
         </div>
       </div>
