@@ -1,7 +1,7 @@
 After a few weeks of [teasing][twitter tease] the CloudKit synchronization tools coming to our
 [SwiftData alternative], and demoing the tools during last week's [live stream], we are finally 
 ready to release a private alpha. This alpha period will help us gather critical feedback so that 
-we can release a public alpha in the coming weeks, and then eventually the final release of the 
+we can release a public beta in the coming weeks, and then eventually the final release of the 
 tools.
 
 Here is everything you need to know about the private alpha:
@@ -52,7 +52,7 @@ Here is everything you need to know about the private alpha:
 [demos and case studies]: https://github.com/pointfreeco/sharing-grdb/tree/main/Examples
 [SharingGRDB]: http://github.com/pointfreeco/sharing-grdb
 
-* ## How can I get access to the public alpha?
+* ## How can I get access to the private alpha?
 
   Currently we are opening the alpha only to [Point-Free subscribers](/pricing). This will give us
   a smaller audience to get feedback from and an audience that is already familiar with our work.
