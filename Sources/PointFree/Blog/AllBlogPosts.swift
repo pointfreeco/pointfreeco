@@ -195,5 +195,6 @@ extension BlogPost {
     .post0176_TypeSafeTriggers,
     .post0177_LiveStreamReminder,
     .post0178_WereLive,
+    .post0179_CloudKitPrivateAlpha,
   ]
 }
