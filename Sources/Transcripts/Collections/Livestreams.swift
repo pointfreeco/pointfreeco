@@ -6,6 +6,7 @@ extension Episode.Collection {
         .init(
           blurb: livestreamBlurb,
           coreLessons: [
+            .episode(.ep329_pfLive_modernPersistence),
             .episode(.ep313_pfLive_SharingGRDB),
             .clip(Clip(cloudflareVideoID: "d27a2cd4d124d031f0fa4bde2b84bca0")),
             .episode(.ep267_pfLive_observationInPractice),
