@@ -7,7 +7,7 @@ tools.
 Here is everything you need to know about the private alpha:
 
 [SwiftData alternative]: http://github.com/pointfreeco/sharing-grdb
-[live stream]: TODO
+[live stream]: /episodes/ep329-point-free-live-a-vision-for-modern-persistence
 [twitter tease]: https://x.com/pointfreeco/status/1925944881853174212
 
 * ## What tools are you previewing?
@@ -34,11 +34,11 @@ Here is everything you need to know about the private alpha:
   "ON DELETE" and "ON UPDATE" cascading works. However, foreign key _constraints_ are not supported
   (i.e. requiring that a parent record to exist for a child to point to it) because CloudKit may 
   deliver records in multiple, disconnected batches.
-  * **Large binary assets** are supported (images, movies, audio files, etc.) and are automatically turned
-  into `CKAsset`s and uploaded to CloudKit behind the scenes. 
-  * You can allow **sharing of records and their assocations** in your user's database with just a few
-  lines of code. The library handles synchronizing changes between multiple different users and all of
-  their devices.
+  * **Large binary assets** are supported (images, movies, audio files, etc.) and are automatically 
+  turned into `CKAsset`s and uploaded to CloudKit behind the scenes. 
+  * **Your users can share their records** with other iCloud users, all with just a few
+  lines of code. The library handles synchronizing changes between multiple users and all 
+  of their devices.
   * All of the underlying CloudKit metadata (i.e. `CKRecord`s, `CKShare`s, etc.) are all **publicly
   available and queryable** from SQLite. This means you can easily query for records in your 
   database that are currently being shared with other iCloud users, and easily pull extra data
@@ -57,8 +57,8 @@ Here is everything you need to know about the private alpha:
   Currently we are opening the alpha only to [Point-Free subscribers](/pricing). This will give us
   a smaller audience to get feedback from and an audience that is already familiar with our work.
   If you are interested in participating in the alpha preview, 
-  [contact us](mailto:support@pointfreeo.co) from the email that is associated with your Point-Free
-  account, and provide your GitHub username.
+  [**contact us**](mailto:support@pointfreeo.co) from the email that is associated with your 
+  Point-Free account, and provide your GitHub username.
 
 * ## What can I do with the alpha?
 
@@ -70,13 +70,15 @@ Here is everything you need to know about the private alpha:
   The most ideal way to test the alpha preview would be to build a greenfield toy app with CloudKit
   synchronization to get a feel for how the tools work. Here are some ideas:
 
-  * A voice memos app that synchronizes the audio file across devices. Bonus points for using the new
-  `[SpeechAnalyzer]` API in iOS 26 for transcribing the audio and using Foundation Models to summarize
-  the memo.
+  * A voice memos app that synchronizes the audio file across devices. Bonus points for using the 
+  new [`SpeechAnalyzer`] API in iOS 26 for transcribing the audio and using Foundation Models to 
+  summarize the memo.
   * A flashcards app that allows a user to create decks of flashcards, with each deck containing 
-  multiple cards, and the ability to share decks with other users.
+  multiple cards, and the ability to share decks with other users. Bonus points for allowing users
+  to associate images, audio clips and videos to the flashcards.
   * A podcast app that synchronizes progress of episodes across devices. You can also add a feature
-  that allows a user to organize a playlist of their favorite episodes and share it with other users.
+  that allows a user to organize a playlist of their favorite episodes and share it with other 
+  users.
 
   That's just a few fun ideas, but I'm sure you can come up with more!
 
@@ -84,7 +86,7 @@ Here is everything you need to know about the private alpha:
   recommend doing so in a temporary CloudKit container that you can delete at a later date. And no
   matter what, _do not_ ship an app to the App Store using the alpha preview of our library.
 
-[SpeechAnalyzer]: https://developer.apple.com/documentation/speech/speechanalyzer
+[`SpeechAnalyzer`]: https://developer.apple.com/documentation/speech/speechanalyzer
 
 * ## Where can I provide feedback during the alpha?
 
