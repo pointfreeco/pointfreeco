@@ -31,17 +31,17 @@ support CloudKit, but we will provide documentation and tools to aid in that mig
 You can continue reading from and writing to your database like normal, and all changes will 
 automatically be synchronized to all of your user's devices.
 * **Foreign keys** are supported, including one-to-many and many-to-many associations, and even
-"ON DELETE" and "ON UPDATE" cascading works. However, foreign key _constraints_ are not supported
-(i.e. requiring that a parent record to exist for a child to point to it) because CloudKit may 
+`ON DELETE` and `ON UPDATE` cascading works. However, foreign key _constraints_ are not supported
+(_i.e._ requiring that a parent record to exist for a child to point to it) because CloudKit may 
 deliver records in multiple, disconnected batches.
-* **Large binary assets** are supported (images, movies, audio files, etc.) and are automatically 
-turned into `CKAsset`s and uploaded to CloudKit behind the scenes. 
+* **Large binary assets** are supported (images, movies, audio files, _etc._) and are
+automatically turned into `CKAsset`s and uploaded to CloudKit behind the scenes. 
 * **Your users can share their records** with other iCloud users, all with just a few
 lines of code. The library handles synchronizing changes between multiple users and all 
 of their devices.
-* All of the underlying CloudKit metadata (i.e. `CKRecord`s, `CKShare`s, etc.) are all **publicly
-available and queryable** from SQLite. This means you can easily query for records in your 
-database that are currently being shared with other iCloud users, and easily pull extra data
+* All of the underlying CloudKit metadata (_i.e._ `CKRecord`s, `CKShare`s, etc.) are all
+**publicly available and queryable** from SQLite. This means you can easily query for records in
+your database that are currently being shared with other iCloud users, and easily pull extra data
 from CloudKit such as participants and permissions for a shared record.
 
 It may seem too good to be true, but our library accomplishes all of this, and more.
@@ -55,8 +55,8 @@ It may seem too good to be true, but our library accomplishes all of this, and m
 ## How can I get access to the private alpha?
 
 Currently we are opening the alpha only to [Point-Free subscribers](/pricing). This will give us
-a smaller audience to get feedback from and an audience that is already familiar with our work.
-If you are interested in participating in the alpha preview, 
+a smaller audience to get feedback from an audience that is already familiar with our work. If you
+are interested in participating in the alpha preview, 
 [**contact us**](mailto:support@pointfree.co) from the email that is associated with your 
 Point-Free account, and provide your GitHub username.
 
