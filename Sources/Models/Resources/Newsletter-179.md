@@ -18,7 +18,7 @@ built with the library, including a slimmed down [version of Apple's Reminders] 
 demonstrates advanced querying, many-to-many join tables, search, and more.
 
 This library forms the foundation of what we like to call ["modern persistence"], but that may be
-a misnomer because the library currently does not have a solution for synchronizating data across
+a misnomer because the library currently does not have a solution for synchronizing data across
 multiple devices. That is, **until now!**
 
 We are happy to say that we have made a lot of progress towards bringing seamless CloudKit 
