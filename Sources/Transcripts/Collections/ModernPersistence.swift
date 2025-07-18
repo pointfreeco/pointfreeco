@@ -28,7 +28,25 @@ extension Episode.Collection {
         related: [],
         title: "Modern Persistence",
         whereToGoFromHere: nil
-      )
+      ),
+      .init(
+        alternateSlug: nil,
+        blurb: """
+          SQLite triggers are an incredibly powerful tool that is criminally underused in the \
+          iOS community. They give you a global view into what is happening in your database, and \
+          allow you to react to those events by executing additional SQL statements, raising \ 
+          errors, and even calling directly into your Swift code!
+          """,
+        coreLessons: [
+          Section.Lesson(episode: .ep330_callbacks),
+          Section.Lesson(episode: .ep331_callbacks),
+        ],
+        isFinished: false,
+        isHidden: false,
+        related: [],
+        title: "SQLite Triggers",
+        whereToGoFromHere: nil
+      ),
     ],
     title: "Modern Persistence"
   )
