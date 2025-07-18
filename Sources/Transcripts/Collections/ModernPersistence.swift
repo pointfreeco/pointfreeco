@@ -34,7 +34,7 @@ extension Episode.Collection {
         blurb: """
           SQLite triggers are an incredibly powerful tool that is criminally underused in the \
           iOS community. They give you a global view into what is happening in your database, and \
-          allow you to react to those events by executing additional SQL statements, raising \ 
+          allow you to react to those events by executing additional SQL statements, raising \
           errors, and even calling directly into your Swift code!
           """,
         coreLessons: [
