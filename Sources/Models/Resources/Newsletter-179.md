@@ -31,9 +31,7 @@ support CloudKit, but we will provide documentation and tools to aid in that mig
 You can continue reading from and writing to your database like normal, and all changes will 
 automatically be synchronized to all of your user's devices.
 * **Foreign keys** are supported, including one-to-many and many-to-many associations, and even
-`ON DELETE` and `ON UPDATE` cascading works. However, foreign key _constraints_ are not supported
-(_i.e._ requiring that a parent record to exist for a child to point to it) because CloudKit may 
-deliver records in multiple, disconnected batches.
+`ON DELETE` and `ON UPDATE` cascading works.
 * **Large binary assets** are supported (images, movies, audio files, _etc._) and are
 automatically turned into `CKAsset`s and uploaded to CloudKit behind the scenes. 
 * **Your users can share their records** with other iCloud users, all with just a few
