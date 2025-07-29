@@ -574,7 +574,7 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
     statusRow,
     shareRow,
     contactUsRow,
-    teammatesSection(accountData: data),
+    teammatesSection(accountData: data)
   )
 }
 
