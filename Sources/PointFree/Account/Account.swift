@@ -87,6 +87,8 @@ private func fetchAccountData<I>(
       (try? await database.fetchSubscriptionTeammates(ownerID: user.id)) ?? []
     }()
 
+    let tms = await teammates 
+
     return await AccountData(
       currentUser: user,
       emailSettings: emailSettings,

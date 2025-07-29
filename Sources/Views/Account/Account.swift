@@ -573,7 +573,8 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
     planRow,
     statusRow,
     shareRow,
-    contactUsRow
+    contactUsRow,
+    teammatesSection(accountData: data),
   )
 }
 
@@ -962,8 +963,7 @@ private func mainAction(
 private func subscriptionTeamRow(_ data: AccountData) -> Node {
   let currentTeamNode: Node
   if !data.teammates.isEmpty,
-    data.isSubscriptionOwner,
-    !data.subscriberState.isEnterpriseSubscriber
+    data.isSubscriptionOwner
   {
     currentTeamNode = .div(
       attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
