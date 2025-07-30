@@ -46,7 +46,9 @@ to your users.
  
  let model = Model()
 -let messages = Observations {
-+let messages = Perceptions { "Your count is \(model.count)" }
+-let messages = Perceptions {
+   "Your count is \(model.count)"
+ }
  
  for await message in messages {
    print(message)
