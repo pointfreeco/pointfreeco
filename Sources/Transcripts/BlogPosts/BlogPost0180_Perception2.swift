@@ -13,6 +13,6 @@ extension BlogPost {
     hideFromSlackRSS: false,
     id: 180,
     publishedAt: yearMonthDayFormatter.date(from: "2025-07-30")!,
-    title: "Perception 2.0: A back-port of Swift's Observation framework"
+    title: "Perception 2.0: An updated back-port of Swift's Observation framework"
   )
 }
