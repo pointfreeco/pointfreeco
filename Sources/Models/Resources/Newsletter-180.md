@@ -105,7 +105,7 @@ When using [Perception] in SwiftUI, one must wrap the body of your views in
 `WithPerceptionTracking`. This allows the view to properly observe changes to your model and
 re-render:
 
-```swift
+```swift:4
 struct CounterView: View {
   let model: CounterModel
   var body: some View {
