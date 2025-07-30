@@ -1,10 +1,10 @@
 More than one and a half years ago we [open-sourced Perception], a back-port of Swift's Observation
-tools to work on iOS 13+ and macOS 10.15+. This has allowed thousands of developers to use
+tools that works on iOS 13+ and macOS 10.15+. This has allowed thousands of developers to use
 Swift's amazing observation tools in SwiftUI (and [UIKit]!) much earlier than if they were to
 wait to drop support for iOS 16.
 
 Today we are releasing a big update that brings many of the recent advancements in the Observation
-framework to Perception, and of course it is all back ported to iOS 13+ and macOS 10.15+. Join
+framework to Perception, and of course it is all back-ported to iOS 13+ and macOS 10.15+. Join
 us for a quick overview of what is new in [Perception].
 
 ## Observations: async sequences of changes
@@ -12,7 +12,7 @@ us for a quick overview of what is new in [Perception].
 Swift 6.2 has brought a new tool to the Observation framework: [`Observations`]. This tool
 allows you to construct an async sequence of changes to an observable model. As a very basic
 example, if an observable model holds onto an integer, then you can construct an async 
-sequence of messages that describe that number like so:
+sequence of messages that describe changes to that number like so:
 
 ```swift
 @Observable
@@ -21,18 +21,18 @@ class Model {
 }
 
 let model = Model()
-let messages = Observations { "Your count is \(model.count) }
+let messages = Observations { "Your count is \(model.count)" }
 
 for await message in messages {
   print(message)
 }
 ```
 
-However, the `Observations` API is limited to the 26 era of Apple platforms, i.e. iOS 26, 
-macOS 26, watchOS 26, etc. This means you realistically will not be able to use this for a few
+However, the `Observations` API is limited to the 26 era of Apple platforms, _i.e._ iOS 26, 
+macOS 26, watchOS 26, _etc._ This means you realistically will not be able to use the tool for a few
 more years once you feel that the vast majority of your users are no longer on iOS 18.
 
-With [Perception], you now get access to this tool _today_, and it's called `Perceptions`. It works
+But with [Perception], you get access to this tool _today_, and it's called `Perceptions`. It works
 in **iOS 13+** and **Xcode 16+**, and so you don't even have to wait until Xcode 26 is released.
 Just two small changes to the above code snippet is all it takes to ship this code immediately
 to your users.
@@ -93,7 +93,7 @@ to increase the performance of the library.
 
 ## Memory leak fix
 
-Since Observation's first release in Swift 5.9 there has been a sublte way to accidentally introduce
+Since Observation's first release in Swift 5.9 there has been a subtle way to accidentally introduce
 a memory leak into your app. Due to how `withObservationTracking` works, subscriptions cannot
 be cleaned up unless a final mutation is made to state. Now, the newest version of Observation
 listens for the deallocation of observers and uses that moment to unsubscribe from observations.
@@ -124,11 +124,11 @@ the model changes. In order to help you to remember to always do this the librar
 warning if you ever access a field of a `@Perceptible` model from a view without being inside
 `WithPerceptionTracking`.
 
-This check only happens in DEBUG builds, but it sometimes shows false positives and can sometimes
+This check only happens in debug builds, but it sometimes showed false positives and could sometimes
 be slow to compute. In Perception 2.0 we have greatly improved the performance of the check,
 and reduced the number of false positives, making it more dependable to rely on.
 
-# Get started today
+## Get started today
 
 It looks like our [Perception] library has a little bit of life left in it yet! We're excited
 to get these improvements into the hands of everyone using Perception. Be sure to update to 
