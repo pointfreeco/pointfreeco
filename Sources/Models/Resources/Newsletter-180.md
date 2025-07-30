@@ -7,7 +7,7 @@ Today we are releasing a big update that brings many of the recent advancements 
 framework to Perception, and of course it is all back ported to iOS 13+ and macOS 10.15+. Join
 us for a quick overview of what is new in [Perception].
 
-### Observations: async sequences of changes
+## Observations: async sequences of changes
 
 Swift 6.2 has brought a new tool to the Observation framework: [`Observations`]. This tool
 allows you to construct an async sequence of changes to an observable model. As a very basic
@@ -21,9 +21,7 @@ class Model {
 }
 
 let model = Model()
-let messages = Observations {
-  "Your count is \(model.count)"
-}
+let messages = Observations { "Your count is \(model.count) }
 
 for await message in messages {
   print(message)
@@ -48,9 +46,7 @@ to your users.
  
  let model = Model()
 -let messages = Observations {
-+let messages = Perceptions {
-   "Your count is \(model.count)"
- }
++let messages = Perceptions { "Your count is \(model.count)" }
  
  for await message in messages {
    print(message)
@@ -60,7 +56,7 @@ to your users.
 Further, if you are targeting iOS 17 or 18, then you can even use `Perceptions` with `@Observable`
 models.
 
-### Short circuit observer notifications
+## Short circuit observer notifications
 
 The newest version of the Observation framework employs an interesting trick to skip notifying
 observers if the mutated value has not actually changed. Prior to this change something as seemingly
@@ -95,7 +91,7 @@ choose the fully generic version, which causes all mutations to trigger notifica
 This is even a [trick we've employed] in the Composable Architecture for over a year and a half
 to increase the performance of the library. 
 
-### Memory leak fix
+## Memory leak fix
 
 Since Observation's first release in Swift 5.9 there has been a sublte way to accidentally introduce
 a memory leak into your app. Due to how `withObservationTracking` works, subscriptions cannot
@@ -103,7 +99,7 @@ be cleaned up unless a final mutation is made to state. Now, the newest version 
 listens for the deallocation of observers and uses that moment to unsubscribe from observations.
 And we have also ported those changes to Perception 2.0.
 
-### Improved perception checking
+## Improved perception checking
 
 When using [Perception] in SwiftUI, one must wrap the body of your views in 
 `WithPerceptionTracking`. This allows the view to properly observe changes to your model and
@@ -132,7 +128,7 @@ This check only happens in DEBUG builds, but it sometimes shows false positives 
 be slow to compute. In Perception 2.0 we have greatly improved the performance of the check,
 and reduced the number of false positives, making it more dependable to rely on.
 
-## Get started today
+# Get started today
 
 It looks like our [Perception] library has a little bit of life left in it yet! We're excited
 to get these improvements into the hands of everyone using Perception. Be sure to update to 
