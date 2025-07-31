@@ -46,7 +46,7 @@ to your users.
  
  let model = Model()
 -let messages = Observations {
--let messages = Perceptions {
++let messages = Perceptions {
    "Your count is \(model.count)"
  }
  
