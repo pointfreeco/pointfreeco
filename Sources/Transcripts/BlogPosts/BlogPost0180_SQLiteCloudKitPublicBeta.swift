@@ -7,7 +7,8 @@ extension BlogPost {
       We are excited to announce the public beta of our upcoming, powerful SQLite + CloudKit \
       synchronization tools.
       """,
-    coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/531a4e00-1b5f-40ea-2c88-0ec5fe8d1d00/public",
+    coverImage:
+      "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/531a4e00-1b5f-40ea-2c88-0ec5fe8d1d00/public",
     hidden: .no,
     hideFromSlackRSS: false,
     id: 181,
