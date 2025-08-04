@@ -3,10 +3,26 @@ our new SQLite + CloudKit synchronization tools. They helped us find numerous bu
 us get a better understanding of how people want to use these tools in their apps.
 
 And now we are ready to release a [public beta] of these tools, and we think everyone is going to be
-blown away by what they are capable of. With just a few lines of code you can immediately 
-synchronize a local SQLite database to CloudKit so that your user's data is available on all of 
-their devices. And with just a few more lines of code you can allow your users to share their
-records with participants for collaboration.
+blown away by what they are capable of. With just a single statement you can immediately synchronize
+a local SQLite database to CloudKit so that your user's data is available on all of their devices.
+For example:
+
+```swift
+$0.defaultSyncEngine = try SyncEngine(
+  container: CKContainer(identifier: "iCloud.co.pointfree.Reminders"),
+  database: $0.defaultDatabase,
+  tables: [
+    RemindersList.self,
+    RemindersListAsset.self,
+    Reminder.self,
+    Tag.self,
+    ReminderTag.self,
+  ]
+)
+```
+
+And with just a few more lines of code you can allow your users to share their records with
+participants for collaboration.
 
 [public beta]: https://github.com/pointfreeco/sharing-grdb/pull/112
 
@@ -15,10 +31,6 @@ the final version of these tools in the coming weeks. Here is everything you nee
 public beta:
 
 [gather critical feedback]: https://github.com/pointfreeco/sharing-grdb/discussions/categories/cloudkit-preview
-
-[SwiftData alternative]: http://github.com/pointfreeco/sharing-grdb
-[live stream]: /episodes/ep329-point-free-live-a-vision-for-modern-persistence
-[twitter tease]: https://x.com/pointfreeco/status/1925944881853174212
 
 ## What tools are you previewing?
 
@@ -56,8 +68,8 @@ It may seem too good to be true, but our library accomplishes all of this, and m
 
 [GRDB]: http://github.com/groue/grdb.swift
 ["modern persistence"]: /collections/modern-persistence
-[version of Apple's Reminders]: https://github.com/pointfreeco/sharing-grdb/tree/main/Examples/Reminders
-[demos and case studies]: https://github.com/pointfreeco/sharing-grdb/tree/main/Examples
+[version of Apple's Reminders]: https://github.com/pointfreeco/sharing-grdb/tree/cloudkit/Examples/Reminders
+[demos and case studies]: https://github.com/pointfreeco/sharing-grdb/tree/cloudkit/Examples
 [SharingGRDB]: http://github.com/pointfreeco/sharing-grdb
 
 ## How can I get access to the public beta?
@@ -72,6 +84,14 @@ depend on that branch directly to get access to the CloudKit synchronization too
 [`cloudkit`]: https://github.com/pointfreeco/sharing-grdb/tree/cloudkit
 
 ## What can I do with the beta?
+
+Once you've pointed to the `cloudkit` branch you get instant access to our new CloudKit
+synchronization tools. Please read [CloudKit synchronization] for a lengthy guide on setting up
+your project, and read [Sharing data with other iCloud users] to learn how to further synchronize
+records with multiple participants.
+
+[CloudKit synchronization]: https://github.com/pointfreeco/sharing-grdb/blob/cloudkit/Sources/SharingGRDBCore/Documentation.docc/Articles/CloudKit.md
+[Sharing data with other iCloud users]: https://github.com/pointfreeco/sharing-grdb/blob/cloudkit/Sources/SharingGRDBCore/Documentation.docc/Articles/CloudKitSharing.md
 
 We **do not** recommend using the beta version of these tools in the production version of an
 existing app. The APIs may change before the final version, and there may be bugs that cause bad 
@@ -107,7 +127,6 @@ a question about an actual part of the implementation, feel free to leave a comm
 [pull request]. 
 
 [pull request]: https://github.com/pointfreeco/sharing-grdb/pull/112
-
 [SharingGRDB discussions]: http://github.com/pointfreeco/sharing-grdb/discussions
 [Slack]: http://pointfree.co/slack-invite
 
