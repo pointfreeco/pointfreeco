@@ -1,110 +1,144 @@
-For the past 5 weeks, dozens of Point-Free community members have been testing an alpha preview of
-our new SQLite + CloudKit synchronization tools. They helped us find numerous bugs and helped
-us get a better understanding of how people want to use these tools in their apps.
+More than one and a half years ago we [open-sourced Perception], a back-port of Swift's Observation
+tools that works on iOS 13+ and macOS 10.15+. This has allowed thousands of developers to use
+Swift's amazing observation tools in SwiftUI (and [UIKit]!) much earlier than if they were to
+wait to drop support for iOS 16.
 
-And now we are ready to release a public beta of these tools, and we think everyone is going to be
-blown away by what they are capable of. With just a few lines of code you can immediately 
-synchronize a local SQLite database to CloudKit so that your user's data is available on all of 
-their devices. And with just a few more lines of code you can allow your users to share their
-records with participants for collaboration.
+Today we are releasing a big update that brings many of the recent advancements in the Observation
+framework to Perception, and of course it is all back-ported to iOS 13+ and macOS 10.15+. Join
+us for a quick overview of what is new in [Perception].
 
-This beta period will be crucial for us to gather critical feedback so that we can release
-the final version of these tools in the coming weeks. Here is everything you need to know about the 
-public beta:
+## Observations: async sequences of changes
 
-[SwiftData alternative]: http://github.com/pointfreeco/sharing-grdb
-[live stream]: /episodes/ep329-point-free-live-a-vision-for-modern-persistence
-[twitter tease]: https://x.com/pointfreeco/status/1925944881853174212
-
-## What tools are you previewing?
-
-Our popular [SharingGRDB] library provides a viable alternative to SwiftData that gives you 
-direct access to SQLite and all of its wonderful powers. We have multiple [demos and case studies]
-built with the library, including a slimmed down [version of Apple's Reminders] app that 
-demonstrates advanced querying, many-to-many join tables, search, and more.
-
-This library forms the foundation of what we like to call ["modern persistence"], but that may be
-a misnomer because the library currently does not have a solution for synchronizing data across
-multiple devices. That is, **until now!**
-
-We are happy to say that we have made a lot of progress towards bringing seamless CloudKit 
-integration to apps using SQLite, with the following feature set:
-
-* **Most apps using [SharingGRDB]** will be able to enable CloudKit syncing 
-in their app with just a few lines of code. You may need to make a few tweaks to your schema to 
-support CloudKit, but we will provide documentation and tools to aid in that migration.
-* **Synchronization happens seamlessly** behind the scenes with no additional work on your part.
-You can continue reading from and writing to your database like normal, and all changes will 
-automatically be synchronized to all of your user's devices.
-* **Foreign keys** are supported, including constraints, one-to-many and many-to-many associations, 
-and even `ON DELETE` and `ON UPDATE` cascading works.
-* **Large binary assets** are supported (images, movies, audio files, _etc._) and are
-automatically turned into `CKAsset`s and uploaded to CloudKit behind the scenes. 
-* **Your users can share their records** with other iCloud users, all with just a few
-lines of code. The library handles synchronizing changes between multiple users and all 
-of their devices.
-* All of the underlying CloudKit metadata (_i.e._ `CKRecord`s, `CKShare`s, etc.) are
-**publicly available and queryable** from SQLite. This means you can easily query for records in
-your database that are currently being shared with other iCloud users, and easily pull extra data
-from CloudKit such as participants and permissions for a shared record.
-
-It may seem too good to be true, but our library accomplishes all of this, and more.
-
-[GRDB]: http://github.com/groue/grdb.swift
-["modern persistence"]: /collections/modern-persistence
-[version of Apple's Reminders]: https://github.com/pointfreeco/sharing-grdb/tree/main/Examples/Reminders
-[demos and case studies]: https://github.com/pointfreeco/sharing-grdb/tree/main/Examples
-[SharingGRDB]: http://github.com/pointfreeco/sharing-grdb
-
-## How can I get access to the public beta?
-
-The public beta is being run off of the [`cloudkit`] branch of our SharingGRDB library. Simply
-depend on that branch directly to get access to the CloudKit synchronization tools: 
+Swift 6.2 has brought a new tool to the Observation framework: [`Observations`]. This tool
+allows you to construct an async sequence of changes to an observable model. As a very basic
+example, if an observable model holds onto an integer, then you can construct an async 
+sequence of messages that describe changes to that number like so:
 
 ```swift
-.package(url: "https://github.com/pointfreeco/sharing-grdb", branch: "cloudkit"),
+@Observable
+class Model {
+  var count = 0
+}
+
+let model = Model()
+let messages = Observations { "Your count is \(model.count)" }
+
+for await message in messages {
+  print(message)
+}
 ```
 
-[`cloudkit`]: https://github.com/pointfreeco/sharing-grdb/tree/cloudkit
+However, the `Observations` API is limited to the 26 era of Apple platforms, _i.e._ iOS 26, 
+macOS 26, watchOS 26, _etc._ This means you realistically will not be able to use the tool for a few
+more years once you feel that the vast majority of your users are no longer on iOS 18.
 
-## What can I do with the beta?
+But with [Perception], you get access to this tool _today_, and it's called `Perceptions`. It works
+in **iOS 13+** and **Xcode 16+**, and so you don't even have to wait until Xcode 26 is released.
+Just two small changes to the above code snippet is all it takes to ship this code immediately
+to your users.
 
-We **do not** recommend using the beta version of these tools in the production version of an
-existing app. The APIs may change before the final version, and there may be bugs that cause bad 
-data to be written to your iCloud containers, or we may ask that you rotate your containers.
+```diff
+-@Observable
++@Perceptible
+ class Model {
+   var count = 0
+ }
+ 
+ let model = Model()
+-let messages = Observations {
++let messages = Perceptions {
+   "Your count is \(model.count)"
+ }
+ 
+ for await message in messages {
+   print(message)
+ }
+```
 
-The most ideal way to test the beta preview would be to build a greenfield toy app with CloudKit
-synchronization to get a feel for how the tools work. Here are some ideas:
+Further, if you are targeting iOS 17 or 18, then you can even use `Perceptions` with `@Observable`
+models.
 
-* A voice memos app that synchronizes the audio file across devices. Bonus points for using the 
-new [`SpeechAnalyzer`] API in iOS 26 for transcribing the audio and Foundation Models to 
-summarize the memo.
-* A flashcards app that allows a user to create decks of flashcards, with each deck containing 
-multiple cards, and the ability to share decks with other users. Bonus points for allowing users
-to associate images, audio clips and videos to the flashcards.
-* A podcast app that synchronizes progress of episodes across devices. You can also add a feature
-that allows a user to organize a playlist of their favorite episodes and share it with other 
-users.
+## Short circuit observer notifications
 
-That's just a few fun ideas, but we're sure you can come up with more!
+The newest version of the Observation framework employs an interesting trick to skip notifying
+observers if the mutated value has not actually changed. Prior to this change something as seemingly
+innocuous as this: 
 
-If you really, _really_ want to try out these tools in your app during the beta period, we 
-recommend doing so in a temporary CloudKit container that you can delete at a later date. And no
-matter what, _do not_ ship an app to the App Store using the beta preview of our library.
+```swift
+model.count = model.count
+```
 
-[`SpeechAnalyzer`]: https://developer.apple.com/documentation/speech/speechanalyzer
+…would cause the SwiftUI view displaying this data to re-render.
 
-## Where can I provide feedback during the beta?
+Now, the `@Observable` macro (and `@Perceptible`) macro implements `shouldNotifyObservers` functions
+in your model that allow it to efficiently check if the value changing is equatable, and if so
+it performs an equality comparison before notifying observers.
 
-Feedback is much appreciated during the beta preview, and it would be best to open a new topic
-on the [SharingGRDB][SharingGRDB discussions] repo for long form discussion, or for chat-like 
-discussion you can ask questions in the #sharing-grdb channel of our [Slack].
+The trick to accomplish this is that the `@Observable` macro implements 
+[_multiple_][macro-expansion] `shouldNotifyObservers` methods: one that takes an `Equatable` value, 
+and one that does not:
 
-[SharingGRDB discussions]: http://github.com/pointfreeco/sharing-grdb/discussions
-[Slack]: http://pointfree.co/slack-invite
+```swift
+nonisolated func shouldNotifyObservers<T>(_ lhs: T, _ rhs: T) -> Bool {
+  true
+}
 
-# More to come soon
+nonisolated func shouldNotifyObservers<T: Equatable>(_ lhs: T, _ rhs: T) -> Bool {
+  lhs != rhs
+}
+```
 
-This is just the beginning for these tools. Once we gather a bit of feedback we will prepare the 
-official release of the tools in the coming weeks. We are excited to see what everyone makes with 
-[SharingGRDB]!
+Then at compile time Swift will choose the `Equatable` version if possible, and otherwise will 
+choose the fully generic version, which causes all mutations to trigger notifications to observers.
+This is even a [trick we've employed] in the Composable Architecture for over a year and a half
+to increase the performance of the library. 
+
+## Memory leak fix
+
+Since Observation's first release in Swift 5.9 there has been a subtle way to accidentally introduce
+a memory leak into your app. Due to how `withObservationTracking` works, subscriptions cannot
+be cleaned up unless a final mutation is made to state. Now, the newest version of Observation
+listens for the deallocation of observers and uses that moment to unsubscribe from observations.
+And we have also ported those changes to Perception 2.0.
+
+## Improved perception checking
+
+When using [Perception] in SwiftUI, one must wrap the body of your views in 
+`WithPerceptionTracking`. This allows the view to properly observe changes to your model and
+re-render:
+
+```swift:4
+struct CounterView: View {
+  let model: CounterModel
+  var body: some View {
+    WithPerceptionTracking {
+      Form {
+        Text("\(model.count)")
+        Button("Increment") { model.count += 1 }
+      }
+    }
+  }
+}
+```
+
+If you forget to use `WithPerceptionTracking`, your view will not properly update when state in
+the model changes. In order to help you to remember to always do this the library emits a runtime
+warning if you ever access a field of a `@Perceptible` model from a view without being inside
+`WithPerceptionTracking`.
+
+This check only happens in debug builds, but it sometimes showed false positives and could sometimes
+be slow to compute. In Perception 2.0 we have greatly improved the performance of the check,
+and reduced the number of false positives, making it more dependable to rely on.
+
+## Get started today
+
+It looks like our [Perception] library has a little bit of life left in it yet! We're excited
+to get these improvements into the hands of everyone using Perception. Be sure to update to 
+2.0 today!
+
+[trick we've employed]: https://github.com/pointfreeco/swift-composable-architecture/blob/af0a2c74087aea4aa305eaac332d106fb0bb625e/Sources/ComposableArchitecture/Observation/ObservableState.swift#L106-L134
+[macro-expansion]: https://github.com/pointfreeco/swift-perception/blob/main/Tests/PerceptionMacrosTests/PerceptionMacrosTests.swift#L73-L87
+[UIKit]: https://swiftpackageindex.com/pointfreeco/swift-navigation/main/documentation/uikitnavigation
+[open-sourced Perception]: /blog/posts/129-perception-a-back-port-of-observable
+[Perception]: http://github.com/pointfreeco/swift-perception
+[`Observations`]: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0475-observed.md

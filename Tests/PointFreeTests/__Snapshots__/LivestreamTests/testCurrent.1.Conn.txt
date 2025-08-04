@@ -2,7 +2,7 @@ GET http://localhost:8080/live
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 51881
+Content-Length: 51024
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2100,36 +2100,6 @@ explore our open source libraries, and take questions from our viewers.">
             <div class="md-ctn">
             </div>
           </div>
-        </div>
-      </div>
-      <div class="middle-d
-                  d-pl5
-                  d-pr5
-                  m-pb4
-                  m-pl3
-                  m-pr3
-                  row"
-           style="max-width:1080px;
-                  margin-right:auto;
-                  margin-left:auto">
-        <div class="center
-                    col-m
-                    col-m-12">
-          <a href="https://youtube.com/live/deadbeef"
-             class="medium
-                    cursor-pointer
-                    nowrap
-                    btn-normal
-                    border-none
-                    text-decoration-none
-                    pf-link-white
-                    fg-white
-                    bg-purple
-                    h5
-                    m-pl2
-                    m-pr2">
-            Watch on YouTube →
-          </a>
         </div>
       </div>
       <div class="bg-black

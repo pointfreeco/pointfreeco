@@ -196,6 +196,7 @@ extension BlogPost {
     .post0177_LiveStreamReminder,
     .post0178_WereLive,
     .post0179_CloudKitPrivateAlpha,
-    .post0180_SQLiteCloudKitPublicBeta,
+    .post0180_Perception2,
+    .post0181_SQLiteCloudKitPublicBeta,
   ]
 }
