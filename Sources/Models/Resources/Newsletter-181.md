@@ -2,11 +2,13 @@ For the past 5 weeks, dozens of Point-Free community members have been testing a
 our new SQLite + CloudKit synchronization tools. They helped us find numerous bugs and helped
 us get a better understanding of how people want to use these tools in their apps.
 
-And now we are ready to release a public beta of these tools, and we think everyone is going to be
+And now we are ready to release a [public beta] of these tools, and we think everyone is going to be
 blown away by what they are capable of. With just a few lines of code you can immediately 
 synchronize a local SQLite database to CloudKit so that your user's data is available on all of 
 their devices. And with just a few more lines of code you can allow your users to share their
 records with participants for collaboration.
+
+[public beta]: https://github.com/pointfreeco/sharing-grdb/pull/112
 
 This beta period will be crucial for us to gather critical feedback so that we can release
 the final version of these tools in the coming weeks. Here is everything you need to know about the 
@@ -98,7 +100,11 @@ matter what, _do not_ ship an app to the App Store using the beta preview of our
 
 Feedback is much appreciated during the beta preview, and it would be best to open a new topic
 on the [SharingGRDB][SharingGRDB discussions] repo for long form discussion, or for chat-like 
-discussion you can ask questions in the #sharing-grdb channel of our [Slack].
+discussion you can ask questions in the #sharing-grdb channel of our [Slack]. Or, if you have
+a question about an actual part of the implementation, feel free to leave a comment on the 
+[pull request]. 
+
+[pull request]: https://github.com/pointfreeco/sharing-grdb/pull/112
 
 [SharingGRDB discussions]: http://github.com/pointfreeco/sharing-grdb/discussions
 [Slack]: http://pointfree.co/slack-invite
