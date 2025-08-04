@@ -10,9 +10,11 @@ records with participants for collaboration.
 
 [public beta]: https://github.com/pointfreeco/sharing-grdb/pull/112
 
-This beta period will be crucial for us to gather critical feedback so that we can release
+This beta period will be crucial for us to [gather critical feedback] so that we can release
 the final version of these tools in the coming weeks. Here is everything you need to know about the 
 public beta:
+
+[gather critical feedback]: https://github.com/pointfreeco/sharing-grdb/discussions/categories/cloudkit-preview
 
 [SwiftData alternative]: http://github.com/pointfreeco/sharing-grdb
 [live stream]: /episodes/ep329-point-free-live-a-vision-for-modern-persistence
