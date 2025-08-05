@@ -9,15 +9,12 @@ For example:
 
 ```swift
 $0.defaultSyncEngine = try SyncEngine(
-  container: CKContainer(identifier: "iCloud.co.pointfree.Reminders"),
-  database: $0.defaultDatabase,
-  tables: [
-    RemindersList.self,
-    RemindersListAsset.self,
-    Reminder.self,
-    Tag.self,
-    ReminderTag.self,
-  ]
+  for: $0.defaultDatabase,
+  tables: RemindersList.self,
+  RemindersListAsset.self,
+  Reminder.self,
+  Tag.self,
+  ReminderTag.self
 )
 ```
 
