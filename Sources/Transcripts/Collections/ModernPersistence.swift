@@ -40,6 +40,8 @@ extension Episode.Collection {
         coreLessons: [
           Section.Lesson(episode: .ep330_callbacks),
           Section.Lesson(episode: .ep331_callbacks),
+          Section.Lesson(episode: .ep332_callbacks),
+          Section.Lesson(episode: .ep333_callbacks),
         ],
         isFinished: false,
         isHidden: false,
