@@ -336,5 +336,6 @@ extension Episode {
     .ep331_callbacks,
     .ep332_callbacks,
     .ep333_callbacks,
+    .ep334_fts,
   ]
 }
