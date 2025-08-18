@@ -43,10 +43,29 @@ extension Episode.Collection {
           Section.Lesson(episode: .ep332_callbacks),
           Section.Lesson(episode: .ep333_callbacks),
         ],
-        isFinished: false,
+        isFinished: true,
         isHidden: false,
         related: [],
         title: "SQLite Triggers",
+        whereToGoFromHere: nil
+      ),
+      .init(
+        alternateSlug: nil,
+        blurb: """
+          Full-text search is a technology that allows a user to efficiently search a large \
+          collection of documents for a search term, and includes advanced features such as \
+          tokenizing, stemming and supports a basic query language for constructing complex search \
+          terms. We give an overview of the technology by building powerful search capabilities \
+          into a reminders app.
+          """,
+        coreLessons: [
+          Section.Lesson(episode: .ep334_fts),
+          Section.Lesson(episode: .ep335_fts),
+        ],
+        isFinished: false,
+        isHidden: false,
+        related: [],
+        title: "Full-Text Search",
         whereToGoFromHere: nil
       ),
     ],
