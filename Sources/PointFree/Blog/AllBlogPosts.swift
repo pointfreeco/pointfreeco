@@ -198,5 +198,6 @@ extension BlogPost {
     .post0179_CloudKitPrivateAlpha,
     .post0180_Perception2,
     .post0181_SQLiteCloudKitPublicBeta,
+    .post0182_StructuredQueriesFTS,
   ]
 }
