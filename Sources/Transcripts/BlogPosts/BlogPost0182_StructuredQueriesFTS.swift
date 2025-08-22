@@ -8,7 +8,7 @@ extension BlogPost {
       SharingGRDB.
       """,
     coverImage:
-      "TODO",
+      "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/5d900bae-3f5e-40bb-b720-1e33b98c9400/public",
     hidden: .no,
     hideFromSlackRSS: false,
     id: 182,

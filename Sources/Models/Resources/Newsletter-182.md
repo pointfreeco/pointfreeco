@@ -1,7 +1,7 @@
 We are excited to release version [0.6.0] of our powerful persistence library, [SharingGRDB]. It
 introduces all new tools for bringing full-text search capabilities to your applications.
 
-[0.6.0] https://github.com/pointfreeco/sharing-grdb/releases/0.6.0
+[0.6.0]: https://github.com/pointfreeco/sharing-grdb/releases/0.6.0
 [SharingGRDB]: https://github.com/pointfreeco/sharing-grdb
 
 ## FTS5
@@ -64,6 +64,7 @@ try Reminder.createTemporaryTrigger(after: .insert { new in
     (new.id, new.title, new.notes, "")
   }
 })
+.execute(db)
 
 // More triggers for when reminders are updated/deleted,
 // and reminder tags are inserted/deleted.
