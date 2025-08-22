@@ -73,6 +73,11 @@ try Reminder.createTemporaryTrigger(after: .insert { new in
 > exhaustively insert a row into the database using the generated `Columns` type:
 >
 > ```swift
+> @Table @Selection
+> struct ReminderText {
+>   // ...
+> }
+> 
 > try Reminder.createTemporaryTrigger(after: .insert { new in
 >   ReminderText.Columns(
 >     reminderID: new.id,
