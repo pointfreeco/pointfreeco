@@ -6,8 +6,10 @@ introduces all new tools for bringing full-text search capabilities to your appl
 
 ## FTS5
 
-SharingGRDB has introduced a number of helpers for accessing SQLite's latest iteration of full-text
-search, [FTS5].
+Full-text search is a powerful technology provided by SQLite that can search large collections
+of text efficiently and with advanced features, such as stemming, lemmatization and fuzzy matching.
+[SharingGRDB] has now introduced a number of helpers for accessing this functionality via the 
+[FTS5] module.
 
 [FTS5]: https://www.sqlite.org/fts5.html
 
@@ -51,8 +53,10 @@ migrator.registerMigration("Add reminders FTS table") { db in
 }
 ```
 
-It is your responsibility to keep this FTS table up-to-date with the data it references. SQLite
-suggests triggers as one way to do this, and you can use our [type-safe APIs] to create them:
+The data held in this virtual table will be automatically processed and indexed so that it can
+be efficiently searched. It is your responsibility to keep this FTS table up-to-date with the data 
+it references. SQLite suggests triggers as one way to do this, and you can use our [type-safe APIs] 
+to create them:
 
 [type-safe APIs]: https://swiftpackageindex.com/pointfreeco/swift-structured-queries/0.13.0/documentation/structuredqueriescore/triggers
 
@@ -70,15 +74,15 @@ try Reminder.createTemporaryTrigger(after: .insert { new in
 // and reminder tags are inserted/deleted.
 ```
 
-> Tip: If you annotate your FTS5 table with the `@Selection` macro, the insert trigger can
+> Tip: If you further annotate your FTS5 table with the `@Selection` macro, the insert trigger can
 > exhaustively insert a row into the database using the generated `Columns` type:
 >
-> ```swift
+> ```swift:1
 > @Table @Selection
 > struct ReminderText {
 >   // ...
 > }
-> 
+>
 > try Reminder.createTemporaryTrigger(after: .insert { new in
 >   ReminderText.Columns(
 >     reminderID: new.id,
@@ -87,6 +91,7 @@ try Reminder.createTemporaryTrigger(after: .insert { new in
 >     tags: ""
 >   )
 > })
+> .execute(db)
 > ```
 
 With your FTS5 table defined and data being inserted into it, you are ready to perform a search.
