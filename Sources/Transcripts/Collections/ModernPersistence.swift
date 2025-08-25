@@ -61,6 +61,7 @@ extension Episode.Collection {
         coreLessons: [
           Section.Lesson(episode: .ep334_fts),
           Section.Lesson(episode: .ep335_fts),
+          Section.Lesson(episode: .ep336_fts),
         ],
         isFinished: false,
         isHidden: false,
