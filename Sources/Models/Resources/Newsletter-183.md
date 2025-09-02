@@ -11,21 +11,16 @@ powerful query builder. Simply annotate a function using the new `@DatabaseFunct
 
 ```swift
 @DatabaseFunction
-func uuid() -> UUID {
-  UUID()  // TODO: Control with a dependency for tests
+func exclaim(_ string: String) -> String {
+  string.localizedUppercase + "!"
 }
 ```
 
 And you will immediately be able to invoke it from a query by prefixing it with `$`:
 
 ```swift
-Reminder.insert {
-  ($0.id, $0.title)
-} values: {
-  ($uuid(), "Take boxes to thrift shop")
-}
-// INSERT INTO "reminders" ("id", "title")
-// VALUES ("uuid"(), 'Take boxes to thrift shop')
+Reminder.select { $exclaim($0.title) }
+// SELECT "exclaim"("reminders"."title") FROM "reminders"
 ```
 
 This function must be added to a SQLite connection before a query can successfully invoke it at
@@ -34,9 +29,19 @@ runtime. This is typically done when you first configure your database. For exam
 ```swift
 var configuration = Configuration()
 configuration.prepareDatabase { db in
-  db.add(function: $uuid)
+  db.add(function: $exclaim)
 }
 ```
+
+> Tip: Use the `isDeterministic` parameter for functions that always return the same value from the
+> same arguments. SQLite's query planner can optimize these functions.
+>
+> ```swift
+> @DatabaseFunction(isDeterministic: true)
+> func exclaim(_ string: String) -> String {
+>   string.localizedUppercase + "!"
+> }
+> ```
 
 ## Try it out today!
 
