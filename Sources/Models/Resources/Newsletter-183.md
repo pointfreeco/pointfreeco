@@ -63,7 +63,7 @@ func didUpdate(…) { … }
 
 And you can tell SQLite when a function is "deterministic": that is, it always returns the same
 value from the same arguments. SQLite's query planner can optimize such functions, and they are
-allowed to be [used][non-deterministic-restrictions] in "CHECK" constraints, partial indices, and
+allowed to be [used][non-deterministic-restrictions] in `CHECK` constraints, partial indices, and
 generated columns.
 
 ```swift
