@@ -7,7 +7,7 @@ extension BlogPost {
       Announcing support for simple, user-defined SQL functions in our SwiftData alternative, \
       SharingGRDB.
       """,
-    coverImage: "TODO",
+    coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/01b50219-7b48-46bb-d030-49f9f374db00/public",
     hidden: .no,
     hideFromSlackRSS: false,
     id: 183,
