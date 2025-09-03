@@ -53,19 +53,27 @@ configuration.prepareDatabase { db in
 }
 ```
 
-> Tip: Use the `isDeterministic` parameter for functions that always return the same value from the
-> same arguments. SQLite's query planner can optimize such functions, and they are allowed to be
-> [used][non-deterministic-restrictions] in "CHECK" constraints, partial indices and generated 
-> columns.
->
-> ```swift
-> @DatabaseFunction(isDeterministic: true)
-> func exclaim(_ string: String) -> String {
->   string.localizedUppercase + "!"
-> }
-> ```
->
-> [non-deterministic-restrictions]: https://sqlite.org/deterministic.html#restrictions_on_the_use_of_non_deterministic_functions
+You can configure a `@DatabaseFunction` with a custom name much like you can configure `@Table`
+names and `@Column` names:
+
+```swift
+@DatabaseFunction("did_update")
+func didUpdate(…) { … }
+```
+
+And you can tell SQLite when a function is "deterministic": that is, it always returns the same
+value from the same arguments. SQLite's query planner can optimize such functions, and they are
+allowed to be [used][non-deterministic-restrictions] in "CHECK" constraints, partial indices, and
+generated columns.
+
+```swift
+@DatabaseFunction(isDeterministic: true)
+func exclaim(_ string: String) -> String {
+  string.localizedUppercase + "!"
+}
+```
+
+[non-deterministic-restrictions]: https://sqlite.org/deterministic.html#restrictions_on_the_use_of_non_deterministic_functions
 
 ## Try it out today!
 
