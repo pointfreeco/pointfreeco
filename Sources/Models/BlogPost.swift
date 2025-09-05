@@ -3,6 +3,7 @@ import Foundation
 import Tagged
 
 public struct BlogPost: Equatable, Identifiable {
+  public var alternateSlug: String?
   public var author: Author?
   public var blurb: String
   public var coverImage: String?
@@ -29,6 +30,7 @@ public struct BlogPost: Equatable, Identifiable {
   }
 
   public init(
+    alternateSlug: String? = nil,
     author: Author?,
     blurb: String,
     coverImage: String?,
@@ -38,6 +40,7 @@ public struct BlogPost: Equatable, Identifiable {
     publishedAt: Date,
     title: String
   ) {
+    self.alternateSlug = alternateSlug
     self.author = author
     self.blurb = blurb
     self.coverImage = coverImage
@@ -53,7 +56,7 @@ public struct BlogPost: Equatable, Identifiable {
   }
 
   public var slug: String {
-    return "\(self.id)-\(Models.slug(for: self.title))"
+    return "\(id)-" + (alternateSlug ?? "\(Models.slug(for: title))")
   }
 
   public enum Author: Equatable {

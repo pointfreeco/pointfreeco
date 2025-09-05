@@ -200,5 +200,6 @@ extension BlogPost {
     .post0181_SQLiteCloudKitPublicBeta,
     .post0182_StructuredQueriesFTS,
     .post0183_StructuredQueriesCustomFunctions,
+    .post0184_SQLiteData,
   ]
 }
