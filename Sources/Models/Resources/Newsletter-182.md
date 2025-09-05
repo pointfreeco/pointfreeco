@@ -1,14 +1,14 @@
-We are excited to release version [0.6.0] of our powerful persistence library, [SharingGRDB]. It
+We are excited to release version [0.6.0] of our powerful persistence library, [SQLiteData]. It
 introduces all new tools for bringing full-text search capabilities to your applications.
 
-[0.6.0]: https://github.com/pointfreeco/sharing-grdb/releases/0.6.0
-[SharingGRDB]: https://github.com/pointfreeco/sharing-grdb
+[0.6.0]: https://github.com/pointfreeco/sqlite-data/releases/0.6.0
+[SQLiteData]: https://github.com/pointfreeco/sqlite-data
 
 ## FTS5
 
 Full-text search is a powerful technology provided by SQLite that can search large collections
 of text efficiently and with advanced features, such as stemming, lemmatization and fuzzy matching.
-[SharingGRDB] has now introduced a number of helpers for accessing this functionality via the 
+[SQLiteData] has now introduced a number of helpers for accessing this functionality via the 
 [FTS5] module.
 
 [FTS5]: https://www.sqlite.org/fts5.html
@@ -104,7 +104,7 @@ ReminderText.where { $0.match(query) }
 // WHERE "reminderTexts" MATCH 'appointment'
 ```
 
-That's all it takes to add full-text search to your SharingGRDB applications. But it also only
+That's all it takes to add full-text search to your SQLiteData applications. But it also only
 scratches the surface: the library also comes with helpers for ranking, highlighting, and even
 generating truncated excerpts for your searches:
 
@@ -134,9 +134,9 @@ can be indexed and search.
 
 ## Try it out today!
 
-[SharingGRDB] 0.6.0 is available today! We hope you'll take these new features for a spin. And we
+[SQLiteData] 0.6.0 is available today! We hope you'll take these new features for a spin. And we
 have more improvements and refinements coming soon, including support for
-[CloudKit synchronization and sharing]
+[CloudKit synchronization and sharing].
 
-[SharingGRDB]: https://github.com/pointfreeco/sharing-grdb
+[SQLiteData]: https://github.com/pointfreeco/sqlite-data
 [CloudKit synchronization and sharing]: /blog/posts/181-a-swiftdata-alternative-with-sqlite-cloudkit-public-beta

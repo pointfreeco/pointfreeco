@@ -4,7 +4,7 @@ already quite powerful, and so perhaps it doesn’t need many updates right now,
 has big plans for SwiftData in the future.
 
 But we feel that the future can be sooner rather than later. We are working on a major update to 
-our popular [SQLite persistence library](http://github.com/pointfreeco/sharing-grdb) that brings 
+our popular [SQLite persistence library](http://github.com/pointfreeco/sqlite-data) that brings 
 seamless CloudKit synchronization and more. To give a sneak peek to these tools, and to demonstrate 
 our vision for [modern persistence](/collections/modern-persistence) on Apple's platforms, we are 
 hosting a live stream on June 25th at 9am PDT (5pm GTM). Be sure to tune in!

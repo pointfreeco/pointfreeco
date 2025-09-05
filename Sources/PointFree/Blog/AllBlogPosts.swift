@@ -184,7 +184,7 @@ extension BlogPost {
     .post0165_PFAnniversary,
     .post0166_LiveStreamReminder,
     .post0167_WereLive,
-    .post0168_SharingGRDB,
+    .post0168_SQLiteData,
     .post0169_testScoping,
     .post0170_StructuredQueries,
     .post0171_MitigatingSwiftSyntax,

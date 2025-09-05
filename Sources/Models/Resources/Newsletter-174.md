@@ -134,4 +134,4 @@ And so we feel confident saying that there is a clear winner here. Our library e
 an open standard for data querying and aggregation, and gives you a powerful suite of tools
 for type-safety and schema-safety. If you're interested in learning more, be sure to check
 out our [Modern Persistence](/collections/modern-persistence) series, as well as our 
-open source, [lightweight replacement for SwiftData](http://github.com/pointfreeco/sharing-grdb).
+open source, [lightweight replacement for SwiftData](http://github.com/pointfreeco/sqlite-data).

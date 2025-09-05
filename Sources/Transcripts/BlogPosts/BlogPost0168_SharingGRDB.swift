@@ -1,7 +1,7 @@
 import Foundation
 
 extension BlogPost {
-  public static let post0168_SharingGRDB = Self(
+  public static let post0168_SQLiteData = Self(
     alternateSlug: "sharinggrdb-a-swiftdata-alternative",
     author: .pointfree,
     blurb: """
