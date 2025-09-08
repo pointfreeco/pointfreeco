@@ -20,7 +20,7 @@ extension Episode {
           FTS5 is an SQLite virtual table module that provides full-text search functionality to \
           database applications.
           """,
-        link: "https://github.com/pointfreeco/sharing-grdb",
+        link: "https://www.sqlite.org/fts5.html",
         title: "SQLite FTS5 Extension"
       ),
       Reference(
