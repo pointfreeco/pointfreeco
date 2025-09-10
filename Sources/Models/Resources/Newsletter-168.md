@@ -4,8 +4,7 @@
 > for more info.
 
 We are excited to announce the release of a brand new open source library: 
-[SQLiteData][sqlite-data-gh]. It's an amalgamation of our [Sharing][sharing-gh] library and
-Gwendal Roué's [GRDB.swift][grdb], providing a suite of tools that can replace many usages
+[SQLiteData][sqlite-data-gh]. It provides a suite of tools that can replace most usages
 of SwiftData while giving you direct access to the underlying SQLite, including joins, aggregates,
 common table expressions (CVE's) and more!
 
