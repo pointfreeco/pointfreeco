@@ -25,8 +25,8 @@ extension Episode {
       ),
       Reference(
         blurb: "A fast, lightweight replacement for SwiftData, powered by SQL.",
-        link: "https://github.com/pointfreeco/sharing-grdb",
-        title: "SharingGRDB"
+        link: "https://github.com/pointfreeco/sqlite-data",
+        title: "SQLiteData"
       ),
       Reference(
         blurb: "A library for building SQL in a safe, expressive, and composable manner.",
