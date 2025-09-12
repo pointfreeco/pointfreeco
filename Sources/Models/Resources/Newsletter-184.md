@@ -1,6 +1,8 @@
-Today we are releasing [SQLiteData 1.0][sqlite-data-gh], a library that provides the tools
-necessary to build apps with complex persistence and query needs, all based on SQLite. This 
-includes:
+Today we are releasing [SQLiteData 1.0][sqlite-data-gh], an alternative to SwiftData that provides 
+the tools necessary to build apps with complex persistence and query needs, all based on [SQLite]. 
+This includes:
+
+[SQLite]: https://sqlite.org`
 
 - Model your data types as concisely as possible using everything Swift has to offer, such as
   **structs** and **enums**.
@@ -18,8 +20,8 @@ includes:
 - Powered by **SQLite**, a battle tested technology that is over 25 years old and one of the most
   widely deployed pieces of software in history.
 
-It accomplishes all of this (and more) in a lightweight and ergonomic API that is fully documented
-and comes with a wide variety of demo apps and case studies.
+It accomplishes all of this (and more) in a lightweight and ergonomic API that is fully [documented]
+and comes with a wide variety of [demo apps and case studies][Examples].
 
 ## Using SQLiteData
 
