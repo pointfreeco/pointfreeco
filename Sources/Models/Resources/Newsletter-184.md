@@ -1,6 +1,5 @@
 Today we are releasing [SQLiteData 1.0][sqlite-data-gh], an alternative to SwiftData that provides 
-the tools necessary to build apps with complex persistence and query needs, all based on [SQLite]. 
-This includes:
+the tools necessary to build apps with complex persistence and query needs, all based on [SQLite]:
 
 [SQLite]: https://sqlite.org`
 
@@ -8,9 +7,9 @@ This includes:
   **structs** and **enums**.
 - Perform **type-safe** and **schema-safe** queries to fetch your data in anyway you want.
 - Decode data from the database using a **performant, custom SQLite decoder** that is only a tiny 
-  bit slower than dealing directly with SQLite’s C functions.
-- **Property wrappers** similar to SwiftData's `@Query` that allow you to fetch data in SwiftUI 
-  views so that when the database changes the view automatically refreshes. And those property 
+  bit slower than dealing directly with SQLite's C functions.
+- Leverage **Property wrappers** similar to SwiftData's `@Query` that allow you to fetch data in
+  SwiftUI views so that when the database changes the view automatically refreshes. These property 
   wrappers even work outside of SwiftUI views, such as in **`@Observable` models** and even 
   **UIKit view controllers**.
 - Direct support for **CloudKit synchronization** so that your users' data is distributed across all
@@ -28,7 +27,7 @@ and comes with a wide variety of [demo apps and case studies][Examples].
 SQLiteData allows you to model your domain types as concisely as possible, using all of the 
 amazing tools that Swift gives us. This means you can use structs instead of classes, raw
 representable enums to model choices, and immutable `let`s for IDs that should not change
-after insantiation:
+after instantiation:
 
 ```swift
 import SQLiteData
@@ -93,7 +92,7 @@ persistence and querying needs:
   <br> Demonstrates how to solve some common application problems in a simplified environment, in
   both SwiftUI and UIKit. Things like animations, dynamic queries, database transactions, and more.
 
-* [**CloudKitDemo**](https://github.com/pointfreeco/sqlite-data/tree/main/Examples/CloudKitDemo)
+* [**CloudKit Demo**](https://github.com/pointfreeco/sqlite-data/tree/main/Examples/CloudKitDemo)
   <br> A simplified demo that shows how to synchronize a SQLite database to CloudKit and how to
   share records with other iCloud users. See our dedicated articles on [CloudKit Synchronization]
   and [CloudKit Sharing] for more information. 
@@ -120,8 +119,8 @@ If there are more examples or case studies you would like to see built, start a 
 
 ## Fully documented
 
-The library comes fully [documented] with many articles exploring the more naunced topics of 
-data persistence and querying in complex applications:
+The library comes fully [documented] with many articles exploring the more nuanced topics of data
+persistence and querying in complex applications:
 
 * [**Fetching model data**](https://swiftpackageindex.com/pointfreeco/sqlite-data/main/documentation/sqlitedata/fetching)
   <br> Learn how to use the `@FetchAll`, `@FetchOne` and `@Fetch` property wrappers for performing
