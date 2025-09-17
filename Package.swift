@@ -41,7 +41,7 @@ var package = Package(
     .library(name: "Views", targets: ["Views"]),
     .library(name: "WebPreview", targets: ["WebPreview"]),
   ],
-  dependencies: platformSpecificDependencies + [
+  dependencies: [
     .package(url: "https://github.com/apple/swift-collections", from: "1.1.0"),
     .package(url: "https://github.com/apple/swift-log", from: "1.5.0"),
     .package(url: "https://github.com/swiftlang/swift-markdown", from: "0.4.0"),
