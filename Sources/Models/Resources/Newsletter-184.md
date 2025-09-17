@@ -6,7 +6,7 @@ based on [SQLite]:
 
 - Model your data types as concisely as possible using everything Swift has to offer, such as
   **structs** and **enums**.
-- Perform **type-safe** and **schema-safe** queries to fetch your data in anyway you want.
+- Perform **type-safe** and **schema-safe** queries to fetch your data in any way you want.
 - Decode data from the database using a **performant, custom SQLite decoder** that is only a tiny 
   bit slower than dealing directly with SQLite's C functions.
 - Leverage **property wrappers** similar to SwiftData's `@Query` that allow you to fetch data in
