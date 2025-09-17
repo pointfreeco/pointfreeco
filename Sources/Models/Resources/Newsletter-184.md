@@ -1,21 +1,22 @@
 Today we are releasing [SQLiteData 1.0][sqlite-data-gh], an alternative to SwiftData that provides 
-the tools necessary to build apps with complex persistence and query needs, all based on [SQLite]:
+familiar tool to build apps with complex persistence and query needs, with none of the gotchas,
+based on [SQLite]:
 
-[SQLite]: https://sqlite.org`
+[SQLite]: https://sqlite.org
 
 - Model your data types as concisely as possible using everything Swift has to offer, such as
   **structs** and **enums**.
 - Perform **type-safe** and **schema-safe** queries to fetch your data in anyway you want.
 - Decode data from the database using a **performant, custom SQLite decoder** that is only a tiny 
   bit slower than dealing directly with SQLite's C functions.
-- Leverage **Property wrappers** similar to SwiftData's `@Query` that allow you to fetch data in
+- Leverage **property wrappers** similar to SwiftData's `@Query` that allow you to fetch data in
   SwiftUI views so that when the database changes the view automatically refreshes. These property 
   wrappers even work outside of SwiftUI views, such as in **`@Observable` models** and even 
   **UIKit view controllers**.
 - Direct support for **CloudKit synchronization** so that your users' data is distributed across all
   of their devices.
 - Support for **iCloud sharing**, which allows your users to share a record (and all of its 
-  associations) with another iCloud user.
+  associated data) with another iCloud user.
 - Powered by **SQLite**, a battle tested technology that is over 25 years old and one of the most
   widely deployed pieces of software in history.
 
@@ -26,7 +27,7 @@ and comes with a wide variety of [demo apps and case studies][Examples].
 
 SQLiteData allows you to model your domain types as concisely as possible, using all of the 
 amazing tools that Swift gives us. This means you can use structs instead of classes, raw
-representable enums to model choices, and immutable `let`s for IDs that should not change
+representable enums to model choices, and immutable `let`s for identifiers that should not change
 after instantiation:
 
 ```swift
@@ -80,8 +81,6 @@ SQL joins, aggregates, common table expressions, and more. See the full docs of 
 
 [sq-docs]: https://swiftpackageindex.com/pointfreeco/swift-structured-queries/main/documentation/structuredqueriescore/
 
-
-
 ## Example projects galore
 
 SQLiteData comes with many, _many_ [example projects][examples] to show you the best practices of 
@@ -90,7 +89,7 @@ persistence and querying needs:
 
 * [**Case Studies**](https://github.com/pointfreeco/sqlite-data/tree/main/Examples/CaseStudies)
   <br> Demonstrates how to solve some common application problems in a simplified environment, in
-  both SwiftUI and UIKit. Things like animations, dynamic queries, database transactions, and more.
+  both SwiftUI and UIKit. This includes animation, dynamic queries, database transactions, and more.
 
 * [**CloudKit Demo**](https://github.com/pointfreeco/sqlite-data/tree/main/Examples/CloudKitDemo)
   <br> A simplified demo that shows how to synchronize a SQLite database to CloudKit and how to
@@ -102,12 +101,12 @@ persistence and querying needs:
 
 * [**Reminders**](https://github.com/pointfreeco/sqlite-data/tree/main/Examples/Reminders)
   <br> A rebuild of Apple's [Reminders][reminders-app-store] app that uses a SQLite database to
-  model the reminders, lists and tags. It features many advanced queries, such as searching, stats
+  model the reminders, lists, and tags. It features many advanced queries, such as searching, stats
   aggregation, and multi-table joins. It also features CloudKit synchronization and sharing.
 
 * [**SyncUps**](https://github.com/pointfreeco/sqlite-data/tree/main/Examples/SyncUps)
   <br> This application is a faithful reconstruction of one of Apple's more interesting sample
-  projects, called [Scrumdinger][scrumdinger], and uses SQLite to persist the data for meetings.
+  projects called [Scrumdinger][scrumdinger], and it uses SQLite to persist its data for meetings.
   We have also added CloudKit synchronization so that all changes are automatically made available
   on all of the user's devices.
   
