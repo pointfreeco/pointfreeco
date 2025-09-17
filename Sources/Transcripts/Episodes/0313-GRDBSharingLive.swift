@@ -3,7 +3,7 @@ import Foundation
 extension Episode {
   public static let ep313_pfLive_SharingGRDB = Episode(
     blurb: """
-      We celebrate 7 years with a live stream! We discuss some recent updates around our popular [Sharing](http://github.com/pointfreeco/swift-sharing) library; open source [SharingGRDB](http://github.com/pointfreeco/sharing-grdb) live, which is a new lightweight alternative to SwiftData that is powered by Sharing and [GRDB](http://github.com/groue/GRDB.swift); and we give a sneak peek of an upcoming series and library.
+      We celebrate 7 years with a live stream! We discuss some recent updates around our popular [Sharing](http://github.com/pointfreeco/swift-sharing) library; open source [SharingGRDB](http://github.com/pointfreeco/sqlite-data) live, which is a new lightweight alternative to SwiftData that is powered by Sharing and [GRDB](http://github.com/groue/GRDB.swift); and we give a sneak peek of an upcoming series and library.
       """,
     codeSampleDirectory: "0313-pf-live-grdb-sharing",
     exercises: _exercises,
@@ -26,7 +26,7 @@ extension Episode {
         blurb: """
           > A lightweight replacement for SwiftData and `@Query`.
           """,
-        link: "https://github.com/pointfreeco/sharing-grdb",
+        link: "https://github.com/pointfreeco/sqlite-data",
         title: "Sharing"
       ),
       .init(
@@ -39,7 +39,7 @@ extension Episode {
       ),
     ],
     sequence: 313,
-    subtitle: "SharingGRDB",
+    subtitle: "SQLiteData",
     title: "Point-Free Live",
     trailerVideo: .init(
       bytesLength: 16_100_000,

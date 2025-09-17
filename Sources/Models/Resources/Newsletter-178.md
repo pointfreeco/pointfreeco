@@ -7,7 +7,7 @@ We will be [live soon](/live), at 9am PST / 4pm GMT!
 We will be discussing some of the following:
 
 * A **sneak peek** at the new CloudKit synchronization tools coming to our popular SwiftData
-alternative: [SharingGRDB]. In just a few lines of code you can unlock synchronization across
+alternative: [SQLiteData]. In just a few lines of code you can unlock synchronization across
 all of your user's devices.
 * We will also demo how to make it possible for your users to **share their data** with other iCloud
 users for collaboration.
@@ -19,4 +19,4 @@ that you are interested in.
 
 You're not going to want to miss this!
 
-[SharingGRDB]: https://github.com/pointfreeco/sharing-grdb
+[SQLiteData]: https://github.com/pointfreeco/sqlite-data

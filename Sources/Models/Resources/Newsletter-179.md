@@ -6,13 +6,13 @@ tools.
 
 Here is everything you need to know about the private alpha:
 
-[SwiftData alternative]: http://github.com/pointfreeco/sharing-grdb
+[SwiftData alternative]: http://github.com/pointfreeco/sqlite-data
 [live stream]: /episodes/ep329-point-free-live-a-vision-for-modern-persistence
 [twitter tease]: https://x.com/pointfreeco/status/1925944881853174212
 
 ## What tools are you previewing?
 
-Our popular [SharingGRDB] library provides a viable alternative to SwiftData that gives you 
+Our popular [SQLiteData] library provides a viable alternative to SwiftData that gives you 
 direct access to SQLite and all of its wonderful powers. We have multiple [demos and case studies]
 built with the library, including a slimmed down [version of Apple's Reminders] app that 
 demonstrates advanced querying, many-to-many join tables, search, and more.
@@ -24,7 +24,7 @@ multiple devices. That is, **until now!**
 We are happy to say that we have made a lot of progress towards bringing seamless CloudKit 
 integration to apps using SQLite, with the following feature set:
 
-* **Most apps using [SharingGRDB]** will be able to enable CloudKit syncing 
+* **Most apps using [SQLiteData]** will be able to enable CloudKit syncing 
 in their app with just a few lines of code. You may need to make a few tweaks to your schema to 
 support CloudKit, but we will provide documentation and tools to aid in that migration.
 * **Synchronization happens seamlessly** behind the scenes with no additional work on your part.
@@ -46,9 +46,9 @@ It may seem too good to be true, but our library accomplishes all of this, and m
 
 [GRDB]: http://github.com/groue/grdb.swift
 ["modern persistence"]: /collections/modern-persistence
-[version of Apple's Reminders]: https://github.com/pointfreeco/sharing-grdb/tree/main/Examples/Reminders
-[demos and case studies]: https://github.com/pointfreeco/sharing-grdb/tree/main/Examples
-[SharingGRDB]: http://github.com/pointfreeco/sharing-grdb
+[version of Apple's Reminders]: https://github.com/pointfreeco/sqlite-data/tree/main/Examples/Reminders
+[demos and case studies]: https://github.com/pointfreeco/sqlite-data/tree/main/Examples
+[SQLiteData]: http://github.com/pointfreeco/sqlite-data
 
 ## How can I get access to the private alpha?
 
@@ -89,14 +89,14 @@ matter what, _do not_ ship an app to the App Store using the alpha preview of ou
 ## Where can I provide feedback during the alpha?
 
 Feedback is much appreciated during the alpha preview, and it would be best to open a new topic
-on the [SharingGRDB][SharingGRDB discussions] repo for long form discussion, or for chat-like 
-discussion you can ask questions in the #sharing-grdb channel of our [Slack].
+on the [SQLiteData][SQLiteData discussions] repo for long form discussion, or for chat-like 
+discussion you can ask questions in the #sqlite-data channel of our [Slack].
 
-[SharingGRDB discussions]: http://github.com/pointfreeco/sharing-grdb/discussions
+[SQLiteData discussions]: http://github.com/pointfreeco/sqlite-data/discussions
 [Slack]: http://pointfree.co/slack-invite
 
 # More to come soon
 
 This is just the beginning for these tools. Once we gather a bit of feedback we will prepare a 
 beta preview for a broader audience, and then officially release the tools in the coming weeks.
-We are excited to see what everyone makes with [SharingGRDB]!
+We are excited to see what everyone makes with [SQLiteData]!

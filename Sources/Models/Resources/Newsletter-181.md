@@ -21,17 +21,18 @@ $0.defaultSyncEngine = try SyncEngine(
 And with just a few more lines of code you can allow your users to share their records with
 participants for collaboration.
 
-[public beta]: https://github.com/pointfreeco/sharing-grdb/pull/112
+[public beta]: https://github.com/pointfreeco/sqlite-data/pull/112
 
 This beta period will be crucial for us to [gather critical feedback] so that we can release
 the final version of these tools in the coming weeks. Here is everything you need to know about the 
 public beta:
 
-[gather critical feedback]: https://github.com/pointfreeco/sharing-grdb/discussions/categories/cloudkit-preview
+[gather critical feedback]: https://github.com/pointfreeco/sqlite-data/discussions/categories/cloudkit-preview
 
 ## What tools are you previewing?
 
-Our popular [SharingGRDB] library provides a viable alternative to SwiftData that gives you 
+Our popular [SQLiteData] library provides a viable alternative to SwiftData that gives you 
+Our popular [SQLiteData] library provides a viable alternative to SwiftData that gives you 
 direct access to SQLite and all of its wonderful powers. We have multiple [demos and case studies]
 built with the library, including a slimmed down [version of Apple's Reminders] app that 
 demonstrates advanced querying, many-to-many join tables, search, and more.
@@ -43,7 +44,8 @@ multiple devices. That is, **until now!**
 We are happy to say that we have made a lot of progress towards bringing seamless CloudKit 
 integration to apps using SQLite, with the following feature set:
 
-* **Most apps using [SharingGRDB]** will be able to enable CloudKit syncing 
+* **Most apps using [SQLiteData]** will be able to enable CloudKit syncing 
+* **Most apps using [SQLiteData]** will be able to enable CloudKit syncing 
 in their app with just a few lines of code. You may need to make a few tweaks to your schema to 
 support CloudKit, but we will provide documentation and tools to aid in that migration.
 * **Synchronization happens seamlessly** behind the scenes with no additional work on your part.
@@ -65,20 +67,22 @@ It may seem too good to be true, but our library accomplishes all of this, and m
 
 [GRDB]: http://github.com/groue/grdb.swift
 ["modern persistence"]: /collections/modern-persistence
-[version of Apple's Reminders]: https://github.com/pointfreeco/sharing-grdb/tree/cloudkit/Examples/Reminders
-[demos and case studies]: https://github.com/pointfreeco/sharing-grdb/tree/cloudkit/Examples
-[SharingGRDB]: http://github.com/pointfreeco/sharing-grdb
+[version of Apple's Reminders]: https://github.com/pointfreeco/sqlite-data/tree/cloudkit/Examples/Reminders
+[demos and case studies]: https://github.com/pointfreeco/sqlite-data/tree/cloudkit/Examples
+[SQLiteData]: http://github.com/pointfreeco/sqlite-data
+[SQLiteData]: http://github.com/pointfreeco/sqlite-data
 
 ## How can I get access to the public beta?
 
-The public beta is being run off of the [`cloudkit`] branch of our SharingGRDB library. Simply
+The public beta is being run off of the [`cloudkit`] branch of our SQLiteData library. Simply
+The public beta is being run off of the [`cloudkit`] branch of our SQLiteData library. Simply
 depend on that branch directly to get access to the CloudKit synchronization tools: 
 
 ```swift
-.package(url: "https://github.com/pointfreeco/sharing-grdb", branch: "cloudkit"),
+.package(url: "https://github.com/pointfreeco/sqlite-data", branch: "cloudkit"),
 ```
 
-[`cloudkit`]: https://github.com/pointfreeco/sharing-grdb/tree/cloudkit
+[`cloudkit`]: https://github.com/pointfreeco/sqlite-data/tree/cloudkit
 
 ## What can I do with the beta?
 
@@ -87,8 +91,10 @@ synchronization tools. Please read [CloudKit synchronization] for a lengthy guid
 your project, and read [Sharing data with other iCloud users] to learn how to further synchronize
 records with multiple participants.
 
-[CloudKit synchronization]: https://github.com/pointfreeco/sharing-grdb/blob/cloudkit/Sources/SharingGRDBCore/Documentation.docc/Articles/CloudKit.md
-[Sharing data with other iCloud users]: https://github.com/pointfreeco/sharing-grdb/blob/cloudkit/Sources/SharingGRDBCore/Documentation.docc/Articles/CloudKitSharing.md
+[CloudKit synchronization]: https://github.com/pointfreeco/sqlite-data/blob/cloudkit/Sources/sqlitedata/Documentation.docc/Articles/CloudKit.md
+[CloudKit synchronization]: https://github.com/pointfreeco/sqlite-data/blob/cloudkit/Sources/sqlitedata/Documentation.docc/Articles/CloudKit.md
+[Sharing data with other iCloud users]: https://github.com/pointfreeco/sqlite-data/blob/cloudkit/Sources/sqlitedata/Documentation.docc/Articles/CloudKitSharing.md
+[Sharing data with other iCloud users]: https://github.com/pointfreeco/sqlite-data/blob/cloudkit/Sources/sqlitedata/Documentation.docc/Articles/CloudKitSharing.md
 
 We **do not** recommend using the beta version of these tools in the production version of an
 existing app. The APIs may change before the final version, and there may be bugs that cause bad 
@@ -118,17 +124,21 @@ matter what, _do not_ ship an app to the App Store using the beta preview of our
 ## Where can I provide feedback during the beta?
 
 Feedback is much appreciated during the beta preview, and it would be best to open a new topic
-on the [SharingGRDB][SharingGRDB discussions] repo for long form discussion, or for chat-like 
-discussion you can ask questions in the #sharing-grdb channel of our [Slack]. Or, if you have
+on the [SQLiteData][SQLiteData discussions] repo for long form discussion, or for chat-like 
+on the [SQLiteData][SQLiteData discussions] repo for long form discussion, or for chat-like 
+on the [SQLiteData][SQLiteData discussions] repo for long form discussion, or for chat-like 
+discussion you can ask questions in the #sqlite-data channel of our [Slack]. Or, if you have
 a question about an actual part of the implementation, feel free to leave a comment on the 
 [pull request]. 
 
-[pull request]: https://github.com/pointfreeco/sharing-grdb/pull/112
-[SharingGRDB discussions]: http://github.com/pointfreeco/sharing-grdb/discussions
+[pull request]: https://github.com/pointfreeco/sqlite-data/pull/112
+[SQLiteData discussions]: http://github.com/pointfreeco/sqlite-data/discussions
+[SQLiteData discussions]: http://github.com/pointfreeco/sqlite-data/discussions
 [Slack]: http://pointfree.co/slack-invite
 
 # More to come soon
 
 This is just the beginning for these tools. Once we gather a bit of feedback we will prepare the 
 official release of the tools in the coming weeks. We are excited to see what everyone makes with 
-[SharingGRDB]!
+[SQLiteData]!
+[SQLiteData]!

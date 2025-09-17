@@ -1,12 +1,12 @@
-We are excited to release version [0.7.0] of our powerful persistence library, [SharingGRDB]. It
+We are excited to release version [0.7.0] of our powerful persistence library, [SQLiteData]. It
 introduces all new tools for bringing user-defined functions to SQLite.
 
-[0.7.0]: https://github.com/pointfreeco/sharing-grdb/releases/0.7.0
-[SharingGRDB]: https://github.com/pointfreeco/sharing-grdb
+[0.7.0]: https://github.com/pointfreeco/sqlite-data/releases/0.7.0
+[SQLiteData]: https://github.com/pointfreeco/sqlite-data
 
 ## `@DatabaseFunction`
 
-SharingGRDB now allows you to define Swift functions that can be called from SQLite _via_ its
+SQLiteData now allows you to define Swift functions that can be called from SQLite _via_ its
 powerful query builder. Simply annotate a function using the new `@DatabaseFunction` macro:
 
 ```swift
@@ -77,10 +77,10 @@ func exclaim(_ string: String) -> String {
 
 ## Try it out today!
 
-[SharingGRDB] 0.7.0 is available today! We hope you'll take these new features for a spin. And we
+[SQLiteData] 0.7.0 is available today! We hope you'll take these new features for a spin. And we
 have more improvements and refinements coming soon, including support for
 [CloudKit synchronization and sharing]
 
-[SharingGRDB]: https://github.com/pointfreeco/sharing-grdb
+[SQLiteData]: https://github.com/pointfreeco/sqlite-data
 [CloudKit synchronization and sharing]: /blog/posts/181-a-swiftdata-alternative-with-sqlite-cloudkit-public-beta
 [cloudkit-beta]: /blog/posts/181-a-swiftdata-alternative-with-sqlite-cloudkit-public-beta
