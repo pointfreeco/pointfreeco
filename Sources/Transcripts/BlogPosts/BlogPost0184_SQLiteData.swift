@@ -11,7 +11,7 @@ extension BlogPost {
     hidden: .no,
     hideFromSlackRSS: false,
     id: 184,
-    publishedAt: yearMonthDayFormatter.date(from: "2025-09-15")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2025-09-17")!,
     title: "SQLiteData 1.0: An alternative to SwiftData with CloudKit sync and sharing"
   )
 }
