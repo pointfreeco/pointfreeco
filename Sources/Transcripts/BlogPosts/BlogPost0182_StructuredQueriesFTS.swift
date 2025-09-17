@@ -2,6 +2,7 @@ import Foundation
 
 extension BlogPost {
   public static let post0182_StructuredQueriesFTS = Self(
+    alternateSlug: "sharinggrdb-0-6-0-full-text-search-and-more",
     author: .pointfree,
     blurb: """
       Announcing support for powerful full-text search tools in our SwiftData alternative, \

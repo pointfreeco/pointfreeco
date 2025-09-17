@@ -2,6 +2,7 @@ import Foundation
 
 extension BlogPost {
   public static let post0183_StructuredQueriesCustomFunctions = Self(
+    alternateSlug: "sharinggrdb-0-7-0-user-defined-sql-functions",
     author: .pointfree,
     blurb: """
       Announcing support for simple, user-defined SQL functions in our SwiftData alternative, \
