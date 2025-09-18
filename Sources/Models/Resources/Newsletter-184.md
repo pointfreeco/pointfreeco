@@ -18,7 +18,10 @@ based on [SQLite]:
 - Support for **iCloud sharing**, which allows your users to share a record (and all of its 
   associated data) with another iCloud user.
 - Powered by **SQLite**, a battle tested technology that is over 25 years old and one of the most
-  widely deployed pieces of software in history.
+  widely deployed pieces of software in history, and **[GRDB]**, a popular and community-standard
+  SQLite driver.
+
+[GRDB]: https://github.com/groue/GRDB.swift
 
 It accomplishes all of this (and more) in a lightweight and ergonomic API that is fully [documented]
 and comes with a wide variety of [demo apps and case studies][Examples].
