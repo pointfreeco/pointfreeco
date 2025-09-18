@@ -1,5 +1,5 @@
 Today we are releasing [SQLiteData 1.0][sqlite-data-gh], an alternative to SwiftData that provides 
-familiar tool to build apps with complex persistence and query needs, with none of the gotchas,
+familiar tools to build apps with complex persistence and query needs, with none of the gotchas,
 based on [SQLite]:
 
 [SQLite]: https://sqlite.org
