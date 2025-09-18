@@ -80,7 +80,8 @@ var reminders
 
 This barely scratches the surface of the kinds of queries you can build. Our library supports
 SQL joins, aggregates, common table expressions, and more. See the full docs of our
-[StructuredQueries][sq-docs] for more information on writing type-safe and schema-safe queries.
+[StructuredQueries][sq-docs] library for more information on writing type-safe and schema-safe
+queries.
 
 [sq-docs]: https://swiftpackageindex.com/pointfreeco/swift-structured-queries/main/documentation/structuredqueriescore/
 
