@@ -4,7 +4,8 @@ extension BlogPost {
   public static let post0185_StructuredQueriesViews = Self(
     author: .pointfree,
     blurb: """
-      TODO.
+      Announcing type-safe, schema-safe support for creating, querying, and updating database
+      views in SQLiteData.
       """,
     coverImage: "TODO",
     hidden: .no,
