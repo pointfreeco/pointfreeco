@@ -25,28 +25,62 @@ private struct ReminderWithList {
 ```
 
 Note that we have applied both the `@Table` macro and `@Selection` macro. This is similar to what
-one does with common table expressions, and it allows one to represent a type that for intents and
+one does with [common table expressions], and it allows one to represent a type that for intents and
 purposes seems like a regular SQLite table, but it's not actually persisted in the database.
+
+[common table expressions]: https://swiftpackageindex.com/pointfreeco/swift-structured-queries/main/documentation/structuredqueriescore/commontableexpressions
 
 With that type defined we can use the `createTemporaryView` function to create a SQL query that
 creates a temporary view. You provide a select statement that selects all the data needed for the
 view:
 
+<table>
+<tr valign=top>
+<td width=50%>
+
 ```swift
 ReminderWithList.createTemporaryView(
   as: Reminder
-    .join(RemindersList.all) { $0.remindersListID.eq($1.id) }
+    .join(RemindersList.all) { 
+      $0.remindersListID.eq($1.id) 
+    }
     .select {
       ReminderWithList.Columns(
         reminderTitle: $0.title,
         remindersListTitle: $1.title
       )
     }
-)
+)  
 ```
+
+</td>
+<td width=50%>
+
+```sql
+CREATE TEMPORARY VIEW "reminderWithLists"
+("reminderTitle", "remindersListTitle")
+AS
+SELECT
+  "reminders"."title",
+  "remindersLists"."title"
+FROM "reminders"
+JOIN "remindersLists"
+  ON "reminders"."remindersListID" 
+    = "remindersLists"."id"
+    
+    
+```
+
+</td>
+</tr>
+</table>
 
 Once that is executed in your database you are free to query from this table as if it is a regular
 table:
+
+<table>
+<tr valign=top>
+<td width=50%>
 
 ```swift
 ReminderWithList
@@ -55,16 +89,27 @@ ReminderWithList
      $0.reminderTitle)
   }
   .limit(3)
-
-// SELECT
-//   "reminderWithLists"."reminderTitle",
-//   "reminderWithLists"."remindersListTitle"
-// FROM "reminderWithLists"
-// ORDER BY
-//   "reminderWithLists"."remindersListTitle",
-//   "reminderWithLists"."reminderTitle"
-// LIMIT 3
+  
+  
 ```
+
+</td>
+<td width=50%>
+
+```sql
+SELECT
+  "reminderWithLists"."reminderTitle",
+  "reminderWithLists"."remindersListTitle"
+FROM "reminderWithLists"
+ORDER BY
+  "reminderWithLists"."remindersListTitle",
+  "reminderWithLists"."reminderTitle"
+LIMIT 3
+```
+
+</td>
+</tr>
+</table>
 
 The best part of this is that the `JOIN` used in the view is completely hidden from us. For all
 intents and purposes, `ReminderWithList` seems like a regular SQL table for which each row holds
