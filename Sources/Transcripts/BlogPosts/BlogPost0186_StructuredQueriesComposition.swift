@@ -9,8 +9,8 @@ extension BlogPost {
     coverImage: "TODO",
     hidden: .no,
     hideFromSlackRSS: false,
-    id: 185,
-    publishedAt: yearMonthDayFormatter.date(from: "2025-09-30")!,
-    title: "What’s new in SQLiteData: Column Groupings"
+    id: 186,
+    publishedAt: yearMonthDayFormatter.date(from: "2025-10-02")!,
+    title: "New in SQLiteData: Column groups and inheritance"
   )
 }
