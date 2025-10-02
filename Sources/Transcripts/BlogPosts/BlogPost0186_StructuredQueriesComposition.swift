@@ -6,7 +6,7 @@ extension BlogPost {
     blurb: """
       Announcing powerful new tools for composing your schema's Swift data types.
       """,
-    coverImage: "TODO",
+    coverImage: nil,
     hidden: .no,
     hideFromSlackRSS: false,
     id: 186,
