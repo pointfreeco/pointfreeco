@@ -120,7 +120,62 @@ WHERE ("createdAt", "updatedAt") <= (?, ?)
 </td>
 </tr>
 </table>
+
 That allows you to query against all columns of a grouping at once.
+
+These improvements to the library make it also possible to nest `@Selection` data types when 
+selecting certain columns from your queries, which was previously impossible. For example,
+if you want to select the title of each reminder with the title of its associated list, as well
+as the reminder's timestamps, you can design the following data type:
+
+```swift
+@Selection struct Row {
+  let reminderTitle: String
+  let remindersListTitle: String
+  let reminderTimestamps: Timestamps
+}
+```
+
+And then construct a query that selects this data into the `Row` data type:
+
+<table>
+<tr valign=top>
+<td width=50%>
+
+```swift
+Reminder
+  .join(RemindersList) {
+    $0.remindersListID.eq($1.id)
+  }
+  .select {
+    Row.Columns(
+      reminderTitle: $0.title,
+      remindersListTitle: $1.title,
+      remindersTimestamps: $0.timestamps
+    )
+  }
+```
+
+</td>
+<td width=50%>
+
+```sql
+SELECT 
+  "reminders"."title",
+  "remindersLists"."title", 
+  "reminders"."createdAt", 
+  "reminders"."updatedAt"
+FROM "reminders"
+JOIN "remindersLists"
+  ON "remindersListID" = "id"
+
+
+
+```
+
+</td>
+</tr>
+</table>
 
 ## Enum tables, a.k.a single-table inheritance
 
