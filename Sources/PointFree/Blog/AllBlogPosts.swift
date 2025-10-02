@@ -202,5 +202,6 @@ extension BlogPost {
     .post0183_StructuredQueriesCustomFunctions,
     .post0184_SQLiteData,
     .post0185_StructuredQueriesViews,
+    .post0186_StructuredQueriesComposition,
   ]
 }
