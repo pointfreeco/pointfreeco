@@ -4,8 +4,9 @@ extension BlogPost {
   public static let post0187_primaryKeyMigrationTool = Self(
     author: .pointfree,
     blurb: """
-      TODO \
-      TODO
+      We have released a tool that will help you prepare your existing SQLite database for \
+      CloudKit synchronization. It will convert existing integer primary keys to UUIDs and add \
+      primary keys to tables that do not have one, all the while preserving foreign key integrity.
       """,
     coverImage: nil,
     hidden: .no,
