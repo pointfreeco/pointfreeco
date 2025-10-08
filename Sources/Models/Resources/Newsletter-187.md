@@ -4,7 +4,7 @@ The steps to migrate such tables to be CloudKit sync-compatible are numerous, co
 
 ## Migrating an existing schema without our tool
 
-Before showing off the tool, it is important to understand just how much of a slog it can be to migrate any existing schema manually. While SQLite is an incredibly powerful tool, it unfortunately does not offer a robust set of table alteration tools. The only alterations you can make to existing tables are renaming tables and columns, as well as adding and deleting columns. In particular, there is no way to change the definition of a column, such as changing its type from `INTEGER AUTOINCREMENT` to `TEXT DEFAULT (uuid())`.
+Before showing off the tool, it is important to understand just how much of a slog it can be to migrate any existing schema manually. While SQLite is an incredibly powerful tool, it unfortunately does not offer a robust set of table alteration tools. The only alterations you can make to existing tables are renaming tables and columns, as well as adding and deleting columns. In particular, there is no way to change the definition of a column, such as changing its type from `INTEGER AUTOINCREMENT` to the type `TEXT DEFAULT (uuid())`.
 
 However, the SQLite docs do provide a [concise 12-step program](https://sqlite.org/lang_altertable.html#making_other_kinds_of_table_schema_changes) you can follow to perform such alterations. The essence of these steps really boils down to just 4 fundamental steps:
 
