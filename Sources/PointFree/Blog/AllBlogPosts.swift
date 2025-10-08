@@ -203,5 +203,6 @@ extension BlogPost {
     .post0184_SQLiteData,
     .post0185_StructuredQueriesViews,
     .post0186_StructuredQueriesComposition,
+    .post0187_primaryKeyMigrationTool,
   ]
 }
