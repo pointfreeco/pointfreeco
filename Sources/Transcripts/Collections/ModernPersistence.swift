@@ -80,18 +80,18 @@ extension Episode.Collection {
           how our powerful [SQLiteData] library makes synchronizing your users' local data to \
           CloudKit a breeze, and even how they can share data with other iCloud users for \
           collaboration.
-          
+
           [SQLiteData]: http://github.com/pointfreeco/sqlite-data
           """,
         coreLessons: [
-          Section.Lesson(episode: .ep340_sync),
+          Section.Lesson(episode: .ep340_sync)
         ],
         isFinished: false,
         isHidden: false,
         related: [],
         title: "CloudKit synchronization",
         whereToGoFromHere: nil
-      )
+      ),
     ],
     title: "Modern Persistence"
   )
