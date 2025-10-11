@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 130142
+Content-Length: 130232
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -227,7 +227,11 @@ Prism.languages.insertBefore('swift', 'string-literal', {
       },
     }
   },
-});</script>
+});
+Prism.languages.sql.keyword = [
+  /\b(IS|NOT|STRICT)\b/,
+  Prism.languages.sql.keyword
+];</script>
     <meta name="title" content="Episode #1: Type-Safe HTML in Swift">
     <meta property="og:title" content="Episode #1: Type-Safe HTML in Swift">
     <meta name="twitter:title" content="Episode #1: Type-Safe HTML in Swift">

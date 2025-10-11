@@ -476,7 +476,7 @@ SELECT
   "title",
   "dueDate"
 FROM "remindersLists"
-WHERE isPastDue("id", "title", "dueDate")
+WHERE "isPastDue"("id", "title", "dueDate")
 ```
 
 </td>

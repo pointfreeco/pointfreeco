@@ -380,7 +380,12 @@ private var prismJsHead: ChildOf<Tag.Head> {
             }
           },
         });
-        """#),
+        Prism.languages.sql.keyword = [
+          /\b(IS|NOT|STRICT)\b/,
+          Prism.languages.sql.keyword
+        ];
+        """#
+    ),
   ])
 }
 

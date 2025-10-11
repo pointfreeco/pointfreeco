@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 68602
+Content-Length: 68692
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -227,7 +227,11 @@ Prism.languages.insertBefore('swift', 'string-literal', {
       },
     }
   },
-});</script>
+});
+Prism.languages.sql.keyword = [
+  /\b(IS|NOT|STRICT)\b/,
+  Prism.languages.sql.keyword
+];</script>
     <meta name="title" content="Episode #2: Proof in Functions">
     <meta property="og:title" content="Episode #2: Proof in Functions">
     <meta name="twitter:title" content="Episode #2: Proof in Functions">

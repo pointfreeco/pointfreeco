@@ -8,7 +8,7 @@ You could of course audit your entire code base for anytime you perform a `DELET
 
 This is a perfect use case for SQL triggers. We can create one that monitors deletions on the `remindersLists` table so that when the table is empty we insert a brand new list:
 
-```swift
+```sql
 CREATE TEMPORARY TRIGGER "nonEmptyRemindersLists"
 AFTER DELETE ON "remindersLists"
 FOR EACH ROW WHEN NOT (EXISTS (SELECT * FROM "remindersLists"))

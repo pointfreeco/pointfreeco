@@ -343,5 +343,6 @@ extension Episode {
     .ep338_fts,
     .ep339_fts,
     .ep340_sync,
+    .ep341_sync,
   ]
 }
