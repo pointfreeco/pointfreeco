@@ -2,7 +2,7 @@ It is now possible to use simple Swift functions to aggregate data in your SQLit
 This can unlock all new super powers in querying by writing complex logic directly in Swift rather
 than contorting SQL to do strange things.
 
-As example, consider computing the [mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of a 
+As an example, consider computing the [mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of a 
 column in a table. Say we have a reminders table with a priority, and each reminder belongs to
 a reminders list:
 
