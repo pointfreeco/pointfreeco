@@ -22,9 +22,9 @@ a reminders list:
 }
 ```
 
-We would like to compute the mode of the priority across all reminders for each list, i.e. compute 
+We would like to compute the mode of the priority across all reminders for each list, _i.e._ compute 
 the most common priority that is assigned to all reminders belonging to a particular list. And 
-further we would like to ignore any NULL values from this computation.
+further we would like to ignore any `NULL` values from this computation.
 
 Unfortunately SQLite does not have a `mode` function that can easily compute this for us. We
 need to perform the computation ourselves using subqueries, and the raw SQL is quite complex: 
@@ -59,19 +59,19 @@ were simple Swift functions.
 
 ```swift
 func mode(priority priorities: some Sequence<Priority?>) -> Priority? {
-  var occurences: [Priority: Int] = [:]
+  var occurrences: [Priority: Int] = [:]
   for priority in priorities {
     guard let priority
     else { continue }
-    occurences[priority, default: 0] += 1
+    occurrences[priority, default: 0] += 1
   }
-  return occurences.max { $0.value < $1.value }?.key
+  return occurrences.max { $0.value < $1.value }?.key
 }
 ```
 
 It's a function that takes some sequence of optional priorities and it returns the mode of all
 of those priorities. It does so by constructing a dictionary mapping a priority to the number
-of its occurences in the sequence before finally returning the max value in that dictionary.
+of its occurrences in the sequence before finally returning the maximum value in that dictionary.
 
 And this naive function can be invoked directly from a SQLite query, as long as you first annotate
 the function with the `@DatabaseFunction` macro:
@@ -109,7 +109,6 @@ Swift code directly from a SQL query.
 
 ## Try it out today!
 
-Update your depedence on [SQLiteData] and [StructuredQueries] today to get access to this new
-tools.
+Update [SQLiteData] and [StructuredQueries] today to get access to these new tools.
 
 [SQLiteData]: https://github.com/pointfreeco/sqlite-data
