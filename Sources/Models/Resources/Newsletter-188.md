@@ -3,8 +3,8 @@ This can unlock all new super powers in querying by writing complex logic direct
 than contorting SQL to do strange things.
 
 As an example, consider computing the [mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of a 
-column in a table. Say we have a reminders table with a priority, and each reminder belongs to
-a reminders list:
+column in a table, i.e. the most commonly used value across all rows. Say we have a reminders table 
+with a priority, and each reminder belongs to a reminders list:
 
 ```swift
 @Table struct RemindersList {
@@ -109,6 +109,6 @@ Swift code directly from a SQL query.
 
 ## Try it out today!
 
-Update [SQLiteData] and [StructuredQueries] today to get access to these new tools.
+Update [SQLiteData] and [StructuredQueries] today to get access to these new tools!
 
 [SQLiteData]: https://github.com/pointfreeco/sqlite-data
