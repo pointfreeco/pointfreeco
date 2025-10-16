@@ -84,7 +84,8 @@ extension Episode.Collection {
           [SQLiteData]: http://github.com/pointfreeco/sqlite-data
           """,
         coreLessons: [
-          Section.Lesson(episode: .ep340_sync)
+          Section.Lesson(episode: .ep340_sync),
+          Section.Lesson(episode: .ep341_sync),
         ],
         isFinished: false,
         isHidden: false,
