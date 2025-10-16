@@ -205,6 +205,6 @@ extension BlogPost {
     .post0186_StructuredQueriesComposition,
     .post0187_primaryKeyMigrationTool,
     .post0188_AggregateFunctions,
-    .post0189_CaseStudyInOpenSource
+    .post0189_CaseStudyInOpenSource,
   ]
 }
