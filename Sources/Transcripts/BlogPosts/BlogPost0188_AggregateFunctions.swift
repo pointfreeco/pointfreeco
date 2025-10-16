@@ -12,7 +12,7 @@ extension BlogPost {
     hidden: .no,
     hideFromSlackRSS: false,
     id: 188,
-    publishedAt: yearMonthDayFormatter.date(from: "2025-10-25")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2025-10-16")!,
     title: "New in SQLiteData: Custom aggregate functions"
   )
 }
