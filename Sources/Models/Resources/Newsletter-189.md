@@ -1,3 +1,7 @@
+The Apple community is one that largely values 1st party libraries and frameworks, and typically
+shuns 3rd party. While Apple does build incredible tools, the yearly or semi-yearly release cycle
+and opaque feedback channels can start to weigh on a developer's experience.
+
 One of the benefits to maintaing open source software is the abililty for us to easily gather
 feedback from people and act on that feedback quickly. This happens on a weekly basis in the dozens
 of open source libraries we maintain, but we wanted to highlight two recent occurences that stem
@@ -10,7 +14,7 @@ from our [SQLiteData] libray.
 With the first release of SQLiteData we baked in some behavior that we felt was safe as a default,
 but ultimately turned out to be a bit restrictive. For example, when the [`SyncEngine`] detects
 that the iCloud account on the device logs out or switches accounts, we take the precaution to 
-automatically delete all local data. After all, most likely the data belongs to the user that just
+delete all local data. After all, most likely the data belongs to the user that just
 logged out, and so it's probably not appropriate to keep that data around for the next iCloud user.
 
 [`SyncEngine`]: https://swiftpackageindex.com/pointfreeco/sqlite-data/main/documentation/sqlitedata/syncengine 
@@ -85,8 +89,48 @@ This is a great feature for the library to have, and we are glad that someone fr
 advocated for it so that we can take the time to implement it. And this is exactly why we enjoy
 building our libraries in the open.  
 
-## Immedate bug fixes
+## Bug fixes: Sharing iCloud records
+
+Our popular [SQLiteData] library not only makes it easy to synchronize your user's data across
+all of their devices, but it also makes it easy for them to share a record (and all associated
+records) with other iCloud users for collaboration. This took a great amount of effort to support,
+and was one of the most complex features we worked on for the library.
+
+However, shortly after releasing the library a member of our community brought up an issue in our
+[Slack] community. It seems that sharing a record worked fine the first time, but then sharing
+the record again would sometimes fail to generate a share link and produce an error.
+
+Thanks to our extensive [test suite] for the iCloud synchronization tools we were able to write
+a [failing test] quite quickly. It turns out the problem was due to us saving the record being 
+shared to CloudKit (a requirement to create `CKShare`s), which in turn updates the record's 
+'internal [`recordChangeTag`] used to determine whether the server and client records differ. 
+However, we did not update our locally cached server record with this newly updated record, which
+means if you try sharing again it, CloudKit will see the mismatched `recordChangeTag`s and reject
+the operation.
+
+Luckily [the fix] was quite simple. We just needed to make sure to 
+[cache the freshest server record] we receive after creating the `CKShare` in CloudKit. With that
+small change everything works exactly as expected, and our test passes. Less than 5 hours after
+the report of this bug we had opened a pull request and merged it into `main`.  
 
 ![](https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/259bd04f-870b-407d-0051-a2a845fbf100/public)
 
+[cache the freshest server record]: https://github.com/pointfreeco/sqlite-data/pull/259/files#diff-e4abd0f68cc100e2f568a99f42e683074f3df6e0515fc914be9997497d069da2R209
+[`recordChangeTag`]: https://developer.apple.com/documentation/cloudkit/ckrecord/recordchangetag
+[Slack]: http://pointfree.co/slack-invite
+[the fix]: https://github.com/pointfreeco/sqlite-data/pull/259
+[test suite]: https://github.com/pointfreeco/sqlite-data/tree/main/Tests/SQLiteDataTests/CloudKitTests
+[failing test]: https://github.com/pointfreeco/sqlite-data/blob/f6c72114e6ba9df1f5cefcd8b0590d86982a92f6/Tests/SQLiteDataTests/CloudKitTests/SharingTests.swift#L648
 
+## Can you trust 3rd party libraries?
+
+While we understand that many in the Apple community have an ingrained distaste for 3rd party 
+libraries and full trust of Apple's frameworks, we hope that everyone can see there is a clear 
+benefit to using libraries with active and engaged maintainers. We were able to implement and
+release a user requested feature in less than a week, and fix a bug in just a few hours. No need
+to wait for WWDC or hope for a new Xcode release and pray that the new feature or bug fix
+doesn't require a bump in your minimum deployment target.
+
+And if you are interested in a SwiftData alternative that gives you direct access to SQLite,
+seamlessly integrates with iCloud synchronization, and allows your users to share their data
+with other iCloud users, then be sure to check out [SQLiteData]. 
