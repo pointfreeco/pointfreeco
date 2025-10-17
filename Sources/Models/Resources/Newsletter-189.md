@@ -11,6 +11,9 @@ from our [SQLiteData] libray.
 
 ## New feature: Customizable iCloud logout behavior
 
+> TLDR;: A community member requested the ability to customize what happens when a user logs out
+of their iCloud account. Within a week we implemented and released the feature.
+
 With the first release of SQLiteData we baked in some behavior that we felt was safe as a default,
 but ultimately turned out to be a bit restrictive. For example, when the [`SyncEngine`] detects
 that the iCloud account on the device logs out or switches accounts, we take the precaution to 
@@ -89,7 +92,38 @@ This is a great feature for the library to have, and we are glad that someone fr
 advocated for it so that we can take the time to implement it. And this is exactly why we enjoy
 building our libraries in the open.  
 
+## New feature: Schema migration tool for iCloud
+
+> TLDR;: A community member proposed and implemented a feature they needed in their app, and after
+a bit of cleanup we merged and released the changes.
+
+A few weeks ago we [released a tool] that helps existing apps adopt iCloud synchronization 
+with [SQLiteData]. One of the most important [prerequisites] of iCloud sync is that each table must 
+have a primary key, and that primary key must be a globally unique identifier, such as a UUID. Such 
+a migration can be quite painful in practice, but our migration tool makes it easy to migrate your 
+tables.
+
+[prerequisites]: https://swiftpackageindex.com/pointfreeco/sqlite-data/main/documentation/sqlitedata/cloudkit#Designing-your-schema-with-synchronization-in-mind
+
+However, another prerequisite to implementing iCloud synchronization is that none of your SQL
+tables can have [uniqueness constraints]. It's not possible to support uniqueness
+constraints when your users' data is distributed across all of their devices. And unfortunately
+it is also quite difficult to remove uniqueness constraints from an existing SQL schema, and our
+migration tool did not do anything to help with this problem.
+
+Well, that was until a member from our community opened a [pull request][uniqueness-pr] to
+improve our migration tool. The tool will now find any uniqueness constraints in your schema and
+automatically remove them. This removes yet another hurdle to adopting iCloud synchronization,
+and this kind of collaboration with the users of our library is what makes open source so special.   
+
+[uniqueness constraints]: https://swiftpackageindex.com/pointfreeco/sqlite-data/main/documentation/sqlitedata/cloudkit#Uniqueness-constraints
+[uniqueness-pr]: https://github.com/pointfreeco/sqlite-data/pull/253
+[released a tool]: /blog/posts/187-new-in-sqlitedata-migration-tool-for-cloudkit-sync
+
 ## Bug fixes: Sharing iCloud records
+
+> TLDR;: A community member reported an issue with sharing a record with other iCloud users.
+After reproducing the problem we were able to release a fix for the bug in just a few hours.  
 
 Our popular [SQLiteData] library not only makes it easy to synchronize your user's data across
 all of their devices, but it also makes it easy for them to share a record (and all associated
