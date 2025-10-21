@@ -469,7 +469,7 @@ private struct BlockQuoteStyle {
     case "Important":
       self.backgroundColor = PointFreeColor(rawValue: "#FEFBF3").dark(.init(rawValue: "#291F04"))
       self.borderColor = PointFreeColor(rawValue: "#966922").dark(.init(rawValue: "#F4B842"))
-    case "Announcement", "Tip":
+    case "Announcement", "Tip", "TL;DR":
       self.backgroundColor = PointFreeColor(rawValue: "#FBFFFF").dark(.init(rawValue: "#0F2C2B"))
       self.borderColor = PointFreeColor(rawValue: "#4B767C").dark(.init(rawValue: "#9FFCE5"))
     case "Preamble":
