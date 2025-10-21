@@ -81,8 +81,9 @@ them if they want to reset their local data or not:
 } message: {
   Text(
     """
-    You are no longer logged into iCloud. Would you like to reset your local data to the \
-    defaults? This will not affect your data in iCloud.
+    You are no longer logged into iCloud. \
+    Would you like to reset your local data to the defaults? \
+    This will not affect your data in iCloud.
     """
   )
 }
