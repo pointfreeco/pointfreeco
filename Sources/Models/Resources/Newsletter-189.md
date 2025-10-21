@@ -45,7 +45,7 @@ it updates a boolean that can be used to drive an alert:
 [updated]: https://github.com/pointfreeco/sqlite-data/blob/22cb3a5260d127b80cb263f580ad7b6fbfd04493/Examples/Reminders/RemindersApp.swift#L54-L71
 
 ```swift
-MainActor
+@MainActor
 @Observable
 class RemindersSyncEngineDelegate: SyncEngineDelegate {
   var isDeleteLocalDataAlertPresented = false
