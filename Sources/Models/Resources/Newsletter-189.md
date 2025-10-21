@@ -4,7 +4,7 @@ and opaque feedback channels can start to weigh on a developer's experience.
 
 One of the benefits to maintaining open source software is the ability for us to easily gather
 feedback from people and act on that feedback quickly. This happens on a weekly basis in the dozens
-of open source libraries we maintain, but we wanted to highlight two recent occurrences from our
+of open source libraries we maintain, but we wanted to highlight three recent occurrences from our
 [SQLiteData] library.
 
 [SQLiteData]: http://github.com/pointfreeco/sqlite-data 
