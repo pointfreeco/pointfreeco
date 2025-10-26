@@ -345,5 +345,6 @@ extension Episode {
     .ep340_sync,
     .ep341_sync,
     .ep342_sync,
+    .ep343_sync,
   ]
 }
