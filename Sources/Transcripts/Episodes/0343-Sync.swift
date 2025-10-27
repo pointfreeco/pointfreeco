@@ -12,7 +12,7 @@ extension Episode {
     id: 343,
     length: 35 * 60 + 46,
     permission: .subscriberOnly,
-    publishedAt: yearMonthDayFormatter.date(from: "2025-10-28")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2025-10-27")!,
     references: [
       Reference(
         blurb: "A fast, lightweight replacement for SwiftData, powered by SQL.",
