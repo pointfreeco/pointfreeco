@@ -87,6 +87,7 @@ extension Episode.Collection {
           Section.Lesson(episode: .ep340_sync),
           Section.Lesson(episode: .ep341_sync),
           Section.Lesson(episode: .ep342_sync),
+          Section.Lesson(episode: .ep343_sync),
         ],
         isFinished: false,
         isHidden: false,
