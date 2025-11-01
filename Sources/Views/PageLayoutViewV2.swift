@@ -1017,7 +1017,7 @@ public struct PrismJSHead: HTML {
         },
       });
       Prism.languages.sql.keyword = [
-        /\b(IS|NOT|STRICT)\b/,
+        /\b(AND|IS|NOT|STRICT)\b/,
         Prism.languages.sql.keyword
       ];
       """#
