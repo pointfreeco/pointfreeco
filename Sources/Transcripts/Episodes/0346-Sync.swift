@@ -10,7 +10,7 @@ extension Episode {
     codeSampleDirectory: "0346-sync-pt6",
     exercises: _exercises,
     id: 346,
-    length: 56 * 60 + 19,
+    length: 37 * 60 + 9,
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2025-11-17")!,
     references: [
