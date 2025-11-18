@@ -444,7 +444,7 @@ public struct PastDueBanner: HTML {
 
     case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .some, deactivated: _):
       TopBanner(style: .warning) {
-        "Your subscription is past-due! Please contact us at "
+        "Your enterprise subscription is past-due! Please contact us at "
         Link("support@pointfree.co", href: "mailto:support@pointfree.co")
         " to regain access to Point-Free."
       }
@@ -458,7 +458,7 @@ public struct PastDueBanner: HTML {
 
     case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .some, deactivated: _):
       TopBanner(style: .warning) {
-        "Your subscription is canceled. Please contact us at "
+        "Your enterprise subscription is canceled. Please contact us at "
         Link("support@pointfree.co", href: "mailto:support@pointfree.co")
         " to regain access to Point-Free."
       }
