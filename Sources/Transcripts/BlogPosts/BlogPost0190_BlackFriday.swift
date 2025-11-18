@@ -8,7 +8,7 @@ extension BlogPost {
       instant access to all past 303 episodes instantly, as well as access to everything we have \
       planned for 2026.
       """,
-    coverImage: nil,
+    coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/0897ce61-28b0-4ebd-11da-29937bfad800/public",
     hidden: .no,
     hideFromSlackRSS: false,
     id: 190,

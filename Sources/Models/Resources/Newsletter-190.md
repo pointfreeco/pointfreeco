@@ -119,7 +119,7 @@ state being initialized. Previously one would have to send an explicit `.onAppea
 view to emulate this concept, but now you can simply use the `.onMount` method:
 
 ```swift:2
-Reduce { … }
+Update { … }
   .onMount { store in
     guard try store.isTimerRunning
     else { return }
@@ -142,7 +142,7 @@ as when a piece of state changes in your feature. This can be a great tool for d
 requests that depend on a piece of state:
 
 ```swift:2
-Reduce { … }
+Update { … }
   .onMount(id: \.searchText) { store in
     try await clock.sleep(for: .seconds(0.3))
     try store.send(.searchResults(apiClient.search(store.searchText)))
@@ -152,7 +152,7 @@ Reduce { … }
 There is even an `onDismount` method that is invoked the moment the feature is deinitialized:
 
 ```swift:2
-Reduce { … }
+Update { … }
   .onDismount { state in
     await analyticsClient.track("Feature dismounted")
   }

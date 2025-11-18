@@ -189,7 +189,7 @@ struct Banner {
     @Dependency(\.subscriberState) var subscriberState
     @Dependency(\.envVars.appEnv) var appEnv
 
-    let banners: [Self] = [.wwdc2025]
+    let banners: [Self] = [.blackFriday2025]
     return banners.filter { banner in
       return
         appEnv == .development
@@ -199,10 +199,10 @@ struct Banner {
     }
   }
 
-  static let wwdc2025 = Self(
-    endAt: yearMonthDayFormatter.date(from: "2025-06-16")!,
+  static let blackFriday2025 = Self(
+    endAt: yearMonthDayFormatter.date(from: "2025-12-07")!,
     markdownContent: ###"""
-      **🎉 WWDC Sale!** Save 30% when you [subscribe today](/discounts/dubdub25).
+      **🎉 BLACK FRIDAY SALE!** Save 30% when you [subscribe today](/discounts/black-friday-2025).
       """###,
     shouldShow: { route in
       if case .subscribeConfirmation = route {
@@ -213,7 +213,7 @@ struct Banner {
         return true
       }
     },
-    startAt: yearMonthDayFormatter.date(from: "2025-06-03")!
+    startAt: yearMonthDayFormatter.date(from: "2025-11-17")!
   )
 }
 
