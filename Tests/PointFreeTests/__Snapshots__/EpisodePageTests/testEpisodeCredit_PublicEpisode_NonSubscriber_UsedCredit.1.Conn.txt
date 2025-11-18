@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-type-safe-html-in-swift
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 130233
+Content-Length: 130319
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -110,6 +110,10 @@ body, html {
 
 .highlight-warn .line-highlight {
   background-color: rgba(254, 223, 43, 0.15);
+}
+
+.highlight-runtime .line-highlight {
+  background-color: rgba(200, 91, 221, 0.15);
 }
 
 .language-diff {

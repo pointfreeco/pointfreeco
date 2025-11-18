@@ -8,8 +8,10 @@ import Html
 import Models
 import PointFreeRouter
 import Prelude
+import Stripe
 import Styleguide
 import StyleguideV2
+import Tagged
 
 public struct PageLayout<Content: HTML>: HTMLDocument {
   let content: Content
@@ -32,6 +34,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     self.cssConfig = cssConfig
   }
 
+  @Dependency(\.envVars.appEnv) var appEnv
   @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.date.now) var now
@@ -142,13 +145,18 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     if shouldShowLiveBanner {
       LiveStreamBanner()
     }
-    //    if !subscriberState.isActive && !currentRoute.is(\.subscribeConfirmation) {
-    //      if currentRoute.is(\.home) || currentRoute.is(\.blog.index) {
-    //        WWDCBanner()
-    //      } else {
-    //        MinimalWWDCBanner()
-    //      }
-    //    }
+    if appEnv == .development
+      || !subscriberState.isActive && !currentRoute.is(\.subscribeConfirmation)
+    {
+      SaleBanner(
+        isMaximum: currentRoute.is(\.home)
+          || currentRoute.is(\.blog)
+          || currentRoute.is(\.episodes),
+        title: "Black Friday",
+        percentage: 30,
+        discountCode: "black-friday-2025"
+      )
+    }
     NavBar()
     content
     if !layoutData.style.isMinimal {
@@ -436,7 +444,7 @@ public struct PastDueBanner: HTML {
 
     case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .some, deactivated: _):
       TopBanner(style: .warning) {
-        "Your subscription is past-due! Please contact us at "
+        "Your enterprise subscription is past-due! Please contact us at "
         Link("support@pointfree.co", href: "mailto:support@pointfree.co")
         " to regain access to Point-Free."
       }
@@ -450,7 +458,7 @@ public struct PastDueBanner: HTML {
 
     case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .some, deactivated: _):
       TopBanner(style: .warning) {
-        "Your subscription is canceled. Please contact us at "
+        "Your enterprise subscription is canceled. Please contact us at "
         Link("support@pointfree.co", href: "mailto:support@pointfree.co")
         " to regain access to Point-Free."
       }
@@ -603,102 +611,34 @@ struct TopBanner<Content: HTML>: HTML {
   }
 }
 
-struct MinimalWWDCBanner: HTML {
+struct SaleBanner: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
+  let isMaximum: Bool
+  let title: String
+  let percentage: Int
+  let discountCode: Tagged<Coupon, String>
+
   var body: some HTML {
-    div {
-      HTMLGroup {
-        HStack(alignment: .lastTextBaseline, spacing: 2) {
-          Spacer()
-          core
-          Spacer()
-        }
-        .inlineStyle("display", "none", media: .mobile)
-        VStack(alignment: .center, spacing: 0) {
-          core
-        }
-        .inlineStyle("display", "none", media: .desktop)
-      }
-      .color(.offBlack)
-      .linkStyle(LinkStyle(color: .offWhite, underline: true))
-      .inlineStyle("margin", "0 auto")
-      .inlineStyle("max-width", "1280px")
-      .inlineStyle("padding", "2rem 2rem")
-      .inlineStyle("text-align", "center")
-      .inlineStyle("font-size", "1.2rem")
+    if isMaximum {
+      maximum
+    } else {
+      minimum
     }
-    .inlineStyle(
-      "background",
-      "linear-gradient(135deg, #fff080 0%, #4cccff 20%, #79f2b0 80%, #974dff 100%)"
-    )
   }
 
   @HTMLBuilder
-  var core: some HTML {
-    VStack(alignment: .leading, spacing: -0.2) {
-      div {
-        HTMLRaw("WWDC&nbsp;WEEK")
-      }
-      .inlineStyle("font-weight", "1000")
-      .inlineStyle("font-size", "2.3rem")
-      .inlineStyle("margin-bottom", "-1.5rem")
-      div {
-        "SALE"
-      }
-      .inlineStyle("font-weight", "1000")
-      .inlineStyle("font-size", "6rem")
-    }
-    .inlineStyle("margin-top", "0.75rem")
-
-    VStack(alignment: .center, spacing: 0) {
-      HStack(alignment: .center, spacing: 0) {
-        div { "30" }
-          .inlineStyle("font-weight", "1000")
-          .inlineStyle("font-size", "4rem")
-        VStack(alignment: .leading, spacing: 0) {
-          div { "%" }
-            .inlineStyle("margin-bottom", "-0.5rem")
-            .inlineStyle("font-weight", "700")
-            .inlineStyle("font-size", "2rem")
-          div { "off" }
-            .inlineStyle("font-weight", "700")
-            .inlineStyle("font-size", "1rem")
-            .inlineStyle("position", "relative")
-            .inlineStyle("top", "-0.125rem")
-        }
-      }
-      HStack {
-        Spacer()
-        Button(color: .purple) {
-          span {
-            "Subscribe now"
-          }
-          .padding(leftRight: .small)
-        }
-        .attribute(
-          "href",
-          siteRouter.path(for: .discounts(code: "dubdub25", .yearly))
-        )
-        Spacer()
-      }
-    }
-  }
-}
-
-struct WWDCBanner: HTML {
-  @Dependency(\.siteRouter) var siteRouter
-
-  var body: some HTML {
+  var maximum: some HTML {
     div {
       LazyVGrid(columns: [.desktop: [1, 1]]) {
         VStack(alignment: .center, spacing: 0) {
           div {
-            HTMLRaw("WWDC&nbsp;WEEK")
+            HTMLRaw(title.replacingOccurrences(of: " ", with: "&nbsp;"))
           }
           .inlineStyle("font-weight", "1000")
           .inlineStyle("font-size", "3.5rem")
           .inlineStyle("margin-bottom", "-3.5rem")
+          .inlineStyle("text-transform", "uppercase")
           div {
             "SALE"
           }
@@ -740,7 +680,7 @@ struct WWDCBanner: HTML {
         VStack {
           VStack(alignment: .center, spacing: 0) {
             HStack(alignment: .center, spacing: 0) {
-              div { "30" }
+              div { "\(percentage)" }
                 .inlineStyle("font-weight", "1000")
                 .inlineStyle("font-size", "10rem")
               VStack(alignment: .leading, spacing: 0) {
@@ -770,7 +710,7 @@ struct WWDCBanner: HTML {
             }
             .attribute(
               "href",
-              siteRouter.path(for: .discounts(code: "dubdub25", .yearly))
+              siteRouter.path(for: .discounts(code: discountCode, .yearly))
             )
             Spacer()
           }
@@ -793,6 +733,85 @@ struct WWDCBanner: HTML {
       "background",
       "linear-gradient(135deg, #fff080 0%, #4cccff 20%, #79f2b0 80%, #974dff 100%)"
     )
+  }
+
+  var minimum: some HTML {
+    div {
+      HTMLGroup {
+        HStack(alignment: .lastTextBaseline, spacing: 2) {
+          Spacer()
+          minimumCore
+          Spacer()
+        }
+        .inlineStyle("display", "none", media: .mobile)
+        VStack(alignment: .center, spacing: 0) {
+          minimumCore
+        }
+        .inlineStyle("display", "none", media: .desktop)
+      }
+      .color(.offBlack)
+      .linkStyle(LinkStyle(color: .offWhite, underline: true))
+      .inlineStyle("margin", "0 auto")
+      .inlineStyle("max-width", "1280px")
+      .inlineStyle("padding", "2rem 2rem")
+      .inlineStyle("text-align", "center")
+      .inlineStyle("font-size", "1.2rem")
+    }
+    .inlineStyle(
+      "background",
+      "linear-gradient(135deg, #fff080 0%, #4cccff 20%, #79f2b0 80%, #974dff 100%)"
+    )
+  }
+
+  @HTMLBuilder
+  var minimumCore: some HTML {
+    VStack(alignment: .leading, spacing: -0.2) {
+      div {
+        HTMLRaw(title.replacingOccurrences(of: " ", with: "&nbsp;"))
+      }
+      .inlineStyle("font-weight", "1000")
+      .inlineStyle("font-size", "2.3rem")
+      .inlineStyle("margin-bottom", "-1.5rem")
+      div {
+        "SALE"
+      }
+      .inlineStyle("font-weight", "1000")
+      .inlineStyle("font-size", "6rem")
+    }
+    .inlineStyle("margin-top", "0.75rem")
+
+    VStack(alignment: .center, spacing: 0) {
+      HStack(alignment: .center, spacing: 0) {
+        div { "\(percentage)" }
+          .inlineStyle("font-weight", "1000")
+          .inlineStyle("font-size", "4rem")
+        VStack(alignment: .leading, spacing: 0) {
+          div { "%" }
+            .inlineStyle("margin-bottom", "-0.5rem")
+            .inlineStyle("font-weight", "700")
+            .inlineStyle("font-size", "2rem")
+          div { "off" }
+            .inlineStyle("font-weight", "700")
+            .inlineStyle("font-size", "1rem")
+            .inlineStyle("position", "relative")
+            .inlineStyle("top", "-0.125rem")
+        }
+      }
+      HStack {
+        Spacer()
+        Button(color: .purple) {
+          span {
+            "Subscribe now"
+          }
+          .padding(leftRight: .small)
+        }
+        .attribute(
+          "href",
+          siteRouter.path(for: .discounts(code: discountCode, .yearly))
+        )
+        Spacer()
+      }
+    }
   }
 }
 
@@ -870,6 +889,10 @@ public struct PrismJSHead: HTML {
 
       .highlight-warn .line-highlight {
         background-color: rgba(254, 223, 43, 0.15);
+      }
+
+      .highlight-runtime .line-highlight {
+        background-color: rgba(200, 91, 221, 0.15);
       }
 
       .language-diff {
