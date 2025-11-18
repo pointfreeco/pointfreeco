@@ -10,9 +10,9 @@ extension BlogPost {
       """,
     coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/0897ce61-28b0-4ebd-11da-29937bfad800/public",
     hidden: .no,
-    hideFromSlackRSS: false,
+    hideFromSlackRSS: true,
     id: 190,
-    publishedAt: yearMonthDayFormatter.date(from: "2025-11-20")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2025-11-18")!,
     title: "BLACK FRIDAY: Save 30% on Point-Free"
   )
 }
