@@ -8,7 +8,7 @@ extension Episode {
       metadata, instead. Along the way we will explore two powerful tools to simplify our app: \
       database "views" and the `@DatabaseFunction` macro.
       """,
-    codeSampleDirectory: "0345-sync-pt5",
+    codeSampleDirectory: "0345-sync-pt6",
     exercises: _exercises,
     id: 345,
     length: 56 * 60 + 19,

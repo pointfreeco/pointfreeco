@@ -7,7 +7,7 @@ extension Episode {
       synchronization, custom logout behavior, how the library handles read-only permissions, and \
       how you can incorporate theses permissions in your app's behavior.
       """,
-    codeSampleDirectory: "0346-sync-pt6",
+    codeSampleDirectory: "0346-sync-pt7",
     exercises: _exercises,
     id: 346,
     length: 37 * 60 + 9,

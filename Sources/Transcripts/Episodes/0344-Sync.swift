@@ -8,7 +8,7 @@ extension Episode {
       under the hood. Let’s explore the secret sync metadata table to see how we can fetch and \
       even join against data related to sync, including sharing information and more.
       """,
-    codeSampleDirectory: "0344-sync-pt4",
+    codeSampleDirectory: "0344-sync-pt5",
     exercises: _exercises,
     id: 344,
     length: 42 * 60 + 41,
