@@ -207,5 +207,6 @@ extension BlogPost {
     .post0188_AggregateFunctions,
     .post0189_CaseStudyInOpenSource,
     .post0190_BlackFriday,
+    .post0191_BlackFriday,
   ]
 }
