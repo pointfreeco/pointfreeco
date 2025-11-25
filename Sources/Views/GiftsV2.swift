@@ -90,7 +90,7 @@ fileprivate extension Gifts.Plan {
     switch self {
     case .threeMonths: "3 months"
     case .sixMonths: "6 months"
-    case .year: "1 year (30% off)"
+    case .year: "1 year (Black Friday Sale)"
     }
   }
 
@@ -109,6 +109,11 @@ fileprivate extension Gifts.Plan {
       baseFeatures
     case .year:
       li { "Full access for 1 year" }
+      li { "30% off for Black Friday" }
+        .color(.black)
+        .backgroundColor(.yellow)
+        .inlineStyle("margin", "-2px")
+        .inlineStyle("padding", "2px")
       li { "45% off the 3 and 6 month gift options" }
         .color(.black)
         .backgroundColor(.yellow)
