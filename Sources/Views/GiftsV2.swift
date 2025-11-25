@@ -1,4 +1,5 @@
 import Dependencies
+import PointFreeRouter
 import StyleguideV2
 import TaggedMoney
 import Transcripts
@@ -20,45 +21,17 @@ public struct GiftsV2: HTML {
 
     PageModule(theme: .content) {
       LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
-        PricingLane("3 months", annualPricePerMonth: 54) {
-          "One-time payment"
-        } features: {
-          li { "Full access for 3 months" }
-          baseFeatures
-        } callToAction: {
-          Button(color: .purple) {
-            "Choose Gift"
+        HTMLForEach(Gifts.Plan.allCases) { plan in
+          PricingLane(plan.laneTitle, annualPricePerMonth: plan.laneAnnualPricePerMonth) {
+            "One-time payment"
+          } features: {
+            plan.laneFeatures
+          } callToAction: {
+            Button(color: .purple) {
+              "Choose Gift"
+            }
+            .attribute("href", siteRouter.path(for: .gifts(.plan(plan))))
           }
-          .attribute("href", siteRouter.path(for: .gifts(.plan(.threeMonths))))
-        }
-
-        PricingLane("6 months", annualPricePerMonth: 108) {
-          "One-time payment"
-        } features: {
-          li { "Full access for 6 months" }
-          baseFeatures
-        } callToAction: {
-          Button(color: .purple) {
-            "Choose Gift"
-          }
-          .attribute("href", siteRouter.path(for: .gifts(.plan(.sixMonths))))
-        }
-
-        PricingLane("1 year", annualPricePerMonth: 168) {
-          "One-time payment"
-        } features: {
-          li { "Full access for 1 year" }
-          li { "22% off the 3 and 6 month gift options" }
-            .color(.black)
-            .backgroundColor(.yellow)
-            .inlineStyle("margin", "-2px")
-            .inlineStyle("padding", "2px")
-          baseFeatures
-        } callToAction: {
-          Button(color: .purple) {
-            "Choose Gift"
-          }
-          .attribute("href", siteRouter.path(for: .gifts(.plan(.year))))
         }
       }
       .linkUnderline(true)
@@ -71,24 +44,6 @@ public struct GiftsV2: HTML {
     if currentUser == nil {
       GetStartedModule(style: .gradient)
     }
-  }
-
-  @HTMLBuilder
-  var baseFeatures: some HTML {
-    let stats = EpisodesStats()
-
-    li { "All \(stats.allEpisodes) episodes with transcripts" }
-    li { "Over \(stats.allHours) hours of video" }
-    li {
-      "Access to all past "
-      Link(
-        "livestreams",
-        href: siteRouter.path(for: .collections(.collection("livestreams", .show)))
-      )
-      " at 1080p"
-    }
-    li { "Private RSS feed for offline viewing" }
-    li { "Download all episode code samples" }
   }
 }
 
@@ -128,4 +83,57 @@ extension Faq {
       [regular](/pricing) subscriptions.
       """
   )
+}
+
+fileprivate extension Gifts.Plan {
+  var laneTitle: String {
+    switch self {
+    case .threeMonths: "3 months"
+    case .sixMonths: "6 months"
+    case .year: "1 year (30% off)"
+    }
+  }
+
+  var laneAnnualPricePerMonth: Dollars<Int> {
+    amount.map(Double.init).dollars.map(Int.init)
+  }
+
+  @HTMLBuilder
+  var laneFeatures: some HTML {
+    switch self {
+    case .threeMonths:
+      li { "Full access for 3 months" }
+      baseFeatures
+    case .sixMonths:
+      li { "Full access for 6 year" }
+      baseFeatures
+    case .year:
+      li { "Full access for 1 year" }
+      li { "45% off the 3 and 6 month gift options" }
+        .color(.black)
+        .backgroundColor(.yellow)
+        .inlineStyle("margin", "-2px")
+        .inlineStyle("padding", "2px")
+      baseFeatures
+    }
+  }
+
+  @HTMLBuilder
+  private var baseFeatures: some HTML {
+    @Dependency(\.siteRouter) var siteRouter
+    let stats = EpisodesStats()
+
+    li { "All \(stats.allEpisodes) episodes with transcripts" }
+    li { "Over \(stats.allHours) hours of video" }
+    li {
+      "Access to all past "
+      Link(
+        "livestreams",
+        href: siteRouter.path(for: .collections(.collection("livestreams", .show)))
+      )
+      " at 1080p"
+    }
+    li { "Private RSS feed for offline viewing" }
+    li { "Download all episode code samples" }
+  }
 }
