@@ -105,7 +105,7 @@ fileprivate extension Gifts.Plan {
       li { "Full access for 3 months" }
       baseFeatures
     case .sixMonths:
-      li { "Full access for 6 year" }
+      li { "Full access for 6 months" }
       baseFeatures
     case .year:
       li { "Full access for 1 year" }
