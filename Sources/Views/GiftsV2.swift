@@ -85,8 +85,8 @@ extension Faq {
   )
 }
 
-fileprivate extension Gifts.Plan {
-  var laneTitle: String {
+extension Gifts.Plan {
+  fileprivate var laneTitle: String {
     switch self {
     case .threeMonths: "3 months"
     case .sixMonths: "6 months"
@@ -94,12 +94,12 @@ fileprivate extension Gifts.Plan {
     }
   }
 
-  var laneAnnualPricePerMonth: Dollars<Int> {
+  fileprivate var laneAnnualPricePerMonth: Dollars<Int> {
     amount.map(Double.init).dollars.map(Int.init)
   }
 
   @HTMLBuilder
-  var laneFeatures: some HTML {
+  fileprivate var laneFeatures: some HTML {
     switch self {
     case .threeMonths:
       li { "Full access for 3 months" }
