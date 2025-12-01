@@ -9,7 +9,7 @@ extension BlogPost {
       planned for 2026.
       """,
     coverImage:
-      "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/0897ce61-28b0-4ebd-11da-29937bfad800/public",
+      "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/9045fa26-782a-4c9f-4ae4-0b8f0fa8a300/public",
     hidden: .no,
     hideFromSlackRSS: true,
     id: 193,
