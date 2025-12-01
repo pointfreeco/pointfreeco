@@ -90,7 +90,7 @@ extension Gifts.Plan {
     switch self {
     case .threeMonths: "3 months"
     case .sixMonths: "6 months"
-    case .year: "1 year (Black Friday Sale)"
+    case .year: "1 year (Cyber Monday Sale)"
     }
   }
 
@@ -109,7 +109,7 @@ extension Gifts.Plan {
       baseFeatures
     case .year:
       li { "Full access for 1 year" }
-      li { "30% off for Black Friday" }
+      li { "30% off for Cyber Monday" }
         .color(.black)
         .backgroundColor(.yellow)
         .inlineStyle("margin", "-2px")

@@ -202,7 +202,7 @@ struct Banner {
   static let blackFriday2025 = Self(
     endAt: yearMonthDayFormatter.date(from: "2025-12-07")!,
     markdownContent: ###"""
-      **🎉 BLACK FRIDAY SALE!** Save 30% when you [subscribe today](/discounts/black-friday-2025).
+      **🎉 CYBER MONDAY SALE!** Save 30% when you [subscribe today](/discounts/cyber-monday-2025).
       """###,
     shouldShow: { route in
       if case .subscribeConfirmation = route {

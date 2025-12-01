@@ -152,9 +152,9 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
         isMaximum: currentRoute.is(\.home)
           || currentRoute.is(\.blog)
           || currentRoute.is(\.episodes),
-        title: "Black Friday",
+        title: "Cyber Monday",
         percentage: 30,
-        discountCode: "black-friday-2025"
+        discountCode: "cyber-monday-2025"
       )
     }
     NavBar()
