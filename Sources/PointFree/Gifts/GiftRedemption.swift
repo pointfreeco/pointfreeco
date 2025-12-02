@@ -118,7 +118,7 @@ private func redeemGift(
           customerID: customer.id,
           planID: gift.monthsFree < 12 ? .monthly : .yearly,
           quantity: 1,
-          coupon: "cyber-monday-2025"
+          coupon: nil
         )
       _ =
         try await database.createSubscription(
