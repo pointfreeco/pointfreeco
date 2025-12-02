@@ -78,7 +78,8 @@ private func redeemGift(
     .run
     .flatMap { errorOrCustomer in
       switch errorOrCustomer {
-      case .left:
+      case .left(let error):
+        reportIssue(error)
         return conn
           |> redirect(
             to: .gifts(.redeem(gift.id)),
@@ -117,7 +118,7 @@ private func redeemGift(
           customerID: customer.id,
           planID: gift.monthsFree < 12 ? .monthly : .yearly,
           quantity: 1,
-          coupon: nil
+          coupon: "cyber-monday-2025"
         )
       _ =
         try await database.createSubscription(
@@ -131,7 +132,8 @@ private func redeemGift(
     .run
     .flatMap { errorOrNot in
       switch errorOrNot {
-      case .left:
+      case .left(let error):
+        reportIssue(error)
         return conn
           |> redirect(
             to: .gifts(.redeem(gift.id)),
