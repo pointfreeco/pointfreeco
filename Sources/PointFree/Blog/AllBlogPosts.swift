@@ -208,5 +208,7 @@ extension BlogPost {
     .post0189_CaseStudyInOpenSource,
     .post0190_BlackFriday,
     .post0191_BlackFriday,
+    .post0192_BlackFriday,
+    .post0193_CyberMonday,
   ]
 }
