@@ -210,5 +210,6 @@ extension BlogPost {
     .post0191_BlackFriday,
     .post0192_BlackFriday,
     .post0193_CyberMonday,
+    .post0194_CyberWeek,
   ]
 }
