@@ -157,6 +157,12 @@ private struct HTMLConverter: MarkupVisitor {
         }
       }
       .inlineStyle("padding", "0 1rem")
+    } else if aside.kind.displayName == "Prompt" {
+      Prompt {
+        for child in aside.content {
+          visit(child)
+        }
+      }
     } else {
       let style = BlockQuoteStyle(blockName: aside.kind.displayName)
       blockquote {
@@ -455,6 +461,44 @@ extension HTMLBuilder {
   @_disfavoredOverload
   fileprivate static func buildFinalResult(_ component: some HTML) -> AnyHTML {
     AnyHTML(component)
+  }
+}
+
+private struct Prompt<Content: HTML>: HTML {
+  let content: Content
+  init(@HTMLBuilder content: () -> Content) {
+    self.content = content()
+  }
+  var body: some HTML {
+    blockquote {
+      VStack(spacing: 0.5) {
+        strong {
+          HTMLText("Prompt")
+        }
+        .color(PointFreeColor(rawValue: "#00000088", darkValue: "#ffffff88"))
+
+        content
+      }
+      .padding(topBottom: .small, leftRight: .small)
+      .inlineStyle("border-radius", "22px")
+      .inlineStyle("border", "3px solid rgba(255, 255, 255, 0.5)")
+      .background(PointFreeColor(rawValue: "rgba(255, 255, 255, 0.7)", darkValue: "rgba(15, 23, 42, 0.7)"))
+      .inlineStyle("backdrop-filter", "blur(12px)")
+      .inlineStyle("box-shadow", "0 0 30px 10px rgba(255, 200, 255, 0.6)")
+      .inlineStyle("font-weight", "500")
+    }
+    .color(.offBlack.dark(.offWhite))
+    .inlineStyle("margin", "0.5rem 0")
+    .inlineStyle("border-radius", "30px")
+    .inlineStyle(
+      "background",
+      "linear-gradient(135deg,#4c1d95,#0369a1,#16a34a,#020617)"
+    )
+    .inlineStyle(
+      "background",
+      "linear-gradient(135deg,#5b21b6 0%,#3b82f6 35%,#10b981 65%,#0f172a 100%)",
+      media: .dark
+    )
   }
 }
 
