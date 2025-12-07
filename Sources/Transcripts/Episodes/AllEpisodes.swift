@@ -349,5 +349,6 @@ extension Episode {
     .ep344_sync,
     .ep345_sync,
     .ep346_sync,
+    .ep347_sqliteDataTour,
   ]
 }
