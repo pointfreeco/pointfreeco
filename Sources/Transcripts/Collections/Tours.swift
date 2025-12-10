@@ -6,6 +6,7 @@ extension Episode.Collection {
       We've open sourced a lot of software on Point-Free, and every once in awhile we like to give casual tours of one of our projects. This gives us an opportunity to show of some features and discuss topics that are hard to glean from reading the README or documentation.
       """#,
     sections: [
+      .sqliteData,
       .sharing,
       .tca1_0,
       .isowords,
@@ -117,6 +118,26 @@ extension Episode.Collection.Section {
     ],
     related: [],
     title: "Tour of Swift Sharing",
+    whereToGoFromHere: nil
+  )
+
+  static let sqliteData = Self(
+    blurb: #"""
+      [SQLiteData] is our alternative to SwiftData. It's built on top of the battle-tested SQLite 
+      database, gives you full access to everything SQL has to offer, allows you to embrace 
+      all of Swift's most powerful domain modeling tools, such as structs and enums, and even 
+      allows you to sync your user's data across all of their devices and share records with 
+      other iCloud users for collaboration. Join us for a tour of the library where we build a 
+      moderately complex app from scratch to show off many of the library's features.
+      
+      [SQLiteData]: https://github.com/pointfreeco/sqlite-data
+      """#,
+    coreLessons: [
+      .init(episode: .ep347_sqliteDataTour),
+    ],
+    isFinished: false,
+    related: [],
+    title: "Tour of SQLiteData",
     whereToGoFromHere: nil
   )
 }
