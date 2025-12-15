@@ -134,6 +134,7 @@ extension Episode.Collection.Section {
       """#,
     coreLessons: [
       .init(episode: .ep347_sqliteDataTour),
+      .init(episode: .ep348_sqliteDataTour),
     ],
     isFinished: false,
     posterURL: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/58728c56-74d2-4c50-e090-4b6a6e99e300/public",
