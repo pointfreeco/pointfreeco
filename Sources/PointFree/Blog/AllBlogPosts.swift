@@ -212,5 +212,6 @@ extension BlogPost {
     .post0193_CyberMonday,
     .post0194_CyberWeek,
     .post0195_CyberConclusion,
+    .post0196_YearInReview2025,
   ]
 }

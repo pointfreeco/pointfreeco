@@ -36,7 +36,7 @@ public enum Gifts: Equatable {
       case .sixMonths:
         return 108_00
       case .year:
-        return 168_00
+        return 117_60  // 168_00
       }
     }
 

@@ -189,7 +189,8 @@ struct Banner {
     @Dependency(\.subscriberState) var subscriberState
     @Dependency(\.envVars.appEnv) var appEnv
 
-    let banners: [Self] = [.blackFriday2025]
+    let banners: [Self] = [.saleBanner]
+
     return banners.filter { banner in
       return
         appEnv == .development
@@ -199,21 +200,13 @@ struct Banner {
     }
   }
 
-  static let blackFriday2025 = Self(
-    endAt: yearMonthDayFormatter.date(from: "2025-12-07")!,
+  static let saleBanner = Self(
+    endAt: yearMonthDayFormatter.date(from: "2026-01-05")!,
     markdownContent: ###"""
-      **🎉 CYBER MONDAY SALE!** Save 30% when you [subscribe today](/discounts/cyber-monday-2025).
+      **🎉 Holiday Sale!** Save 25% when you [subscribe today](/discounts/eoy-2025).
       """###,
-    shouldShow: { route in
-      if case .subscribeConfirmation = route {
-        return false
-      } else if case .teamInviteCode = route {
-        return false
-      } else {
-        return true
-      }
-    },
-    startAt: yearMonthDayFormatter.date(from: "2025-11-17")!
+    shouldShow: { route in !route.is(\.subscribeConfirmation) && !route.is(\.teamInviteCode) },
+    startAt: yearMonthDayFormatter.date(from: "2025-12-22")!
   )
 }
 
