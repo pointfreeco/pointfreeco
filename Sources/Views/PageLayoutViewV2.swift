@@ -153,7 +153,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
           || currentRoute.is(\.blog)
           || currentRoute.is(\.episodes),
         title: "End-of-year Sale",
-        percentage: 30,
+        percentage: 25,
         discountCode: "eoy-2025"
       )
     }

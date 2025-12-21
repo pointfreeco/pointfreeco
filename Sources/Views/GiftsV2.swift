@@ -109,7 +109,7 @@ extension Gifts.Plan {
       baseFeatures
     case .year:
       li { "Full access for 1 year" }
-      li { "30% off for Cyber Monday" }
+      li { "25% off for our end-of-year sale" }
         .color(.black)
         .backgroundColor(.yellow)
         .inlineStyle("margin", "-2px")
