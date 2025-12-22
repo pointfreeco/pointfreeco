@@ -43,6 +43,7 @@ extension Client {
         )
       },
       createGift: {
+        coupon,
         deliverAt,
         fromEmail,
         fromName,
@@ -55,6 +56,7 @@ extension Client {
         try await pool.sqlDatabase.first(
           """
           INSERT INTO "gifts" (
+            "coupon",
             "deliver_at",
             "from_email",
             "from_name",
@@ -65,6 +67,7 @@ extension Client {
             "to_name"
           )
           VALUES (
+            \(bind: coupon),
             \(bind: deliverAt),
             \(bind: fromEmail),
             \(bind: fromName),
@@ -916,6 +919,12 @@ extension Client {
         try await database.run(
           """
           ALTER TABLE "livestreams" DROP COLUMN IF EXISTS "event_id" 
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "gifts"
+          ADD COLUMN IF NOT EXISTS "coupon" character varying
           """
         )
       },

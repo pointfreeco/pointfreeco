@@ -4,6 +4,7 @@ import Stripe
 import Tagged
 
 public struct Gift: Decodable, Identifiable {
+  public var coupon: Stripe.Coupon.ID?
   public var deliverAt: Date?
   public var delivered: Bool
   public var fromEmail: EmailAddress
@@ -18,6 +19,7 @@ public struct Gift: Decodable, Identifiable {
   public var toName: String
 
   public init(
+    coupon: Stripe.Coupon.ID?,
     deliverAt: Date?,
     delivered: Bool,
     fromEmail: EmailAddress,
@@ -31,6 +33,7 @@ public struct Gift: Decodable, Identifiable {
     toEmail: EmailAddress,
     toName: String
   ) {
+    self.coupon = coupon
     self.deliverAt = deliverAt
     self.delivered = delivered
     self.fromEmail = fromEmail
