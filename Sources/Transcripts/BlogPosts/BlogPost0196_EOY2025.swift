@@ -7,7 +7,7 @@ extension BlogPost {
       Point-Free year in review: an epic year of persistence! 41 episodes, 2 new open source \
       projects, and a whole bunch more!
       """,
-    coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/5bae4cd4-eed4-452e-9e5a-55ac84c7c000/public",
+    coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/fd3c6413-596e-48bc-e97c-83b69e6a7200/public",
     hidden: .no,
     hideFromSlackRSS: false,
     id: 196,
