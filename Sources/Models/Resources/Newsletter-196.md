@@ -10,7 +10,7 @@ now is the perfect time to subscribe!
   Subscribe today!
 }
 
-## Highlights
+# Highlights
 
 2025 was a big year for us:
 
@@ -40,6 +40,7 @@ overview of some of our favorite episodes, open source updates, and blog posts f
   * [What's new in SQLiteData](#what-s-new-in-sqlitedata)
 
 * [What's coming in 2026](#what-s-coming-in-2026)
+  * [The "Point-Free Way"](#the-point-free-way)
   * [The Composable Architecture 2](#the-composable-architecture-2)
   * [Concurrency](#concurrency)
   * [Major releases for modern Swift](#major-releases-for-modern-swift)
@@ -49,7 +50,7 @@ overview of some of our favorite episodes, open source updates, and blog posts f
   
 * [See you next year](#see-you-next-year)
 
-## Episodes
+# Episodes
 
 2025 was all about persistence, a fundamental requirement of most apps. In particular, we set out to
 demonstrate what we call "[modern persistence]." This turned into an epic, year-long arc of episodes
@@ -62,7 +63,7 @@ alternative to SwiftData, built entirely in the open.
 [SQLite]: https://sqlite.org
 [SQLiteData]: https://github.com/pointfreeco/sqlite-data
 
-### Sharing with SQLite
+## Sharing with SQLite
 
 Our year began with [a humble start]: we enhanced our [Sharing] persistence library with a SQLite
 strategy that made it easy to observe values in a SQLite database from not only SwiftUI views, but
@@ -71,7 +72,7 @@ from observable models, UIKit view controllers, and more.
 [a humble start]: /collections/sqlite/sharing-with-sqlite
 [Sharing]: https://github.com/pointfreeco/swift-sharing
 
-### SQL Building
+## SQL Building
 
 We kicked things up a notch with a belated addition to our collection of episodes on
 [domain-specific languages]: we hosted [a SQL builder] in the Swift type system. We leveraged many
@@ -81,7 +82,7 @@ protocols with primary associated types.
 [domain-specific languages]: /collections/domain-specific-languages
 [a SQL builder]: /collections/sqlite/sql-building
 
-### Modern Persistence
+## Modern Persistence
 
 We couldn't resist combining our simple SQLite persistence tool with our new type-safe query
 builder, and things [kept escalating] from there. We shared our [from-first-principles] approach to
@@ -97,7 +98,7 @@ that does everything SwiftData does _and more_.
 [full-text search]: /collections/modern-persistence/full-text-search
 [iCloud synchronization _and_ sharing]: /collections/modern-persistence/cloudkit-synchronization
 
-### Tour of SQLiteData
+## Tour of SQLiteData
 
 The tool our year-long episode arc led to was [SQLiteData], and we ended things with a
 [tour of the library]. This is the best way to get started today, though we highly recommend the
@@ -106,9 +107,9 @@ entire year's worth of episodes to go as deep as we did into the topic of persis
 [SQLiteData]: https://github.com/pointfreeco/sqlite-data
 [tour of the library]: /collections/tours/tour-of-sqlitedata
 
-## Open source
+# Open source
 
-### SQLiteData
+## SQLiteData
 
 [SQLiteData] is undoubtedly our open source of the year. It started as a humble library called
 SharingGRDB, which was [open sourced] early in the year on Valentine's Day (ðŸ’˜). It simply plugged
@@ -122,7 +123,7 @@ library that had evolved into a more-than-complete replacement for SwiftData, an
 [GRDB]:  https://github.com/groue/GRDB.swift
 [1.0 rename]: /blog/posts/184-sqlitedata-1-0-an-alternative-to-swiftdata-with-cloudkit-sync-and-sharing
 
-### StructuredQueries
+## StructuredQueries
 
 A powerful feature of [SQLiteData] is its type-safe (and schema-safe) query builder. The simple act
 of applying a macro to a Swift value type gives you instant access to a rich set of APIs that
@@ -135,7 +136,7 @@ more!
 [SQLiteData]: https://github.com/pointfreeco/sqlite-data
 [StructuredQueries]: https://github.com/pointfreeco/swift-structured-queries
 
-### Sharing 2
+## Sharing 2
 
 Our popular persistence library, [Sharing], which was a foundational component of our deep dive into
 [modern persistence] this year, had a [major update], including support for `throws`, `async`, and
@@ -145,7 +146,7 @@ more.
 [modern persistence]: /collections/modern-persistence
 [major update]: /blog/posts/164-sharing-2
 
-### Perception 2
+## Perception 2
 
 Our [backport] of Swift's Observation tools also had a [major update]. This included all the new
 features of the official Observation framework, as well as a complete rewrite of its debugging
@@ -155,9 +156,9 @@ tools (many thanks to [a contribution] from the community).
 [major update]: /blog/posts/180-perception-2-0-an-updated-back-port-of-swift-s-observation-framework
 [a contribution]: https://github.com/pointfreeco/swift-perception/pull/165
 
-## Blog posts
+# Blog posts
 
-### Open source case study: Listening to our users
+## Open source case study: Listening to our users
 
 A favorite post of ours this years is an [open source case study]. Third party libraries are a
 contentious topic in the Swift community, and many folks prefer first party and ad hoc solutions
@@ -169,7 +170,7 @@ improved thanks to the community.
 
 [open source case study]: /blog/posts/189-open-source-case-study-listening-to-our-users
 
-### Mitigating SwiftSyntax build times 
+## Mitigating SwiftSyntax build times 
 
 Swift made a big deal about macros, and we agree: macros are a big deal. Macros also, for a long
 time, took a big toll on applications that used them, skyrocketing build times. [This blog post]
@@ -178,7 +179,7 @@ time capsule. If you're on Xcode 26, you get this functionality automatically ðŸ
 
 [This blog post]: /blog/posts/171-mitigating-swiftsyntax-build-times
 
-### Test scoping traits
+## Test scoping traits
 
 Swift Testing introduced [scoping traits] this year, further closing its gap with XCTest in
 functionality. We gave a tour of the feature and how it helped us improve many of our test-forward
@@ -186,7 +187,7 @@ libraries.
 
 [scoping traits]: /blog/posts/169-new-in-swift-6-1-test-scoping-traits
 
-### What's new in SQLiteData
+## What's new in SQLiteData
 
 Building SQLiteData in the open allowed us to announce many, many updates as they came. This led to
 an entire series of "what's new in SQLiteData," including:
@@ -207,9 +208,19 @@ an entire series of "what's new in SQLiteData," including:
 [CloudKit migration tools]: /blog/posts/187-new-in-sqlitedata-migration-tool-for-cloudkit-sync
 [Custom aggregate functions]: /blog/posts/188-new-in-sqlitedata-custom-aggregate-functions
 
-## What's coming in 2026
+# What's coming in 2026
 
-### The Composable Architecture 2
+## The "Point-Free Way"
+
+We are working on a collection of AI skill documents that we affectionately call, the 
+"Point-Free way". These documents are hyper tuned to seed your AI editor with all of the context
+it needs to optimally work with our libaries, _and_ to embrace the patterns we teach in our 
+episodes. Everything from domain modeling and controlled dependencies, to embracing value types
+and making code easier to preview and test.
+
+These documents will be free to all subscribers in early 2026.
+
+## The Composable Architecture 2
 
 Our flagship library, [the Composable Architecture] is getting some major updates next year that
 will make it both easier to use and more powerful. We have assessed every bit of feedback from our
@@ -221,7 +232,7 @@ app's business logic layer will become more and more like building your app's Sw
 We gave [a sneak peek] at some of the upcoming features earlier this year, but they only scratched
 the surface. Here are a few more things to get excited about:
 
-#### Fewer concepts to learn
+### Fewer concepts to learn
 
 The Composable Architecture currently introduces a zoo of types and functions that let users
 describe their application logic, including presentation, navigation, bindings, lists, and more.
@@ -244,7 +255,7 @@ A short list of things that are going away or that will be completely hidden fro
 
 Don't worry, though! None of the functionality they provide is going away.
 
-#### Stronger, simpler encapsulation
+### Stronger, simpler encapsulation
 
 A common question from Composable Architecture users is how to better encapsulate their
 applications. Because Composable Architecture applications compose child state and child actions
@@ -276,7 +287,7 @@ You can think of `@FeatureState` as the Composable Architecture equivalent to Sw
 allows a child feature to own the source of truth of some local domain state that can not be read or
 updated from a parent.
 
-#### Access to a store's dependencies
+### Access to a store's dependencies
 
 The Composable Architecture leverages a dependency injection system that looks and behaves a lot
 like SwiftUI's environment, but up until now has been completely locked up in the feature, away from
@@ -284,7 +295,7 @@ the view.
 
 This limitation will be addressed by exposing a particular store's dependencies right to the view.
 
-### Concurrency
+## Concurrency
 
 A lot has happened in the Swift language since we first covered [concurrency] on Point-Free. We are
 working on an updated series that goes [back-to-basics] _and_ modern by exploring a topic that is
@@ -305,7 +316,7 @@ release. We will share these lessons that we learned along the way.
 [concurrency]: https://www.pointfree.co/collections/concurrency
 [back-to-basics]: /collections/back-to-basics
 
-### Major releases for modern Swift
+## Major releases for modern Swift
 
 Swift and Xcode's new concurrency defaults---"approachable" concurrency and main actor
 isolation---force us to completely rethink how our libraries approach concurrency. As a result, we
@@ -315,7 +326,7 @@ more.
 While we always strive to be as backwards-compatible as possible, these releases will introduce
 minor breaking changes to accommodate and better embrace modern Swift.
 
-### Dependencies
+## Dependencies
 
 Dependency management is an evergreen topic. We've given our opinionated approach [in the past], but
 how does it stack up against today's Swift? We will explore how improvements to the language
@@ -323,7 +334,7 @@ fundamentally change our previous recommendations.
 
 [in the past]: /collections/dependencies
 
-### Generics
+## Generics
 
 Another topic that deserves a [back-to-basics], modern look is Swift's generics system. Swift's
 generics have seen many changes since our series on "protocol witnesses." We will dedicate time to
@@ -335,7 +346,7 @@ totally possible to create such a type in Swift today, and we will do just that!
 [back-to-basics]: /collections/back-to-basics
 [StructuredQueries]: https://github.com/pointfreeco/swift-structured-queries
 
-### Cross-platform: Android
+## Cross-platform: Android
 
 Finally, we are excited to go cross-platform once again after our 7-part series of episodes
 exploring [cross-platform] techniques for sharing code across vastly different platforms,
@@ -348,7 +359,7 @@ of reusing Swift on various platforms.
 
 [Android SDK]: https://www.swift.org/blog/nightly-swift-sdk-for-android/
 
-## See you next year
+# See you next year
 
 We're thankful to all of our subscribers for [supporting us](/pricing) and helping us create our 
 episodes and support our open source libraries. We could not do it without you!
