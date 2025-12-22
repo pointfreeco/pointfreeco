@@ -90,7 +90,7 @@ extension Gifts.Plan {
     switch self {
     case .threeMonths: "3 months"
     case .sixMonths: "6 months"
-    case .year: "1 year (Cyber Monday Sale)"
+    case .year: "1 year (End-of-Year Sale)"
     }
   }
 
