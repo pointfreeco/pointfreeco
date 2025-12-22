@@ -152,7 +152,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
         isMaximum: currentRoute.is(\.home)
           || currentRoute.is(\.blog)
           || currentRoute.is(\.episodes),
-        title: "End-of-year Sale",
+        title: "End-of-year",
         percentage: 25,
         discountCode: "eoy-2025"
       )
