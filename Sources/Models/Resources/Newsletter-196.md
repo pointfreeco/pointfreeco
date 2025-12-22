@@ -346,6 +346,8 @@ _e.g._ Apple and Wasm.
 Well with the release of Swift's official [Android SDK] we are excited to dive deeper into the topic
 of reusing Swift on various platforms.
 
+[Android SDK]: https://www.swift.org/blog/nightly-swift-sdk-for-android/
+
 ## See you next year
 
 We're thankful to all of our subscribers for [supporting us](/pricing) and helping us create our 
