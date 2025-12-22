@@ -139,21 +139,21 @@ more!
 ## Sharing 2
 
 Our popular persistence library, [Sharing], which was a foundational component of our deep dive into
-[modern persistence] this year, had a [major update], including support for `throws`, `async`, and
-more.
+[modern persistence] this year, had a [major update][major-update-sharing], including support for
+`throws`, `async`, and more.
 
 [Sharing]: https://github.com/pointfreeco/swift-sharing
 [modern persistence]: /collections/modern-persistence
-[major update]: /blog/posts/164-sharing-2
+[major-update-sharing]: /blog/posts/164-sharing-2
 
 ## Perception 2
 
-Our [backport] of Swift's Observation tools also had a [major update]. This included all the new
-features of the official Observation framework, as well as a complete rewrite of its debugging
-tools (many thanks to [a contribution] from the community).
+Our [backport] of Swift's Observation tools also had a [major update][major-update-perception]. This
+included all the new features of the official Observation framework, as well as a complete rewrite
+of its debugging tools (many thanks to [a contribution] from the community).
 
 [backport]: https://github.com/pointfreeco/swift-perception
-[major update]: /blog/posts/180-perception-2-0-an-updated-back-port-of-swift-s-observation-framework
+[major-update-perception]: /blog/posts/180-perception-2-0-an-updated-back-port-of-swift-s-observation-framework
 [a contribution]: https://github.com/pointfreeco/swift-perception/pull/165
 
 # Blog posts
@@ -231,6 +231,8 @@ app's business logic layer will become more and more like building your app's Sw
 
 We gave [a sneak peek] at some of the upcoming features earlier this year, but they only scratched
 the surface. Here are a few more things to get excited about:
+
+[a sneak peek]: /blog/posts/194-cyber-week-save-30-on-point-free#the-composable-architecture-2-0
 
 ### Fewer concepts to learn
 
