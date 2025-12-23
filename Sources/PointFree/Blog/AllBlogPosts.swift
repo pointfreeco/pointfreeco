@@ -213,5 +213,7 @@ extension BlogPost {
     .post0194_CyberWeek,
     .post0195_CyberConclusion,
     .post0196_YearInReview2025,
+    .post0197_EndOfYearSale,
+    .post0198_EndOfYearSale,
   ]
 }
