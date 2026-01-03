@@ -141,17 +141,23 @@ private struct Style: Hashable {
   let pseudo: Pseudo?
 }
 
-public struct MediaQuery: RawRepresentable, Hashable {
+public struct MediaQuery: RawRepresentable, Hashable, ExpressibleByStringLiteral {
+  public var rawValue: String
   public init(rawValue: String) {
     self.rawValue = rawValue
   }
-  public var rawValue: String
+  public init(stringLiteral value: String) {
+    self.init(rawValue: value)
+  }
 }
 
-public struct Pseudo: RawRepresentable, Hashable {
+public struct Pseudo: RawRepresentable, Hashable, ExpressibleByStringLiteral {
   public var rawValue: String
   public init(rawValue: String) {
     self.rawValue = rawValue
+  }
+  public init(stringLiteral value: String) {
+    self.init(rawValue: value)
   }
 
   public static let active = Self(rawValue: ":active")

@@ -246,7 +246,7 @@ extension EnvVars {
     try container.encode(self.regionalDiscountCouponId, forKey: .regionalDiscountCouponId)
     try container.encode(self.slackInviteURL, forKey: .slackInviteURL)
     try self.stripe.encode(to: encoder)
-    try container.encode(self.yearlyGiftCoupon, forKey: .yearlyGiftCoupon)
+    try container.encodeIfPresent(self.yearlyGiftCoupon, forKey: .yearlyGiftCoupon)
     try container.encode(self.youtubeChannelID, forKey: .youtubeChannelID)
   }
 }
