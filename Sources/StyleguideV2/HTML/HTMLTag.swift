@@ -80,6 +80,14 @@ public func tag<T: HTML>(
   HTMLElement(tag: tag, content: content)
 }
 
+public func block<T: HTML>(
+  _ tag: String,
+  @HTMLBuilder _ content: () -> T = { HTMLEmpty() }
+) -> some HTML  {
+  HTMLElement(tag: tag, content: content)
+    .inlineStyle("display", "block")
+}
+
 public var a: HTMLTag { #function }
 public var abbr: HTMLTag { #function }
 public var acronym: HTMLTag { #function }

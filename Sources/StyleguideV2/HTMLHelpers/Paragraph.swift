@@ -16,6 +16,8 @@ public struct Paragraph<Content: HTML>: HTML {
     .inlineStyle("padding-right", "0")
     .inlineStyle("margin", "0")
     .inlineStyle("line-height", "1.5")
+    .inlineStyle("font-size", "\(size.fontSize)rem")
+    .inlineStyle("line-height", "\(size.lineHeight)rem")
   }
 
   public enum Size {
