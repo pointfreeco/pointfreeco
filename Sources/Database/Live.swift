@@ -327,6 +327,16 @@ extension Client {
           """
         )
       },
+      fetchTheWayAccess: { machine, whoami in
+        try await pool.sqlDatabase.first(
+          """
+          SELECT * FROM "the_way_accesses" 
+          WHERE
+            "machine" = \(bind: machine)
+            AND "whoami" = \(bind: whoami)
+          """
+        )
+      },
       fetchUserByEmail: { email in
         try await pool.sqlDatabase.first(
           """
@@ -927,6 +937,21 @@ extension Client {
           ADD COLUMN IF NOT EXISTS "coupon" character varying
           """
         )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "the_way_accesses" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "machine" character varying NOT NULL,
+            "whoami" character varying NOT NULL,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "updated_at" timestamp without time zone
+          )
+          """
+        )
+        try await database.run("""
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_the_way_accesses_on_machine_whoami"
+          ON "the_way_accesses"("machine", "whoami")
+          """)
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(
@@ -1043,6 +1068,22 @@ extension Client {
           WHERE "id" = \(bind: userId)
           """
         )
+      },
+      upsertTheWayAccess: { access in
+        try await pool.sqlDatabase.first("""
+          INSERT INTO "the_way_accesses"
+          ("id", "machine", "whoami", "created_at", "updated_at")
+          VALUES 
+          (
+            \(bind: access.id),
+            \(bind: access.machine),
+            \(bind: access.whoami),
+            \(bind: access.createdAt),
+            \(bind: access.updatedAt)
+          )
+          ON CONFLICT ("machine", "whoami") DO NOTHING
+          RETURNING *
+          """)
       },
       upsertUser: { accessToken, gitHubUser, email, now in
         try await pool.sqlDatabase.first(

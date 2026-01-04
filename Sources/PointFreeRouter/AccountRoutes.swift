@@ -12,6 +12,7 @@ public enum Account: Equatable {
   case rss(salt: User.RssSalt)
   case rssLegacy(secret1: String, secret2: String)
   case subscription(Subscription)
+  case theWay(TheWay)
   case update(ProfileData? = nil)
 
   public enum Invoices: Equatable {
@@ -33,6 +34,11 @@ public enum Account: Equatable {
       case show
       case update(Pricing? = nil)
     }
+  }
+
+  public enum TheWay: Equatable {
+    case login(redirect: String, whoami: String, machine: UUID)
+    case download(token: String, whoami: String, machine: UUID)
   }
 }
 
@@ -127,6 +133,28 @@ struct AccountRouter: ParserPrinter {
           Route(.case(Account.Subscription.reactivate)) {
             Method.post
             Path { "reactivate" }
+          }
+        }
+      }
+
+      Route(.case(Account.theWay)) {
+        Path { "the-way" }
+        OneOf {
+          Route(.case(Account.TheWay.login)) {
+            Path { "login" }
+            Query {
+              Field("redirect", .string)
+              Field("whoami", .string)
+              Field("machine") { UUID.parser() }
+            }
+          }
+          Route(.case(Account.TheWay.download)) {
+            Path { "download" }
+            Query {
+              Field("token", .string)
+              Field("whoami", .string)
+              Field("machine") { UUID.parser() }
+            }
           }
         }
       }
