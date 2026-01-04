@@ -22,40 +22,26 @@ struct TerminalWindow: HTML {
   struct Screen: HTML {
     var body: some HTML {
       block("terminal-screen") {
-        Line {
-          span { "~/.codex.skills/the-point-free-way" }
-            .inlineStyle("color", "color-mix(in oklab, rgba(10, 14, 20, 0.86) 60%, transparent)")
-            .inlineStyle(
-              "color",
-              "color-mix(in oklab, rgba(255, 255, 255, 0.86) 88%, transparent)",
-              media: .dark
-            )
-          span { " $ " }
-            .inlineStyle("color", "color-mix(in oklab, rgba(10, 14, 20, 0.86) 60%, transparent)")
-            .inlineStyle(
-              "color",
-              "color-mix(in oklab, rgba(255, 255, 255, 0.86) 68%, transparent)",
-              media: .dark
-            )
-          span { "ls -R" }
-            .inlineStyle("color", "color-mix(in oklab, rgba(10, 14, 20, 0.86) 96%, transparent)")
-            .inlineStyle(
-              "color",
-              "color-mix(in oklab, rgba(255, 255, 255, 0.86) 96%, transparent)",
-              media: .dark
-            )
-        }
+        // TODO: Should we do this?
+//        Command("brew install pfw")
+//        Command("pfw login")
+//        Line { Folder("Login successful") }
+//        Gap()
+//        Command("pfw install --codex")
+//        Line { Folder("Installed to ~/.codex/skills/") }
+//        Gap()
+        Command("ls -R ~/.codex/skills/the-point-free-way")
         Gap()
-        Line { Folder("ComposableArchitecture") }
+        Line { Folder("./ComposableArchitecture/") }
         Line { File("  SKILL.md") }
         Gap()
-        Line { Folder("SQLiteData") }
+        Line { Folder("./SQLiteData/") }
         Line { File("  SKILL.md") }
         Gap()
-        Line { Folder("Dependencies") }
+        Line { Folder("./Dependencies/") }
         Line { File("  SKILL.md") }
         Gap()
-        Line { Folder("SwiftNavigation") }
+        Line { Folder("./SwiftNavigation/") }
         Line { File("  SKILL.md") }
       }
       .inlineStyle("position", "relative")
@@ -67,6 +53,31 @@ struct TerminalWindow: HTML {
       .inlineStyle("font-size", "16px")
       .inlineStyle("line-height", "1.55")
       .color(.init(rawValue: "rgba(10, 14, 20, 0.86)", darkValue: "rgba(255, 255, 255, 0.86)"))
+    }
+  }
+
+  struct Command: HTML {
+    let command: String
+    init(_ command: String) {
+      self.command = command
+    }
+    var body: some HTML {
+      Line {
+        span { "$ " }
+          .inlineStyle("color", "color-mix(in oklab, rgba(10, 14, 20, 0.86) 60%, transparent)")
+          .inlineStyle(
+            "color",
+            "color-mix(in oklab, rgba(255, 255, 255, 0.86) 68%, transparent)",
+            media: .dark
+          )
+        span { HTMLRaw(command) }
+          .inlineStyle("color", "color-mix(in oklab, rgba(10, 14, 20, 0.86) 96%, transparent)")
+          .inlineStyle(
+            "color",
+            "color-mix(in oklab, rgba(255, 255, 255, 0.86) 96%, transparent)",
+            media: .dark
+          )
+      }
     }
   }
 
@@ -108,7 +119,7 @@ struct TerminalWindow: HTML {
     }
     var body: some HTML {
       span {
-        HTMLText("./" + folder + "/")
+        HTMLText(folder)
       }
       .inlineStyle(
         "color",

@@ -31,9 +31,11 @@ private struct PointFreeWayHeader: HTML {
           Header(2) {
             HTMLRaw("The Point&#8209;Free Way")
           }
+          .titleColor()
           Paragraph(.big) {
             "Expert-crafted AI skill documents for building long-lasting Swift applications."
           }
+          .contentColor()
           Paragraph(.small) {
             HTMLRaw(
               """
@@ -42,7 +44,18 @@ private struct PointFreeWayHeader: HTML {
               """
             )
           }
-          // TODO: CTAs
+          .contentColor()
+          HStack {
+            PFWButton(type: .primary) {
+              HTMLText("Subscribe to unlock")
+            }
+            .href("/pricing")
+            PFWButton {
+              HTMLText("Explore Point-Free")
+            }
+            .href("/")
+            Spacer()
+          }
         }
 
         TerminalWindow()
@@ -91,14 +104,36 @@ private struct PointFreeWayModule<Content: HTML>: HTML {
         .contentColor()
       }
     }
-    Divider()
+    DividerLine()
   }
 }
 
-private struct ChecklistModule: HTML {
+struct DividerLine: HTML {
+  var body: some HTML {
+    hr()
+      .inlineStyle("border", "none")
+      .inlineStyle("border-top", "1px solid \(PointFreeColor.gray800.rawValue)")
+      .inlineStyle("border-top", "1px solid \(PointFreeColor.gray300.rawValue)", media: .dark)
+      .inlineStyle("display", "none", media: .dark, pseudo: .lastOfType)
+  }
+}
+
+private struct ChecklistModule<Footer: HTML>: HTML {
   let title: String
   var blurb: String?
   var items: [String]
+  var footer: Footer
+  init(
+    title: String,
+    blurb: String? = nil,
+    items: [String],
+    @HTMLBuilder footer: () -> Footer = { HTMLEmpty() }
+  ) {
+    self.title = title
+    self.blurb = blurb
+    self.items = items
+    self.footer = footer()
+  }
   var body: some HTML {
     VStack(alignment: .leading, spacing: 0) {
       Header(4) {
@@ -114,29 +149,31 @@ private struct ChecklistModule: HTML {
         Checklist(items: items)
       }
       .contentColor()
+      footer
+        .inlineStyle("padding-top", "1.5rem")
     }
     .panel()
   }
-  struct Checklist: HTML {
-    let items: [String]
-    var body: some HTML {
-      ul {
-        for item in items {
-          li {
-            Check()
-            HTMLRaw(item)
-          }
-          .inlineStyle("display", "flex")
-          .inlineStyle("gap", "10px")
-          .inlineStyle("align-items", "flex-start")
+}
+private struct Checklist: HTML {
+  let items: [String]
+  var body: some HTML {
+    ul {
+      for item in items {
+        li {
+          Check()
+          HTMLRaw(item)
         }
+        .inlineStyle("display", "flex")
+        .inlineStyle("gap", "10px")
+        .inlineStyle("align-items", "flex-start")
       }
-      .inlineStyle("margin", "1rem 0 0")
-      .inlineStyle("padding", "0")
-      .inlineStyle("list-style", "none")
-      .inlineStyle("display", "grid")
-      .inlineStyle("gap", "0.75rem")
     }
+    .inlineStyle("margin", "1rem 0 0")
+    .inlineStyle("padding", "0")
+    .inlineStyle("list-style", "none")
+    .inlineStyle("display", "grid")
+    .inlineStyle("gap", "0.75rem")
   }
   struct Check: HTML {
     var body: some HTML {
@@ -169,7 +206,7 @@ private struct WhatIsThePointFreeWay: HTML {
     ) {
       LazyVGrid(columns: [.desktop: [1, 1]], horizontalSpacing: 2) {
         VStack {
-          ChecklistModule.Checklist(items: [
+          Checklist(items: [
             "Built specifically for Swift and Apple platforms",
             "Deeply integrated with Point-Free libraries",
             "Opinionated, consistent, and maintainable by design",
@@ -200,8 +237,15 @@ private struct PullQuote: HTML {
     }
     .inlineStyle("margin", "2rem auto 0 0")
     .inlineStyle("padding", "1.5rem")
-    .inlineStyle("border-left", "3px solid color-mix(in oklab, #974dff 65%, rgba(15, 18, 32, 0.12))")
-    .inlineStyle("border-left", "3px solid color-mix(in oklab, #974dff 65%, rgba(255, 255, 255, 0.12))", media: .dark)
+    .inlineStyle(
+      "border-left",
+      "3px solid color-mix(in oklab, #974dff 65%, rgba(15, 18, 32, 0.12))"
+    )
+    .inlineStyle(
+      "border-left",
+      "3px solid color-mix(in oklab, #974dff 65%, rgba(255, 255, 255, 0.12))",
+      media: .dark
+    )
     .inlineStyle("border-radius", "0.75rem")
     .inlineStyle("background", "color-mix(in oklab, #974dff 10%, #ffffff)")
     .inlineStyle("background", "color-mix(in oklab, #974dff 10%, #0f1220)", media: .dark)
@@ -298,9 +342,16 @@ private struct HowAccessWorks: HTML {
           blurb: "Apply consistent patterns across features and teams."
         )
       }
+
+      HStack {
+        PFWButton(type: .secondary) {
+          HTMLText("View subscription plans")
+        }
+        .href("/pricing")
+        Spacer()
+      }
+      .inlineStyle("padding-top", "1.5rem")
     }
-    .inlineStyle("padding-top", "4rem")
-    .inlineStyle("padding-bottom", "4rem")
   }
 
   struct Step: HTML {
@@ -339,7 +390,57 @@ private struct HowAccessWorks: HTML {
 
 private struct NotReadyToSubscribe: HTML {
   var body: some HTML {
-    PointFreeWayModule(title: "Not ready to subscribe?") {
+    PointFreeWayModule(
+      title: "Not ready to subscribe?",
+      blurb: """
+        Create a free Point-Free account to access a limited preview of our architectural 
+        philosophy and see how we think about building software.
+        """
+    ) {
+      LazyVGrid(columns: [.desktop: [1, 1]]) {
+        ChecklistModule(
+          title: "The Point-Free Primer",
+          blurb: """
+            A short, read-only preview intended to demonstrate the tone and rigor of the Point-Free 
+            Way.
+            """,
+          items: [
+            "High-level architectural principles",
+            "Not regularly updated",
+            "No library deep dives",
+          ]
+        ) {
+          HStack {
+            PFWButton(type: .secondary) {
+              HTMLText("Create a free account")
+            }
+            .href("/signup")
+            PFWButton {
+              HTMLText("Compare plans")
+            }
+            .href("/pricing")
+          }
+        }
+        ChecklistModule(
+          title: "Prefer the full experience?",
+          blurb: """
+            Subscribe to unlock the complete collection, including library-specific guidance and 
+            frequently updated best practices.
+            """,
+          items: [
+            "Maintained with the same rigor as our codebases",
+            "Evolved from weekly community questions",
+            "Updated for new versions of our libraries",
+          ]
+        ) {
+          HStack {
+            PFWButton(type: .primary) {
+              HTMLText("Subscribe")
+            }
+            .href("/pricing")
+          }
+        }
+      }
     }
   }
 }
@@ -352,12 +453,14 @@ private struct BuildSoftwareThatLasts: HTML {
           Header(3) {
             "Build software that lasts."
           }
+          .titleColor()
           Paragraph(.big) {
             """
             Subscribe to Point-Free and unlock the Point-Free Way: expert guidance, continuously 
             refined.
             """
           }
+          .contentColor()
         }
         Spacer()
         VStack {
@@ -377,6 +480,17 @@ private struct BuildSoftwareThatLasts: HTML {
         color-mix(in oklab, #974dff 30%, #ffffff) 100%
       )
       """
+    )
+    .inlineStyle(
+      "background",
+      """
+      linear-gradient(
+        180deg, 
+        color-mix(in oklab, #000000 100%, transparent) 0%, 
+        color-mix(in oklab, #974dff 30%, #000000) 100%
+      )
+      """,
+      media: .dark
     )
   }
 }
