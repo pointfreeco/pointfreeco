@@ -27,7 +27,7 @@ private struct PointFreeWayHeader: HTML {
   var body: some HTML {
     PageModule(theme: .content) {
       LazyVGrid(columns: [.desktop: [1, 1]]) {
-        VStack {
+        VStack(spacing: 1) {
           Header(2) {
             HTMLRaw("The Point&#8209;Free Way")
           }
@@ -36,6 +36,7 @@ private struct PointFreeWayHeader: HTML {
             "Expert-crafted AI skill documents for building long-lasting Swift applications."
           }
           .contentColor()
+          .inlineStyle("padding", "0")
           Paragraph(.small) {
             HTMLRaw(
               """
@@ -45,6 +46,9 @@ private struct PointFreeWayHeader: HTML {
             )
           }
           .contentColor()
+          Divider(alignment: .left, size: 30)
+            .inlineStyle("margin-top", "1rem")
+            .inlineStyle("margin-bottom", "1rem")
           HStack {
             PFWButton(type: .primary) {
               HTMLText("Subscribe to unlock")
@@ -58,8 +62,29 @@ private struct PointFreeWayHeader: HTML {
           }
         }
 
-        TerminalWindow()
-          .inlineStyle("margin-top", "2rem", media: .mobile)
+        TerminalWindow {
+          // TODO: Should we do this?
+          Command("brew install pfw")
+          //        Command("pfw login")
+          //        Line { Folder("Login successful") }
+          //        Gap()
+          //        Command("pfw install --codex")
+          //        Line { Folder("Installed to ~/.codex/skills/") }
+          //        Gap()
+          Command("ls -R ~/.codex/skills/the-point-free-way")
+          Line { Folder("./ComposableArchitecture/") }
+          Line { File("  SKILL.md") }
+          Gap()
+          Line { Folder("./SQLiteData/") }
+          Line { File("  SKILL.md") }
+          Gap()
+          Line { Folder("./Dependencies/") }
+          Line { File("  SKILL.md") }
+          Gap()
+          Line { Folder("./SwiftNavigation/") }
+          Line { File("  SKILL.md") }
+        }
+        .inlineStyle("margin-top", "2rem", media: .mobile)
       }
     }
     .inlineStyle(
@@ -103,17 +128,9 @@ private struct PointFreeWayModule<Content: HTML>: HTML {
         }
         .contentColor()
       }
+      .inlineStyle("width", "100%")
     }
-    DividerLine()
-  }
-}
-
-struct DividerLine: HTML {
-  var body: some HTML {
-    hr()
-      .inlineStyle("border", "none")
-      .inlineStyle("border-top", "1px solid \(PointFreeColor.gray800.rawValue)")
-      .inlineStyle("border-top", "1px solid \(PointFreeColor.gray300.rawValue)", media: .dark)
+    Divider(size: 100)
       .inlineStyle("display", "none", media: .dark, pseudo: .lastOfType)
   }
 }
@@ -259,11 +276,19 @@ private struct PullQuote: HTML {
 private struct BuildInThePointFreeStyle: HTML {
   var body: some HTML {
     PointFreeWayModule(title: "Build apps in the Point&#8209;Free style") {
-      HStack {
+      LazyVGrid(
+        columns: [.mobile: [1, 1], .desktop: [2, 1, 1]],
+        horizontalSpacing: 2,
+        verticalSpacing: 2
+      ) {
+        ComposableArchitecturePrompt()
+          .inlineStyle("grid-column", "1/-1", media: .mobile)
+
         ChecklistModule(
           title: "Principles",
           items: [
             "Compositional architecture",
+            "Value types over reference types",
             "Explicit dependencies",
             "Controlled side effects",
             "Testability by construction",
@@ -424,8 +449,8 @@ private struct NotReadyToSubscribe: HTML {
         ChecklistModule(
           title: "Prefer the full experience?",
           blurb: """
-            Subscribe to unlock the complete collection, including library-specific guidance and 
-            frequently updated best practices.
+            Subscribe to unlock the complete collection of AI skills and access to hundreds of \
+            hours of advanced Swift videos.
             """,
           items: [
             "Maintained with the same rigor as our codebases",
@@ -464,7 +489,7 @@ private struct BuildSoftwareThatLasts: HTML {
         }
         Spacer()
         VStack {
-          Button(color: .purple) {
+          PFWButton(type: .primary) {
             "Subscribe now"
           }
           .inlineStyle("margin-right", "auto")
@@ -477,7 +502,7 @@ private struct BuildSoftwareThatLasts: HTML {
       linear-gradient(
         180deg, 
         color-mix(in oklab, #ffffff 100%, transparent) 0%, 
-        color-mix(in oklab, #974dff 30%, #ffffff) 100%
+        color-mix(in oklab, #974dff 20%, #ffffff) 100%
       )
       """
     )
@@ -513,5 +538,119 @@ extension HTML {
   }
   fileprivate func contentColor() -> some HTML {
     color(.gray300.dark(.gray800))
+  }
+}
+
+struct ComposableArchitecturePrompt: HTML {
+  var body: some HTML {
+    TerminalWindow(title: "Pomodoro – codex", maxHeight: 22) {
+      CodexCommand(
+        command: """
+          $ComposableArchitecture Produce a snippet of code that implements a pomodoro \
+          timer feature.
+          """
+      )
+      Gap()
+      Line(prefix: "•") {
+        "Using The Composable Architecture skill (requested)."
+      }
+      Gap()
+      Line {
+        Code(
+          """
+            import ComposableArchitecture
+            import SwiftUI
+
+            @Feature struct Pomodoro {
+              struct State {
+                var isRunning = false
+                var remainingSeconds = 25 * 60
+                var totalSeconds = 25 * 60
+              }
+              enum Action {
+                case startButtonTapped
+                case pauseButtonTapped
+                case resetButtonTapped
+                case timerTick
+              }
+
+              var body: some Feature<State, Action> {
+                Update { state, action in
+                  switch action {
+                  case .startButtonTapped:
+                    state.isRunning = true
+                    return .none
+
+                  case .pauseButtonTapped:
+                    state.isRunning = false
+                    return .none
+
+                  case .resetButtonTapped:
+                    state.isRunning = false
+                    state.remainingSeconds = state.totalSeconds
+                    return .none
+
+                  case .timerTick:
+                    guard state.remainingSeconds > 0 else {
+                      state.isRunning = false
+                      return .none
+                    }
+                    state.remainingSeconds -= 1
+                    return .none
+                  }
+                }
+                .onMount(id: store.isRunning) { store in
+                  guard try store.isRunning else { return }
+                  while true {
+                    try await Task.sleep(for: .seconds(1))
+                    try store.send(.timerTick)
+                  }
+                }
+              }
+            }
+
+            struct PomodoroView: View {
+              let store: StoreOf<Pomodoro>
+
+              var body: some View {
+                VStack(spacing: 16) {
+                  Text(timeString(from: store.remainingSeconds))
+                  HStack(spacing: 12) {
+                    Button("Start") { 
+                      store.send(.startButtonTapped) 
+                    }
+                    .disabled(store.isRunning)
+
+                    Button("Pause") { 
+                      store.send(.pauseButtonTapped) 
+                    }
+                    .disabled(!store.isRunning)
+
+                    Button("Reset") { 
+                      store.send(.resetButtonTapped) 
+                    }
+                  }
+                }
+                .padding()
+              }
+
+              private func timeString(from seconds: Int) -> String {
+                let minutes = seconds / 60
+                let seconds = seconds % 60
+                return String(format: "%02d:%02d", minutes, seconds)
+              }
+            }
+
+            #Preview {
+              PomodoroView(
+                store: Store(initialState: Pomodoro.State()) {
+                  Pomodoro()
+                }
+              )
+            }
+          """
+        )
+      }
+    }
   }
 }

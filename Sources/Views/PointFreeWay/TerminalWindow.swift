@@ -1,10 +1,13 @@
 import StyleguideV2
 
-struct TerminalWindow: HTML {
+struct TerminalWindow<Content: HTML>: HTML {
+  var title: String?
+  var maxHeight: Int?
+  @HTMLBuilder var content: Content
   var body: some HTML {
     block("terminal-window") {
-      TitleBar()
-      Screen()
+      TitleBar(title: title)
+      Screen(content: content, maxHeight: maxHeight)
     }
     .inlineStyle("border-radius", "18px")
     .inlineStyle("background", "rgba(250, 251, 253, 0.92)")
@@ -20,32 +23,45 @@ struct TerminalWindow: HTML {
   }
 
   struct Screen: HTML {
+    let content: Content
+    let maxHeight: Int?
     var body: some HTML {
       block("terminal-screen") {
-        // TODO: Should we do this?
-//        Command("brew install pfw")
-//        Command("pfw login")
-//        Line { Folder("Login successful") }
-//        Gap()
-//        Command("pfw install --codex")
-//        Line { Folder("Installed to ~/.codex/skills/") }
-//        Gap()
-        Command("ls -R ~/.codex/skills/the-point-free-way")
-        Gap()
-        Line { Folder("./ComposableArchitecture/") }
-        Line { File("  SKILL.md") }
-        Gap()
-        Line { Folder("./SQLiteData/") }
-        Line { File("  SKILL.md") }
-        Gap()
-        Line { Folder("./Dependencies/") }
-        Line { File("  SKILL.md") }
-        Gap()
-        Line { Folder("./SwiftNavigation/") }
-        Line { File("  SKILL.md") }
+        block("terminal-viewport") {
+          content
+          if maxHeight != nil {
+            Gap()
+          }
+        }
+        .inlineStyle("position", "relative")
+        .inlineStyle("padding", "1rem")
+        .inlineStyle("width", "100%")
+        .inlineStyle("overflow-y", "scroll")
+        .inlineStyle("scrollbar-gutter", "stable both-edges")
+        .inlineStyle("max-height", maxHeight.map { "\($0)rem" })
+        .inlineStyle("color-scheme", "light dark")
+
+        if maxHeight != nil {
+          block("terminal-fade") {
+
+          }
+          .inlineStyle("position", "absolute")
+          .inlineStyle("left", "0")
+          .inlineStyle("right", "0")
+          .inlineStyle("bottom", "0")
+          .inlineStyle("height", "6rem")
+          .inlineStyle("pointer-events", "none")
+          .inlineStyle(
+            "background",
+            "linear-gradient(to bottom, transparent, rgba(250, 251, 253, 0.98))"
+          )
+          .inlineStyle(
+            "background",
+            "linear-gradient(to bottom, transparent, rgba(14, 16, 20, 0.98))",
+            media: .dark
+          )
+        }
       }
-      .inlineStyle("position", "relative")
-      .inlineStyle("padding", "1.125rem 3rem 1.25rem 1.125rem")
       .inlineStyle(
         "font-family",
         "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace"
@@ -56,89 +72,8 @@ struct TerminalWindow: HTML {
     }
   }
 
-  struct Command: HTML {
-    let command: String
-    init(_ command: String) {
-      self.command = command
-    }
-    var body: some HTML {
-      Line {
-        span { "$ " }
-          .inlineStyle("color", "color-mix(in oklab, rgba(10, 14, 20, 0.86) 60%, transparent)")
-          .inlineStyle(
-            "color",
-            "color-mix(in oklab, rgba(255, 255, 255, 0.86) 68%, transparent)",
-            media: .dark
-          )
-        span { HTMLRaw(command) }
-          .inlineStyle("color", "color-mix(in oklab, rgba(10, 14, 20, 0.86) 96%, transparent)")
-          .inlineStyle(
-            "color",
-            "color-mix(in oklab, rgba(255, 255, 255, 0.86) 96%, transparent)",
-            media: .dark
-          )
-      }
-    }
-  }
-
-  struct Line<Content: HTML>: HTML {
-    @HTMLBuilder var content: Content
-    var body: some HTML {
-      p {
-        content
-      }
-      .inlineStyle("position", "relative")
-      .inlineStyle("margin", "0")
-      .inlineStyle("white-space", "pre")
-    }
-  }
-  struct File: HTML {
-    let file: String
-    init(_ file: String) {
-      self.file = file
-    }
-    var body: some HTML {
-      span {
-        HTMLText(file)
-      }
-      .inlineStyle(
-        "color",
-        "color-mix(in oklab, \(PointFreeColor.blue.rawValue) 82%, rgba(10, 14, 20, 0.86) 10%);"
-      )
-      .inlineStyle(
-        "color",
-        "color-mix(in oklab, \(PointFreeColor.blue.rawValue) 82%, rgba(255, 255, 255, 0.86) 10%);",
-        media: .dark
-      )
-    }
-  }
-  struct Folder: HTML {
-    let folder: String
-    init(_ folder: String) {
-      self.folder = folder
-    }
-    var body: some HTML {
-      span {
-        HTMLText(folder)
-      }
-      .inlineStyle(
-        "color",
-        "color-mix(in oklab, \(PointFreeColor.green.rawValue) 82%, rgba(10, 14, 20, 0.86) 10%);"
-      )
-      .inlineStyle(
-        "color",
-        "color-mix(in oklab, \(PointFreeColor.green.rawValue) 82%, rgba(255, 255, 255, 0.86) 10%);",
-        media: .dark
-      )
-    }
-  }
-  struct Gap: HTML {
-    var body: some HTML {
-      block("terminal-gap") {}.inlineStyle("height", "0.625rem")
-    }
-  }
-
   struct TitleBar: HTML {
+    let title: String?
     var body: some HTML {
       block("terminal-title-bar") {
         div {
@@ -149,7 +84,7 @@ struct TerminalWindow: HTML {
         .inlineStyle("padding-left", "0.25rem")
 
         div {
-          "Terminal"
+          HTMLRaw(title ?? "Terminal")
         }
         .inlineStyle("text-align", "center")
         .inlineStyle("font-size", "0.875rem")
@@ -204,5 +139,133 @@ struct TerminalWindow: HTML {
         .inlineStyle("box-shadow", "inset 0 0 0 1px rgba(0, 0, 0, 0.18)")
         .inlineStyle("background", color.hexString)
     }
+  }
+}
+
+struct Command: HTML {
+  let command: String
+  init(_ command: String) {
+    self.command = command
+  }
+  var body: some HTML {
+    Line(prefix: "$") {
+      span { HTMLRaw(command) }
+        .inlineStyle("color", "color-mix(in oklab, rgba(10, 14, 20, 0.86) 96%, transparent)")
+        .inlineStyle(
+          "color",
+          "color-mix(in oklab, rgba(255, 255, 255, 0.86) 96%, transparent)",
+          media: .dark
+        )
+    }
+  }
+}
+
+struct CodexCommand: HTML {
+  let command: String
+  var body: some HTML {
+    Line(prefix: "›", background: .gray850.dark(.gray300)) {
+      span { HTMLRaw(command) }
+        .inlineStyle("color", "color-mix(in oklab, rgba(10, 14, 20, 0.86) 96%, transparent)")
+        .inlineStyle(
+          "color",
+          "color-mix(in oklab, rgba(255, 255, 255, 0.86) 96%, transparent)",
+          media: .dark
+        )
+    }
+  }
+}
+
+struct Line<Content: HTML>: HTML {
+  var prefix: String?
+  var background: PointFreeColor?
+  @HTMLBuilder var content: Content
+  var body: some HTML {
+    HStack(spacing: 1) {
+      if let prefix {
+        span { HTMLRaw(prefix + " ") }
+          .inlineStyle("width", "0px")
+          .inlineStyle("color", "color-mix(in oklab, rgba(10, 14, 20, 0.86) 60%, transparent)")
+          .inlineStyle(
+            "color",
+            "color-mix(in oklab, rgba(255, 255, 255, 0.86) 68%, transparent)",
+            media: .dark
+          )
+      }
+      content
+    }
+    .inlineStyle("position", "relative")
+    .inlineStyle("margin", "0 -1rem")
+    .inlineStyle("white-space", "pre-wrap")
+    .inlineStyle("overflow-wrap", "anywhere")
+    .inlineStyle("word-break", "break-word")
+    .inlineStyle("padding", "2px 1rem")
+    .background(background)
+  }
+}
+struct File: HTML {
+  let file: String
+  init(_ file: String) {
+    self.file = file
+  }
+  var body: some HTML {
+    span {
+      HTMLText(file)
+    }
+    .inlineStyle(
+      "color",
+      "color-mix(in oklab, \(PointFreeColor.blue.rawValue) 82%, rgba(10, 14, 20, 0.86) 10%);"
+    )
+    .inlineStyle(
+      "color",
+      "color-mix(in oklab, \(PointFreeColor.blue.rawValue) 82%, rgba(255, 255, 255, 0.86) 10%);",
+      media: .dark
+    )
+  }
+}
+struct Folder: HTML {
+  let folder: String
+  init(_ folder: String) {
+    self.folder = folder
+  }
+  var body: some HTML {
+    span {
+      HTMLText(folder)
+    }
+    .inlineStyle(
+      "color",
+      "color-mix(in oklab, \(PointFreeColor.green.rawValue) 82%, rgba(10, 14, 20, 0.86) 10%);"
+    )
+    .inlineStyle(
+      "color",
+      "color-mix(in oklab, \(PointFreeColor.green.rawValue) 82%, rgba(255, 255, 255, 0.86) 10%);",
+      media: .dark
+    )
+  }
+}
+
+struct Code: HTML {
+  let code: String
+  init(_ code: String) {
+    self.code = code
+  }
+  var body: some HTML {
+    span {
+      HTMLText(code)
+    }
+    .inlineStyle(
+      "color",
+      "color-mix(in oklab, \(PointFreeColor.green.rawValue) 82%, #000 20%);"
+    )
+    .inlineStyle(
+      "color",
+      "color-mix(in oklab, \(PointFreeColor.green.rawValue) 82%, rgba(255, 255, 255, 0.86) 10%);",
+      media: .dark
+    )
+  }
+}
+
+struct Gap: HTML {
+  var body: some HTML {
+    block("terminal-gap") {}.inlineStyle("height", "0.625rem")
   }
 }
