@@ -941,7 +941,7 @@ extension Client {
           """
           CREATE TABLE IF NOT EXISTS "the_way_accesses" (
             "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-            "machine" character varying NOT NULL,
+            "machine" uuid NOT NULL,
             "whoami" character varying NOT NULL,
             "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
             "updated_at" timestamp without time zone
