@@ -3,9 +3,18 @@ import Dependencies
 public struct Feature: Equatable {
   public var isAdminEnabled: Bool
   public var isEnabled: Bool
+  public var allowedUserIDs: [User.ID] = []
   public var name: String
 
-  public static let allFeatures: [Self] = []
+  public static let allFeatures: [Self] = [
+    thePointFreeWay
+  ]
+  public static let thePointFreeWay = Self(
+    isAdminEnabled: true,
+    isEnabled: false,
+    allowedUserIDs: [],
+    name: "the-point-free-way"
+  )
 }
 
 extension Array where Element == Feature {
@@ -16,6 +25,7 @@ extension Array where Element == Feature {
       .map {
         $0.isEnabled
           || ($0.isAdminEnabled && user?.isAdmin == .some(true))
+          || ((user?.id).map { feature.allowedUserIDs.contains($0) } ?? false)
       }
       ?? false
   }
