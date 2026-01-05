@@ -1070,7 +1070,7 @@ extension Client {
         )
       },
       upsertTheWayAccess: { access in
-        try await pool.sqlDatabase.first("""
+        try! await pool.sqlDatabase.first("""
           INSERT INTO "the_way_accesses"
           ("id", "machine", "whoami", "created_at", "updated_at")
           VALUES 
@@ -1081,7 +1081,8 @@ extension Client {
             \(bind: access.createdAt),
             \(bind: access.updatedAt)
           )
-          ON CONFLICT ("machine", "whoami") DO NOTHING
+          ON CONFLICT ("machine", "whoami") 
+          DO UPDATE SET "updated_at" = now()
           RETURNING *
           """)
       },
