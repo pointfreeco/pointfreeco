@@ -47,3 +47,4 @@ Packages/
 .ssl/*
 Sources/Transcripts/PrivateTranscripts
 bin/*
+gitignored/*
