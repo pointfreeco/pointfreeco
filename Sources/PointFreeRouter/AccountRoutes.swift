@@ -86,6 +86,7 @@ struct AccountRouter: ParserPrinter {
       }
 
       Route(.case(Account.regenerateTeamInviteCode)) {
+        Method.post
         Path { "regenerate-team-invite-code" }
       }
 

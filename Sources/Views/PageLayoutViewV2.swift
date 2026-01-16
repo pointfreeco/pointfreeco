@@ -145,18 +145,18 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     if shouldShowLiveBanner {
       LiveStreamBanner()
     }
-    if appEnv == .development
-      || !subscriberState.isActive && !currentRoute.is(\.subscribeConfirmation)
-    {
-      SaleBanner(
-        isMaximum: currentRoute.is(\.home)
-          || currentRoute.is(\.blog)
-          || currentRoute.is(\.episodes),
-        title: "End-of-year",
-        percentage: 25,
-        discountCode: "eoy-2025"
-      )
-    }
+    // if appEnv == .development
+    //   || !subscriberState.isActive && !currentRoute.is(\.subscribeConfirmation)
+    // {
+    //   SaleBanner(
+    //     isMaximum: currentRoute.is(\.home)
+    //       || currentRoute.is(\.blog)
+    //       || currentRoute.is(\.episodes),
+    //     title: "End-of-year",
+    //     percentage: 25,
+    //     discountCode: "eoy-2025"
+    //   )
+    // }
     NavBar()
     content
     if !layoutData.style.isMinimal {
