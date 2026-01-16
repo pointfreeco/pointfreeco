@@ -235,8 +235,8 @@ private struct WhatIsThePointFreeWay: HTML {
           title: "Designed by industry experts",
           blurb: "Created by the hosts of Point-Free.",
           items: [
-            "Maintainers of open source libraries used by thousands of developers",
-            "Producer of education videos, watched by tens of thousands of developers",
+            "Maintainers of open source libraries used by tens of thousands of developers",
+            "Producer of education videos, millions of minutes watched",
             "Decades of real-world experience and consulting with teams of all sizes",
           ]
         )
