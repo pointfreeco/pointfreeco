@@ -17,6 +17,11 @@ public struct Client {
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
   public var fetchAuthToken: (_ code: String) async throws -> AuthTokenResponse
 
+  /// Fetches info for a repo branch.
+  public var fetchBranch:
+    (_ owner: String, _ repo: String, _ branch: String, _ token: GitHubAccessToken) async throws ->
+      Repo
+
   /// Fetches a GitHub user's emails.
   public var fetchEmails: (_ accessToken: GitHubAccessToken) async throws -> [GitHubUser.Email]
 
@@ -29,6 +34,11 @@ public struct Client {
       _ id: GitHubUser.ID,
       _ accessToken: GitHubAccessToken
     ) async throws -> GitHubUser
+
+  /// Fetches a zipball of a given repo.
+  public var fetchZipball:
+    (_ owner: String, _ repo: String, _ ref: String, _ token: GitHubAccessToken) async throws ->
+      Data
 
   public struct AuthTokenResponse: Codable {
     public var accessToken: GitHubAccessToken
@@ -53,6 +63,11 @@ extension Client {
           decoder: gitHubJsonDecoder
         )
       },
+      fetchBranch: { owner, repo, branch, token in
+        try await jsonDataTask(
+          with: fetchRepoBranch(owner: owner, repo: repo, branch: branch, token: token)
+        )
+      },
       fetchEmails: {
         try await jsonDataTask(with: fetchGitHubEmails(token: $0), decoder: gitHubJsonDecoder)
       },
@@ -61,7 +76,20 @@ extension Client {
       },
       fetchUserByUserID: { userID, accessToken in
         try await jsonDataTask(
-          with: fetchGitHubUser(id: userID, with: accessToken), decoder: gitHubJsonDecoder)
+          with: fetchGitHubUser(id: userID, with: accessToken),
+          decoder: gitHubJsonDecoder
+        )
+      },
+      fetchZipball: { owner, repo, ref, token in
+        let (_, response) = try await dataTask(
+          with: fetchGitHubZipball(owner: owner, repo: repo, ref: ref, token: token)
+        )
+        guard let redirectURL = response.headers.first(name: "found") else {
+          struct NotFound: Error {}
+          throw NotFound()
+        }
+        let (bytes, _) = try await dataTask(with: HTTPClientRequest(url: redirectURL))
+        return Data(buffer: bytes)
       }
     )
   }
@@ -106,14 +134,39 @@ func fetchGitHubUser(
   apiDataTask("user/\(id)", token: token)
 }
 
+func fetchRepoBranch(
+  owner: String,
+  repo: String,
+  branch: String,
+  token: GitHubAccessToken
+) -> HTTPClientRequest {
+  apiDataTask("repos/\(owner)/\(repo)/branches/\(branch)", token: token)
+}
+
+func fetchGitHubZipball(
+  owner: String,
+  repo: String,
+  ref: String,
+  token: GitHubAccessToken
+) -> HTTPClientRequest {
+  apiDataTask("repos/\(owner)/\(repo)/zipball/\(ref)", token: token)
+}
+
 private func apiDataTask<A>(
   _ path: String,
   token: GitHubAccessToken
 ) -> DecodableHTTPClientRequest<A> {
+  DecodableHTTPClientRequest(rawValue: apiDataTask(path, token: token))
+}
+
+private func apiDataTask(
+  _ path: String,
+  token: GitHubAccessToken
+) -> HTTPClientRequest {
   var request = HTTPClientRequest(url: "https://api.github.com/\(path)")
   request.headers.add(name: "accept", value: "application/vnd.github.v3+json")
   request.headers.add(name: "authorization", value: "token \(token.rawValue)")
-  return DecodableHTTPClientRequest(rawValue: request)
+  return request
 }
 
 private let gitHubJsonEncoder: JSONEncoder = {

@@ -62,3 +62,12 @@ public struct GitHubUser: Codable, Identifiable {
     case name
   }
 }
+
+public struct Repo: Codable {
+  public var commit: Commit
+
+  public struct Commit: Codable {
+    public typealias SHA = Tagged<Self, String>
+    public var sha: SHA
+  }
+}

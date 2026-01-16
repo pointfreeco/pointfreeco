@@ -55,6 +55,24 @@ func theWayMiddleware(
         throw MismatchedToken()
       }
 
+      @Dependency(\.gitHub) var gitHub
+      @Dependency(\.envVars.gitHub.pfwDownloadsAccessToken) var pfwDownloadsAccessToken
+
+      let sha = try await gitHub.fetchBranch(
+        owner: "pointfreeco",
+        repo: "the-point-free-way",
+        branch: "main",
+        token: pfwDownloadsAccessToken
+      )
+      .commit.sha
+
+      let data = try await gitHub.fetchZipball(
+        owner: "pointfreeco",
+        repo: "the-point-free-way",
+        ref: sha.rawValue,
+        token: pfwDownloadsAccessToken
+      )
+
       return conn
         .writeStatus(.ok)
         .respond(data: Data("hello!".utf8))
