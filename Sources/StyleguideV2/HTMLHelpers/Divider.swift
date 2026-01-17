@@ -1,18 +1,24 @@
 public struct Divider: HTML {
   let alignment: Alignment
   let size: Int
+  let color: PointFreeColor
   public init(
     alignment: Alignment = .center,
-    size: Int = 40
+    size: Int = 40,
+    color: PointFreeColor = PointFreeColor(
+      rawValue: PointFreeColor.gray800.rawValue,
+      darkValue: PointFreeColor.gray300.rawValue
+    )
   ) {
     self.alignment = alignment
     self.size = size
+    self.color = color
   }
   public var body: some HTML {
     hr()
       .inlineStyle("border", "none")
-      .inlineStyle("border-top", "1px solid \(PointFreeColor.gray800.rawValue)")
-      .inlineStyle("border-top", "1px solid \(PointFreeColor.gray300.rawValue)", media: .dark)
+      .inlineStyle("border-top", "1px solid \(color.rawValue)")
+      .inlineStyle("border-top", "1px solid \(color.darkValue ?? color.rawValue)", media: .dark)
       .inlineStyle("margin-left", marginLeft)
       .inlineStyle("margin-right", marginRight)
   }

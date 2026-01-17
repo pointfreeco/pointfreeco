@@ -69,6 +69,7 @@ private struct ContentColumn: HTML {
   var body: some HTML {
     Column(title: "Content") {
       FooterLink("Pricing", destination: .pricingLanding)
+      FooterLink("The Point-Free Way", destination: .theWay)
       FooterLink("Gifts", destination: .gifts())
       FooterLink("Videos", destination: .home)
       FooterLink("Collections", destination: .collections())

@@ -53,6 +53,10 @@ private struct LoggedIn: HTML {
     if creditCount > 0 {
       EpisodeCredits(creditCount: creditCount)
     }
+    EpisodesModule()
+    if !subscriberState.isActiveSubscriber {
+      PointFreeWayHeader()
+    }
     if !inProgressEpisodes.isEmpty {
       InProgressEpisodes(episodes: Array(inProgressEpisodes))
       Divider()
@@ -61,7 +65,6 @@ private struct LoggedIn: HTML {
       FreeEpisodes()
       Divider()
     }
-    EpisodesModule()
     if subscriberState.isActiveSubscriber {
       GiveAGiftModule()
     } else {
@@ -108,7 +111,7 @@ private struct LoggedOut: HTML {
     )
     Companies()
     FreeEpisodes()
-    Divider()
+    PointFreeWayHeader()
     EpisodesModule()
     WhatToExpect()
     CollectionsModule()

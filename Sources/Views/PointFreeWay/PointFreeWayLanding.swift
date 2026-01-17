@@ -23,7 +23,7 @@ public struct PointFreeWayLanding: HTML {
   }
 }
 
-private struct PointFreeWayHeader: HTML {
+struct PointFreeWayHeader: HTML {
   var body: some HTML {
     PageModule(theme: .content) {
       LazyVGrid(columns: [.desktop: [1, 1]]) {

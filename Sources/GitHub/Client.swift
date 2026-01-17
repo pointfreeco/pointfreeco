@@ -84,7 +84,7 @@ extension Client {
         )
       },
       fetchZipball: { owner, repo, ref, token in
-        let (data, response) = try await dataTask(
+        let (data, _) = try await dataTask(
           with: fetchGitHubZipball(owner: owner, repo: repo, ref: ref, token: token)
         )
         return Data(buffer: data)
