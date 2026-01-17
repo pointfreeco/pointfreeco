@@ -117,6 +117,15 @@ extension Client {
           """
         )
       },
+      deleteTheWayAccess: { machine, whoami in
+        try await pool.sqlDatabase.run(
+          """
+          DELETE FROM "the_way_accesses"
+          WHERE "machine" = \(bind: machine)
+          AND "whoami" = \(bind: whoami)
+          """
+        )
+      },
       execute: { sql in
         try await pool.sqlDatabase.raw(sql).all()
       },
@@ -941,9 +950,11 @@ extension Client {
           """
           CREATE TABLE IF NOT EXISTS "the_way_accesses" (
             "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "user_id" uuid REFERENCES "users"("id") NOT NULL,
             "machine" uuid NOT NULL,
             "whoami" character varying NOT NULL,
             "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "expires_at" timestamp without time zone NOT NULL,
             "updated_at" timestamp without time zone
           )
           """
@@ -1070,16 +1081,18 @@ extension Client {
         )
       },
       upsertTheWayAccess: { access in
-        try! await pool.sqlDatabase.first("""
+        try await pool.sqlDatabase.first("""
           INSERT INTO "the_way_accesses"
-          ("id", "machine", "whoami", "created_at", "updated_at")
+          ("id", "user_id", "machine", "whoami", "created_at", "updated_at", "expires_at")
           VALUES 
           (
             \(bind: access.id),
+            \(bind: access.userID),
             \(bind: access.machine),
             \(bind: access.whoami),
             \(bind: access.createdAt),
-            \(bind: access.updatedAt)
+            \(bind: access.updatedAt),
+            \(bind: access.expiresAt)
           )
           ON CONFLICT ("machine", "whoami") 
           DO UPDATE SET "updated_at" = now()

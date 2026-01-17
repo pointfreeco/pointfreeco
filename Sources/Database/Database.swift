@@ -51,6 +51,7 @@ public struct Client {
     ) async throws -> Models.Subscription
   public var deleteEnterpriseEmail: (_ userID: User.ID) async throws -> Void
   public var deleteTeamInvite: (_ id: TeamInvite.ID) async throws -> Void
+  public var deleteTheWayAccess: (_ machine: UUID, _ whoami: String) async throws -> Void
   public var execute: (_ sql: SQLQueryString) async throws -> [SQLRow]
   public var fetchAdmins: () async throws -> [Models.User]
   @DependencyEndpoint(method: "fetchClip")

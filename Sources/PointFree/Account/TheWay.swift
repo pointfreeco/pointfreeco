@@ -10,24 +10,62 @@ func theWayMiddleware(
   _ conn: Conn<StatusLineOpen, Account.TheWay>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
-  // TODO: guard with feature flag
+  @Dependency(\.date.now) var now
 
   switch conn.data {
   case .login(let redirect, let whoami, let machine):
-    do {
-      guard
-        var redirectBase = URLComponents(string: redirect)
-      else {
-        return conn.redirect(to: .home) {
-          $0.flash(.error, "Could not login.")
+    @Dependency(\.currentUser) var currentUser
+    @Dependency(\.siteRouter) var siteRouter
+    @Dependency(\.subscriberState) var subscriberState
+
+    guard var redirectBase = URLComponents(string: redirect)
+    else {
+      return conn.redirect(to: .home) {
+        $0.flash(.error, "Invalid redirect provided.")
+      }
+    }
+    guard let currentUser
+    else {
+      return await conn
+        .redirect(
+          to: .auth(
+            .login(
+              redirect: siteRouter.url(
+                for: .account(.theWay(.login(redirect: redirect, whoami: whoami, machine: machine)))
+              )
+            )
+          )
+        ) {
+          $0.flash(.notice, "Log in to access 'The Point-Free Way'.")
         }
+    }
+    guard Feature.allFeatures.hasAccess(to: .thePointFreeWay, for: currentUser)
+    else {
+      return conn.redirect(to: .home) {
+        $0.flash(.error, "Could not login.")
+      }
+    }
+
+    guard subscriberState.isActive
+    else {
+      return conn.redirect(to: .pricingLanding) {
+        $0.flash(.error, "Must be a subscriber to access 'The Point-Free Way'.")
+      }
+    }
+
+    do {
+      let currentAccess = try? await database.fetchTheWayAccess(machine: machine, whoami: whoami)
+      if let currentAccess, currentAccess.expiresAt < now {
+        try await database.deleteTheWayAccess(machine: machine, whoami: whoami)
       }
       let access = try await database.upsertTheWayAccess(
         TheWayAccess(
           id: TheWayAccess.ID(),
+          userID: currentUser.id,
           machine: machine,
           whoami: whoami,
-          createdAt: Date(),
+          createdAt: now,
+          expiresAt: now.addingTimeInterval(60 * 60 * 24),
           updatedAt: nil
         )
       )
@@ -52,9 +90,17 @@ func theWayMiddleware(
       let access = try await database.fetchTheWayAccess(machine: machine, whoami: whoami)
       guard access.id == token
       else {
-        struct MismatchedToken: Error {}
-        throw MismatchedToken()
+        return conn
+          .writeStatus(.unauthorized)
+          .respond(text: "🛑 Token not found.")
       }
+      guard access.expiresAt > Date()
+      else {
+        return conn
+          .writeStatus(.unauthorized)
+          .respond(text: "🛑 Token has expired, re-login with 'pfw login'.")
+      }
+      _ = try await database.upsertTheWayAccess(access)
 
       @Dependency(\.gitHub) var gitHub
       @Dependency(\.envVars.gitHub.pfwDownloadsAccessToken) var pfwDownloadsAccessToken
@@ -77,13 +123,12 @@ func theWayMiddleware(
         let data = try await gitHub.fetchZipball(
           owner: "pointfreeco",
           repo: "the-point-free-way",
-          ref: sha.rawValue,
+          ref: sha,
           token: pfwDownloadsAccessToken
         )
         try data.write(to: zipURL)
       }
       if !FileManager.default.fileExists(atPath: unzippedURL.path()) {
-        // TODO: allowUncontainedSymlink
         try FileManager.default.unzipItem(
           at: zipURL,
           to: unzippedURL,
@@ -127,10 +172,9 @@ func theWayMiddleware(
         .writeStatus(.ok)
         .respond(data: Data(contentsOf: destinationURL))
     } catch {
-      print(error)
       return conn
         .writeStatus(.unauthorized)
-        .respond(text: "Could not download skills.")
+        .respond(text: "🛑 Could not download skills.")
     }
   }
 }

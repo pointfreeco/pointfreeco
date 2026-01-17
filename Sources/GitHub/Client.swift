@@ -36,9 +36,12 @@ public struct Client {
     ) async throws -> GitHubUser
 
   /// Fetches a zipball of a given repo.
-  public var fetchZipball:
-    (_ owner: String, _ repo: String, _ ref: String, _ token: GitHubAccessToken) async throws ->
-      Data
+  public var fetchZipball: (
+    _ owner: String,
+    _ repo: String,
+    _ ref: Repo.Commit.SHA,
+    _ token: GitHubAccessToken
+  ) async throws -> Data
 
   public struct AuthTokenResponse: Codable {
     public var accessToken: GitHubAccessToken
@@ -141,7 +144,7 @@ func fetchRepoBranch(
 func fetchGitHubZipball(
   owner: String,
   repo: String,
-  ref: String,
+  ref: Repo.Commit.SHA,
   token: GitHubAccessToken
 ) -> HTTPClientRequest {
   apiDataTask("repos/\(owner)/\(repo)/zipball/\(ref)", token: token)

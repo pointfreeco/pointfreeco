@@ -14,6 +14,7 @@ extension Client {
     createSubscription: { _, _, _, _ in .mock },
     deleteEnterpriseEmail: { _ in },
     deleteTeamInvite: { _ in },
+    deleteTheWayAccess: { _, _ in },
     execute: { _ in throw unit },
     fetchAdmins: { [] },
     fetchClipByCloudflareVideoID: { _ in throw unit },
