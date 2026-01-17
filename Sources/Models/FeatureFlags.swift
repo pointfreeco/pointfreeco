@@ -11,7 +11,13 @@ public struct Feature: Equatable {
   ]
   public static let thePointFreeWay = Self(
     isAdminEnabled: true,
-    isEnabled: false,
+    isEnabled: {
+      #if DEBUG
+      return true
+      #else
+      return false
+      #endif
+    }(),
     allowedUserIDs: [],
     name: "the-point-free-way"
   )

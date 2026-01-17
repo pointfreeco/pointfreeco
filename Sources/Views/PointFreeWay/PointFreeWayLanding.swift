@@ -10,6 +10,8 @@ import Styleguide
 import StyleguideV2
 
 public struct PointFreeWayLanding: HTML {
+  @Dependency(\.subscriberState) var subscriberState
+
   public init() {}
 
   public var body: some HTML {
@@ -18,12 +20,17 @@ public struct PointFreeWayLanding: HTML {
     BuildInThePointFreeStyle()
     HandCrafted()
     HowAccessWorks()
-    NotReadyToSubscribe()
-    BuildSoftwareThatLasts()
+    if !subscriberState.isActiveSubscriber {
+      NotReadyToSubscribe()
+      BuildSoftwareThatLasts()
+    }
   }
 }
 
 struct PointFreeWayHeader: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
+
   var body: some HTML {
     PageModule(theme: .content) {
       LazyVGrid(columns: [.desktop: [1, 1]]) {
@@ -49,28 +56,27 @@ struct PointFreeWayHeader: HTML {
           Divider(alignment: .left, size: 30)
             .inlineStyle("margin-top", "1rem")
             .inlineStyle("margin-bottom", "1rem")
-          HStack {
-            PFWButton(type: .primary) {
-              HTMLText("Subscribe to unlock")
+          if subscriberState.isActiveSubscriber {
+            AccessUnlocked()
+          } else {
+            HStack {
+              PFWButton(type: .primary) {
+                HTMLText("Subscribe to unlock")
+              }
+              .href(siteRouter.path(for: .pricingLanding))
+              PFWButton {
+                HTMLText("Explore Point-Free")
+              }
+              .href(siteRouter.path(for: .home))
+              Spacer()
             }
-            .href("/pricing")
-            PFWButton {
-              HTMLText("Explore Point-Free")
-            }
-            .href("/")
-            Spacer()
           }
         }
 
         TerminalWindow {
-          // TODO: Should we do this?
           Command("brew install pfw")
-                  Command("pfw login")
-          //        Line { Folder("Login successful") }
-          //        Gap()
-                  Command("pfw install --codex")
-          //        Line { Folder("Installed to ~/.codex/skills/") }
-          //        Gap()
+          Command("pfw login")
+          Command("pfw install --codex")
           Command("ls -R ~/.codex/skills/the-point-free-way")
           Line { Folder("./ComposableArchitecture/") }
           Line { File("  SKILL.md") }
@@ -104,6 +110,52 @@ struct PointFreeWayHeader: HTML {
       """,
       media: .dark
     )
+  }
+
+  struct AccessUnlocked: HTML {
+    var body: some HTML {
+      VStack(alignment: .leading, spacing: 0.5) {
+        Badge()
+        div {
+          Header(4) {
+            HTMLText("You already have the Point-Free Way.")
+          }
+          .titleColor()
+          .inlineStyle("margin", "0 0 0 0")
+        }
+
+        div {
+          Paragraph(.small) {
+            "Install the tools and start using them in Codex, Claude (and more!) right away."
+          }
+          .contentColor()
+        }
+
+        PFWButton(type: .primary) {
+          HTMLText("Install the Point-Free Way")
+        }
+        .href("https://www.github.com/pointfreeco/the-point-free-way")
+        .inlineStyle("margin-top", "1rem")
+      }
+      .inlineStyle("border-left", "3px solid rgb(12, 116, 52)")
+      .inlineStyle("padding-left", "1rem")
+      .inlineStyle("border-left", "3px solid rgb(162, 255, 200)", media: .dark)
+    }
+    struct Badge: HTML {
+      var body: some HTML {
+        span {
+          HTMLRaw("&#10003;")
+          " Access unlocked"
+        }
+        .inlineStyle("color", "rgb(12, 116, 52)")
+        .inlineStyle("display", "inline-flex")
+        .inlineStyle("font-size", "0.8rem")
+        .inlineStyle("font-weight", "600")
+        .inlineStyle("letter-spacing", "0.04em")
+        .inlineStyle("text-transform", "uppercase")
+        .inlineStyle("color", "rgb(162, 255, 200)", media: .dark)
+      }
+    }
   }
 }
 
@@ -268,7 +320,7 @@ private struct PullQuote: HTML {
     .inlineStyle("background", "color-mix(in oklab, #974dff 10%, #0f1220)", media: .dark)
     .inlineStyle("color", "#0f1220cc")
     .inlineStyle("color", "rgba(255, 255, 255, 0.92)", media: .dark)
-    .inlineStyle("font-size", "1.25rem")
+    .inlineStyle("font-size", "1.5rem")
     .inlineStyle("font-style", "italic")
   }
 }
@@ -343,6 +395,9 @@ private struct HandCrafted: HTML {
 }
 
 private struct HowAccessWorks: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
+
   var body: some HTML {
     PointFreeWayModule(title: "How access works") {
       LazyVGrid(columns: [.mobile: [1, 1], .desktop: [1, 1, 1, 1]]) {
@@ -369,10 +424,17 @@ private struct HowAccessWorks: HTML {
       }
 
       HStack {
-        PFWButton(type: .secondary) {
-          HTMLText("View subscription plans")
+        if subscriberState.isActiveSubscriber {
+          PFWButton(type: .primary) {
+            HTMLText("Install the Point-Free Way")
+          }
+          .href("https://github.com/pointfreeco/the-point-free-way")
+        } else {
+          PFWButton(type: .secondary) {
+            HTMLText("View subscription plans")
+          }
+          .href(siteRouter.path(for: .pricingLanding))
         }
-        .href("/pricing")
         Spacer()
       }
       .inlineStyle("padding-top", "1.5rem")
@@ -388,8 +450,10 @@ private struct HowAccessWorks: HTML {
         block("step-count") {
           HTMLRaw(count.description)
         }
+        .inlineStyle("aspect-ratio", "1 / 1")
         .inlineStyle("width", "30px")
         .inlineStyle("height", "30px")
+        .inlineStyle("min-width", "30px")
         .inlineStyle("border-radius", "999px")
         .inlineStyle("display", "grid")
         .inlineStyle("place-items", "center")
@@ -407,13 +471,15 @@ private struct HowAccessWorks: HTML {
             .contentColor()
         }
       }
-      .panel()
-      .inlineStyle("padding", "1.25rem")
+      .panel(mini: true)
+      .inlineStyle("padding", "1rem")
     }
   }
 }
 
 private struct NotReadyToSubscribe: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+
   var body: some HTML {
     PointFreeWayModule(
       title: "Not ready to subscribe?",
@@ -439,11 +505,11 @@ private struct NotReadyToSubscribe: HTML {
             PFWButton(type: .secondary) {
               HTMLText("Create a free account")
             }
-            .href("/signup")
+            .href(siteRouter.path(for: .auth(.signUp(redirect: siteRouter.url(for: .theWay)))))
             PFWButton {
               HTMLText("Compare plans")
             }
-            .href("/pricing")
+            .href(siteRouter.path(for: .pricingLanding))
           }
         }
         ChecklistModule(
@@ -462,7 +528,7 @@ private struct NotReadyToSubscribe: HTML {
             PFWButton(type: .primary) {
               HTMLText("Subscribe")
             }
-            .href("/pricing")
+            .href(siteRouter.path(for: .pricingLanding))
           }
         }
       }
@@ -471,6 +537,8 @@ private struct NotReadyToSubscribe: HTML {
 }
 
 private struct BuildSoftwareThatLasts: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+
   var body: some HTML {
     PageModule(theme: .content) {
       HStack(alignment: .center, spacing: 2) {
@@ -492,6 +560,7 @@ private struct BuildSoftwareThatLasts: HTML {
           PFWButton(type: .primary) {
             "Subscribe now"
           }
+          .href(siteRouter.path(for: .pricingLanding))
           .inlineStyle("margin-right", "auto")
         }
       }
@@ -525,13 +594,13 @@ extension HTML {
     inlineStyle("border", "1px solid rgba(15, 18, 32, 0.12)")
       .inlineStyle("border-color", "rgba(255, 255, 255, 0.12)", media: .dark)
   }
-  fileprivate func panel() -> some HTML {
+  fileprivate func panel(mini: Bool = false) -> some HTML {
     border()
       .inlineStyle("border-radius", "1rem")
       .inlineStyle("background", "#fcfcfc")
       .inlineStyle("background", "#0f1220", media: .dark)
       .inlineStyle("box-shadow", "none")
-      .inlineStyle("padding", "1.5rem")
+      .inlineStyle("padding", mini ? "1rem" : "1.5rem")
   }
   fileprivate func titleColor() -> some HTML {
     color(.black.dark(.white))

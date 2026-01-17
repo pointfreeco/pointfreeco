@@ -284,7 +284,7 @@ struct MobileNavItems: HTML {
           }
         }
         NavListItem(isNew: true, route: .theWay) {
-          AdaptablePointFreeWayLabel()
+          "The Point-Free Way"
         }
         NavListItem(route: .blog()) {
           "Blog"
@@ -352,14 +352,7 @@ struct MobileNavItems: HTML {
           HStack(alignment: .firstTextBaseline, spacing: 0.25) {
             title
             if isNew {
-              tag("is-new") {
-                "NEW"
-              }
-              .inlineStyle("font-size", "0.75rem")
-              .inlineStyle("font-weight", "740")
-              .inlineStyle("padding", "3px 8px")
-              .background(.yellow)
-              .color(.black)
+              NewBadge()
             }
           }
         }
@@ -468,7 +461,7 @@ struct MoreMenu<Content: HTML>: HTML {
       }
       .linkColor(.gray800)
       .listStyle(.reset)
-      .inlineStyle("background", "rgba(15, 15, 15, 0.98)")
+      .inlineStyle("background", "rgba(15, 15, 15)")
       .inlineStyle("border", "1px solid rgba(255, 255, 255, 0.12)")
       .inlineStyle("border-radius", "12px")
       .inlineStyle("box-shadow", "0 18px 36px rgba(0, 0, 0, 0.45)")
@@ -619,23 +612,33 @@ struct CenteredNavItems: HTML {
     var body: some HTML {
       li {
         Link(destination: route) {
-          title
-          if isNew {
-            tag("is-new") {
-              "NEW"
+          HStack(alignment: .firstTextBaseline, spacing: 0.25) {
+            title
+            if isNew {
+              NewBadge()
             }
-            .inlineStyle("font-size", "0.75rem")
-            .inlineStyle("font-weight", "740")
-            .inlineStyle("padding", "3px 6px")
-            .inlineStyle("margin-left", "4px")
-            .background(.yellow)
-            .color(.black)
           }
         }
       }
       .inlineStyle("padding-left", "2rem", pseudo: .not(.firstChild))
       .inlineStyle("display", "inline")
     }
+  }
+}
+
+private struct NewBadge: HTML {
+  var body: some HTML {
+    tag("is-new") {
+      "NEW"
+    }
+    .inlineStyle("font-size", "0.65rem")
+    .inlineStyle("font-weight", "700")
+    .inlineStyle("letter-spacing", "0.08em")
+    .inlineStyle("padding", "2px 7px")
+    .inlineStyle("border-radius", "999px")
+    .inlineStyle("border", "1px solid rgba(255, 208, 77, 0.7)")
+    .inlineStyle("background", "rgba(255, 214, 102, 0.5)")
+    .inlineStyle("color", "rgba(255, 255, 255, 0.75)")
   }
 }
 

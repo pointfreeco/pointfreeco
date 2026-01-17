@@ -87,9 +87,11 @@ private struct MoreColumn: HTML {
   var body: some HTML {
     Column(title: "More") {
       FooterLink("About Us", destination: .about)
+      FooterLink("Community Slack", href: siteRouter.path(for: .slackInvite))
       FooterLink("Mastodon", href: "https://hachyderm.io/@pointfreeco")
         .attribute("rel", "me")
       FooterLink("Twitter", href: twitterRouter.url(for: .pointfreeco).absoluteString)
+      FooterLink("BlueSky", href: "https://bsky.app/profile/pointfree.co")
       FooterLink("GitHub", href: gitHubRouter.url(for: .organization).absoluteString)
       FooterLink("Contact Us", href: "mailto:support@pointfree.co")
       FooterLink("Privacy Policy", destination: .privacy)

@@ -11,7 +11,7 @@ public struct Paragraph<Content: HTML>: HTML {
       content
     }
     // apply bottom padding if not in a VStack and next sibling is not <hr>
-    .inlineStyle("padding-bottom", "0.5rem", pseudo: ":not(pf-vstack > *):has(+hr)")// .not(.lastChild))
+    .inlineStyle("padding-bottom", "0.5rem", pseudo: ":not(pf-vstack > *):has(+hr)")
     .inlineStyle("padding-top", "0")
     .inlineStyle("padding-left", "0")
     .inlineStyle("padding-right", "0")
