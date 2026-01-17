@@ -65,10 +65,10 @@ private struct PointFreeWayHeader: HTML {
         TerminalWindow {
           // TODO: Should we do this?
           Command("brew install pfw")
-          //        Command("pfw login")
+                  Command("pfw login")
           //        Line { Folder("Login successful") }
           //        Gap()
-          //        Command("pfw install --codex")
+                  Command("pfw install --codex")
           //        Line { Folder("Installed to ~/.codex/skills/") }
           //        Gap()
           Command("ls -R ~/.codex/skills/the-point-free-way")

@@ -182,7 +182,7 @@ struct Line<Content: HTML>: HTML {
   var body: some HTML {
     HStack(spacing: 1) {
       if let prefix {
-        span { HTMLRaw(prefix + " ") }
+        span { HTMLRaw(prefix) }
           .inlineStyle("width", "0px")
           .inlineStyle("color", "color-mix(in oklab, rgba(10, 14, 20, 0.86) 60%, transparent)")
           .inlineStyle(
