@@ -81,15 +81,10 @@ extension Client {
         )
       },
       fetchZipball: { owner, repo, ref, token in
-        let (_, response) = try await dataTask(
+        let (data, response) = try await dataTask(
           with: fetchGitHubZipball(owner: owner, repo: repo, ref: ref, token: token)
         )
-        guard let redirectURL = response.headers.first(name: "found") else {
-          struct NotFound: Error {}
-          throw NotFound()
-        }
-        let (bytes, _) = try await dataTask(with: HTTPClientRequest(url: redirectURL))
-        return Data(buffer: bytes)
+        return Data(buffer: data)
       }
     )
   }
