@@ -414,7 +414,7 @@ struct UnlockEpisodeCallout: HTML {
   }
 }
 
-struct Callout<Message: HTML, CallToAction: HTML, Bar: HTML>: HTML {
+private struct Callout<Message: HTML, CallToAction: HTML, Bar: HTML>: HTML {
   let title: String
   let icon: SVG?
   let message: Message
