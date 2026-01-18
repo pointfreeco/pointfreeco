@@ -59,7 +59,7 @@ struct PointFreeWayHeader: HTML {
           if subscriberState.isActiveSubscriber {
             AccessUnlocked()
           } else {
-            HStack {
+            CTAGroup {
               PFWButton(type: .primary) {
                 HTMLText("Subscribe to unlock")
               }
@@ -68,7 +68,6 @@ struct PointFreeWayHeader: HTML {
                 HTMLText("Explore Point-Free")
               }
               .href(siteRouter.path(for: .home))
-              Spacer()
             }
           }
         }
@@ -93,23 +92,7 @@ struct PointFreeWayHeader: HTML {
         .inlineStyle("margin-top", "2rem", media: .mobile)
       }
     }
-    .inlineStyle(
-      "background",
-      """
-      radial-gradient(900px 700px at 20% 20%, rgba(76, 204, 255, 0.18), transparent 55%),
-      radial-gradient(900px 700px at 80% 70%, rgba(151, 77, 255, 0.16), transparent 55%),
-      linear-gradient(180deg, #f6f7fb, #eef1f7)
-      """
-    )
-    .inlineStyle(
-      "background",
-      """
-      radial-gradient(900px 700px at 20% 20%, rgba(76, 204, 255, 0.18), transparent 55%),
-      radial-gradient(900px 700px at 80% 70%, rgba(151, 77, 255, 0.16), transparent 55%),
-      linear-gradient(180deg, #07080b, #0b0d10)
-      """,
-      media: .dark
-    )
+    .heroBackground()
   }
 
   struct AccessUnlocked: HTML {
@@ -153,7 +136,7 @@ struct PointFreeWayHeader: HTML {
         .inlineStyle("font-weight", "600")
         .inlineStyle("letter-spacing", "0.04em")
         .inlineStyle("text-transform", "uppercase")
-        .inlineStyle("color", "rgb(162, 255, 200)", media: .dark)
+        .badgeLabelStyle(light: "rgb(12, 116, 52)", dark: "rgb(162, 255, 200)")
       }
     }
   }
@@ -229,20 +212,22 @@ private struct Checklist: HTML {
   var body: some HTML {
     ul {
       for item in items {
-        li {
-          Check()
-          HTMLRaw(item)
-        }
-        .inlineStyle("display", "flex")
-        .inlineStyle("gap", "10px")
-        .inlineStyle("align-items", "flex-start")
+        ChecklistItem(text: item)
       }
     }
-    .inlineStyle("margin", "1rem 0 0")
-    .inlineStyle("padding", "0")
-    .inlineStyle("list-style", "none")
-    .inlineStyle("display", "grid")
-    .inlineStyle("gap", "0.75rem")
+    .checklistListStyle()
+  }
+  struct ChecklistItem: HTML {
+    let text: String
+    var body: some HTML {
+      li {
+        Check()
+        HTMLRaw(text)
+      }
+      .inlineStyle("display", "flex")
+      .inlineStyle("gap", "10px")
+      .inlineStyle("align-items", "flex-start")
+    }
   }
   struct Check: HTML {
     var body: some HTML {
@@ -281,7 +266,11 @@ private struct WhatIsThePointFreeWay: HTML {
             "Opinionated, consistent, and maintainable by design",
             "Updated continuously based on releases and weekly community questions",
           ])
-          PullQuote()
+          Callout {
+            """
+            “It's like having Point-Free as your pairing partner!”
+            """
+          }
         }
         ChecklistModule(
           title: "Designed by industry experts",
@@ -294,34 +283,6 @@ private struct WhatIsThePointFreeWay: HTML {
         )
       }
     }
-  }
-}
-
-private struct PullQuote: HTML {
-  var body: some HTML {
-    blockquote {
-      """
-      “It's like having Point-Free as your pairing partner!”
-      """
-    }
-    .inlineStyle("margin", "2rem auto 0 0")
-    .inlineStyle("padding", "1.5rem")
-    .inlineStyle(
-      "border-left",
-      "3px solid color-mix(in oklab, #974dff 65%, rgba(15, 18, 32, 0.12))"
-    )
-    .inlineStyle(
-      "border-left",
-      "3px solid color-mix(in oklab, #974dff 65%, rgba(255, 255, 255, 0.12))",
-      media: .dark
-    )
-    .inlineStyle("border-radius", "0.75rem")
-    .inlineStyle("background", "color-mix(in oklab, #974dff 10%, #ffffff)")
-    .inlineStyle("background", "color-mix(in oklab, #974dff 10%, #0f1220)", media: .dark)
-    .inlineStyle("color", "#0f1220cc")
-    .inlineStyle("color", "rgba(255, 255, 255, 0.92)", media: .dark)
-    .inlineStyle("font-size", "1.5rem")
-    .inlineStyle("font-style", "italic")
   }
 }
 
@@ -423,7 +384,7 @@ private struct HowAccessWorks: HTML {
         )
       }
 
-      HStack {
+      CTAGroup {
         if subscriberState.isActiveSubscriber {
           PFWButton(type: .primary) {
             HTMLText("Install the Point-Free Way")
@@ -435,7 +396,6 @@ private struct HowAccessWorks: HTML {
           }
           .href(siteRouter.path(for: .pricingLanding))
         }
-        Spacer()
       }
       .inlineStyle("padding-top", "1.5rem")
     }
@@ -501,7 +461,7 @@ private struct NotReadyToSubscribe: HTML {
             "No library deep dives",
           ]
         ) {
-          HStack {
+          CTAGroup {
             PFWButton(type: .secondary) {
               HTMLText("Create a free account")
             }
@@ -524,7 +484,7 @@ private struct NotReadyToSubscribe: HTML {
             "Updated for new versions of our libraries",
           ]
         ) {
-          HStack {
+          CTAGroup {
             PFWButton(type: .primary) {
               HTMLText("Subscribe")
             }
@@ -565,7 +525,32 @@ private struct BuildSoftwareThatLasts: HTML {
         }
       }
     }
+    .footerGradientBackground()
+  }
+}
+
+fileprivate extension HTML {
+  fileprivate func heroBackground() -> some HTML {
+    inlineStyle(
+      "background",
+      """
+      radial-gradient(900px 700px at 20% 20%, rgba(76, 204, 255, 0.18), transparent 55%),
+      radial-gradient(900px 700px at 80% 70%, rgba(151, 77, 255, 0.16), transparent 55%),
+      linear-gradient(180deg, #f6f7fb, #eef1f7)
+      """
+    )
     .inlineStyle(
+      "background",
+      """
+      radial-gradient(900px 700px at 20% 20%, rgba(76, 204, 255, 0.18), transparent 55%),
+      radial-gradient(900px 700px at 80% 70%, rgba(151, 77, 255, 0.16), transparent 55%),
+      linear-gradient(180deg, #07080b, #0b0d10)
+      """,
+      media: .dark
+    )
+  }
+  fileprivate func footerGradientBackground() -> some HTML {
+    inlineStyle(
       "background",
       """
       linear-gradient(
@@ -587,9 +572,6 @@ private struct BuildSoftwareThatLasts: HTML {
       media: .dark
     )
   }
-}
-
-extension HTML {
   fileprivate func border() -> some HTML {
     inlineStyle("border", "1px solid rgba(15, 18, 32, 0.12)")
       .inlineStyle("border-color", "rgba(255, 255, 255, 0.12)", media: .dark)
@@ -608,9 +590,70 @@ extension HTML {
   fileprivate func contentColor() -> some HTML {
     color(.gray300.dark(.gray800))
   }
+  fileprivate func checklistListStyle() -> some HTML {
+    inlineStyle("margin", "1rem 0 0")
+      .inlineStyle("padding", "0")
+      .inlineStyle("list-style", "none")
+      .inlineStyle("display", "grid")
+      .inlineStyle("gap", "0.75rem")
+  }
+  fileprivate func badgeLabelStyle(light: String, dark: String) -> some HTML {
+    inlineStyle("color", light)
+      .inlineStyle("display", "inline-flex")
+      .inlineStyle("font-size", "0.8rem")
+      .inlineStyle("font-weight", "600")
+      .inlineStyle("letter-spacing", "0.04em")
+      .inlineStyle("text-transform", "uppercase")
+      .inlineStyle("color", dark, media: .dark)
+  }
 }
 
-struct ComposableArchitecturePrompt: HTML {
+private struct CTAGroup<Content: HTML>: HTML {
+  var spacing: Double?
+  @HTMLBuilder var content: Content
+  init(spacing: Double? = nil, @HTMLBuilder content: () -> Content) {
+    self.spacing = spacing
+    self.content = content()
+  }
+  var body: some HTML {
+    HStack(spacing: spacing) {
+      content
+      Spacer()
+    }
+  }
+}
+
+private struct Callout<Content: HTML>: HTML {
+  @HTMLBuilder var content: Content
+  init(@HTMLBuilder content: () -> Content) {
+    self.content = content()
+  }
+  var body: some HTML {
+    blockquote {
+      content
+    }
+    .inlineStyle("margin", "2rem auto 0 0")
+    .inlineStyle("padding", "1.5rem")
+    .inlineStyle(
+      "border-left",
+      "3px solid color-mix(in oklab, #974dff 65%, rgba(15, 18, 32, 0.12))"
+    )
+    .inlineStyle(
+      "border-left",
+      "3px solid color-mix(in oklab, #974dff 65%, rgba(255, 255, 255, 0.12))",
+      media: .dark
+    )
+    .inlineStyle("border-radius", "0.75rem")
+    .inlineStyle("background", "color-mix(in oklab, #974dff 10%, #ffffff)")
+    .inlineStyle("background", "color-mix(in oklab, #974dff 10%, #0f1220)", media: .dark)
+    .inlineStyle("color", "#0f1220cc")
+    .inlineStyle("color", "rgba(255, 255, 255, 0.92)", media: .dark)
+    .inlineStyle("font-size", "1.5rem")
+    .inlineStyle("font-style", "italic")
+  }
+}
+
+fileprivate struct ComposableArchitecturePrompt: HTML {
   var body: some HTML {
     TerminalWindow(title: "Pomodoro – codex", maxHeight: 22) {
       CodexCommand(
