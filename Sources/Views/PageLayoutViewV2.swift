@@ -1040,7 +1040,7 @@ public struct PrismJSHead: HTML {
         },
       });
       Prism.languages.sql.keyword = [
-        /\b(AND|DEFERRED|IS|NOT|PRAGMA|STRICT)\b/,
+        /\b(AND|DEFERRED|IMMEDIATE|IS|NOT|PRAGMA|STRICT)\b/,
         Prism.languages.sql.keyword
       ];
       """#
