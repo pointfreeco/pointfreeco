@@ -272,6 +272,9 @@ struct MobileNavItems: HTML {
   var body: some HTML {
     ul {
       HTMLGroup {
+        NavListItem(isNew: true, route: .theWay) {
+          "The Point-Free Way"
+        }
         NavListItem(route: .episodes(.list(.all))) {
           "Episodes"
         }
@@ -283,8 +286,8 @@ struct MobileNavItems: HTML {
             "Pricing"
           }
         }
-        NavListItem(isNew: true, route: .theWay) {
-          "The Point-Free Way"
+        NavListItem(route: .clips(.clips)) {
+          "Free clips"
         }
         NavListItem(route: .blog()) {
           "Blog"
@@ -573,7 +576,8 @@ struct CenteredNavItems: HTML {
           if currentUser == nil {
             MenuItem(title: "Episodes", destination: .episodes(.list(.all)))
           }
-          if !Feature.allFeatures.hasAccess(to: .thePointFreeWay, for: currentUser) {
+          MenuItem(title: "Free clips", destination: .clips(.clips))
+          if Feature.allFeatures.hasAccess(to: .thePointFreeWay, for: currentUser) {
             MenuItem(title: "Blog", destination: .blog(.index))
           }
           MenuItem(title: "Gifts", destination: .gifts())
@@ -612,11 +616,10 @@ struct CenteredNavItems: HTML {
     var body: some HTML {
       li {
         Link(destination: route) {
-          HStack(alignment: .firstTextBaseline, spacing: 0.25) {
-            title
-            if isNew {
-              NewBadge()
-            }
+          title
+          if isNew {
+            NewBadge()
+              .inlineStyle("margin-left", "0.25rem")
           }
         }
       }

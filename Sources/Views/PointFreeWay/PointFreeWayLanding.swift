@@ -137,7 +137,7 @@ struct PointFreeWayHeader: HTML {
         .href("https://www.github.com/pointfreeco/the-point-free-way")
         .inlineStyle("margin-top", "1rem")
       }
-      .inlineStyle("border-left", "3px solid rgb(12, 116, 52)")
+      .inlineStyle("border-left", "3px solid rgb(24, 158, 72)")
       .inlineStyle("padding-left", "1rem")
       .inlineStyle("border-left", "3px solid rgb(162, 255, 200)", media: .dark)
     }
@@ -147,7 +147,7 @@ struct PointFreeWayHeader: HTML {
           HTMLRaw("&#10003;")
           " Access unlocked"
         }
-        .inlineStyle("color", "rgb(12, 116, 52)")
+        .inlineStyle("color", "rgb(24, 158, 72)")
         .inlineStyle("display", "inline-flex")
         .inlineStyle("font-size", "0.8rem")
         .inlineStyle("font-weight", "600")
@@ -183,7 +183,7 @@ private struct PointFreeWayModule<Content: HTML>: HTML {
       .inlineStyle("width", "100%")
     }
     Divider(size: 100)
-      .inlineStyle("display", "none", media: .dark, pseudo: .lastOfType)
+      .inlineStyle("display", "none", pseudo: .lastOfType)
   }
 }
 

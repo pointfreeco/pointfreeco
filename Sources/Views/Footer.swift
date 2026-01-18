@@ -73,7 +73,7 @@ private struct ContentColumn: HTML {
       FooterLink("Gifts", destination: .gifts())
       FooterLink("Videos", destination: .home)
       FooterLink("Collections", destination: .collections())
-      FooterLink("Clips", destination: .clips(.clips))
+      FooterLink("Free clips", destination: .clips(.clips))
       FooterLink("Blog", destination: .blog())
     }
   }
