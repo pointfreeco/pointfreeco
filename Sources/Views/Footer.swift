@@ -64,12 +64,15 @@ private struct TaglineColumn: HTML {
 
 private struct ContentColumn: HTML {
   @Dependency(\.currentUser) var currentUser
+  @Dependency(\.features) var features
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
     Column(title: "Content") {
       FooterLink("Pricing", destination: .pricingLanding)
-      FooterLink("The Point-Free Way", destination: .theWay)
+      if features.hasAccess(to: .thePointFreeWay, for: currentUser) {
+        FooterLink("The Point-Free Way", destination: .theWay)
+      }
       FooterLink("Gifts", destination: .gifts())
       FooterLink("Episodes", destination: .episodes(.list(.all)))
       FooterLink("Collections", destination: .collections())

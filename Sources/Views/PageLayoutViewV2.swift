@@ -266,14 +266,17 @@ struct MenuButton: HTML {
 struct MobileNavItems: HTML {
   @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.currentUser) var currentUser
+  @Dependency(\.features) var features
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 
   var body: some HTML {
     ul {
       HTMLGroup {
-        NavListItem(isNew: true, route: .theWay) {
-          "The Point-Free Way"
+        if features.hasAccess(to: .thePointFreeWay, for: currentUser) {
+          NavListItem(isNew: true, route: .theWay) {
+            "The Point-Free Way"
+          }
         }
         NavListItem(route: .episodes(.list(.all))) {
           "Episodes"
@@ -407,7 +410,7 @@ struct TrailingNavItems: HTML {
   }
 }
 
-struct AdaptablePointFreeWayLabel: HTML {
+private struct AdaptablePointFreeWayLabel: HTML {
   var body: some HTML {
     span { "The Point-Free Way" }
       .inlineStyle("display", "none", media: "only screen and (max-width: 940px)")
@@ -544,6 +547,7 @@ private struct MenuItem: HTML {
 
 struct CenteredNavItems: HTML {
   @Dependency(\.currentUser) var currentUser
+  @Dependency(\.features) var features
   @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.siteRouter) var siteRouter
 
@@ -563,7 +567,7 @@ struct CenteredNavItems: HTML {
             "Pricing"
           }
         }
-        if Feature.allFeatures.hasAccess(to: .thePointFreeWay, for: currentUser) {
+        if features.hasAccess(to: .thePointFreeWay, for: currentUser) {
           NavListItem(isNew: true, route: .theWay) {
             AdaptablePointFreeWayLabel()
           }
@@ -577,7 +581,7 @@ struct CenteredNavItems: HTML {
             MenuItem(title: "Episodes", destination: .episodes(.list(.all)))
           }
           MenuItem(title: "Free clips", destination: .clips(.clips))
-          if Feature.allFeatures.hasAccess(to: .thePointFreeWay, for: currentUser) {
+          if features.hasAccess(to: .thePointFreeWay, for: currentUser) {
             MenuItem(title: "Blog", destination: .blog(.index))
           }
           MenuItem(title: "Gifts", destination: .gifts())

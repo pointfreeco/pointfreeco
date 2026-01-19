@@ -8,6 +8,7 @@ public struct PricingLanding: HTML {
   @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.envVars.emergencyMode) var emergencyMode
   @Dependency(\.episodes) var episodes
+  @Dependency(\.features) var features
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
@@ -62,10 +63,12 @@ public struct PricingLanding: HTML {
           "billed annually"
         } features: {
           li { "All \(stats.allEpisodes) episodes with transcripts" }
-          li {
-            "Access to \""
-            Link("The Point-Free Way", destination: .theWay)
-            "\""
+          if features.hasAccess(to: .thePointFreeWay, for: currentUser) {
+            li {
+              "Access to \""
+              Link("The Point-Free Way", destination: .theWay)
+              "\""
+            }
           }
           li {
             "Watch past "

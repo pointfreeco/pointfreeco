@@ -1,4 +1,5 @@
 import Dependencies
+import Models
 import PointFreeRouter
 import StyleguideV2
 import TaggedMoney
@@ -120,14 +121,18 @@ extension Gifts.Plan {
 
   @HTMLBuilder
   private var baseFeatures: some HTML {
+    @Dependency(\.currentUser) var currentUser
+    @Dependency(\.features) var features
     @Dependency(\.siteRouter) var siteRouter
     let stats = EpisodesStats()
 
     li { "All \(stats.allEpisodes) episodes with transcripts" }
-    li {
-      "Access to \""
-      Link("The Point-Free Way", destination: .theWay)
-      "\""
+    if features.hasAccess(to: .thePointFreeWay, for: currentUser) {
+      li {
+        "Access to \""
+        Link("The Point-Free Way", destination: .theWay)
+        "\""
+      }
     }
     li {
       "Access to all past "
