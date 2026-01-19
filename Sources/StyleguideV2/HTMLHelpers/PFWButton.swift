@@ -1,15 +1,18 @@
-import StyleguideV2
+public struct PFWButton<Label: HTML>: HTML {
+  public let type: ButtonType?
+  public let label: Label
 
-struct PFWButton<Label: HTML>: HTML {
-  var type: ButtonType?
-  @HTMLBuilder let label: Label
+  public init(type: ButtonType? = nil, @HTMLBuilder label: () -> Label) {
+    self.type = type
+    self.label = label()
+  }
 
-  enum ButtonType {
+  public enum ButtonType {
     case primary
     case secondary
   }
 
-  var body: some HTML {
+  public var body: some HTML {
     switch type {
     case .primary:
       base
@@ -72,32 +75,39 @@ struct PFWButton<Label: HTML>: HTML {
     .inlineStyle("text-decoration", "none")
     .inlineStyle("text-decoration", "none", pseudo: .hover)
     .inlineStyle("transform", "translateY(-1px)", pseudo: .hover)
-
     .inlineStyle("transform", "translateY(0)", pseudo: .active)
     .boxShadow()
     .color(PointFreeColor(rawValue: "#0f1220", darkValue: "rgba(255, 255, 255, 0.92)"))
     .color(PointFreeColor(rawValue: "#0f1220", darkValue: "rgba(255, 255, 255, 0.92)"), .link)
-    .color(PointFreeColor(rawValue: "#0f1220", darkValue: "rgba(255, 255, 255, 0.92)"), .visited)
-
+    .color(
+      PointFreeColor(rawValue: "#0f1220", darkValue: "rgba(255, 255, 255, 0.92)"),
+      .visited
+    )
   }
-
 }
 
-extension HTML {
-  fileprivate func font() -> some HTML {
+private extension HTML {
+  func font() -> some HTML {
     inlineStyle("font-weight", "650")
       .inlineStyle("font-size", "0.98rem")
       .inlineStyle("line-height", "1")
   }
-  fileprivate func border() -> some HTML {
+
+  func border() -> some HTML {
     inlineStyle("border-radius", "999px")
       .inlineStyle("border", "1px solid rgba(15, 18, 32, 0.12)")
       .inlineStyle("border", "1px solid rgba(255, 255, 255, 0.12)", media: .dark)
   }
-  fileprivate func boxShadow() -> some HTML {
+
+  func boxShadow() -> some HTML {
     inlineStyle("box-shadow", "none")
       .inlineStyle("box-shadow", "0 12px 30px rgba(15, 18, 32, 0.08)", pseudo: .hover)
-      .inlineStyle("box-shadow", "0 16px 40px rgba(0, 0, 0, 0.35)", media: .dark, pseudo: .hover)
+      .inlineStyle(
+        "box-shadow",
+        "0 16px 40px rgba(0, 0, 0, 0.35)",
+        media: .dark,
+        pseudo: .hover
+      )
       .inlineStyle("box-shadow", "none", pseudo: .active)
   }
 }
