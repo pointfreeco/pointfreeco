@@ -90,7 +90,7 @@ extension Gifts.Plan {
     switch self {
     case .threeMonths: "3 months"
     case .sixMonths: "6 months"
-    case .year: "1 year (End-of-Year Sale)"
+    case .year: "1 year"
     }
   }
 
@@ -108,12 +108,12 @@ extension Gifts.Plan {
       li { "Full access for 6 months" }
       baseFeatures
     case .year:
-      li { "Full access for 1 year" }
       li { "22% off the 3 and 6 month gift options" }
         .color(.black)
         .backgroundColor(.yellow)
         .inlineStyle("margin", "-2px")
         .inlineStyle("padding", "2px")
+      li { "Full access for 1 year" }
       baseFeatures
     }
   }
@@ -124,7 +124,11 @@ extension Gifts.Plan {
     let stats = EpisodesStats()
 
     li { "All \(stats.allEpisodes) episodes with transcripts" }
-    li { "Over \(stats.allHours) hours of video" }
+    li {
+      "Access to \""
+      Link("The Point-Free Way", destination: .theWay)
+      "\""
+    }
     li {
       "Access to all past "
       Link(

@@ -117,7 +117,7 @@ struct PointFreeWayHeader: HTML {
         PFWButton(type: .primary) {
           HTMLText("Install the Point-Free Way")
         }
-        .href("https://www.github.com/pointfreeco/the-point-free-way")
+        .href("https://www.github.com/pointfreeco/pfw-cli")
         .inlineStyle("margin-top", "1rem")
       }
       .inlineStyle("border-left", "3px solid rgb(24, 158, 72)")
@@ -389,7 +389,7 @@ private struct HowAccessWorks: HTML {
           PFWButton(type: .primary) {
             HTMLText("Install the Point-Free Way")
           }
-          .href("https://github.com/pointfreeco/the-point-free-way")
+          .href("https://github.com/pointfreeco/pfw-cli")
         } else {
           PFWButton(type: .secondary) {
             HTMLText("View subscription plans")

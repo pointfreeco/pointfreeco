@@ -54,9 +54,7 @@ private struct LoggedIn: HTML {
       EpisodeCredits(creditCount: creditCount)
     }
     EpisodesModule()
-    if !subscriberState.isActiveSubscriber {
-      PointFreeWayHeader()
-    }
+    PointFreeWayHeader()
     if !inProgressEpisodes.isEmpty {
       InProgressEpisodes(episodes: Array(inProgressEpisodes))
       Divider()

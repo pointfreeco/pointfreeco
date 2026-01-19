@@ -71,7 +71,7 @@ private struct ContentColumn: HTML {
       FooterLink("Pricing", destination: .pricingLanding)
       FooterLink("The Point-Free Way", destination: .theWay)
       FooterLink("Gifts", destination: .gifts())
-      FooterLink("Videos", destination: .home)
+      FooterLink("Episodes", destination: .episodes(.list(.all)))
       FooterLink("Collections", destination: .collections())
       FooterLink("Free clips", destination: .clips(.clips))
       FooterLink("Blog", destination: .blog())
