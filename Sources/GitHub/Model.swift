@@ -66,8 +66,16 @@ public struct GitHubUser: Codable, Identifiable {
 public struct Repo: Codable {
   public var commit: Commit
 
+  public init(commit: Commit) {
+    self.commit = commit
+  }
+
   public struct Commit: Codable {
     public typealias SHA = Tagged<Self, String>
     public var sha: SHA
+
+    public init(sha: SHA) {
+      self.sha = sha
+    }
   }
 }

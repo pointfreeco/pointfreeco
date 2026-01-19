@@ -1,4 +1,5 @@
 import Either
+import Foundation
 import GitHub
 import Prelude
 import Tagged
@@ -6,9 +7,13 @@ import Tagged
 extension Client {
   public static let mock = Client(
     fetchAuthToken: { _ in Client.AuthTokenResponse("deadbeef") },
+    fetchBranch: { _, _, _, _ in
+      Repo(commit: Repo.Commit(sha: "deadbeef"))
+    },
     fetchEmails: { _ in [.mock] },
     fetchUser: { _ in .mock },
-    fetchUserByUserID: { _, _ in .mock }
+    fetchUserByUserID: { _, _ in .mock },
+    fetchZipball: { _, _, _, _ in Data() }
   )
 }
 
