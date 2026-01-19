@@ -11,7 +11,6 @@ func theWayMiddleware(
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
   @Dependency(\.date.now) var now
-  @Dependency(\.features) var features
 
   switch conn.data {
   case .login(let redirect, let whoami, let machine):
@@ -19,7 +18,7 @@ func theWayMiddleware(
     @Dependency(\.siteRouter) var siteRouter
     @Dependency(\.subscriberState) var subscriberState
 
-    guard features.hasAccess(to: .thePointFreeWay, for: currentUser)
+    guard currentUser.hasAccess(to: .thePointFreeWay)
     else {
       return conn.redirect(to: .home) {
         $0.flash(.error, "Could not login.")

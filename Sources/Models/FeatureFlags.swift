@@ -11,29 +11,26 @@ public struct Feature: Equatable {
   ]
   public static let thePointFreeWay = Self(
     isAdminEnabled: true,
-    isEnabled: {
-      #if DEBUG
-      return true
-      #else
-      return false
-      #endif
-    }(),
+    isEnabled: inDebug,
     allowedUserIDs: [],
     name: "the-point-free-way"
   )
 }
 
-extension Array where Element == Feature {
-  public func hasAccess(to feature: Feature, for user: User?) -> Bool {
-    return
-      self
-      .first(where: { $0.name == feature.name })
-      .map {
-        $0.isEnabled
-          || ($0.isAdminEnabled && user?.isAdmin == .some(true))
-          || ((user?.id).map { feature.allowedUserIDs.contains($0) } ?? false)
-      }
-      ?? false
+#if DEBUG
+  private let inDebug = true
+#else
+  private let inDebug = false
+#endif
+
+extension Optional where Wrapped == User {
+  public func hasAccess(to feature: Feature) -> Bool {
+    @Dependency(\.features) var features
+    guard let feature = features.first(where: { $0.name == feature.name })
+    else { return false }
+    return feature.isEnabled
+      || (feature.isAdminEnabled && self?.isAdmin == .some(true))
+      || ((self?.id).map { feature.allowedUserIDs.contains($0) } ?? false)
   }
 }
 

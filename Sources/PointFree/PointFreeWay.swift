@@ -11,8 +11,7 @@ func pointFreeWayMiddleware(
   _ conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.currentUser) var currentUser
-  @Dependency(\.features) var features
-  guard features.hasAccess(to: .thePointFreeWay, for: currentUser)
+  guard currentUser.hasAccess(to: .thePointFreeWay)
   else {
     return await conn.redirect(to: .home)
   }

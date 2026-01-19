@@ -266,14 +266,13 @@ struct MenuButton: HTML {
 struct MobileNavItems: HTML {
   @Dependency(\.currentRoute) var currentRoute
   @Dependency(\.currentUser) var currentUser
-  @Dependency(\.features) var features
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 
   var body: some HTML {
     ul {
       HTMLGroup {
-        if features.hasAccess(to: .thePointFreeWay, for: currentUser) {
+        if currentUser.hasAccess(to: .thePointFreeWay) {
           NavListItem(isNew: true, route: .theWay) {
             "The Point-Free Way"
           }
@@ -547,7 +546,6 @@ private struct MenuItem: HTML {
 
 struct CenteredNavItems: HTML {
   @Dependency(\.currentUser) var currentUser
-  @Dependency(\.features) var features
   @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.siteRouter) var siteRouter
 
@@ -567,7 +565,7 @@ struct CenteredNavItems: HTML {
             "Pricing"
           }
         }
-        if features.hasAccess(to: .thePointFreeWay, for: currentUser) {
+        if currentUser.hasAccess(to: .thePointFreeWay) {
           NavListItem(isNew: true, route: .theWay) {
             AdaptablePointFreeWayLabel()
           }
@@ -581,7 +579,7 @@ struct CenteredNavItems: HTML {
             MenuItem(title: "Episodes", destination: .episodes(.list(.all)))
           }
           MenuItem(title: "Free clips", destination: .clips(.clips))
-          if features.hasAccess(to: .thePointFreeWay, for: currentUser) {
+          if currentUser.hasAccess(to: .thePointFreeWay) {
             MenuItem(title: "Blog", destination: .blog(.index))
           }
           MenuItem(title: "Gifts", destination: .gifts())

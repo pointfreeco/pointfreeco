@@ -122,12 +122,11 @@ extension Gifts.Plan {
   @HTMLBuilder
   private var baseFeatures: some HTML {
     @Dependency(\.currentUser) var currentUser
-    @Dependency(\.features) var features
     @Dependency(\.siteRouter) var siteRouter
     let stats = EpisodesStats()
 
     li { "All \(stats.allEpisodes) episodes with transcripts" }
-    if features.hasAccess(to: .thePointFreeWay, for: currentUser) {
+    if currentUser.hasAccess(to: .thePointFreeWay) {
       li {
         "Access to \""
         Link("The Point-Free Way", destination: .theWay)
