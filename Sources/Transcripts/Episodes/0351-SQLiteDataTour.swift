@@ -11,7 +11,7 @@ extension Episode {
     codeSampleDirectory: "0351-sqlite-data-tour-pt5",
     exercises: _exercises,
     id: 351,
-    length: 38 * 19 + 20,
+    length: 38 * 60 + 19,
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2026-01-19")!,
     references: [
