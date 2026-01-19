@@ -283,7 +283,7 @@ struct MobileNavItems: HTML {
         NavListItem(route: .collections()) {
           "Collections"
         }
-        if subscriberState.isNonSubscriber {
+        if !subscriberState.isActiveSubscriber {
           NavListItem(route: .pricingLanding) {
             "Pricing"
           }
@@ -552,7 +552,7 @@ struct CenteredNavItems: HTML {
   var body: some HTML {
     ul {
       HTMLGroup {
-        if currentUser != nil {
+        if subscriberState.isActiveSubscriber {
           NavListItem(route: .episodes(.list(.all))) {
             "Episodes"
           }
@@ -560,7 +560,7 @@ struct CenteredNavItems: HTML {
         NavListItem(route: .collections()) {
           "Collections"
         }
-        if subscriberState.isNonSubscriber {
+        if !subscriberState.isActiveSubscriber {
           NavListItem(route: .pricingLanding) {
             "Pricing"
           }
@@ -639,7 +639,7 @@ private struct NewBadge: HTML {
     .inlineStyle("font-size", "0.65rem")
     .inlineStyle("font-weight", "700")
     .inlineStyle("letter-spacing", "0.08em")
-    .inlineStyle("padding", "2px 7px")
+    .inlineStyle("padding", "2px 4px")
     .inlineStyle("border-radius", "999px")
     .inlineStyle("border", "1px solid rgba(255, 208, 77, 0.7)")
     .inlineStyle("background", "rgba(255, 214, 102, 0.5)")

@@ -29,12 +29,14 @@ class EnvVarTests: TestCase {
       "MAILGUN_PRIVATE_API_KEY": "deadbeef-mg-api-key",
       "PF_COMMUNITY_SLACK_INVITE_URL":
         "https://join.slack.com/t/pointfreecommunity/shared_invite/zt-1o8l02r36-lygnfRjdoCZA3GtpG9bo_Q",
+      "PFW_DOWNLOADS_ACCESS_TOKEN": "deadbeef",
       "PORT": "8080",
       "REGIONAL_DISCOUNT_COUPON_ID": "regional-discount",
       "RSS_USER_AGENT_WATCHLIST": "",
       "STRIPE_ENDPOINT_SECRET": "whsec_test",
       "STRIPE_PUBLISHABLE_KEY": "pk_test",
       "STRIPE_SECRET_KEY": "sk_test",
+      "YOUTUBE_CHANNEL_ID": "yt_123"
     ]
 
     let envVars = try JSONDecoder()

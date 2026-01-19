@@ -62,6 +62,7 @@ public struct PFWButton<Label: HTML>: HTML {
     .inlineStyle("display", "inline-flex")
     .inlineStyle("align-items", "center")
     .inlineStyle("justify-content", "center")
+    .inlineStyle("text-align", "center")
     .inlineStyle("gap", "10px")
     .inlineStyle("padding", "0.75rem 1rem")
     .font()

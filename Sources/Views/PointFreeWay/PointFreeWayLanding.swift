@@ -179,7 +179,7 @@ private struct WhatIsThePointFreeWay: HTML {
         toward clear, composable, and testable application architecture.
         """
     ) {
-      LazyVGrid(columns: [.desktop: [1, 1]], horizontalSpacing: 2) {
+      LazyVGrid(columns: [.desktop: [1, 1]], alignItems: .start, horizontalSpacing: 2) {
         VStack {
           Checklist(items: [
             "Built specifically for Swift and Apple platforms",
