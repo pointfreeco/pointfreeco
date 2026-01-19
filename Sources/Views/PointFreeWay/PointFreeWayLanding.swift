@@ -529,7 +529,7 @@ private struct BuildSoftwareThatLasts: HTML {
   }
 }
 
-fileprivate extension HTML {
+extension HTML {
   fileprivate func heroBackground() -> some HTML {
     inlineStyle(
       "background",
