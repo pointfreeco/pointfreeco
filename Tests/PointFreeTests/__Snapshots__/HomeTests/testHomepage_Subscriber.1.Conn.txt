@@ -716,7 +716,7 @@ and techniques we use every day at Point&#8209;Free.
             </pf-hstack>
             <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="width-QlFKs1 color-Kqybp1 color-rN1St">$</span><span class="color-jx6QW1 color-huCu91">pfw login</span>
             </pf-hstack>
-            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="width-QlFKs1 color-Kqybp1 color-rN1St">$</span><span class="color-jx6QW1 color-huCu91">pfw install --codex</span>
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="width-QlFKs1 color-Kqybp1 color-rN1St">$</span><span class="color-jx6QW1 color-huCu91">pfw install --tool codex</span>
             </pf-hstack>
             <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="width-QlFKs1 color-Kqybp1 color-rN1St">$</span><span class="color-jx6QW1 color-huCu91">ls -R ~/.codex/skills/the-point-free-way</span>
             </pf-hstack>

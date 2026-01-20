@@ -74,7 +74,7 @@ class PointFreeRouterTests: TestCase {
       route
     )
 
-    XCTAssertNoDifference(
+    expectNoDifference(
       try siteRouter.request(for: route),
       request
     )

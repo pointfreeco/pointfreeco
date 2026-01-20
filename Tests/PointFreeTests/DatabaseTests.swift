@@ -125,7 +125,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     _ = try await self.database.updateEpisodeProgress(episodeSequence, 99, true, user.id)
 
     var progress = try await self.database.fetchEpisodeProgress(user.id, episodeSequence)
-    XCTAssertNoDifference(
+    expectNoDifference(
       progress,
       EpisodeProgress(
         createdAt: progress.createdAt,
@@ -141,7 +141,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     _ = try await self.database.updateEpisodeProgress(episodeSequence, 20, false, user.id)
 
     progress = try await self.database.fetchEpisodeProgress(user.id, episodeSequence)
-    XCTAssertNoDifference(
+    expectNoDifference(
       progress,
       EpisodeProgress(
         createdAt: progress.createdAt,
@@ -165,7 +165,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     _ = try await self.database.updateEpisodeProgress(3, 40, false, user.id)
 
     let progresses = try await self.database.fetchEpisodeProgresses(user.id)
-    XCTAssertNoDifference(
+    expectNoDifference(
       progresses,
       [
         EpisodeProgress(
@@ -211,7 +211,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
 
     let fetchedProgress = try await self.database.fetchEpisodeProgress(user.id, episodeSequence)
 
-    XCTAssertNoDifference(
+    expectNoDifference(
       fetchedProgress,
       EpisodeProgress(
         createdAt: fetchedProgress.createdAt,

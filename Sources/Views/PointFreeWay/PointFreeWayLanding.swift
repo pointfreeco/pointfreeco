@@ -75,7 +75,7 @@ struct PointFreeWayHeader: HTML {
         TerminalWindow {
           Command("brew install pfw")
           Command("pfw login")
-          Command("pfw install --codex")
+          Command("pfw install --tool codex")
           Command("ls -R ~/.codex/skills/the-point-free-way")
           Line { Folder("./ComposableArchitecture/") }
           Line { File("  SKILL.md") }
