@@ -374,7 +374,7 @@ private var prismJsHead: ChildOf<Tag.Head> {
           },
         });
         Prism.languages.sql.keyword = [
-          /\b(AND|DEFERRED|IS|NOT|PRAGMA|STRICT)\b/,
+          /\b(AND|DEFERRED|IMMEDIATE|IS|NOT|PRAGMA|STRICT)\b/,
           Prism.languages.sql.keyword
         ];
         """#
