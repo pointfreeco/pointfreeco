@@ -31,6 +31,9 @@ struct PointFreeWayHeader: HTML {
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 
+  var context: Context = .landing
+  enum Context { case home, landing }
+
   var body: some HTML {
     PageModule(theme: .content) {
       LazyVGrid(columns: [.desktop: [1, 1]]) {
@@ -64,10 +67,18 @@ struct PointFreeWayHeader: HTML {
                 HTMLText("Subscribe to unlock")
               }
               .href(siteRouter.path(for: .pricingLanding))
-              PFWButton {
-                HTMLText("Explore Point-Free")
+              switch context {
+              case .home:
+                PFWButton {
+                  HTMLText("Learn more")
+                }
+                .href(siteRouter.path(for: .theWay))
+              case .landing:
+                PFWButton {
+                  HTMLText("Explore Point-Free")
+                }
+                .href(siteRouter.path(for: .home))
               }
-              .href(siteRouter.path(for: .home))
             }
           }
         }

@@ -54,7 +54,7 @@ private struct LoggedIn: HTML {
       EpisodeCredits(creditCount: creditCount)
     }
     EpisodesModule()
-    PointFreeWayHeader()
+    PointFreeWayHeader(context: .home)
     if !inProgressEpisodes.isEmpty {
       InProgressEpisodes(episodes: Array(inProgressEpisodes))
       Divider()
@@ -109,7 +109,7 @@ private struct LoggedOut: HTML {
     )
     Companies()
     FreeEpisodes()
-    PointFreeWayHeader()
+    PointFreeWayHeader(context: .home)
     EpisodesModule()
     WhatToExpect()
     CollectionsModule()
