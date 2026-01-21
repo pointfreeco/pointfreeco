@@ -31,7 +31,6 @@ public struct Home: HTML {
 }
 
 private struct LoggedIn: HTML {
-  @Dependency(\.currentUser) var currentUser
   @Dependency(\.episodeProgresses) var episodeProgresses
   @Dependency(\.episodes) var episodes
   @Dependency(\.features) var features
@@ -98,6 +97,7 @@ private struct LoggedOut: HTML {
   let allFreeEpisodeCount: Int
   let clips: [Clip]
 
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {

@@ -11,7 +11,7 @@ public struct Feature: Equatable {
   ]
   public static let thePointFreeWay = Self(
     isAdminEnabled: true,
-    isEnabled: inDebug,
+    isEnabled: false && inDebug,
     allowedUserIDs: [],
     name: "the-point-free-way"
   )
@@ -22,6 +22,12 @@ public struct Feature: Equatable {
 #else
   private let inDebug = false
 #endif
+
+extension User {
+  public func hasAccess(to feature: Feature) -> Bool {
+    Optional(self).hasAccess(to: feature)
+  }
+}
 
 extension Optional where Wrapped == User {
   public func hasAccess(to feature: Feature) -> Bool {
