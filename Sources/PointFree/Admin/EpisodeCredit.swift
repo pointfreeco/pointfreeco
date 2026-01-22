@@ -12,54 +12,37 @@ import Styleguide
 import Tuple
 import Views
 
-let showEpisodeCreditsMiddleware:
-  Middleware<
-    StatusLineOpen,
-    ResponseEnded,
-    Void,
-    Data
-  > =
-    writeStatus(.ok)
-    >=> respond({ showEpisodeCreditsView() })
-
-let redeemEpisodeCreditMiddleware =
-  filterMap(
-    over1(fetchUser(id:)) >>> sequence1 >>> map(require1),
-    or: redirect(
-      to: .admin(.episodeCredits(.show)),
-      headersMiddleware: flash(.error, "Could not find that user."))
-  )
-  <<< filterMap(
-    over2(fetchEpisode(bySequence:)) >>> require2 >>> pure,
-    or: redirect(
-      to: .admin(.episodeCredits(.show)),
-      headersMiddleware: flash(.error, "Could not find that episode."))
-  )
-  <| creditUserMiddleware
-
-private func creditUserMiddleware(
-  _ conn: Conn<StatusLineOpen, Tuple2<User, Episode>>
-) -> IO<Conn<ResponseEnded, Data>> {
-  @Dependency(\.database) var database
-
-  let (user, episode) = lower(conn.data)
-
-  return EitherIO {
-    try await database.redeemEpisodeCredit(sequence: episode.sequence, userID: user.id)
-  }
-  .run
-  .flatMap(
-    const(
-      conn
-        |> redirect(to: .admin(.episodeCredits(.show)))
-    )
-  )
+func showEpisodeCreditsMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseEnded, Data> {
+  conn.writeStatus(.ok)
+    .respond(showEpisodeCreditsView)
 }
 
-private func fetchUser(id: User.ID?) -> IO<User?> {
+func redeemEpisodeCreditMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>,
+  userID: User.ID?,
+  episodeSequence: Episode.Sequence?
+) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
-
-  return IO { try? await database.fetchUser(id: id.unwrap()) }
+  guard let userID, let user = try? await database.fetchUser(id: userID) else {
+    return conn.redirect(to: .admin(.episodeCredits(.show))) {
+      $0.flash(.error, "Could not find that user.")
+    }
+  }
+  guard let episode = fetchEpisode(bySequence: episodeSequence) else {
+    return conn.redirect(to: .admin(.episodeCredits(.show))) {
+      $0.flash(.error, "Could not find that episode.")
+    }
+  }
+  do {
+    try await database.redeemEpisodeCredit(sequence: episode.sequence, userID: user.id)
+    return conn.redirect(to: .admin(.episodeCredits(.show))) {
+      $0.flash(.notice, "Applied credit!")
+    }
+  } catch {
+    return conn.redirect(to: .admin(.episodeCredits(.show))) {
+      $0.flash(.error, "Could not apply credit.")
+    }
+  }
 }
 
 private func fetchEpisode(bySequence sequence: Episode.Sequence?) -> Episode? {

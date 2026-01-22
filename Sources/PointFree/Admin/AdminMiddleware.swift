@@ -22,33 +22,33 @@ public func adminMiddleware(
 
   switch route {
   case .emailPreview(let template):
-    return await emailPreview(conn.map(const(template)))
+    return await emailPreview(conn, template: template)
 
-  case .episodeCredits(.add(userId: let userId, episodeSequence: let episodeSequence)):
-    return await redeemEpisodeCreditMiddleware(conn.map(const(userId .*. episodeSequence .*. unit)))
-      .performAsync()
+  case .episodeCredits(.add(let userID, let episodeSequence)):
+    return await redeemEpisodeCreditMiddleware(
+      conn,
+      userID: userID,
+      episodeSequence: episodeSequence
+    )
 
   case .episodeCredits(.show):
-    return await showEpisodeCreditsMiddleware(conn.map { _ in })
-      .performAsync()
+    return showEpisodeCreditsMiddleware(conn)
 
   case .index:
-    return await adminIndex(conn.map { _ in })
-      .performAsync()
+    return adminIndex(conn)
 
   case .freeEpisodeEmail(.index):
-    return await indexFreeEpisodeEmailMiddleware(conn.map { _ in })
-      .performAsync()
+    return indexFreeEpisodeEmailMiddleware(conn)
 
   case .freeEpisodeEmail(.send(let episodeId)):
     return await sendFreeEpisodeEmailMiddleware(conn.map { _ in episodeId })
       .performAsync()
 
   case .ghost(.index):
-    return ghostIndexMiddleware(conn.map { _ in })
+    return ghostIndexMiddleware(conn)
 
   case .ghost(.start(let ghosteeID)):
-    return await ghostStartMiddleware(conn.map { _ in }, ghoster: currentUser, ghosteeID: ghosteeID)
+    return await ghostStartMiddleware(conn, ghoster: currentUser, ghosteeID: ghosteeID)
 
   case .newBlogPostEmail(.send(let blogPostId, let formData, let isTest)):
     return await sendNewBlogPostEmailMiddleware(
