@@ -10,12 +10,15 @@ public struct Paragraph<Content: HTML>: HTML {
     tag("p") {
       content
     }
-    .inlineStyle("padding-bottom", "0.5rem", pseudo: .not(.lastChild))
+    // apply bottom padding if not in a VStack and next sibling is not <hr>
+    .inlineStyle("padding-bottom", "0.5rem", pseudo: ":not(pf-vstack > *):has(+hr)")
     .inlineStyle("padding-top", "0")
     .inlineStyle("padding-left", "0")
     .inlineStyle("padding-right", "0")
     .inlineStyle("margin", "0")
     .inlineStyle("line-height", "1.5")
+    .inlineStyle("font-size", "\(size.fontSize)rem")
+    .inlineStyle("line-height", "\(size.lineHeight)rem")
   }
 
   public enum Size {

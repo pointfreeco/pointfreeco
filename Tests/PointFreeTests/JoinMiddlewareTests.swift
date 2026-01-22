@@ -317,7 +317,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         """
       }
 
-      XCTAssertNoDifference(
+      expectNoDifference(
         Set(sentEmails.value.flatMap(\.to)),
         [
           "blob@pointfree.co",
@@ -326,7 +326,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
           "stephen@pointfree.co",
         ]
       )
-      XCTAssertNoDifference(
+      expectNoDifference(
         Set(sentEmails.value.map(\.subject)),
         [
           "[testing] Blob has joined your Point-Free subscription",
@@ -392,7 +392,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       }
 
       XCTAssertEqual(sentEmails.value.flatMap(\.to), [currentUser.email])
-      XCTAssertNoDifference(
+      expectNoDifference(
         sentEmails.value.map(\.subject),
         ["[testing] Confirm your email to join the Point-Free team subscription."]
       )
@@ -661,7 +661,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         """
       }
 
-      XCTAssertNoDifference(
+      expectNoDifference(
         Set(sentEmails.value.flatMap(\.to)),
         [
           "blob.sr@pointfree.co",
@@ -670,7 +670,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
           "stephen@pointfree.co",
         ]
       )
-      XCTAssertNoDifference(
+      expectNoDifference(
         Set(sentEmails.value.map(\.subject)),
         [
           "[testing] Blob has joined your Point-Free subscription",
@@ -738,7 +738,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         """
       }
 
-      XCTAssertNoDifference(
+      expectNoDifference(
         Set(sentEmails.value.flatMap(\.to)),
         [
           "blob.sr@pointfree.co",
@@ -747,7 +747,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
           "stephen@pointfree.co",
         ]
       )
-      XCTAssertNoDifference(
+      expectNoDifference(
         Set(sentEmails.value.map(\.subject)),
         [
           "[testing] Blob has joined your Point-Free subscription",
@@ -812,7 +812,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         """
       }
 
-      XCTAssertNoDifference(
+      expectNoDifference(
         Set(sentEmails.value.flatMap(\.to)),
         [
           "blob.sr@pointfree.co",
@@ -821,7 +821,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
           "stephen@pointfree.co",
         ]
       )
-      XCTAssertNoDifference(
+      expectNoDifference(
         Set(sentEmails.value.map(\.subject)),
         [
           "[testing] Blob has joined your Point-Free subscription",

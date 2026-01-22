@@ -33,6 +33,7 @@ public struct Home: HTML {
 private struct LoggedIn: HTML {
   @Dependency(\.episodeProgresses) var episodeProgresses
   @Dependency(\.episodes) var episodes
+  @Dependency(\.features) var features
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 
@@ -53,6 +54,10 @@ private struct LoggedIn: HTML {
     if creditCount > 0 {
       EpisodeCredits(creditCount: creditCount)
     }
+    EpisodesModule()
+    if currentUser.hasAccess(to: .thePointFreeWay) {
+      PointFreeWayHeader(context: .home)
+    }
     if !inProgressEpisodes.isEmpty {
       InProgressEpisodes(episodes: Array(inProgressEpisodes))
       Divider()
@@ -61,7 +66,6 @@ private struct LoggedIn: HTML {
       FreeEpisodes()
       Divider()
     }
-    EpisodesModule()
     if subscriberState.isActiveSubscriber {
       GiveAGiftModule()
     } else {
@@ -93,6 +97,7 @@ private struct LoggedOut: HTML {
   let allFreeEpisodeCount: Int
   let clips: [Clip]
 
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
@@ -108,7 +113,9 @@ private struct LoggedOut: HTML {
     )
     Companies()
     FreeEpisodes()
-    Divider()
+    if currentUser.hasAccess(to: .thePointFreeWay) {
+      PointFreeWayHeader(context: .home)
+    }
     EpisodesModule()
     WhatToExpect()
     CollectionsModule()

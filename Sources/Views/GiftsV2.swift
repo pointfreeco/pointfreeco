@@ -1,4 +1,5 @@
 import Dependencies
+import Models
 import PointFreeRouter
 import StyleguideV2
 import TaggedMoney
@@ -108,23 +109,30 @@ extension Gifts.Plan {
       li { "Full access for 6 months" }
       baseFeatures
     case .year:
-      li { "Full access for 1 year" }
       li { "22% off the 3 and 6 month gift options" }
         .color(.black)
         .backgroundColor(.yellow)
         .inlineStyle("margin", "-2px")
         .inlineStyle("padding", "2px")
+      li { "Full access for 1 year" }
       baseFeatures
     }
   }
 
   @HTMLBuilder
   private var baseFeatures: some HTML {
+    @Dependency(\.currentUser) var currentUser
     @Dependency(\.siteRouter) var siteRouter
     let stats = EpisodesStats()
 
     li { "All \(stats.allEpisodes) episodes with transcripts" }
-    li { "Over \(stats.allHours) hours of video" }
+    if currentUser.hasAccess(to: .thePointFreeWay) {
+      li {
+        "Access to \""
+        Link("The Point-Free Way", destination: .theWay)
+        "\""
+      }
+    }
     li {
       "Access to all past "
       Link(

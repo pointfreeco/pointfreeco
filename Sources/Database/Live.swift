@@ -117,6 +117,15 @@ extension Client {
           """
         )
       },
+      deleteTheWayAccess: { machine, whoami in
+        try await pool.sqlDatabase.run(
+          """
+          DELETE FROM "the_way_accesses"
+          WHERE "machine" = \(bind: machine)
+          AND "whoami" = \(bind: whoami)
+          """
+        )
+      },
       execute: { sql in
         try await pool.sqlDatabase.raw(sql).all()
       },
@@ -324,6 +333,16 @@ extension Client {
           SELECT "created_at", "email", "id", "inviter_user_id"
           FROM "team_invites"
           WHERE "inviter_user_id" = \(bind: inviterId)
+          """
+        )
+      },
+      fetchTheWayAccess: { machine, whoami in
+        try await pool.sqlDatabase.first(
+          """
+          SELECT * FROM "the_way_accesses" 
+          WHERE
+            "machine" = \(bind: machine)
+            AND "whoami" = \(bind: whoami)
           """
         )
       },
@@ -927,6 +946,23 @@ extension Client {
           ADD COLUMN IF NOT EXISTS "coupon" character varying
           """
         )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "the_way_accesses" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "user_id" uuid REFERENCES "users"("id") NOT NULL,
+            "machine" uuid NOT NULL,
+            "whoami" character varying NOT NULL,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "expires_at" timestamp without time zone NOT NULL,
+            "updated_at" timestamp without time zone
+          )
+          """
+        )
+        try await database.run("""
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_the_way_accesses_on_machine_whoami"
+          ON "the_way_accesses"("machine", "whoami")
+          """)
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(
@@ -1043,6 +1079,25 @@ extension Client {
           WHERE "id" = \(bind: userId)
           """
         )
+      },
+      upsertTheWayAccess: { access in
+        try await pool.sqlDatabase.first("""
+          INSERT INTO "the_way_accesses"
+          ("id", "user_id", "machine", "whoami", "created_at", "updated_at", "expires_at")
+          VALUES 
+          (
+            \(bind: access.id),
+            \(bind: access.userID),
+            \(bind: access.machine),
+            \(bind: access.whoami),
+            \(bind: access.createdAt),
+            \(bind: access.updatedAt),
+            \(bind: access.expiresAt)
+          )
+          ON CONFLICT ("machine", "whoami") 
+          DO UPDATE SET "updated_at" = now()
+          RETURNING *
+          """)
       },
       upsertUser: { accessToken, gitHubUser, email, now in
         try await pool.sqlDatabase.first(

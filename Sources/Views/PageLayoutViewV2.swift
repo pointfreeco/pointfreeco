@@ -272,15 +272,31 @@ struct MobileNavItems: HTML {
   var body: some HTML {
     ul {
       HTMLGroup {
-        if currentUser != nil {
-          NavListItem("Episodes", route: .episodes(.list(.all)))
+        if currentUser.hasAccess(to: .thePointFreeWay) {
+          NavListItem(isNew: true, route: .theWay) {
+            "The Point-Free Way"
+          }
         }
-        NavListItem("Collections", route: .collections())
-        if subscriberState.isNonSubscriber {
-          NavListItem("Pricing", route: .pricingLanding)
+        NavListItem(route: .episodes(.list(.all))) {
+          "Episodes"
         }
-        NavListItem("Blog", route: .blog())
-        NavListItem("Gifts", route: .gifts(.index))
+        NavListItem(route: .collections()) {
+          "Collections"
+        }
+        if !subscriberState.isActiveSubscriber {
+          NavListItem(route: .pricingLanding) {
+            "Pricing"
+          }
+        }
+        NavListItem(route: .clips(.clips)) {
+          "Free clips"
+        }
+        NavListItem(route: .blog()) {
+          "Blog"
+        }
+        NavListItem(route: .gifts(.index)) {
+          "Gifts"
+        }
         HTMLGroup {
           if currentUser != nil {
             li {
@@ -325,19 +341,28 @@ struct MobileNavItems: HTML {
     .inlineStyle("display", "block", media: .mobile, pre: "input:checked ~")
   }
 
-  struct NavListItem: HTML {
+  struct NavListItem<Title: HTML>: HTML {
     @Dependency(\.siteRouter) var siteRouter
-    let title: String
+    let title: Title
+    var isNew: Bool
     let route: SiteRoute
-    init(_ title: String, route: SiteRoute) {
-      self.title = title
+    init(isNew: Bool = false, route: SiteRoute, @HTMLBuilder title: () -> Title) {
+      self.title = title()
+      self.isNew = isNew
       self.route = route
     }
     var body: some HTML {
       li {
-        Link(title, destination: route)
-          .linkColor(.gray650)
-          .inlineStyle("display", "block")
+        Link(destination: route) {
+          HStack(alignment: .firstTextBaseline, spacing: 0.25) {
+            title
+            if isNew {
+              NewBadge()
+            }
+          }
+        }
+        .linkColor(.gray650)
+        .inlineStyle("display", "block")
       }
     }
   }
@@ -384,6 +409,141 @@ struct TrailingNavItems: HTML {
   }
 }
 
+private struct AdaptablePointFreeWayLabel: HTML {
+  var body: some HTML {
+    span { "The Point-Free Way" }
+      .inlineStyle("display", "none", media: "only screen and (max-width: 940px)")
+      .inlineStyle("display", "inline", media: "only screen and (min-width: 940px)")
+    span { "Point-Free Way" }
+      .inlineStyle("display", "inline", media: "only screen and (max-width: 940px)")
+      .inlineStyle("display", "none", media: "only screen and (min-width: 940px)")
+  }
+}
+
+struct MoreMenu<Content: HTML>: HTML {
+  @HTMLBuilder let content: Content
+  var body: some HTML {
+    li {
+      EllipsisButton()
+      DropdownMenu(content: content)
+    }
+    .inlineStyle("display", "inline")
+    .inlineStyle("padding-left", "2rem", pseudo: .not(.firstChild))
+    .inlineStyle("position", "relative")
+    .inlineStyle("opacity", "1", pseudo: ":hover ul")
+    .inlineStyle("pointer-events", "auto", pseudo: ":hover ul")
+    .inlineStyle("transform", "translate(-50%, 0)", pseudo: ":hover ul")
+    .inlineStyle("visibility", "visible", pseudo: ":hover ul")
+  }
+
+  struct EllipsisButton: HTML {
+    var body: some HTML {
+      button {
+        "•••"
+      }
+      .attribute("type", "button")
+      .inlineStyle("appearance", "none")
+      .inlineStyle("background", "transparent")
+      .inlineStyle("border", "1px solid rgba(255, 255, 255, 0.25)")
+      .inlineStyle("border-radius", "999px")
+      .inlineStyle("cursor", "pointer")
+      .inlineStyle("display", "inline-flex")
+      .inlineStyle("font-size", "1.1rem")
+      .inlineStyle("font-weight", "700")
+      .inlineStyle("letter-spacing", "2px")
+      .inlineStyle("transition", "background-color 150ms ease, border-color 150ms ease")
+      .inlineStyle("background-color", "rgba(255, 255, 255, 0.1)", pseudo: .hover)
+      .inlineStyle("border-color", "rgba(255, 255, 255, 0.4)", pseudo: .hover)
+      .color(.gray650)
+    }
+  }
+
+  struct DropdownMenu: HTML {
+    let content: Content
+    var body: some HTML {
+      ul {
+        content
+      }
+      .linkColor(.gray800)
+      .listStyle(.reset)
+      .inlineStyle("background", "rgba(15, 15, 15)")
+      .inlineStyle("border", "1px solid rgba(255, 255, 255, 0.12)")
+      .inlineStyle("border-radius", "12px")
+      .inlineStyle("box-shadow", "0 18px 36px rgba(0, 0, 0, 0.45)")
+      .inlineStyle("left", "50%")
+      .inlineStyle("min-width", "11rem")
+      .inlineStyle("opacity", "0")
+      .inlineStyle("padding", "0.35rem 0")
+      .inlineStyle("pointer-events", "none")
+      .inlineStyle("position", "absolute")
+      .inlineStyle("top", "100%")
+      .inlineStyle("transform", "translate(-50%, 6px)")
+      .inlineStyle("transition", "opacity 150ms ease, transform 150ms ease")
+      .inlineStyle("visibility", "hidden")
+      .inlineStyle("z-index", "2")
+    }
+  }
+}
+
+private struct MenuItem: HTML {
+  let iconBase64: String?
+  let href: String
+  let opensInNewWindow: Bool
+  let title: String
+
+  init(
+    title: String,
+    destination: SiteRoute,
+    iconBase64: String? = nil,
+    opensInNewWindow: Bool = false
+  ) {
+    @Dependency(\.siteRouter) var siteRouter
+    self.init(
+      title: title,
+      href: siteRouter.path(for: destination),
+      iconBase64: iconBase64,
+      opensInNewWindow: opensInNewWindow
+    )
+  }
+
+  init(
+    title: String,
+    href: String,
+    iconBase64: String? = nil,
+    opensInNewWindow: Bool = false
+  ) {
+    self.title = title
+    self.href = href
+    self.iconBase64 = iconBase64
+    self.opensInNewWindow = opensInNewWindow
+  }
+
+  var body: some HTML {
+    li {
+      Link(href: href) {
+        if let iconBase64 {
+          img()
+            .attribute("src", "data:image/svg+xml;base64,\(iconBase64)")
+            .attribute("alt", "")
+            .attribute("aria-hidden", "true")
+            .inlineStyle("height", "1rem")
+            .inlineStyle("width", "1rem")
+        }
+        span { HTMLText(title) }
+      }
+      .attribute("rel", opensInNewWindow ? "noopener noreferrer" : nil)
+      .attribute("target", opensInNewWindow ? "_blank" : nil)
+      .inlineStyle("align-items", "center")
+      .inlineStyle("display", "flex")
+      .inlineStyle("gap", "0.5rem")
+      .inlineStyle("padding", "0.5rem 1rem")
+      .inlineStyle("text-decoration", "none")
+      .inlineStyle("white-space", "nowrap")
+      .inlineStyle("background-color", "rgba(255, 255, 255, 0.08)", pseudo: .hover)
+    }
+  }
+}
+
 struct CenteredNavItems: HTML {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.subscriberState) var subscriberState
@@ -392,37 +552,98 @@ struct CenteredNavItems: HTML {
   var body: some HTML {
     ul {
       HTMLGroup {
-        if currentUser != nil {
-          NavListItem("Episodes", route: .episodes(.list(.all)))
+        if subscriberState.isActiveSubscriber {
+          NavListItem(route: .episodes(.list(.all))) {
+            "Episodes"
+          }
         }
-        NavListItem("Collections", route: .collections())
-        if subscriberState.isNonSubscriber {
-          NavListItem("Pricing", route: .pricingLanding)
+        NavListItem(route: .collections()) {
+          "Collections"
         }
-        NavListItem("Blog", route: .blog())
-        NavListItem("Gifts", route: .gifts(.index))
+        if !subscriberState.isActiveSubscriber {
+          NavListItem(route: .pricingLanding) {
+            "Pricing"
+          }
+        }
+        if currentUser.hasAccess(to: .thePointFreeWay) {
+          NavListItem(isNew: true, route: .theWay) {
+            AdaptablePointFreeWayLabel()
+          }
+        } else {
+          NavListItem(route: .blog(.index)) {
+            "Blog"
+          }
+        }
+        MoreMenu {
+          if currentUser == nil {
+            MenuItem(title: "Episodes", destination: .episodes(.list(.all)))
+          }
+          MenuItem(title: "Free clips", destination: .clips(.clips))
+          if currentUser.hasAccess(to: .thePointFreeWay) {
+            MenuItem(title: "Blog", destination: .blog(.index))
+          }
+          MenuItem(title: "Gifts", destination: .gifts())
+          Divider(size: 100, color: .gray300)
+          MenuItem(
+            title: "Community Slack",
+            destination: .slackInvite,
+            iconBase64: slackIconSvgBase64,
+            opensInNewWindow: true
+          )
+          MenuItem(
+            title: "Discussions",
+            href: "https://github.com/orgs/pointfreeco/discussions",
+            iconBase64: gitHubIconSvgBase64,
+            opensInNewWindow: true
+          )
+        }
       }
       .inlineStyle("padding-left", "1.5rem", media: .desktop)
     }
     .linkColor(.gray650)
     .listStyle(.reset)
     .inlineStyle("display", "none", media: .mobile)
+    .inlineStyle("align-items", "first baseline")
   }
 
-  struct NavListItem: HTML {
-    let title: String
+  struct NavListItem<Title: HTML>: HTML {
+    let title: Title
+    let isNew: Bool
     let route: SiteRoute
-    init(_ title: String, route: SiteRoute) {
-      self.title = title
+    init(isNew: Bool = false, route: SiteRoute, @HTMLBuilder title: () -> Title) {
+      self.title = title()
+      self.isNew = isNew
       self.route = route
     }
     var body: some HTML {
       li {
-        Link(title, destination: route)
+        Link(destination: route) {
+          title
+          if isNew {
+            NewBadge()
+              .inlineStyle("margin-left", "0.25rem")
+          }
+        }
       }
       .inlineStyle("padding-left", "2rem", pseudo: .not(.firstChild))
       .inlineStyle("display", "inline")
     }
+  }
+}
+
+private struct NewBadge: HTML {
+  var body: some HTML {
+    tag("is-new") {
+      "NEW"
+    }
+    .inlineStyle("font-size", "0.65rem")
+    .inlineStyle("font-weight", "700")
+    .inlineStyle("letter-spacing", "0.08em")
+    .inlineStyle("padding", "2px 4px")
+    .inlineStyle("border-radius", "999px")
+    .inlineStyle("border", "1px solid rgba(255, 208, 77, 0.7)")
+    .inlineStyle("background", "rgba(255, 214, 102, 0.5)")
+    .inlineStyle("color", "rgba(255, 255, 255, 0.75)")
   }
 }
 
@@ -1053,3 +1274,9 @@ extension DependencyValues {
     !currentRoute.is(\.live) && livestreams.first(where: \.isLive) != nil
   }
 }
+
+private let slackIconSvgBase64 =
+"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIiBmaWxsPSIjZjVmNWY1Ij48cGF0aCBkPSJNOTQuMTIgMzE1LjFjMCAyNS45LTIxLjIgNDcuMS00Ny4xIDQ3LjFTMCAzNDEgMCAzMTUuMXMyMS4yLTQ3LjEgNDcuMS00Ny4xaDQ3LjF2NDcuMXpNMTE3LjggMzE1LjFjMC0yNS45IDIxLjItNDcuMSA0Ny4xLTQ3LjFzNDcuMSAyMS4yIDQ3LjEgNDcuMXYxMThjMCAyNS45LTIxLjIgNDcuMS00Ny4xIDQ3LjFzLTQ3LjEtMjEuMi00Ny4xLTQ3LjF2LTExOHptNDcuMS0xODguMmMtMjUuOSAwLTQ3LjEtMjEuMi00Ny4xLTQ3LjFTMTM5IDMyLjcgMTY0LjkgMzIuN3M0Ny4xIDIxLjIgNDcuMSA0Ny4xdjQ3LjFoLTQ3LjF6bTAgMjMuNmMyNS45IDAgNDcuMSAyMS4yIDQ3LjEgNDcuMXMtMjEuMiA0Ny4xLTQ3LjEgNDcuMUg0Ni45Yy0yNS45IDAtNDcuMS0yMS4yLTQ3LjEtNDcuMXMyMS4yLTQ3LjEgNDcuMS00Ny4xaDExOHptMTg4LjIgNDcuMWMwLTI1LjkgMjEuMi00Ny4xIDQ3LjEtNDcuMXM0Ny4xIDIxLjIgNDcuMSA0Ny4xLTIxLjIgNDcuMS00Ny4xIDQ3LjFoLTQ3LjF2LTQ3LjF6bS0yMy42IDBjMCAyNS45LTIxLjIgNDcuMS00Ny4xIDQ3LjFzLTQ3LjEtMjEuMi00Ny4xLTQ3LjFWNzkuOWMwLTI1LjkgMjEuMi00Ny4xIDQ3LjEtNDcuMXM0Ny4xIDIxLjIgNDcuMSA0Ny4xdjExNy44ek0yODIuMiAzODUuMWMyNS45IDAgNDcuMSAyMS4yIDQ3LjEgNDcuMXMtMjEuMiA0Ny4xLTQ3LjEgNDcuMS00Ny4xLTIxLjItNDcuMS00Ny4xdi00Ny4xaDQ3LjF6bTAtMjMuNmMtMjUuOSAwLTQ3LjEtMjEuMi00Ny4xLTQ3LjFzMjEuMi00Ny4xIDQ3LjEtNDcuMWgxMThjMjUuOSAwIDQ3LjEgMjEuMiA0Ny4xIDQ3LjFzLTIxLjIgNDcuMS00Ny4xIDQ3LjFoLTExOHoiLz48L3N2Zz4="
+
+private let gitHubIconSvgBase64 =
+"PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OTYgNTEyIiBmaWxsPSIjZjVmNWY1Ij48cGF0aCBkPSJNMTY1LjkgMzk3LjRjMCAyLTIuMyAzLjctNS4yIDMuNy0zLjMuMy01LjYtMS4zLTUuNi0zLjcgMC0yIDIuMy0zLjcgNS4yLTMuNyAzLjMtLjMgNS42IDEuMyA1LjYgMy43em0tMzEuMS00LjVjLS43IDIgMS4zIDQuMyA0LjMgNC45IDIuNi43IDUuNi0uMyA2LjMtMi4zLjctMi0xLjMtNC4zLTQuMy01LjItMi42LS43LTUuNi4zLTYuMyAyLjZ6bTQ0LjItMS43Yy0yLjkuNy00LjkgMy4zLTQuMyA1LjYuNyAyLjYgMy4zIDQuMyA2LjMgMy43IDIuOS0uNyA0LjktMy4zIDQuMy01LjYtLjctMi42LTMuMy00LjMtNi4zLTMuN3ptNjAuMi03LjJjLTIuNiAyLTIgNi4zIDEuMyA5LjIgMy4zIDIuNiA3LjkgMyAxMC41LjcgMi42LTIgMi02LjMtMS4zLTkuMi0zLjMtMi42LTcuOS0zLTEwLjUtLjd6TTI0OCA4QzExMSA4IDAgMTE5IDAgMjU2YzAgMTEwLjIgNzEuOSAyMDMuNyAxNzEuNyAyMzYuMyAxMi42IDIuMyAxNy4yLTUuNiAxNy4yLTEyLjIgMC02LjEtLjMtMjYuMi0uMy00Ny41LTY5LjkgMTUuMi04NC44LTI5LjItODQuOC0yOS4yLTExLjQtMjkuMi0yNy45LTM3LTI3LjktMzctMjIuOS0xNS43IDEuNy0xNS40IDEuNy0xNS40IDI1LjIgMS43IDM4LjQgMjUuOSAzOC40IDI1LjkgMjIuNCAzOC40IDU4LjkgMjcuMyA3My4zIDIwLjggMi4zLTE2LjIgOC44LTI3LjMgMTYuMi0zMy42LTU1LjgtNi4xLTExNC42LTI3LjktMTE0LjYtMTI0LjIgMC0yNy4zIDkuNi00OS44IDI1LjItNjcuMi0yLjYtNi4xLTExLTMwLjggMi42LTY0LjMgMCAwIDIwLjgtNi42IDY4LjIgMjUuNiAxOS44LTUuNiA0MS04LjMgNjIuMS04LjMgMjEuMSAwIDQyLjMgMi45IDYyLjEgOC4zIDQ3LjUtMzIuMiA2OC4yLTI1LjYgNjguMi0yNS42IDEzLjYgMzMuNSA1LjIgNTguMiAyLjYgNjQuMyAxNS43IDE3LjQgMjUuMiAzOS45IDI1LjIgNjcuMiAwIDk2LjUtNTguOSAxMTgtMTE0LjkgMTI0LjIgOS4yIDcuOSAxNy4yIDIyLjkgMTcuMiA0Ni4yIDAgMzMuNS0uMyA2MC40LS4zIDY4LjUgMCA2LjYgNC42IDE0LjUgMTcuMiAxMi4yQzQyNC4xIDQ1OS43IDQ5NiAzNjYuMiA0OTYgMjU2IDQ5NiAxMTkgMzg1IDggMjQ4IDh6Ii8+PC9zdmc+"

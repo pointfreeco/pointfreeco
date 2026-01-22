@@ -44,31 +44,39 @@
     value: "deadbeef-mg-api-key"
   ),
   [11]: (
+    key: "PFW_DOWNLOADS_ACCESS_TOKEN",
+    value: "deadbeef"
+  ),
+  [12]: (
     key: "PF_COMMUNITY_SLACK_INVITE_URL",
     value: "https://join.slack.com/t/pointfreecommunity/shared_invite/zt-1o8l02r36-lygnfRjdoCZA3GtpG9bo_Q"
   ),
-  [12]: (
+  [13]: (
     key: "PORT",
     value: "8080"
   ),
-  [13]: (
+  [14]: (
     key: "REGIONAL_DISCOUNT_COUPON_ID",
     value: "regional-discount"
   ),
-  [14]: (
+  [15]: (
     key: "RSS_USER_AGENT_WATCHLIST",
     value: ""
   ),
-  [15]: (
+  [16]: (
     key: "STRIPE_ENDPOINT_SECRET",
     value: "whsec_test"
   ),
-  [16]: (
+  [17]: (
     key: "STRIPE_PUBLISHABLE_KEY",
     value: "pk_test"
   ),
-  [17]: (
+  [18]: (
     key: "STRIPE_SECRET_KEY",
     value: "sk_test"
+  ),
+  [19]: (
+    key: "YOUTUBE_CHANNEL_ID",
+    value: "yt_123"
   )
 ]

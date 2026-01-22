@@ -69,10 +69,13 @@ private struct ContentColumn: HTML {
   var body: some HTML {
     Column(title: "Content") {
       FooterLink("Pricing", destination: .pricingLanding)
+      if currentUser.hasAccess(to: .thePointFreeWay) {
+        FooterLink("The Point-Free Way", destination: .theWay)
+      }
       FooterLink("Gifts", destination: .gifts())
-      FooterLink("Videos", destination: .home)
+      FooterLink("Episodes", destination: .episodes(.list(.all)))
       FooterLink("Collections", destination: .collections())
-      FooterLink("Clips", destination: .clips(.clips))
+      FooterLink("Free clips", destination: .clips(.clips))
       FooterLink("Blog", destination: .blog())
     }
   }
@@ -86,9 +89,11 @@ private struct MoreColumn: HTML {
   var body: some HTML {
     Column(title: "More") {
       FooterLink("About Us", destination: .about)
+      FooterLink("Community Slack", href: siteRouter.path(for: .slackInvite))
       FooterLink("Mastodon", href: "https://hachyderm.io/@pointfreeco")
         .attribute("rel", "me")
       FooterLink("Twitter", href: twitterRouter.url(for: .pointfreeco).absoluteString)
+      FooterLink("BlueSky", href: "https://bsky.app/profile/pointfree.co")
       FooterLink("GitHub", href: gitHubRouter.url(for: .organization).absoluteString)
       FooterLink("Contact Us", href: "mailto:support@pointfree.co")
       FooterLink("Privacy Policy", destination: .privacy)

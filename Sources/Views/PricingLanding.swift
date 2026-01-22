@@ -62,13 +62,18 @@ public struct PricingLanding: HTML {
           "billed annually"
         } features: {
           li { "All \(stats.allEpisodes) episodes with transcripts" }
-          li { "Over \(stats.allHours) hours of video" }
+          if currentUser.hasAccess(to: .thePointFreeWay) {
+            li {
+              "Access to \""
+              Link("The Point-Free Way", destination: .theWay)
+              "\""
+            }
+          }
           li {
             "Watch past "
             Link("livestreams", destination: .live(.current))
           }
-          li { "Personal podcast feed for offline viewing" }
-          li { "Download all episode code samples" }
+          li { "Private podcast feed for offline viewing" }
           li {
             Link(
               "Regional",
@@ -98,7 +103,7 @@ public struct PricingLanding: HTML {
           br()
           "billed annually"
         } features: {
-          li { "All personal plan features" }
+          li { "All individual plan features" }
           li { "For teams of 2 or more" }
           li { "Add teammates at any time with prorated billing" }
           li { "Reassign team mates at any time" }

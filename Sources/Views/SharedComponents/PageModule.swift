@@ -46,6 +46,21 @@ public struct PageModule<Title: HTML, Content: HTML>: HTML {
       div {
         titleRow
         content
+
+        if let seeAllURL {
+          Link("See all →", href: seeAllURL)
+            .linkColor(.purple)
+            .inlineStyle("font-size", "1.25rem")
+            .margin(right: .small)
+            .inlineStyle("display", "none", media: .desktop)
+            .flexContainer(
+              direction: "row",
+              wrap: "nowrap",
+              justification: "end",
+              itemAlignment: "center"
+            )
+            .flexItem(basis: "100%")
+        }
       }
       .flexContainer(
         direction: "row",

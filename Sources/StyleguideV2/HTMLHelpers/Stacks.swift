@@ -97,6 +97,7 @@ extension HTML {
 
 public struct LazyVGrid<Content: HTML>: HTML {
   let columns: OrderedDictionary<MediaQuery?, [Int]>
+  let alignItems: AlignItems?
   let content: Content
   let horizontalSpacing: Double?
   let verticalSpacing: Double?
@@ -104,11 +105,13 @@ public struct LazyVGrid<Content: HTML>: HTML {
   public init(
     columns: OrderedDictionary<MediaQuery?, [Int]>,
     // TODO: alignment: HorizontalAlignment = .center,
+    alignItems: AlignItems? = nil,
     horizontalSpacing: Double? = nil,
     verticalSpacing: Double? = nil,
     @HTMLBuilder content: () -> Content
   ) {
     self.columns = columns
+    self.alignItems = alignItems
     self.horizontalSpacing = horizontalSpacing
     self.verticalSpacing = verticalSpacing
     self.content = content()
@@ -117,11 +120,13 @@ public struct LazyVGrid<Content: HTML>: HTML {
   public init(
     columns: [Int],
     // TODO: alignment: HorizontalAlignment = .center,
+    alignItems: AlignItems? = nil,
     horizontalSpacing: Double? = nil,
     verticalSpacing: Double? = nil,
     @HTMLBuilder content: () -> Content
   ) {
     self.columns = [nil: columns]
+    self.alignItems = alignItems
     self.horizontalSpacing = horizontalSpacing
     self.verticalSpacing = verticalSpacing
     self.content = content()
@@ -132,6 +137,7 @@ public struct LazyVGrid<Content: HTML>: HTML {
       tag("pf-vgrid") {
         content
       }
+      .inlineStyle("align-items", alignItems?.rawValue)
       .inlineStyle("width", "100%")
     ) { html, columns in
       html
@@ -153,6 +159,17 @@ public struct LazyVGrid<Content: HTML>: HTML {
         )
     }
   }
+}
+
+public struct AlignItems {
+  public var rawValue: String
+  public init(rawValue: String) {
+    self.rawValue = rawValue
+  }
+  public static let center = Self(rawValue: "center")
+  public static let end = Self(rawValue: "end")
+  public static let start = Self(rawValue: "start")
+  public static let stretch = Self(rawValue: "stretch")
 }
 
 extension Double {

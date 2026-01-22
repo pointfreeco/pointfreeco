@@ -2,7 +2,7 @@ GET http://localhost:8080/
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 69258
+Content-Length: 79282
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -118,6 +118,7 @@ body, html {
 .text-decoration-Mif7n4:visited{text-decoration:none}
 .text-decoration-Q5Er64:link{text-decoration:none}
 .text-decoration-Zf0gY:hover{text-decoration:underline}
+.align-items-Dq4Oc4{align-items:first baseline}
 .padding-left-E4tBw4{padding-left:0.0rem}
 .list-style-type-Wl0y44{list-style-type:none}
 .padding-left-dzKEp:not(:first-child){padding-left:2rem}
@@ -125,6 +126,52 @@ body, html {
 .color-dwzNH2:link{color:#a8a8a8}
 .color-hzlcf:visited{color:#a8a8a8}
 .color-Vt0a43{color:#a8a8a8}
+.position-Pjz1G2{position:relative}
+.opacity-mJTmO2:hover ul{opacity:1}
+.pointer-events-7T0L22:hover ul{pointer-events:auto}
+.transform-v3Gb72:hover ul{transform:translate(-50%, 0)}
+.visibility-ZTlvG1:hover ul{visibility:visible}
+.appearance-Wl0y44{appearance:none}
+.background-JyKaz4{background:transparent}
+.border-4sVnF2{border:1px solid rgba(255, 255, 255, 0.25)}
+.border-radius-btBsa3{border-radius:999px}
+.cursor-xmR5l{cursor:pointer}
+.display-MH46v1{display:inline-flex}
+.font-size-zZ9yy3{font-size:1.1rem}
+.font-weight-SywJI1{font-weight:700}
+.letter-spacing-B7Alk3{letter-spacing:2px}
+.transition-6t4cq1{transition:background-color 150ms ease, border-color 150ms ease}
+.background-color-6OEwN1:hover{background-color:rgba(255, 255, 255, 0.1)}
+.border-color-TaUzd2:hover{border-color:rgba(255, 255, 255, 0.4)}
+.background-1tnR2{background:rgba(15, 15, 15)}
+.border-gjzas2{border:1px solid rgba(255, 255, 255, 0.12)}
+.border-radius-rrfjb1{border-radius:12px}
+.box-shadow-QuMln{box-shadow:0 18px 36px rgba(0, 0, 0, 0.45)}
+.left-85P192{left:50%}
+.min-width-cW9sI{min-width:11rem}
+.opacity-FBkWQ3{opacity:0}
+.padding-8jCYd1{padding:0.35rem 0}
+.pointer-events-Wl0y44{pointer-events:none}
+.position-X8qzJ{position:absolute}
+.top-C8uWv{top:100%}
+.transform-sbXOd4{transform:translate(-50%, 6px)}
+.transition-zUm2k{transition:opacity 150ms ease, transform 150ms ease}
+.visibility-PhNC81{visibility:hidden}
+.z-index-7AUj1{z-index:2}
+.gap-NKv2f3{gap:0.5rem}
+.padding-iTSWe2{padding:0.5rem 1rem}
+.text-decoration-Wl0y44{text-decoration:none}
+.white-space-RLKFg3{white-space:nowrap}
+.background-color-XQ7V51:hover{background-color:rgba(255, 255, 255, 0.08)}
+.color-Vv8Gw4:link{color:#ccc}
+.color-x5AlI2:visited{color:#ccc}
+.color-KmPrN{color:#ccc}
+.border-Wl0y44{border:none}
+.border-top-J0Fab1{border-top:1px solid #555555}
+.margin-left-ahEQU2{margin-left:0%}
+.margin-right-ahEQU2{margin-right:0%}
+.height-dnNPN1{height:1rem}
+.width-dnNPN1{width:1rem}
 .padding-left-IOMPq3:not(:first-child){padding-left:1rem}
 .font-size-RTPM71{font-size:0.875rem}
 .color-QZ6Yg3:visited{color:#fff}
@@ -134,10 +181,7 @@ body, html {
 .border-i8QWz2{border:none #fff}
 .border-radius-NKv2f3{border-radius:0.5rem}
 .box-shadow-dyray:hover{box-shadow:inset 0 0 0 20rem rgba(0,0,0,0.1)}
-.cursor-xmR5l{cursor:pointer}
 .font-weight-aG4U6{font-weight:500}
-.text-decoration-Wl0y44{text-decoration:none}
-.white-space-RLKFg3{white-space:nowrap}
 .padding-inc4S2{padding:0.75rem 1.0rem}
 .transition-DjHPg{transition:0.3s}
 .display-Wl0y44{display:none}
@@ -145,7 +189,6 @@ body, html {
 .display-ix08W2{display:block}
 .border-radius-Oi9xr3{border-radius:1.5px}
 .transition-BVnrT{transition:all .2s ease-out, background .2s ease-out}
-.position-Pjz1G2{position:relative}
 .background-4kuW21{background:#f6f6f6}
 .height-BOHcc4{height:3px}
 .width-t6pNK3{width:24px}
@@ -162,6 +205,8 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .flex-shrink-tzL8I2{flex-shrink:1}
 .flex-basis-C8uWv{flex-basis:100%}
 .padding-top-Xin5E2{padding-top:1.5rem}
+.max-height-C8uWv{max-height:100%}
+.column-gap-FxsCt1{column-gap:0.25rem}
 .text-align-CdPBO2{text-align:center}
 .box-sizing-otfSh{box-sizing:border-box}
 .background-RMpfJ3{background:linear-gradient(#121212, #242424)}
@@ -170,21 +215,20 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .max-width-C8uWv{max-width:100%}
 .row-gap-83zzS1{row-gap:1.0rem}
 .padding-jNK411{padding:6rem 2rem}
-.max-height-C8uWv{max-height:100%}
 .column-gap-83zzS1{column-gap:1.0rem}
 .margin-top-rmfs01:not(:first-child){margin-top:1.75rem}
 .margin-bottom-1rcXs4:not(:last-child){margin-bottom:0.75rem}
 .font-size-NBsge3{font-size:3.0rem}
-.font-weight-SywJI1{font-weight:700}
 .line-height-auF6B{line-height:1.2}
-.color-KmPrN{color:#ccc}
 .font-weight-evfWi1{font-weight:normal}
 .line-height-9Qkso4{line-height:1.5}
 .font-size-83zzS1{font-size:1.0rem}
-.padding-bottom-yQEjs3:not(:last-child){padding-bottom:0.5rem}
+.padding-bottom-XWkc24:not(pf-vstack > *):has(+hr){padding-bottom:0.5rem}
 .padding-top-FBkWQ3{padding-top:0}
 .padding-left-FBkWQ3{padding-left:0}
 .padding-right-FBkWQ3{padding-right:0}
+.font-size-6nw8i1{font-size:1.1875rem}
+.line-height-vsvaN2{line-height:1.75rem}
 .text-decoration-gUV393:visited{text-decoration:underline}
 .text-decoration-tfb0F1:link{text-decoration:underline}
 .color-c5ixr2{color:#fafafa}
@@ -218,7 +262,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 article .content-xD6dy1:is(p):last-of-type::after{content:"❖"}
 article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .padding-FBkWQ3{padding:0}
-.column-gap-FxsCt1{column-gap:0.25rem}
+.filter-X2omQ1{filter:grayscale(1)}
 .width-72jGK2{width:80px}
 .border-radius-kkQtJ1{border-radius:4px}
 .display-qrAHi{display:inline-block}
@@ -227,10 +271,12 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .height-C8uWv{height:100%}
 .width-7EVUP2{width:30%}
 .background-color-GPfER1{background-color:#555555}
-.border-Wl0y44{border:none}
+.justify-content-VOQy11{justify-content:end}
+.margin-right-83zzS1{margin-right:1.0rem}
+.font-size-yLOVS3{font-size:1.25rem}
 .border-top-S35Gp4{border-top:1px solid #ccc}
-.margin-5uXnK3{margin:0 30%}
-.filter-X2omQ1{filter:grayscale(1)}
+.margin-left-7EVUP2{margin-left:30%}
+.margin-right-7EVUP2{margin-right:30%}
 .padding-pRWYM{padding:4rem 2rem}
 .background-color-c5ixr2{background-color:#fafafa}
 .align-items-cQlZY2{align-items:start}
@@ -258,8 +304,6 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .outline-Wl0y44{outline:none}
 .padding-dnNPN1{padding:1rem}
 .background-color-K2J0r1{background-color:#121212}
-.align-items-Dq4Oc4{align-items:first baseline}
-.font-size-yLOVS3{font-size:1.25rem}
 .line-height-B6FIc2{line-height:1.45}
 .color-H59Xg3:link{color:#79f2b0}
 .color-tgLLb3:visited{color:#79f2b0}
@@ -313,6 +357,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   .font-size-Fb6s54{font-size:0.875rem}
 }
 @media (prefers-color-scheme: dark){
+  .border-top-MR1dZ1{border-top:1px solid #555555}
   .background-color-dMv2U1{background-color:#121212}
   .color-GOHNR{color:#fafafa}
   .border-bSHu21{border:1px #353535 solid}
@@ -325,7 +370,6 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   .color-5uscm3{color:#a8a8a8}
   .background-color-lJpf9{background-color:#555555}
   .background-color-5uscm3{background-color:#a8a8a8}
-  .border-top-MR1dZ1{border-top:1px solid #555555}
   .background-color-wdRty{background-color:#050505}
   .color-r4foZ2{color:#d8d8d8}
   .color-VoDZ9{color:#ccc}
@@ -336,14 +380,25 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   <body>
 <nav class="width-C8uWv position-0RTpx2 top-dcqqP z-index-yn1UK1 background-K2J0r1">
   <div class="padding-hS6a7 padding-dR5Tt4 max-width-P6HnV margin-gEzmi display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-ymXQt align-items-CdPBO2 background-K2J0r1"><a class="line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/"><img alt="Point-Free" src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgMTQyIDE2IiB3aWR0aD0iMTQyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Im00My4zMDg0Nzg3LjA1ODc2Mzk0LjA3MDA2MDguMDUxNDI1MjggOS43NjA0OTc5IDcuODk0MzMwMDV2LTcuNjQ3NjMyMjRoMy45MDg3NzA4djE1LjQ3NDY4MTA3YzAgLjE2MTQ3NDktLjA1NTU0NTcuMjMyMTIwMi0uMjQ5OTU1Ni4wOTc0OTA1bC0uMDcwMDYwNy0uMDUyNjM2NC05Ljc2MDQ5NzktNy44NzE5MDI5M3Y3LjYwMjc3ODEzaC0zLjkwODc3MDl2LTE1LjQ1MjI1NDAzYzAtLjEyMTEwNjIuMDU1NTQ1Ny0uMjI0MDQ2NDcuMjQ5OTU1Ni0uMDk2Mjc5NDN6bTU0LjEyNDM0OTguNTEyNjY0NjN2My40MzEzNDIzMmgtNi40MDAzMjY1djMuNTQzNDc3N2g1LjY0NjAwMjN2My40MzEzNDIzMWgtNS42NDYwMDIzdjQuODQ0MjQ4aC00LjE2MDIxMjN2LTE1LjI1MDQxMDMzem05LjE3OTI0MzUgMGM0LjE4MzA3MSAwIDYuNTM3NDc3IDIuNjAxNTQwNTkgNi41Mzc0NzcgNS45ODgwMjg3NiAwIDIuMTk3ODUzMjUtLjk4MjkwOCAzLjk0NzE2NTA3LTIuODExNTcyIDQuOTMzOTU2MjdsMi43NjU4NTUgNC4zMjg0MjUzaC00LjUwMzA4N2wtMi4xNzE1MzktMy40OTg2MjM2aC0xLjU1NDM2NXYzLjQ5ODYyMzZoLTQuMTYwMjEydi0xNS4yNTA0MTAzM3ptMjAuNjA4Mzk5IDB2My40MzEzNDIzMmgtNi43NDMyMDJ2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxOHYzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptMTQuNDU5NTEzIDB2My40MzEzNDIzMmgtNi43NDMyMDF2My41NDM0Nzc3aDUuNjIzMTQ0djMuMjUxOTI1NzFoLTUuNjIzMTQ0djEuNTkyMzIyM2g3LjA2MzIxN3YzLjQzMTM0MjNoLTExLjIyMzQzdi0xNS4yNTA0MTAzM3ptLTExOC4zOTcxNjM2LS4zOTM5NTgxM2M0LjQ4MDIyODYgMCA4LjM0MzI4MjggMy4yMDcwNzE1OCA4LjM0MzI4MjggNy44MDQ2MjE3NiAwIDQuNTk3NTUwMi0zLjg2MzA1NDIgNy44MjcwNDg4LTguMzQzMjgyOCA3LjgyNzA0ODgtNC40ODAyMjg1IDAtOC4zNDMyODI4LTMuMjI5NDk4Ni04LjM0MzI4MjgtNy44MjcwNDg4IDAtNC41OTc1NTAxOCAzLjg2MzA1NDMtNy44MDQ2MjE3NiA4LjM0MzI4MjgtNy44MDQ2MjE3NnptLTE3LjM4NTM3NjY5LjE3OTQxNjU5YzQuMTgzMDcwNTkgMCA2LjUzNzQ3NjM5IDIuNjAxNTQwNTkgNi41Mzc0NzYzOSA1Ljk4ODAyODc2IDAgMy4zODY0ODgxOC0yLjM1NDQwNTggNS45NjU2MDE3MS02LjUzNzQ3NjM5IDUuOTY1NjAxNzFoLTEuNzM3MjMxNDh2My4yOTY3Nzk5aC00LjE2MDIxMjIzdi0xNS4yNTA0MTAzN3ptMzMuMTQ3ODEzNDkgMHYxNS4yNTA0MTAzN2gtNC4xNjAyMTIzdi0xNS4yNTA0MTAzN3ptMzMuNDkwNjg4MSAwdjMuNDMxMzQyMzNoLTQuMTE0NDk1NnYxMS44MTkwNjgwNGgtNC4xNjAyMTIzdi0xMS44MTkwNjgwNGgtNC4xMTQ0OTU2di0zLjQzMTM0MjMzem01LjY5NTY1OTUgNS41NDI0OTQ2NSAzLjI1NDQ2MjcgMy4yNTQ0NjI3OS0zLjIzMjQ4ODEgMy4yMzI0ODgxMy0zLjI1NDQ2MjgtMy4yNTQ0NjI3OHptLTU0Ljk0ODc4NDQtMi4xNzg0MzM1NWMtMi42MDU4NDcyIDAtNC4wOTE2MzczIDEuODYxNDQ3MTUtNC4wOTE2MzczIDQuMjYxMTQ0MDcgMCAyLjM5OTY5NjkgMS40ODU3OTAxIDQuMjgzNTcxMSA0LjA5MTYzNzMgNC4yODM1NzExczQuMDkxNjM3My0xLjg4Mzg3NDIgNC4wOTE2MzczLTQuMjgzNTcxMWMwLTIuMzk5Njk2OTItMS40ODU3OTAxLTQuMjYxMTQ0MDctNC4wOTE2MzczLTQuMjYxMTQ0MDd6bTgzLjEyMzUyNjYuMzA0MjQ5ODRoLTEuNTMxNTA2djUuMDQ2MDkxNjVoMS41MzE1MDZjMS44NzQzODIgMCAyLjU2MDEzMS0xLjAzMTY0NTQgMi41NjAxMzEtMi41MTE4MzIyOSAwLTEuNDgwMTg2ODgtLjY4NTc0OS0yLjUzNDI1OTM2LTIuNTYwMTMxLTIuNTM0MjU5MzZ6bS0xMDAuNzE0NjI4MDctLjIxNDU0MTU0aC0xLjUzMTUwNjd2NS4wNDYwOTE2NWgxLjUzMTUwNjdjMS44NzQzODEzNCAwIDIuNTYwMTMwNi0xLjAzMTY0NTQgMi41NjAxMzA2LTIuNTExODMyMjkgMC0xLjQ4MDE4Njg4LS42ODU3NDkyNi0yLjUzNDI1OTM2LTIuNTYwMTMwNi0yLjUzNDI1OTM2eiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"></a>
-    <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
+    <ul class="display-mScdO2 align-items-Dq4Oc4 padding-left-E4tBw4 list-style-type-Wl0y44">
       <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/episodes">Episodes</a>
       </li>
       <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">Collections</a>
       </li>
       <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/blog">Blog</a>
       </li>
-      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/gifts">Gifts</a>
+      <li class="padding-left-dR5Tt4 display-mFpu24 padding-left-dzKEp position-Pjz1G2 opacity-mJTmO2 pointer-events-7T0L22 transform-v3Gb72 visibility-ZTlvG1"><button class="color-Vt0a43 appearance-Wl0y44 background-JyKaz4 border-4sVnF2 border-radius-btBsa3 cursor-xmR5l display-MH46v1 font-size-zZ9yy3 font-weight-SywJI1 letter-spacing-B7Alk3 transition-6t4cq1 background-color-6OEwN1 border-color-TaUzd2" type="button">•••</button>
+        <ul class="background-1tnR2 border-gjzas2 border-radius-rrfjb1 box-shadow-QuMln left-85P192 min-width-cW9sI opacity-FBkWQ3 padding-8jCYd1 pointer-events-Wl0y44 position-X8qzJ top-C8uWv transform-sbXOd4 transition-zUm2k visibility-PhNC81 z-index-7AUj1 padding-left-E4tBw4 list-style-type-Wl0y44">
+          <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/clips"><span>Free clips</span></a>
+          </li>
+          <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/gifts"><span>Gifts</span></a>
+          </li>
+          <hr class="border-Wl0y44 border-top-J0Fab1 border-top-MR1dZ1 margin-left-ahEQU2 margin-right-ahEQU2">
+          <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" rel="noopener noreferrer" target="_blank" href="/slack-invite"><img class="height-dnNPN1 width-dnNPN1" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIiBmaWxsPSIjZjVmNWY1Ij48cGF0aCBkPSJNOTQuMTIgMzE1LjFjMCAyNS45LTIxLjIgNDcuMS00Ny4xIDQ3LjFTMCAzNDEgMCAzMTUuMXMyMS4yLTQ3LjEgNDcuMS00Ny4xaDQ3LjF2NDcuMXpNMTE3LjggMzE1LjFjMC0yNS45IDIxLjItNDcuMSA0Ny4xLTQ3LjFzNDcuMSAyMS4yIDQ3LjEgNDcuMXYxMThjMCAyNS45LTIxLjIgNDcuMS00Ny4xIDQ3LjFzLTQ3LjEtMjEuMi00Ny4xLTQ3LjF2LTExOHptNDcuMS0xODguMmMtMjUuOSAwLTQ3LjEtMjEuMi00Ny4xLTQ3LjFTMTM5IDMyLjcgMTY0LjkgMzIuN3M0Ny4xIDIxLjIgNDcuMSA0Ny4xdjQ3LjFoLTQ3LjF6bTAgMjMuNmMyNS45IDAgNDcuMSAyMS4yIDQ3LjEgNDcuMXMtMjEuMiA0Ny4xLTQ3LjEgNDcuMUg0Ni45Yy0yNS45IDAtNDcuMS0yMS4yLTQ3LjEtNDcuMXMyMS4yLTQ3LjEgNDcuMS00Ny4xaDExOHptMTg4LjIgNDcuMWMwLTI1LjkgMjEuMi00Ny4xIDQ3LjEtNDcuMXM0Ny4xIDIxLjIgNDcuMSA0Ny4xLTIxLjIgNDcuMS00Ny4xIDQ3LjFoLTQ3LjF2LTQ3LjF6bS0yMy42IDBjMCAyNS45LTIxLjIgNDcuMS00Ny4xIDQ3LjFzLTQ3LjEtMjEuMi00Ny4xLTQ3LjFWNzkuOWMwLTI1LjkgMjEuMi00Ny4xIDQ3LjEtNDcuMXM0Ny4xIDIxLjIgNDcuMSA0Ny4xdjExNy44ek0yODIuMiAzODUuMWMyNS45IDAgNDcuMSAyMS4yIDQ3LjEgNDcuMXMtMjEuMiA0Ny4xLTQ3LjEgNDcuMS00Ny4xLTIxLjItNDcuMS00Ny4xdi00Ny4xaDQ3LjF6bTAtMjMuNmMtMjUuOSAwLTQ3LjEtMjEuMi00Ny4xLTQ3LjFzMjEuMi00Ny4xIDQ3LjEtNDcuMWgxMThjMjUuOSAwIDQ3LjEgMjEuMiA0Ny4xIDQ3LjFzLTIxLjIgNDcuMS00Ny4xIDQ3LjFoLTExOHoiLz48L3N2Zz4=" alt aria-hidden="true"><span>Community Slack</span></a>
+          </li>
+          <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" rel="noopener noreferrer" target="_blank" href="https://github.com/orgs/pointfreeco/discussions"><img class="height-dnNPN1 width-dnNPN1" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0OTYgNTEyIiBmaWxsPSIjZjVmNWY1Ij48cGF0aCBkPSJNMTY1LjkgMzk3LjRjMCAyLTIuMyAzLjctNS4yIDMuNy0zLjMuMy01LjYtMS4zLTUuNi0zLjcgMC0yIDIuMy0zLjcgNS4yLTMuNyAzLjMtLjMgNS42IDEuMyA1LjYgMy43em0tMzEuMS00LjVjLS43IDIgMS4zIDQuMyA0LjMgNC45IDIuNi43IDUuNi0uMyA2LjMtMi4zLjctMi0xLjMtNC4zLTQuMy01LjItMi42LS43LTUuNi4zLTYuMyAyLjZ6bTQ0LjItMS43Yy0yLjkuNy00LjkgMy4zLTQuMyA1LjYuNyAyLjYgMy4zIDQuMyA2LjMgMy43IDIuOS0uNyA0LjktMy4zIDQuMy01LjYtLjctMi42LTMuMy00LjMtNi4zLTMuN3ptNjAuMi03LjJjLTIuNiAyLTIgNi4zIDEuMyA5LjIgMy4zIDIuNiA3LjkgMyAxMC41LjcgMi42LTIgMi02LjMtMS4zLTkuMi0zLjMtMi42LTcuOS0zLTEwLjUtLjd6TTI0OCA4QzExMSA4IDAgMTE5IDAgMjU2YzAgMTEwLjIgNzEuOSAyMDMuNyAxNzEuNyAyMzYuMyAxMi42IDIuMyAxNy4yLTUuNiAxNy4yLTEyLjIgMC02LjEtLjMtMjYuMi0uMy00Ny41LTY5LjkgMTUuMi04NC44LTI5LjItODQuOC0yOS4yLTExLjQtMjkuMi0yNy45LTM3LTI3LjktMzctMjIuOS0xNS43IDEuNy0xNS40IDEuNy0xNS40IDI1LjIgMS43IDM4LjQgMjUuOSAzOC40IDI1LjkgMjIuNCAzOC40IDU4LjkgMjcuMyA3My4zIDIwLjggMi4zLTE2LjIgOC44LTI3LjMgMTYuMi0zMy42LTU1LjgtNi4xLTExNC42LTI3LjktMTE0LjYtMTI0LjIgMC0yNy4zIDkuNi00OS44IDI1LjItNjcuMi0yLjYtNi4xLTExLTMwLjggMi42LTY0LjMgMCAwIDIwLjgtNi42IDY4LjIgMjUuNiAxOS44LTUuNiA0MS04LjMgNjIuMS04LjMgMjEuMSAwIDQyLjMgMi45IDYyLjEgOC4zIDQ3LjUtMzIuMiA2OC4yLTI1LjYgNjguMi0yNS42IDEzLjYgMzMuNSA1LjIgNTguMiAyLjYgNjQuMyAxNS43IDE3LjQgMjUuMiAzOS45IDI1LjIgNjcuMiAwIDk2LjUtNTguOSAxMTgtMTE0LjkgMTI0LjIgOS4yIDcuOSAxNy4yIDIyLjkgMTcuMiA0Ni4yIDAgMzMuNS0uMyA2MC40LS4zIDY4LjUgMCA2LjYgNC42IDE0LjUgMTcuMiAxMi4yQzQyNC4xIDQ1OS43IDQ5NiAzNjYuMiA0OTYgMjU2IDQ5NiAxMTkgMzg1IDggMjQ4IDh6Ii8+PC9zdmc+" alt aria-hidden="true"><span>Discussions</span></a>
+          </li>
+        </ul>
       </li>
     </ul>
     <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
@@ -351,13 +406,25 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </li>
     </ul><input class="display-Wl0y44" id="menu-checkbox" type="checkbox"><label class="cursor-xmR5l display-Nvbu41 cursor-xmR5l user-select-Wl0y44" id="menu-icon" for="menu-checkbox"><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-SUDJi1 top-xEdC7 transform-0hcgW2"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 transform-kZtH24 background-WytRx3"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-YwIIn top-i3LWY2 transform-BHskb"></span></label>
     <ul class="margin-FBkWQ3 display-Wl0y44 display-sAbis3 flex-grow-tzL8I2 flex-shrink-tzL8I2 flex-basis-C8uWv padding-left-E4tBw4 list-style-type-Wl0y44 color-nbn0i3">
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/episodes">Episodes</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/episodes">
+        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Episodes
+        </pf-hstack></a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">Collections</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">
+        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Collections
+        </pf-hstack></a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/blog">Blog</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/clips">
+        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Free clips
+        </pf-hstack></a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/gifts">Gifts</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/blog">
+        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Blog
+        </pf-hstack></a>
+      </li>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/gifts">
+        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Gifts
+        </pf-hstack></a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/account">Account</a>
       </li>
@@ -369,60 +436,13 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
     <div class="flex-grow-tzL8I2">
       <h2 class="color-nbn0i3 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">Welcome back
       </h2>
-      <p class="color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4"><span class="color-KmPrN">Want to see what’s coming up next? </span><a class="color-KmPrN text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY" href="http://www.twitter.com/pointfreeco">Follow us on Twitter</a>
+      <p class="color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2"><span class="color-KmPrN">Want to see what’s coming up next? </span><a class="color-KmPrN text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY" href="http://www.twitter.com/pointfreeco">Follow us on Twitter</a>
       </p>
     </div>
     <div class="color-c5ixr2">
     </div>
   </pf-hstack>
 </pf-vstack>
-<div class="background-color-nbn0i3 background-color-dMv2U1">
-  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
-      <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Continue watching
-      </h3><a class="margin-left-83zzS1 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/history">See all →</a>
-    </div>
-    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
-      <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/episodes/ep2-side-effects"><img class="width-C8uWv max-width-C8uWv" loading="lazy" src="http://localhost:8080/images/2.jpg" alt></a>
-        <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-          <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
-            <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-              <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Episode 2 • Feb 5, 2018
-                </div>
-                <div>
-                  <h4 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/episodes/ep2-side-effects">Side Effects</a>
-                  </h4>
-                </div>
-              </pf-vstack>
-              <pf-markdown class="color-OpZD03 color-5uscm3 display-ix08W2">
-                <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                  <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.
-                  </p>
-                </pf-vstack>
-              </pf-markdown>
-            </pf-vstack>
-          </pf-vstack>
-          <pf-hstack class="color-Vt0a43 color-Cn4Oi1 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
-            <pf-hstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M8.49996 11.8333C9.23329 11.8333 9.83329 11.2333 9.83329 10.5C9.83329 9.76666 9.23329 9.16666 8.49996 9.16666C7.76663 9.16666 7.16663 9.76666 7.16663 10.5C7.16663 11.2333 7.76663 11.8333 8.49996 11.8333ZM12.5 5.83332H11.8333V4.49999C11.8333 2.65999 10.34 1.16666 8.49996 1.16666C6.65996 1.16666 5.16663 2.65999 5.16663 4.49999H6.43329C6.43329 3.35999 7.35996 2.43332 8.49996 2.43332C9.63996 2.43332 10.5666 3.35999 10.5666 4.49999V5.83332H4.49996C3.76663 5.83332 3.16663 6.43332 3.16663 7.16666V13.8333C3.16663 14.5667 3.76663 15.1667 4.49996 15.1667H12.5C13.2333 15.1667 13.8333 14.5667 13.8333 13.8333V7.16666C13.8333 6.43332 13.2333 5.83332 12.5 5.83332ZM12.5 13.8333H4.49996V7.16666H12.5V13.8333Z" fill="currentColor"/>
-</svg>Free
-            </pf-hstack>
-            <pf-hstack class="flex-grow-tzL8I2 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
-</svg>44 min
-            </pf-hstack>
-            <div title="31 min to finish" class="width-72jGK2 border-radius-kkQtJ1 display-qrAHi height-GcgQe4 overflow-PhNC81 background-color-3nkXS2 background-color-lJpf9">
-              <div class="height-C8uWv width-7EVUP2 background-color-GPfER1 background-color-5uscm3">
-              </div>
-            </div>
-          </pf-hstack>
-        </pf-vstack>
-      </pf-vstack>
-    </pf-vgrid>
-  </div>
-</div>
-<hr class="border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-5uXnK3">
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
@@ -530,9 +550,56 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           </pf-hstack>
         </pf-vstack>
       </pf-vstack>
-    </pf-vgrid>
+    </pf-vgrid><a class="flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-VOQy11 align-items-CdPBO2 display-Nvbu41 margin-right-83zzS1 font-size-yLOVS3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">See all →</a>
   </div>
 </div>
+<div class="background-color-nbn0i3 background-color-dMv2U1">
+  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
+      <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Continue watching
+      </h3><a class="margin-left-83zzS1 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/history">See all →</a>
+    </div>
+    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
+      <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/episodes/ep2-side-effects"><img class="width-C8uWv max-width-C8uWv" loading="lazy" src="http://localhost:8080/images/2.jpg" alt></a>
+        <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+          <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
+            <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+              <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Episode 2 • Feb 5, 2018
+                </div>
+                <div>
+                  <h4 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/episodes/ep2-side-effects">Side Effects</a>
+                  </h4>
+                </div>
+              </pf-vstack>
+              <pf-markdown class="color-OpZD03 color-5uscm3 display-ix08W2">
+                <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                  <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Side effects: can’t live with ’em; can’t write a program without ’em. Let’s explore a few kinds of side effects we encounter every day, why they make code difficult to reason about and test, and how we can control them without losing composition.
+                  </p>
+                </pf-vstack>
+              </pf-markdown>
+            </pf-vstack>
+          </pf-vstack>
+          <pf-hstack class="color-Vt0a43 color-Cn4Oi1 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
+            <pf-hstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.49996 11.8333C9.23329 11.8333 9.83329 11.2333 9.83329 10.5C9.83329 9.76666 9.23329 9.16666 8.49996 9.16666C7.76663 9.16666 7.16663 9.76666 7.16663 10.5C7.16663 11.2333 7.76663 11.8333 8.49996 11.8333ZM12.5 5.83332H11.8333V4.49999C11.8333 2.65999 10.34 1.16666 8.49996 1.16666C6.65996 1.16666 5.16663 2.65999 5.16663 4.49999H6.43329C6.43329 3.35999 7.35996 2.43332 8.49996 2.43332C9.63996 2.43332 10.5666 3.35999 10.5666 4.49999V5.83332H4.49996C3.76663 5.83332 3.16663 6.43332 3.16663 7.16666V13.8333C3.16663 14.5667 3.76663 15.1667 4.49996 15.1667H12.5C13.2333 15.1667 13.8333 14.5667 13.8333 13.8333V7.16666C13.8333 6.43332 13.2333 5.83332 12.5 5.83332ZM12.5 13.8333H4.49996V7.16666H12.5V13.8333Z" fill="currentColor"/>
+</svg>Free
+            </pf-hstack>
+            <pf-hstack class="flex-grow-tzL8I2 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
+</svg>44 min
+            </pf-hstack>
+            <div title="31 min to finish" class="width-72jGK2 border-radius-kkQtJ1 display-qrAHi height-GcgQe4 overflow-PhNC81 background-color-3nkXS2 background-color-lJpf9">
+              <div class="height-C8uWv width-7EVUP2 background-color-GPfER1 background-color-5uscm3">
+              </div>
+            </div>
+          </pf-hstack>
+        </pf-vstack>
+      </pf-vstack>
+    </pf-vgrid><a class="flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-VOQy11 align-items-CdPBO2 display-Nvbu41 margin-right-83zzS1 font-size-yLOVS3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/history">See all →</a>
+  </div>
+</div>
+<hr class="border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-left-7EVUP2 margin-right-7EVUP2">
 <div class="background-color-nbn0i3 background-color-dMv2U1 padding-fDGSU2 max-width-C8uWv">
   <pf-vstack class="padding-pRWYM padding-rKBkb1 background-color-c5ixr2 background-color-wdRty max-width-P6HnV margin-gEzmi align-items-GE99b align-items-cQlZY2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
     <div>
@@ -675,10 +742,10 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           </pf-hstack>
         </pf-vstack>
       </pf-vstack>
-    </pf-vgrid>
+    </pf-vgrid><a class="flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-VOQy11 align-items-CdPBO2 display-Nvbu41 margin-right-83zzS1 font-size-yLOVS3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">See all →</a>
   </div>
 </div>
-<hr class="border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-5uXnK3">
+<hr class="border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-left-7EVUP2 margin-right-7EVUP2">
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
@@ -686,10 +753,10 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </h3><a class="margin-left-83zzS1 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/clips">See all →</a>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
-    </pf-vgrid>
+    </pf-vgrid><a class="flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-VOQy11 align-items-CdPBO2 display-Nvbu41 margin-right-83zzS1 font-size-yLOVS3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/clips">See all →</a>
   </div>
 </div>
-<hr class="border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-5uXnK3">
+<hr class="border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-left-7EVUP2 margin-right-7EVUP2">
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
@@ -720,9 +787,9 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
         </div>
       </li>
       <li class="margin-A2Nt1 display-4Y7tJ2">
-        <hr class="border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-5uXnK3">
+        <hr class="border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-left-7EVUP2 margin-right-7EVUP2">
       </li>
-    </ul>
+    </ul><a class="flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-VOQy11 align-items-CdPBO2 display-Nvbu41 margin-right-83zzS1 font-size-yLOVS3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/blog">See all →</a>
   </div>
 </div>
 <div class="background-CEcmK3">
@@ -732,7 +799,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </h2>
     </div>
     <div class="text-align-GE99b">
-      <p class="margin-mBI0f2 max-width-3zifi color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-yQEjs3 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4">You'll both get one month free ($18 credit) when they sign up from your personal referral link:
+      <p class="margin-mBI0f2 max-width-3zifi color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2">You'll both get one month free ($18 credit) when they sign up from your personal referral link:
       </p>
     </div>
     <div class="text-align-GE99b width-C8uWv">
@@ -760,11 +827,11 @@ setTimeout(() => { this.value = &quot;Copy&quot;; }, 3000);" class="font-size-83
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/">Videos</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Episodes</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">Collections</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/clips">Clips</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/clips">Free clips</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/blog">Blog</a>
           </li>
@@ -776,9 +843,13 @@ setTimeout(() => { this.value = &quot;Copy&quot;; }, 3000);" class="font-size-83
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/about">About Us</a>
           </li>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/slack-invite">Community Slack</a>
+          </li>
           <li rel="me"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="https://www.twitter.com/pointfreeco">Twitter</a>
+          </li>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="https://bsky.app/profile/pointfree.co">BlueSky</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="https://github.com/pointfreeco">GitHub</a>
           </li>

@@ -3,21 +3,40 @@ import Dependencies
 public struct Feature: Equatable {
   public var isAdminEnabled: Bool
   public var isEnabled: Bool
+  public var allowedUserIDs: [User.ID] = []
   public var name: String
 
-  public static let allFeatures: [Self] = []
+  public static let allFeatures: [Self] = [
+    thePointFreeWay
+  ]
+  public static let thePointFreeWay = Self(
+    isAdminEnabled: true,
+    isEnabled: false && inDebug,
+    allowedUserIDs: [],
+    name: "the-point-free-way"
+  )
 }
 
-extension Array where Element == Feature {
-  public func hasAccess(to feature: Feature, for user: User?) -> Bool {
-    return
-      self
-      .first(where: { $0.name == feature.name })
-      .map {
-        $0.isEnabled
-          || ($0.isAdminEnabled && user?.isAdmin == .some(true))
-      }
-      ?? false
+#if DEBUG
+  private let inDebug = true
+#else
+  private let inDebug = false
+#endif
+
+extension User {
+  public func hasAccess(to feature: Feature) -> Bool {
+    Optional(self).hasAccess(to: feature)
+  }
+}
+
+extension Optional where Wrapped == User {
+  public func hasAccess(to feature: Feature) -> Bool {
+    @Dependency(\.features) var features
+    guard let feature = features.first(where: { $0.name == feature.name })
+    else { return false }
+    return feature.isEnabled
+      || (feature.isAdminEnabled && self?.isAdmin == .some(true))
+      || ((self?.id).map { feature.allowedUserIDs.contains($0) } ?? false)
   }
 }
 

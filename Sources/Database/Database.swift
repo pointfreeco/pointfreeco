@@ -51,6 +51,7 @@ public struct Client {
     ) async throws -> Models.Subscription
   public var deleteEnterpriseEmail: (_ userID: User.ID) async throws -> Void
   public var deleteTeamInvite: (_ id: TeamInvite.ID) async throws -> Void
+  public var deleteTheWayAccess: (_ machine: UUID, _ whoami: String) async throws -> Void
   public var execute: (_ sql: SQLQueryString) async throws -> [SQLRow]
   public var fetchAdmins: () async throws -> [Models.User]
   @DependencyEndpoint(method: "fetchClip")
@@ -95,6 +96,7 @@ public struct Client {
     (_ ownerID: Models.User.ID) async throws -> [Models.User]
   public var fetchTeamInvite: (_ id: TeamInvite.ID) async throws -> TeamInvite
   public var fetchTeamInvites: (_ inviterID: Models.User.ID) async throws -> [TeamInvite]
+  public var fetchTheWayAccess: (_ machine: UUID, _ whoami: String) async throws -> TheWayAccess
   @DependencyEndpoint(method: "fetchUser")
   public var fetchUserByEmail: (_ email: EmailAddress) async throws -> Models.User
   @DependencyEndpoint(method: "fetchUser")
@@ -152,6 +154,7 @@ public struct Client {
       _ gitHubAccessToken: GitHubAccessToken?,
       _ rssSalt: Models.User.RssSalt?
     ) async throws -> Void
+  public var upsertTheWayAccess: (TheWayAccess) async throws -> TheWayAccess
   public var upsertUser:
     (
       _ accessToken: GitHubAccessToken,

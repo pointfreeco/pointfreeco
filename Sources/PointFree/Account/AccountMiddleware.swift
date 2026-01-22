@@ -66,6 +66,9 @@ func accountMiddleware(
   case .subscription(.reactivate):
     return IO { await reactivateMiddleware(conn.map { _ in currentUser }) }
 
+  case .theWay(let route):
+    return IO { await theWayMiddleware(conn.map { _ in route }) }
+
   case let .update(data):
     return conn.map(const(currentUser .*. data .*. unit))
       |> updateProfileMiddleware

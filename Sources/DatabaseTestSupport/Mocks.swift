@@ -1,5 +1,6 @@
 import Database
 import Either
+import Foundation
 import Models
 import ModelsTestSupport
 import PointFreePrelude
@@ -14,6 +15,7 @@ extension Client {
     createSubscription: { _, _, _, _ in .mock },
     deleteEnterpriseEmail: { _ in },
     deleteTeamInvite: { _ in },
+    deleteTheWayAccess: { _, _ in },
     execute: { _ in throw unit },
     fetchAdmins: { [] },
     fetchClipByCloudflareVideoID: { _ in throw unit },
@@ -40,6 +42,17 @@ extension Client {
     fetchSubscriptionTeammatesByOwnerId: { _ in [.mock] },
     fetchTeamInvite: { _ in .mock },
     fetchTeamInvites: { _ in [] },
+    fetchTheWayAccess: { _, _ in
+      TheWayAccess(
+        id: TheWayAccess.ID(rawValue: UUID(uuidString: "AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA")!),
+        userID: User.mock.id,
+        machine: UUID(uuidString: "BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB")!,
+        whoami: "mock",
+        createdAt: Date(timeIntervalSince1970: 1_234_567_890),
+        expiresAt: Date(timeIntervalSince1970: 1_234_567_990),
+        updatedAt: nil
+      )
+    },
     fetchUserByEmail: { _ in .mock },
     fetchUserByGitHub: { _ in .mock },
     fetchUserById: { id in update(.mock) { $0.id = id } },
@@ -60,6 +73,7 @@ extension Client {
     updateGiftStatus: { _, _, _ in .fulfilled },
     updateStripeSubscription: { _ in .mock },
     updateUser: { _, _, _, _, _, _, _ in },
+    upsertTheWayAccess: { $0 },
     upsertUser: { _, _, _, _ in .mock }
   )
 }

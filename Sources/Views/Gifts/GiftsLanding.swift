@@ -17,7 +17,6 @@ extension Gifts.Plan {
 
     let base: [Feature] = [
       .init(name: "All \(episodeStats.allEpisodeCount) episodes with transcripts"),
-      .init(name: "Over \(episodeStats.episodeHourCount) hours of video"),
       .init(
         name: "Access to all past [livestreams](\(siteRouter.path(for: .live(.current)))) at 1080p"
       ),

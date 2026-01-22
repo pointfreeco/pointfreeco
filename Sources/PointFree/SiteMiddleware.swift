@@ -124,6 +124,9 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
   case .about:
     return aboutResponse(conn.map { _ in () })
 
+  case .theWay:
+    return await pointFreeWayMiddleware(conn.map { _ in })
+
   case let .account(account):
     return await accountMiddleware(conn: conn.map(const(account)))
       .performAsync()
