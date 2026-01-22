@@ -16,15 +16,26 @@ func ghostIndexMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseEn
   conn.writeStatus(.ok).respond(indexView)
 }
 
-let ghostStartMiddleware: M<Tuple2<User, User.ID?>> =
-  filterMap(
-    over2(fetchGhostee) >>> sequence2 >>> map(require2),
-    or: redirect(
-      to: .admin(.ghost(.index)),
-      headersMiddleware: flash(.error, "Couldn't find user with that id")
-    )
-  )
-  <| redirect(to: .home, headersMiddleware: startGhosting)
+func ghostStartMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>,
+  ghoster: User,
+  ghosteeID: User.ID?
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+  guard
+    let ghosteeID,
+    let ghostee = try? await database.fetchUser(id: ghosteeID)
+  else {
+    return conn.redirect(to: .admin(.ghost(.index))) {
+      $0.flash(.error, "Couldn't find user")
+    }
+  }
+  return conn.redirect(to: .home) {
+    $0.writeSessionCookie {
+      $0.user = .ghosting(ghosteeId: ghostee.id, ghosterId: ghoster.id)
+    }
+  }
+}
 
 let endGhostingMiddleware: M<Prelude.Unit> = redirect(to: .home, headersMiddleware: endGhosting)
 
@@ -36,24 +47,6 @@ private func endGhosting<A>(
     |> writeSessionCookieMiddleware {
       $0.user = conn.request.session.ghosterId.map(Session.User.standard)
     }
-}
-
-private func startGhosting(
-  conn: Conn<HeadersOpen, Tuple2<User, User>>
-) -> IO<Conn<HeadersOpen, Tuple2<User, User>>> {
-
-  let (adminUser, ghostee) = lower(conn.data)
-
-  return conn
-    |> writeSessionCookieMiddleware {
-      $0.user = .ghosting(ghosteeId: ghostee.id, ghosterId: adminUser.id)
-    }
-}
-
-private func fetchGhostee(userId: User.ID?) -> IO<User?> {
-  @Dependency(\.database) var database
-
-  return IO { try? await database.fetchUser(id: userId.unwrap()) }
 }
 
 private func indexView() -> Node {
