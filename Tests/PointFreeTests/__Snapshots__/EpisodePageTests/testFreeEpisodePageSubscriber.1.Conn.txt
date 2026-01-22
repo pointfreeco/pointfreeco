@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep2-proof-in-functions
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 146320
+Content-Length: 144405
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -273,15 +273,6 @@ Prism.languages.sql.keyword = [
 .color-dwzNH2:link{color:#a8a8a8}
 .color-hzlcf:visited{color:#a8a8a8}
 .color-Vt0a43{color:#a8a8a8}
-.margin-left-FxsCt1{margin-left:0.25rem}
-.font-size-HFDgk3{font-size:0.65rem}
-.font-weight-SywJI1{font-weight:700}
-.letter-spacing-miVw93{letter-spacing:0.08em}
-.padding-SjEOn4{padding:2px 4px}
-.border-radius-btBsa3{border-radius:999px}
-.border-uB9vi{border:1px solid rgba(255, 208, 77, 0.7)}
-.background-33BAq4{background:rgba(255, 214, 102, 0.5)}
-.color-GnKka3{color:rgba(255, 255, 255, 0.75)}
 .position-Pjz1G2{position:relative}
 .opacity-mJTmO2:hover ul{opacity:1}
 .pointer-events-7T0L22:hover ul{pointer-events:auto}
@@ -290,9 +281,11 @@ Prism.languages.sql.keyword = [
 .appearance-Wl0y44{appearance:none}
 .background-JyKaz4{background:transparent}
 .border-4sVnF2{border:1px solid rgba(255, 255, 255, 0.25)}
+.border-radius-btBsa3{border-radius:999px}
 .cursor-xmR5l{cursor:pointer}
 .display-MH46v1{display:inline-flex}
 .font-size-zZ9yy3{font-size:1.1rem}
+.font-weight-SywJI1{font-weight:700}
 .letter-spacing-B7Alk3{letter-spacing:2px}
 .transition-6t4cq1{transition:background-color 150ms ease, border-color 150ms ease}
 .background-color-6OEwN1:hover{background-color:rgba(255, 255, 255, 0.1)}
@@ -531,14 +524,6 @@ article div:hover > * > .display-Vk1P81{display:initial}
   .font-size-dR5Tt4{font-size:1.5rem}
   .font-size-Fb6s54{font-size:0.875rem}
 }
-@media only screen and (max-width: 940px){
-  .display-osldI1{display:none}
-  .display-yNuW2{display:inline}
-}
-@media only screen and (min-width: 940px){
-  .display-HhxPd1{display:inline}
-  .display-jM9hW2{display:none}
-}
 @media (prefers-color-scheme: dark){
   .border-top-MR1dZ1{border-top:1px solid #555555}
   .background-color-dMv2U1{background-color:#121212}
@@ -576,15 +561,11 @@ article div:hover > * > .display-Vk1P81{display:initial}
       </li>
       <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">Collections</a>
       </li>
-      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/the-way"><span class="display-osldI1 display-HhxPd1">The Point-Free Way</span><span class="display-yNuW2 display-jM9hW2">Point-Free Way</span>
-        <is-new class="margin-left-FxsCt1 font-size-HFDgk3 font-weight-SywJI1 letter-spacing-miVw93 padding-SjEOn4 border-radius-btBsa3 border-uB9vi background-33BAq4 color-GnKka3">NEW
-        </is-new></a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/blog">Blog</a>
       </li>
       <li class="padding-left-dR5Tt4 display-mFpu24 padding-left-dzKEp position-Pjz1G2 opacity-mJTmO2 pointer-events-7T0L22 transform-v3Gb72 visibility-ZTlvG1"><button class="color-Vt0a43 appearance-Wl0y44 background-JyKaz4 border-4sVnF2 border-radius-btBsa3 cursor-xmR5l display-MH46v1 font-size-zZ9yy3 font-weight-SywJI1 letter-spacing-B7Alk3 transition-6t4cq1 background-color-6OEwN1 border-color-TaUzd2" type="button">•••</button>
         <ul class="background-1tnR2 border-gjzas2 border-radius-rrfjb1 box-shadow-QuMln left-85P192 min-width-cW9sI opacity-FBkWQ3 padding-8jCYd1 pointer-events-Wl0y44 position-X8qzJ top-C8uWv transform-sbXOd4 transition-zUm2k visibility-PhNC81 z-index-7AUj1 padding-left-E4tBw4 list-style-type-Wl0y44">
           <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/clips"><span>Free clips</span></a>
-          </li>
-          <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/blog"><span>Blog</span></a>
           </li>
           <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/gifts"><span>Gifts</span></a>
           </li>
@@ -601,12 +582,6 @@ article div:hover > * > .display-Vk1P81{display:initial}
       </li>
     </ul><input class="display-Wl0y44" id="menu-checkbox" type="checkbox"><label class="cursor-xmR5l display-Nvbu41 cursor-xmR5l user-select-Wl0y44" id="menu-icon" for="menu-checkbox"><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-SUDJi1 top-xEdC7 transform-0hcgW2"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 transform-kZtH24 background-WytRx3"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-YwIIn top-i3LWY2 transform-BHskb"></span></label>
     <ul class="margin-FBkWQ3 display-Wl0y44 display-sAbis3 flex-grow-tzL8I2 flex-shrink-tzL8I2 flex-basis-C8uWv padding-left-E4tBw4 list-style-type-Wl0y44 color-nbn0i3">
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/the-way">
-        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">The Point-Free Way
-          <is-new class="font-size-HFDgk3 font-weight-SywJI1 letter-spacing-miVw93 padding-SjEOn4 border-radius-btBsa3 border-uB9vi background-33BAq4 color-GnKka3">NEW
-          </is-new>
-        </pf-hstack></a>
-      </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/episodes">
         <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Episodes
         </pf-hstack></a>
@@ -1745,8 +1720,6 @@ config |> inoutDecimalStyle &lt;> inoutCurrencyStyle
         </h5>
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/pricing">Pricing</a>
-          </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/the-way">The Point-Free Way</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>
