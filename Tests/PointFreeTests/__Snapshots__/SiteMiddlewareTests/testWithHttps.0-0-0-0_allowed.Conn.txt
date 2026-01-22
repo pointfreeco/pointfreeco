@@ -1,7 +1,7 @@
 GET http://0.0.0.0:8080/
 
 200 OK
-Content-Length: 148114
+Content-Length: 148118
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -654,7 +654,7 @@ linear-gradient(180deg, #07080b, #0b0d10)}
 and techniques we use every day at Point&#8209;Free.
         </p>
         <hr class="margin-top-dnNPN1 margin-bottom-dnNPN1 border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-left-FBkWQ3 margin-right-IuLpj2">
-        <pf-hstack class="align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><a href="/pricing" class="border-color-Y7CRG border-color-94F9E4 background-bF8aN2 background-vVzWy3 color-Nffw82 color-5ECK3 color-l1jsl4 color-ucD0q1 color-7cveC2 color-sA2Di1 box-shadow-Wl0y44 box-shadow-FthUz4 box-shadow-piGCD2 box-shadow-WcNXy2 cursor-xmR5l transition-6g6pq4 user-select-Wl0y44 text-decoration-Wl0y44 text-decoration-8r95N transform-z1OuF transform-HA8Os4 border-radius-btBsa3 border-qBwtZ3 border-wER7b font-weight-Ewe5J3 font-size-7UmQH1 line-height-tzL8I2 display-MH46v1 align-items-CdPBO2 justify-content-CdPBO2 text-align-CdPBO2 gap-Fqw6a1 padding-sHJvF1">Subscribe to unlock</a><a href="/" class="background-PAcgR2 background-LTTQR color-Nffw82 color-5ECK3 color-l1jsl4 color-ucD0q1 color-7cveC2 color-sA2Di1 box-shadow-Wl0y44 box-shadow-FthUz4 box-shadow-piGCD2 box-shadow-WcNXy2 cursor-xmR5l transition-6g6pq4 user-select-Wl0y44 text-decoration-Wl0y44 text-decoration-8r95N transform-z1OuF transform-HA8Os4 border-radius-btBsa3 border-qBwtZ3 border-wER7b font-weight-Ewe5J3 font-size-7UmQH1 line-height-tzL8I2 display-MH46v1 align-items-CdPBO2 justify-content-CdPBO2 text-align-CdPBO2 gap-Fqw6a1 padding-sHJvF1">Learn more</a>
+        <pf-hstack class="align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><a href="/pricing" class="border-color-Y7CRG border-color-94F9E4 background-bF8aN2 background-vVzWy3 color-Nffw82 color-5ECK3 color-l1jsl4 color-ucD0q1 color-7cveC2 color-sA2Di1 box-shadow-Wl0y44 box-shadow-FthUz4 box-shadow-piGCD2 box-shadow-WcNXy2 cursor-xmR5l transition-6g6pq4 user-select-Wl0y44 text-decoration-Wl0y44 text-decoration-8r95N transform-z1OuF transform-HA8Os4 border-radius-btBsa3 border-qBwtZ3 border-wER7b font-weight-Ewe5J3 font-size-7UmQH1 line-height-tzL8I2 display-MH46v1 align-items-CdPBO2 justify-content-CdPBO2 text-align-CdPBO2 gap-Fqw6a1 padding-sHJvF1">Subscribe to unlock</a><a href="/the-way" class="background-PAcgR2 background-LTTQR color-Nffw82 color-5ECK3 color-l1jsl4 color-ucD0q1 color-7cveC2 color-sA2Di1 box-shadow-Wl0y44 box-shadow-FthUz4 box-shadow-piGCD2 box-shadow-WcNXy2 cursor-xmR5l transition-6g6pq4 user-select-Wl0y44 text-decoration-Wl0y44 text-decoration-8r95N transform-z1OuF transform-HA8Os4 border-radius-btBsa3 border-qBwtZ3 border-wER7b font-weight-Ewe5J3 font-size-7UmQH1 line-height-tzL8I2 display-MH46v1 align-items-CdPBO2 justify-content-CdPBO2 text-align-CdPBO2 gap-Fqw6a1 padding-sHJvF1">Learn more</a>
           <pf-spacer class="flex-grow-tzL8I2">
           </pf-spacer>
         </pf-hstack>

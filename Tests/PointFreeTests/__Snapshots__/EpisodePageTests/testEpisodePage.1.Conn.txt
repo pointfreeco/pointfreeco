@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 78693
+Content-Length: 78703
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -233,7 +233,7 @@ Prism.languages.insertBefore('swift', 'string-literal', {
   },
 });
 Prism.languages.sql.keyword = [
-  /\b(AND|DEFERRED|IS|NOT|PRAGMA|STRICT)\b/,
+  /\b(AND|DEFERRED|IMMEDIATE|IS|NOT|PRAGMA|STRICT)\b/,
   Prism.languages.sql.keyword
 ];</script>
     <meta name="title" content="Episode #1: Proof in Functions">
