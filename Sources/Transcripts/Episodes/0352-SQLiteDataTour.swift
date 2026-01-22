@@ -3,7 +3,10 @@ import Foundation
 extension Episode {
   public static let ep352_sqliteDataTour = Episode(
     blurb: """
-      TODO
+      SQLiteData is incredibly test-friendly. We will show how to configure a test suite for \
+      your data layer, how to seed the database for testing, how to assert against this data as it \
+      changes, how to employ `expectNoDifference` for better debugging over Swift Testing's \
+      `#expect` macro, and how to control the `uuid()` function used by SQLite.
       """,
     codeSampleDirectory: "0352-sqlite-data-tour-pt6",
     exercises: _exercises,
