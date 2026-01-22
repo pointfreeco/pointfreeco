@@ -105,7 +105,7 @@ func apiMiddleware(
       }
 
     return conn.map(const(episode))
-      |> (filterMap(pure, or: routeNotFoundMiddleware)  // TODO: make a JSON 404 payload?
+      |> (filterMap(pure, or: { conn in IO { routeNotFoundMiddleware(conn) } })  // TODO: make a JSON 404 payload?
         <| writeStatus(.ok)
         >=> respondJson)
   }

@@ -45,8 +45,7 @@ public func adminMiddleware(conn: Conn<StatusLineOpen, Admin>) -> IO<Conn<Respon
       |> sendFreeEpisodeEmailMiddleware
 
   case .ghost(.index):
-    return conn.map(const(unit))
-      |> ghostIndexMiddleware
+    return IO { ghostIndexMiddleware(conn.map { _ in }) }
 
   case let .ghost(.start(userId)):
     return conn.map(const(currentUser .*. userId .*. unit))

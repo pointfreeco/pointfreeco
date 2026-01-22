@@ -28,36 +28,36 @@ func authMiddleware(
   case .failureLanding(let redirect):
     return await failureLanding(
       redirect: redirect,
-      conn: conn.map(const(()))
+      conn: conn.map { _ in }
     )
 
   case let .gitHubAuth(redirect):
-    return await loginResponse(redirect: redirect, conn: conn.map(const(())))
+    return await loginResponse(redirect: redirect, conn: conn.map { _ in })
 
   case let .gitHubCallback(code, redirect):
-    return await gitHubCallbackResponse(code: code, redirect: redirect, conn.map(const(())))
+    return await gitHubCallbackResponse(code: code, redirect: redirect, conn.map { _ in })
 
   case let .login(redirect):
     return await loginSignUpMiddleware(
       redirect: redirect,
       type: .login,
-      conn.map(const(()))
+      conn.map { _ in }
     )
 
   case .logout:
-    return await logoutResponse(conn.map(const(())))
+    return await logoutResponse(conn.map { _ in })
 
   case let .signUp(redirect):
     return await loginSignUpMiddleware(
       redirect: redirect,
       type: .signUp,
-      conn.map(const(()))
+      conn.map { _ in }
     )
 
   case .updateGitHub(let redirect):
     return await updateGitHub(
       redirect: redirect,
-      conn: conn.map(const(()))
+      conn: conn.map { _ in }
     )
   }
 }
@@ -277,16 +277,7 @@ extension Conn where Step == StatusLineOpen {
 }
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
-  conn |> redirect(to: .auth(.gitHubAuth(redirect: conn.request.url?.absoluteString)))
-}
-
-public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
-  -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
-{
-  @Dependency(\.database) var database
-
-  return IO { try? await database.fetchUser(id: get1(conn.data)) }
-    .map { conn.map(const($0 .*. conn.data.second)) }
+  IO { conn.loginAndRedirect() }
 }
 
 private func fetchOrRegisterUser(

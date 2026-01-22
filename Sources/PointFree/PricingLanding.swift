@@ -8,9 +8,7 @@ import Prelude
 import Tuple
 import Views
 
-public func pricingMiddleware(
-  _ conn: Conn<StatusLineOpen, Void>
-) async -> Conn<ResponseEnded, Data> {
+public func pricingMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseEnded, Data> {
   @Dependency(\.episodes) var episodes
   let stats = EpisodesStats()
 

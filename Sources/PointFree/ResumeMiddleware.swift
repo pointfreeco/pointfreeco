@@ -18,8 +18,7 @@ func resumeMiddleware(
 
   guard currentUser != nil
   else {
-    return await redirect(to: .auth(.gitHubAuth(redirect: siteRouter.url(for: currentRoute))))(conn)
-      .performAsync()
+    return await conn.redirect(to: .auth(.gitHubAuth(redirect: siteRouter.url(for: currentRoute))))
   }
 
   guard
@@ -27,39 +26,33 @@ func resumeMiddleware(
       .sorted(by: { ($0.updatedAt ?? $0.createdAt) > ($1.updatedAt ?? $0.createdAt) })
       .first
   else {
-    return await redirect(
-      to: .home,
-      headersMiddleware: flash(.warning, "You are not currently watching any episodes.")
-    )(conn)
-    .performAsync()
+    return conn.redirect(to: .home) {
+      $0.flash(.warning, "You are not currently watching any episodes.")
+    }
   }
 
   guard latestProgress.isFinished
   else {
-    return await redirect(
+    return conn.redirect(
       to: .episodes(
         .show(
           episodes().first(where: { $0.sequence == latestProgress.episodeSequence })!
         )
-      ),
-      headersMiddleware: flash(.notice, "Resuming your last watched episode.")
-    )(conn)
-    .performAsync()
+      )
+    ) {
+      $0.flash(.notice, "Resuming your last watched episode.")
+    }
   }
 
   guard
     let nextEpisode = episodes().first(where: { $0.sequence == latestProgress.episodeSequence + 1 })
   else {
-    return await redirect(
-      to: .home,
-      headersMiddleware: flash(.notice, "You‘re all caught up!")
-    )(conn)
-    .performAsync()
+    return conn.redirect(to: .home) {
+      $0.flash(.notice, "You‘re all caught up!")
+    }
   }
 
-  return await redirect(
-    to: .episodes(.show(nextEpisode)),
-    headersMiddleware: flash(.notice, "Starting the next episode.")
-  )(conn)
-  .performAsync()
+  return conn.redirect(to: .episodes(.show(nextEpisode))) {
+    $0.flash(.notice, "Starting the next episode.")
+  }
 }

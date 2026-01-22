@@ -21,7 +21,7 @@ func clipsMiddleware(
       return await clipsMiddleware(conn.map(const(())))
     }
   } catch {
-    return await routeNotFoundMiddleware(conn).performAsync()
+    return routeNotFoundMiddleware(conn)
   }
 }
 
@@ -63,6 +63,6 @@ private func clipsMiddleware(
         ClipsIndex(clips: clips)
       }
   } catch {
-    return await routeNotFoundMiddleware(conn).performAsync()
+    return routeNotFoundMiddleware(conn)
   }
 }

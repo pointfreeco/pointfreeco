@@ -552,7 +552,7 @@ struct WhatPeopleAreSaying: HTML {
 }
 
 extension PageModuleTheme {
-  static let credits = Self(
+  public static let credits = Self(
     backgroundColor: .white.dark(.black),
     color: .black.dark(.offWhite),
     topMargin: 2,
@@ -562,7 +562,7 @@ extension PageModuleTheme {
     titleMarginBottom: 3
   )
 
-  static let content = Self(
+  public static let content = Self(
     backgroundColor: .white.dark(.black),
     color: .black.dark(.offWhite),
     topMargin: 4,
@@ -572,7 +572,7 @@ extension PageModuleTheme {
     titleMarginBottom: 3
   )
 
-  static let informational = Self(
+  public static let informational = Self(
     backgroundColor: .offWhite.dark(.offBlack),
     color: .offBlack.dark(.offWhite),
     topMargin: 4,
@@ -582,7 +582,7 @@ extension PageModuleTheme {
     titleMarginBottom: 3
   )
 
-  static let companies = Self(
+  public static let companies = Self(
     backgroundColor: .black,
     color: .purple,
     topMargin: 4,

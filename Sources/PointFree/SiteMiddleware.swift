@@ -109,7 +109,7 @@ public func siteMiddleware(
   } operation: {
     // Early out if route cannot be matched
     guard siteRoute != nil
-    else { return await routeNotFoundMiddleware(conn).performAsync() }
+    else { return routeNotFoundMiddleware(conn) }
     return await render(conn: conn)
   }
 }
@@ -140,7 +140,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
       .performAsync()
 
   case .wellKnown(let route):
-    return await wellKnown(route: route, conn: conn.map { _ in () })
+    return await wellKnown(route: route, conn: conn.map { _ in })
 
   case let .auth(auth):
     return await authMiddleware(conn.map { _ in auth })
