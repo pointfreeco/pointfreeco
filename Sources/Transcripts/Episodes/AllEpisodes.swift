@@ -354,5 +354,7 @@ extension Episode {
     .ep349_sqliteDataTour,
     .ep350_sqliteDataTour,
     .ep351_sqliteDataTour,
+    .ep352_sqliteDataTour,
+    .ep353_sqliteDataTour,
   ]
 }
