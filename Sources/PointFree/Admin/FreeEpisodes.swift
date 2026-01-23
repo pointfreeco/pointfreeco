@@ -6,16 +6,14 @@ import HttpPipeline
 import HttpPipelineHtmlSupport
 import Models
 import PointFreeRouter
-import Prelude
 import Styleguide
-import Tuple
 import Views
 
 func indexFreeEpisodeEmailMiddleware(
   _ conn: Conn<StatusLineOpen, Void>
 ) -> Conn<ResponseEnded, Data> {
   conn.writeStatus(.ok)
-    .respond { _ in
+    .respond {
       @Dependency(\.date.now) var now
       @Dependency(\.episodes) var episodes
       @Dependency(\.envVars.emergencyMode) var emergencyMode
@@ -28,85 +26,70 @@ func indexFreeEpisodeEmailMiddleware(
     }
 }
 
-let sendFreeEpisodeEmailMiddleware:
-  Middleware<
-    StatusLineOpen,
-    ResponseEnded,
-    Episode.ID,
-    Data
-  > = { conn in
-    guard let episode = fetchEpisode(conn.data)
-    else { return conn |> redirect(to: .admin(.freeEpisodeEmail())) }
-
-    return sendFreeEpisodeEmails(conn.map(const(episode)))
-      .flatMap { $0 |> redirect(to: .admin()) }
-  }
-
-func fetchEpisode(_ id: Episode.ID) -> Episode? {
+func sendFreeEpisodeEmailMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>,
+  episodeID: Episode.ID
+) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.episodes) var episodes
-  return episodes().first(where: { $0.id == id })
+  guard let episode = episodes().first(where: { $0.id == episodeID })
+  else { return conn.redirect(to: .admin(.freeEpisodeEmail())) }
+
+  Task {
+    try? await sendFreeEpisodeEmails(episode: episode)
+  }
+  return conn.redirect(to: .admin())
 }
 
-private func sendFreeEpisodeEmails<I>(_ conn: Conn<I, Episode>) -> IO<Conn<I, Prelude.Unit>> {
+private func sendFreeEpisodeEmails(episode: Episode) async throws {
   @Dependency(\.database) var database
 
-  return EitherIO { try await database.fetchFreeEpisodeUsers() }
-    .flatMap { users in sendEmail(forFreeEpisode: conn.data, toUsers: users) }
-    .run
-    .map { _ in conn.map(const(unit)) }
-}
+  let users = try await database.fetchFreeEpisodeUsers()
+  var failedUsers: [User] = []
 
-private func sendEmail(forFreeEpisode episode: Episode, toUsers users: [User]) -> EitherIO<
-  Error, Prelude.Unit
-> {
-
-  // A personalized email to send to each user.
-  let freeEpisodeEmails = users.map { user in
-    lift(IO { inj2(freeEpisodeEmail((episode, user))) })
-      .flatMap { nodes in
-        EitherIO {
-          try await sendEmail(
-            to: [user.email],
-            subject: "Free Point-Free Episode: \(episode.fullTitle)",
-            unsubscribeData: (user.id, .newEpisode),
-            content: nodes
-          )
-        }
-        .delay(.milliseconds(200))
-        .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
-      }
-  }
-
-  // An email to send to admins once all user emails are sent
-  let freeEpisodeEmailReport = sequence(freeEpisodeEmails.map(\.run))
-    .flatMap { results in
-      EitherIO {
-        try await sendEmail(
-          to: adminEmails,
-          subject: "New free episode email finished sending!",
-          content: inj2(
-            adminEmailReport("New free episode")(
-              (
-                zip(users, results)
-                  .filter(second >>> \.isLeft)
-                  .map(first),
-
-                results.count
-              )
-            )
-          )
+  for user in users {
+    do {
+      try await Task.sleep(for: .milliseconds(200))
+      let nodes = freeEpisodeEmail((episode, user))
+      try await retry(maxRetries: 3, backoff: { .seconds(10 * $0) }) {
+        _ = try await sendEmail(
+          to: [user.email],
+          subject: "Free Point-Free Episode: \(episode.fullTitle)",
+          unsubscribeData: (user.id, .newEpisode),
+          content: inj2(nodes)
         )
       }
-      .run
+    } catch {
+      failedUsers.append(user)
     }
-
-  let fireAndForget = IO { () -> Prelude.Unit in
-    freeEpisodeEmailReport
-      .map(const(unit))
-      .parallel
-      .run({ _ in })
-    return unit
   }
 
-  return lift(fireAndForget)
+  _ = try? await sendEmail(
+    to: adminEmails,
+    subject: "New free episode email finished sending!",
+    content: inj2(
+      adminEmailReport("New free episode")(
+        (
+          failedUsers,
+          users.count
+        )
+      )
+    )
+  )
+}
+
+private func retry<R>(
+  maxRetries: Int,
+  backoff: (Int) -> Duration,
+  operation: () async throws -> R
+) async throws -> R {
+  var attempt = 0
+  while true {
+    do {
+      return try await operation()
+    } catch {
+      attempt += 1
+      if attempt > maxRetries { throw error }
+      try await Task.sleep(for: backoff(attempt))
+    }
+  }
 }

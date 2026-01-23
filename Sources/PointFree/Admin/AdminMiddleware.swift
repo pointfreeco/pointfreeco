@@ -41,8 +41,7 @@ public func adminMiddleware(
     return indexFreeEpisodeEmailMiddleware(conn)
 
   case .freeEpisodeEmail(.send(let episodeId)):
-    return await sendFreeEpisodeEmailMiddleware(conn.map { _ in episodeId })
-      .performAsync()
+    return await sendFreeEpisodeEmailMiddleware(conn, episodeID: episodeId)
 
   case .ghost(.index):
     return ghostIndexMiddleware(conn)
@@ -52,25 +51,25 @@ public func adminMiddleware(
 
   case .newBlogPostEmail(.send(let blogPostId, let formData, let isTest)):
     return await sendNewBlogPostEmailMiddleware(
-      conn.map(const(blogPostId .*. formData .*. isTest .*. unit))
+      conn,
+      blogPostID: blogPostId,
+      formData: formData,
+      isTest: isTest
     )
-    .performAsync()
 
   case .newBlogPostEmail(.index):
-    return await showNewBlogPostEmailMiddleware(conn.map { _ in unit })
-      .performAsync()
+    return showNewBlogPostEmailMiddleware(conn)
 
   case .newEpisodeEmail(
     .send(let episodeId, let subscriberAnnouncement, let nonSubscriberAnnouncement, let isTest)
   ):
     return await sendNewEpisodeEmailMiddleware(
-      conn.map(
-        const(
-          episodeId .*. subscriberAnnouncement .*. nonSubscriberAnnouncement .*. isTest .*. unit
-        )
-      )
+      conn,
+      episodeID: episodeId,
+      subscriberAnnouncement: subscriberAnnouncement,
+      nonSubscriberAnnouncement: nonSubscriberAnnouncement,
+      isTest: isTest
     )
-    .performAsync()
 
   case .newEpisodeEmail(.show):
     return showNewEpisodeEmailMiddleware(conn)

@@ -125,7 +125,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     return aboutResponse(conn.map { _ in () })
 
   case .theWay:
-    return await pointFreeWayMiddleware(conn.map { _ in })
+    return pointFreeWayMiddleware(conn.map { _ in })
 
   case let .account(account):
     return await accountMiddleware(conn: conn.map(const(account)))
@@ -384,7 +384,7 @@ extension Conn where Step == StatusLineOpen {
 
   public func redirect(
     to route: SiteRoute,
-    headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A> = { $0 }
+    headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A>
   ) async -> Conn<ResponseEnded, Data> {
     @Dependency(\.siteRouter) var siteRouter
 
@@ -396,7 +396,7 @@ extension Conn where Step == StatusLineOpen {
 
   public func redirect(
     with route: (A) -> SiteRoute,
-    headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A> = { $0 }
+    headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A>
   ) async -> Conn<ResponseEnded, Data> {
     @Dependency(\.siteRouter) var siteRouter
 

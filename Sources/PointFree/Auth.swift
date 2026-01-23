@@ -31,13 +31,13 @@ func authMiddleware(
       conn: conn.map { _ in }
     )
 
-  case let .gitHubAuth(redirect):
+  case .gitHubAuth(let redirect):
     return await loginResponse(redirect: redirect, conn: conn.map { _ in })
 
-  case let .gitHubCallback(code, redirect):
+  case .gitHubCallback(let code, let redirect):
     return await gitHubCallbackResponse(code: code, redirect: redirect, conn.map { _ in })
 
-  case let .login(redirect):
+  case .login(let redirect):
     return await loginSignUpMiddleware(
       redirect: redirect,
       type: .login,
@@ -47,7 +47,7 @@ func authMiddleware(
   case .logout:
     return await logoutResponse(conn.map { _ in })
 
-  case let .signUp(redirect):
+  case .signUp(let redirect):
     return await loginSignUpMiddleware(
       redirect: redirect,
       type: .signUp,
@@ -73,11 +73,9 @@ private func updateGitHub(
   @Dependency(\.siteRouter) var siteRouter
 
   guard let accessToken = conn.request.session.gitHubAccessToken else {
-    return
-      conn
-      .redirect(to: .home) {
-        $0.flash(.error, "We could not update your GitHub account. Please try again.")
-      }
+    return conn.redirect(to: .home) {
+      $0.flash(.error, "We could not update your GitHub account. Please try again.")
+    }
   }
 
   do {
@@ -116,25 +114,21 @@ private func updateGitHub(
         reportIssue(error, "Unable to send email: \"Your GitHub account has been updated\"")
       }
     }
-    return
-      conn
-      .redirect(to: redirect ?? siteRouter.path(for: .home)) {
-        $0
-          .writeSessionCookie {
-            $0.flash = Flash(
-              .notice,
-              "Your GitHub account has been updated to @\(newGitHubUser.login)."
-            )
-            $0.gitHubAccessToken = nil
-            $0.user = .standard(existingUser.id)
-          }
-      }
+    return conn.redirect(to: redirect ?? siteRouter.path(for: .home)) {
+      $0
+        .writeSessionCookie {
+          $0.flash = Flash(
+            .notice,
+            "Your GitHub account has been updated to @\(newGitHubUser.login)."
+          )
+          $0.gitHubAccessToken = nil
+          $0.user = .standard(existingUser.id)
+        }
+    }
   } catch {
-    return
-      conn
-      .redirect(to: .home) {
-        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
-      }
+    return conn.redirect(to: .home) {
+      $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+    }
   }
 }
 
@@ -146,11 +140,9 @@ private func failureLanding(
   @Dependency(\.gitHub) var gitHub
 
   guard let accessToken = conn.request.session.gitHubAccessToken else {
-    return
-      conn
-      .redirect(to: .home) {
-        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
-      }
+    return conn.redirect(to: .home) {
+      $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+    }
   }
 
   do {
@@ -195,19 +187,15 @@ private func gitHubCallbackResponse(
 
   guard currentUser == nil
   else {
-    return
-      conn
-      .redirect(to: .account()) {
-        $0.flash(.warning, "You’re already logged in.")
-      }
+    return conn.redirect(to: .account()) {
+      $0.flash(.warning, "You’re already logged in.")
+    }
   }
   guard let code
   else {
-    return
-      conn
-      .redirect(to: .auth(.login(redirect: nil))) {
-        $0.flash(.warning, "GitHub code wasn't found :(")
-      }
+    return conn.redirect(to: .auth(.login(redirect: nil))) {
+      $0.flash(.warning, "GitHub code wasn't found :(")
+    }
   }
   do {
     let accessToken = try await gitHub.fetchAuthToken(code: code).accessToken
@@ -218,15 +206,11 @@ private func gitHubCallbackResponse(
       conn
     )
   } catch let error as OAuthError where error.error == .badVerificationCode {
-    return
-      await conn
-      .redirect(to: .auth(.gitHubAuth(redirect: redirect)))
+    return conn.redirect(to: .auth(.gitHubAuth(redirect: redirect)))
   } catch {
-    return
-      conn
-      .redirect(to: .home) {
-        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
-      }
+    return conn.redirect(to: .home) {
+      $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+    }
   }
 }
 
