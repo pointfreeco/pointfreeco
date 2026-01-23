@@ -3,6 +3,7 @@ import Dependencies
 import EnvVars
 import IssueReporting
 import Models
+import PointFreePrelude
 
 public func bootstrap() async {
   prepareDependencies {
@@ -120,7 +121,7 @@ private func updateCloudflareVideos() async throws {
       })
       let clip = clips.first(where: { $0.cloudflareVideoID == video.uid })
       if let episode {
-        let didUpdate = try await retry {
+        let didUpdate = try await retry(maxRetries: 100, backoff: { _ in .seconds(10) }) {
           try await cloudflare.editVideo(
             cloudflareVideo: video,
             episode: episode,
@@ -131,7 +132,7 @@ private func updateCloudflareVideos() async throws {
           try await Task.sleep(for: .seconds(0.5))
         }
       } else if let clip {
-        let didUpdate = try await retry {
+        let didUpdate = try await retry(maxRetries: 100, backoff: { _ in .seconds(10) }) {
           try await cloudflare.editVideo(
             cloudflareVideo: video,
             clip: clip
@@ -143,23 +144,4 @@ private func updateCloudflareVideos() async throws {
       }
     }
   }
-}
-
-private func retry<R>(
-  maxRetries: Int = 100,
-  delay: Duration = .seconds(10),
-  operation: () async throws -> R
-) async throws -> R {
-  var tryCount = 0
-  var lastError: (any Error)?
-  while tryCount < 1 {
-    defer { tryCount += 1 }
-    do {
-      return try await operation()
-    } catch {
-      lastError = error
-      try await Task.sleep(for: delay)
-    }
-  }
-  throw lastError!
 }
