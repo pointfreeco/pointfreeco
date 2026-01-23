@@ -209,12 +209,10 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
       .performAsync()
 
   case let .expressUnsubscribe(payload):
-    return await expressUnsubscribeMiddleware(conn.map(const(payload)))
-      .performAsync()
+    return await expressUnsubscribeMiddleware(conn.map { _ in }, payload: payload)
 
   case let .expressUnsubscribeReply(payload):
-    return await expressUnsubscribeReplyMiddleware(conn.map(const(payload)))
-      .performAsync()
+    return await expressUnsubscribeReplyMiddleware(conn.map { _ in }, payload: payload)
 
   case let .feed(feedRoute):
     @Dependency(\.envVars.emergencyMode) var emergencyMode
