@@ -14,9 +14,7 @@ func expressUnsubscribeMiddleware(
     let string = payload.decrypt(with: appSecret),
     let (userId, newsletter) = try? ExpressUnsubscribe().parse(string)
   else {
-    return conn.redirect(
-      to: .home
-    ) {
+    return conn.redirect(to: .home) {
       $0.flash(.error, "An error occurred. Please contact <support@pointfree.co>.")
     }
   }

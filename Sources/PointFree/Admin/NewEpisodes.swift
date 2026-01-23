@@ -1,57 +1,24 @@
-import Css
 import Dependencies
 import Either
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
-import HttpPipelineHtmlSupport
 import Models
 import PointFreePrelude
 import PointFreeRouter
-import Prelude
-import Styleguide
+import StyleguideV2
+import Views
 
 func showNewEpisodeEmailMiddleware(
   _ conn: Conn<StatusLineOpen, Void>
 ) -> Conn<ResponseEnded, Data> {
-  conn.writeStatus(.ok)
-    .respond(showNewEpisodeView)
-}
-
-private func showNewEpisodeView() -> Node {
   @Dependency(\.episodes) var episodes
-
-  return .ul(
-    .fragment(
-      episodes()
-        .sorted(by: their(\.sequence, >))
-        .prefix(upTo: 1)
-        .map { .li(newEpisodeEmailRowView(ep: $0)) }
-    )
-  )
-}
-
-private func newEpisodeEmailRowView(ep: Episode) -> Node {
-  @Dependency(\.siteRouter) var siteRouter
-
-  return .p(
-    .text("Episode #\(ep.sequence): \(ep.fullTitle)"),
-    .form(
-      attributes: [
-        .action(siteRouter.path(for: .admin(.newEpisodeEmail(.send(ep.id))))),
-        .method(.post),
-      ],
-      .textarea(attributes: [
-        .name("subscriber_announcement"), .placeholder("Subscriber announcement"),
-      ]),
-      .textarea(attributes: [
-        .name("nonsubscriber_announcement"), .placeholder("Non-subscribers announcements"),
-      ]),
-      .input(attributes: [.type(.submit), .name("test"), .value("Test email!")]),
-      .input(attributes: [.type(.submit), .name("live"), .value("Send email!")])
-    )
-  )
+  let latestEpisodes = episodes()
+    .sorted { $0.sequence > $1.sequence }
+    .prefix(upTo: 1)
+  return conn.writeStatus(.ok)
+    .respondV2(layoutData: SimplePageLayoutData(title: "New episode email")) {
+      AdminNewEpisodeEmailView(episodes: Array(latestEpisodes))
+    }
 }
 
 func sendNewEpisodeEmailMiddleware(
