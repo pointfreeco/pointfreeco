@@ -73,7 +73,6 @@ public func adminMiddleware(
     .performAsync()
 
   case .newEpisodeEmail(.show):
-    return await showNewEpisodeEmailMiddleware(conn.map { _ in unit })
-      .performAsync()
+    return showNewEpisodeEmailMiddleware(conn)
   }
 }
