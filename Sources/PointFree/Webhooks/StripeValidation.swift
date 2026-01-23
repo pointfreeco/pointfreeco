@@ -4,65 +4,59 @@ import Foundation
 import HttpPipeline
 import Prelude
 
-func validateStripeSignature<A>(_ middleware: @escaping M<A>) -> M<A> {
-  return { conn in
-    let pairs =
-      conn.request.value(forHTTPHeaderField: "Stripe-Signature")
-      .map(keysWithAllValues(separator: ","))
-      ?? []
+func validateStripeSignature(
+  _ conn: Conn<StatusLineOpen, Void>
+) -> Conn<ResponseEnded, Data>? {
+  let pairs =
+    conn.request.value(forHTTPHeaderField: "Stripe-Signature")
+    .map(keysWithAllValues(separator: ","))
+    ?? []
 
-    let params = Dictionary(pairs, uniquingKeysWith: +)
+  let params = Dictionary(pairs, uniquingKeysWith: +)
 
-    guard
-      let timestamp = params["t"]?.first.flatMap(Int.init).map(TimeInterval.init),
-      shouldTolerate(timestamp),
-      let signatures = params["v1"],
-      let payload = conn.request.httpBody.map({ String(decoding: $0, as: UTF8.self) }),
-      signatures.contains(where: isSignatureValid(timestamp: timestamp, payload: payload))
-    else {
-      return conn
-        |> stripeHookFailure(
-          subject: "[PointFree Error] Stripe Hook Failed!",
-          body: "Couldn't verify signature."
-        )
-    }
-
-    return conn |> middleware
+  guard
+    let timestamp = params["t"]?.first.flatMap(Int.init).map(TimeInterval.init),
+    shouldTolerate(timestamp),
+    let signatures = params["v1"],
+    let payload = conn.request.httpBody.map({ String(decoding: $0, as: UTF8.self) }),
+    signatures.contains(where: isSignatureValid(timestamp: timestamp, payload: payload))
+  else {
+    return stripeHookFailure(
+      conn,
+      subject: "[PointFree Error] Stripe Hook Failed!",
+      body: "Couldn't verify signature."
+    )
   }
+
+  return nil
 }
 
-func stripeHookFailure<A>(
+func stripeHookFailure(
+  _ conn: Conn<StatusLineOpen, Void>,
   subject: String = "[PointFree Error] Stripe Hook Failed!",
   body: String
-)
-  -> (Conn<StatusLineOpen, A>)
-  -> IO<Conn<ResponseEnded, Data>>
-{
+) -> Conn<ResponseEnded, Data> {
   @Dependency(\.date.now) var now
 
-  return { conn in
-    Task {
-      var requestDump = body + "\n\n"
-      print("Current timestamp: \(now.timeIntervalSince1970)", to: &requestDump)
-      print(
-        "\n\(conn.request.httpMethod ?? "?METHOD?") \(conn.request.url?.absoluteString ?? "?URL?")",
-        to: &requestDump
-      )
-      print("\nHeaders:", to: &requestDump)
-      dump(conn.request.allHTTPHeaderFields, to: &requestDump)
-      print("\nBody:", to: &requestDump)
-      print(String(decoding: conn.request.httpBody ?? .init(), as: UTF8.self), to: &requestDump)
-      _ = try await sendEmail(
-        to: adminEmails,
-        subject: subject,
-        content: inj1(requestDump)
-      )
-    }
-    return
-      conn
-      |> writeStatus(.badRequest)
-      >=> respond(text: body)
+  Task {
+    var requestDump = body + "\n\n"
+    print("Current timestamp: \(now.timeIntervalSince1970)", to: &requestDump)
+    print(
+      "\n\(conn.request.httpMethod ?? "?METHOD?") \(conn.request.url?.absoluteString ?? "?URL?")",
+      to: &requestDump
+    )
+    print("\nHeaders:", to: &requestDump)
+    dump(conn.request.allHTTPHeaderFields, to: &requestDump)
+    print("\nBody:", to: &requestDump)
+    print(String(decoding: conn.request.httpBody ?? .init(), as: UTF8.self), to: &requestDump)
+    _ = try await sendEmail(
+      to: adminEmails,
+      subject: subject,
+      content: inj1(requestDump)
+    )
   }
+  return conn.writeStatus(.badRequest)
+    .respond(text: body)
 }
 
 public func generateStripeSignature(

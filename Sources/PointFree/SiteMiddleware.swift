@@ -331,12 +331,10 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
       .performAsync()
 
   case let .webhooks(.stripe(.paymentIntents(event))):
-    return await stripePaymentIntentsWebhookMiddleware(conn.map(const(event)))
-      .performAsync()
+    return await stripePaymentIntentsWebhookMiddleware(conn.map { _ in }, event: event)
 
   case let .webhooks(.stripe(.subscriptions(event))):
-    return await stripeSubscriptionsWebhookMiddleware(conn.map(const(event)))
-      .performAsync()
+    return await stripeSubscriptionsWebhookMiddleware(conn.map { _ in }, event: event)
 
   case let .webhooks(.stripe(.unknown(event))):
     @Dependency(\.logger) var logger: Logger
