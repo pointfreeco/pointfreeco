@@ -315,20 +315,24 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     .performAsync()
 
   case let .team(.join(teamInviteCode, .landing)):
-    return await joinTeamLandingMiddleware(conn.map(const(teamInviteCode)))
-      .performAsync()
+    return joinTeamLandingMiddleware(conn.map { _ in }, inviteCode: teamInviteCode)
 
   case let .team(.join(teamInviteCode, .confirm)):
-    return await joinTeamMiddleware(conn.map(const(teamInviteCode)))
-      .performAsync()
+    return joinTeamMiddleware(conn.map { _ in }, inviteCode: teamInviteCode)
 
   case .team(.leave):
-    return await leaveTeamMiddleware(conn.map(const(currentUser .*. subscriberState .*. unit)))
-      .performAsync()
+    return await leaveTeamMiddleware(
+      conn.map { _ in },
+      currentUser: currentUser,
+      subscriberState: subscriberState
+    )
 
   case let .team(.remove(teammateId)):
-    return await removeTeammateMiddleware(conn.map(const(teammateId .*. currentUser .*. unit)))
-      .performAsync()
+    return await removeTeammateMiddleware(
+      conn.map { _ in },
+      teammateID: teammateId,
+      currentUser: currentUser
+    )
 
   case let .webhooks(.stripe(.paymentIntents(event))):
     return await stripePaymentIntentsWebhookMiddleware(conn.map { _ in }, event: event)
