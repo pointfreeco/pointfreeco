@@ -189,8 +189,7 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     .performAsync()
 
   case .endGhosting:
-    return await endGhostingMiddleware(conn.map(const(unit)))
-      .performAsync()
+    return endGhostingMiddleware(conn.map { _ in })
 
   case .episodes(let route):
     return await episodesMiddleware(route: route, conn.map { _ in })
