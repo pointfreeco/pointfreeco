@@ -128,7 +128,7 @@ struct PointFreeWayHeader: HTML {
         PFWButton(type: .primary) {
           HTMLText("Install the Point-Free Way")
         }
-        .href("https://www.github.com/pointfreeco/pfw-cli")
+        .href("https://www.github.com/pointfreeco/pfw")
         .inlineStyle("margin-top", "1rem")
       }
       .inlineStyle("border-left", "3px solid rgb(24, 158, 72)")
