@@ -4,8 +4,6 @@ import HttpPipeline
 import Models
 import PointFreeDependencies
 import PointFreeRouter
-import Prelude
-import Tuple
 
 public func adminMiddleware(
   _ conn: Conn<StatusLineOpen, Void>,
