@@ -64,7 +64,6 @@ public struct GitHubFailureView: HTML {
         }
       }
     }
-    .color(.offBlack.dark(.offWhite))
     .linkStyle(LinkStyle(color: .offBlack.dark(.offWhite), underline: true))
   }
 }

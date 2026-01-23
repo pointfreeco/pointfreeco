@@ -1,25 +1,23 @@
-import Css
 import Dependencies
 import Either
 import Foundation
 import HttpPipeline
-import HttpPipelineHtmlSupport
 import Models
 import PointFreePrelude
 import PointFreeRouter
-import Styleguide
+import StyleguideV2
 import Views
 
 func indexFreeEpisodeEmailMiddleware(
   _ conn: Conn<StatusLineOpen, Void>
 ) -> Conn<ResponseEnded, Data> {
   conn.writeStatus(.ok)
-    .respond {
+    .respondV2(layoutData: SimplePageLayoutData(title: "Free episode email")) {
       @Dependency(\.date.now) var now
       @Dependency(\.episodes) var episodes
       @Dependency(\.envVars.emergencyMode) var emergencyMode
 
-      return freeEpisodeView(
+      FreeEpisodeAdminView(
         episodes: episodes(),
         today: now,
         emergencyMode: emergencyMode
