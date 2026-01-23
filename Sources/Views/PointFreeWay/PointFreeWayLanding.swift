@@ -84,7 +84,7 @@ struct PointFreeWayHeader: HTML {
         }
 
         TerminalWindow {
-          Command("brew install pfw")
+          Command("brew install pointfreeco/tap/pfw")
           Command("pfw login")
           Command("pfw install --tool codex")
           Command("ls -R ~/.codex/skills/the-point-free-way")
