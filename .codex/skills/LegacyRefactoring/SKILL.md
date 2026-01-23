@@ -15,6 +15,9 @@ metadata:
 - The Prelude.Unit (sometimes just Unit) type should be refactored away to Void
 - The Either type should be refactored away to a domain-specific enum or result type
 - The Conn type should only be mapped to Void (`conn.map { _ in }`) and not to hold other data. Instead, always pass data along to the middleware function
+- The Tuple type should be refactored away for arguments to middleware functions, or as a last resort, normal Swift tuples
+- Custom operators should be refactored away:
+    - `|>` should be simple dot syntax
 
 ## How to refactor views
 
