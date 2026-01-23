@@ -1,79 +1,24 @@
-import Css
 import Dependencies
 import Either
 import Foundation
-import Html
-import HtmlCssSupport
 import HttpPipeline
-import HttpPipelineHtmlSupport
 import Models
 import PointFreePrelude
 import PointFreeRouter
-import Prelude
-import Styleguide
+import StyleguideV2
+import Views
 
 func showNewBlogPostEmailMiddleware(
   _ conn: Conn<StatusLineOpen, Void>
 ) -> Conn<ResponseEnded, Data> {
-  conn.writeStatus(.ok)
-    .respond(showNewBlogPostView)
-}
-
-private func showNewBlogPostView() -> Node {
   @Dependency(\.blogPosts) var blogPosts
-
-  return .ul(
-    .fragment(
-      blogPosts()
-        .sorted(by: their(\.id, >))
-        .prefix(upTo: 3)
-        .map { .li(newBlogPostEmailRowView(post: $0)) }
-    )
-  )
-}
-
-private func newBlogPostEmailRowView(post: BlogPost) -> Node {
-  @Dependency(\.siteRouter) var siteRouter
-
-  return .p(
-    .text("Blog Post: \(post.title)"),
-    .form(
-      attributes: [
-        .action(siteRouter.path(for: .admin(.newBlogPostEmail(.send(post.id))))),
-        .method(.post),
-      ],
-      .input(
-        attributes: [
-          .checked(true),
-          .name(NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue),
-          .type(.checkbox),
-          .value("true"),
-        ]
-      ),
-      .textarea(
-        attributes: [
-          .name(NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue),
-          .placeholder("Subscriber announcement"),
-        ]
-      ),
-      .input(
-        attributes: [
-          .checked(true),
-          .name(NewBlogPostFormData.CodingKeys.nonsubscriberDeliver.rawValue),
-          .type(.checkbox),
-          .value("true"),
-        ]
-      ),
-      .textarea(
-        attributes: [
-          .name(NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue),
-          .placeholder("Non-subscriber announcement"),
-        ]
-      ),
-      .input(attributes: [.type(.submit), .name("test"), .value("Test email!")]),
-      .input(attributes: [.type(.submit), .name("live"), .value("Send email!")])
-    )
-  )
+  let posts = blogPosts()
+    .sorted { $0.id > $1.id }
+    .prefix(upTo: 3)
+  return conn.writeStatus(.ok)
+    .respondV2(layoutData: SimplePageLayoutData(title: "New blog post email")) {
+      AdminNewBlogPostEmailView(posts: Array(posts))
+    }
 }
 
 func sendNewBlogPostEmailMiddleware(
