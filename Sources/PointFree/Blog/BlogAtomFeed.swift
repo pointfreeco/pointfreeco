@@ -1,18 +1,20 @@
 import Dependencies
 import Foundation
-import FunctionalCss
 import Html
 import HttpPipeline
 import Models
 import PointFreeRouter
-import Prelude
-import Styleguide
 import Syndication
-import Views
 
-let blogAtomFeedResponse =
-  writeStatus(.ok)
-  >=> respond(feedView, contentType: .application(.atom))
+func blogAtomFeedResponse(
+  _ conn: Conn<StatusLineOpen, Void>,
+  posts: [BlogPost]
+) -> Conn<ResponseEnded, Data> {
+  @Dependency(\.renderXml) var renderXml
+
+  return conn.writeStatus(.ok)
+    .respond(body: renderXml(feedView(posts: posts)), contentType: .application(.atom))
+}
 
 private func feedView(posts: [BlogPost]) -> Node {
   @Dependency(\.siteRouter) var siteRouter

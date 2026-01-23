@@ -1,39 +1,29 @@
 import Dependencies
-import Either
 import Foundation
 import HttpPipeline
 import Models
 import PointFreeRouter
-import Prelude
-import Styleguide
-import Tuple
 
 func blogMiddleware(
-  conn: Conn<StatusLineOpen, SiteRoute.Blog>
-) async -> Conn<ResponseEnded, Data> {
+  _ conn: Conn<StatusLineOpen, Void>,
+  route: SiteRoute.Blog
+) -> Conn<ResponseEnded, Data> {
   @Dependency(\.blogPosts) var blogPosts
 
-  let subRoute = conn.data
-
-  switch subRoute {
+  switch route {
   case .feed:
-    return await blogAtomFeedResponse(conn.map(const(blogPosts()))).performAsync()
+    return blogAtomFeedResponse(conn, posts: blogPosts())
 
   case .index:
-    return await newsletterIndex(conn.map { _ in })
+    return newsletterIndex(conn)
 
   case .slackFeed:
-    return await blogAtomFeedResponse(
-      conn.map(
-        const(
-          blogPosts()
-            .filter { !$0.hideFromSlackRSS }
-        )
-      )
+    return blogAtomFeedResponse(
+      conn,
+      posts: blogPosts().filter { !$0.hideFromSlackRSS }
     )
-    .performAsync()
 
   case let .show(postParam):
-    return await newsletterDetail(conn.map { _ in }, postParam)
+    return newsletterDetail(conn, postParam)
   }
 }

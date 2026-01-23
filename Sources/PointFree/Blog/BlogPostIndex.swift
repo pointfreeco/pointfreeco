@@ -3,13 +3,11 @@ import Foundation
 import HttpPipeline
 import Models
 import PointFreeRouter
-import Prelude
-import Tuple
 import Views
 
 func newsletterIndex(
   _ conn: Conn<StatusLineOpen, Void>
-) async -> Conn<ResponseEnded, Data> {
+) -> Conn<ResponseEnded, Data> {
   @Dependency(\.assets) var assets
 
   return

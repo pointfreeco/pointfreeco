@@ -12,7 +12,7 @@ import Views
 func newsletterDetail(
   _ conn: Conn<StatusLineOpen, Void>,
   _ postParam: Either<String, BlogPost.ID>
-) async -> Conn<ResponseEnded, Data> {
+) -> Conn<ResponseEnded, Data> {
   guard let post = fetchBlogPost(forParam: postParam)
   else {
     return
