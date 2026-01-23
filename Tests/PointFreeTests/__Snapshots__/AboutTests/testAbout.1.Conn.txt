@@ -2,7 +2,7 @@ GET http://localhost:8080/about
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 59359
+Content-Length: 59361
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -235,16 +235,17 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .line-height-vsvaN2{line-height:1.75rem}
 .color-c5ixr2{color:#fafafa}
 .background-color-nbn0i3{background-color:#fff}
+.color-K2J0r1{color:#121212}
 .padding-bFon03{padding:4.0rem 2.0rem 4.0rem}
 .justify-content-n56cj2{justify-content:flex-start}
 .align-items-0Zubr3{align-items:baseline}
-.color-BoTGL{color:#171717}
 .row-gap-NKv2f3{row-gap:0.5rem}
 article .content-xD6dy1:is(p):last-of-type::after{content:"❖"}
 article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .top-kDUvL2{top:-5em}
 .margin-left-SH03u1{margin-left:-2.25rem}
 .padding-left-5jRhu{padding-left:2.25rem}
+.color-BoTGL{color:#171717}
 .margin-top-EvtWd3:not(:first-child){margin-top:1.5rem}
 .margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
 .font-size-QgYLk2{font-size:2.0rem}
@@ -256,7 +257,6 @@ article div:hover > * > .display-Vk1P81{display:initial}
 .padding-FBkWQ3{padding:0}
 .color-T7UxR2:link{color:#121212}
 .color-IVYQy2:visited{color:#121212}
-.color-K2J0r1{color:#121212}
 .padding-MlBf82{padding:0 2rem}
 .box-shadow-91xof{box-shadow:0 2px 10px -2px rgba(0,0,0,0.3)}
 .border-radius-YwIIn{border-radius:5px}
@@ -425,8 +425,8 @@ article div:hover > * > .display-Vk1P81{display:initial}
   </pf-hstack>
 </pf-vstack>
 <div class="background-color-nbn0i3 background-color-dMv2U1">
-  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <pf-markdown class="color-BoTGL color-GOHNR display-ix08W2">
+  <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+    <pf-markdown class="display-ix08W2">
       <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="your-hosts"></a>
         <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
           <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Your hosts<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#your-hosts"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
@@ -487,9 +487,9 @@ article div:hover > * > .display-Vk1P81{display:initial}
   </pf-vgrid>
 </pf-center-column>
 <div class="background-color-c5ixr2 background-color-xnERS1">
-  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+  <div class="color-BoTGL color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <pf-vstack class="margin-gEzmi align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-      <pf-markdown class="color-BoTGL color-GOHNR max-width-vCelo2 display-ix08W2">
+      <pf-markdown class="max-width-vCelo2 display-ix08W2">
         <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="what-we-ll-cover"></a>
           <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
             <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">What we’ll cover<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#what-we-ll-cover"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>
@@ -529,9 +529,9 @@ article div:hover > * > .display-Vk1P81{display:initial}
   </div>
 </div>
 <div class="background-color-nbn0i3 background-color-dMv2U1">
-  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+  <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <pf-vstack class="margin-gEzmi align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-      <pf-markdown class="color-BoTGL color-GOHNR max-width-vCelo2 display-ix08W2">
+      <pf-markdown class="max-width-vCelo2 display-ix08W2">
         <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a class="content-xD6dy1 margin-left-rhxaL1 display-ix08W2 position-Pjz1G2 top-kDUvL2 top-FEoZS2 visibility-PhNC81" id="open-source"></a>
           <div class="content-xD6dy1 margin-left-rhxaL1 margin-left-SH03u1 margin-left-ItApa4 padding-left-5jRhu padding-left-WU6C5 position-Pjz1G2">
             <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Open source<a class="display-Wl0y44 display-Vk1P81 left-FBkWQ3 position-X8qzJ text-align-CdPBO2 top-RSlUg4 width-Wr637 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-Vv8Gw4 color-9rBiP color-x5AlI2 color-CwERD1 color-KmPrN color-lJpf9" href="#open-source"><svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M432-288H288q-79.68 0-135.84-56.23Q96-400.45 96-480.23 96-560 152.16-616q56.16-56 135.84-56h144v72H288q-50 0-85 35t-35 85q0 50 35 85t85 35h144v72Zm-96-156v-72h288v72H336Zm192 156v-72h144q50 0 85-35t35-85q0-50-35-85t-85-35H528v-72h144q79.68 0 135.84 56.23 56.16 56.22 56.16 136Q864-400 807.84-344 751.68-288 672-288H528Z"/></svg></a>

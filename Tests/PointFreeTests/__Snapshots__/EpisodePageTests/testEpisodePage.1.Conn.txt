@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes/ep1-proof-in-functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 76788
+Content-Length: 76822
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -233,7 +233,7 @@ Prism.languages.insertBefore('swift', 'string-literal', {
   },
 });
 Prism.languages.sql.keyword = [
-  /\b(AND|DEFERRED|IMMEDIATE|IS|NOT|PRAGMA|STRICT)\b/,
+  /\b(AND|CONFLICT|DEFERRED|IMMEDIATE|IS|NOT|PRAGMA|STRICT)\b/,
   Prism.languages.sql.keyword
 ];</script>
     <meta name="title" content="Episode #1: Proof in Functions">
@@ -390,6 +390,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .left-FBkWQ3{left:0}
 .height-C8uWv{height:100%}
 .background-color-nbn0i3{background-color:#fff}
+.color-K2J0r1{color:#121212}
 .padding-bFon03{padding:4.0rem 2.0rem 4.0rem}
 .justify-content-n56cj2{justify-content:flex-start}
 .align-items-0Zubr3{align-items:baseline}
@@ -448,7 +449,6 @@ article div:hover > * > .display-Vk1P81{display:initial}
 .margin-bottom-NKv2f3{margin-bottom:0.5rem}
 .overflow-x-u7yQf2{overflow-x:auto}
 .padding-wKavA3{padding:1rem 1.5rem}
-.color-K2J0r1{color:#121212}
 .margin-iSoPp2{margin:5rem 0 2.5rem}
 .border-top-S35Gp4{border-top:1px solid #ccc}
 .margin-left-7EVUP2{margin-left:30%}
@@ -547,13 +547,13 @@ article div:hover > * > .display-Vk1P81{display:initial}
 @media (prefers-color-scheme: dark){
   .border-top-MR1dZ1{border-top:1px solid #555555}
   .background-color-dMv2U1{background-color:#121212}
+  .color-GOHNR{color:#fafafa}
   .border-Sh2jA3{border:1px solid #555}
   .border-top-MKosC4:not(:first-child){border-top:1px solid #555}
   .color-Cn4Oi1{color:#666666}
   .filter-OPc2q{filter:invert(100%)}
   .color-Jm6Xp1:link{color:#fafafa}
   .color-D9CPB:visited{color:#fafafa}
-  .color-GOHNR{color:#fafafa}
   .background-color-J82xc3{background-color:#191919}
   .color-atKCn2:link{color:#575757}
   .color-WJrrA4:visited{color:#575757}
@@ -704,7 +704,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
   </div>
 </pf-center-column>
 <div class="background-color-nbn0i3 background-color-dMv2U1">
-  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+  <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <pf-vgrid class="min-width-FBkWQ3 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-JKiHg4 row-gap-ZNGkd1 column-gap-GuM2x3 display-Vv9EA3 grid-template-columns-RehC04 row-gap-GuM2x3">
       <pf-vstack class="align-self-JHQ5W1 border-S35Gp4 border-Sh2jA3 border-radius-xypJ01 position-rSYDC top-KzzEY3 display-BvS8W3 flex-direction-7gclL align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
         <pf-vstack class="padding-8LFAG4 border-top-O6mdG2 border-top-MKosC4 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">

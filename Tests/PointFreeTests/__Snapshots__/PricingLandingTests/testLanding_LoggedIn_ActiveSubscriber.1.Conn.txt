@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 140058
+Content-Length: 140169
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -265,9 +265,9 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .color-PJVOr3{color:#242424}
 .border-Hc5Su2{border:1px solid #121212}
 .background-color-c5ixr2{background-color:#fafafa}
+.color-BoTGL{color:#171717}
 .padding-bottom-NBsge3{padding-bottom:3.0rem}
 .flex-wrap-RLKFg3{flex-wrap:nowrap}
-.color-BoTGL{color:#171717}
 .padding-FJnJ04{padding:2.5%}
 .color-GPfER1{color:#555555}
 .line-height-Xin5E2{line-height:1.5rem}
@@ -289,9 +289,9 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .margin-top-FBkWQ3{margin-top:0}
 .margin-bottom-cPmaw:not(:last-child){margin-bottom:0.3rem}
 .background-color-K2J0r1{background-color:#121212}
+.color-cemJK2{color:#974dff}
 .justify-content-7cCa9{justify-content:space-evenly}
 .padding-bottom-QgYLk2{padding-bottom:2.0rem}
-.color-cemJK2{color:#974dff}
 .text-transform-RqT8X1{text-transform:uppercase}
 .padding-dnNPN1{padding:1rem}
 .flex-basis-85P192{flex-basis:50%}
@@ -355,6 +355,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 @media (prefers-color-scheme: dark){
   .border-top-MR1dZ1{border-top:1px solid #555555}
   .background-color-dMv2U1{background-color:#121212}
+  .color-GOHNR{color:#fafafa}
   .border-bSHu21{border:1px #353535 solid}
   .background-color-Hakcq1{background-color:#242424}
   .border-bottom-a7wnM{border-bottom:1px solid #3d3d3d}
@@ -367,7 +368,6 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   .color-3tgnX1:link{color:#fff}
   .border-558L71{border:1px solid #fff}
   .background-color-xnERS1{background-color:#171717}
-  .color-GOHNR{color:#fafafa}
   .color-r4foZ2{color:#d8d8d8}
   .border-qEa5h2{border:1px solid #353535}
   .background-color-lJpf9{background-color:#555555}
@@ -445,7 +445,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   </pf-hstack>
 </pf-vstack>
 <div class="background-color-nbn0i3 background-color-dMv2U1">
-  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+  <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-9TexL row-gap-ZNGkd1">
       <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
         <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
@@ -559,7 +559,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   </div>
 </div>
 <div class="background-color-c5ixr2 background-color-xnERS1">
-  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+  <div class="color-BoTGL color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <div class="padding-bottom-NBsge3 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-CdPBO2 align-items-CdPBO2">
       <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">What to expect
       </h3>
@@ -601,7 +601,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   </div>
 </div>
 <div class="background-color-nbn0i3 background-color-dMv2U1">
-  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+  <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <div class="padding-bottom-NBsge3 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-CdPBO2 align-items-CdPBO2">
       <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">FAQ
       </h3>
@@ -681,7 +681,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   </div>
 </div>
 <div class="background-color-c5ixr2 background-color-xnERS1">
-  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+  <div class="color-BoTGL color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <div class="padding-bottom-NBsge3 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-CdPBO2 align-items-CdPBO2">
       <h3 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">What people are saying
       </h3>
@@ -843,7 +843,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   </div>
 </div>
 <div class="background-color-K2J0r1">
-  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-7cCa9 align-items-0Zubr3">
+  <div class="color-cemJK2 max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-7cCa9 align-items-0Zubr3">
     <div class="padding-bottom-QgYLk2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-CdPBO2 align-items-CdPBO2">
       <h6 class="color-cemJK2 font-weight-SywJI1 text-transform-RqT8X1 margin-FBkWQ3 margin-top-ukUO62 margin-bottom-cPmaw font-size-RTPM71 font-weight-SywJI1 line-height-EHclK1">Trusted by teams
       </h6>
