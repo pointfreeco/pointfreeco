@@ -1,20 +1,16 @@
-import Css
 import Dependencies
-import Either
 import Foundation
 import HttpPipeline
-import HttpPipelineHtmlSupport
 import Models
-import PointFreePrelude
 import PointFreeRouter
-import Prelude
-import Styleguide
-import Tuple
+import StyleguideV2
 import Views
 
 func showEpisodeCreditsMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseEnded, Data> {
   conn.writeStatus(.ok)
-    .respond(showEpisodeCreditsView)
+    .respondV2(layoutData: SimplePageLayoutData(title: "Episode credits")) {
+      EpisodeCreditView()
+    }
 }
 
 func redeemEpisodeCreditMiddleware(
