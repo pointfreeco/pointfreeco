@@ -141,8 +141,8 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
   case .wellKnown(let route):
     return await wellKnown(route: route, conn: conn.map { _ in })
 
-  case .auth(let auth):
-    return await authMiddleware(conn.map { _ in auth })
+  case .auth(let route):
+    return await authMiddleware(conn.map { _ in }, route: route)
 
   case .blog(let subRoute):
     return await blogMiddleware(conn: conn.map { _ in subRoute })
