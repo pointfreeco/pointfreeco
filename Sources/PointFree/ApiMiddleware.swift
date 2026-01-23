@@ -31,7 +31,9 @@ extension Api {
       self.publishedAt = episode.publishedAt
       self.sequence = episode.sequence
       self.subscriberOnly = episode.isSubscriberOnly(
-        currentDate: currentDate, emergencyMode: emergencyMode)
+        currentDate: currentDate,
+        emergencyMode: emergencyMode
+      )
       self.title = episode.fullTitle
     }
   }
@@ -94,7 +96,7 @@ func apiMiddleware(
       |> writeStatus(.ok)
       >=> respondJson
 
-  case let .episode(id):
+  case .episode(let id):
     let episode = episodes()
       .first { $0.id == id }
       .map {

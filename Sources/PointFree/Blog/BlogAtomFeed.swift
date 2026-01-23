@@ -26,20 +26,16 @@ private func feedView(posts: [BlogPost]) -> Node {
         email: "support@pointfree.co",
         name: "Point-Free"
       ),
-      entries: posts.map(atomEntry(for:)),
+      entries: posts.map {
+        AtomEntry(
+          content: .markdownBlock($0.blurb),
+          siteUrl: siteRouter.url(for: .blog(.show(slug: $0.slug))),
+          title: $0.title,
+          updated: $0.publishedAt
+        )
+      },
       siteUrl: siteRouter.url(for: .blog()),
       title: "Point-Free Pointers"
     )
-  )
-}
-
-private func atomEntry(for post: BlogPost) -> AtomEntry {
-  @Dependency(\.siteRouter) var siteRouter
-
-  return AtomEntry(
-    content: .markdownBlock(post.blurb),
-    siteUrl: siteRouter.url(for: .blog(.show(slug: post.slug))),
-    title: post.title,
-    updated: post.publishedAt
   )
 }

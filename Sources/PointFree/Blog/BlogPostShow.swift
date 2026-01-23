@@ -11,15 +11,17 @@ import Views
 
 func newsletterDetail(
   _ conn: Conn<StatusLineOpen, Void>,
-  _ postParam: Either<String, BlogPost.ID>
+  _ param: Either<String, BlogPost.ID>
 ) -> Conn<ResponseEnded, Data> {
-  guard let post = fetchBlogPost(forParam: postParam)
+  @Dependency(\.blogPosts) var blogPosts
+
+  guard
+    let post = blogPosts()
+      .first(where: { param.right == $0.id || param.left == $0.slug })
   else {
-    return
-      conn
-      .redirect(to: .home) {
-        $0.flash(.error, "Newsletter not found")
-      }
+    return conn.redirect(to: .home) {
+      $0.flash(.error, "Newsletter not found")
+    }
   }
 
   @Dependency(\.assets) var assets
@@ -37,14 +39,4 @@ func newsletterDetail(
     ) {
       NewsletterDetail(blogPost: post)
     }
-}
-
-func fetchBlogPost(forParam param: Either<String, BlogPost.ID>) -> BlogPost? {
-  @Dependency(\.blogPosts) var blogPosts
-
-  return blogPosts()
-    .first(where: {
-      param.right == .some($0.id)
-        || param.left == .some($0.slug)
-    })
 }
