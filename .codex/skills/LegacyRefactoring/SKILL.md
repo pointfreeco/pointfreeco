@@ -1,7 +1,10 @@
 ---
 name: Legacy Refactoring
 description: Refactor legacy code in pointfree.co
+metadata:
+  short-description: Refactor legacy code
 ---
+
 # Legacy Refactoring
 
 ## How to refactor middleware

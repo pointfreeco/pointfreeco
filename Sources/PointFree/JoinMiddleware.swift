@@ -15,8 +15,10 @@ import Tagged
 import URLRouting
 import Views
 
-func joinMiddleware(_ conn: Conn<StatusLineOpen, TeamInviteCode>) async -> Conn<ResponseEnded, Data>
-{
+func joinMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>,
+  route: TeamInviteCode
+) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.envVars.appSecret) var appSecret
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.database) var database
@@ -24,17 +26,15 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, TeamInviteCode>) async -> Conn<
   @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
 
-  switch conn.data {
-  case let .confirm(code: code, secret: secret):
+  switch route {
+  case .confirm(let code, let secret):
     guard let currentUser = currentUser
     else {
-      return
-        await conn
-        .redirect(
-          to: siteRouter.loginPath(
-            redirect: .teamInviteCode(.confirm(code: code, secret: secret))
-          )
+      return await conn.redirect(
+        to: siteRouter.loginPath(
+          redirect: .teamInviteCode(.confirm(code: code, secret: secret))
         )
+      )
     }
 
     guard
@@ -43,23 +43,19 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, TeamInviteCode>) async -> Conn<
       decryptedCode == code,
       decryptedUserID == currentUser.id
     else {
-      return
-        conn
-        .redirect(to: .home) {
-          $0.flash(.error, "This invite link is no longer valid")
-        }
+      return conn.redirect(to: .home) {
+        $0.flash(.error, "This invite link is no longer valid")
+      }
     }
 
     return await add(currentUser: currentUser, code: code, conn: conn)
 
-  case let .join(code: code, email: email):
+  case .join(let code, let email):
     guard let currentUser = currentUser
     else {
-      return
-        conn
-        .redirect(to: .teamInviteCode(.landing(code: code))) {
-          $0.flash(.notice, "You must be logged in to complete that action.")
-        }
+      return conn.redirect(to: .teamInviteCode(.landing(code: code))) {
+        $0.flash(.notice, "You must be logged in to complete that action.")
+      }
     }
 
     guard let email = email
@@ -72,14 +68,9 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, TeamInviteCode>) async -> Conn<
       let domain = email.split(separator: "@").last.map(String.init),
       code.rawValue.lowercased() == domain.lowercased()
     else {
-      return
-        conn
-        .redirect(to: .teamInviteCode(.landing(code: code))) {
-          $0.flash(
-            .error,
-            "Your email address must be from the @\(code) domain."
-          )
-        }
+      return conn.redirect(to: .teamInviteCode(.landing(code: code))) {
+        $0.flash(.error, "Your email address must be from the @\(code) domain.")
+      }
     }
 
     await fireAndForget {
@@ -89,25 +80,21 @@ func joinMiddleware(_ conn: Conn<StatusLineOpen, TeamInviteCode>) async -> Conn<
         content: inj2(confirmationEmail(email: email, code: code, currentUser: currentUser))
       )
     }
-    return
-      conn
-      .redirect(to: .home) {
-        $0.flash(.notice, "Confirmation email sent to \(email.rawValue).")
-      }
+    return conn.redirect(to: .home) {
+      $0.flash(.notice, "Confirmation email sent to \(email.rawValue).")
+    }
 
-  case let .landing(code):
+  case .landing(let code):
     guard
       let subscription = try? await database.fetchSubscription(teamInviteCode: code),
       subscription.stripeSubscriptionStatus.isActive
     else {
-      return
-        conn
-        .redirect(to: .home) {
-          $0.flash(
-            .error,
-            "Cannot join team as it is inactive. Contact the subscription owner to re-activate."
-          )
-        }
+      return conn.redirect(to: .home) {
+        $0.flash(
+          .error,
+          "Cannot join team as it is inactive. Contact the subscription owner to re-activate."
+        )
+      }
     }
 
     return
@@ -136,59 +123,49 @@ private func add<A>(
   do {
     subscription = try await database.fetchSubscription(teamInviteCode: code)
   } catch {
-    return
-      conn
-      .redirect(to: .home) {
-        $0.flash(.error, "Could not find that team.")
-      }
+    return conn.redirect(to: .home) {
+      $0.flash(.error, "Could not find that team.")
+    }
   }
 
   guard subscription.stripeSubscriptionStatus.isActive
   else {
-    return
-      conn
-      .redirect(to: .teamInviteCode(.landing(code: code))) {
-        $0.flash(
-          .error,
-          "Cannot join team as it is inactive. Contact the subscription owner to re-activate."
-        )
-      }
+    return conn.redirect(to: .teamInviteCode(.landing(code: code))) {
+      $0.flash(
+        .error,
+        "Cannot join team as it is inactive. Contact the subscription owner to re-activate."
+      )
+    }
   }
 
   if let subscriptionID = currentUser.subscriptionId,
     let currentUserSubscription = try? await database.fetchSubscription(id: subscriptionID),
     currentUserSubscription.stripeSubscriptionStatus.isActive
   {
-    return
-      conn
-      .redirect(to: .account()) {
-        $0.flash(
-          .warning,
-          "You cannot join this team as you already have an active subscription."
-        )
-      }
+    return conn.redirect(to: .account()) {
+      $0.flash(
+        .warning,
+        "You cannot join this team as you already have an active subscription."
+      )
+    }
   }
 
   let owner: User
   do {
     owner = try await database.fetchUser(id: subscription.userId)
   } catch {
-    return
-      conn
-      .redirect(to: .teamInviteCode(.landing(code: code))) {
-        $0.flash(.error, "Cannot join team.")
-      }
+    return conn.redirect(to: .teamInviteCode(.landing(code: code))) {
+      $0.flash(.error, "Cannot join team.")
+    }
   }
 
   let stripeSubscription: Stripe.Subscription
   do {
     stripeSubscription = try await stripe.fetchSubscription(subscription.stripeSubscriptionId)
   } catch {
-    return
-      conn
-      .redirect(to: .teamInviteCode(.landing(code: code))) {
-        $0.flash(.error, "Could not find subscription. Try again or contact support@pointfree.co.")
-      }
+    return conn.redirect(to: .teamInviteCode(.landing(code: code))) {
+      $0.flash(.error, "Could not find subscription. Try again or contact support@pointfree.co.")
+    }
   }
 
   let newPricing = Pricing(
@@ -229,14 +206,12 @@ private func add<A>(
       toSubscriptionID: subscription.id
     )
   } catch {
-    return
-      conn
-      .redirect(to: .teamInviteCode(.landing(code: code))) {
-        $0.flash(
-          .error,
-          "Could not add you to the team. Try again or contact support@pointfree.co."
-        )
-      }
+    return conn.redirect(to: .teamInviteCode(.landing(code: code))) {
+      $0.flash(
+        .error,
+        "Could not add you to the team. Try again or contact support@pointfree.co."
+      )
+    }
   }
   await fireAndForget { [shouldAddSubscriptionSeat] in
     _ = try? await sendEmail(
@@ -278,11 +253,9 @@ private func add<A>(
     )
   }
 
-  return
-    conn
-    .redirect(to: .account()) {
-      $0.flash(.notice, "You now have access to Point-Free!")
-    }
+  return conn.redirect(to: .account()) {
+    $0.flash(.notice, "You now have access to Point-Free!")
+  }
 }
 
 struct JoinSecretConversion: Conversion {
@@ -360,14 +333,17 @@ func confirmationEmail(
           .div(
             attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
             .h3(
-              attributes: [.class([Class.pf.type.responsiveTitle3])], "You’re invited!"),
+              attributes: [.class([Class.pf.type.responsiveTitle3])],
+              "You’re invited!"
+            ),
             .markdownBlock(
               attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
               """
               You’re invited to join the \(code.rawValue) team on
               [Point-Free](http://pointfree.co), a video series exploring advanced concepts in the
               Swift programming language. To accept, simply click the link below!
-              """),
+              """
+            ),
             .p(
               attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
               .a(
@@ -413,7 +389,9 @@ func newTeammateEmail(
           .div(
             attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
             .h3(
-              attributes: [.class([Class.pf.type.responsiveTitle3])], "You've got full access!"),
+              attributes: [.class([Class.pf.type.responsiveTitle3])],
+              "You've got full access!"
+            ),
             .markdownBlock(
               attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
               """
@@ -421,7 +399,8 @@ func newTeammateEmail(
               have access to all videos and transcripts. Be sure to check out our
               [collections](\(siteRouter.url(for: .collections()))) to find a series that
               interests you!
-              """)
+              """
+            )
           )
         )
       )
@@ -495,7 +474,9 @@ func ownerNewTeammateJoinedEmail(
             .div(
               attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
               .h3(
-                attributes: [.class([Class.pf.type.responsiveTitle3])], "New teammate added"),
+                attributes: [.class([Class.pf.type.responsiveTitle3])],
+                "New teammate added"
+              ),
               .markdownBlock(
                 attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
                 """
@@ -503,7 +484,8 @@ func ownerNewTeammateJoinedEmail(
                 now have full access to all videos and transcripts of every Point-Free video.
                 You can manage your team by visiting your [account
                 page](\(siteRouter.url(for: .account()))).
-                """)
+                """
+              )
             )
           )
         )

@@ -8,11 +8,12 @@ import Prelude
 import Views
 
 func liveMiddleware(
-  _ conn: Conn<StatusLineOpen, Live>
+  _ conn: Conn<StatusLineOpen, Void>,
+  route: Live
 ) -> Conn<ResponseEnded, Data> {
-  switch conn.data {
+  switch route {
   case .current:
-    return currentLivestream(conn.map { _ in })
+    return currentLivestream(conn)
   }
 }
 
