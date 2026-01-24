@@ -7,9 +7,7 @@ import Prelude
 import Tuple
 import Views
 
-func privacyMiddleware(
-  _ conn: Conn<StatusLineOpen, Void>
-) async -> Conn<ResponseEnded, Data> {
+func privacyMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseEnded, Data> {
   conn
     .writeStatus(.ok)
     .respondV2(

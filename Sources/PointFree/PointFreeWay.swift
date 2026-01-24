@@ -9,11 +9,11 @@ import Views
 
 func pointFreeWayMiddleware(
   _ conn: Conn<StatusLineOpen, Void>
-) async -> Conn<ResponseEnded, Data> {
+) -> Conn<ResponseEnded, Data> {
   @Dependency(\.currentUser) var currentUser
   guard currentUser.hasAccess(to: .thePointFreeWay)
   else {
-    return await conn.redirect(to: .home)
+    return conn.redirect(to: .home)
   }
 
   return conn

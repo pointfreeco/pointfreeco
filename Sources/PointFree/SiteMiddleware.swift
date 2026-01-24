@@ -90,7 +90,7 @@ public func siteMiddleware(
   return await withDependencies {
     $0.currentUser = currentUser
     $0.currentRoute = siteRoute ?? .home
-    $0.episodeProgresses = .init(
+    $0.episodeProgresses = [Episode.Sequence: EpisodeProgress](
       progresses.map { ($0.episodeSequence, $0) },
       uniquingKeysWith: { $1 }
     )
@@ -109,12 +109,12 @@ public func siteMiddleware(
   } operation: {
     // Early out if route cannot be matched
     guard siteRoute != nil
-    else { return await routeNotFoundMiddleware(conn).performAsync() }
-    return await render(conn: conn)
+    else { return routeNotFoundMiddleware(conn) }
+    return await render(conn: conn.map { _ in })
   }
 }
 
-private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<ResponseEnded, Data> {
+private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.currentRoute) var route
   @Dependency(\.siteRouter) var siteRouter
@@ -122,61 +122,60 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
 
   switch route {
   case .about:
-    return aboutResponse(conn.map { _ in () })
+    return aboutResponse(conn)
 
   case .theWay:
-    return await pointFreeWayMiddleware(conn.map { _ in })
+    return pointFreeWayMiddleware(conn)
 
-  case let .account(account):
+  case .account(let account):
     return await accountMiddleware(conn: conn.map(const(account)))
       .performAsync()
 
-  case let .admin(route):
-    return await adminMiddleware(conn: conn.map(const(route)))
-      .performAsync()
+  case .admin(let route):
+    return await adminMiddleware(conn, route: route)
 
-  case let .api(apiRoute):
+  case .api(let apiRoute):
     return await apiMiddleware(conn.map(const(apiRoute)))
       .performAsync()
 
   case .wellKnown(let route):
-    return await wellKnown(route: route, conn: conn.map { _ in () })
+    return await wellKnown(route: route, conn: conn)
 
-  case let .auth(auth):
-    return await authMiddleware(conn.map { _ in auth })
+  case .auth(let route):
+    return await authMiddleware(conn, route: route)
 
-  case let .blog(subRoute):
-    return await blogMiddleware(conn: conn.map { _ in subRoute })
+  case .blog(let route):
+    return blogMiddleware(conn, route: route)
 
-  case let .clips(clipsRoute):
+  case .clips(let clipsRoute):
     return await clipsMiddleware(conn.map(const(clipsRoute)))
 
   case .collections(.index):
-    return await collectionsIndexMiddleware(conn.map { _ in })
+    return await collectionsIndexMiddleware(conn)
 
-  case let .collections(.collection(slug, .show)):
+  case .collections(.collection(let slug, .show)):
     return await collectionMiddleware(conn.map(const(slug)))
       .performAsync()
 
-  case let .collections(.collection(collectionSlug, .section(sectionSlug, .show))):
+  case .collections(.collection(let collectionSlug, .section(let sectionSlug, .show))):
     return await collectionSectionMiddleware(
       conn.map(const(collectionSlug .*. sectionSlug .*. unit))
     )
     .performAsync()
 
-  case let .collections(.collection(collectionSlug, .section(_, .episode(episodeParam)))):
+  case .collections(.collection(let collectionSlug, .section(_, .episode(let episodeParam)))):
     return await episodesMiddleware(
       route: .episode(param: episodeParam, .show(collection: collectionSlug)),
-      conn.map { _ in }
+      conn
     )
 
-  case let .collections(.collection(_, .section(_, .progress(episodeParam, percent)))):
+  case .collections(.collection(_, .section(_, .progress(let episodeParam, let percent)))):
     return await episodesMiddleware(
       route: .episode(param: episodeParam, .progress(percent: percent)),
-      conn.map { _ in }
+      conn
     )
 
-  case let .discounts(couponId, billing):
+  case .discounts(let couponId, let billing):
     let subscribeData = SubscribeConfirmationData(
       billing: billing ?? .yearly,
       isOwnerTakingSeat: true,
@@ -190,35 +189,32 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     .performAsync()
 
   case .endGhosting:
-    return await endGhostingMiddleware(conn.map(const(unit)))
-      .performAsync()
+    return endGhostingMiddleware(conn)
 
   case .episodes(let route):
-    return await episodesMiddleware(route: route, conn.map(const(())))
+    return await episodesMiddleware(route: route, conn)
 
-  case let .enterprise(domain, .acceptInvite(encryptedEmail, encryptedUserId)):
+  case .enterprise(let domain, .acceptInvite(let encryptedEmail, let encryptedUserId)):
     return await enterpriseAcceptInviteMiddleware(
       conn.map(const(currentUser .*. domain .*. encryptedEmail .*. encryptedUserId .*. unit))
     )
     .performAsync()
 
-  case let .enterprise(domain, .landing):
+  case .enterprise(let domain, .landing):
     return await enterpriseLandingResponse(conn.map(const(domain)))
       .performAsync()
 
-  case let .enterprise(domain, .requestInvite(request)):
+  case .enterprise(let domain, .requestInvite(let request)):
     return await enterpriseRequestMiddleware(conn.map(const(domain .*. request .*. unit)))
       .performAsync()
 
-  case let .expressUnsubscribe(payload):
-    return await expressUnsubscribeMiddleware(conn.map(const(payload)))
-      .performAsync()
+  case .expressUnsubscribe(let payload):
+    return await expressUnsubscribeMiddleware(conn, payload: payload)
 
-  case let .expressUnsubscribeReply(payload):
-    return await expressUnsubscribeReplyMiddleware(conn.map(const(payload)))
-      .performAsync()
+  case .expressUnsubscribeReply(let payload):
+    return await expressUnsubscribeReplyMiddleware(conn, payload: payload)
 
-  case let .feed(feedRoute):
+  case .feed(let feedRoute):
     @Dependency(\.envVars.emergencyMode) var emergencyMode
     guard !emergencyMode
     else {
@@ -230,56 +226,56 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
 
     switch feedRoute {
     case .atom, .episodes:
-      return episodesRssMiddleware(conn.map { _ in })
+      return episodesRssMiddleware(conn)
     case .slack:
-      return slackEpisodesRssMiddleware(conn.map { _ in })
+      return slackEpisodesRssMiddleware(conn)
     }
 
-  case let .gifts(giftsRoute):
+  case .gifts(let giftsRoute):
     return await giftsMiddleware(conn.map(const(giftsRoute)))
       .performAsync()
 
   case .home:
     return await homeMiddleware(conn.map(const(())))
 
-  case let .invite(.addTeammate(email)):
+  case .invite(.addTeammate(let email)):
     return await addTeammateViaInviteMiddleware(conn.map(const(currentUser .*. email .*. unit)))
       .performAsync()
 
-  case let .invite(.invitation(inviteId, .accept)):
+  case .invite(.invitation(let inviteId, .accept)):
     return await acceptInviteMiddleware(conn.map(const(inviteId .*. currentUser .*. unit)))
       .performAsync()
 
-  case let .invite(.invitation(inviteId, .resend)):
+  case .invite(.invitation(let inviteId, .resend)):
     return await resendInviteMiddleware(conn.map(const(inviteId .*. currentUser .*. unit)))
       .performAsync()
 
-  case let .invite(.invitation(inviteId, .revoke)):
+  case .invite(.invitation(let inviteId, .revoke)):
     return await revokeInviteMiddleware(conn.map(const(inviteId .*. currentUser .*. unit)))
       .performAsync()
 
-  case let .invite(.invitation(inviteId, .show)):
+  case .invite(.invitation(let inviteId, .show)):
     return await showInviteMiddleware(conn.map(const(inviteId .*. currentUser .*. unit)))
       .performAsync()
 
-  case let .invite(.send(email)):
+  case .invite(.send(let email)):
     return await sendInviteMiddleware(conn.map(const(email .*. currentUser .*. unit)))
       .performAsync()
 
-  case let .teamInviteCode(joinRoute):
-    return await joinMiddleware(conn.map(const(joinRoute)))
+  case .teamInviteCode(let joinRoute):
+    return await joinMiddleware(conn, route: joinRoute)
 
-  case let .live(liveRoute):
-    return await liveMiddleware(conn.map(const(liveRoute)))
+  case .live(let liveRoute):
+    return liveMiddleware(conn, route: liveRoute)
 
   case .pricingLanding:
-    return await pricingMiddleware(conn.map { _ in })
+    return pricingMiddleware(conn)
 
   case .privacy:
-    return await privacyMiddleware(conn.map(const(())))
+    return privacyMiddleware(conn)
 
   case .resume:
-    return await resumeMiddleware(conn.map(const(())))
+    return await resumeMiddleware(conn)
 
   case .robots:
     return
@@ -292,18 +288,25 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
 
           #User-Agent: GPTBot
           #Disallow: /
-          """)
+          """
+      )
 
   case .slackInvite:
     @Dependency(\.envVars) var envVars
     return await conn.redirect(to: envVars.slackInviteURL)
 
-  case let .subscribe(data):
+  case .subscribe(let data):
     return await subscribeMiddleware(conn.map(const(currentUser .*. data .*. unit)))
       .performAsync()
 
-  case let .subscribeConfirmation(
-    lane, billing, isOwnerTakingSeat, teammates, referralCode, useRegionalDiscount
+  case .subscribeConfirmation(
+    let
+      lane,
+    let billing,
+    let isOwnerTakingSeat,
+    let teammates,
+    let referralCode,
+    let useRegionalDiscount
   ):
     let teammates = lane == .team ? (teammates ?? [""]) : []
     let subscribeData = SubscribeConfirmationData(
@@ -318,31 +321,33 @@ private func render(conn: Conn<StatusLineOpen, Prelude.Unit>) async -> Conn<Resp
     )
     .performAsync()
 
-  case let .team(.join(teamInviteCode, .landing)):
-    return await joinTeamLandingMiddleware(conn.map(const(teamInviteCode)))
-      .performAsync()
+  case .team(.join(let teamInviteCode, .landing)):
+    return joinTeamLandingMiddleware(conn, inviteCode: teamInviteCode)
 
-  case let .team(.join(teamInviteCode, .confirm)):
-    return await joinTeamMiddleware(conn.map(const(teamInviteCode)))
-      .performAsync()
+  case .team(.join(let teamInviteCode, .confirm)):
+    return joinTeamMiddleware(conn, inviteCode: teamInviteCode)
 
   case .team(.leave):
-    return await leaveTeamMiddleware(conn.map(const(currentUser .*. subscriberState .*. unit)))
-      .performAsync()
+    return await leaveTeamMiddleware(
+      conn,
+      currentUser: currentUser,
+      subscriberState: subscriberState
+    )
 
-  case let .team(.remove(teammateId)):
-    return await removeTeammateMiddleware(conn.map(const(teammateId .*. currentUser .*. unit)))
-      .performAsync()
+  case .team(.remove(let teammateId)):
+    return await removeTeammateMiddleware(
+      conn,
+      teammateID: teammateId,
+      currentUser: currentUser
+    )
 
-  case let .webhooks(.stripe(.paymentIntents(event))):
-    return await stripePaymentIntentsWebhookMiddleware(conn.map(const(event)))
-      .performAsync()
+  case .webhooks(.stripe(.paymentIntents(let event))):
+    return await stripePaymentIntentsWebhookMiddleware(conn, event: event)
 
-  case let .webhooks(.stripe(.subscriptions(event))):
-    return await stripeSubscriptionsWebhookMiddleware(conn.map(const(event)))
-      .performAsync()
+  case .webhooks(.stripe(.subscriptions(let event))):
+    return await stripeSubscriptionsWebhookMiddleware(conn, event: event)
 
-  case let .webhooks(.stripe(.unknown(event))):
+  case .webhooks(.stripe(.unknown(let event))):
     @Dependency(\.logger) var logger: Logger
     logger.log(.error, "Received invalid webhook \(event.type)")
     return
@@ -385,7 +390,7 @@ extension Conn where Step == StatusLineOpen {
 
   public func redirect(
     to route: SiteRoute,
-    headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A> = { $0 }
+    headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A>
   ) async -> Conn<ResponseEnded, Data> {
     @Dependency(\.siteRouter) var siteRouter
 
@@ -397,7 +402,7 @@ extension Conn where Step == StatusLineOpen {
 
   public func redirect(
     with route: (A) -> SiteRoute,
-    headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A> = { $0 }
+    headersMiddleware: (Conn<HeadersOpen, A>) async -> Conn<HeadersOpen, A>
   ) async -> Conn<ResponseEnded, Data> {
     @Dependency(\.siteRouter) var siteRouter
 

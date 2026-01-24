@@ -13,15 +13,27 @@ import Stripe
 import Styleguide
 import Views
 
-func sendGiftEmail(for gift: Gift) -> EitherIO<Error, SendEmailResponse> {
-  EitherIO {
-    try await sendEmail(
+func sendGiftEmail(for gift: Gift) async throws -> SendEmailResponse {
+  do {
+    return try await sendEmail(
       to: ["\(gift.toName) <\(gift.toEmail)>"],
       subject: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
       content: inj2(giftEmail(gift))
     )
+  } catch {
+    await notifyAdmins(subject: "Gift delivery failed", error: error)
+    throw error
   }
-  .catch(notifyAdmins(subject: "Gift delivery failed"))
+}
+
+private func notifyAdmins(subject: String, error: Error) async {
+  var errorDump = ""
+  dump(error, to: &errorDump)
+  _ = try? await sendEmail(
+    to: adminEmails,
+    subject: "[PointFree Error] \(subject)",
+    content: inj1(errorDump)
+  )
 }
 
 private let giftEmail =

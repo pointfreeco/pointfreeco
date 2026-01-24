@@ -31,7 +31,9 @@ extension Api {
       self.publishedAt = episode.publishedAt
       self.sequence = episode.sequence
       self.subscriberOnly = episode.isSubscriberOnly(
-        currentDate: currentDate, emergencyMode: emergencyMode)
+        currentDate: currentDate,
+        emergencyMode: emergencyMode
+      )
       self.title = episode.fullTitle
     }
   }
@@ -94,7 +96,7 @@ func apiMiddleware(
       |> writeStatus(.ok)
       >=> respondJson
 
-  case let .episode(id):
+  case .episode(let id):
     let episode = episodes()
       .first { $0.id == id }
       .map {
@@ -105,7 +107,7 @@ func apiMiddleware(
       }
 
     return conn.map(const(episode))
-      |> (filterMap(pure, or: routeNotFoundMiddleware)  // TODO: make a JSON 404 payload?
+      |> (filterMap(pure, or: { conn in IO { routeNotFoundMiddleware(conn) } })  // TODO: make a JSON 404 payload?
         <| writeStatus(.ok)
         >=> respondJson)
   }

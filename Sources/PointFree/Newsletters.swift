@@ -1,82 +1,59 @@
 import Dependencies
-import Either
 import Foundation
 import HttpPipeline
 import Models
 import PointFreeRouter
-import Prelude
 import Tagged
-import Tuple
 
-let expressUnsubscribeMiddleware =
-  decryptUserAndNewsletter
-  <| unsubscribeMiddleware
-  >=> redirect(to: .home, headersMiddleware: flash(.notice, "You’re now unsubscribed."))
+func expressUnsubscribeMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>,
+  payload: Encrypted<String>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.envVars.appSecret) var appSecret
+  guard
+    let string = payload.decrypt(with: appSecret),
+    let (userId, newsletter) = try? ExpressUnsubscribe().parse(string)
+  else {
+    return conn.redirect(to: .home) {
+      $0.flash(.error, "An error occurred. Please contact <support@pointfree.co>.")
+    }
+  }
 
-let expressUnsubscribeReplyMiddleware =
-  requireUserAndNewsletter
-  <| unsubscribeMiddleware
-  >=> head(.ok)
+  await unsubscribe(userID: userId, newsletter: newsletter)
+  return conn.redirect(to: .home) {
+    $0.flash(.notice, "You’re now unsubscribed.")
+  }
+}
 
-private func requireUserAndNewsletter(
-  _ middleware: @escaping Middleware<
-    StatusLineOpen, ResponseEnded, (User.ID, EmailSetting.Newsletter), Data
-  >
-) -> Middleware<StatusLineOpen, ResponseEnded, MailgunForwardPayload, Data> {
+func expressUnsubscribeReplyMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>,
+  payload: MailgunForwardPayload
+) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.mailgun) var mailgun
   @Dependency(\.envVars.mailgun.apiKey) var mailgunApiKey
 
-  return { conn in
-
-    guard
-      let (userId, newsletter) = mailgun.userIdAndNewsletter(
-        fromUnsubscribeEmail: conn.data.recipient),
-      mailgun.verify(payload: conn.data, with: mailgunApiKey)
-    else {
-      return conn |> head(.notAcceptable)
-    }
-
-    return conn.map(const((userId, newsletter))) |> middleware
+  guard
+    let (userId, newsletter) = mailgun.userIdAndNewsletter(
+      fromUnsubscribeEmail: payload.recipient
+    ),
+    mailgun.verify(payload: payload, with: mailgunApiKey)
+  else {
+    return conn.head(.notAcceptable)
   }
+
+  await unsubscribe(userID: userId, newsletter: newsletter)
+  return conn.head(.ok)
 }
 
-private func unsubscribeMiddleware<I>(
-  _ conn: Conn<I, (User.ID, EmailSetting.Newsletter)>
-) -> IO<Conn<I, Prelude.Unit>> {
+private func unsubscribe(
+  userID: User.ID,
+  newsletter: EmailSetting.Newsletter
+) async {
   @Dependency(\.database) var database
 
-  let (userId, newsletter) = conn.data
-
-  return EitherIO {
-    let settings = try await database.fetchEmailSettings(userID: userId)
+  await withErrorReporting {
+    let settings = try await database.fetchEmailSettings(userID: userID)
       .filter { $0.newsletter != newsletter }
-    try await database.updateUser(id: userId, emailSettings: settings.map(\.newsletter))
-  }
-  .run
-  .map(const(conn.map(const(unit))))
-}
-
-private func decryptUserAndNewsletter(
-  _ middleware: @escaping Middleware<
-    StatusLineOpen, ResponseEnded, (User.ID, EmailSetting.Newsletter), Data
-  >
-) -> Middleware<StatusLineOpen, ResponseEnded, Encrypted<String>, Data> {
-  @Dependency(\.envVars.appSecret) var appSecret
-
-  return { conn in
-    guard
-      let string = conn.data.decrypt(with: appSecret),
-      let (userId, newsletter) = try? ExpressUnsubscribe().parse(string)
-    else {
-      return conn.map(const(unit))
-        |> redirect(
-          to: .home,
-          headersMiddleware: flash(
-            .error, "An error occurred. Please contact <support@pointfree.co>."
-          )
-        )
-    }
-
-    return conn.map(const((userId, newsletter))) |> middleware
+    try await database.updateUser(id: userID, emailSettings: settings.map(\.newsletter))
   }
 }

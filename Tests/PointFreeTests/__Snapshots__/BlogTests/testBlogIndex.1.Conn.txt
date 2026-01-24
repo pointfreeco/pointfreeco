@@ -2,7 +2,7 @@ GET http://localhost:8080/blog
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 45869
+Content-Length: 45928
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -233,7 +233,7 @@ Prism.languages.insertBefore('swift', 'string-literal', {
   },
 });
 Prism.languages.sql.keyword = [
-  /\b(AND|DEFERRED|IMMEDIATE|IS|NOT|PRAGMA|STRICT)\b/,
+  /\b(AND|CONFLICT|DEFERRED|IMMEDIATE|IS|NOT|PRAGMA|STRICT)\b/,
   Prism.languages.sql.keyword
 ];</script>
     <meta name="title" content="Point-Free Pointers">
@@ -382,13 +382,13 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .line-height-vsvaN2{line-height:1.75rem}
 .color-c5ixr2{color:#fafafa}
 .background-color-nbn0i3{background-color:#fff}
+.color-K2J0r1{color:#121212}
 .padding-bFon03{padding:4.0rem 2.0rem 4.0rem}
 .justify-content-n56cj2{justify-content:flex-start}
 .align-items-0Zubr3{align-items:baseline}
 .padding-bottom-NBsge3{padding-bottom:3.0rem}
 .flex-wrap-RLKFg3{flex-wrap:nowrap}
 .justify-content-CdPBO2{justify-content:center}
-.color-K2J0r1{color:#121212}
 .color-FF7Dt2:link{color:#171717}
 .color-py8mM2:visited{color:#171717}
 .color-BoTGL{color:#171717}
@@ -575,7 +575,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   </pf-hstack>
 </pf-vstack>
 <div class="background-color-nbn0i3 background-color-dMv2U1">
-  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+  <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <div class="padding-bottom-NBsge3 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-CdPBO2 align-items-CdPBO2">
       <pf-vstack class="color-K2J0r1 color-GOHNR text-align-CdPBO2 width-C8uWv align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-FF7Dt2 color-Jm6Xp1 color-py8mM2 color-D9CPB color-BoTGL color-GOHNR" href="/blog/posts/0-mock-blog-post">
         <h3 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">
@@ -627,7 +627,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   </div>
 </div>
 <div class="background-color-nbn0i3 background-color-dMv2U1">
-  <div class="max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+  <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <div class="padding-bottom-NBsge3 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-CdPBO2 align-items-CdPBO2">
       <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Older posts
       </h3>

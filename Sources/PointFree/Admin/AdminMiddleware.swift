@@ -4,70 +4,72 @@ import HttpPipeline
 import Models
 import PointFreeDependencies
 import PointFreeRouter
-import Prelude
-import Tuple
 
-public func adminMiddleware(conn: Conn<StatusLineOpen, Admin>) -> IO<Conn<ResponseEnded, Data>> {
+public func adminMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>,
+  route: Admin
+) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.currentUser) var currentUser
-  let route = conn.data
-
   guard let currentUser = currentUser
-  else { return loginAndRedirect(conn) }
+  else { return conn.loginAndRedirect() }
 
   guard currentUser.isAdmin
   else {
-    return conn
-      |> redirect(to: .home, headersMiddleware: flash(.error, "You don't have access to that."))
+    return conn.redirect(to: .home) { $0.flash(.error, "You don't have access to that.") }
   }
 
   switch route {
-  case let .emailPreview(template: template):
-    return IO { await emailPreview(conn.map(const(template))) }
+  case .emailPreview(let template):
+    return await emailPreview(conn, template: template)
 
-  case let .episodeCredits(.add(userId: userId, episodeSequence: episodeSequence)):
-    return conn.map(const(userId .*. episodeSequence .*. unit))
-      |> redeemEpisodeCreditMiddleware
+  case .episodeCredits(.add(let userID, let episodeSequence)):
+    return await redeemEpisodeCreditMiddleware(
+      conn,
+      userID: userID,
+      episodeSequence: episodeSequence
+    )
 
   case .episodeCredits(.show):
-    return conn.map(const(()))
-      |> showEpisodeCreditsMiddleware
+    return showEpisodeCreditsMiddleware(conn)
 
   case .index:
-    return conn.map(const(()))
-      |> adminIndex
+    return adminIndex(conn)
 
   case .freeEpisodeEmail(.index):
-    return conn.map(const(()))
-      |> indexFreeEpisodeEmailMiddleware
+    return indexFreeEpisodeEmailMiddleware(conn)
 
-  case let .freeEpisodeEmail(.send(episodeId)):
-    return conn.map(const(episodeId))
-      |> sendFreeEpisodeEmailMiddleware
+  case .freeEpisodeEmail(.send(let episodeId)):
+    return await sendFreeEpisodeEmailMiddleware(conn, episodeID: episodeId)
 
   case .ghost(.index):
-    return conn.map(const(unit))
-      |> ghostIndexMiddleware
+    return ghostIndexMiddleware(conn)
 
-  case let .ghost(.start(userId)):
-    return conn.map(const(currentUser .*. userId .*. unit))
-      |> ghostStartMiddleware
+  case .ghost(.start(let ghosteeID)):
+    return await ghostStartMiddleware(conn, ghoster: currentUser, ghosteeID: ghosteeID)
 
-  case let .newBlogPostEmail(.send(blogPostId, formData, isTest)):
-    return conn.map(const(blogPostId .*. formData .*. isTest .*. unit))
-      |> sendNewBlogPostEmailMiddleware
+  case .newBlogPostEmail(.send(let blogPostId, let formData, let isTest)):
+    return await sendNewBlogPostEmailMiddleware(
+      conn,
+      blogPostID: blogPostId,
+      formData: formData,
+      isTest: isTest
+    )
 
   case .newBlogPostEmail(.index):
-    return conn.map(const(unit))
-      |> showNewBlogPostEmailMiddleware
+    return showNewBlogPostEmailMiddleware(conn)
 
-  case let
-    .newEpisodeEmail(.send(episodeId, subscriberAnnouncement, nonSubscriberAnnouncement, isTest)):
-    return conn.map(
-      const(episodeId .*. subscriberAnnouncement .*. nonSubscriberAnnouncement .*. isTest .*. unit))
-      |> sendNewEpisodeEmailMiddleware
+  case .newEpisodeEmail(
+    .send(let episodeId, let subscriberAnnouncement, let nonSubscriberAnnouncement, let isTest)
+  ):
+    return await sendNewEpisodeEmailMiddleware(
+      conn,
+      episodeID: episodeId,
+      subscriberAnnouncement: subscriberAnnouncement,
+      nonSubscriberAnnouncement: nonSubscriberAnnouncement,
+      isTest: isTest
+    )
 
   case .newEpisodeEmail(.show):
-    return conn.map(const(unit))
-      |> showNewEpisodeEmailMiddleware
+    return showNewEpisodeEmailMiddleware(conn)
   }
 }

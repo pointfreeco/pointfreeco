@@ -174,7 +174,7 @@ private func fetchAndValidateGiftAndDiscount(
     .flatMap { errorOrGiftAndPaymentIntent in
       switch errorOrGiftAndPaymentIntent {
       case .left:
-        return conn |> routeNotFoundMiddleware
+        return IO { routeNotFoundMiddleware(conn)}
 
       case let .right((gift, paymentIntent)):
         guard gift.stripeSubscriptionId == nil

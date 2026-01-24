@@ -37,7 +37,7 @@ private let fetchCollectionMiddleware: MT<Episode.Collection.Slug, Episode.Colle
   middleware in
   return { conn in
     guard let collection = fetchCollection(conn.data)
-    else { return routeNotFoundMiddleware(conn) }
+    else { return IO { routeNotFoundMiddleware(conn) } }
 
     return middleware(conn.map(const(collection)))
   }

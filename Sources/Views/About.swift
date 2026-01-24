@@ -35,7 +35,6 @@ public struct AboutView: HTML {
           [ksr-open-source]: https://kickstarter.engineering/open-sourcing-our-android-and-ios-apps-6891be909fcd
           """
         )
-        .color(.offBlack.dark(.offWhite))
       }
 
       CenterColumn {
@@ -90,7 +89,6 @@ public struct AboutView: HTML {
             """
           )
           .inlineStyle("max-width", "48rem")
-          .color(.offBlack.dark(.offWhite))
         }
         .inlineStyle("margin", "0 auto")
       }
@@ -113,7 +111,6 @@ public struct AboutView: HTML {
             """
           )
           .inlineStyle("max-width", "48rem")
-          .color(.offBlack.dark(.offWhite))
         }
         .inlineStyle("margin", "0 auto")
       }

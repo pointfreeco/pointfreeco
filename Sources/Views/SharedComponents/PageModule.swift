@@ -79,6 +79,7 @@ public struct PageModule<Title: HTML, Content: HTML>: HTML {
         "\(theme.topMargin)rem \(theme.leftRightMarginDesktop)rem \(theme.bottomMargin)rem",
         media: .desktop
       )
+      .color(theme.color)
       .backgroundColor(theme.contentBackgroundColor)
     }
     .backgroundColor(theme.backgroundColor)

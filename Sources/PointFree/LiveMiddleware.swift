@@ -8,19 +8,20 @@ import Prelude
 import Views
 
 func liveMiddleware(
-  _ conn: Conn<StatusLineOpen, Live>
-) async -> Conn<ResponseEnded, Data> {
-  switch conn.data {
+  _ conn: Conn<StatusLineOpen, Void>,
+  route: Live
+) -> Conn<ResponseEnded, Data> {
+  switch route {
   case .current:
-    return await currentLivestream(conn.map(const(())))
+    return currentLivestream(conn)
   }
 }
 
 private func currentLivestream(
   _ conn: Conn<StatusLineOpen, Void>
-) async -> Conn<ResponseEnded, Data> {
+) -> Conn<ResponseEnded, Data> {
   @Dependency(\.livestreams) var livestreams: [Livestream]
-  let isLive = livestreams.first(where: { $0.isLive }) != nil
+  let isLive = livestreams.first(where: \.isLive) != nil
 
   return
     conn
@@ -29,7 +30,6 @@ private func currentLivestream(
       view: liveView,
       layoutData: {
         SimplePageLayoutData(
-          data: (),
           description: isLive
             ? """
             We are livestreaming right now! Tune in to hear us discuss topics from episodes,

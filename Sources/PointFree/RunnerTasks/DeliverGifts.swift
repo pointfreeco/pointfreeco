@@ -13,7 +13,7 @@ public func deliverGifts() -> EitherIO<Error, Prelude.Unit> {
       sequence(
         gifts.map { gift in
           gift.stripePaymentIntentStatus == .succeeded
-            ? sendGiftEmail(for: gift)
+            ? EitherIO { try await sendGiftEmail(for: gift) }
               .delay(.milliseconds(200))
               .retry(maxRetries: 3, backoff: { .seconds(10 * $0) })
               .flatMap { _ in

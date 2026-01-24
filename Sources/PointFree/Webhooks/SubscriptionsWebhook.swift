@@ -15,33 +15,30 @@ import Prelude
 import Stripe
 import Styleguide
 
-let stripeSubscriptionsWebhookMiddleware =
-  validateStripeSignature
-  <<< filterInvalidInvoices
-  <<< requireSubscriptionId
-  <| { conn in IO { await handleFailedPayment(conn) } }
-
-private let filterInvalidInvoices:
-  MT<Event<Either<Invoice, Stripe.Subscription>>, Event<Either<Invoice, Stripe.Subscription>>> =
-    filter(
-      {
-        extraSubscriptionId(fromEvent: $0) == nil
-          || $0.data.object.either({ $0.number != nil }, const(true))
-      },
-      or: writeStatus(.ok) >=> respond(text: "OK")
-    )
-
-private let requireSubscriptionId:
-  MT<Event<Either<Invoice, Stripe.Subscription>>, Stripe.Subscription.ID> = filterMap(
-    extraSubscriptionId(fromEvent:) >>> pure,
-    or: stripeHookFailure(
+func stripeSubscriptionsWebhookMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>,
+  event: Event<Either<Invoice, Stripe.Subscription>>
+) async -> Conn<ResponseEnded, Data> {
+  if let failure = validateStripeSignature(conn) { return failure }
+  guard
+    extraSubscriptionId(fromEvent: event) == nil
+      || event.data.object.either({ $0.number != nil }, { _ in true })
+  else {
+    return conn.writeStatus(.ok).respond(text: "OK")
+  }
+  guard let subscriptionID = extraSubscriptionId(fromEvent: event) else {
+    return stripeHookFailure(
+      conn,
       subject: "[PointFree Error] Stripe Hook Failed!",
       body: "Couldn't extract subscription id from event payload."
     )
-  )
+  }
+  return await handleFailedPayment(conn, subscriptionID: subscriptionID)
+}
 
 private func handleFailedPayment(
-  _ conn: Conn<StatusLineOpen, Stripe.Subscription.ID>
+  _ conn: Conn<StatusLineOpen, Void>,
+  subscriptionID: Stripe.Subscription.ID
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
   @Dependency(\.fireAndForget) var fireAndForget
@@ -49,7 +46,7 @@ private func handleFailedPayment(
   @Dependency(\.stripe) var stripe
 
   do {
-    let stripeSubscription = try await stripe.fetchSubscription(conn.data)
+    let stripeSubscription = try await stripe.fetchSubscription(subscriptionID)
     guard !stripeSubscription.status.isIncomplete else { return conn.head(.ok) }
 
     let subscription = try await database.updateStripeSubscription(stripeSubscription)

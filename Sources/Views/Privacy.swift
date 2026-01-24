@@ -57,7 +57,6 @@ public struct PrivacyAndTerms: HTML {
         This document was last updated on January 13, 2020.
         """
       )
-      .color(.offBlack.dark(.offWhite))
     }
   }
 }

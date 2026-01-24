@@ -22,43 +22,30 @@ import Views
 #endif
 
 func authMiddleware(
-  _ conn: Conn<StatusLineOpen, SiteRoute.Auth>
+  _ conn: Conn<StatusLineOpen, Void>,
+  route: SiteRoute.Auth
 ) async -> Conn<ResponseEnded, Data> {
-  switch conn.data {
+  switch route {
   case .failureLanding(let redirect):
-    return await failureLanding(
-      redirect: redirect,
-      conn: conn.map(const(()))
-    )
+    return await failureLanding(redirect: redirect, conn: conn)
 
-  case let .gitHubAuth(redirect):
-    return await loginResponse(redirect: redirect, conn: conn.map(const(())))
+  case .gitHubAuth(let redirect):
+    return await loginResponse(redirect: redirect, conn: conn)
 
-  case let .gitHubCallback(code, redirect):
-    return await gitHubCallbackResponse(code: code, redirect: redirect, conn.map(const(())))
+  case .gitHubCallback(let code, let redirect):
+    return await gitHubCallbackResponse(code: code, redirect: redirect, conn)
 
-  case let .login(redirect):
-    return await loginSignUpMiddleware(
-      redirect: redirect,
-      type: .login,
-      conn.map(const(()))
-    )
+  case .login(let redirect):
+    return await loginSignUpMiddleware(redirect: redirect, type: .login, conn)
 
   case .logout:
-    return await logoutResponse(conn.map(const(())))
+    return await logoutResponse(conn)
 
-  case let .signUp(redirect):
-    return await loginSignUpMiddleware(
-      redirect: redirect,
-      type: .signUp,
-      conn.map(const(()))
-    )
+  case .signUp(let redirect):
+    return await loginSignUpMiddleware(redirect: redirect, type: .signUp, conn)
 
   case .updateGitHub(let redirect):
-    return await updateGitHub(
-      redirect: redirect,
-      conn: conn.map(const(()))
-    )
+    return await updateGitHub(redirect: redirect, conn: conn)
   }
 }
 
@@ -73,11 +60,9 @@ private func updateGitHub(
   @Dependency(\.siteRouter) var siteRouter
 
   guard let accessToken = conn.request.session.gitHubAccessToken else {
-    return
-      conn
-      .redirect(to: .home) {
-        $0.flash(.error, "We could not update your GitHub account. Please try again.")
-      }
+    return conn.redirect(to: .home) {
+      $0.flash(.error, "We could not update your GitHub account. Please try again.")
+    }
   }
 
   do {
@@ -116,25 +101,21 @@ private func updateGitHub(
         reportIssue(error, "Unable to send email: \"Your GitHub account has been updated\"")
       }
     }
-    return
-      conn
-      .redirect(to: redirect ?? siteRouter.path(for: .home)) {
-        $0
-          .writeSessionCookie {
-            $0.flash = Flash(
-              .notice,
-              "Your GitHub account has been updated to @\(newGitHubUser.login)."
-            )
-            $0.gitHubAccessToken = nil
-            $0.user = .standard(existingUser.id)
-          }
-      }
+    return conn.redirect(to: redirect ?? siteRouter.path(for: .home)) {
+      $0
+        .writeSessionCookie {
+          $0.flash = Flash(
+            .notice,
+            "Your GitHub account has been updated to @\(newGitHubUser.login)."
+          )
+          $0.gitHubAccessToken = nil
+          $0.user = .standard(existingUser.id)
+        }
+    }
   } catch {
-    return
-      conn
-      .redirect(to: .home) {
-        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
-      }
+    return conn.redirect(to: .home) {
+      $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+    }
   }
 }
 
@@ -146,11 +127,9 @@ private func failureLanding(
   @Dependency(\.gitHub) var gitHub
 
   guard let accessToken = conn.request.session.gitHubAccessToken else {
-    return
-      conn
-      .redirect(to: .home) {
-        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
-      }
+    return conn.redirect(to: .home) {
+      $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+    }
   }
 
   do {
@@ -195,19 +174,15 @@ private func gitHubCallbackResponse(
 
   guard currentUser == nil
   else {
-    return
-      conn
-      .redirect(to: .account()) {
-        $0.flash(.warning, "You’re already logged in.")
-      }
+    return conn.redirect(to: .account()) {
+      $0.flash(.warning, "You’re already logged in.")
+    }
   }
   guard let code
   else {
-    return
-      conn
-      .redirect(to: .auth(.login(redirect: nil))) {
-        $0.flash(.warning, "GitHub code wasn't found :(")
-      }
+    return conn.redirect(to: .auth(.login(redirect: nil))) {
+      $0.flash(.warning, "GitHub code wasn't found :(")
+    }
   }
   do {
     let accessToken = try await gitHub.fetchAuthToken(code: code).accessToken
@@ -218,15 +193,11 @@ private func gitHubCallbackResponse(
       conn
     )
   } catch let error as OAuthError where error.error == .badVerificationCode {
-    return
-      await conn
-      .redirect(to: .auth(.gitHubAuth(redirect: redirect)))
+    return conn.redirect(to: .auth(.gitHubAuth(redirect: redirect)))
   } catch {
-    return
-      conn
-      .redirect(to: .home) {
-        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
-      }
+    return conn.redirect(to: .home) {
+      $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+    }
   }
 }
 
@@ -240,11 +211,9 @@ private func loginResponse(
 
   guard currentUser == nil
   else {
-    return
-      conn
-      .redirect(to: .account()) {
-        $0.flash(.warning, "You’re already logged in.")
-      }
+    return conn.redirect(to: .account()) {
+      $0.flash(.warning, "You’re already logged in.")
+    }
   }
 
   let url = GitHubRouter().url(
@@ -264,29 +233,17 @@ private func loginResponse(
 private func logoutResponse(
   _ conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
-  conn
-    .redirect(to: .home) {
-      $0.writeSessionCookie { $0.user = nil }
-    }
+  conn.redirect(to: .home) { $0.writeSessionCookie { $0.user = nil } }
 }
 
 extension Conn where Step == StatusLineOpen {
   public func loginAndRedirect() -> Conn<ResponseEnded, Data> {
-    self.redirect(to: .auth(.gitHubAuth(redirect: self.request.url?.absoluteString)))
+    redirect(to: .auth(.gitHubAuth(redirect: request.url?.absoluteString)))
   }
 }
 
 public func loginAndRedirect<A>(_ conn: Conn<StatusLineOpen, A>) -> IO<Conn<ResponseEnded, Data>> {
-  conn |> redirect(to: .auth(.gitHubAuth(redirect: conn.request.url?.absoluteString)))
-}
-
-public func fetchUser<A>(_ conn: Conn<StatusLineOpen, T2<Models.User.ID, A>>)
-  -> IO<Conn<StatusLineOpen, T2<Models.User?, A>>>
-{
-  @Dependency(\.database) var database
-
-  return IO { try? await database.fetchUser(id: get1(conn.data)) }
-    .map { conn.map(const($0 .*. conn.data.second)) }
+  IO { conn.loginAndRedirect() }
 }
 
 private func fetchOrRegisterUser(
@@ -298,10 +255,7 @@ private func fetchOrRegisterUser(
   do {
     return try await database.fetchUser(gitHubID: gitHubUser.id)
   } catch {
-    return try await registerUser(
-      accessToken: accessToken,
-      gitHubUser: gitHubUser
-    )
+    return try await registerUser(accessToken: accessToken, gitHubUser: gitHubUser)
   }
 }
 
@@ -366,13 +320,11 @@ private func gitHubAuthTokenMiddleware(
       $0.writeSessionCookie { $0.user = .standard(user.id) }
     }
   } catch is GitHubUser.AlreadyRegistered {
-    return
-      conn
-      .redirect(to: .auth(.failureLanding(redirect: redirect))) {
-        $0.writeSessionCookie {
-          $0.gitHubAccessToken = accessToken
-        }
+    return conn.redirect(to: .auth(.failureLanding(redirect: redirect))) {
+      $0.writeSessionCookie {
+        $0.gitHubAccessToken = accessToken
       }
+    }
   } catch {
     await fireAndForget {
       try await sendEmail(

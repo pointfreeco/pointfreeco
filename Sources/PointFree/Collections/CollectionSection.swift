@@ -44,5 +44,5 @@ private let fetchCollectionSectionMiddleware:
           }
         })
     },
-    or: routeNotFoundMiddleware
+    or: { conn in IO { routeNotFoundMiddleware(conn) } }
   )
