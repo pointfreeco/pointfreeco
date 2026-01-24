@@ -204,8 +204,7 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
     return await enterpriseLandingResponse(conn, domain: domain)
 
   case .enterprise(let domain, .requestInvite(let request)):
-    return await enterpriseRequestMiddleware(conn.map(const(domain .*. request .*. unit)))
-      .performAsync()
+    return await enterpriseRequestMiddleware(conn.map { _ in }, domain: domain, request: request)
 
   case .expressUnsubscribe(let payload):
     return await expressUnsubscribeMiddleware(conn, payload: payload)

@@ -46,26 +46,65 @@ func enterpriseLandingResponse(
     )
 }
 
-let enterpriseRequestMiddleware =
-  requireEnterpriseAccountWithFormData
-  <<< validateMembership
-  <<< sendEnterpriseInvitation
-  <| { conn in
-    conn
-      |> redirect(
-        to: .enterprise(get1(conn.data).domain),
-        headersMiddleware: flash(
-          .notice, "We've sent an invite to \(get2(conn.data).email.rawValue)!")
+func enterpriseRequestMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>,
+  domain: EnterpriseAccount.Domain,
+  request: EnterpriseRequestFormData
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+  @Dependency(\.envVars.appSecret) var appSecret
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.siteRouter) var siteRouter
+
+  guard let account = try? await database.fetchEnterpriseAccount(forDomain: domain)
+  else { return conn.redirect(to: .home) }
+
+  guard let currentUser
+  else { return conn.loginAndRedirect() }
+
+  if currentUser.subscriptionId == account.subscriptionId {
+    return conn.redirect(to: .account()) {
+      $0.flash(
+        .notice,
+        "🙌 You're already enrolled in \(account.companyName)'s subscription!"
       )
+    }
   }
 
-private let requireEnterpriseAccountWithFormData:
-  MT<
-    Tuple2<EnterpriseAccount.Domain, EnterpriseRequestFormData>,
-    Tuple2<EnterpriseAccount, EnterpriseRequestFormData>
-  > = filterMap(
-    over1(fetchEnterpriseAccount) >>> sequence1 >>> map(require1), or: redirect(to: .home)
-  )
+  if !account.domains.contains(where: request.email.hasDomain) {
+    let domains = account.domains.map { "\"\($0)\"" }.joined(separator: ", ")
+    return conn.redirect(to: siteRouter.path(for: .enterprise(account.domain))) {
+      $0.flash(
+        .error,
+        "The email you entered must be on one of the following domains: \(domains)"
+      )
+    }
+  }
+
+  guard
+    let encryptedEmail = Encrypted(request.email.rawValue, with: appSecret),
+    let encryptedUserId = Encrypted(currentUser.id.rawValue.uuidString, with: appSecret)
+  else {
+    return conn.redirect(to: siteRouter.path(for: .enterprise(account.domain))) {
+      $0.flash(
+        .warning,
+        "Something went wrong. Please try again or contact <support@pointfree.co>."
+      )
+    }
+  }
+
+  Task {
+    _ = try await sendEmail(
+      to: [request.email],
+      subject: "You’re invited to join the \(account.companyName) team on Point-Free",
+      content: inj2(enterpriseInviteEmailView((account, encryptedEmail, encryptedUserId)))
+    )
+  }
+
+  return conn.redirect(to: .enterprise(account.domain)) {
+    $0.flash(.notice, "We've sent an invite to \(request.email.rawValue)!")
+  }
+}
 
 let enterpriseAcceptInviteMiddleware =
   redirectCurrentSubscribersAndRequireEnterpriseAccount
@@ -173,28 +212,6 @@ private func invalidInvitationLinkMiddleware<A, Z>(reason: String)
   }
 }
 
-private func validateMembership<Z>(
-  _ middleware: @escaping M<T2<EnterpriseAccount, Z>>
-) -> M<T2<EnterpriseAccount, Z>> {
-  return { conn in
-    @Dependency(\.currentUser) var currentUser
-    let account = get1(conn.data)
-
-    if currentUser?.subscriptionId == account.subscriptionId {
-      return conn
-        |> redirect(
-          to: .account(),
-          headersMiddleware: flash(
-            .notice,
-            "🙌 You're already enrolled in \(account.companyName)'s subscription!"
-          )
-        )
-    } else {
-      return middleware(conn)
-    }
-  }
-}
-
 private func validateInvitation(
   _ data: Tuple4<User, EnterpriseAccount, Encrypted<String>, Encrypted<String>>
 ) -> Tuple4<User, EnterpriseAccount, EmailAddress, User.ID>? {
@@ -229,55 +246,6 @@ private func validateInvitation(
       |> over3(const(email))
       |> over4(const(userId))
   )
-}
-
-private func sendEnterpriseInvitation<Z>(
-  _ middleware: @escaping M<T3<EnterpriseAccount, EnterpriseRequestFormData, Z>>
-) -> M<T3<EnterpriseAccount, EnterpriseRequestFormData, Z>> {
-  @Dependency(\.envVars.appSecret) var appSecret
-  @Dependency(\.currentUser) var currentUser
-  @Dependency(\.siteRouter) var siteRouter
-
-  return { conn in
-    guard let currentUser = currentUser
-    else { return loginAndRedirect(conn) }
-
-    let (account, request) = (get1(conn.data), get2(conn.data))
-
-    if !account.domains.contains(where: request.email.hasDomain) {
-      let domains = account.domains.map { "\"\($0)\"" }.joined(separator: ", ")
-      return conn
-        |> redirect(
-          to: siteRouter.path(for: .enterprise(account.domain)),
-          headersMiddleware: flash(
-            .error,
-            "The email you entered must be on one of the following domains: \(domains)"
-          )
-        )
-    } else if let encryptedEmail = Encrypted(
-      request.email.rawValue, with: appSecret),
-      let encryptedUserId = Encrypted(currentUser.id.rawValue.uuidString, with: appSecret)
-    {
-      Task {
-        _ = try await sendEmail(
-          to: [request.email],
-          subject: "You’re invited to join the \(account.companyName) team on Point-Free",
-          content: inj2(enterpriseInviteEmailView((account, encryptedEmail, encryptedUserId)))
-        )
-      }
-      return conn
-        |> middleware
-    } else {
-      return conn
-        |> redirect(
-          to: siteRouter.path(for: .enterprise(account.domain)),
-          headersMiddleware: flash(
-            .warning,
-            "Something went wrong. Please try again or contact <support@pointfree.co>."
-          )
-        )
-    }
-  }
 }
 
 func fetchEnterpriseAccount(_ domain: EnterpriseAccount.Domain) -> IO<EnterpriseAccount?> {
