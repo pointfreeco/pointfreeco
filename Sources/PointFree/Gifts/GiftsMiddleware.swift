@@ -1,34 +1,25 @@
 import Foundation
 import HttpPipeline
 import Models
-import PointFreePrelude
 import PointFreeRouter
-import Prelude
-import Tuple
 
 public func giftsMiddleware(
-  _ conn: Conn<StatusLineOpen, Gifts>
-) -> IO<Conn<ResponseEnded, Data>> {
-  let giftRoute = conn.data
-
-  switch giftRoute {
+  _ conn: Conn<StatusLineOpen, Void>, route: Gifts
+) async -> Conn<ResponseEnded, Data> {
+  switch route {
   case let .create(formData):
-    return conn.map(const(formData))
-      |> giftCreateMiddleware
+    return await giftCreateMiddleware(conn, formData: formData)
 
   case .index:
-    return IO {
-      await giftsIndexMiddleware(conn.map(const(())))
-    }
+    return giftsIndexMiddleware(conn)
 
   case let .plan(plan):
-    return conn.map(const(plan))
-      |> giftPaymentMiddleware
+    return giftPaymentMiddleware(conn, plan: plan)
 
   case let .redeem(giftId, .confirm):
-    return IO { await giftRedemptionMiddleware(conn.map { _ in }, giftId: giftId) }
+    return await giftRedemptionMiddleware(conn, giftId: giftId)
 
   case let .redeem(giftId, .landing):
-    return IO { await giftRedemptionLandingMiddleware(conn.map { _ in }, giftId: giftId) }
+    return await giftRedemptionLandingMiddleware(conn, giftId: giftId)
   }
 }

@@ -10,7 +10,7 @@ import Views
 
 public func giftsIndexMiddleware(
   _ conn: Conn<StatusLineOpen, Void>
-) async -> Conn<ResponseEnded, Data> {
+) -> Conn<ResponseEnded, Data> {
   conn
     .writeStatus(.ok)
     .respondV2(

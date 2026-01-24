@@ -232,9 +232,8 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
       return slackEpisodesRssMiddleware(conn)
     }
 
-  case .gifts(let giftsRoute):
-    return await giftsMiddleware(conn.map(const(giftsRoute)))
-      .performAsync()
+  case .gifts(let route):
+    return await giftsMiddleware(conn, route: route)
 
   case .home:
     return await homeMiddleware(conn.map(const(())))
