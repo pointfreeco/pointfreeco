@@ -26,11 +26,9 @@ public func giftsMiddleware(
       |> giftPaymentMiddleware
 
   case let .redeem(giftId, .confirm):
-    return conn.map(const(giftId))
-      |> giftRedemptionMiddleware
+    return IO { await giftRedemptionMiddleware(conn.map { _ in }, giftId: giftId) }
 
   case let .redeem(giftId, .landing):
-    return conn.map(const(giftId))
-      |> giftRedemptionLandingMiddleware
+    return IO { await giftRedemptionLandingMiddleware(conn.map { _ in }, giftId: giftId) }
   }
 }
