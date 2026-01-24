@@ -196,9 +196,12 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
 
   case .enterprise(let domain, .acceptInvite(let encryptedEmail, let encryptedUserId)):
     return await enterpriseAcceptInviteMiddleware(
-      conn.map(const(currentUser .*. domain .*. encryptedEmail .*. encryptedUserId .*. unit))
+      conn.map { _ in },
+      currentUser: currentUser,
+      domain: domain,
+      encryptedEmail: encryptedEmail,
+      encryptedUserId: encryptedUserId
     )
-    .performAsync()
 
   case .enterprise(let domain, .landing):
     return await enterpriseLandingResponse(conn, domain: domain)
