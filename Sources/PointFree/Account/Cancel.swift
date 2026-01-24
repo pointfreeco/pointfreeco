@@ -16,20 +16,77 @@ import Stripe
 import Styleguide
 import Tuple
 
-let cancelMiddleware = requireUserAndStripeSubscription(cancelResponse)
+func cancelMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>,
+  userID: User.ID?
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+  @Dependency(\.stripe) var stripe
 
-let reactivateMiddleware = requireUserAndStripeSubscription(reactivateResponse)
+  guard let userID, let user = try? await database.fetchUser(id: userID)
+  else { return conn.loginAndRedirect() }
+
+  guard let subscription = try? await database.fetchSubscription(ownerID: user.id)
+  else {
+    return conn.redirect(to: .account()) {
+      $0.flash(.error, "Doesn’t look like you’re subscribed yet!")
+    }
+  }
+
+  guard
+    let stripeSubscription =
+      try? await stripe
+      .fetchSubscription(id: subscription.stripeSubscriptionId)
+  else {
+    return conn.redirect(to: .account()) {
+      $0.flash(.error, genericSubscriptionError)
+    }
+  }
+
+  return await cancelResponse(conn, user: user, stripeSubscription: stripeSubscription)
+}
+
+func reactivateMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>,
+  userID: User.ID?
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+  @Dependency(\.stripe) var stripe
+
+  guard let userID, let user = try? await database.fetchUser(id: userID)
+  else { return conn.loginAndRedirect() }
+
+  guard let subscription = try? await database.fetchSubscription(ownerID: user.id)
+  else {
+    return conn.redirect(to: .account()) {
+      $0.flash(.error, "Doesn’t look like you’re subscribed yet!")
+    }
+  }
+
+  guard
+    let stripeSubscription =
+      try? await stripe
+      .fetchSubscription(id: subscription.stripeSubscriptionId)
+  else {
+    return conn.redirect(to: .account()) {
+      $0.flash(.error, genericSubscriptionError)
+    }
+  }
+
+  return await reactivateResponse(conn, user: user, stripeSubscription: stripeSubscription)
+}
 
 // MARK: Middleware
 
 private func cancelResponse(
-  _ conn: Conn<StatusLineOpen, (User, Stripe.Subscription)>
+  _ conn: Conn<StatusLineOpen, Void>,
+  user: User,
+  stripeSubscription: Stripe.Subscription
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.stripe) var stripe
 
   do {
-    let (user, stripeSubscription) = conn.data
     guard stripeSubscription.isRenewing
     else {
       return conn.redirect(to: .account()) {
@@ -56,12 +113,13 @@ private func cancelResponse(
 }
 
 private func reactivateResponse(
-  _ conn: Conn<StatusLineOpen, (User, Stripe.Subscription)>
+  _ conn: Conn<StatusLineOpen, Void>,
+  user: User,
+  stripeSubscription: Stripe.Subscription
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.stripe) var stripe
 
   do {
-    let (user, stripeSubscription) = conn.data
     guard stripeSubscription.isCanceling
     else {
       return conn.redirect(to: .account()) {
@@ -91,39 +149,6 @@ private func reactivateResponse(
         """
       )
     }
-  }
-}
-
-private func requireUserAndStripeSubscription(
-  _ middleware: @escaping (Conn<StatusLineOpen, (User, Stripe.Subscription)>) async -> Conn<
-    ResponseEnded, Data
-  >
-) -> (Conn<StatusLineOpen, User?>) async -> Conn<ResponseEnded, Data> {
-  @Dependency(\.database) var database
-  @Dependency(\.stripe) var stripe
-
-  return { conn in
-    guard let user = conn.data
-    else { return conn.loginAndRedirect() }
-
-    guard let subscription = try? await database.fetchSubscription(ownerID: user.id)
-    else {
-      return conn.redirect(to: .account()) {
-        $0.flash(.error, "Doesn’t look like you’re subscribed yet!")
-      }
-    }
-
-    guard
-      let stripeSubscription =
-        try? await stripe
-        .fetchSubscription(id: subscription.stripeSubscriptionId)
-    else {
-      return conn.redirect(to: .account()) {
-        $0.flash(.error, genericSubscriptionError)
-      }
-    }
-
-    return await middleware(conn.map { _ in (user, stripeSubscription) })
   }
 }
 

@@ -54,7 +54,7 @@ func accountMiddleware(
     return IO { await accountRssMiddleware(conn.map { _ in "\(secret1)/\(secret2)" }) }
 
   case .subscription(.cancel):
-    return IO { await cancelMiddleware(conn.map { _ in currentUser }) }
+    return IO { await cancelMiddleware(conn.map { _ in }, userID: currentUser?.id) }
 
   case .subscription(.change(.show)):
     return IO { conn.redirect(to: .account()) }
@@ -64,7 +64,7 @@ func accountMiddleware(
       |> subscriptionChangeMiddleware
 
   case .subscription(.reactivate):
-    return IO { await reactivateMiddleware(conn.map { _ in currentUser }) }
+    return IO { await reactivateMiddleware(conn.map { _ in }, userID: currentUser?.id) }
 
   case .theWay(let route):
     return IO { await theWayMiddleware(conn.map { _ in route }) }
