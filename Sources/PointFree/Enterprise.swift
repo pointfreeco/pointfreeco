@@ -19,41 +19,32 @@ import Tuple
 import UrlFormEncoding
 import Views
 
-let enterpriseLandingResponse =
-  requireEnterpriseAccount
-  <| writeStatus(.ok)
-  >=> respond(
-    view: enterpriseView,
-    layoutData: { enterpriseAccount in
-      SimplePageLayoutData(
-        data: enterpriseAccount,
-        style: .base(.minimal(.dark)),
-        title: "Point-Free 🤝 \(enterpriseAccount.companyName)"
-      )
-    }
-  )
+func enterpriseLandingResponse(
+  _ conn: Conn<StatusLineOpen, Void>,
+  domain: EnterpriseAccount.Domain
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
 
-private let requireEnterpriseAccount:
-  MT<
-    EnterpriseAccount.Domain,
-    EnterpriseAccount
-  > = { middleware in
-    return { conn in
-      return IO {
-        guard let account = await fetchEnterpriseAccount(conn.data).performAsync()
-        else {
-          return await
-            (conn
-            |> redirect(
-              to: .home,
-              headersMiddleware: flash(.warning, "That enterprise account does not exist.")
-            )).performAsync()
-        }
-
-        return await middleware(conn.map(const(account))).performAsync()
-      }
+  guard let account = try? await database.fetchEnterpriseAccount(forDomain: domain)
+  else {
+    return conn.redirect(to: .home) {
+      $0.flash(.warning, "That enterprise account does not exist.")
     }
   }
+
+  return conn
+    .writeStatus(.ok)
+    .respond(
+      view: enterpriseView,
+      layoutData: {
+        SimplePageLayoutData(
+          data: account,
+          style: .base(.minimal(.dark)),
+          title: "Point-Free 🤝 \(account.companyName)"
+        )
+      }
+    )
+}
 
 let enterpriseRequestMiddleware =
   requireEnterpriseAccountWithFormData

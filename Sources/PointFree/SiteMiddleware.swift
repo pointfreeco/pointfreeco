@@ -201,8 +201,7 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
     .performAsync()
 
   case .enterprise(let domain, .landing):
-    return await enterpriseLandingResponse(conn.map(const(domain)))
-      .performAsync()
+    return await enterpriseLandingResponse(conn, domain: domain)
 
   case .enterprise(let domain, .requestInvite(let request)):
     return await enterpriseRequestMiddleware(conn.map(const(domain .*. request .*. unit)))
