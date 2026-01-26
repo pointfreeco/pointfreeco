@@ -144,14 +144,14 @@ func theWayMiddleware(
         )
         for skillDirectory in skillDirectories {
           let skillLicenseURL = skillDirectory.appending(path: "LICENSE")
-          try rewriteContents(at: skillLicenseURL) { contents in
-            contents.replace("{{name}}", with: user.displayName)
-            contents.replace("{{email}}", with: user.email)
-          }
           if FileManager.default.fileExists(atPath: skillLicenseURL.path()) {
             try FileManager.default.removeItem(at: skillLicenseURL)
           }
           try FileManager.default.copyItem(at: licenseURL, to: skillLicenseURL)
+          try rewriteContents(at: skillLicenseURL) { contents in
+            contents.replace("{{name}}", with: user.displayName)
+            contents.replace("{{email}}", with: user.email)
+          }
 
           let skillURL = skillDirectory.appending(path: "SKILL.md")
           try rewriteContents(at: skillURL) { contents in
