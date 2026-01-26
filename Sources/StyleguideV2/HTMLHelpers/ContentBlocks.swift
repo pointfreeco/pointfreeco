@@ -172,9 +172,12 @@ public struct Step: HTML {
         Paragraph { HTMLRaw(blurb) }
           .contentColor()
       }
+      .inlineStyle("width", "100%", media: .mobile)
     }
     .panel(mini: true)
+    .inlineStyle("row-gap", "0.5rem")
     .inlineStyle("padding", "1rem")
+    .inlineStyle("flex-direction", "column", media: .mobile)
   }
 }
 
