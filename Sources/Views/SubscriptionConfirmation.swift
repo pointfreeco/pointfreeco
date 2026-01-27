@@ -1004,6 +1004,7 @@ public struct DiscountCountry {
     .init(countryCode: "AG", name: "Antigua and Barbuda"),
     .init(countryCode: "AR", name: "Argentina"),
     .init(countryCode: "AM", name: "Armenia"),
+    .init(countryCode: "BA", name: "Bosnia and Herzegovina"),
     .init(countryCode: "BS", name: "Bahamas"),
     .init(countryCode: "BD", name: "Bangladesh"),
     .init(countryCode: "BB", name: "Barbados"),
