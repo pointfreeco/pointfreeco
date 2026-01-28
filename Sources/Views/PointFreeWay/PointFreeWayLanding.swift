@@ -36,8 +36,10 @@ struct PointFreeWayHeader: HTML {
   enum Context { case home, landing }
 
   var body: some HTML {
+    let hasPointFreeWayAccess = currentUser.hasAccess(to: .thePointFreeWay)
+
     PageModule(theme: .content) {
-      LazyVGrid(columns: [.desktop: [1, 1]]) {
+      LazyVGrid(columns: [.desktop: [1, 1]], verticalSpacing: 2) {
         VStack(spacing: 1) {
           Header(2) {
             HTMLRaw("The Point&#8209;Free Way")
@@ -60,27 +62,14 @@ struct PointFreeWayHeader: HTML {
           Divider(alignment: .left, size: 30)
             .inlineStyle("margin-top", "1rem")
             .inlineStyle("margin-bottom", "1rem")
-          if currentUser.hasAccess(to: .thePointFreeWay) {
+          if hasPointFreeWayAccess {
             AccessUnlocked()
           } else {
-            CTAGroup {
-              if subscriberState.isActiveSubscriber {
-                VStack(alignment: .stretch, spacing: 0.5) {
-                  PFWButton(type: .primary) {
-                    HTMLText("Request access")
-                  }
-                  .href(pointFreeWayRequestAccessHref)
-                  Paragraph(.small) {
-                    "Skills are currently in beta."
-                  }
-                  .contentColor()
-                }
-              } else {
-                PFWButton(type: .primary) {
-                  HTMLText("Subscribe to unlock")
-                }
-                .href(siteRouter.path(for: .pricingLanding))
-              }
+            PointFreeWayCTAButtons(
+              hasPointFreeWayAccess: hasPointFreeWayAccess,
+              isSubscriber: subscriberState.isActiveSubscriber,
+              subscribeHref: siteRouter.path(for: .pricingLanding)
+            ) {
               switch context {
               case .home:
                 PFWButton {
@@ -307,6 +296,8 @@ private struct HowAccessWorks: HTML {
   @Dependency(\.subscriberState) var subscriberState
 
   var body: some HTML {
+    let hasPointFreeWayAccess = currentUser.hasAccess(to: .thePointFreeWay)
+
     PointFreeWayModule(title: "How access works") {
       LazyVGrid(columns: [.mobile: [1, 1], .desktop: [1, 1, 1, 1]]) {
         Step(
@@ -331,32 +322,54 @@ private struct HowAccessWorks: HTML {
         )
       }
 
-      CTAGroup {
-        if currentUser.hasAccess(to: .thePointFreeWay) {
-          PFWButton(type: .primary) {
-            HTMLText("Install the Point-Free Way")
+      PointFreeWayCTAButtons(
+        hasPointFreeWayAccess: hasPointFreeWayAccess,
+        isSubscriber: subscriberState.isActiveSubscriber,
+        subscribeHref: siteRouter.path(for: .pricingLanding)
+      ) {
+        if !subscriberState.isActiveSubscriber {
+          PFWButton(type: .secondary) {
+            HTMLText("View subscription plans")
           }
-          .href("https://github.com/pointfreeco/pfw")
-        } else {
-          VStack(alignment: .leading, spacing: 0.5) {
-            PFWButton(type: .primary) {
-              HTMLText("Request access")
-            }
-            .href(pointFreeWayRequestAccessHref)
-            Paragraph(.small) {
-              "Skills are currently in beta."
-            }
-            .contentColor()
-          }
-          if !subscriberState.isActiveSubscriber {
-            PFWButton(type: .secondary) {
-              HTMLText("View subscription plans")
-            }
-            .href(siteRouter.path(for: .pricingLanding))
-          }
+          .href(siteRouter.path(for: .pricingLanding))
         }
       }
       .inlineStyle("padding-top", "1.5rem")
+    }
+  }
+}
+
+private struct PointFreeWayCTAButtons<Secondary: HTML>: HTML {
+  let hasPointFreeWayAccess: Bool
+  let isSubscriber: Bool
+  let subscribeHref: String
+  @HTMLBuilder let secondary: Secondary
+
+  var body: some HTML {
+    CTAGroup {
+      if hasPointFreeWayAccess {
+        PFWButton(type: .primary) {
+          HTMLText("Install the Point-Free Way")
+        }
+        .href(pointFreeWayInstallHref)
+      } else if isSubscriber {
+        VStack(alignment: .stretch, spacing: 0.5) {
+          PFWButton(type: .primary) {
+            HTMLText("Request access")
+          }
+          .href(pointFreeWayRequestAccessHref)
+          Paragraph(.small) {
+            "Skills are currently in beta."
+          }
+          .contentColor()
+        }
+      } else {
+        PFWButton(type: .primary) {
+          HTMLText("Subscribe to unlock")
+        }
+        .href(subscribeHref)
+      }
+      secondary
     }
   }
 }
@@ -648,3 +661,5 @@ private struct ComposableArchitecturePrompt: HTML {
 
 private let pointFreeWayRequestAccessHref =
   "mailto:support@pointfree.co?subject=Point-Free%20Way%20Beta"
+private let pointFreeWayInstallHref =
+  "https://github.com/pointfreeco/pfw"
