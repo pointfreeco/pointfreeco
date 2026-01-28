@@ -99,9 +99,9 @@ struct PointFreeWayHeader: HTML {
           Gap()
           Line { Folder("./SQLiteData/") }
           Line { File("  SKILL.md") }
-//          Gap()
-//          Line { Folder("./Dependencies/") }
-//          Line { File("  SKILL.md") }
+          Gap()
+          Line { Folder("./Dependencies/") }
+          Line { File("  SKILL.md") }
           Gap()
           Line { Folder("./SwiftNavigation/") }
           Line { File("  SKILL.md") }
