@@ -36,8 +36,6 @@ struct PointFreeWayHeader: HTML {
   enum Context { case home, landing }
 
   var body: some HTML {
-    let hasPointFreeWayAccess = currentUser?.hasAccess(to: .thePointFreeWay) ?? false
-
     PageModule(theme: .content) {
       LazyVGrid(columns: [.desktop: [1, 1]]) {
         VStack(spacing: 1) {
@@ -62,7 +60,7 @@ struct PointFreeWayHeader: HTML {
           Divider(alignment: .left, size: 30)
             .inlineStyle("margin-top", "1rem")
             .inlineStyle("margin-bottom", "1rem")
-          if hasPointFreeWayAccess {
+          if currentUser.hasAccess(to: .thePointFreeWay) {
             AccessUnlocked()
           } else {
             CTAGroup {
@@ -309,8 +307,6 @@ private struct HowAccessWorks: HTML {
   @Dependency(\.subscriberState) var subscriberState
 
   var body: some HTML {
-    let hasPointFreeWayAccess = currentUser?.hasAccess(to: .thePointFreeWay) ?? false
-
     PointFreeWayModule(title: "How access works") {
       LazyVGrid(columns: [.mobile: [1, 1], .desktop: [1, 1, 1, 1]]) {
         Step(
@@ -336,7 +332,7 @@ private struct HowAccessWorks: HTML {
       }
 
       CTAGroup {
-        if hasPointFreeWayAccess {
+        if currentUser.hasAccess(to: .thePointFreeWay) {
           PFWButton(type: .primary) {
             HTMLText("Install the Point-Free Way")
           }
