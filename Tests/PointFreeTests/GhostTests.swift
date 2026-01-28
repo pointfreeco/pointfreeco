@@ -94,7 +94,7 @@ final class GhostTests: TestCase {
         302 Found
         Location: /admin/ghost
         Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"Couldn't find user with that id","priority":"error"},"userId":"12121212-1212-1212-1212-121212121212"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        Set-Cookie: pf_session={"flash":{"message":"Couldn't find user","priority":"error"},"userId":"12121212-1212-1212-1212-121212121212"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
         X-Content-Type-Options: nosniff
         X-Download-Options: noopen
         X-Frame-Options: SAMEORIGIN

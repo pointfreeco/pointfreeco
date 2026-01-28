@@ -186,9 +186,8 @@ class PointFreeRouterTests: TestCase {
 
   @MainActor
   func testLive() async throws {
-    var request = URLRequest.init(
-      url: .init(string: "http://localhost:8080/live")!)
-    var route = SiteRoute.live(.current)
+    let request = URLRequest(url: .init(string: "http://localhost:8080/live")!)
+    let route = SiteRoute.live(.current)
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }

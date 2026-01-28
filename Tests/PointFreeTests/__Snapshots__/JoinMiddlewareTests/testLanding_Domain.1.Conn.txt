@@ -2,7 +2,7 @@ GET http://localhost:8080/join/pointfree.co
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 52787
+Content-Length: 52974
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2201,6 +2201,8 @@ access to all videos, transcripts, code samples and more.
         </h5>
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/pricing">Pricing</a>
+          </li>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/the-way">The Point-Free Way</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>

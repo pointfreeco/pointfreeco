@@ -54,13 +54,15 @@ extension Array where Element == Faq {
       question: "Will I be charged on a recurring basis?",
       answer: """
         Nope. A gift subscription is a one-time payment and you will not be charged again.
-        """),
+        """
+    ),
     Faq(
       question: "When am I charged and when does the gift subscription start?",
       answer: """
         You are charged immediately, but the subscription does not start until the recipient \
         accepts your gift.
-        """),
+        """
+    ),
     .existingSubscriberRedeemGift,
     .combinedWithStudentDiscountsEtc,
   ]
@@ -72,7 +74,8 @@ extension Faq {
     answer: """
       Yes! If you receive a gift and are currently a subscriber we will apply the credit to your \
       account and the amount will be applied to future invoices.
-      """)
+      """
+  )
 
   static let combinedWithStudentDiscountsEtc = Self(
     question: """
@@ -126,12 +129,10 @@ extension Gifts.Plan {
     let stats = EpisodesStats()
 
     li { "All \(stats.allEpisodes) episodes with transcripts" }
-    if currentUser.hasAccess(to: .thePointFreeWay) {
-      li {
-        "Access to \""
-        Link("The Point-Free Way", destination: .theWay)
-        "\""
-      }
+    li {
+      "Access to \""
+      Link("The Point-Free Way", destination: .theWay)
+      "\""
     }
     li {
       "Access to all past "
