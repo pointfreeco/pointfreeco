@@ -92,7 +92,7 @@ struct PointFreeWayHeader: HTML {
         TerminalWindow {
           Command("brew install pointfreeco/tap/pfw")
           Command("pfw login")
-          Command("pfw install --tool codex")
+          Command("pfw install")
           Command("ls -R ~/.codex/skills/")
           Line { Folder("./ComposableArchitecture/") }
           Line { File("  SKILL.md") }
