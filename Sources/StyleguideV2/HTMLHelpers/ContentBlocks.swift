@@ -97,7 +97,7 @@ public struct CTAGroup<Content: HTML>: HTML {
   }
 
   public var body: some HTML {
-    HStack(spacing: spacing) {
+    HStack(alignment: .firstTextBaseline, spacing: spacing) {
       content
       Spacer()
     }

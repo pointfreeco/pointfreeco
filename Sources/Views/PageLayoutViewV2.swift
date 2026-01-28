@@ -272,10 +272,8 @@ struct MobileNavItems: HTML {
   var body: some HTML {
     ul {
       HTMLGroup {
-        if currentUser.hasAccess(to: .thePointFreeWay) {
-          NavListItem(isNew: true, route: .theWay) {
-            "The Point-Free Way"
-          }
+        NavListItem(isNew: true, route: .theWay) {
+          "The Point-Free Way"
         }
         NavListItem(route: .episodes(.list(.all))) {
           "Episodes"
@@ -565,23 +563,15 @@ struct CenteredNavItems: HTML {
             "Pricing"
           }
         }
-        if currentUser.hasAccess(to: .thePointFreeWay) {
-          NavListItem(isNew: true, route: .theWay) {
-            AdaptablePointFreeWayLabel()
-          }
-        } else {
-          NavListItem(route: .blog(.index)) {
-            "Blog"
-          }
+        NavListItem(isNew: true, route: .theWay) {
+          AdaptablePointFreeWayLabel()
         }
         MoreMenu {
           if currentUser == nil {
             MenuItem(title: "Episodes", destination: .episodes(.list(.all)))
           }
           MenuItem(title: "Free clips", destination: .clips(.clips))
-          if currentUser.hasAccess(to: .thePointFreeWay) {
-            MenuItem(title: "Blog", destination: .blog(.index))
-          }
+          MenuItem(title: "Blog", destination: .blog(.index))
           MenuItem(title: "Gifts", destination: .gifts())
           Divider(size: 100, color: .gray300)
           MenuItem(
