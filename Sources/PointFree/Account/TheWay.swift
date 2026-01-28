@@ -86,7 +86,7 @@ func theWayMiddleware(
       }
     }
 
-  case .download(let token, let whoami, let machine):
+  case .download(let token, let whoami, let machine, let lastSHA):
     do {
       let access = try await database.fetchTheWayAccess(machine: machine, whoami: whoami)
       guard access.id == token
@@ -116,6 +116,15 @@ func theWayMiddleware(
         token: pfwDownloadsAccessToken
       )
       .commit.sha
+
+      guard sha != lastSHA
+      else {
+        return conn
+          .map { _ in Data() }
+          .writeStatus(.notModified)
+          .closeHeaders()
+          .end()
+      }
 
       let zipURL = URL.temporaryDirectory.appending(path: "\(sha).zip")
       let unzippedURL = URL.temporaryDirectory.appending(path: "\(sha)-\(token)-\(whoami)")
@@ -185,6 +194,7 @@ func theWayMiddleware(
       return
         try conn
         .writeStatus(.ok)
+        .writeHeader(Response.Header("ETag", sha.rawValue))
         .respond(data: Data(contentsOf: destinationURL))
     } catch {
       return
