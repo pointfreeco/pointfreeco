@@ -1,4 +1,5 @@
 import Foundation
+import GitHub
 import Models
 import Stripe
 import URLRouting
@@ -38,7 +39,7 @@ public enum Account: Equatable {
 
   public enum TheWay: Equatable {
     case login(redirect: String, whoami: String, machine: UUID)
-    case download(token: TheWayAccess.ID, whoami: String, machine: UUID)
+    case download(token: TheWayAccess.ID, whoami: String, machine: UUID, lastSHA: Repo.Commit.SHA?)
   }
 }
 
@@ -155,6 +156,9 @@ struct AccountRouter: ParserPrinter {
               Field("token") { UUID.parser().map(.representing(TheWayAccess.ID.self)) }
               Field("whoami", .string)
               Field("machine") { UUID.parser() }
+            }
+            Headers {
+              Optionally { Field("If-None-Match", .string.representing(Repo.Commit.SHA.self)) }
             }
           }
         }

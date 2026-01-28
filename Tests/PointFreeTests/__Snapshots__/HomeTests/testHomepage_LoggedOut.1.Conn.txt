@@ -2,7 +2,7 @@ GET http://localhost:8080/
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 157378
+Content-Length: 158123
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -299,6 +299,15 @@ linear-gradient(180deg, #f6f7fb, #eef1f7)}
 .border-top-S35Gp4{border-top:1px solid #ccc}
 .margin-left-FBkWQ3{margin-left:0}
 .margin-right-IuLpj2{margin-right:70%}
+.border-left-dr0hs1{border-left:3px solid rgb(24, 158, 72)}
+.padding-left-dnNPN1{padding-left:1rem}
+.align-items-cQlZY2{align-items:start}
+.color-S2i7w1{color:rgb(12, 116, 52)}
+.font-size-dSQa32{font-size:0.8rem}
+.font-weight-uXksW1{font-weight:600}
+.letter-spacing-4AXnp{letter-spacing:0.04em}
+.color-rI1T5{color:rgb(24, 158, 72)}
+.margin-0TotT3{margin:0 0 0 0}
 .border-color-Y7CRG{border-color:color-mix(in oklab, #79f2b0 40%, rgba(15, 18, 32, 0.12))}
 .background-bF8aN2{background:color-mix(in oklab, #79f2b0 22%, #ffffff)}
 .color-Nffw82:visited{color:#0f1220}
@@ -317,7 +326,6 @@ linear-gradient(180deg, #f6f7fb, #eef1f7)}
 .line-height-tzL8I2{line-height:1}
 .gap-Fqw6a1{gap:10px}
 .padding-sHJvF1{padding:0.75rem 1rem}
-.background-PAcgR2{background:#ffffff}
 .border-radius-TX0I34{border-radius:18px}
 .background-lnco41{background:rgba(250, 251, 253, 0.92)}
 .border-I77cU2{border:1px solid}
@@ -427,6 +435,7 @@ linear-gradient(180deg, #f6f7fb, #eef1f7)}
   .grid-template-columns-oWJr1{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)}
   .row-gap-ZNGkd1{row-gap:1.0rem}
   .grid-template-columns-AWWfa{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
+  .row-gap-6BZZO1{row-gap:2.0rem}
   .padding-YB9JG:nth-child(even){padding:0rem 1.5rem 4rem 0}
   .padding-CTEDv4:nth-child(odd){padding:0rem 0 4rem 1.5rem}
   .padding-gRWSc1{padding:7.5%}
@@ -462,6 +471,8 @@ linear-gradient(180deg, #f6f7fb, #eef1f7)}
 radial-gradient(900px 700px at 80% 70%, rgba(151, 77, 255, 0.16), transparent 55%),
 linear-gradient(180deg, #07080b, #0b0d10)}
   .color-VoDZ9{color:#ccc}
+  .border-left-dBEjR1{border-left:3px solid rgb(162, 255, 200)}
+  .color-iAWvU2{color:rgb(162, 255, 200)}
   .border-color-94F9E4{border-color:color-mix(in oklab, #79f2b0 40%, rgba(255, 255, 255, 0.12))}
   .background-vVzWy3{background:color-mix(in oklab, #79f2b0 22%, #0f1220)}
   .color-5ECK3:visited{color:rgba(255, 255, 255, 0.92)}
@@ -469,7 +480,6 @@ linear-gradient(180deg, #07080b, #0b0d10)}
   .color-sA2Di1{color:rgba(255, 255, 255, 0.92)}
   .box-shadow-piGCD2:hover{box-shadow:0 16px 40px rgba(0, 0, 0, 0.35)}
   .border-wER7b{border:1px solid rgba(255, 255, 255, 0.12)}
-  .background-LTTQR{background:#0f1220}
   .background-wnFz4{background:rgba(14, 16, 20, 0.92)}
   .border-color-A2eBf3{border-color:rgba(255, 255, 255, 0.10)}
   .box-shadow-o9zHM3{box-shadow:0 24px 70px rgba(0, 0, 0, 0.45)}
@@ -677,7 +687,7 @@ linear-gradient(180deg, #07080b, #0b0d10)}
 </div>
 <div class="background-JItPm4 background-e7ncj background-color-nbn0i3 background-color-dMv2U1">
   <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
+    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-6BZZO1">
       <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
         <h2 class="color-K2J0r1 color-wVkSF3 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">The Point&#8209;Free Way
         </h2>
@@ -687,10 +697,16 @@ linear-gradient(180deg, #07080b, #0b0d10)}
 and techniques we use every day at Point&#8209;Free.
         </p>
         <hr class="margin-top-dnNPN1 margin-bottom-dnNPN1 border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-left-FBkWQ3 margin-right-IuLpj2">
-        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><a href="/pricing" class="border-color-Y7CRG border-color-94F9E4 background-bF8aN2 background-vVzWy3 color-Nffw82 color-5ECK3 color-l1jsl4 color-ucD0q1 color-7cveC2 color-sA2Di1 box-shadow-Wl0y44 box-shadow-FthUz4 box-shadow-piGCD2 box-shadow-WcNXy2 cursor-xmR5l transition-6g6pq4 user-select-Wl0y44 text-decoration-Wl0y44 text-decoration-8r95N transform-z1OuF transform-HA8Os4 border-radius-btBsa3 border-qBwtZ3 border-wER7b font-weight-Ewe5J3 font-size-7UmQH1 line-height-tzL8I2 display-MH46v1 align-items-CdPBO2 justify-content-CdPBO2 text-align-CdPBO2 gap-Fqw6a1 padding-sHJvF1">Subscribe to unlock</a><a href="/the-way" class="background-PAcgR2 background-LTTQR color-Nffw82 color-5ECK3 color-l1jsl4 color-ucD0q1 color-7cveC2 color-sA2Di1 box-shadow-Wl0y44 box-shadow-FthUz4 box-shadow-piGCD2 box-shadow-WcNXy2 cursor-xmR5l transition-6g6pq4 user-select-Wl0y44 text-decoration-Wl0y44 text-decoration-8r95N transform-z1OuF transform-HA8Os4 border-radius-btBsa3 border-qBwtZ3 border-wER7b font-weight-Ewe5J3 font-size-7UmQH1 line-height-tzL8I2 display-MH46v1 align-items-CdPBO2 justify-content-CdPBO2 text-align-CdPBO2 gap-Fqw6a1 padding-sHJvF1">Learn more</a>
-          <pf-spacer class="flex-grow-tzL8I2">
-          </pf-spacer>
-        </pf-hstack>
+        <pf-vstack class="border-left-dr0hs1 padding-left-dnNPN1 border-left-dBEjR1 align-items-cQlZY2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><span class="color-S2i7w1 display-MH46v1 font-size-dSQa32 font-weight-uXksW1 letter-spacing-4AXnp text-transform-RqT8X1 color-iAWvU2 color-rI1T5 display-MH46v1 font-size-dSQa32 font-weight-uXksW1 letter-spacing-4AXnp text-transform-RqT8X1">&#10003; Access unlocked</span>
+          <div>
+            <h4 class="margin-0TotT3 color-K2J0r1 color-wVkSF3 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">You already have the Point-Free Way.
+            </h4>
+          </div>
+          <div>
+            <p class="color-GPfER1 color-VoDZ9 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-RTPM71 line-height-JeRI4">Install the tools and start using them in Codex, Claude (and more!) right away.
+            </p>
+          </div><a class="margin-top-dnNPN1 border-color-Y7CRG border-color-94F9E4 background-bF8aN2 background-vVzWy3 color-Nffw82 color-5ECK3 color-l1jsl4 color-ucD0q1 color-7cveC2 color-sA2Di1 box-shadow-Wl0y44 box-shadow-FthUz4 box-shadow-piGCD2 box-shadow-WcNXy2 cursor-xmR5l transition-6g6pq4 user-select-Wl0y44 text-decoration-Wl0y44 text-decoration-8r95N transform-z1OuF transform-HA8Os4 border-radius-btBsa3 border-qBwtZ3 border-wER7b font-weight-Ewe5J3 font-size-7UmQH1 line-height-tzL8I2 display-MH46v1 align-items-CdPBO2 justify-content-CdPBO2 text-align-CdPBO2 gap-Fqw6a1 padding-sHJvF1" href="https://www.github.com/pointfreeco/pfw">Install the Point-Free Way</a>
+        </pf-vstack>
       </pf-vstack>
       <terminal-window class="margin-top-HMdgd border-radius-TX0I34 background-lnco41 background-wnFz4 border-I77cU2 border-color-ApzIg border-color-A2eBf3 box-shadow-CRMsc1 box-shadow-o9zHM3 overflow-PhNC81 backdrop-filter-zVU0m3 -webkit-backdrop-filter-zVU0m3 display-ix08W2">
         <terminal-title-bar class="border-bottom-I77cU2 border-bottom-color-ApzIg border-bottom-color-A2eBf3 color-7oH1C1 color-sA8jH3 padding-top-NKv2f3 padding-left-NKv2f3 padding-bottom-NKv2f3 padding-right-NKv2f3 display-mqllb2 grid-template-columns-HBnnk2 align-items-CdPBO2 gap-dnNPN1 display-ix08W2">
@@ -709,7 +725,7 @@ and techniques we use every day at Point&#8209;Free.
             </pf-hstack>
             <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="width-QlFKs1 color-Kqybp1 color-rN1St">$</span><span class="color-jx6QW1 color-huCu91">pfw install --tool codex</span>
             </pf-hstack>
-            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="width-QlFKs1 color-Kqybp1 color-rN1St">$</span><span class="color-jx6QW1 color-huCu91">ls -R ~/.codex/skills/the-point-free-way</span>
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="width-QlFKs1 color-Kqybp1 color-rN1St">$</span><span class="color-jx6QW1 color-huCu91">ls -R ~/.codex/skills/</span>
             </pf-hstack>
             <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="color-6ZIxp2 color-qJyfQ">./ComposableArchitecture/</span>
             </pf-hstack>

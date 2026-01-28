@@ -196,7 +196,12 @@ private struct WhatIsThePointFreeWay: HTML {
         toward clear, composable, and testable application architecture.
         """
     ) {
-      LazyVGrid(columns: [.desktop: [1, 1]], alignItems: .start, horizontalSpacing: 2) {
+      LazyVGrid(
+        columns: [.desktop: [1, 1], .mobile: [1]],
+        alignItems: .start,
+        horizontalSpacing: 2,
+        verticalSpacing: 2
+      ) {
         VStack {
           Checklist(items: [
             "Built specifically for Swift and Apple platforms",
@@ -228,7 +233,7 @@ private struct BuildInThePointFreeStyle: HTML {
   var body: some HTML {
     PointFreeWayModule(title: "Build apps in the Point&#8209;Free style") {
       LazyVGrid(
-        columns: [.mobile: [1, 1], .desktop: [2, 1, 1]],
+        columns: [.mobile: [1], .desktop: [2, 1, 1]],
         horizontalSpacing: 2,
         verticalSpacing: 2
       ) {
@@ -271,7 +276,7 @@ private struct HandCrafted: HTML {
         high-quality code.
         """
     ) {
-      LazyVGrid(columns: [.desktop: [1, 1]]) {
+      LazyVGrid(columns: [.desktop: [1, 1], .mobile: [1]], horizontalSpacing: 2, verticalSpacing: 2) {
         ChecklistModule(
           title: "What you can expect",
           items: [
