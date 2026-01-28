@@ -42,7 +42,7 @@ struct PointFreeWayHeader: HTML {
     let hasPointFreeWayAccess = currentUser.hasAccess(to: .thePointFreeWay)
 
     PageModule(theme: .content) {
-      LazyVGrid(columns: [.desktop: [1, 1]], verticalSpacing: 2) {
+      LazyVGrid(columns: [.desktop: [1, 1]], alignItems: .start, verticalSpacing: 2) {
         VStack(spacing: 1) {
           Header(2) {
             HTMLRaw("The Point&#8209;Free Way")
@@ -65,7 +65,7 @@ struct PointFreeWayHeader: HTML {
           Divider(alignment: .left, size: 30)
             .inlineStyle("margin-top", "1rem")
             .inlineStyle("margin-bottom", "1rem")
-          if hasPointFreeWayAccess {
+          if hasPointFreeWayAccess && subscriberState.isActiveSubscriber {
             AccessUnlocked()
           } else {
             PointFreeWayCTAButtons(
@@ -92,7 +92,7 @@ struct PointFreeWayHeader: HTML {
         TerminalWindow {
           Command("brew install pointfreeco/tap/pfw")
           Command("pfw login")
-          Command("pfw install --tool codex")
+          Command("pfw install")
           Command("ls -R ~/.codex/skills/")
           Line { Folder("./ComposableArchitecture/") }
           Line { File("  SKILL.md") }
@@ -276,7 +276,11 @@ private struct HandCrafted: HTML {
         high-quality code.
         """
     ) {
-      LazyVGrid(columns: [.desktop: [1, 1], .mobile: [1]], horizontalSpacing: 2, verticalSpacing: 2) {
+      LazyVGrid(
+        columns: [.desktop: [1, 1], .mobile: [1]],
+        horizontalSpacing: 2,
+        verticalSpacing: 2
+      ) {
         ChecklistModule(
           title: "What you can expect",
           items: [
@@ -355,27 +359,29 @@ private struct PointFreeWayCTAButtons<Secondary: HTML>: HTML {
 
   var body: some HTML {
     CTAGroup {
-      if hasPointFreeWayAccess {
-        PFWButton(type: .primary) {
-          HTMLText("Install the Point-Free Way")
-        }
-        .href(pointFreeWayInstallHref)
-      } else if isSubscriber {
-        VStack(alignment: .stretch, spacing: 0.5) {
-          PFWButton(type: .primary) {
-            HTMLText("Request access")
-          }
-          .href(pointFreeWayRequestAccessHref)
-          Paragraph(.small) {
-            "Skills are currently in beta."
-          }
-          .contentColor()
-        }
-      } else {
+      if !isSubscriber {
         PFWButton(type: .primary) {
           HTMLText("Subscribe to unlock")
         }
         .href(subscribeHref)
+      } else {
+        if hasPointFreeWayAccess {
+          PFWButton(type: .primary) {
+            HTMLText("Install the Point-Free Way")
+          }
+          .href(pointFreeWayInstallHref)
+        } else {
+          VStack(alignment: .stretch, spacing: 0.5) {
+            PFWButton(type: .primary) {
+              HTMLText("Request access")
+            }
+            .href(pointFreeWayRequestAccessHref)
+            Paragraph(.small) {
+              "Skills are currently in beta."
+            }
+            .contentColor()
+          }
+        }
       }
       secondary
     }
