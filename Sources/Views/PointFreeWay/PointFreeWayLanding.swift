@@ -27,9 +27,6 @@ public struct PointFreeWayLanding: HTML {
   }
 }
 
-fileprivate let pointFreeWayRequestAccessHref =
-  "mailto:support@pointfree.co?subject=Point-Free%20Way%20Beta"
-
 struct PointFreeWayHeader: HTML {
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
@@ -539,8 +536,7 @@ extension HTML {
   }
 }
 
-
-fileprivate struct ComposableArchitecturePrompt: HTML {
+private struct ComposableArchitecturePrompt: HTML {
   var body: some HTML {
     TerminalWindow(title: "Pomodoro – codex", maxHeight: 22) {
       CodexCommand(
@@ -653,3 +649,6 @@ fileprivate struct ComposableArchitecturePrompt: HTML {
     }
   }
 }
+
+private let pointFreeWayRequestAccessHref =
+  "mailto:support@pointfree.co?subject=Point-Free%20Way%20Beta"
