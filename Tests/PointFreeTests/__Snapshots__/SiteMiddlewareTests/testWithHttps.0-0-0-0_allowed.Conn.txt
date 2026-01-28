@@ -1,7 +1,7 @@
 GET http://0.0.0.0:8080/
 
 200 OK
-Content-Length: 132419
+Content-Length: 148295
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -125,6 +125,15 @@ body, html {
 .color-dwzNH2:link{color:#a8a8a8}
 .color-hzlcf:visited{color:#a8a8a8}
 .color-Vt0a43{color:#a8a8a8}
+.margin-left-FxsCt1{margin-left:0.25rem}
+.font-size-HFDgk3{font-size:0.65rem}
+.font-weight-SywJI1{font-weight:700}
+.letter-spacing-miVw93{letter-spacing:0.08em}
+.padding-SjEOn4{padding:2px 4px}
+.border-radius-btBsa3{border-radius:999px}
+.border-uB9vi{border:1px solid rgba(255, 208, 77, 0.7)}
+.background-33BAq4{background:rgba(255, 214, 102, 0.5)}
+.color-GnKka3{color:rgba(255, 255, 255, 0.75)}
 .position-Pjz1G2{position:relative}
 .opacity-mJTmO2:hover ul{opacity:1}
 .pointer-events-7T0L22:hover ul{pointer-events:auto}
@@ -133,11 +142,9 @@ body, html {
 .appearance-Wl0y44{appearance:none}
 .background-JyKaz4{background:transparent}
 .border-4sVnF2{border:1px solid rgba(255, 255, 255, 0.25)}
-.border-radius-btBsa3{border-radius:999px}
 .cursor-xmR5l{cursor:pointer}
 .display-MH46v1{display:inline-flex}
 .font-size-zZ9yy3{font-size:1.1rem}
-.font-weight-SywJI1{font-weight:700}
 .letter-spacing-B7Alk3{letter-spacing:2px}
 .transition-6t4cq1{transition:background-color 150ms ease, border-color 150ms ease}
 .background-color-6OEwN1:hover{background-color:rgba(255, 255, 255, 0.1)}
@@ -281,6 +288,80 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .justify-content-VOQy11{justify-content:end}
 .margin-right-83zzS1{margin-right:1.0rem}
 .font-size-yLOVS3{font-size:1.25rem}
+.background-JItPm4{background:radial-gradient(900px 700px at 20% 20%, rgba(76, 204, 255, 0.18), transparent 55%),
+radial-gradient(900px 700px at 80% 70%, rgba(151, 77, 255, 0.16), transparent 55%),
+linear-gradient(180deg, #f6f7fb, #eef1f7)}
+.color-GPfER1{color:#555555}
+.line-height-JeRI4{line-height:1.3125rem}
+.margin-top-dnNPN1{margin-top:1rem}
+.margin-bottom-dnNPN1{margin-bottom:1rem}
+.border-top-S35Gp4{border-top:1px solid #ccc}
+.margin-left-FBkWQ3{margin-left:0}
+.margin-right-IuLpj2{margin-right:70%}
+.border-color-Y7CRG{border-color:color-mix(in oklab, #79f2b0 40%, rgba(15, 18, 32, 0.12))}
+.background-bF8aN2{background:color-mix(in oklab, #79f2b0 22%, #ffffff)}
+.color-Nffw82:visited{color:#0f1220}
+.color-l1jsl4:link{color:#0f1220}
+.color-7cveC2{color:#0f1220}
+.box-shadow-Wl0y44{box-shadow:none}
+.box-shadow-FthUz4:hover{box-shadow:0 12px 30px rgba(15, 18, 32, 0.08)}
+.box-shadow-WcNXy2:active{box-shadow:none}
+.transition-6g6pq4{transition:transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease, background 120ms ease}
+.text-decoration-8r95N:hover{text-decoration:none}
+.transform-z1OuF:hover{transform:translateY(-1px)}
+.transform-HA8Os4:active{transform:translateY(0)}
+.border-qBwtZ3{border:1px solid rgba(15, 18, 32, 0.12)}
+.font-weight-Ewe5J3{font-weight:650}
+.font-size-7UmQH1{font-size:0.98rem}
+.line-height-tzL8I2{line-height:1}
+.gap-Fqw6a1{gap:10px}
+.padding-sHJvF1{padding:0.75rem 1rem}
+.background-PAcgR2{background:#ffffff}
+.border-radius-TX0I34{border-radius:18px}
+.background-lnco41{background:rgba(250, 251, 253, 0.92)}
+.border-I77cU2{border:1px solid}
+.border-color-ApzIg{border-color:rgba(10, 14, 20, 0.10)}
+.box-shadow-CRMsc1{box-shadow:0 24px 70px rgba(0, 0, 0, 0.20)}
+.backdrop-filter-zVU0m3{backdrop-filter:blur(10px)}
+.-webkit-backdrop-filter-zVU0m3{-webkit-backdrop-filter:blur(10px)}
+.border-bottom-I77cU2{border-bottom:1px solid}
+.border-bottom-color-ApzIg{border-bottom-color:rgba(10, 14, 20, 0.10)}
+.color-7oH1C1{color:rgba(10, 14, 20, 0.06)}
+.padding-top-NKv2f3{padding-top:0.5rem}
+.padding-left-NKv2f3{padding-left:0.5rem}
+.padding-bottom-NKv2f3{padding-bottom:0.5rem}
+.padding-right-NKv2f3{padding-right:0.5rem}
+.display-mqllb2{display:grid}
+.grid-template-columns-HBnnk2{grid-template-columns:auto 1fr auto}
+.gap-dnNPN1{gap:1rem}
+.padding-left-FxsCt1{padding-left:0.25rem}
+.width-rrfjb1{width:12px}
+.height-rrfjb1{height:12px}
+.box-shadow-0u66r4{box-shadow:inset 0 0 0 1px rgba(0, 0, 0, 0.18)}
+.background-aQOAt1{background:#ff5f57}
+.background-acl8l2{background:#febc2e}
+.background-m5X8S3{background:#28c840}
+.letter-spacing-yjvIy{letter-spacing:0.02em}
+.color-3ZKcs3{color:color-mix(in oklab, rgba(10, 14, 20, 0.86) 72%, transparent)}
+.width-NpBLs3{width:38px}
+.color-8pHx{color:rgba(10, 14, 20, 0.86)}
+.font-family-UKgcr1{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+.font-size-jcA622{font-size:16px}
+.line-height-dXQ412{line-height:1.55}
+.overflow-y-omYyh3{overflow-y:scroll}
+.scrollbar-gutter-98fMT2{scrollbar-gutter:stable both-edges}
+.color-scheme-7kCIU2{color-scheme:light dark}
+.margin-DLMV5{margin:0 -1rem}
+.white-space-jzzz9{white-space:pre-wrap}
+.overflow-wrap-EXdsR2{overflow-wrap:anywhere}
+.word-break-FpkIZ2{word-break:break-word}
+.padding-XPdkE{padding:2px 1rem}
+.width-QlFKs1{width:0px}
+.color-Kqybp1{color:color-mix(in oklab, rgba(10, 14, 20, 0.86) 60%, transparent)}
+.color-jx6QW1{color:color-mix(in oklab, rgba(10, 14, 20, 0.86) 96%, transparent)}
+.color-6ZIxp2{color:color-mix(in oklab, #79f2b0 82%, rgba(10, 14, 20, 0.86) 10%);}
+.color-9xCv11{color:color-mix(in oklab, #4cccff 82%, rgba(10, 14, 20, 0.86) 10%);}
+.height-MDs1b4{height:0.625rem}
 .color-vig5A3:link{color:currentColor}
 .color-vZTTa3:visited{color:currentColor}
 .color-4IpZj1{color:currentColor}
@@ -288,10 +369,8 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .color-BoTGL{color:#171717}
 .padding-bottom-NBsge3{padding-bottom:3.0rem}
 .padding-FJnJ04{padding:2.5%}
-.color-GPfER1{color:#555555}
 .line-height-Xin5E2{line-height:1.5rem}
 .padding-PJnmd4{padding:2rem 1.5rem}
-.text-decoration-8r95N:hover{text-decoration:none}
 .row-gap-NBsge3{row-gap:3.0rem}
 .text-decoration-line-Wl0y44{text-decoration-line:none}
 .border-9YkDE1{border:1px solid #e8e8e8}
@@ -308,7 +387,6 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .color-H59Xg3:link{color:#79f2b0}
 .color-tgLLb3:visited{color:#79f2b0}
 .color-ov8tN1{color:#79f2b0}
-.display-mqllb2{display:grid}
 .grid-template-columns-hE9y01{grid-template-columns:minmax(0, 1fr) minmax(0, 2fr)}
 .font-size-xlo1p4{font-size:0.75rem}
 .letter-spacing-fGWfX2{letter-spacing:0.54pt}
@@ -319,6 +397,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   .display-mScdO2{display:none}
   input:checked ~ .display-sAbis3{display:block}
   .display-qVTRn:last-child{display:none}
+  .margin-top-HMdgd{margin-top:2rem}
   .padding-top-bS1Ay3{padding-top:2.0rem}
   .padding-left-bS1Ay3{padding-left:2.0rem}
   .padding-bottom-bS1Ay3{padding-bottom:2.0rem}
@@ -358,6 +437,14 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   .font-size-dR5Tt4{font-size:1.5rem}
   .font-size-Fb6s54{font-size:0.875rem}
 }
+@media only screen and (max-width: 940px){
+  .display-osldI1{display:none}
+  .display-yNuW2{display:inline}
+}
+@media only screen and (min-width: 940px){
+  .display-HhxPd1{display:inline}
+  .display-jM9hW2{display:none}
+}
 @media (prefers-color-scheme: dark){
   .border-top-MR1dZ1{border-top:1px solid #555555}
   .background-color-dMv2U1{background-color:#121212}
@@ -370,6 +457,29 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
   .color-fIiIX2:visited{color:#fff}
   .color-wVkSF3{color:#fff}
   .color-5uscm3{color:#a8a8a8}
+  .background-e7ncj{background:radial-gradient(900px 700px at 20% 20%, rgba(76, 204, 255, 0.18), transparent 55%),
+radial-gradient(900px 700px at 80% 70%, rgba(151, 77, 255, 0.16), transparent 55%),
+linear-gradient(180deg, #07080b, #0b0d10)}
+  .color-VoDZ9{color:#ccc}
+  .border-color-94F9E4{border-color:color-mix(in oklab, #79f2b0 40%, rgba(255, 255, 255, 0.12))}
+  .background-vVzWy3{background:color-mix(in oklab, #79f2b0 22%, #0f1220)}
+  .color-5ECK3:visited{color:rgba(255, 255, 255, 0.92)}
+  .color-ucD0q1:link{color:rgba(255, 255, 255, 0.92)}
+  .color-sA2Di1{color:rgba(255, 255, 255, 0.92)}
+  .box-shadow-piGCD2:hover{box-shadow:0 16px 40px rgba(0, 0, 0, 0.35)}
+  .border-wER7b{border:1px solid rgba(255, 255, 255, 0.12)}
+  .background-LTTQR{background:#0f1220}
+  .background-wnFz4{background:rgba(14, 16, 20, 0.92)}
+  .border-color-A2eBf3{border-color:rgba(255, 255, 255, 0.10)}
+  .box-shadow-o9zHM3{box-shadow:0 24px 70px rgba(0, 0, 0, 0.45)}
+  .border-bottom-color-A2eBf3{border-bottom-color:rgba(255, 255, 255, 0.10)}
+  .color-sA8jH3{color:rgba(255,255,255,0.06)}
+  .color-5FPze{color:color-mix(in oklab, rgba(255, 255, 255, 0.86) 72%, transparent)}
+  .color-ekPg54{color:rgba(255, 255, 255, 0.86)}
+  .color-rN1St{color:color-mix(in oklab, rgba(255, 255, 255, 0.86) 68%, transparent)}
+  .color-huCu91{color:color-mix(in oklab, rgba(255, 255, 255, 0.86) 96%, transparent)}
+  .color-qJyfQ{color:color-mix(in oklab, #79f2b0 82%, rgba(255, 255, 255, 0.86) 10%);}
+  .color-x1xqC1{color:color-mix(in oklab, #4cccff 82%, rgba(255, 255, 255, 0.86) 10%);}
   .background-color-xnERS1{background-color:#171717}
   .color-r4foZ2{color:#d8d8d8}
   .border-qEa5h2{border:1px solid #353535}
@@ -386,13 +496,17 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </li>
       <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/pricing">Pricing</a>
       </li>
-      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/blog">Blog</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/the-way"><span class="display-osldI1 display-HhxPd1">The Point-Free Way</span><span class="display-yNuW2 display-jM9hW2">Point-Free Way</span>
+        <is-new class="margin-left-FxsCt1 font-size-HFDgk3 font-weight-SywJI1 letter-spacing-miVw93 padding-SjEOn4 border-radius-btBsa3 border-uB9vi background-33BAq4 color-GnKka3">NEW
+        </is-new></a>
       </li>
       <li class="padding-left-dR5Tt4 display-mFpu24 padding-left-dzKEp position-Pjz1G2 opacity-mJTmO2 pointer-events-7T0L22 transform-v3Gb72 visibility-ZTlvG1"><button class="color-Vt0a43 appearance-Wl0y44 background-JyKaz4 border-4sVnF2 border-radius-btBsa3 cursor-xmR5l display-MH46v1 font-size-zZ9yy3 font-weight-SywJI1 letter-spacing-B7Alk3 transition-6t4cq1 background-color-6OEwN1 border-color-TaUzd2" type="button">•••</button>
         <ul class="background-1tnR2 border-gjzas2 border-radius-rrfjb1 box-shadow-QuMln left-85P192 min-width-cW9sI opacity-FBkWQ3 padding-8jCYd1 pointer-events-Wl0y44 position-X8qzJ top-C8uWv transform-sbXOd4 transition-zUm2k visibility-PhNC81 z-index-7AUj1 padding-left-E4tBw4 list-style-type-Wl0y44">
           <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/episodes"><span>Episodes</span></a>
           </li>
           <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/clips"><span>Free clips</span></a>
+          </li>
+          <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/blog"><span>Blog</span></a>
           </li>
           <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/gifts"><span>Gifts</span></a>
           </li>
@@ -411,6 +525,12 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </li>
     </ul><input class="display-Wl0y44" id="menu-checkbox" type="checkbox"><label class="cursor-xmR5l display-Nvbu41 cursor-xmR5l user-select-Wl0y44" id="menu-icon" for="menu-checkbox"><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-SUDJi1 top-xEdC7 transform-0hcgW2"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 transform-kZtH24 background-WytRx3"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-YwIIn top-i3LWY2 transform-BHskb"></span></label>
     <ul class="margin-FBkWQ3 display-Wl0y44 display-sAbis3 flex-grow-tzL8I2 flex-shrink-tzL8I2 flex-basis-C8uWv padding-left-E4tBw4 list-style-type-Wl0y44 color-nbn0i3">
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/the-way">
+        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">The Point-Free Way
+          <is-new class="font-size-HFDgk3 font-weight-SywJI1 letter-spacing-miVw93 padding-SjEOn4 border-radius-btBsa3 border-uB9vi background-33BAq4 color-GnKka3">NEW
+          </is-new>
+        </pf-hstack></a>
+      </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/episodes">
         <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Episodes
         </pf-hstack></a>
@@ -520,6 +640,70 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
         </pf-vstack>
       </pf-vstack>
     </pf-vgrid><a class="flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-VOQy11 align-items-CdPBO2 display-Nvbu41 margin-right-83zzS1 font-size-yLOVS3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/free">See all →</a>
+  </div>
+</div>
+<div class="background-JItPm4 background-e7ncj background-color-nbn0i3 background-color-dMv2U1">
+  <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
+      <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+        <h2 class="color-K2J0r1 color-wVkSF3 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">The Point&#8209;Free Way
+        </h2>
+        <p class="padding-FBkWQ3 color-GPfER1 color-VoDZ9 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2">Expert-crafted AI skill documents for building long-lasting Swift applications.
+        </p>
+        <p class="color-GPfER1 color-VoDZ9 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-RTPM71 line-height-JeRI4">Design, test, and evolve applications using the same principles, libraries, 
+and techniques we use every day at Point&#8209;Free.
+        </p>
+        <hr class="margin-top-dnNPN1 margin-bottom-dnNPN1 border-Wl0y44 border-top-S35Gp4 border-top-MR1dZ1 margin-left-FBkWQ3 margin-right-IuLpj2">
+        <pf-hstack class="align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><a href="/pricing" class="border-color-Y7CRG border-color-94F9E4 background-bF8aN2 background-vVzWy3 color-Nffw82 color-5ECK3 color-l1jsl4 color-ucD0q1 color-7cveC2 color-sA2Di1 box-shadow-Wl0y44 box-shadow-FthUz4 box-shadow-piGCD2 box-shadow-WcNXy2 cursor-xmR5l transition-6g6pq4 user-select-Wl0y44 text-decoration-Wl0y44 text-decoration-8r95N transform-z1OuF transform-HA8Os4 border-radius-btBsa3 border-qBwtZ3 border-wER7b font-weight-Ewe5J3 font-size-7UmQH1 line-height-tzL8I2 display-MH46v1 align-items-CdPBO2 justify-content-CdPBO2 text-align-CdPBO2 gap-Fqw6a1 padding-sHJvF1">Subscribe to unlock</a><a href="/the-way" class="background-PAcgR2 background-LTTQR color-Nffw82 color-5ECK3 color-l1jsl4 color-ucD0q1 color-7cveC2 color-sA2Di1 box-shadow-Wl0y44 box-shadow-FthUz4 box-shadow-piGCD2 box-shadow-WcNXy2 cursor-xmR5l transition-6g6pq4 user-select-Wl0y44 text-decoration-Wl0y44 text-decoration-8r95N transform-z1OuF transform-HA8Os4 border-radius-btBsa3 border-qBwtZ3 border-wER7b font-weight-Ewe5J3 font-size-7UmQH1 line-height-tzL8I2 display-MH46v1 align-items-CdPBO2 justify-content-CdPBO2 text-align-CdPBO2 gap-Fqw6a1 padding-sHJvF1">Learn more</a>
+          <pf-spacer class="flex-grow-tzL8I2">
+          </pf-spacer>
+        </pf-hstack>
+      </pf-vstack>
+      <terminal-window class="margin-top-HMdgd border-radius-TX0I34 background-lnco41 background-wnFz4 border-I77cU2 border-color-ApzIg border-color-A2eBf3 box-shadow-CRMsc1 box-shadow-o9zHM3 overflow-PhNC81 backdrop-filter-zVU0m3 -webkit-backdrop-filter-zVU0m3 display-ix08W2">
+        <terminal-title-bar class="border-bottom-I77cU2 border-bottom-color-ApzIg border-bottom-color-A2eBf3 color-7oH1C1 color-sA8jH3 padding-top-NKv2f3 padding-left-NKv2f3 padding-bottom-NKv2f3 padding-right-NKv2f3 display-mqllb2 grid-template-columns-HBnnk2 align-items-CdPBO2 gap-dnNPN1 display-ix08W2">
+          <div class="display-MH46v1 gap-NKv2f3 padding-left-FxsCt1"><span class="width-rrfjb1 height-rrfjb1 border-radius-btBsa3 box-shadow-0u66r4 background-aQOAt1"></span><span class="width-rrfjb1 height-rrfjb1 border-radius-btBsa3 box-shadow-0u66r4 background-acl8l2"></span><span class="width-rrfjb1 height-rrfjb1 border-radius-btBsa3 box-shadow-0u66r4 background-m5X8S3"></span>
+          </div>
+          <div class="text-align-CdPBO2 font-size-RTPM71 letter-spacing-yjvIy color-3ZKcs3 color-5FPze user-select-Wl0y44">Terminal
+          </div>
+          <div class="width-NpBLs3">
+          </div>
+        </terminal-title-bar>
+        <terminal-screen class="color-8pHx color-ekPg54 font-family-UKgcr1 font-size-jcA622 line-height-dXQ412 display-ix08W2">
+          <terminal-viewport class="position-Pjz1G2 padding-dnNPN1 width-C8uWv overflow-y-omYyh3 scrollbar-gutter-98fMT2 color-scheme-7kCIU2 display-ix08W2">
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="width-QlFKs1 color-Kqybp1 color-rN1St">$</span><span class="color-jx6QW1 color-huCu91">brew install pointfreeco/tap/pfw</span>
+            </pf-hstack>
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="width-QlFKs1 color-Kqybp1 color-rN1St">$</span><span class="color-jx6QW1 color-huCu91">pfw login</span>
+            </pf-hstack>
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="width-QlFKs1 color-Kqybp1 color-rN1St">$</span><span class="color-jx6QW1 color-huCu91">pfw install --tool codex</span>
+            </pf-hstack>
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="width-QlFKs1 color-Kqybp1 color-rN1St">$</span><span class="color-jx6QW1 color-huCu91">ls -R ~/.codex/skills/the-point-free-way</span>
+            </pf-hstack>
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="color-6ZIxp2 color-qJyfQ">./ComposableArchitecture/</span>
+            </pf-hstack>
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="color-9xCv11 color-x1xqC1">  SKILL.md</span>
+            </pf-hstack>
+            <terminal-gap class="height-MDs1b4 display-ix08W2">
+            </terminal-gap>
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="color-6ZIxp2 color-qJyfQ">./SQLiteData/</span>
+            </pf-hstack>
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="color-9xCv11 color-x1xqC1">  SKILL.md</span>
+            </pf-hstack>
+            <terminal-gap class="height-MDs1b4 display-ix08W2">
+            </terminal-gap>
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="color-6ZIxp2 color-qJyfQ">./Dependencies/</span>
+            </pf-hstack>
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="color-9xCv11 color-x1xqC1">  SKILL.md</span>
+            </pf-hstack>
+            <terminal-gap class="height-MDs1b4 display-ix08W2">
+            </terminal-gap>
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="color-6ZIxp2 color-qJyfQ">./SwiftNavigation/</span>
+            </pf-hstack>
+            <pf-hstack class="position-Pjz1G2 margin-DLMV5 white-space-jzzz9 overflow-wrap-EXdsR2 word-break-FpkIZ2 padding-XPdkE align-items-msN8p3 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1"><span class="color-9xCv11 color-x1xqC1">  SKILL.md</span>
+            </pf-hstack>
+          </terminal-viewport>
+        </terminal-screen>
+      </terminal-window>
+    </pf-vgrid>
   </div>
 </div>
 <div class="background-color-nbn0i3 background-color-dMv2U1">
@@ -956,6 +1140,8 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
         </h5>
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/pricing">Pricing</a>
+          </li>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/the-way">The Point-Free Way</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>
