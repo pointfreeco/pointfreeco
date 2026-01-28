@@ -215,5 +215,6 @@ extension BlogPost {
     .post0196_YearInReview2025,
     .post0197_EndOfYearSale,
     .post0198_EndOfYearSale,
+    .post0199_PointFreeTurns8,
   ]
 }
