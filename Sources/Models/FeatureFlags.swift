@@ -11,8 +11,8 @@ public struct Feature: Equatable {
     thePointFreeWay
   ]
   public static let thePointFreeWay = Self(
-    isAdminEnabled: true,
-    isEnabled: inDebug,
+    isAdminEnabled: false, //true,
+    isEnabled: false, //inDebug,
     allowedUserIDs: [
       User.ID(UUID(uuidString: "b0fdb3e8-e2ca-11ec-a019-1fddd3f5ae5a")!),
       User.ID(UUID(uuidString: "ccb77370-a3fa-11ed-b47b-237e7b5f06b0")!),

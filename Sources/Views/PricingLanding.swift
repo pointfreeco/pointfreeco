@@ -62,12 +62,10 @@ public struct PricingLanding: HTML {
           "billed annually"
         } features: {
           li { "All \(stats.allEpisodes) episodes with transcripts" }
-          if currentUser.hasAccess(to: .thePointFreeWay) {
-            li {
-              "Access to \""
-              Link("The Point-Free Way", destination: .theWay)
-              "\""
-            }
+          li {
+            "Access to \""
+            Link("The Point-Free Way", destination: .theWay)
+            "\""
           }
           li {
             "Watch past "

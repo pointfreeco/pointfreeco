@@ -27,7 +27,11 @@ public struct PointFreeWayLanding: HTML {
   }
 }
 
+fileprivate let pointFreeWayRequestAccessHref =
+  "mailto:support@pointfree.co?subject=Point-Free%20Way%20Beta"
+
 struct PointFreeWayHeader: HTML {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 
@@ -35,6 +39,8 @@ struct PointFreeWayHeader: HTML {
   enum Context { case home, landing }
 
   var body: some HTML {
+    let hasPointFreeWayAccess = currentUser?.hasAccess(to: .thePointFreeWay) ?? false
+
     PageModule(theme: .content) {
       LazyVGrid(columns: [.desktop: [1, 1]]) {
         VStack(spacing: 1) {
@@ -59,14 +65,27 @@ struct PointFreeWayHeader: HTML {
           Divider(alignment: .left, size: 30)
             .inlineStyle("margin-top", "1rem")
             .inlineStyle("margin-bottom", "1rem")
-          if subscriberState.isActiveSubscriber {
+          if hasPointFreeWayAccess {
             AccessUnlocked()
           } else {
             CTAGroup {
-              PFWButton(type: .primary) {
-                HTMLText("Subscribe to unlock")
+              if subscriberState.isActiveSubscriber {
+                VStack(alignment: .stretch, spacing: 0.5) {
+                  PFWButton(type: .primary) {
+                    HTMLText("Request access")
+                  }
+                  .href(pointFreeWayRequestAccessHref)
+                  Paragraph(.small) {
+                    "Skills are currently in beta."
+                  }
+                  .contentColor()
+                }
+              } else {
+                PFWButton(type: .primary) {
+                  HTMLText("Subscribe to unlock")
+                }
+                .href(siteRouter.path(for: .pricingLanding))
               }
-              .href(siteRouter.path(for: .pricingLanding))
               switch context {
               case .home:
                 PFWButton {
@@ -288,10 +307,13 @@ private struct HandCrafted: HTML {
 }
 
 private struct HowAccessWorks: HTML {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 
   var body: some HTML {
+    let hasPointFreeWayAccess = currentUser?.hasAccess(to: .thePointFreeWay) ?? false
+
     PointFreeWayModule(title: "How access works") {
       LazyVGrid(columns: [.mobile: [1, 1], .desktop: [1, 1, 1, 1]]) {
         Step(
@@ -317,16 +339,28 @@ private struct HowAccessWorks: HTML {
       }
 
       CTAGroup {
-        if subscriberState.isActiveSubscriber {
+        if hasPointFreeWayAccess {
           PFWButton(type: .primary) {
             HTMLText("Install the Point-Free Way")
           }
           .href("https://github.com/pointfreeco/pfw")
         } else {
-          PFWButton(type: .secondary) {
-            HTMLText("View subscription plans")
+          VStack(alignment: .leading, spacing: 0.5) {
+            PFWButton(type: .primary) {
+              HTMLText("Request access")
+            }
+            .href(pointFreeWayRequestAccessHref)
+            Paragraph(.small) {
+              "Skills are currently in beta."
+            }
+            .contentColor()
           }
-          .href(siteRouter.path(for: .pricingLanding))
+          if !subscriberState.isActiveSubscriber {
+            PFWButton(type: .secondary) {
+              HTMLText("View subscription plans")
+            }
+            .href(siteRouter.path(for: .pricingLanding))
+          }
         }
       }
       .inlineStyle("padding-top", "1.5rem")
