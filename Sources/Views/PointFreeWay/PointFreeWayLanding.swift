@@ -21,7 +21,10 @@ public struct PointFreeWayLanding: HTML {
     HandCrafted()
     HowAccessWorks()
     if !subscriberState.isActiveSubscriber {
-      NotReadyToSubscribe()
+      // NB: Bring back when ready.
+      if false {
+        NotReadyToSubscribe()
+      }
       BuildSoftwareThatLasts()
     }
   }
