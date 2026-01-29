@@ -376,13 +376,8 @@ private struct PointFreeWayCTAButtons<Secondary: HTML>: HTML {
               HTMLText("Request access")
             }
             .href(pointFreeWayRequestAccessHref)
-            .attribute(
-              "onclick",
-              "alert('Beta invites are closed, but we will be releasing the tools soon!');"
-            )
             Paragraph(.small) {
-              HTMLRaw("&#9888;")
-              " Beta invites are closed for now."
+              "Skills are currently in beta."
             }
             .contentColor()
           }
