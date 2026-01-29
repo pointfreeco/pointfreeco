@@ -10,11 +10,7 @@ Today we are releasing a beta preview of what we call the "[Point-Free Way](/the
 
 And the best part is that they will be constantly updated. Every time we answer a question in one of our many forums, or see an anti-pattern emerge within the community, we will update skill documents to help guide people towards the right path.
 
-To take part in this beta, message us with the email address associated with your Point-Free account (can be found on your [account page](/account)):
-
-@Button(mailto:support@pointfree.co?subject=Point-Free%20Way%20Beta) {
-  Request beta access
-}
+> Important: Beta invites are now closed, but we will be releasing the tools soon!
 
 We will be releasing the first stable version of these tools in the coming weeks, so stay tuned!
 
