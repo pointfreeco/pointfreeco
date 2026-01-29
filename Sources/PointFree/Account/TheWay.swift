@@ -47,7 +47,7 @@ func theWayMiddleware(
         }
     }
 
-    guard subscriberState.isActive
+    guard subscriberState.isActiveSubscriber
     else {
       return conn.redirect(to: .pricingLanding) {
         $0.flash(.error, "Must be a subscriber to access 'The Point-Free Way'.")
@@ -89,6 +89,26 @@ func theWayMiddleware(
   case .download(let token, let whoami, let machine, let lastSHA):
     do {
       let access = try await database.fetchTheWayAccess(machine: machine, whoami: whoami)
+      let user = try await database.fetchUser(id: access.userID)
+      guard
+        let subscription = try? await database.fetchSubscription(user: user),
+        let enterpriseAccount = try? await database.fetchEnterpriseAccount(
+          forSubscriptionID: subscription.id
+        ),
+        let subscriberState = Optional(
+          SubscriberState(
+            user: user,
+            subscription: subscription,
+            enterpriseAccount: enterpriseAccount
+          )
+        ),
+        subscriberState.isActiveSubscriber
+      else {
+        return
+          conn
+          .writeStatus(.unauthorized)
+          .respond(text: "🛑 Must be a subscriber to access 'The Point-Free Way'.")
+      }
       guard access.id == token
       else {
         return
@@ -104,7 +124,6 @@ func theWayMiddleware(
           .respond(text: "🛑 Token has expired, re-login with 'pfw login'.")
       }
       _ = try await database.upsertTheWayAccess(access)
-      let user = try await database.fetchUser(id: access.userID)
 
       @Dependency(\.gitHub) var gitHub
       @Dependency(\.envVars.gitHub.pfwDownloadsAccessToken) var pfwDownloadsAccessToken
@@ -119,7 +138,8 @@ func theWayMiddleware(
 
       guard sha != lastSHA
       else {
-        return conn
+        return
+          conn
           .map { _ in Data() }
           .writeStatus(.notModified)
           .closeHeaders()
