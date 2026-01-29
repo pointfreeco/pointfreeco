@@ -141,6 +141,16 @@ public struct Feature: Equatable {
       User.ID(UUID(uuidString: "f0bdb706-66bb-11e8-b945-9b6d35d26330")!),
       User.ID(UUID(uuidString: "e3f09a6c-c0a4-11ea-8f6c-6f01521f4f9d")!),
       User.ID(UUID(uuidString: "4e0fd2d6-fd2c-11f0-bd6d-c350433744ab")!),
+      User.ID(UUID(uuidString: "e8bd197a-0603-11e8-adfc-e3fd7610d0b9")!),
+      User.ID(UUID(uuidString: "74cde1ea-16a9-11e9-a342-b371e410d804")!),
+      User.ID(UUID(uuidString: "afa775e0-fd58-11f0-869d-cb5f1a7760c8")!),
+      User.ID(UUID(uuidString: "ecdaa8a8-75a0-11ed-ac08-7f50b3d58ee9")!),
+      User.ID(UUID(uuidString: "0cefdad2-cfd0-11eb-b297-2b6433b214ca")!),
+      User.ID(UUID(uuidString: "8d0b4db0-3843-11ec-8fc2-a33b275538ff")!),
+      User.ID(UUID(uuidString: "3f168038-d2be-11eb-a424-4f8714a23d98")!),
+      User.ID(UUID(uuidString: "698c1848-c1b9-11f0-8732-e74c17d6580b")!),
+      User.ID(UUID(uuidString: "8b2ec756-4c9c-11e8-bba7-1f093bf7758f")!),
+      User.ID(UUID(uuidString: "9f63b616-9830-11ed-b804-2f91c110e1c9")!),
     ],
     name: "the-point-free-way"
   )
