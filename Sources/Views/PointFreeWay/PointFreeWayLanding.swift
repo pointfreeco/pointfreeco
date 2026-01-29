@@ -315,7 +315,7 @@ private struct HowAccessWorks: HTML {
         Step(
           count: 1,
           title: "Subscribe to Point&#8209;Free",
-          blurb: "Unlock videos and the all Point-Free Way skill documents."
+          blurb: "Unlock videos and all Point-Free Way skill documents."
         )
         Step(
           count: 2,
