@@ -91,18 +91,22 @@ func theWayMiddleware(
       let access = try await database.fetchTheWayAccess(machine: machine, whoami: whoami)
       let user = try await database.fetchUser(id: access.userID)
       guard
-        let subscription = try? await database.fetchSubscription(user: user),
-        let enterpriseAccount = try? await database.fetchEnterpriseAccount(
-          forSubscriptionID: subscription.id
-        ),
-        let subscriberState = Optional(
-          SubscriberState(
-            user: user,
-            subscription: subscription,
-            enterpriseAccount: enterpriseAccount
-          )
-        ),
-        subscriberState.isActiveSubscriber
+        let subscription = try? await database.fetchSubscription(user: user)
+      else {
+        return
+          conn
+          .writeStatus(.unauthorized)
+          .respond(text: "🛑 Must be a subscriber to access 'The Point-Free Way'.")
+      }
+      let enterpriseAccount = try? await database.fetchEnterpriseAccount(
+        forSubscriptionID: subscription.id
+      )
+      let subscriberState = SubscriberState(
+        user: user,
+        subscription: subscription,
+        enterpriseAccount: enterpriseAccount
+      )
+      guard subscriberState.isActiveSubscriber
       else {
         return
           conn
