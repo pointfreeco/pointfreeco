@@ -140,6 +140,7 @@ public struct Feature: Equatable {
       User.ID(UUID(uuidString: "f46b5938-6245-11ec-bc65-4b12b5f2e0e0")!),
       User.ID(UUID(uuidString: "f0bdb706-66bb-11e8-b945-9b6d35d26330")!),
       User.ID(UUID(uuidString: "e3f09a6c-c0a4-11ea-8f6c-6f01521f4f9d")!),
+      User.ID(UUID(uuidString: "4e0fd2d6-fd2c-11f0-bd6d-c350433744ab")!),
     ],
     name: "the-point-free-way"
   )
