@@ -1,5 +1,6 @@
 import Dependencies
 import Foundation
+import Tagged
 
 public struct Feature: Equatable {
   public var isAdminEnabled: Bool
@@ -11,8 +12,8 @@ public struct Feature: Equatable {
     thePointFreeWay
   ]
   public static let thePointFreeWay = Self(
-    isAdminEnabled: true,
-    isEnabled: inDebug,
+    isAdminEnabled: false, //true,
+    isEnabled: false, //inDebug,
     allowedUserIDs: [
       User.ID(UUID(uuidString: "b0fdb3e8-e2ca-11ec-a019-1fddd3f5ae5a")!),
       User.ID(UUID(uuidString: "ccb77370-a3fa-11ed-b47b-237e7b5f06b0")!),
@@ -244,6 +245,8 @@ public struct Feature: Equatable {
       User.ID(UUID(uuidString: "5801fd82-dc19-11e8-96b2-4bc0dc1034a7")!),
       User.ID(UUID(uuidString: "c592f582-f3b0-11e8-87e4-f3d68decaa92")!),
       User.ID(UUID(uuidString: "ddb78972-d737-11ea-88b1-370430112e9b")!),
+      User.ID(UUID(uuidString: "eed72166-5dba-11e8-897f-977b84a30433")!),
+
     ],
     name: "the-point-free-way"
   )
