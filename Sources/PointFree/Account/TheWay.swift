@@ -76,13 +76,13 @@ func theWayMiddleware(
       guard let redirectString = redirectBase.url?.absoluteString
       else {
         return conn.redirect(to: .home) {
-          $0.flash(.error, "Could not login.")
+          $0.flash(.error, "Could not login..")
         }
       }
       return await conn.redirect(to: redirectString)
     } catch {
       return conn.redirect(to: .home) {
-        $0.flash(.error, "Could not login.")
+        $0.flash(.error, "Could not login...")
       }
     }
 
