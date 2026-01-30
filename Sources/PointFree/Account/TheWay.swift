@@ -208,19 +208,6 @@ func theWayMiddleware(
         }
       }
 
-      let commitMessagesURL = skillsURL.appending(path: "commit-messages.txt")
-      if let lastSHA {
-        let commitMessages = try await gitHub.fetchCommitMessagesBetweenSHAs(
-          owner: "pointfreeco",
-          repo: "the-point-free-way",
-          base: lastSHA,
-          head: sha,
-          token: pfwDownloadsAccessToken
-        )
-        let contents = commitMessages.map { "• \($0)" }.joined(separator: "\n") + "\n"
-        try Data(contents.utf8).write(to: commitMessagesURL)
-      }
-
       let destinationURL = URL.temporaryDirectory.appending(path: UUID().uuidString + ".zip")
       try FileManager.default.zipItem(
         at: skillsURL,
