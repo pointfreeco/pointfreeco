@@ -209,25 +209,26 @@ func theWayMiddleware(
         }
       }
 
-      let commitMessagesURL = skillsURL.appending(path: "commit-messages.txt")
+      let commitMessagesURL = skillsURL.appending(path: "commit-messages.json")
       if let lastSHA,
         let version,
         let semanticVersion = Version(version),
         semanticVersion > Version("0.0.5")!
       {
-        let compareResponse = try await gitHub.fetchCommitMessages(
-          owner: "pointfreeco",
-          repo: "the-point-free-way",
-          base: lastSHA,
-          head: sha,
-          token: pfwDownloadsAccessToken
-        )
-        let contents =
-          compareResponse.commits
-          .map { "• \($0.commit.message)" }
-          .joined(separator: "\n")
-          + "\n"
-        try Data(contents.utf8).write(to: commitMessagesURL)
+        await withErrorReporting {
+          let compareResponse = try await gitHub.fetchCommitMessages(
+            owner: "pointfreeco",
+            repo: "the-point-free-way",
+            base: lastSHA,
+            head: sha,
+            token: pfwDownloadsAccessToken
+          )
+          try JSONEncoder()
+            .encode(
+              compareResponse.commits.map { String($0.commit.message.prefix { $0 != "\n" }) }
+            )
+            .write(to: commitMessagesURL)
+        }
       }
 
       let destinationURL = URL.temporaryDirectory.appending(path: UUID().uuidString + ".zip")
