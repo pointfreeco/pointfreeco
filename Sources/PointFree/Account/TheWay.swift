@@ -225,7 +225,14 @@ func theWayMiddleware(
           )
           try JSONEncoder()
             .encode(
-              compareResponse.commits.map { String($0.commit.message.prefix { $0 != "\n" }) }
+              compareResponse.commits.map {
+                let title = $0.commit.message.prefix { $0 != "\n" }
+                var parts = title.split(separator: " ")
+                if (parts.last ?? "").hasPrefix("(#") && (parts.last ?? "").hasSuffix(")") {
+                  parts.removeLast()
+                }
+                return String(parts.joined(separator: " "))
+              }
             )
             .write(to: commitMessagesURL)
         }
