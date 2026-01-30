@@ -39,7 +39,13 @@ public enum Account: Equatable {
 
   public enum TheWay: Equatable {
     case login(redirect: String, whoami: String, machine: UUID)
-    case download(token: TheWayAccess.ID, whoami: String, machine: UUID, lastSHA: Repo.Commit.SHA?)
+    case download(
+      token: TheWayAccess.ID,
+      whoami: String,
+      machine: UUID,
+      lastSHA: Repo.Commit.SHA?,
+      version: String?
+    )
   }
 }
 
@@ -154,11 +160,18 @@ struct AccountRouter: ParserPrinter {
             Path { "download" }
             Query {
               Field("token") { UUID.parser().map(.representing(TheWayAccess.ID.self)) }
+            }
+            Query {
               Field("whoami", .string)
+            }
+            Query {
               Field("machine") { UUID.parser() }
             }
             Headers {
               Optionally { Field("If-None-Match", .string.representing(Repo.Commit.SHA.self)) }
+            }
+            Headers {
+              Optionally { Field("X-PFW-Version", .string) }
             }
           }
         }

@@ -86,8 +86,9 @@ func theWayMiddleware(
       }
     }
 
-  case .download(let token, let whoami, let machine, let lastSHA):
+  case .download(let token, let whoami, let machine, let lastSHA, let version):
     do {
+      _ = version
       let access = try await database.fetchTheWayAccess(machine: machine, whoami: whoami)
       let user = try await database.fetchUser(id: access.userID)
       guard
@@ -209,7 +210,11 @@ func theWayMiddleware(
       }
 
       let commitMessagesURL = skillsURL.appending(path: "commit-messages.txt")
-      if let lastSHA {
+      if let lastSHA,
+        let version,
+        let semanticVersion = Version(version),
+        semanticVersion > Version("0.0.5")!
+      {
         let compareResponse = try await gitHub.fetchCommitMessages(
           owner: "pointfreeco",
           repo: "the-point-free-way",
@@ -264,4 +269,23 @@ private func rewriteContents(
   var contents = try String(decoding: Data(contentsOf: url), as: UTF8.self)
   try transform(&contents)
   try Data(contents.utf8).write(to: url)
+}
+
+extension String {
+  fileprivate var isValidSemanticVersion: Bool {
+    range(of: #"^\d+(\.\d+)*$"#, options: .regularExpression) != nil
+  }
+}
+
+extension Version {
+  fileprivate init?(_ string: String) {
+    let parts = string.split(separator: ".")
+    guard
+      parts.count == 3,
+      let major = Int(parts[0]),
+      let minor = Int(parts[1]),
+      let patch = Int(parts[2])
+    else { return nil }
+    self = Version(major, minor, patch)
+  }
 }
