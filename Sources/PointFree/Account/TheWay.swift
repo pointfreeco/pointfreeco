@@ -86,8 +86,9 @@ func theWayMiddleware(
       }
     }
 
-  case .download(let token, let whoami, let machine, let lastSHA):
+  case .download(let token, let whoami, let machine, let lastSHA, let version):
     do {
+      _ = version
       let access = try await database.fetchTheWayAccess(machine: machine, whoami: whoami)
       let user = try await database.fetchUser(id: access.userID)
       guard
@@ -208,6 +209,35 @@ func theWayMiddleware(
         }
       }
 
+      let commitMessagesURL = skillsURL.appending(path: "commit-messages.json")
+      if let lastSHA,
+        let version,
+        let semanticVersion = Version(version),
+        semanticVersion > Version("0.0.5")!
+      {
+        await withErrorReporting {
+          let compareResponse = try await gitHub.fetchCommitMessages(
+            owner: "pointfreeco",
+            repo: "the-point-free-way",
+            base: lastSHA,
+            head: sha,
+            token: pfwDownloadsAccessToken
+          )
+          try JSONEncoder()
+            .encode(
+              compareResponse.commits.map {
+                let title = $0.commit.message.prefix { $0 != "\n" }
+                var parts = title.split(separator: " ")
+                if (parts.last ?? "").hasPrefix("(#") && (parts.last ?? "").hasSuffix(")") {
+                  parts.removeLast()
+                }
+                return String(parts.joined(separator: " "))
+              }
+            )
+            .write(to: commitMessagesURL)
+        }
+      }
+
       let destinationURL = URL.temporaryDirectory.appending(path: UUID().uuidString + ".zip")
       try FileManager.default.zipItem(
         at: skillsURL,
@@ -247,4 +277,17 @@ private func rewriteContents(
   var contents = try String(decoding: Data(contentsOf: url), as: UTF8.self)
   try transform(&contents)
   try Data(contents.utf8).write(to: url)
+}
+
+extension Version {
+  fileprivate init?(_ string: String) {
+    let parts = string.split(separator: ".")
+    guard
+      parts.count == 3,
+      let major = Int(parts[0]),
+      let minor = Int(parts[1]),
+      let patch = Int(parts[2])
+    else { return nil }
+    self = Version(major, minor, patch)
+  }
 }

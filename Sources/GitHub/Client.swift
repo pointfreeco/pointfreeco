@@ -43,6 +43,16 @@ public struct Client {
     _ token: GitHubAccessToken
   ) async throws -> Data
 
+  /// Fetches commits between two SHAs.
+  public var fetchCommitMessages:
+    (
+      _ owner: String,
+      _ repo: String,
+      _ base: Repo.Commit.SHA,
+      _ head: Repo.Commit.SHA,
+      _ token: GitHubAccessToken
+    ) async throws -> CompareCommitsResponse
+
   public struct AuthTokenResponse: Codable {
     public var accessToken: GitHubAccessToken
     public init(_ accessToken: GitHubAccessToken) {
@@ -88,6 +98,18 @@ extension Client {
           with: fetchGitHubZipball(owner: owner, repo: repo, ref: ref, token: token)
         )
         return Data(buffer: data)
+      },
+      fetchCommitMessages: { owner, repo, base, head, token in
+        try await jsonDataTask(
+          with: fetchGitHubCompareCommits(
+            owner: owner,
+            repo: repo,
+            base: base,
+            head: head,
+            token: token
+          ),
+          decoder: gitHubJsonDecoder
+        )
       }
     )
   }
@@ -148,6 +170,28 @@ func fetchGitHubZipball(
   token: GitHubAccessToken
 ) -> HTTPClientRequest {
   apiDataTask("repos/\(owner)/\(repo)/zipball/\(ref)", token: token)
+}
+
+func fetchGitHubCompareCommits(
+  owner: String,
+  repo: String,
+  base: Repo.Commit.SHA,
+  head: Repo.Commit.SHA,
+  token: GitHubAccessToken
+) -> DecodableHTTPClientRequest<CompareCommitsResponse> {
+  apiDataTask("repos/\(owner)/\(repo)/compare/\(base)...\(head)", token: token)
+}
+
+public struct CompareCommitsResponse: Codable {
+  public var commits: [Commit]
+
+  public struct Commit: Codable {
+    public var commit: Detail
+
+    public struct Detail: Codable {
+      public var message: String
+    }
+  }
 }
 
 private func apiDataTask<A>(
