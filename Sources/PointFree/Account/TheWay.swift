@@ -271,12 +271,6 @@ private func rewriteContents(
   try Data(contents.utf8).write(to: url)
 }
 
-extension String {
-  fileprivate var isValidSemanticVersion: Bool {
-    range(of: #"^\d+(\.\d+)*$"#, options: .regularExpression) != nil
-  }
-}
-
 extension Version {
   fileprivate init?(_ string: String) {
     let parts = string.split(separator: ".")
