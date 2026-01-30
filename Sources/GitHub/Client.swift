@@ -43,15 +43,15 @@ public struct Client {
     _ token: GitHubAccessToken
   ) async throws -> Data
 
-  /// Fetches commit messages between two SHAs.
-  public var fetchCommitMessagesBetweenSHAs:
+  /// Fetches commits between two SHAs.
+  public var fetchCommitMessages:
     (
       _ owner: String,
       _ repo: String,
       _ base: Repo.Commit.SHA,
       _ head: Repo.Commit.SHA,
       _ token: GitHubAccessToken
-    ) async throws -> [String]
+    ) async throws -> CompareCommitsResponse
 
   public struct AuthTokenResponse: Codable {
     public var accessToken: GitHubAccessToken
@@ -99,8 +99,8 @@ extension Client {
         )
         return Data(buffer: data)
       },
-      fetchCommitMessagesBetweenSHAs: { owner, repo, base, head, token in
-        let response = try await jsonDataTask(
+      fetchCommitMessages: { owner, repo, base, head, token in
+        try await jsonDataTask(
           with: fetchGitHubCompareCommits(
             owner: owner,
             repo: repo,
@@ -110,7 +110,6 @@ extension Client {
           ),
           decoder: gitHubJsonDecoder
         )
-        return response.commits.map { $0.commit.message }
       }
     )
   }
@@ -183,14 +182,14 @@ func fetchGitHubCompareCommits(
   apiDataTask("repos/\(owner)/\(repo)/compare/\(base)...\(head)", token: token)
 }
 
-struct CompareCommitsResponse: Codable {
-  var commits: [Commit]
+public struct CompareCommitsResponse: Codable {
+  public var commits: [Commit]
 
-  struct Commit: Codable {
-    var commit: Detail
+  public struct Commit: Codable {
+    public var commit: Detail
 
-    struct Detail: Codable {
-      var message: String
+    public struct Detail: Codable {
+      public var message: String
     }
   }
 }

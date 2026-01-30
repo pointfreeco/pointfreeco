@@ -210,14 +210,18 @@ func theWayMiddleware(
 
       let commitMessagesURL = skillsURL.appending(path: "commit-messages.txt")
       if let lastSHA {
-        let commitMessages = try await gitHub.fetchCommitMessagesBetweenSHAs(
+        let compareResponse = try await gitHub.fetchCommitMessages(
           owner: "pointfreeco",
           repo: "the-point-free-way",
           base: lastSHA,
           head: sha,
           token: pfwDownloadsAccessToken
         )
-        let contents = commitMessages.map { "• \($0)" }.joined(separator: "\n") + "\n"
+        let contents =
+          compareResponse.commits
+          .map { "• \($0.commit.message)" }
+          .joined(separator: "\n")
+          + "\n"
         try Data(contents.utf8).write(to: commitMessagesURL)
       }
 
