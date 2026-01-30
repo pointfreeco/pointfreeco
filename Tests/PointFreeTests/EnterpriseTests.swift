@@ -105,7 +105,6 @@ class EnterpriseTests: TestCase {
     await withDependencies {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
-      $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchUserById = { _ in loggedInUser }
     } operation: {
       let req = request(
@@ -132,7 +131,6 @@ class EnterpriseTests: TestCase {
     await withDependencies {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
-      $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchUserById = { _ in loggedInUser }
     } operation: {
       let req = request(
@@ -159,8 +157,9 @@ class EnterpriseTests: TestCase {
 
     await withDependencies {
       $0.database = .mock
+      $0.database.fetchUserById = { _ in loggedInUser }
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
-      $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     } operation: {
       let req = request(
         to: .enterprise(account.domain, .acceptInvite(email: "baddata", userId: encryptedUserId)),
@@ -186,6 +185,7 @@ class EnterpriseTests: TestCase {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
       $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     } operation: {
       let req = request(
         to: .enterprise(account.domain, .acceptInvite(email: encryptedEmail, userId: "baddata")),
@@ -212,6 +212,7 @@ class EnterpriseTests: TestCase {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
       $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     } operation: {
       let req = request(
         to: .enterprise(
@@ -238,6 +239,7 @@ class EnterpriseTests: TestCase {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
       $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     } operation: {
       let req = request(
         to: .enterprise(
@@ -254,6 +256,7 @@ class EnterpriseTests: TestCase {
     await withDependencies {
       $0.database.fetchEnterpriseAccountForDomain = { _ in throw unit }
       $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     } operation: {
       var account = EnterpriseAccount.mock
       account.domain = "pointfree.co"
@@ -285,11 +288,16 @@ class EnterpriseTests: TestCase {
     var loggedInUser = User.mock
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
+    let userAddedToSubscription = LockIsolated(false)
 
     await withDependencies {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
       $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.addUserIdToSubscriptionId = { id, _ in
+        userAddedToSubscription.withValue { [loggedInUser] in $0 = userId == loggedInUser.id }
+      }
     } operation: {
       let req = request(
         to: .enterprise(
@@ -300,7 +308,7 @@ class EnterpriseTests: TestCase {
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
 
-    // todo: more verifications that subscription was linked
+    XCTAssertEqual(userAddedToSubscription.value, true)
   }
 
   @MainActor
@@ -314,11 +322,16 @@ class EnterpriseTests: TestCase {
     var loggedInUser = User.mock
     loggedInUser.id = userId
     loggedInUser.subscriptionId = nil
+    let userAddedToSubscription = LockIsolated(false)
 
     await withDependencies {
       $0.database = .mock
       $0.database.fetchEnterpriseAccountForDomain = { _ in account }
+      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
       $0.database.fetchSubscriptionById = { _ in throw unit }
+      $0.database.addUserIdToSubscriptionId = { id, _ in
+        userAddedToSubscription.withValue { [loggedInUser] in $0 = userId == loggedInUser.id }
+      }
     } operation: {
       let req = request(
         to: .enterprise(
@@ -329,7 +342,7 @@ class EnterpriseTests: TestCase {
       await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
     }
 
-    // todo: more verifications that subscription was linked
+    XCTAssertEqual(userAddedToSubscription.value, true)
   }
 
   // todo: flow for when user already has sub
