@@ -286,7 +286,7 @@ private struct HandCrafted: HTML {
           items: [
             "Practical guidance that results in cleaner designs",
             "Patterns that remain maintainable for years",
-            "Guidance aligned with the libraries thousands already",
+            "Guidance aligned with the libraries thousands already use",
           ]
         )
         ChecklistModule(
