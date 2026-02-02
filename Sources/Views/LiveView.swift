@@ -1,217 +1,199 @@
-import Css
 import Dependencies
 import Foundation
-import FunctionalCss
-import Html
-import PointFreeDependencies
-import Prelude
-import Styleguide
+import Models
+import PointFreeRouter
+import StyleguideV2
 
-public func liveView() -> Node {
+public struct LiveView: HTML {
   @Dependency(\.envVars.baseUrl) var baseURL
-  @Dependency(\.currentRoute) var currentRoute
-  @Dependency(\.currentUser) var currentUser
   @Dependency(\.envVars.youtubeChannelID) var youtubeChannelID
   @Dependency(\.livestreams) var livestreams
+
+  public init() {}
+
+  public var body: some HTML {
+    if let activeLivestream = livestreams.first(where: \.isActive) {
+      VStack(spacing: 0) {
+        LiveHeader(livestream: activeLivestream)
+        LiveEmbeds(
+          youtubeChannelID: youtubeChannelID,
+          videoID: activeLivestream.videoID,
+          host: baseURL.host() ?? "localhost"
+        )
+      }
+    } else {
+      HTMLEmpty()
+    }
+  }
+}
+
+private struct LiveHeader: HTML {
+  let livestream: Livestream
+
+  var body: some HTML {
+    CenterColumn {
+      VStack(alignment: .center, spacing: 1) {
+        Header(2) {
+          HTMLRaw(nonBreaking(title: livestream.title))
+        }
+        .color(.white)
+        .inlineStyle("text-align", "center")
+        .inlineStyle("text-wrap", "balance")
+
+        LiveDate(livestream: livestream)
+
+        HTMLMarkdown(description)
+          .color(.gray900)
+          .inlineStyle("max-width", "768px")
+          .inlineStyle("margin", "0 auto")
+          .inlineStyle("text-align", "left")
+          .linkStyle(.init(color: .offWhite, underline: true))
+      }
+      .inlineStyle("padding", "3rem 2rem 2rem")
+      .inlineStyle("padding", "4rem 3rem 3rem", media: .desktop)
+    }
+    .inlineStyle("background", "linear-gradient(#121212, #242424)")
+
+    LiveCallToAction(livestream: livestream)
+      .inlineStyle("padding", "0 2rem 3rem")
+      .inlineStyle("padding", "0 3rem 3rem", media: .desktop)
+      .inlineStyle("background", "linear-gradient(#242424, #0a0a0a)")
+  }
+
+  private var description: String {
+    if livestream.isLive {
+      return livestream.liveDescription ?? livestream.description
+    } else {
+      return livestream.description
+    }
+  }
+}
+
+private struct LiveDate: HTML {
+  let livestream: Livestream
+
+  var body: some HTML {
+    if let scheduledAt = livestream.scheduledAt {
+      HStack(alignment: .center, spacing: 0.5) {
+        if livestream.isLive {
+          span { "🔴" }
+            .inlineStyle("animation", "Pulse 3s linear infinite")
+        }
+        if livestream.isLive {
+          "We are live right now!"
+        } else {
+          "Scheduled for \(livestreamScheduledAtFormatter.string(from: scheduledAt))"
+        }
+      }
+      .fontStyle(.body(.small))
+      .color(.gray650)
+      .inlineStyle("text-align", "center")
+    }
+  }
+}
+
+private struct LiveCallToAction: HTML {
+  let livestream: Livestream
+
+  @Dependency(\.currentRoute) var currentRoute
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
-  let host = baseURL.host() ?? "localhost"
-  guard let activeLivestream = livestreams.first(where: { $0.isActive })
-  else { return [] }
-
-  let dateNode: Node
-  if let scheduledAt = activeLivestream.scheduledAt {
-    let messageNode: Node
-    if activeLivestream.isLive {
-      messageNode = [
-        .span(
-          attributes: [
-            .style(safe: "animation: Pulse 3s linear infinite;")
-          ],
-          "🔴 "
-        ),
-        .text("We are live right now!"),
-      ]
-    } else {
-      messageNode = .text(
-        "Scheduled for " + livestreamScheduledAtFormatter.string(from: scheduledAt)
-      )
+  var body: some HTML {
+    if currentUser == nil, !livestream.isLive {
+      CenterColumn {
+        div {
+          Button(color: .white, size: .regular) {
+            "Log in to be notified"
+          }
+          .attribute("href", siteRouter.loginPath(redirect: currentRoute))
+        }
+        .inlineStyle("text-align", "center")
+      }
+    } else if currentUser != nil {
+      CenterColumn {
+        div {
+          Button(color: .purple, size: .regular) {
+            "Watch on YouTube →"
+          }
+          .attribute("href", "https://youtube.com/live/\(livestream.videoID)")
+        }
+        .inlineStyle("text-align", "center")
+      }
     }
-    dateNode = .div(
-      attributes: [
-        .class([
-          Class.padding([.mobile: [.bottom: 2]]),
-          Class.pf.colors.fg.gray650,
-          Class.pf.type.body.small,
-          Class.type.align.center,
-        ])
-      ],
-      messageNode
-    )
-  } else {
-    dateNode = []
   }
-  let ctaNode: Node
-  if currentUser == nil, !activeLivestream.isLive {
-    ctaNode = .gridRow(
-      attributes: [
-        .class([
-          Class.grid.middle(.desktop),
-          Class.padding([
-            .desktop: [.leftRight: 5],
-            .mobile: [.leftRight: 3, .bottom: 4],
-          ]),
-        ]),
-        .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
-      ],
-      .gridColumn(
-        sizes: [.mobile: 12],
-        attributes: [
-          .class([
-            Class.type.align.center
-          ])
-        ],
-        .gitHubLink(
-          text: "Log in to be notified",
-          type: .white,
-          href: siteRouter.loginPath(redirect: currentRoute),
-          size: .regular
-        )
-      )
-    )
-  } else if currentUser != nil {
-    ctaNode = .gridRow(
-      attributes: [
-        .class([
-          Class.grid.middle(.desktop),
-          Class.padding([
-            .desktop: [.leftRight: 5],
-            .mobile: [.leftRight: 3, .bottom: 4],
-          ]),
-        ]),
-        .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
-      ],
-      .gridColumn(
-        sizes: [.mobile: 12],
-        attributes: [
-          .class([
-            Class.type.align.center
-          ])
-        ],
-        .a(
-          attributes: [
-            .href("https://youtube.com/live/\(activeLivestream.videoID)"),
-            .class([Class.pf.components.button(color: .purple)]),
-          ],
-          "Watch on YouTube →"
-        )
-      )
-    )
-  } else {
-    ctaNode = []
+}
+
+private struct LiveEmbeds: HTML {
+  let youtubeChannelID: String
+  let videoID: String
+  let host: String
+
+  var body: some HTML {
+    div {
+      LazyVGrid(
+        columns: [.mobile: [1], .desktop: [2, 1]],
+        alignItems: .start,
+        horizontalSpacing: 0,
+        verticalSpacing: 0
+      ) {
+        LiveVideoEmbed(youtubeChannelID: youtubeChannelID)
+        LiveChatEmbed(videoID: videoID, host: host)
+      }
+      .inlineStyle("width", "100%")
+    }
+    .backgroundColor(.black)
+    .inlineStyle("padding", "0")
   }
+}
 
-  return .div(
-    attributes: [
-      .class([
-        Class.pf.colors.bg.black,
-        Class.border.top,
-      ]),
-      .style(key("border-top-color", "#000")),
-    ],
-    .gridRow(
-      attributes: [
-        .class([
-          Class.grid.middle(.desktop),
-          Class.padding([
-            .desktop: [.leftRight: 5],
-            .mobile: [
-              .leftRight: 3,
-              .top: 4,
-              .bottom: activeLivestream.isLive ? 4 : 3,
-            ],
-          ]),
-        ]),
-        .style(maxWidth(.px(1080)) <> margin(topBottom: nil, leftRight: .auto)),
-      ],
-      .gridColumn(
-        sizes: [.mobile: 12],
-        attributes: [],
-        .h1(
-          attributes: [
-            .class([
-              Class.pf.colors.fg.white,
-              Class.pf.type.responsiveTitle2,
-              Class.type.align.center,
-            ]),
-            .style(lineHeight(1.2)),
-          ],
-          .raw(nonBreaking(title: activeLivestream.title))
-        ),
-        dateNode,
-        .div(
-          attributes: [
-            .class([
-              Class.padding([.mobile: [.top: 1, .leftRight: 0], .desktop: [.leftRight: 4]]),
-              Class.pf.colors.fg.gray850,
-              Class.pf.type.body.regular,
-            ])
-          ],
-          .markdownBlock(
-            activeLivestream.isLive
-              ? (activeLivestream.liveDescription ?? activeLivestream.description)
-              : activeLivestream.description
-          )
+private struct LiveVideoEmbed: HTML {
+  let youtubeChannelID: String
+
+  var body: some HTML {
+    div {
+      iframe()
+        .attribute(
+          "src",
+          "https://www.youtube.com/embed/live_stream?channel=\(youtubeChannelID)"
         )
-      )
-    ),
+        .attribute("allow", "autoplay; fullscreen; picture-in-picture")
+        .attribute("allowfullscreen")
+        .attribute("loading", "lazy")
+        .inlineStyle("border", "none")
+        .inlineStyle("position", "absolute")
+        .inlineStyle("top", "0")
+        .inlineStyle("left", "0")
+        .inlineStyle("width", "100%")
+        .inlineStyle("height", "100%")
+    }
+    .inlineStyle("background", "#000")
+    .inlineStyle("height", "0")
+    .inlineStyle("overflow", "hidden")
+    .inlineStyle("padding-bottom", "56.25%")
+    .inlineStyle("position", "relative")
+  }
+}
 
-    ctaNode,
+private struct LiveChatEmbed: HTML {
+  let videoID: String
+  let host: String
 
-    .gridRow(
-      attributes: [
-        .class([
-          Class.pf.colors.bg.black
-        ])
-      ],
-      .gridColumn(
-        sizes: [.mobile: 12, .desktop: 8],
-        attributes: [
-          .class([
-            Class.grid.center(.desktop)
-          ])
-        ],
-        .raw(
-          """
-          <div style="padding:56.25% 0 0 0;position:relative;">
-            <iframe src="https://www.youtube.com/embed/live_stream?channel=\(youtubeChannelID)"
-                    frameborder="0"
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowfullscreen
-                    style="position:absolute;top:0;left:0;width:100%;height:100%;">
-            </iframe>
-          </div>
-          """)
-      ),
-      .gridColumn(
-        sizes: [.mobile: 12, .desktop: 4],
-        attributes: [
-          .class([
-            Class.grid.center(.desktop)
-          ])
-        ],
-        .raw(
-          """
-          <iframe src="https://www.youtube.com/live_chat?v=\(activeLivestream.videoID)&embed_domain=\(host)"
-                  width="100%"
-                  height="100%"
-                  frameborder="0"
-                  style="min-height: 40rem;">
-          </iframe>
-          """)
-      )
-    )
-  )
+  var body: some HTML {
+    div {
+      iframe()
+        .attribute("src", "https://www.youtube.com/live_chat?v=\(videoID)&embed_domain=\(host)")
+        .attribute("loading", "lazy")
+        .attribute("frameborder", "0")
+        .inlineStyle("border", "none")
+        .inlineStyle("width", "100%")
+        .inlineStyle("height", "100%")
+        .inlineStyle("min-height", "40rem")
+    }
+    .inlineStyle("background", "#000")
+    .inlineStyle("min-height", "40rem")
+    .inlineStyle("overflow", "hidden")
+  }
 }
 
 private let livestreamScheduledAtFormatter: DateFormatter = {
