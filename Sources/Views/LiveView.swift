@@ -12,35 +12,38 @@ public struct LiveView: HTML {
   public init() {}
 
   public var body: some HTML {
-    if let activeLivestream = livestreams.first(where: \.isActive) {
-      VStack(spacing: 0) {
-        LiveHeader(livestream: activeLivestream)
-        LiveEmbeds(
-          youtubeChannelID: youtubeChannelID,
-          videoID: activeLivestream.videoID,
-          host: baseURL.host() ?? "localhost"
-        )
-      }
-    } else {
-      HTMLEmpty()
+    let livestream = livestreams.first(where: \.isActive)
+    VStack(spacing: 0) {
+      LiveHeader(livestream: livestream)
+      LiveEmbeds(
+        youtubeChannelID: youtubeChannelID,
+        videoID: livestream?.videoID,
+        host: baseURL.host() ?? "localhost"
+      )
     }
   }
 }
 
 private struct LiveHeader: HTML {
-  let livestream: Livestream
+  let livestream: Livestream?
 
   var body: some HTML {
     CenterColumn {
       VStack(alignment: .center, spacing: 1) {
         Header(2) {
-          HTMLRaw(nonBreaking(title: livestream.title))
+          if let title = livestream?.title {
+            HTMLRaw(nonBreaking(title: title))
+          } else {
+            "Point-Free Live"
+          }
         }
         .color(.white)
         .inlineStyle("text-align", "center")
         .inlineStyle("text-wrap", "balance")
 
-        LiveDate(livestream: livestream)
+        if let livestream {
+          LiveDate(livestream: livestream)
+        }
 
         HTMLMarkdown(description)
           .color(.gray900)
@@ -54,17 +57,26 @@ private struct LiveHeader: HTML {
     }
     .inlineStyle("background", "linear-gradient(#121212, #242424)")
 
-    LiveCallToAction(livestream: livestream)
-      .inlineStyle("padding", "0 2rem 3rem")
-      .inlineStyle("padding", "0 3rem 3rem", media: .desktop)
-      .inlineStyle("background", "linear-gradient(#242424, #0a0a0a)")
+    if let livestream {
+      LiveCallToAction(livestream: livestream)
+        .inlineStyle("padding", "0 2rem 3rem")
+        .inlineStyle("padding", "0 3rem 3rem", media: .desktop)
+        .inlineStyle("background", "linear-gradient(#242424, #0a0a0a)")
+    }
   }
 
   private var description: String {
-    if livestream.isLive {
-      return livestream.liveDescription ?? livestream.description
+    if let livestream {
+      if livestream.isLive {
+        return livestream.liveDescription ?? livestream.description
+      } else {
+        return livestream.description
+      }
     } else {
-      return livestream.description
+      return """
+      Point-Free Live is a periodic livestream where we discuss topics from episodes, explore
+      our open source libraries, and take questions from our viewers.
+      """
     }
   }
 }
@@ -126,7 +138,7 @@ private struct LiveCallToAction: HTML {
 
 private struct LiveEmbeds: HTML {
   let youtubeChannelID: String
-  let videoID: String
+  let videoID: String?
   let host: String
 
   var body: some HTML {
@@ -138,7 +150,9 @@ private struct LiveEmbeds: HTML {
         verticalSpacing: 0
       ) {
         LiveVideoEmbed(youtubeChannelID: youtubeChannelID)
-        LiveChatEmbed(videoID: videoID, host: host)
+        if let videoID {
+          LiveChatEmbed(videoID: videoID, host: host)
+        }
       }
       .inlineStyle("width", "100%")
     }
