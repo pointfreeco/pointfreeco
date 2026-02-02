@@ -266,7 +266,7 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
     return await joinMiddleware(conn, route: joinRoute)
 
   case .live(let liveRoute):
-    return liveMiddleware(conn, route: liveRoute)
+    return await liveMiddleware(conn, route: liveRoute)
 
   case .pricingLanding:
     return pricingMiddleware(conn)
