@@ -361,6 +361,7 @@ public struct Feature: Equatable {
       User.ID(UUID(uuidString: "07f15a66-a9af-11eb-8e27-bff6bc638e24")!),
       User.ID(UUID(uuidString: "91cf5e5e-690b-11ee-a088-63a38ba6cb84")!),
       User.ID(UUID(uuidString: "459af4b2-4fb7-11ed-a3ae-3302b6b60b59")!),
+<<<<<<< HEAD
       User.ID(UUID(uuidString: "83a0864c-4b43-11ec-8cb1-a37893b51635")!),
       User.ID(UUID(uuidString: "6c5286bc-7cfa-11ee-8174-8f9c7a2eca1b")!),
       User.ID(UUID(uuidString: "870a20a0-e8ac-11e9-aa29-6f957b0b6442")!),
@@ -415,6 +416,22 @@ public struct Feature: Equatable {
       User.ID(UUID(uuidString: "f0bdb706-66bb-11e8-b945-9b6d35d26330")!),
       User.ID(UUID(uuidString: "513c0056-4596-11e9-b719-67dd4858f3cc")!),
       User.ID(UUID(uuidString: "24885348-1e07-11eb-9fba-ef846e1e9d19")!),
+=======
+      User.ID(UUID(uuidString: "4c4a982a-71e7-11ec-bf6f-471c5072b86b")!),
+      User.ID(UUID(uuidString: "76bcaad2-421b-11eb-a155-3327d45014e1")!),
+      User.ID(UUID(uuidString: "d184d86a-659e-11ed-b246-cbc6dfa67aab")!),
+      User.ID(UUID(uuidString: "48017d00-7208-11ea-ac58-f729d6d2d158")!),
+      User.ID(UUID(uuidString: "54e7b7c4-d98f-11f0-a352-cff0678a29fd")!),
+      User.ID(UUID(uuidString: "06207a82-e5a1-11ef-a6fd-8f6bd1a9455c")!),
+      User.ID(UUID(uuidString: "53cf1caa-9905-11ee-99f2-27943db1550a")!),
+      User.ID(UUID(uuidString: "35dffb9c-7d72-11ed-983e-a346ff9261c0")!),
+      User.ID(UUID(uuidString: "abe80754-e646-11f0-8ee2-37ac99e30bc6")!),
+      User.ID(UUID(uuidString: "b2e0e2b8-5175-11ea-bda2-bb301164c130")!),
+      User.ID(UUID(uuidString: "2232c7f6-a5fa-11eb-b91d-c76886f56a85")!),
+      User.ID(UUID(uuidString: "a9982f4c-1521-11ec-a6de-770e50270a04")!),
+      User.ID(UUID(uuidString: "5f8bbf2c-e4f2-11eb-aead-67ceb807ac62")!),
+      User.ID(UUID(uuidString: "742657ca-fde4-11f0-88a7-334c944ea65f")!),
+>>>>>>> bae03ba09 (Update PFW)
     ],
     name: "the-point-free-way"
   )
