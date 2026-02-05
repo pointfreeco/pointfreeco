@@ -39,8 +39,6 @@ struct PointFreeWayHeader: HTML {
   enum Context { case home, landing }
 
   var body: some HTML {
-    let hasPointFreeWayAccess = currentUser.hasAccess(to: .thePointFreeWay)
-
     PageModule(theme: .content) {
       LazyVGrid(columns: [.desktop: [1, 1]], alignItems: .start, verticalSpacing: 2) {
         VStack(spacing: 1) {
@@ -65,11 +63,10 @@ struct PointFreeWayHeader: HTML {
           Divider(alignment: .left, size: 30)
             .inlineStyle("margin-top", "1rem")
             .inlineStyle("margin-bottom", "1rem")
-          if hasPointFreeWayAccess && subscriberState.isActiveSubscriber {
+          if subscriberState.isActiveSubscriber {
             AccessUnlocked()
           } else {
             PointFreeWayCTAButtons(
-              hasPointFreeWayAccess: hasPointFreeWayAccess,
               isSubscriber: subscriberState.isActiveSubscriber,
               subscribeHref: siteRouter.path(for: .pricingLanding)
             ) {
@@ -308,8 +305,6 @@ private struct HowAccessWorks: HTML {
   @Dependency(\.subscriberState) var subscriberState
 
   var body: some HTML {
-    let hasPointFreeWayAccess = currentUser.hasAccess(to: .thePointFreeWay)
-
     PointFreeWayModule(title: "How access works") {
       LazyVGrid(columns: [.mobile: [1, 1], .desktop: [1, 1, 1, 1]]) {
         Step(
@@ -335,7 +330,6 @@ private struct HowAccessWorks: HTML {
       }
 
       PointFreeWayCTAButtons(
-        hasPointFreeWayAccess: hasPointFreeWayAccess,
         isSubscriber: subscriberState.isActiveSubscriber,
         subscribeHref: siteRouter.path(for: .pricingLanding)
       ) {
@@ -352,7 +346,6 @@ private struct HowAccessWorks: HTML {
 }
 
 private struct PointFreeWayCTAButtons<Secondary: HTML>: HTML {
-  let hasPointFreeWayAccess: Bool
   let isSubscriber: Bool
   let subscribeHref: String
   @HTMLBuilder let secondary: Secondary
@@ -365,23 +358,10 @@ private struct PointFreeWayCTAButtons<Secondary: HTML>: HTML {
         }
         .href(subscribeHref)
       } else {
-        if hasPointFreeWayAccess {
-          PFWButton(type: .primary) {
-            HTMLText("Install the Point-Free Way")
-          }
-          .href(pointFreeWayInstallHref)
-        } else {
-          VStack(alignment: .stretch, spacing: 0.5) {
-            PFWButton(type: .primary) {
-              HTMLText("Request access")
-            }
-            .href(pointFreeWayRequestAccessHref)
-            Paragraph(.small) {
-              "Skills are currently in beta."
-            }
-            .contentColor()
-          }
+        PFWButton(type: .primary) {
+          HTMLText("Install the Point-Free Way")
         }
+        .href(pointFreeWayInstallHref)
       }
       secondary
     }

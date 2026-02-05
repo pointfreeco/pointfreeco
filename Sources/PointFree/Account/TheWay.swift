@@ -18,12 +18,6 @@ func theWayMiddleware(
     @Dependency(\.siteRouter) var siteRouter
     @Dependency(\.subscriberState) var subscriberState
 
-    guard currentUser.hasAccess(to: .thePointFreeWay)
-    else {
-      return conn.redirect(to: .home) {
-        $0.flash(.error, "Could not login.")
-      }
-    }
     guard var redirectBase = URLComponents(string: redirect)
     else {
       return conn.redirect(to: .home) {
