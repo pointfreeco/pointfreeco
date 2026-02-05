@@ -216,5 +216,7 @@ extension BlogPost {
     .post0197_EndOfYearSale,
     .post0198_EndOfYearSale,
     .post0199_PointFreeTurns8,
+    .post0200_LiveStreamReminder,
+    .post0201_WereLive,
   ]
 }
