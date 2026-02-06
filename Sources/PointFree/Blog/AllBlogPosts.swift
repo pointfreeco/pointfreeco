@@ -218,5 +218,6 @@ extension BlogPost {
     .post0199_PointFreeTurns8,
     .post0200_LiveStreamReminder,
     .post0201_WereLive,
+    .post0202_pfwRelease,
   ]
 }

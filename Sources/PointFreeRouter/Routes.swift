@@ -526,7 +526,10 @@ struct SiteRouter: ParserPrinter {
       }
 
       Route(.case(SiteRoute.slackInvite)) {
-        Path { "slack-invite" }
+        OneOf {
+          Path { "slack-invite" }
+          Path { "slack" }
+        }
       }
 
       Route(.case(SiteRoute.clips)) {
