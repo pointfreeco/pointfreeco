@@ -261,42 +261,26 @@ private func validateIsNot(currentUser: User) -> (User) -> EitherIO<Error, User>
   }
 }
 
-private func redirectCurrentSubscribers<A, B>(
-  _ middleware: @escaping M<T3<A, User?, B>>
-) -> M<T3<A, User?, B>> {
-  @Dependency(\.database) var database
-  @Dependency(\.stripe) var stripe
+func redirectCurrentSubscribers<A>(
+  _ middleware: @escaping M<A>
+) -> M<A> {
+  @Dependency(\.subscriberState) var subscriberState
 
   return { conn in
-    guard
-      let user = get2(conn.data),
-      let subscriptionId = user.subscriptionId
-    else { return middleware(conn) }
-
-    let hasActiveSubscription = EitherIO {
-      let subscription = try await database.fetchSubscription(id: subscriptionId)
-      let stripeSubscription =
-        try await stripe
-        .fetchSubscription(id: subscription.stripeSubscriptionId)
-      return stripeSubscription.isRenewing
-    }
-    .run
-    .map { $0.right ?? false }
-
-    return hasActiveSubscription.flatMap {
-      $0
-        ? conn
-          |> redirect(
-            to: .account(),
-            headersMiddleware: flash(
-              .warning,
-              """
-              You already have an active subscription. If you want to accept this team invite you need to
-              cancel your current subscription.
-              """
-            )
-          )
-        : middleware(conn)
+    if !subscriberState.isActive {
+      return middleware(conn)
+    } else {
+      return conn
+      |> redirect(
+        to: .account(),
+        headersMiddleware: flash(
+          .warning,
+            """
+            You already have an active subscription. If you want to accept this team invite you \
+            need to cancel your current subscription.
+            """
+        )
+      )
     }
   }
 }
