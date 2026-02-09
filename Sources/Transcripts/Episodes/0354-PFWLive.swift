@@ -11,7 +11,7 @@ extension Episode {
     codeSampleDirectory: "0354-pfw-live",
     exercises: _exercises,
     id: 354,
-    length: 1 * 60 * 60 + 51 * 60 + 11,
+    length: 6671,
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2026-02-09")!,
     references: [
