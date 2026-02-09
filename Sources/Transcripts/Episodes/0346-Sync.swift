@@ -14,11 +14,7 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2025-11-17")!,
     references: [
-      Reference(
-        blurb: "A fast, lightweight replacement for SwiftData, powered by SQL.",
-        link: "https://github.com/pointfreeco/sqlite-data",
-        title: "SQLiteData"
-      ),
+      .sqliteData,
       Reference(
         blurb: "A library for building SQL in a safe, expressive, and composable manner.",
         link: "https://github.com/pointfreeco/swift-structured-queries",

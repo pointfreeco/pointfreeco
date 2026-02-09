@@ -1458,6 +1458,13 @@ extension Episode.Reference {
     title: "Pull to refresh in SwiftUI with refreshable"
   )
 
+  public static let sqliteData = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: "A fast, lightweight replacement for SwiftData, powered by SQL.",
+    link: "https://github.com/pointfreeco/sqlite-data",
+    title: "SQLiteData"
+  )
+
   public static let taggedSecondsAndMilliseconds = Episode.Reference(
     author: "Brandon Williams",
     blurb: """
@@ -1501,6 +1508,16 @@ extension Episode.Reference {
     link: "https://people.mpi-sws.org/~dreyer/tor/papers/wadler.pdf",
     publishedAt: Date(timeIntervalSince1970: 615_268_800),
     title: "Theorems for Free"
+  )
+
+  public static let thePointFreeWay = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: """
+      A collection of AI skill documents curated by yours truly, and designed to guide you \
+      toward clear, composable, and testable application architecture.
+      """,
+    link: "/the-way",
+    title: "The Point-Free Way"
   )
 
   public static let threadingProgammingGuide = Self(

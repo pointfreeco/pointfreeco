@@ -356,5 +356,6 @@ extension Episode {
     .ep351_sqliteDataTour,
     .ep352_sqliteDataTour,
     .ep353_sqliteDataTour,
+    .ep354_pfwLive,
   ]
 }

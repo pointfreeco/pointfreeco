@@ -23,11 +23,7 @@ extension Episode {
         link: "https://www.sqlite.org/fts5.html",
         title: "SQLite FTS5 Extension"
       ),
-      Reference(
-        blurb: "A fast, lightweight replacement for SwiftData, powered by SQL.",
-        link: "https://github.com/pointfreeco/sqlite-data",
-        title: "SQLiteData"
-      ),
+      .sqliteData,
       Reference(
         blurb: "A library for building SQL in a safe, expressive, and composable manner.",
         link: "https://github.com/pointfreeco/swift-structured-queries",
