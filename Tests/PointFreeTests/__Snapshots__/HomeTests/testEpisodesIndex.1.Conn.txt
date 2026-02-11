@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 69436
+Content-Length: 69983
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -240,7 +240,13 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .padding-right-FBkWQ3{padding-right:0}
 .font-size-6nw8i1{font-size:1.1875rem}
 .line-height-vsvaN2{line-height:1.75rem}
+.text-decoration-gUV393:visited{text-decoration:underline}
+.text-decoration-tfb0F1:link{text-decoration:underline}
+.color-vig5A3:link{color:currentColor}
+.color-vZTTa3:visited{color:currentColor}
+.color-4IpZj1{color:currentColor}
 .color-c5ixr2{color:#fafafa}
+.padding-8K2qP3{padding:1.0rem 1.25rem}
 .background-color-nbn0i3{background-color:#fff}
 .color-K2J0r1{color:#121212}
 .padding-bFon03{padding:4.0rem 2.0rem 4.0rem}
@@ -281,14 +287,8 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .color-GPfER1{color:#555555}
 .margin-top-H64QF2{margin-top:3rem}
 .display-qrAHi{display:inline-block}
-.padding-8K2qP3{padding:1.0rem 1.25rem}
-.text-decoration-gUV393:visited{text-decoration:underline}
-.text-decoration-tfb0F1:link{text-decoration:underline}
 .padding-bottom-NBsge3{padding-bottom:3.0rem}
 .justify-content-CdPBO2{justify-content:center}
-.color-vig5A3:link{color:currentColor}
-.color-vZTTa3:visited{color:currentColor}
-.color-4IpZj1{color:currentColor}
 .background-color-K2J0r1{background-color:#121212}
 .line-height-B6FIc2{line-height:1.45}
 .color-H59Xg3:link{color:#79f2b0}
@@ -446,10 +446,12 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
     <div class="flex-grow-tzL8I2">
       <h2 class="color-nbn0i3 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">Videos
       </h2>
-      <p class="color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2">Watch some for <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/episodes/free">free</a> or explore all 4 videos.
+      <p class="color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2">Watch some for <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-vig5A3 color-vZTTa3 color-4IpZj1" href="/episodes/free">free</a> or explore all 4 videos.
       </p>
     </div>
     <div class="color-c5ixr2">
+      <pf-vstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a href="/auth?kind=login&redirect=http://localhost:8080/episodes/free" class="font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">Explore free videos</a>All 1 of them!
+      </pf-vstack>
     </div>
   </pf-hstack>
 </pf-vstack>
