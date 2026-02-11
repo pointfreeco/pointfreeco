@@ -54,7 +54,7 @@ struct NewsletterDetailModule: HTML {
               """,
             ctaTitle: "Sign up for free →",
             ctaURL: siteRouter.path(
-              for: .auth(.signUp(redirect: siteRouter.url(for: currentRoute)))
+              for: .auth(.authLanding(kind: .signUp, redirect: siteRouter.url(for: currentRoute)))
             ),
             secondaryCTATitle: "View plans and pricing",
             secondaryCTAURL: siteRouter.path(for: .pricingLanding),

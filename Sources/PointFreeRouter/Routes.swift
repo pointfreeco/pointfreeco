@@ -56,13 +56,18 @@ public indirect enum SiteRoute: Equatable {
 
   @CasePathable
   public enum Auth: Equatable {
+    case authLanding(kind: Kind? = nil, redirect: String? = nil)
     case failureLanding(redirect: String?)
     case gitHubAuth(redirect: String?)
     case gitHubCallback(code: String?, redirect: String?)
-    case login(redirect: String?)
     case logout
-    case signUp(redirect: String?)
     case updateGitHub(redirect: String?)
+
+    public enum Kind: String, CaseIterable {
+      case login
+      case signUp
+      case slack
+    }
   }
 
   @CasePathable
@@ -800,8 +805,25 @@ private struct AuthRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.Auth.login)) {
-        Path { "login" }
+      Route(.case(SiteRoute.Auth.authLanding)) {
+        OneOf {
+          Parse {
+            Path { "login" }
+            Always(Optional(SiteRoute.Auth.Kind.login))
+          }
+          Parse {
+            Path { "signup" }
+            Always(Optional(SiteRoute.Auth.Kind.signUp))
+          }
+          Parse {
+            Path { "auth" }
+            Query {
+              Optionally {
+                Field("kind", .string.representing(SiteRoute.Auth.Kind.self))
+              }
+            }
+          }
+        }
         Query {
           Optionally {
             Field("redirect")
@@ -811,15 +833,6 @@ private struct AuthRouter: ParserPrinter {
 
       Route(.case(SiteRoute.Auth.logout)) {
         Path { "logout" }
-      }
-
-      Route(.case(SiteRoute.Auth.signUp)) {
-        Path { "signup" }
-        Query {
-          Optionally {
-            Field("redirect")
-          }
-        }
       }
 
       Route(.case(SiteRoute.Auth.updateGitHub)) {

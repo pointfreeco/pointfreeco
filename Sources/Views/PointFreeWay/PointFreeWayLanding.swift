@@ -396,7 +396,7 @@ private struct NotReadyToSubscribe: HTML {
             PFWButton(type: .secondary) {
               HTMLText("Create a free account")
             }
-            .href(siteRouter.path(for: .auth(.signUp(redirect: siteRouter.url(for: .theWay)))))
+            .href(siteRouter.path(for: .auth(.authLanding(kind: .signUp, redirect: siteRouter.url(for: .theWay)))))
             PFWButton {
               HTMLText("Compare plans")
             }

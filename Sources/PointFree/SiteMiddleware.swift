@@ -293,6 +293,12 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
 
   case .slackInvite:
     @Dependency(\.envVars) var envVars
+    @Dependency(\.currentUser) var currentUser
+    @Dependency(\.siteRouter) var siteRouter
+    guard currentUser != nil
+    else {
+      return conn.redirect(to: .auth(.authLanding(kind: .slack, redirect: siteRouter.path(for: .slackInvite))))
+    }
     return await conn.redirect(to: envVars.slackInviteURL)
 
   case .subscribe(let data):

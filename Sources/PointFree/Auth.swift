@@ -35,14 +35,11 @@ func authMiddleware(
   case .gitHubCallback(let code, let redirect):
     return await gitHubCallbackResponse(code: code, redirect: redirect, conn)
 
-  case .login(let redirect):
-    return await loginSignUpMiddleware(redirect: redirect, type: .login, conn)
+  case .authLanding(kind: let kind, redirect: let redirect):
+    return await loginSignUpMiddleware(redirect: redirect, kind: kind, conn)
 
   case .logout:
     return await logoutResponse(conn)
-
-  case .signUp(let redirect):
-    return await loginSignUpMiddleware(redirect: redirect, type: .signUp, conn)
 
   case .updateGitHub(let redirect):
     return await updateGitHub(redirect: redirect, conn: conn)
@@ -180,7 +177,7 @@ private func gitHubCallbackResponse(
   }
   guard let code
   else {
-    return conn.redirect(to: .auth(.login(redirect: nil))) {
+    return conn.redirect(to: .auth(.authLanding(kind: .login))) {
       $0.flash(.warning, "GitHub code wasn't found :(")
     }
   }

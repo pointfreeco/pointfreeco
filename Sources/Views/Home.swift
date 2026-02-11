@@ -105,7 +105,7 @@ private struct LoggedOut: HTML {
         hosted by industry experts, Brandon and Stephen.
         """,
       ctaTitle: "Start with a free video →",
-      ctaURL: siteRouter.path(for: .auth(.signUp(redirect: nil))),
+      ctaURL: siteRouter.path(for: .auth(.authLanding(kind: .signUp))),
       style: .gradient
     )
     Companies()

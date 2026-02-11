@@ -30,7 +30,8 @@ func theWayMiddleware(
         await conn
         .redirect(
           to: .auth(
-            .login(
+            .authLanding(
+              kind: .login,
               redirect: siteRouter.url(
                 for: .account(.theWay(.login(redirect: redirect, whoami: whoami, machine: machine)))
               )
