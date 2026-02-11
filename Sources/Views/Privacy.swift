@@ -46,7 +46,7 @@ public struct PrivacyAndTerms: HTML {
         Protecting the privacy of the very young is especially important. For that reason, we never collect or maintain information at our Site from those we actually know are under 13, and no part of our website is structured to attract anyone under 13.
 
         ## Terms of use
-        Individual subscriptions are only valid for use by an individual person. Team subscriptions are only valid for use by the number of persons allotted seats. We reserve the right to cancel subscriptions at our own discretion.
+        Individual memberships are only valid for use by an individual person. Team memberships are only valid for use by the number of persons allotted seats. We reserve the right to cancel memberships at our own discretion.
 
         ## Changes to this privacy policy
         Point-Free, Inc. has the discretion to update this privacy policy at any time. When we do, we will revise the updated date at the bottom of this page.

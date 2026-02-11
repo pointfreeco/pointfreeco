@@ -2,7 +2,7 @@ GET http://localhost:8080/404
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 404 Not Found
-Content-Length: 38823
+Content-Length: 38742
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -239,9 +239,9 @@ Prism.languages.sql.keyword = [
     <meta name="title" content="Page not found">
     <meta property="og:title" content="Page not found">
     <meta name="twitter:title" content="Page not found">
-    <meta name="description" content="Point-Free is a video series exploring advanced programming topics in Swift.">
-    <meta property="og:description" content="Point-Free is a video series exploring advanced programming topics in Swift.">
-    <meta name="twitter:description" content="Point-Free is a video series exploring advanced programming topics in Swift.">
+    <meta name="description" content="Point-Free is a hub for advanced Swift programming.">
+    <meta property="og:description" content="Point-Free is a hub for advanced Swift programming.">
+    <meta name="twitter:description" content="Point-Free is a hub for advanced Swift programming.">
     <meta property="og:image" content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta name="twitter:image" content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta property="og:type" content="website">
@@ -465,7 +465,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
     <ul class="display-mScdO2 align-items-Dq4Oc4 padding-left-E4tBw4 list-style-type-Wl0y44">
       <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">Collections</a>
       </li>
-      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/pricing">Pricing</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/pricing">Become a member</a>
       </li>
       <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/the-way"><span class="display-osldI1 display-HhxPd1">The Point-Free Way</span><span class="display-yNuW2 display-jM9hW2">Point-Free Way</span>
         <is-new class="margin-left-FxsCt1 font-size-HFDgk3 font-weight-SywJI1 letter-spacing-miVw93 padding-SjEOn4 border-radius-btBsa3 border-uB9vi background-33BAq4 color-GnKka3">NEW
@@ -507,7 +507,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
         </pf-hstack></a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/pricing">
-        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Pricing
+        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Become a member
         </pf-hstack></a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/clips">
@@ -547,7 +547,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
       <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3 color-nbn0i3" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A hub for advanced Swift programming. Brought to you by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-hE9y01 row-gap-83zzS1">
@@ -555,7 +555,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
         <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/pricing">Pricing</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/pricing">Become a member</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/the-way">The Point-Free Way</a>
           </li>

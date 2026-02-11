@@ -61,7 +61,7 @@ public func giftsPayment(
             country: 'US',
             currency: 'usd',
             total: {
-              label: 'Gift subscription: \(plan.monthCount) months',
+              label: 'Gift membership: \(plan.monthCount) months',
               amount: \(plan.amount),
             }
           });
@@ -153,7 +153,7 @@ private func titleView(plan: Gifts.Plan) -> Node {
     .gridColumn(
       sizes: [.mobile: 12],
       .div(
-        .h1(attributes: [.class([Class.pf.type.responsiveTitle2])], "Gift subscription"),
+        .h1(attributes: [.class([Class.pf.type.responsiveTitle2])], "Gift membership"),
         .p(.text("Give \(plan.monthCount) months of Point-Free access"))
       )
     )

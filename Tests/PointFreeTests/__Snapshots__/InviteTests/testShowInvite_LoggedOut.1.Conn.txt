@@ -2,7 +2,7 @@ GET http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 53209
+Content-Length: 53125
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1929,11 +1929,11 @@ html {
     <link rel="mask-icon"
           href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <meta name="description"
-          content="Point-Free is a video series exploring advanced programming topics in Swift.">
+          content="Point-Free is a hub for advanced Swift programming.">
     <meta property="og:description"
-          content="Point-Free is a video series exploring advanced programming topics in Swift.">
+          content="Point-Free is a hub for advanced Swift programming.">
     <meta name="twitter:description"
-          content="Point-Free is a video series exploring advanced programming topics in Swift.">
+          content="Point-Free is a hub for advanced Swift programming.">
     <meta name="twitter:image"
           content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta property="og:image"
@@ -2002,7 +2002,7 @@ html {
                          inline">
                 <a href="/pricing"
                    class="pf-link-black">
-                  Pricing
+                  Become a member
                 </a>
               </li>
               <li class="m-pl2
@@ -2028,7 +2028,7 @@ html {
               </li>
               <li class="m-pl2
                          inline">
-                <a href="/login?redirect=http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"
+                <a href="/auth?kind=login&redirect=http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"
                    class="medium
                           cursor-pointer
                           nowrap
@@ -2091,15 +2091,13 @@ html {
                   <a href="mailto:hello@pointfree.co">
                     Blob
                   </a>
-                   has invited you to join their team on Point-Free, a video series exploring advanced programming
-concepts using the Swift programming language. Accepting this invitation gives you access to all of
-the videos, transcripts, and code samples on this site.
+                   has invited you to join their team on Point-Free, a hub for advanced Swift programming. Accepting this invitation gives you access to expert advice, advanced AI skills, exclusive videos, and a thriving community of likeminded engineers.
                 </p>
                 <p>
                   You must be logged in to accept this invitation. Would you like to log in with GitHub?
                 </p>
                 <p class="m-pt3">
-                  <a href="/login?redirect=http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"
+                  <a href="/auth?kind=login&redirect=http://localhost:8080/invites/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF"
                      class="medium
                             cursor-pointer
                             nowrap
@@ -2196,7 +2194,7 @@ the videos, transcripts, and code samples on this site.
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
       <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3 color-nbn0i3" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A hub for advanced Swift programming. Brought to you by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-hE9y01 row-gap-83zzS1">
@@ -2204,7 +2202,7 @@ the videos, transcripts, and code samples on this site.
         <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/pricing">Pricing</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/pricing">Become a member</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/the-way">The Point-Free Way</a>
           </li>

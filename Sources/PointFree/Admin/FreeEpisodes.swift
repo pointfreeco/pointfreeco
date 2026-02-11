@@ -12,7 +12,7 @@ func indexFreeEpisodeEmailMiddleware(
   _ conn: Conn<StatusLineOpen, Void>
 ) -> Conn<ResponseEnded, Data> {
   conn.writeStatus(.ok)
-    .respondV2(layoutData: SimplePageLayoutData(title: "Free episode email")) {
+    .respondV2(layoutData: SimplePageLayoutData(title: "Free video email")) {
       @Dependency(\.date.now) var now
       @Dependency(\.episodes) var episodes
       @Dependency(\.envVars.emergencyMode) var emergencyMode
@@ -52,7 +52,7 @@ private func sendFreeEpisodeEmails(episode: Episode) async throws {
       try await retry(maxRetries: 3, backoff: { .seconds(10 * $0) }) {
         _ = try await sendEmail(
           to: [user.email],
-          subject: "Free Point-Free Episode: \(episode.fullTitle)",
+          subject: "Free Point-Free Video: \(episode.fullTitle)",
           unsubscribeData: (user.id, .newEpisode),
           content: inj2(nodes)
         )
@@ -64,9 +64,9 @@ private func sendFreeEpisodeEmails(episode: Episode) async throws {
 
   _ = try? await sendEmail(
     to: adminEmails,
-    subject: "New free episode email finished sending!",
+    subject: "New free video email finished sending!",
     content: inj2(
-      adminEmailReport("New free episode")(
+      adminEmailReport("New free video")(
         (
           failedUsers,
           users.count

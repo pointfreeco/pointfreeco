@@ -58,7 +58,7 @@ private func episodesListMiddleware(
     .writeStatus(.ok)
     .respondV2(
       layoutData: SimplePageLayoutData(
-        description: "Point-Free: A video series exploring advanced programming topics in Swift.",
+        description: "Point-Free: A hub for advanced programming in Swift.",
         title: "Point-Free: \(subtitle)"
       )
     ) {

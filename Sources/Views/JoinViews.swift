@@ -34,14 +34,8 @@ private func joinTeamLandingLoggedOut(
     .gridColumn(
       sizes: [.mobile: 12],
       .div(
-        .h3(attributes: [.class([Class.pf.type.responsiveTitle3])], "Join a team subscription!"),
-        .p(
-          """
-          You have been invited to join a team subscription on Point-Free, a video series exploring
-          advanced concepts in the Swift programming language. Accepting this invitation gives you
-          access to all videos, transcripts, code samples and more.
-          """
-        ),
+        .h3(attributes: [.class([Class.pf.type.responsiveTitle3])], "Join a team on Point-Free!"),
+        .p(.text(joinDescription)),
         .p(
           "You must be logged in to accept this invitation. Would you like to log in with GitHub?"),
         .p(
@@ -119,14 +113,18 @@ private func joinTeamLandingLoggedIn(
           attributes: [
             .class([Class.padding([.mobile: [.bottom: 2]])])
           ],
-          """
-          You have been invited to join a team subscription on Point-Free, a video series exploring
-          advanced concepts in the Swift programming language. Accepting this invitation gives you
-          access to all videos, transcripts, code samples and more.
-          """
+          .text(joinDescription)
         ),
         confirmation
       )
     )
   )
+}
+
+private var joinDescription: String {
+  """
+  You have been invited to join a team on Point-Free, a hub for advanced Swift programming. \
+  Accepting this invitation gives you access to expert guidance, battle-tested tools, advanced AI \
+  skill documents, exclusive videos, and a community of likeminded engineers.
+  """
 }

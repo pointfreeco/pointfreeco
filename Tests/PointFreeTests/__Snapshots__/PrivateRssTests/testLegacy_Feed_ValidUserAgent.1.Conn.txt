@@ -3,7 +3,7 @@ Cookie: pf_session={}
 User-Agent: Safari 1.0
 
 200 OK
-Content-Length: 15638
+Content-Length: 15182
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -30,15 +30,11 @@ X-XSS-Protection: 1; mode=block
       en-US
     </language>
     <description>
-      Point-Free is a video series that explores advanced topics in the Swift programming language. Each episode
-covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of
-each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show
-how these ideas can improve the quality of your code today.
+      Point-Free is a hub for advanced topics in Swift. Videos cover complex, real world topics including application architecture, concurrency, persistence, and more.
 
 ---
 
-This is a private feed associated with the Point-Free account hello@pointfree.co. Please do not share this link
-with anyone else.
+This is a private feed associated with the Point-Free account hello@pointfree.co. Please do not share this link with anyone else.
     </description>
     <copyright>
       Copyright Point-Free, Inc. 2018
@@ -64,15 +60,11 @@ with anyone else.
       Functional programming concepts explained simply.
     </itunes:subtitle>
     <itunes:summary>
-      Point-Free is a video series that explores advanced topics in the Swift programming language. Each episode
-covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of
-each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show
-how these ideas can improve the quality of your code today.
+      Point-Free is a hub for advanced topics in Swift. Videos cover complex, real world topics including application architecture, concurrency, persistence, and more.
 
 ---
 
-This is a private feed associated with the Point-Free account hello@pointfree.co. Please do not share this link
-with anyone else.
+This is a private feed associated with the Point-Free account hello@pointfree.co. Please do not share this link with anyone else.
     </itunes:summary>
     <itunes:explicit>
       no

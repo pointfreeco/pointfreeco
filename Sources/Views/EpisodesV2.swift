@@ -169,7 +169,7 @@ private struct EpisodesHeader: HTML {
       case .all:
         "Videos"
       case .free:
-        "Free Videos"
+        "Free videos"
       case .history:
         "Continue watching"
       }
@@ -179,7 +179,9 @@ private struct EpisodesHeader: HTML {
         if subscriberState.isActiveSubscriber {
           "Watch our entire catalogue of videos, all \(episodeCount) of them."
         } else {
-          "Watch some for free or explore all \(episodeCount) videos."
+          "Watch some for "
+          Link("free", destination: .episodes(.list(.free)))
+          " or explore all \(episodeCount) videos."
         }
       case .free:
         "All of our free videos, in one place."

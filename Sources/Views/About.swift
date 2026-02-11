@@ -13,11 +13,10 @@ public struct AboutView: HTML {
     HTMLGroup {
       PageHeader(title: "About") {
         """
-        Point-Free is a video series that explores advanced topics in the Swift programming \
-        language. Each episode covers a topic that may seem complex and academic at first, but \
-        turns out to be quite simple. At the end of each episode we’ll ask “what’s the point?!”, \
-        so that we can bring the concepts back down to earth and show how these ideas can improve \
-        the quality of your code today.
+        Point-Free is a hub for advanced Swift programming. It includes advice from industry \
+        experts, a collection of battle-tested \
+        [open-source tools](https://github.com/pointfreeco), advanced [AI skills](/the-way), \
+        exclusive [videos](/episodes), and a thriving [community](/slack).
         """
       }
 
@@ -26,7 +25,7 @@ public struct AboutView: HTML {
           """
           # Your hosts
 
-          Brandon and Stephen are industry experts living in New York and California. They
+          Brandon and Stephen are industry experts living in Texas and California. They
           previously helped build and [open source][ksr-open-source] the [Kickstarter][ksr] mobile \
           apps, and have worked with dozens of companies to help build their products and improve \
           their engineering practices.

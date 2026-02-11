@@ -340,8 +340,9 @@ func confirmationEmail(
               attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
               """
               You’re invited to join the \(code.rawValue) team on
-              [Point-Free](http://pointfree.co), a video series exploring advanced concepts in the
-              Swift programming language. To accept, simply click the link below!
+              [Point-Free](http://pointfree.co), a hub for advanced Swift: \
+              expert advice, battle-tested tools, AI skill documents, exclusive videos, thriving \
+              community, and more. To accept, simply click the link below!
               """
             ),
             .p(

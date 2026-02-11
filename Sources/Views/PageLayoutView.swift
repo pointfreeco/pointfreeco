@@ -38,7 +38,7 @@ public struct SimplePageLayoutData<A> {
   public init(
     data: A = (),
     description: String? =
-      "Point-Free is a video series exploring advanced programming topics in Swift.",
+      "Point-Free is a hub for advanced Swift programming.",
     extraHead: ChildOf<Tag.Head> = [],
     extraStyles: Stylesheet = .empty,
     image: String? = nil,

@@ -55,7 +55,7 @@ private func clipsMiddleware(
       .respondV2(
         layoutData: SimplePageLayoutData(
           description: """
-            A collection of some of our favorite moments from Point-Free episodes.
+            A collection of some of our favorite moments from Point-Free videos.
             """,
           title: "Point-Free Clips"
         )

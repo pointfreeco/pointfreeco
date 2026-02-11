@@ -24,7 +24,7 @@ public struct ClipsIndex: HTML {
   public var body: some HTML {
     PageHeader(title: "Point-Free Clips") {
       """
-      A collection of some of our favorite moments from Point-Free episodes.
+      A collection of some of our favorite moments from Point-Free videos.
       """
     }
     PageModule(theme: .content) {
@@ -63,7 +63,7 @@ public struct ClipView: HTML {
     VideoHeader(
       title: clip.title,
       subtitle: """
-        Episode Clip • \(headerDateFormatter.string(from: clip.createdAt))
+        Video Clip • \(headerDateFormatter.string(from: clip.createdAt))
         """,
       blurb: clip.description,
       videoID: clip.cloudflareVideoID,

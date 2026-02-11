@@ -283,7 +283,7 @@ struct MobileNavItems: HTML {
         }
         if !subscriberState.isActiveSubscriber {
           NavListItem(route: .pricingLanding) {
-            "Pricing"
+            "Become a member"
           }
         }
         NavListItem(route: .clips(.clips)) {
@@ -560,7 +560,7 @@ struct CenteredNavItems: HTML {
         }
         if !subscriberState.isActiveSubscriber {
           NavListItem(route: .pricingLanding) {
-            "Pricing"
+            "Become a member"
           }
         }
         NavListItem(isNew: true, route: .theWay) {

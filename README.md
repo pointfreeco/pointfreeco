@@ -1,10 +1,10 @@
 # 🎬 [www.pointfree.co](http://www.pointfree.co)
 
-[![Swift 5.7](https://img.shields.io/badge/swift-5.7-ED523F.svg?style=flat)](https://swift.org/download/)
+[![Swift 6](https://img.shields.io/badge/swift-6-ED523F.svg?style=flat)](https://swift.org/download/)
 [![CI](https://github.com/pointfreeco/pointfreeco/workflows/CI/badge.svg)](https://actions-badge.atrox.dev/pointfreeco/pointfreeco/goto)
 [![@pointfreeco](https://img.shields.io/badge/contact-@pointfreeco-5AA9E7.svg?style=flat)](https://twitter.com/pointfreeco)
 
-This repo contains the full source code for the [Point-Free](http://www.pointfree.co) website, a video series exploring advanced programming topics in Swift. The codebase is split into 3 pieces:
+This repo contains the full source code for the [Point-Free](http://www.pointfree.co) website, a hub for advanced Swift programming. The codebase is split into 3 pieces:
 
 * `PointFree`: This is the core application, and is responsible for routing requests, loading data and rendering HTML and CSS.
 * `Styleguide`: This library contains functions and data types for creating a consistent style across the entire website.

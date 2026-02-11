@@ -2,7 +2,7 @@ GET http://localhost:8080/feed/episodes.xml
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 7635
+Content-Length: 7161
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -29,7 +29,7 @@ X-XSS-Protection: 1; mode=block
       en-US
     </language>
     <description>
-      Point-Free is a video series that explores advanced topics in the Swift programming language. Each episode covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show how these ideas can improve the quality of your code today.
+      Point-Free is a hub for advanced topics in Swift. Videos cover complex, real world topics including application architecture, concurrency, persistence, and more.
     </description>
     <copyright>
       Copyright Point-Free Inc. 2018
@@ -55,7 +55,7 @@ X-XSS-Protection: 1; mode=block
       Advanced programming concepts explained simply.
     </itunes:subtitle>
     <itunes:summary>
-      Point-Free is a video series that explores advanced topics in the Swift programming language. Each episode covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show how these ideas can improve the quality of your code today.
+      Point-Free is a hub for advanced topics in Swift. Videos cover complex, real world topics including application architecture, concurrency, persistence, and more.
     </itunes:summary>
     <itunes:explicit>
       no
@@ -100,7 +100,7 @@ X-XSS-Protection: 1; mode=block
         1517184000
       </guid>
       <description>
-        Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is that day! Please enjoy this episode, and if you find this interesting you may want to consider a membership http://localhost:8080/pricing.
+        Free Episode: Every once in awhile we release a past video for free to all of our members, and today is that day! Please enjoy, and if you find this interesting you may want to consider becoming a member: http://localhost:8080/pricing.
 
 ---
 
@@ -171,7 +171,7 @@ text, no markdown allowed. Here is some more text just to have some filler.
         1516752000
       </guid>
       <description>
-        Every once in awhile we release a new episode free for all to see, and today is that day! Please enjoy this episode, and if you find this interesting you may want to consider a membership http://localhost:8080/pricing.
+        Every once in awhile we release a new video free for all to see, and today is that day! Please enjoy, and if you find this interesting you may want to consider becoming a member: http://localhost:8080/pricing.
 
 ---
 

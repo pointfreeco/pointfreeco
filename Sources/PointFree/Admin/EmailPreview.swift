@@ -140,7 +140,7 @@ extension EmailTemplate {
     case .newBlogPost:
       "New blog post"
     case .newEpisode:
-      "New episode"
+      "New video"
     case .newTeammateJoined:
       "New teammate joined"
     case .ownerNewTeammateJoined:

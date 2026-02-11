@@ -53,9 +53,9 @@ private func creditsView(accountData: AccountData, allEpisodes: [Episode]) -> No
           "Video Credits"
         ),
         .p(
-          "Video credits allow you to see members only videos before commiting to a full ",
+          "Video credits allow you to see members only videos before commiting to a membership. ",
           .text(
-            "subscription. You currently have \(pluralizedCredits(count: accountData.currentUser.episodeCreditCount)) "
+            "You currently have \(pluralizedCredits(count: accountData.currentUser.episodeCreditCount)) "
           ),
           "remaining."
         ),
@@ -364,10 +364,10 @@ private func rssTerms(stripeSubscription: Stripe.Subscription?) -> Node {
         .class([Class.padding([.mobile: [.all: 2]]), Class.margin([.mobile: [.top: 2]])]),
         .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
       ],
-      "Because you are on a monthly subscription plan, you get access to the last ",
+      "Because you have a monthly membership, you get access to the last ",
       .text("\(nonYearlyMaxRssItems)"),
       " videos in your RSS feed (don't worry, you can watch every past video directly on this site).",
-      " To access all videos from the RSS feed, please consider upgrading to a yearly subscription."
+      " To access all videos from the RSS feed, please consider upgrading to a yearly membership."
     )
     : []
 }
@@ -602,7 +602,7 @@ private func subscriptionTeammateOverview(_ data: AccountData) -> Node {
         .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], "Subscription overview"),
 
         .p(
-          "You are currently on a team subscription. Contact ",
+          "You are currently on a team. Contact ",
           .a(
             attributes: [
               .mailto(data.subscriptionOwner?.email.rawValue ?? ""),
@@ -836,7 +836,7 @@ private func cancelAction(for subscription: Stripe.Subscription) -> Node {
       .method(.post),
       .onsubmit(
         unsafe: """
-          if (!confirm("Cancel your subscription? You will lose access to Point-Free at the end of the current billing period. Should you change your mind, you can reactivate your subscription at any time before this period ends.")) {
+          if (!confirm("Cancel your membership? You will lose access to Point-Free at the end of the current billing period. Should you change your mind, you can reactivate your membership at any time before this period ends.")) {
             return false
           }
           """
@@ -1113,7 +1113,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
             ])
           ],
           """
-          Add a teammate to your subscription for a discounted rate of **$\(amount.rawValue / 100)/\
+          Add a teammate for a discounted rate of **$\(amount.rawValue / 100)/\
           \(interval)**. Your first invoice will be prorated based on your current billing cycle.
           """
         ),
@@ -1208,7 +1208,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
             ])
           ],
           """
-          Invite your colleages to your subscription by sharing the following URL. Your credit
+          Invite your colleages to your membership by sharing the following URL. Your credit
           card will be charged a prorated amount of **$\(amount.rawValue / 100)/\(interval)**
           when a teammate joins.
           """
