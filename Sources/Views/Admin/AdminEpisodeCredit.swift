@@ -8,7 +8,7 @@ public struct EpisodeCreditView: HTML {
   public init() {}
 
   public var body: some HTML {
-    PageModule(title: "Create an episode credit!", theme: .content) {
+    PageModule(title: "Create a video credit!", theme: .content) {
       form {
         VStack(alignment: .leading, spacing: 1) {
           input()

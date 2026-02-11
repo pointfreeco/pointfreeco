@@ -101,15 +101,14 @@ private struct LoggedOut: HTML {
     CallToActionHeader(
       title: "Explore the wonderful world of advanced Swift.",
       blurb: """
-        Point-Free is a video series exploring advanced topics in the Swift programming language, \
-        hosted by industry experts, Brandon and Stephen.
+        Expert guidance, battle-tested open source tools, advanced AI skills, exclusive videos, \
+        and a community of likeminded engineers.
         """,
       ctaTitle: "Start with a free video →",
       ctaURL: siteRouter.path(for: .auth(.authLanding(kind: .signUp))),
       style: .gradient
     )
     Companies()
-    FreeEpisodes()
     PointFreeWayHeader(context: .home)
     EpisodesModule()
     WhatToExpect()
@@ -267,7 +266,7 @@ private struct EpisodesModule: HTML {
 
   var body: some HTML {
     PageModule(
-      title: "All videos",
+      title: "Videos",
       seeAllURL: siteRouter.path(for: .episodes(.list(.all))),
       theme: .content
     ) {

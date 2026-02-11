@@ -27,9 +27,9 @@ private struct AdminIndexView: HTML {
   var body: some HTML {
     PageModule(title: "Admin Dashboard", theme: .content) {
       ul {
-        li { Link("Send new episode email", destination: .admin(.newEpisodeEmail())) }
-        li { Link("Send episode credits", destination: .admin(.episodeCredits())) }
-        li { Link("Send free episode email", destination: .admin(.freeEpisodeEmail())) }
+        li { Link("Send new video email", destination: .admin(.newEpisodeEmail())) }
+        li { Link("Send video credits", destination: .admin(.episodeCredits())) }
+        li { Link("Send free video email", destination: .admin(.freeEpisodeEmail())) }
         li { Link("Send new blog post email", destination: .admin(.newBlogPostEmail())) }
         li { Link("Ghost a user", destination: .admin(.ghost())) }
         li { Link("Preview an email", destination: .admin(.emailPreview(template: nil))) }

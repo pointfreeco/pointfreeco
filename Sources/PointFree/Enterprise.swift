@@ -326,9 +326,14 @@ private func enterpriseInviteEmailBodyView(
             attributes: [.class([Class.pf.type.responsiveTitle3])], "You’re invited!"),
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
-            "You’re invited to join the ", .text(account.companyName),
-            " team on Point-Free, a video series exploring advanced programming topics in Swift. ",
-            "To accept, simply click the link below!"
+            .text(
+              """
+              You’re invited to join the \(account.companyName) team on
+              Point-Free, a hub for advanced Swift: \
+              expert advice, battle-tested tools, AI skill documents, exclusive videos, thriving \
+              community, and more. To accept, simply click the link below!
+              """
+            )
           ),
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],

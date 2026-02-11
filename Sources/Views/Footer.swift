@@ -41,7 +41,7 @@ private struct TaglineColumn: HTML {
       .inlineStyle("line-height", "1.45")
 
       p {
-        "A video series exploring advanced topics in the Swift programming language. Hosted by "
+        "A hub for advanced Swift programming. Brought to you by "
         twitterLink("Brandon&nbsp;Williams", .mbrandonw)
         " and "
         twitterLink("Stephen&nbsp;Celis", .stephencelis)
@@ -67,7 +67,7 @@ private struct ContentColumn: HTML {
 
   var body: some HTML {
     Column(title: "Content") {
-      FooterLink("Pricing", destination: .pricingLanding)
+      FooterLink("Become a member", destination: .pricingLanding)
       FooterLink("The Point-Free Way", destination: .theWay)
       FooterLink("Gifts", destination: .gifts())
       FooterLink("Videos", destination: .episodes(.list(.all)))

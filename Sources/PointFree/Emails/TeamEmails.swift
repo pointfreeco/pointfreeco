@@ -51,9 +51,9 @@ private func youHaveBeenRemovedEmailBody(removalType: RemovalType) -> Node {
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             """
-            You have been removed from \(removalType.displayName)’s Point-Free team, which means you no longer
-            have access to full episodes and transcripts. If you wish to become a Point-Free member,
-            click the link below!
+            You have been removed from \(removalType.displayName)’s Point-Free team, which means \
+            you no longer have access to full videos and transcripts. If you wish to become a \
+            Point-Free member, click the link below!
             """
           ),
           .p(

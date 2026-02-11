@@ -162,6 +162,7 @@ private struct EpisodesModule<Episodes: Collection<Episode>, CTA: HTML>: HTML {
 private struct EpisodesHeader: HTML {
   let episodeCount: Int
   let listType: SiteRoute.EpisodesRoute.ListType
+  @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
   var body: some HTML {
     PageHeader {
@@ -169,7 +170,7 @@ private struct EpisodesHeader: HTML {
       case .all:
         "Videos"
       case .free:
-        "Free Videos"
+        "Free videos"
       case .history:
         "Continue watching"
       }
@@ -179,12 +180,30 @@ private struct EpisodesHeader: HTML {
         if subscriberState.isActiveSubscriber {
           "Watch our entire catalogue of videos, all \(episodeCount) of them."
         } else {
-          "Watch some for free or explore all \(episodeCount) videos."
+          "Watch some for "
+          Link("free", destination: .episodes(.list(.free)))
+            .linkColor(.currentColor)
+            .linkUnderline(true)
+          " or explore all \(episodeCount) videos."
         }
       case .free:
         "All of our free videos, in one place."
       case .history:
         "Your most recently watched videos."
+      }
+    } callToAction: {
+      let stats = EpisodesStats()
+      if case .nonSubscriber = subscriberState, listType == .all {
+        VStack(alignment: .center) {
+          Button(color: .purple) {
+            "Explore free videos"
+          }
+          .attribute(
+            "href",
+            siteRouter.loginPath(redirect: .episodes(.list(.free)))
+          )
+          "All \(stats.freeEpisodes) of them!"
+        }
       }
     }
   }

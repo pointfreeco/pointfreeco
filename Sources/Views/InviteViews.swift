@@ -34,9 +34,9 @@ private func showInviteLoggedOutView(invite: TeamInvite, inviter: User) -> Node 
           "Your colleague ",
           .a(attributes: [.mailto(inviter.email.rawValue)], .text(inviter.displayName)),
           """
-           has invited you to join their team on Point-Free, a video series exploring advanced programming
-          concepts using the Swift programming language. Accepting this invitation gives you access to all of
-          the videos, transcripts, and code samples on this site.
+           has invited you to join their team on Point-Free, a hub for advanced Swift programming. \
+          Accepting this invitation gives you access to expert advice, advanced AI skills, \
+          exclusive videos, and a thriving community of likeminded engineers.
           """
         ),
         .p(
@@ -69,9 +69,9 @@ private func showInviteLoggedInView(currentUser: User, teamInvite: TeamInvite, i
           "Your colleague ",
           .a(attributes: [.mailto(inviter.email.rawValue)], .text(inviter.displayName)),
           """
-           has invited you to join their team account on Point-Free, a video series exploring advanced
-          programming concepts using the Swift programming language. Accepting this invitation gives you
-          access to all of the videos, transcripts, and code samples on this site.
+           has invited you to join their team on Point-Free, a hub for advanced Swift programming. \
+          Accepting this invitation gives you access to expert advice, advanced AI skills, \
+          exclusive videos, and a thriving community of likeminded engineers.
           """
         ),
         .form(

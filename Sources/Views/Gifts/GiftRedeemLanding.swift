@@ -166,7 +166,7 @@ private func existingSubscriberNotice() -> Node {
           key("background", "#ffd")
         ),
       ],
-      "Since you are already a subscriber, the gift amount will be applied to your future invoices."
+      "Since you are already a member, the gift amount will be applied to your future invoices."
     )
   } else {
     return []
@@ -214,8 +214,10 @@ extension Array where Element == Faq {
     Faq(
       question: "Do I need to give a credit card to redeem the gift?",
       answer: """
-        Nope. No credit card is required, and when the gift time is almost up we will send you an email to see if you want to continue your subscription.
-        """),
+        Nope. No credit card is required, and when the gift time is almost up we will send you an \
+        email to see if you want to continue your membership.
+        """
+    ),
     .existingSubscriberRedeemGift,
     .combinedWithStudentDiscountsEtc,
   ]

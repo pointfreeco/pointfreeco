@@ -147,7 +147,7 @@ private func headerLinks(
     subscriberState.isNonSubscriber
       ? .a(
         attributes: [.href(siteRouter.path(for: .pricingLanding)), .class([navLinkClasses])],
-        "Pricing")
+        "Become a member")
       : [],
 
     .a(

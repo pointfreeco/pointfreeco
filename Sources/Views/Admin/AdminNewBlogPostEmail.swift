@@ -26,7 +26,7 @@ public struct AdminNewBlogPostEmailView: HTML {
                     .attribute("name", NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue)
                     .attribute("value", "true")
                     .attribute("checked", "")
-                  " Send to subscribers"
+                  " Send to members"
                 }
 
                 textarea { "" }
@@ -39,7 +39,7 @@ public struct AdminNewBlogPostEmailView: HTML {
                     .attribute("name", NewBlogPostFormData.CodingKeys.nonsubscriberDeliver.rawValue)
                     .attribute("value", "true")
                     .attribute("checked", "")
-                  " Send to non-subscribers"
+                  " Send to non-members"
                 }
 
                 textarea { "" }

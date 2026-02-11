@@ -99,7 +99,7 @@ private func subscribedReason(newsletter: EmailSetting.Newsletter) -> String {
       """
   case .newEpisode:
     return """
-      You are receiving this email because you wanted to be notified whenever a new episode is available.
+      You are receiving this email because you wanted to be notified whenever a new video is available.
       """
   case .welcomeEmails:
     return """

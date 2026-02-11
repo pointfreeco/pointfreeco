@@ -21,10 +21,7 @@ public enum NavStyle {
     case main
 
     public var heroTagline: String {
-      switch self {
-      case .blog: return "A blog exploring advanced programming topics in Swift."
-      case .main: return "A video series exploring advanced programming topics in Swift."
-      }
+      "A hub for advanced Swift programming."
     }
 
     public var heroLogoSvgBase64: String {
@@ -149,7 +146,7 @@ private func subscribeLinkView(style: NavStyle.MinimalStyle) -> Node {
 
   return .a(
     attributes: [.href(siteRouter.path(for: .pricingLanding)), .class([navLinkClass(for: style)])],
-    "Pricing")
+    "Become a member")
 }
 
 private func giftLinkView(style: NavStyle.MinimalStyle) -> Node {

@@ -16,15 +16,15 @@ public struct PricingLanding: HTML {
 
   public var body: some HTML {
     PageHeader {
-      "Pricing"
+      "Become a member"
     } blurb: {
       "Plans for you and your whole team."
     } callToAction: {
       if subscriberState.isActiveSubscriber {
         VStack(alignment: .center) {
-          "You’re already a subscriber!"
+          "You’re already a member!"
           Button(color: .white) {
-            "Manage your subscription"
+            "Manage your membership"
           }
           .attribute("href", siteRouter.path(for: .account()))
         }

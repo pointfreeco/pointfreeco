@@ -45,10 +45,8 @@ var freeEpisodeRssChannel: RssChannel {
   @Dependency(\.siteRouter) var siteRouter
 
   let description = """
-    Point-Free is a video series that explores advanced topics in the Swift programming language. Each episode \
-    covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of \
-    each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show \
-    how these ideas can improve the quality of your code today.
+    Point-Free is a hub for advanced topics in Swift. Videos cover complex, real world topics \
+    including application architecture, concurrency, persistence, and more.
     """
   let title = "Point-Free Videos"
 
@@ -134,8 +132,8 @@ private func item(episode: Episode) -> RssItem {
     switch episode.permission {
     case .free:
       return """
-        Every once in awhile we release a new episode free for all to see, and today is that day! Please enjoy \
-        this episode, and if you find this interesting you may want to consider a membership \
+        Every once in awhile we release a new video free for all to see, and today is that day! \
+        Please enjoy, and if you find this interesting you may want to consider becoming a member: \
         \(siteRouter.url(for: .pricingLanding)).
 
         ---
@@ -144,9 +142,9 @@ private func item(episode: Episode) -> RssItem {
         """
     case let .freeDuring(range) where range.contains(now):
       return """
-        Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is \
-        that day! Please enjoy this episode, and if you find this interesting you may want to consider a \
-        membership \(siteRouter.url(for: .pricingLanding)).
+        Free Episode: Every once in awhile we release a past video for free to all of our members, \
+        and today is that day! Please enjoy, and if you find this interesting you may want to \
+        consider becoming a member: \(siteRouter.url(for: .pricingLanding)).
 
         ---
 
@@ -154,8 +152,8 @@ private func item(episode: Episode) -> RssItem {
         """
     case .freeDuring, .subscriberOnly:
       return """
-        Members Only: Today's episode is available only to members. If you are already a \
-        member, you can access your private podcast feed by visiting \
+        Members Only: Today's video is available only to members. If you are already a member, you \
+        can access your private podcast feed by visiting \
         \(siteRouter.url(for: .account())).
 
         ---

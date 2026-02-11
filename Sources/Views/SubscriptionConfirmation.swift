@@ -368,8 +368,8 @@ private func teamMembers(
         ])
       ],
       """
-      You must have at least two seats for your team subscription. You can add additional team members at any time
-      from your account page.
+      You must have at least two seats for a team membership. You can add additional team members \
+      at any time from your account page.
       """
     )
   )
@@ -908,7 +908,7 @@ private func total(
               if (window.paymentRequest) {
                 window.paymentRequest.update({
                   total: {
-                    label: monthly ? "Monthly subscription" : "Yearly subscription",
+                    label: monthly ? "Monthly membership" : "Yearly membership",
                     amount: total * 100
                   }
                 })

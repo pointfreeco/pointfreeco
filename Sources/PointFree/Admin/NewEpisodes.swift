@@ -16,7 +16,7 @@ func showNewEpisodeEmailMiddleware(
     .sorted { $0.sequence > $1.sequence }
     .prefix(upTo: 1)
   return conn.writeStatus(.ok)
-    .respondV2(layoutData: SimplePageLayoutData(title: "New episode email")) {
+    .respondV2(layoutData: SimplePageLayoutData(title: "New video email")) {
       AdminNewEpisodeEmailView(episodes: Array(latestEpisodes))
     }
 }
@@ -64,7 +64,7 @@ private func sendNewEpisodeEmails(
       try await retry(maxRetries: 3, backoff: { .seconds(10 * $0) }) {
         _ = try await sendEmail(
           to: [user.email],
-          subject: "\(subjectPrefix)New Point-Free Episode: \(episode.fullTitle)",
+          subject: "\(subjectPrefix)New Point-Free Video: \(episode.fullTitle)",
           unsubscribeData: (user.id, .newEpisode),
           content: inj2(nodes)
         )
@@ -76,9 +76,9 @@ private func sendNewEpisodeEmails(
 
   _ = try? await sendEmail(
     to: adminEmails,
-    subject: "New episode email finished sending!",
+    subject: "New video email finished sending!",
     content: inj2(
-      adminEmailReport("New episode")(
+      adminEmailReport("New video")(
         (
           failedUsers,
           users.count

@@ -16,7 +16,7 @@ public struct GiftsV2: HTML {
       "Gifts"
     } blurb: {
       """
-      Purchase a 3, 6, or 12 month subscription for a friend, colleague or loved one.
+      Purchase a 3, 6, or 12 month membership for a friend, colleague or loved one.
       """
     }
 
@@ -53,13 +53,13 @@ extension Array where Element == Faq {
     Faq(
       question: "Will I be charged on a recurring basis?",
       answer: """
-        Nope. A gift subscription is a one-time payment and you will not be charged again.
+        Nope. A gift membership is a one-time payment and you will not be charged again.
         """
     ),
     Faq(
-      question: "When am I charged and when does the gift subscription start?",
+      question: "When am I charged and when does access start?",
       answer: """
-        You are charged immediately, but the subscription does not start until the recipient \
+        You are charged immediately, but the membership does not start until the recipient \
         accepts your gift.
         """
     ),
@@ -72,19 +72,18 @@ extension Faq {
   static let existingSubscriberRedeemGift = Self(
     question: "Can I accept a gift if I already have a Point-Free membership?",
     answer: """
-      Yes! If you receive a gift and are currently a subscriber we will apply the credit to your \
+      Yes! If you receive a gift and are currently a member we will apply the credit to your \
       account and the amount will be applied to future invoices.
       """
   )
 
   static let combinedWithStudentDiscountsEtc = Self(
     question: """
-      Can gift subscriptions be combined with student discounts, referrals, regional \
-      discounts, etc.?
+      Can gifts be combined with student discounts, referrals, regional discounts, etc.?
       """,
     answer: """
-      Unfortunately not at this time. Gift subscriptions are charged at the full price of our \
-      [regular](/pricing) subscriptions.
+      Unfortunately not at this time. Gifts are charged at the full price of our \
+      [regular](/pricing) memberships.
       """
   )
 }

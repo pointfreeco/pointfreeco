@@ -146,15 +146,13 @@ func privateRssChannel(user: User) -> RssChannel {
   @Dependency(\.siteRouter) var siteRouter
 
   let description = """
-    Point-Free is a video series that explores advanced topics in the Swift programming language. Each episode
-    covers a topic that may seem complex and academic at first, but turns out to be quite simple. At the end of
-    each episode we’ll ask “what’s the point?!”, so that we can bring the concepts back down to earth and show
-    how these ideas can improve the quality of your code today.
+    Point-Free is a hub for advanced topics in Swift. Videos cover complex, real world topics \
+    including application architecture, concurrency, persistence, and more.
 
     ---
 
-    This is a private feed associated with the Point-Free account \(user.email). Please do not share this link
-    with anyone else.
+    This is a private feed associated with the Point-Free account \(user.email). Please do not \
+    share this link with anyone else.
     """
   let title = "Point-Free Videos (Private feed for \(user.email.rawValue))"
 

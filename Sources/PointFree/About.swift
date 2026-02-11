@@ -15,8 +15,7 @@ func aboutResponse(
     .respondV2(
       layoutData: SimplePageLayoutData(
         description: """
-          Point-Free is a video series that explores advanced topics in the Swift programming \
-          language.
+          Point-Free is a hub for advanced Swift programming.
           """,
         title: "About Point-Free"
       )

@@ -2,7 +2,7 @@ GET https://www.pointfree.co
 X-Forwarded-Proto: https
 
 200 OK
-Content-Length: 177101
+Content-Length: 171355
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -92,9 +92,9 @@ body, html {
     <meta name="title" content="Point-Free">
     <meta property="og:title" content="Point-Free">
     <meta name="twitter:title" content="Point-Free">
-    <meta name="description" content="Point-Free: A video series exploring advanced programming topics in Swift.">
-    <meta property="og:description" content="Point-Free: A video series exploring advanced programming topics in Swift.">
-    <meta name="twitter:description" content="Point-Free: A video series exploring advanced programming topics in Swift.">
+    <meta name="description" content="Point-Free: A hub for advanced programming in Swift.">
+    <meta property="og:description" content="Point-Free: A hub for advanced programming in Swift.">
+    <meta name="twitter:description" content="Point-Free: A hub for advanced programming in Swift.">
     <meta property="og:image" content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta name="twitter:image" content="https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png">
     <meta property="og:type" content="website">
@@ -261,38 +261,15 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .width-meMxa{width:100px}
 .height-95uPW3{height:60px}
 .object-fit-QHxeh4{object-fit:contain}
-.background-color-nbn0i3{background-color:#fff}
-.color-K2J0r1{color:#121212}
-.justify-content-n56cj2{justify-content:flex-start}
-.padding-bottom-Xin5E2{padding-bottom:1.5rem}
-.justify-content-cQlZY2{justify-content:start}
-.margin-top-EvtWd3:not(:first-child){margin-top:1.5rem}
-.margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
-.font-size-QgYLk2{font-size:2.0rem}
-.margin-left-83zzS1{margin-left:1.0rem}
-.box-shadow-91xof{box-shadow:0 2px 10px -2px rgba(0,0,0,0.3)}
-.border-radius-YwIIn{border-radius:5px}
-.margin-yehVj4{margin:1rem 0 2rem 0}
-.overflow-PhNC81{overflow:hidden}
-.align-items-msN8p3{align-items:stretch}
-.border-bottom-9YkDE1{border-bottom:1px solid #e8e8e8}
-.padding-sjJTB1{padding:0.5rem 1.5rem 1.5rem}
-.row-gap-FBkWQ3{row-gap:0}
-.font-size-Xin5E2{font-size:1.5rem}
-.color-T7UxR2:link{color:#121212}
-.color-IVYQy2:visited{color:#121212}
-.color-OpZD03{color:#666666}
-article .content-xD6dy1:is(p):last-of-type::after{content:"❖"}
-article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
-.padding-FBkWQ3{padding:0}
-.column-gap-83zzS1{column-gap:1.0rem}
-.justify-content-VOQy11{justify-content:end}
-.margin-right-83zzS1{margin-right:1.0rem}
-.font-size-yLOVS3{font-size:1.25rem}
 .background-JItPm4{background:radial-gradient(900px 700px at 20% 20%, rgba(76, 204, 255, 0.18), transparent 55%),
 radial-gradient(900px 700px at 80% 70%, rgba(151, 77, 255, 0.16), transparent 55%),
 linear-gradient(180deg, #f6f7fb, #eef1f7)}
+.background-color-nbn0i3{background-color:#fff}
+.color-K2J0r1{color:#121212}
+.justify-content-n56cj2{justify-content:flex-start}
 .align-items-cQlZY2{align-items:start}
+.align-items-msN8p3{align-items:stretch}
+.padding-FBkWQ3{padding:0}
 .color-GPfER1{color:#555555}
 .line-height-JeRI4{line-height:1.3125rem}
 .margin-top-dnNPN1{margin-top:1rem}
@@ -300,6 +277,7 @@ linear-gradient(180deg, #f6f7fb, #eef1f7)}
 .border-top-S35Gp4{border-top:1px solid #ccc}
 .margin-left-FBkWQ3{margin-left:0}
 .margin-right-IuLpj2{margin-right:70%}
+.column-gap-83zzS1{column-gap:1.0rem}
 .border-color-Y7CRG{border-color:color-mix(in oklab, #79f2b0 40%, rgba(15, 18, 32, 0.12))}
 .background-bF8aN2{background:color-mix(in oklab, #79f2b0 22%, #ffffff)}
 .color-Nffw82:visited{color:#0f1220}
@@ -324,6 +302,7 @@ linear-gradient(180deg, #f6f7fb, #eef1f7)}
 .border-I77cU2{border:1px solid}
 .border-color-ApzIg{border-color:rgba(10, 14, 20, 0.10)}
 .box-shadow-CRMsc1{box-shadow:0 24px 70px rgba(0, 0, 0, 0.20)}
+.overflow-PhNC81{overflow:hidden}
 .backdrop-filter-zVU0m3{backdrop-filter:blur(10px)}
 .-webkit-backdrop-filter-zVU0m3{-webkit-backdrop-filter:blur(10px)}
 .border-bottom-I77cU2{border-bottom:1px solid}
@@ -364,9 +343,30 @@ linear-gradient(180deg, #f6f7fb, #eef1f7)}
 .color-6ZIxp2{color:color-mix(in oklab, #79f2b0 82%, rgba(10, 14, 20, 0.86) 10%);}
 .color-9xCv11{color:color-mix(in oklab, #4cccff 82%, rgba(10, 14, 20, 0.86) 10%);}
 .height-MDs1b4{height:0.625rem}
+.padding-bottom-Xin5E2{padding-bottom:1.5rem}
+.justify-content-cQlZY2{justify-content:start}
+.margin-top-EvtWd3:not(:first-child){margin-top:1.5rem}
+.margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
+.font-size-QgYLk2{font-size:2.0rem}
+.margin-left-83zzS1{margin-left:1.0rem}
+.box-shadow-91xof{box-shadow:0 2px 10px -2px rgba(0,0,0,0.3)}
+.border-radius-YwIIn{border-radius:5px}
+.margin-yehVj4{margin:1rem 0 2rem 0}
+.border-bottom-9YkDE1{border-bottom:1px solid #e8e8e8}
+.padding-sjJTB1{padding:0.5rem 1.5rem 1.5rem}
+.row-gap-FBkWQ3{row-gap:0}
+.font-size-Xin5E2{font-size:1.5rem}
+.color-T7UxR2:link{color:#121212}
+.color-IVYQy2:visited{color:#121212}
+.color-OpZD03{color:#666666}
+article .content-xD6dy1:is(p):last-of-type::after{content:"❖"}
+article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .color-vig5A3:link{color:currentColor}
 .color-vZTTa3:visited{color:currentColor}
 .color-4IpZj1{color:currentColor}
+.justify-content-VOQy11{justify-content:end}
+.margin-right-83zzS1{margin-right:1.0rem}
+.font-size-yLOVS3{font-size:1.25rem}
 .background-color-c5ixr2{background-color:#fafafa}
 .color-BoTGL{color:#171717}
 .padding-bottom-NBsge3{padding-bottom:3.0rem}
@@ -427,10 +427,10 @@ linear-gradient(180deg, #f6f7fb, #eef1f7)}
   .height-wjv553{height:60px}
   .column-gap-ZNGkd1{column-gap:1.0rem}
   .display-jdJkm4{display:grid}
-  .grid-template-columns-oWJr1{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)}
-  .row-gap-ZNGkd1{row-gap:1.0rem}
   .grid-template-columns-AWWfa{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr)}
   .row-gap-6BZZO1{row-gap:2.0rem}
+  .grid-template-columns-oWJr1{grid-template-columns:minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr)}
+  .row-gap-ZNGkd1{row-gap:1.0rem}
   .padding-YB9JG:nth-child(even){padding:0rem 1.5rem 4rem 0}
   .padding-CTEDv4:nth-child(odd){padding:0rem 0 4rem 1.5rem}
   .padding-gRWSc1{padding:7.5%}
@@ -452,19 +452,12 @@ linear-gradient(180deg, #f6f7fb, #eef1f7)}
 }
 @media (prefers-color-scheme: dark){
   .border-top-MR1dZ1{border-top:1px solid #555555}
-  .background-color-dMv2U1{background-color:#121212}
-  .color-GOHNR{color:#fafafa}
-  .border-bSHu21{border:1px #353535 solid}
-  .background-color-Hakcq1{background-color:#242424}
-  .border-bottom-a7wnM{border-bottom:1px solid #3d3d3d}
-  .color-Cn4Oi1{color:#666666}
-  .color-3tgnX1:link{color:#fff}
-  .color-fIiIX2:visited{color:#fff}
-  .color-wVkSF3{color:#fff}
-  .color-5uscm3{color:#a8a8a8}
   .background-e7ncj{background:radial-gradient(900px 700px at 20% 20%, rgba(76, 204, 255, 0.18), transparent 55%),
 radial-gradient(900px 700px at 80% 70%, rgba(151, 77, 255, 0.16), transparent 55%),
 linear-gradient(180deg, #07080b, #0b0d10)}
+  .background-color-dMv2U1{background-color:#121212}
+  .color-GOHNR{color:#fafafa}
+  .color-wVkSF3{color:#fff}
   .color-VoDZ9{color:#ccc}
   .border-color-94F9E4{border-color:color-mix(in oklab, #79f2b0 40%, rgba(255, 255, 255, 0.12))}
   .background-vVzWy3{background:color-mix(in oklab, #79f2b0 22%, #0f1220)}
@@ -485,6 +478,13 @@ linear-gradient(180deg, #07080b, #0b0d10)}
   .color-huCu91{color:color-mix(in oklab, rgba(255, 255, 255, 0.86) 96%, transparent)}
   .color-qJyfQ{color:color-mix(in oklab, #79f2b0 82%, rgba(255, 255, 255, 0.86) 10%);}
   .color-x1xqC1{color:color-mix(in oklab, #4cccff 82%, rgba(255, 255, 255, 0.86) 10%);}
+  .border-bSHu21{border:1px #353535 solid}
+  .background-color-Hakcq1{background-color:#242424}
+  .border-bottom-a7wnM{border-bottom:1px solid #3d3d3d}
+  .color-Cn4Oi1{color:#666666}
+  .color-3tgnX1:link{color:#fff}
+  .color-fIiIX2:visited{color:#fff}
+  .color-5uscm3{color:#a8a8a8}
   .background-color-xnERS1{background-color:#171717}
   .color-r4foZ2{color:#d8d8d8}
   .color-T94JN1:link{color:#a8a8a8}
@@ -501,7 +501,7 @@ linear-gradient(180deg, #07080b, #0b0d10)}
     <ul class="display-mScdO2 align-items-Dq4Oc4 padding-left-E4tBw4 list-style-type-Wl0y44">
       <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">Collections</a>
       </li>
-      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/pricing">Pricing</a>
+      <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/pricing">Become a member</a>
       </li>
       <li class="padding-left-dR5Tt4 padding-left-dzKEp display-mFpu24"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/the-way"><span class="display-osldI1 display-HhxPd1">The Point-Free Way</span><span class="display-yNuW2 display-jM9hW2">Point-Free Way</span>
         <is-new class="margin-left-FxsCt1 font-size-HFDgk3 font-weight-SywJI1 letter-spacing-miVw93 padding-SjEOn4 border-radius-btBsa3 border-uB9vi background-33BAq4 color-GnKka3">NEW
@@ -526,9 +526,9 @@ linear-gradient(180deg, #07080b, #0b0d10)}
       </li>
     </ul>
     <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
-      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/login?redirect=http://localhost:8080/" class="font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Login</a>
+      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/auth?kind=login&redirect=http://localhost:8080/" class="font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Login</a>
       </li>
-      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/signup?redirect=http://localhost:8080/" class="font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Sign up</a>
+      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/auth?kind=signUp&redirect=http://localhost:8080/" class="font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Sign up</a>
       </li>
     </ul><input class="display-Wl0y44" id="menu-checkbox" type="checkbox"><label class="cursor-xmR5l display-Nvbu41 cursor-xmR5l user-select-Wl0y44" id="menu-icon" for="menu-checkbox"><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-SUDJi1 top-xEdC7 transform-0hcgW2"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 transform-kZtH24 background-WytRx3"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-YwIIn top-i3LWY2 transform-BHskb"></span></label>
     <ul class="margin-FBkWQ3 display-Wl0y44 display-sAbis3 flex-grow-tzL8I2 flex-shrink-tzL8I2 flex-basis-C8uWv padding-left-E4tBw4 list-style-type-Wl0y44 color-nbn0i3">
@@ -547,7 +547,7 @@ linear-gradient(180deg, #07080b, #0b0d10)}
         </pf-hstack></a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/pricing">
-        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Pricing
+        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Become a member
         </pf-hstack></a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/clips">
@@ -562,9 +562,9 @@ linear-gradient(180deg, #07080b, #0b0d10)}
         <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Gifts
         </pf-hstack></a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/login?redirect=http://localhost:8080/">Login</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/auth?kind=login&redirect=http://localhost:8080/">Login</a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/signup?redirect=http://localhost:8080/">Sign up</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/auth?kind=signUp&redirect=http://localhost:8080/">Sign up</a>
       </li>
     </ul>
   </div>
@@ -576,10 +576,10 @@ linear-gradient(180deg, #07080b, #0b0d10)}
       </h2>
     </div>
     <div class="text-align-GE99b">
-      <p class="margin-mBI0f2 max-width-3zifi color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2">Point-Free is a video series exploring advanced topics in the Swift programming language, hosted by industry experts, Brandon and Stephen.
+      <p class="margin-mBI0f2 max-width-3zifi color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2">Expert guidance, battle-tested open source tools, advanced AI skills, exclusive videos, and a community of likeminded engineers.
       </p>
     </div>
-    <div class="text-align-GE99b width-C8uWv"><a class="margin-top-H64QF2 display-qrAHi font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/signup">Start with a free video →</a>
+    <div class="text-align-GE99b width-C8uWv"><a class="margin-top-H64QF2 display-qrAHi font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/auth?kind=signUp">Start with a free video →</a>
     </div>
   </div>
 </div>
@@ -605,48 +605,6 @@ linear-gradient(180deg, #07080b, #0b0d10)}
       <pf-vstack class="display-qVTRn padding-dnNPN1 flex-basis-KO6Mm4 flex-basis-85P192 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="width-meMxa height-95uPW3 width-t5sSt height-wjv553 object-fit-QHxeh4" alt src="data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjcyIiB2aWV3Qm94PSIwIDAgMjQxIDcyIiB3aWR0aD0iMjQxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGZpbGw9IiM3ZDdkN2QiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PHBhdGggZD0ibTU3LjU2OTI1MjMgMzEuOTE4NzE0MmMtMTEuNjM3ODQyNi02Ljg3MDQyODUtMzAuODM0MjAzOS03LjUwMjE0MjgtNDEuOTQzOTE2LTQuMTUwMjg1Ny0xLjc4NDAwMzYuNTM4Mjg1OS0zLjY3MDYxNTQtLjQ2MzI4NTYtNC4yMTEyNDg2LTIuMjM2NzE0Mi0uNTQwNjMzMy0xLjc3NDI4NTcuNDY1NjE3MS0zLjY0ODQyODYgMi4yNTA5MTQxLTQuMTg3NTcxNCAxMi43NTMxNjgxLTMuODQ4MTQyOSAzMy45NTM0MDc5LTMuMTA1IDQ3LjM1MTExMSA0LjgwMDg1NzEgMS42MDUwODU3Ljk0NzE0MjggMi4xMzE0OTE5IDMuMDA3Mjg1NyAxLjE3OTk5NDYgNC41OTk4NTcxLS45NTE5Mjg1IDEuNTk1MTQzLTMuMDI2MDgwNSAyLjEyMTAwMDEtNC42MjY4NTUxIDEuMTczODU3MXptLS4zODExMTY0IDEwLjE3NjAwMDJjLS44MTYxMjM0IDEuMzE2OTk5OC0yLjU0ODM5MTcgMS43Mjk3MTQxLTMuODcxNTIwNi45MjE0Mjg1LTkuNzAyNTEzMy01LjkyODg1NzMtMjQuNDk3NDk4OS03LjY0NjE0MjktMzUuOTc2MjU1Ny00LjE4MjQyODYtMS40ODg2ODE2LjQ0Njk5OTktMy4wNjEwMDE4LS4zODc0Mjg3LTMuNTEyODIyOS0xLjg2NDI4NTctLjQ0ODgwMzMtMS40Nzk4NTcyLjM5MTAzMjItMy4wMzk4NTczIDEuODc2Njk1OC0zLjQ4OTg1NzMgMTMuMTEzMTU5My0zLjk1NTI4NTUgMjkuNDE0MDcxNy0yLjAzOTU3MTIgNDAuNTU3ODQyNSA0Ljc2ODI4NTkgMS4zMjMxMjg5LjgxIDEuNzM5NTk3NiAyLjUzMjg1NzIuOTI2MDYwOSAzLjg0Njg1NzJ6bS00LjQxNzc1ODUgOS43NzI3MTQzYy0uNjQ4NDE0OSAxLjA1NzI4NTUtMi4wMzQwNTcxIDEuMzg4OTk5OC0zLjA5Mzc2NzMuNzQ0NDI4NS04LjQ3ODU0NC01LjE1MTAwMDEtMTkuMTQ5Nzk5Ni02LjMxNDU3MTUtMzEuNzE3MTUyMS0zLjQ2MDcxNDQtMS4yMTEwMzU4LjI3NjAwMDEtMi40MTc3NjAzLS40Nzg3MTQxLTIuNjk0MTEyNy0xLjY4MjE0MjctLjI3NzY0NTgtMS4yMDM4NTcyLjQ3ODU1MDktMi40MDM0Mjg3IDEuNjkyMTczNS0yLjY3ODE0MjkgMTMuNzUyOTUxNi0zLjEyNTU3MTQgMjUuNTUwMzExMy0xLjc4MDI4NTkgMzUuMDY2NTc3NyA0LjAwMDI4NTYgMS4wNjEwMDM2LjY0NDE0MjggMS4zOTUxMjcgMi4wMjIwMDAxLjc0NjI4MDkgMy4wNzYyODU5em0tMTYuNTU3NDMyOS01MS43NjU4NTcyN2MtMTkuOTM5NjI0MyAwLTM2LjEwNDMwMDQ5IDE2LjA2Nzk5OTk3LTM2LjEwNDMwMDQ5IDM1Ljg4OTQyODU3IDAgMTkuODIyNzE0MiAxNi4xNjQ2NzYxOSAzNS44OTAyODU2IDM2LjEwNDMwMDQ5IDM1Ljg5MDI4NTYgMTkuOTQwMDU1NSAwIDM2LjEwMzg2OTUtMTYuMDY3NTcxNCAzNi4xMDM4Njk1LTM1Ljg5MDI4NTYgMC0xOS44MjE0Mjg2LTE2LjE2MzgxNC0zNS44ODk0Mjg1Ny0zNi4xMDM4Njk1LTM1Ljg4OTQyODU3eiIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0ibTk4LjMzNTMyOTMgMzMuMjMzOTk5OWMtNi4yMzM2NjU2LTEuNDc3NzE0MS03LjM0MzgxNzYtMi41MTQ4NTcxLTcuMzQzODE3Ni00LjY5MzcxNDIgMC0yLjA1OTI4NTYgMS45NTA0MTg0LTMuNDQ0NDI4NiA0Ljg1MDE3ODktMy40NDQ0Mjg2IDIuODEwOTQ4MSAwIDUuNTk3NzUzNCAxLjA1MjE0MyA4LjUyMDM2MzQgMy4yMTgxNDI5LjA4ODM4MS4wNjU1NzE0LjE5OTE4LjA5MTcxNDQuMzA4MjU1LjA3NDU3MTQuMTA5MDc2LS4wMTYyODU2LjIwNTIxNy0uMDc1NDI4NS4yNjk0NTUtLjE2NTQyODVsMy4wNDM3NTctNC4yNjUxNDI5Yy4xMjUwMjYtLjE3NTcxNDMuMDkwOTY3LS40MTc0Mjg2LS4wNzc2MDMtLjU1Mi0zLjQ3NzkwMi0yLjc3NDE0MjktNy4zOTQyNi00LjEyMjg1NzEtMTEuOTcxOTY2NC00LjEyMjg1NzEtNi43MzA3NTQ4IDAtMTEuNDMyMTk0OSA0LjAxNTI4NTctMTEuNDMyMTk0OSA5Ljc2MDI4NTggMCA2LjE2MDcxNDIgNC4wNTU2MTE3IDguMzQyMTQyNiAxMS4wNjQwMTI1IDEwLjAyNiA1Ljk2NTA3MzggMS4zNjU4NTY5IDYuOTcxNzU0OCAyLjUwOTcxNDIgNi45NzE3NTQ4IDQuNTU1NzE0MSAwIDIuMjY2NzE0My0yLjAzNTc4MSAzLjY3NTg1NzEtNS4zMTE5MTU4IDMuNjc1ODU3MS0zLjYzODI4MDggMC02LjYwNjU5MDMtMS4yMTg0Mjg1LTkuOTI2Njk5NS00LjA3NjU3MTMtLjA4MjM0NTEtLjA3MDI4NTctLjE5NTMwMDUtLjEwMjg1NzItLjI5OTYzMzMtLjA5Njg1NzMtLjEwOTUwNjIuMDA5LS4yMDk5NTg3LjA1OTU3MTYtLjI3OTgwMTIuMTQzMTQzbC0zLjQxMjgwMTYgNC4wMzc1NzE1Yy0uMTQzMTM0My4xNjc1NzEzLS4xMjUwMjY5LjQxNzg1NzEuMDQwMDk0OS41NjI3MTQyIDMuODYzMzI5IDMuNDI4MTQyOSA4LjYxMzkxNzcgNS4yMzkyODU3IDEzLjc0MDg4MDEgNS4yMzkyODU3IDcuMjUyODQ5NCAwIDExLjkzOTYzMTQtMy45Mzk4NTcyIDExLjkzOTYzMTQtMTAuMDM3MTQyOCAwLTUuMTUzMTQyOC0zLjA5NzIxNi04LjAwMzE0My0xMC42OTE5NDk3LTkuODM5MTQzIi8+PHBhdGggZD0ibTEzMC43MDEzMjcgNDAuMTQwNDI4N2MwIDQuMzUxMjg1NS0yLjY5NjI2OCA3LjM4NzcxNDItNi41NTcwMSA3LjM4NzcxNDItMy44MTY3NjggMC02LjY5NTgzNC0zLjE3NDQyODUtNi42OTU4MzQtNy4zODc3MTQyIDAtNC4yMTI4NTc0IDIuODc5MDY2LTcuMzg3NzE0MyA2LjY5NTgzNC03LjM4NzcxNDMgMy43OTg2NiAwIDYuNTU3MDEgMy4xMDYyODU3IDYuNTU3MDEgNy4zODc3MTQzem0tNS4yNjQ5MjMtMTMuMDE3ODU3MmMtMy4xNDM3NzggMC01LjcyMjM0OSAxLjIzMDg1Ny03Ljg0ODY2NyAzLjc1M3YtMi44Mzg4NTcxYzAtLjIyNDE0My0uMTgyNzk4LS40MDY3MTQ0LS40MDgyNzctLjQwNjcxNDRoLTUuNTgxMzcxYy0uMjI1NDc5IDAtLjQwNzg0Ni4xODI1NzE0LS40MDc4NDYuNDA2NzE0NHYzMS41NDM3MTQzYzAgLjIyNDE0MjYuMTgyMzY3LjQwNjcxNDEuNDA3ODQ2LjQwNjcxNDFoNS41ODEzNzFjLjIyNTQ3OSAwIC40MDgyNzctLjE4MjU3MTUuNDA4Mjc3LS40MDY3MTQxdi05Ljk1NjU3MTVjMi4xMjY3NSAyLjM3MjU3MTMgNC43MDU3NTEgMy41MzE0Mjg1IDcuODQ4NjY3IDMuNTMxNDI4NSA1Ljg0MTM0IDAgMTEuNzU0Njc4LTQuNDY5OTk5OSAxMS43NTQ2NzgtMTMuMDE0ODU3IDAtOC41NDY1NzE2LTUuOTEzMzM4LTEzLjAxNzg1NzItMTEuNzU0Njc4LTEzLjAxNzg1NzJ6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJtMTUyLjM0ODY0NiA0Ny41NzM1NzEzYy00LjAwMTI5IDAtNy4wMTc4ODYtMy4xOTU4NTctNy4wMTc4ODYtNy40MzMxNDI2IDAtNC4yNTQ4NTczIDIuOTEyMjYzLTcuMzQzMTQzIDYuOTI1NjI1LTcuMzQzMTQzIDQuMDI3MTU3IDAgNy4wNjQwMTYgMy4xOTU4NTcxIDcuMDY0MDE2IDcuNDM2MTQyOCAwIDQuMjU0NDI4Ni0yLjkzMjA5NSA3LjM0MDE0MjgtNi45NzE3NTUgNy4zNDAxNDI4em0wLTIwLjQ1MDk5OThjLTcuNTIyNzM1IDAtMTMuNDE2MjQyIDUuNzU4Mjg1Ni0xMy40MTYyNDIgMTMuMTEwODU3IDAgNy4yNzI0Mjg2IDUuODUyOTgxIDEyLjk3MDI4NTcgMTMuMzIzOTgxIDEyLjk3MDI4NTcgNy41NDk0NjUgMCAxMy40NjEwNzgtNS43Mzg5OTk5IDEzLjQ2MTA3OC0xMy4wNjMyODU1IDAtNy4yOTk4NTc0LTUuODcxMDg3LTEzLjAxNzg1NzItMTMuMzY4ODE3LTEzLjAxNzg1NzJ6IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48cGF0aCBkPSJtMTgxLjc4MjExOCAyNy42M2gtNi4xNDIyNjZ2LTYuMjQyNTcxNGMwLS4yMjQxNDI5LS4xODE5MzYtLjQwNjI4NTgtLjQwNzQxNi0uNDA2Mjg1OGgtNS41ODA5MzljLS4yMjU5MSAwLS40MDk1Ny4xODIxNDI5LS40MDk1Ny40MDYyODU4djYuMjQyNTcxNGgtMi42ODM3NjZjLS4yMjUwNDggMC0uNDA2NTUzLjE4MjU3MTQtLjQwNjU1My40MDY3MTQ0djQuNzY4NzE0M2MwIC4yMjM3MTQyLjE4MTUwNS40MDYyODU3LjQwNjU1My40MDYyODU3aDIuNjgzNzY2djEyLjMzOTQyODRjMCA0Ljk4NjQyODYgMi40OTY2NTYgNy41MTQ1NzE2IDcuNDIwNTU4IDcuNTE0NTcxNiAyLjAwMjE1NCAwIDMuNjYzMjg2LS40MTEwMDAyIDUuMjI4NzA4LTEuMjkzNDI4Ni4xMjcxODMtLjA3MDcxNDMuMjA2NTEtLjIwNy4yMDY1MS0uMzUxODU3M3YtNC41NDExNDI5YzAtLjE0MDE0MjgtLjA3MzcyMy0uMjcyMTQyNy0uMTk0MDA3LS4zNDU4NTcxLS4xMjE1NzgtLjA3NTg1NzItLjI3MjkwMy0uMDc5NzE0My0uMzk3NDk5LS4wMTg0Mjg0LTEuMDc1MjMxLjUzNzg1Ny0yLjExNDY3OC43ODU5OTk4LTMuMjc2NTY1Ljc4NTk5OTgtMS43OTA0NzEgMC0yLjU4OTc4LS44MDc4NTctMi41ODk3OC0yLjYxOTQyODR2LTExLjQ2OTg1NzFoNi4xNDIyNjZjLjIyNTQ4IDAgLjQwNjk4NC0uMTgyNTcxNS40MDY5ODQtLjQwNjI4NTd2LTQuNzY4NzE0M2MwLS4yMjQxNDMtLjE4MTUwNC0uNDA2NzE0NC0uNDA2OTg0LS40MDY3MTQ0Ii8+PHBhdGggZD0ibTIwMy4xODE5NyAyNy42NTQ0Mjg2di0uNzY2NzE0NGMwLTIuMjU1NTcxMy44NzAwMTQtMy4yNjE0Mjg1IDIuODIxMjk1LTMuMjYxNDI4NSAxLjE2MzYxMiAwIDIuMDk4Mjk1LjIyOTcxNDMgMy4xNDUwNzEuNTc2ODU3MS4xMjg5MDcuMDQwMjg1OC4yNjM0MTkuMDIwMTQyOS4zNjgxODMtLjA1NjU3MTQuMTA3NzgxLS4wNzY3MTQzLjE2ODU3LS4xOTk3MTQyLjE2ODU3LS4zM3YtNC42NzU3MTQyYzAtLjE3ODI4NTgtLjExNTU0Mi0uMzM2ODU3Mi0uMjg4NDIzLS4zODk1NzE1LTEuMTA1ODQxLS4zMjY1NzE0LTIuNTIwOC0uNjYyNTcxNC00LjYzOTM1OC0uNjYyNTcxNC01LjE1NTg0OCAwLTcuODgwNTcxIDIuODg2LTcuODgwNTcxIDguMzQzdjEuMTc0Mjg1OGgtMi42ODE2MWMtLjIyNTA0OCAwLS40MDk1NzEuMTgyNTcxNC0uNDA5NTcxLjQwNjI4NTd2NC43OTMxNDI5YzAgLjIyMzcxNDIuMTg0NTIzLjQwNjI4NTcuNDA5NTcxLjQwNjI4NTdoMi42ODE2MXYxOS4wMzI4NTY5YzAgLjIyNDE0My4xODE5MzYuNDA2Mjg1OC40MDY5ODQuNDA2Mjg1OGg1LjU4MTM3Yy4yMjU0OCAwIC40MDkxNC0uMTgyMTQyOC40MDkxNC0uNDA2Mjg1OHYtMTkuMDMyODU2OWg1LjIxMTQ2M2w3Ljk4MzE3OSAxOS4wMjc3MTQxYy0uOTA2MjI5IDEuOTk5Mjg1Ny0xLjc5NzM2OSAyLjM5NzAwMDEtMy4wMTQwMDkgMi4zOTcwMDAxLS45ODM0MDEgMC0yLjAxODk2OC0uMjkxODU3Mi0zLjA3NzgxNi0uODY3ODU3Mi0uMDk5NTktLjA1NDQyODYtLjIxNzI4OC0uMDYzNDI4Ni0uMzI1MDY5LS4wMzA0Mjg1LS4xMDY0ODkuMDM3NzE0Mi0uMTk2MTYzLjExNjE0MjctLjI0MTQzMi4yMTk0Mjg1bC0xLjg5MTc4NSA0LjEyNTg1NzJjLS4wOTAxMDUuMTk0OTk5OS0uMDEzMzY1LjQyMzg1Ny4xNzU0NjkuNTI1MDAwMSAxLjk3NDk5MiAxLjA2MzI4NTcgMy43NTgxMzQgMS41MTcxNDI4IDUuOTYxMTkzIDEuNTE3MTQyOCA0LjEyMTU3NCAwIDYuMzk5NjQ5LTEuOTA4ODU3MyA4LjQwODI3LTcuMDQzMTQyOGw5LjY4MzU0NC0yNC44NzQyODU5Yy4wNDgyODYtLjEyNTE0MjcuMDM0MDU5LS4yNjYxNDI5LS4wNDMxMTMtLjM3NzU3MTQtLjA3Njc0LS4xMDk3MTQzLS4yMDA0NzQtLjE3NjE0MjgtLjMzNTg0OC0uMTc2MTQyOGgtNS44MTA3M2MtLjE3Mzc0NCAwLS4zMjk4MTIuMTA5NzE0My0uMzg2NzIuMjcyNTcxNGwtNS45NTI1NzEgMTYuOTAxNTcxMy02LjUxOTkzNC0xNi45MTI3MTQxYy0uMDU5NDk1LS4xNTc3MTQ0LS4yMTE2ODMtLjI2MTQyODYtLjM4MTExNi0uMjYxNDI4NnoiLz48cGF0aCBkPSJtMTkwLjc3NTg1OSAyNy42M2gtNS41ODE4MDJjLS4yMjU0NzkgMC0uNDA4NzA4LjE4MjU3MTQtLjQwODcwOC40MDY3MTQ0djI0LjIwNzg1NjljMCAuMjI0MTQzLjE4MzIyOS40MDYyODU4LjQwODcwOC40MDYyODU4aDUuNTgxODAyYy4yMjUwNDggMCAuNDA4NzA4LS4xODIxNDI4LjQwODcwOC0uNDA2Mjg1OHYtMjQuMjA3ODU2OWMwLS4yMjQxNDMtLjE4MzY2LS40MDY3MTQ0LS40MDg3MDgtLjQwNjcxNDQiLz48cGF0aCBkPSJtMTg4LjAxMzE5NyAxNi42MDc1NzE0Yy0yLjIxMDgyIDAtNC4wMDU2MDEgMS43Nzk4NTcyLTQuMDA1NjAxIDMuOTc4IDAgMi4xOTkgMS43OTQ3ODEgMy45ODA1NzE1IDQuMDA1NjAxIDMuOTgwNTcxNSAyLjIxMDM4OCAwIDQuMDAzMDE0LTEuNzgxNTcxNSA0LjAwMzAxNC0zLjk4MDU3MTUgMC0yLjE5ODE0MjgtMS43OTI2MjYtMy45NzgtNC4wMDMwMTQtMy45NzgiLz48cGF0aCBkPSJtMjM3LjE0MDk4MiAzMC4wMzgxNDI5aC0xLjAyMjYzM3YxLjI5NjQyODZoMS4wMjI2MzNjLjUxMDQ1NCAwIC44MTUyNjEtLjI0ODE0MjguODE1MjYxLS42NDg4NTczIDAtLjQyMTcxNDMtLjMwNDgwNy0uNjQ3NTcxMy0uODE1MjYxLS42NDc1NzEzem0uNjYzMDczIDEuODQ5Mjg1OCAxLjExMTAxNSAxLjU0NjI4NTZoLS45MzY4MzlsLTEuMDAwMjE1LTEuNDE4MTQyOWgtLjg1OTY2N3YxLjQxODE0MjloLS43ODQyMnYtNC4wOTg0Mjg1aDEuODM4NzU3Yy45NTc1MzMgMCAxLjU4Nzg0LjQ4Njg1NzEgMS41ODc4NCAxLjMwNzE0MjggMCAuNjcxOTk5OS0uMzkwNjAxIDEuMDgyNTcxNC0uOTU2NjcxIDEuMjQ1MDAwMXptLS44NzA4NzYtMy45MTYyODU4Yy0yLjAxMjA3IDAtMy41MzQ4MTEgMS41OS0zLjUzNDgxMSAzLjUzNyAwIDEuOTQ1NzE0MiAxLjUxMTk2MyAzLjUxNDcxNDIgMy41MTQxMTcgMy41MTQ3MTQyIDIuMDExNjM4IDAgMy41MzU2NzItMS41ODkxNDI4IDMuNTM1NjcyLTMuNTM3IDAtMS45NDYxNDI3LTEuNTEyODI0LTMuNTE0NzE0Mi0zLjUxNDk3OC0zLjUxNDcxNDJ6bS0uMDIwNjk0IDcuNDQyMTQyN2MtMi4yMDkwOTUgMC0zLjkyNzk5OC0xLjc2MzU3MTMtMy45Mjc5OTgtMy45MDUxNDI3IDAtMi4xNDIgMS43NDEzMjItMy45MjUyODU3IDMuOTQ4NjkyLTMuOTI1Mjg1NyAyLjIwODY2NCAwIDMuOTI3OTk4IDEuNzYzMTQyNyAzLjkyNzk5OCAzLjkwMjk5OTkgMCAyLjE0MTU3MTQtMS43NDAwMjkgMy45Mjc0Mjg1LTMuOTQ4NjkyIDMuOTI3NDI4NXoiIGZpbGwtcnVsZT0ibm9uemVybyIvPjwvZz48L3N2Zz4=">
       </pf-vstack>
     </div>
-  </div>
-</div>
-<div class="background-color-nbn0i3 background-color-dMv2U1">
-  <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
-      <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Free videos
-      </h3><a class="margin-left-83zzS1 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/free">See all →</a>
-    </div>
-    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
-      <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><a class="border-bottom-9YkDE1 border-bottom-a7wnM display-ix08W2 line-height-FBkWQ3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY" href="/episodes/ep1-type-safe-html-in-swift"><img class="width-C8uWv max-width-C8uWv" loading="lazy" src alt></a>
-        <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-          <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
-            <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-              <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Video 1 • Jun 20, 2017
-                </div>
-                <div>
-                  <h4 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/episodes/ep1-type-safe-html-in-swift">Type-Safe HTML in Swift</a>
-                  </h4>
-                </div>
-              </pf-vstack>
-              <pf-markdown class="color-OpZD03 color-5uscm3 display-ix08W2">
-                <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                  <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">As server-side Swift becomes more popular and widely adopted, it will be important to re-examine some of the past “best-practices” of web frameworks to see how Swift’s type system can improve upon them.
-                  </p>
-                </pf-vstack>
-              </pf-markdown>
-            </pf-vstack>
-          </pf-vstack>
-          <pf-hstack class="color-Vt0a43 color-Cn4Oi1 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
-            <pf-hstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M8.49996 11.8333C9.23329 11.8333 9.83329 11.2333 9.83329 10.5C9.83329 9.76666 9.23329 9.16666 8.49996 9.16666C7.76663 9.16666 7.16663 9.76666 7.16663 10.5C7.16663 11.2333 7.76663 11.8333 8.49996 11.8333ZM12.5 5.83332H11.8333V4.49999C11.8333 2.65999 10.34 1.16666 8.49996 1.16666C6.65996 1.16666 5.16663 2.65999 5.16663 4.49999H6.43329C6.43329 3.35999 7.35996 2.43332 8.49996 2.43332C9.63996 2.43332 10.5666 3.35999 10.5666 4.49999V5.83332H4.49996C3.76663 5.83332 3.16663 6.43332 3.16663 7.16666V13.8333C3.16663 14.5667 3.76663 15.1667 4.49996 15.1667H12.5C13.2333 15.1667 13.8333 14.5667 13.8333 13.8333V7.16666C13.8333 6.43332 13.2333 5.83332 12.5 5.83332ZM12.5 13.8333H4.49996V7.16666H12.5V13.8333Z" fill="currentColor"/>
-</svg>Free
-            </pf-hstack>
-            <pf-hstack class="flex-grow-tzL8I2 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M7.99331 1.83334C4.31331 1.83334 1.33331 4.82001 1.33331 8.50001C1.33331 12.18 4.31331 15.1667 7.99331 15.1667C11.68 15.1667 14.6666 12.18 14.6666 8.50001C14.6666 4.82001 11.68 1.83334 7.99331 1.83334ZM7.99998 13.8333C5.05331 13.8333 2.66665 11.4467 2.66665 8.50001C2.66665 5.55334 5.05331 3.16668 7.99998 3.16668C10.9466 3.16668 13.3333 5.55334 13.3333 8.50001C13.3333 11.4467 10.9466 13.8333 7.99998 13.8333ZM7.33331 5.16668H8.33331V8.66668L11.3333 10.4467L10.8333 11.2667L7.33331 9.16668V5.16668Z" fill="currentColor"/>
-</svg>23 min
-            </pf-hstack>
-          </pf-hstack>
-        </pf-vstack>
-      </pf-vstack>
-    </pf-vgrid><a class="flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-VOQy11 align-items-CdPBO2 display-Nvbu41 margin-right-83zzS1 font-size-yLOVS3 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/free">See all →</a>
   </div>
 </div>
 <div class="background-JItPm4 background-e7ncj background-color-nbn0i3 background-color-dMv2U1">
@@ -716,7 +674,7 @@ and techniques we use every day at Point&#8209;Free.
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
-      <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">All videos
+      <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Videos
       </h3><a class="margin-left-83zzS1 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">See all →</a>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
@@ -1128,7 +1086,7 @@ and techniques we use every day at Point&#8209;Free.
       <p class="margin-mBI0f2 max-width-3zifi color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2">Our free plan includes 1 members only episode of your choice, access to 1 free episodes with transcripts and code samples, and weekly updates from our newsletter.
       </p>
     </div>
-    <div class="text-align-GE99b width-C8uWv"><a class="margin-top-H64QF2 display-qrAHi font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/signup">Sign up for free →</a>
+    <div class="text-align-GE99b width-C8uWv"><a class="margin-top-H64QF2 display-qrAHi font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/auth?kind=signUp">Sign up for free →</a>
     </div><a class="text-align-GE99b font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/pricing">View plans and pricing</a>
   </div>
 </div>
@@ -1137,7 +1095,7 @@ and techniques we use every day at Point&#8209;Free.
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
       <h4 class="font-size-yLOVS3 font-size-dR5Tt4 line-height-B6FIc2 margin-bottom-IGAQh1 font-size-Xin5E2"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-rNSFg1 color-QZ6Yg3 color-nbn0i3" href="/">Point-Free</a>
       </h4>
-      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A video series exploring advanced topics in the Swift programming language. Hosted by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
+      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 color-nbn0i3">A hub for advanced Swift programming. Brought to you by <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/mbrandonw">Brandon&nbsp;Williams</a> and <a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-H59Xg3 color-tgLLb3 color-ov8tN1" href="https://www.twitter.com/stephencelis">Stephen&nbsp;Celis</a>.
       </p>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-83zzS1 display-mqllb2 grid-template-columns-hE9y01 row-gap-83zzS1">
@@ -1145,7 +1103,7 @@ and techniques we use every day at Point&#8209;Free.
         <h5 class="font-size-xlo1p4 font-size-Fb6s54 letter-spacing-fGWfX2 line-height-9Xzre text-transform-RqT8X1 color-nbn0i3">Content
         </h5>
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/pricing">Pricing</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/pricing">Become a member</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/the-way">The Point-Free Way</a>
           </li>

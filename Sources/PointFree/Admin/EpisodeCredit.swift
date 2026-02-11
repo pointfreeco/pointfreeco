@@ -8,7 +8,7 @@ import Views
 
 func showEpisodeCreditsMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseEnded, Data> {
   conn.writeStatus(.ok)
-    .respondV2(layoutData: SimplePageLayoutData(title: "Episode credits")) {
+    .respondV2(layoutData: SimplePageLayoutData(title: "Video credits")) {
       EpisodeCreditView()
     }
 }
@@ -26,7 +26,7 @@ func redeemEpisodeCreditMiddleware(
   }
   guard let episode = fetchEpisode(bySequence: episodeSequence) else {
     return conn.redirect(to: .admin(.episodeCredits(.show))) {
-      $0.flash(.error, "Could not find that episode.")
+      $0.flash(.error, "Could not find that video.")
     }
   }
   do {
