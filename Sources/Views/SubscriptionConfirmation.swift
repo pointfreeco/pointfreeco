@@ -245,7 +245,7 @@ private func header(
       attributes: [.class([moduleRowClass])],
       .gridColumn(
         sizes: [.mobile: 12],
-        .h1(attributes: [.class([Class.pf.type.responsiveTitle2])], "Subscribe")
+        .h1(attributes: [.class([Class.pf.type.responsiveTitle2])], "Become a member")
       ),
       header
     ),

@@ -19,7 +19,7 @@ public struct EpisodeCard: HTML {
       VStack {
         VStack(spacing: 0.5) {
           div {
-            "Episode \(episode.sequence.rawValue) • \(episode.publishedAt.monthDayYear())"
+            "Video \(episode.sequence.rawValue) • \(episode.publishedAt.monthDayYear())"
           }
           .color(.gray650.dark(.gray400))
           .fontStyle(.body(.small))
@@ -195,7 +195,7 @@ public struct CollectionCard: HTML {
       .inlineStyle("text-align", "center")
     } footer: {
       CardFooter {
-        Label("\(collection.numberOfEpisodes) episodes", icon: .play)
+        Label("\(collection.numberOfEpisodes) videos", icon: .play)
 
         Label(collection.length.formatted(), icon: .clock)
       }

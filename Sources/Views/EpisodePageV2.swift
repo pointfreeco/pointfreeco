@@ -109,9 +109,9 @@ public struct EpisodeDetail: HTML {
     VideoHeader(
       title: episode.fullTitle,
       subtitle: """
-        Episode #\(episode.sequence) \
+        Video #\(episode.sequence) \
         • \(headerDateFormatter.string(from: episode.publishedAt)) \
-        • \(isSubscriberOnly ? "Members Only" : "Free Episode")
+        • \(isSubscriberOnly ? "Members Only" : "Free Video")
         """,
       blurb: episode.blurb,
       videoID: permission.isViewable
@@ -313,11 +313,11 @@ struct UnlockEpisodeCallout: HTML {
       HTMLEmpty()
     case .loggedOut(isEpisodeSubscriberOnly: true):
       Callout(
-        "Unlock This Episode",
+        "Unlock This Video",
         icon: SVG(base64: circleLockSvgBase64, description: "Locked")
       ) {
         """
-        Our Free plan includes 1 members only episode of your choice, plus weekly updates from \
+        Our Free plan includes 1 members only video of your choice, plus weekly updates from \
         our newsletter.
         """
       } callToAction: {
@@ -334,18 +334,18 @@ struct UnlockEpisodeCallout: HTML {
     case .loggedIn(let user, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: true)))
     where user.episodeCreditCount > 0:
       Callout(
-        "Unlock This Episode",
+        "Unlock This Video",
         icon: SVG(base64: circleLockSvgBase64, description: "Locked")
       ) {
         """
-        You have \(user.episodeCreditCount) episode \
+        You have \(user.episodeCreditCount) video \
         credit\(user.episodeCreditCount == 1 ? "" : "s"). \
-        Spend \(user.episodeCreditCount == 1 ? "it" : "one") to watch this episode for free?
+        Spend \(user.episodeCreditCount == 1 ? "it" : "one") to watch this video for free?
         """
       } callToAction: {
         form {
           Button(tag: input, color: .purple)
-            .attribute("value", "Redeem this episode")
+            .attribute("value", "Redeem this video")
             .attribute("type", "submit")
         }
         .attribute(
@@ -356,11 +356,8 @@ struct UnlockEpisodeCallout: HTML {
       }
 
     case .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: true))):
-      Callout(
-        "Subscribe to Point-Free",
-        icon: SVG(base64: lockSvgBase64, description: "Locked")
-      ) {
-        "Access this episode, plus all past and future episodes, when you become a subscriber."
+      Callout("Join Point-Free", icon: SVG(base64: lockSvgBase64, description: "Locked")) {
+        "Access this video, plus all past and future videos, and the Point-Free Way, when you become a member."
       } callToAction: {
         Button(color: .purple) {
           "See plans and pricing"
@@ -368,18 +365,18 @@ struct UnlockEpisodeCallout: HTML {
         .attribute("href", siteRouter.path(for: .pricingLanding))
         if currentUser == nil {
           Paragraph {
-            "Already a subscriber? "
+            "Already a member? "
             Link("Log in", href: siteRouter.loginPath(redirect: currentRoute))
           }
         }
       } bar: {
         SVG(base64: lockSvgBase64, description: "Locked")
-        "This episode is for subscribers only."
+        "This video is for members only."
       }
 
     case .loggedIn(_, .isNotSubscriber(.hasUsedCredit)):
-      Callout("Subscribe to Point-Free") {
-        "Access all past and future episodes when you become a subscriber."
+      Callout("Join Point-Free") {
+        "Access all past and future videos, and the Point-Free Way, when you become a member."
       } callToAction: {
         Button(color: .purple) {
           "See plans and pricing"
@@ -387,14 +384,14 @@ struct UnlockEpisodeCallout: HTML {
         .attribute("href", siteRouter.path(for: .pricingLanding))
       } bar: {
         SVG(base64: unlockSvgBase64, description: "Free")
-        "You unlocked this episode with a credit."
+        "You unlocked this video with a credit."
       }
 
     case .loggedOut(isEpisodeSubscriberOnly: false),
       .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: false))):
 
       Callout("Join Point-Free") {
-        "Access all past and future episodes when you become a member."
+        "Access all past and future videos, and the Point-Free Way, when you become a member."
       } callToAction: {
         Button(color: .purple) {
           "See plans and pricing"
@@ -408,7 +405,7 @@ struct UnlockEpisodeCallout: HTML {
         }
       } bar: {
         SVG(base64: unlockSvgBase64, description: "Free")
-        "This episode is free for everyone."
+        "This video is free for everyone."
       }
     }
   }
@@ -630,11 +627,11 @@ struct TableOfContentsSection: HTML {
           switch sequence {
           case .previous:
             Header(6) {
-              "Previous episode"
+              "Previous video"
             }
           case .next:
             Header(6) {
-              "Next episode"
+              "Next video"
             }
           case nil:
             HTMLEmpty()

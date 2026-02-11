@@ -99,7 +99,7 @@ public func simplePageLayout<A>(
             attributes: [
               .href(siteRouter.url(for: .feed(.episodes))),
               .rel(.alternate),
-              .title("Point-Free Episodes"),
+              .title("Point-Free Videos"),
               .type(.application(.init(rawValue: "atom+xml"))),
             ]
           ),

@@ -281,9 +281,9 @@ struct PricingPlan {
       lane: nil,
       features: [
         "Weekly newsletter access",
-        "\(freeEpisodeCount.rawValue) free episodes with transcripts",
-        "1 free credit to redeem any members only episode",
-        "Download all episode code samples",
+        "\(freeEpisodeCount.rawValue) free videos with transcripts",
+        "1 free credit to redeem any members only video",
+        "Download all video code samples",
       ],
       title: "Free"
     )
@@ -301,7 +301,7 @@ struct PricingPlan {
       cost: Cost(title: "per&nbsp;month, billed&nbsp;annually", value: "$14"),
       lane: .personal,
       features: [
-        "All \(allEpisodeCount.rawValue) episodes with transcripts",
+        "All \(allEpisodeCount.rawValue) videos with transcripts",
         "Over \(episodeHourCount.rawValue) hours of video",
         "Watch past [livestreams](\(siteRouter.path(for: .live(.current)))) at 1080p",
         "Private RSS feed for offline viewing in podcast apps",
@@ -439,7 +439,7 @@ struct WhatToExpectItem {
     imageSrc: "https://d3rccdn33rt8ze.cloudfront.net/pricing/download-playgrounds.jpg",
     title: "Playground downloads",
     description: """
-      Download a fully-functioning Swift playground from the episode so you can experiment with \
+      Download a fully-functioning Swift playground from the video so you can experiment with \
       the concepts discussed.
       """
   )

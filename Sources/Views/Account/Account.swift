@@ -80,7 +80,7 @@ private func subscribeCallout(_ subscriberState: SubscriberState) -> Node {
       ],
       "become"
     ),
-    " a subscriber today!"
+    " a member today!"
   )
 }
 
@@ -103,7 +103,7 @@ private func episodeCreditsView(credits: [EpisodeCredit], allEpisodes: [Episode]
           ]
         )
       ],
-      "Chosen episodes"
+      "Chosen videos"
     ),
 
     .ul(
@@ -874,7 +874,7 @@ private func mainAction(
         .class([Class.pf.components.button(color: .purple, size: .small)]),
         .href(siteRouter.path(for: .pricingLanding)),
       ],
-      "Resubscribe"
+      "Rejoin"
     )
   } else {
     switch subscription.plan.interval {

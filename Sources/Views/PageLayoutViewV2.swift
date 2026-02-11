@@ -57,7 +57,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     link()
       .href(siteRouter.url(for: .feed(.episodes)))
       .attribute("rel", "alternate")
-      .attribute("title", "Point-Free Episodes")
+      .attribute("title", "Point-Free Videos")
       .attribute("type", "application/atom+xml")
     link()
       .href(siteRouter.url(for: .blog(.feed)))
@@ -276,7 +276,7 @@ struct MobileNavItems: HTML {
           "The Point-Free Way"
         }
         NavListItem(route: .episodes(.list(.all))) {
-          "Episodes"
+          "Videos"
         }
         NavListItem(route: .collections()) {
           "Collections"
@@ -552,7 +552,7 @@ struct CenteredNavItems: HTML {
       HTMLGroup {
         if subscriberState.isActiveSubscriber {
           NavListItem(route: .episodes(.list(.all))) {
-            "Episodes"
+            "Videos"
           }
         }
         NavListItem(route: .collections()) {
@@ -568,7 +568,7 @@ struct CenteredNavItems: HTML {
         }
         MoreMenu {
           if currentUser == nil {
-            MenuItem(title: "Episodes", destination: .episodes(.list(.all)))
+            MenuItem(title: "Videos", destination: .episodes(.list(.all)))
           }
           MenuItem(title: "Free clips", destination: .clips(.clips))
           MenuItem(title: "Blog", destination: .blog(.index))

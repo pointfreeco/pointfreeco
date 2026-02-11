@@ -16,12 +16,12 @@ extension Gifts.Plan {
     @Dependency(\.siteRouter) var siteRouter
 
     let base: [Feature] = [
-      .init(name: "All \(episodeStats.allEpisodeCount) episodes with transcripts"),
+      .init(name: "All \(episodeStats.allEpisodeCount) videos with transcripts"),
       .init(
         name: "Access to all past [livestreams](\(siteRouter.path(for: .live(.current)))) at 1080p"
       ),
       .init(name: "Private RSS feed for offline viewing"),
-      .init(name: "Download all episode code samples"),
+      .init(name: "Download all video code samples"),
     ]
 
     switch self {

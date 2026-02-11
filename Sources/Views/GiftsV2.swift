@@ -128,7 +128,7 @@ extension Gifts.Plan {
     @Dependency(\.siteRouter) var siteRouter
     let stats = EpisodesStats()
 
-    li { "All \(stats.allEpisodes) episodes with transcripts" }
+    li { "All \(stats.allEpisodes) videos with transcripts" }
     li {
       "Access to \""
       Link("The Point-Free Way", destination: .theWay)
@@ -143,6 +143,6 @@ extension Gifts.Plan {
       " at 1080p"
     }
     li { "Private RSS feed for offline viewing" }
-    li { "Download all episode code samples" }
+    li { "Download all video code samples" }
   }
 }
