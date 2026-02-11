@@ -91,7 +91,7 @@ public struct LoginSignUpView: HTML {
 
 private struct MembersOnlyBadge: HTML {
   var body: some HTML {
-    tag("members-only") {
+    tag("members only") {
       "MEMBERS ONLY"
     }
     .inlineStyle("font-size", "0.65rem")
