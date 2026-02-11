@@ -111,7 +111,7 @@ public struct EpisodeDetail: HTML {
       subtitle: """
         Episode #\(episode.sequence) \
         • \(headerDateFormatter.string(from: episode.publishedAt)) \
-        • \(isSubscriberOnly ? "Subscriber-Only" : "Free Episode")
+        • \(isSubscriberOnly ? "Members Only" : "Free Episode")
         """,
       blurb: episode.blurb,
       videoID: permission.isViewable
@@ -317,7 +317,7 @@ struct UnlockEpisodeCallout: HTML {
         icon: SVG(base64: circleLockSvgBase64, description: "Locked")
       ) {
         """
-        Our Free plan includes 1 subscriber-only episode of your choice, plus weekly updates from \
+        Our Free plan includes 1 members only episode of your choice, plus weekly updates from \
         our newsletter.
         """
       } callToAction: {
@@ -393,8 +393,8 @@ struct UnlockEpisodeCallout: HTML {
     case .loggedOut(isEpisodeSubscriberOnly: false),
       .loggedIn(_, .isNotSubscriber(.hasNotUsedCredit(isEpisodeSubscriberOnly: false))):
 
-      Callout("Subscribe to Point-Free") {
-        "Access all past and future episodes when you become a subscriber."
+      Callout("Join Point-Free") {
+        "Access all past and future episodes when you become a member."
       } callToAction: {
         Button(color: .purple) {
           "See plans and pricing"
@@ -402,7 +402,7 @@ struct UnlockEpisodeCallout: HTML {
         .attribute("href", siteRouter.path(for: .pricingLanding))
         if currentUser == nil {
           Paragraph {
-            "Already a subscriber? "
+            "Already a member? "
             Link("Log in", href: siteRouter.loginPath(redirect: currentRoute))
           }
         }

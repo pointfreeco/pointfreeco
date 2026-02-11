@@ -16,7 +16,7 @@ community!
 ## Livestreams
 
 We are extremely excited to announce our first ever livestream. Everyone can access this
-livestream, whether you are a [subscriber](/pricing) or not, and it will begin at 9am PST
+livestream, whether you are a [member](/pricing) or not, and it will begin at 9am PST
 (5pm GMT) this Wednesday, February 1st:
 
 @Button(/live) {
@@ -32,7 +32,7 @@ at the bottom of chat.
 
 We have plans for a lot more livestreams in the future, especially in tandem with new
 library releases and new episodic releases. Some will be free for all, and some will be
-for subscribers only, so consider [subscribing today](/pricing). 😁
+for members only, so consider [becoming a member today](/pricing). 😁
 
 ## Point-Free community slack
 
@@ -69,7 +69,7 @@ like this to the site soon.
 
 ## To 5 more years!
 
-We are eternally grateful to all of our subscribers, who make it possible for us to create
+We are eternally grateful to all of our members, who make it possible for us to create
 our episodes and work on open source projects. We wouldn't be here without you. Here's
 to five more years! 🥳
 

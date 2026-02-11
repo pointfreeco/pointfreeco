@@ -137,14 +137,14 @@ private func requireSubscriptionAndOwner<A>(
       require1 >>> pure,
       or: redirect(
         to: .pricingLanding,
-        headersMiddleware: flash(.error, "Doesn’t look like you’re subscribed yet!")
+        headersMiddleware: flash(.error, "Doesn’t look like you’re a member yet!")
       )
     )
     <<< filter(
       isSubscriptionOwner,
       or: redirect(
         to: .account(),
-        headersMiddleware: flash(.error, "Only subscription owners can make subscription changes.")
+        headersMiddleware: flash(.error, "Only team owners can make subscription changes.")
       )
     )
     <| middleware

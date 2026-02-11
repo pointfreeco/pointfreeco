@@ -38,7 +38,7 @@ public struct PricingLanding: HTML {
         PricingLane("Free", annualPricePerMonth: 0) {
           li { "Weekly newsletter access" }
           li { "\(stats.freeEpisodes) free episodes with transcripts" }
-          li { "1 free credit to redeem any subscriber-only episode" }
+          li { "1 free credit to redeem any members only episode" }
           li { "Download all episode code samples" }
         } callToAction: {
           if currentUser == nil {

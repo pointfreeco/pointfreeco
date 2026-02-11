@@ -952,10 +952,10 @@ private func total(
               Class.pf.colors.link.white,
             ])
           ],
-          "Subscribe"
+          "Become a member"
         )
         : .gitHubLink(
-          text: "Log in to Subscribe",
+          text: "Log in to become a member",
           type: .black,
           href: siteRouter.loginPath(
             redirect: coupon.map { SiteRoute.discounts(code: $0.id, nil) }
@@ -1169,7 +1169,7 @@ private func checkoutJS(
           if (elementsMatching(formElement)) {
             formElement.disabled = !isEnabled
             if (formElement.tagName == "BUTTON") {
-              formElement.textContent = isEnabled ? "Subscribe" : "Subscribing…"
+              formElement.textContent = isEnabled ? "Join Point-Free" : "Joining…"
             }
           }
         }

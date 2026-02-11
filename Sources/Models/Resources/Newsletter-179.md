@@ -52,7 +52,7 @@ It may seem too good to be true, but our library accomplishes all of this, and m
 
 ## How can I get access to the private alpha?
 
-Currently we are opening the alpha only to [Point-Free subscribers](/pricing). This will give us
+Currently we are opening the alpha only to [Point-Free members](/pricing). This will give us
 a smaller audience to get feedback from an audience that is already familiar with our work. If you
 are interested in participating in the alpha preview, 
 [**contact us**](mailto:support@pointfree.co) from the email that is associated with your 

@@ -1,13 +1,13 @@
 We’re happy to announce an end-of-year sale by offering 🎁[25% off the first
-year][eoy-discount]🎁 of your subscription!
+year][eoy-discount]🎁 of your membership!
 
 [eoy-discount]: /discounts/2023-eoy 
 
 @Button(/discounts/2023-eoy) {
-  Subscribe today!
+  Become a member today!
 }
 
-Once subscribed you'll get instant access to 
+When you're a Point-Free member you'll get instant access to 
 all 262 episodes (and growing) of Point-Free, including popular collections that have grown 
 this past year:
 
@@ -42,5 +42,5 @@ only remain valid through the end of the year! 🥳
 [eoy-2023]: /blog/posts/126-2023-year-in-review
 
 @Button(/discounts/2023-eoy) {
-  Subscribe today!
+  Become a member today!
 }

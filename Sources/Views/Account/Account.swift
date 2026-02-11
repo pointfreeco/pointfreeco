@@ -53,7 +53,7 @@ private func creditsView(accountData: AccountData, allEpisodes: [Episode]) -> No
           "Episode Credits"
         ),
         .p(
-          "Episode credits allow you to see subscriber-only episodes before commiting to a full ",
+          "Episode credits allow you to see members only episodes before commiting to a full ",
           .text(
             "subscription. You currently have \(pluralizedCredits(count: accountData.currentUser.episodeCreditCount)) "
           ),

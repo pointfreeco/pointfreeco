@@ -76,7 +76,7 @@ func joinMiddleware(
     await fireAndForget {
       try await sendEmail(
         to: [email],
-        subject: "Confirm your email to join the Point-Free team subscription.",
+        subject: "Confirm your email to join the Point-Free team.",
         content: inj2(confirmationEmail(email: email, code: code, currentUser: currentUser))
       )
     }
@@ -92,7 +92,7 @@ func joinMiddleware(
       return conn.redirect(to: .home) {
         $0.flash(
           .error,
-          "Cannot join team as it is inactive. Contact the subscription owner to re-activate."
+          "Cannot join team as it is inactive. Contact the owner to re-activate."
         )
       }
     }
@@ -103,7 +103,7 @@ func joinMiddleware(
       .respond(view: joinTeamLanding(code:)) { _ in
         SimplePageLayoutData(
           data: code,
-          title: "Join team subscription"
+          title: "Join team"
         )
       }
   }
@@ -133,7 +133,7 @@ private func add<A>(
     return conn.redirect(to: .teamInviteCode(.landing(code: code))) {
       $0.flash(
         .error,
-        "Cannot join team as it is inactive. Contact the subscription owner to re-activate."
+        "Cannot join team as it is inactive. Contact the owner to reactivate."
       )
     }
   }
@@ -145,7 +145,7 @@ private func add<A>(
     return conn.redirect(to: .account()) {
       $0.flash(
         .warning,
-        "You cannot join this team as you already have an active subscription."
+        "You cannot join this team as you already have an active membership."
       )
     }
   }
@@ -164,7 +164,7 @@ private func add<A>(
     stripeSubscription = try await stripe.fetchSubscription(subscription.stripeSubscriptionId)
   } catch {
     return conn.redirect(to: .teamInviteCode(.landing(code: code))) {
-      $0.flash(.error, "Could not find subscription. Try again or contact support@pointfree.co.")
+      $0.flash(.error, "Could not find membership. Try again or contact support@pointfree.co.")
     }
   }
 
@@ -217,7 +217,7 @@ private func add<A>(
     _ = try? await sendEmail(
       to: [owner.email],
       subject: """
-        \(currentUser.displayName) has joined your Point-Free subscription
+        \(currentUser.displayName) has joined your Point-Free membership
         """,
       content: inj2(
         ownerNewTeammateJoinedEmail(
@@ -236,7 +236,7 @@ private func add<A>(
     _ = try? await sendEmail(
       to: [currentUser.email],
       subject: """
-        You have joined \(ownerName)'s Point-Free subscription
+        You have joined \(ownerName)'s Point-Free membership
         """,
       content: inj2(newTeammateEmail(currentUser: currentUser, owner: owner, code: code))
     )
@@ -321,7 +321,7 @@ func confirmationEmail(
     user: currentUser,
     newsletter: nil,
     title: "Confirm your email",
-    preheader: "Confirm your email to join the Point-Free team subscription.",
+    preheader: "Confirm your email to join the Point-Free team.",
     template: .default(includeHeaderImage: false),
     hideFooter: true
   ) {
@@ -395,7 +395,7 @@ func newTeammateEmail(
             .markdownBlock(
               attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
               """
-              You have joined \(ownerName)'s [Point-Free](http://pointfree.co) subscription and now
+              You have joined \(ownerName)'s [Point-Free](http://pointfree.co) team and now
               have access to all videos and transcripts. Be sure to check out our
               [collections](\(siteRouter.url(for: .collections()))) to find a series that
               interests you!
@@ -439,7 +439,7 @@ func ownerNewTeammateJoinedEmail(
             .markdownBlock(
               attributes: [.class([Class.pf.type.body.regular])],
               """
-              Note that a new seat was added to your subscription to accommodate
+              Note that a new seat was added to your team to accommodate
               **\(currentUser.displayName)**, and your credit card has been charged a prorated
               amount based on your billing cycle. You now have **\(newPricing.quantity) seats**
               and your new billing rate is
@@ -460,7 +460,7 @@ func ownerNewTeammateJoinedEmail(
     newsletter: nil,
     title: "New teammate added",
     preheader: """
-      A colleague has joined your Point-Free subscription.
+      A colleague has joined your Point-Free membership.
       """,
     template: .default(includeHeaderImage: false),
     hideFooter: true
@@ -480,7 +480,7 @@ func ownerNewTeammateJoinedEmail(
               .markdownBlock(
                 attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
                 """
-                Your colleague \(colleagueName) has joined your Point-Free subscription. They
+                Your colleague \(colleagueName) has joined your Point-Free membership. They
                 now have full access to all videos and transcripts of every Point-Free video.
                 You can manage your team by visiting your [account
                 page](\(siteRouter.url(for: .account()))).

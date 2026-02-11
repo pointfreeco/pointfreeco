@@ -1,5 +1,5 @@
 It's Black Friday and we are running [a rare holiday sale](/discounts/black-friday-2024): save 30%
-when you subscribe to Point-Free today!
+when you join Point-Free today!
 
 You will get instant access to hours of content covering advanced Swift topics, including:
 
@@ -17,7 +17,7 @@ And so much more!
 
 Point-Free offers some of the most advanced and original Swift content out there and will help you
 bring your expertise of the Swift language to the next level.
-[Subscribe today](/discounts/black-friday-2024) to take advantage of our **30% off** Black Friday
+[Become a member today](/discounts/black-friday-2024) to take advantage of our **30% off** Black Friday
 sale!
 
 @Button(/discounts/black-friday-2024) {

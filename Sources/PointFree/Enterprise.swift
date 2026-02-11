@@ -195,7 +195,7 @@ private func validateMembership<Z>(
           to: .account(),
           headersMiddleware: flash(
             .notice,
-            "🙌 You're already enrolled in \(account.companyName)'s subscription!"
+            "🙌 You're already enrolled in \(account.companyName)'s team!"
           )
         )
     } else {
@@ -386,8 +386,8 @@ private func redirectCurrentSubscribers<Z>(
             headersMiddleware: flash(
               .warning,
               """
-              You already have an active subscription. If you want to accept this team invite you need to
-              cancel your current subscription.
+              You already have an active membership. If you want to accept this team invite you need to
+              cancel your current membership.
               """
             )
           )

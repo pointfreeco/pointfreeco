@@ -136,7 +136,7 @@ private struct EpisodeCredits: HTML {
         .inlineStyle("line-height", "0")
 
         span {
-          "You have \(creditsLeft) to redeem on any subscriber-only episode of your choice."
+          "You have \(creditsLeft) to redeem on any members only episode of your choice."
         }
         .grow()
         .inlineStyle("padding", "0 1rem")

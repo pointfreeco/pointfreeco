@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0122_BlackFriday = Self(
     author: .pointfree,
     blurb: """
-      We're offering a 30% discount for the first year of a new Point-Free subscription! Get \
+      We're offering a 30% discount for the first year of a new Point-Free membership! Get \
       instant access to all past 259 episodes instantly, as well as access to everything we have \
       planned for 2024.
       """,

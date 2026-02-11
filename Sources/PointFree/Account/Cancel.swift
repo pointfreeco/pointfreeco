@@ -33,7 +33,7 @@ private func cancelResponse(
     guard stripeSubscription.isRenewing
     else {
       return conn.redirect(to: .account()) {
-        $0.flash(.error, "Your subscription is already canceled!")
+        $0.flash(.error, "Your membership is already canceled!")
       }
     }
     _ =
@@ -46,11 +46,11 @@ private func cancelResponse(
       try await sendCancelEmail(to: user, for: stripeSubscription)
     }
     return conn.redirect(to: .account()) {
-      $0.flash(.notice, "We’ve canceled your subscription.")
+      $0.flash(.notice, "We’ve canceled your membership.")
     }
   } catch {
     return conn.redirect(to: .account()) {
-      $0.flash(.error, "We couldn’t cancel your subscription at this time.")
+      $0.flash(.error, "We couldn’t cancel your membership at this time.")
     }
   }
 }
@@ -65,7 +65,7 @@ private func reactivateResponse(
     guard stripeSubscription.isCanceling
     else {
       return conn.redirect(to: .account()) {
-        $0.flash(.error, "Your subscription can’t be reactivated!")
+        $0.flash(.error, "Your membership can’t be reactivated!")
       }
     }
     guard let item = stripeSubscription.items.data.first
@@ -79,15 +79,15 @@ private func reactivateResponse(
     )
     Task { try await sendReactivateEmail(to: user, for: stripeSubscription) }
     return conn.redirect(to: .account()) {
-      $0.flash(.notice, "We’ve reactivated your subscription.")
+      $0.flash(.notice, "We’ve reactivated your membership.")
     }
   } catch {
     return conn.redirect(to: .account()) {
       $0.flash(
         .error,
         """
-        We were unable to reactivate your subscription at this time. Please contact \
-        <support@pointfree.co> or subscribe from our pricing page.
+        We were unable to reactivate your membership at this time. Please contact \
+        <support@pointfree.co> or join from our pricing page.
         """
       )
     }
@@ -109,7 +109,7 @@ private func requireUserAndStripeSubscription(
     guard let subscription = try? await database.fetchSubscription(ownerID: user.id)
     else {
       return conn.redirect(to: .account()) {
-        $0.flash(.error, "Doesn’t look like you’re subscribed yet!")
+        $0.flash(.error, "Doesn’t look like you’re a member yet!")
       }
     }
 
@@ -128,7 +128,7 @@ private func requireUserAndStripeSubscription(
 }
 
 let genericSubscriptionError = """
-  We were unable to locate all of your subscription information. Please contact \
+  We were unable to locate all of your membership information. Please contact \
   <support@pointfree.co> and let us know how we can help!
   """
 
@@ -140,7 +140,7 @@ private func sendCancelEmail(
 ) async throws -> SendEmailResponse {
   try await sendEmail(
     to: [owner.email],
-    subject: "Your subscription has been canceled",
+    subject: "Your membership has been canceled",
     content: inj2(cancelEmailView((owner, subscription)))
   )
 }
@@ -150,10 +150,10 @@ let cancelEmailView =
     SimpleEmailLayoutData(
       user: nil,
       newsletter: nil,
-      title: "Your subscription has been canceled",
+      title: "Your membership has been canceled",
       preheader: """
-        Your \(subscription.plan.description) subscription has been canceled and will remain active through
-        \(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)).
+        Your \(subscription.plan.description) membership has been canceled and will remain active \
+        through \(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)).
         """,
       template: .default(),
       data: (owner, subscription)
@@ -172,13 +172,13 @@ private func cancelEmailBodyView(user: User, subscription: Stripe.Subscription) 
           attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
           .h3(
             attributes: [.class([Class.pf.type.responsiveTitle3])],
-            "Subscription canceled"
+            "Membership canceled"
           ),
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             "Your ",
             .strong(.text(subscription.plan.description)),
-            " subscription has been canceled and will remain active through ",
+            " membership has been canceled and will remain active through ",
             .text(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)),
             ". If you change your mind before then, you can reactivate from ",
             .a(attributes: [.href(siteRouter.url(for: .account()))], "your account page"),
@@ -196,7 +196,7 @@ private func sendReactivateEmail(
 ) async throws -> SendEmailResponse {
   try await sendEmail(
     to: [owner.email],
-    subject: "Your subscription has been reactivated",
+    subject: "Your membership has been reactivated",
     content: inj2(reactivateEmailView((owner, subscription)))
   )
 }
@@ -206,9 +206,9 @@ let reactivateEmailView =
     SimpleEmailLayoutData(
       user: nil,
       newsletter: nil,
-      title: "Your subscription has been reactivated",
+      title: "Your membership has been reactivated",
       preheader:
-        "Your \(subscription.plan.description) subscription has been reactivated and will renew on \(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)).",
+        "Your \(subscription.plan.description) membership has been reactivated and will renew on \(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)).",
       template: .default(),
       data: (owner, subscription)
     )
@@ -224,13 +224,13 @@ private func reactivateEmailBodyView(user: User, subscription: Stripe.Subscripti
           attributes: [.class([Class.padding([.mobile: [.all: 2]])])],
           .h3(
             attributes: [.class([Class.pf.type.responsiveTitle3])],
-            "Subscription reactivated"
+            "Membership reactivated"
           ),
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             "Thanks for sticking with us! Your ",
             .strong(.text(subscription.plan.description)),
-            " subscription has been reactivated and will renew on ",
+            " membership has been reactivated and will renew on ",
             .text(monthDayYearFormatter.string(from: subscription.currentPeriodEnd)),
             "."
           )

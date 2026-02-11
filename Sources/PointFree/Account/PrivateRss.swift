@@ -107,7 +107,7 @@ private var notFoundError: String {
 
 private var deactivatedError: String {
   """
-  ‼️ Your subscription has been deactivated. Please contact us at support@pointfree.co to regain \
+  ‼️ Your membership has been deactivated. Please contact us at support@pointfree.co to regain \
   access to Point-Free.
   """
 }
@@ -115,9 +115,9 @@ private var deactivatedError: String {
 private var inactiveError: String {
   @Dependency(\.siteRouter) var siteRouter
   return """
-    ‼️ The URL for this feed has been turned off by Point-Free as the associated subscription is no \
-    longer active. If you would like reactive this feed you can resubscribe to Point-Free on your \
-    account page at \(siteRouter.url(for: .account())). If you think this is an error, please \
+    ‼️ The URL for this feed has been turned off by Point-Free as the associated team is no \
+    longer active. If you would like reactivate this feed you can become a member at \
+    \(siteRouter.url(for: .pricingLanding)). If you think this is an error, please \
     contact support@pointfree.co.
     """
 }

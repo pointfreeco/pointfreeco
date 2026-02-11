@@ -7,7 +7,7 @@ extension BlogPost {
       Our live stream will be starting soon. Tune in now to watch us discuss our popular Sharing \
       library, and we will release a brand new open source project, live! We will also give a \
       sneak peek at our upcoming series, take questions from our viewers, and give away 7 \
-      yearly subscriptions to one of our viewers.
+      yearly memberships to one of our viewers.
       """,
     coverImage: nil,
     hidden: .noUntil(yearMonthDayFormatter.date(from: "2025-02-16")!),

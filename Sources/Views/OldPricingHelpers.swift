@@ -282,7 +282,7 @@ struct PricingPlan {
       features: [
         "Weekly newsletter access",
         "\(freeEpisodeCount.rawValue) free episodes with transcripts",
-        "1 free credit to redeem any subscriber-only episode",
+        "1 free credit to redeem any members only episode",
         "Download all episode code samples",
       ],
       title: "Free"
@@ -375,7 +375,7 @@ extension Array where Element == Faq {
       Faq(
         question: "Do you offer referral discounts?",
         answer: """
-          We do! If you know someone that has a Point-Free subscription, ask them to share their \
+          We do! If you know someone that has a Point-Free membership, ask them to share their \
           referral link (available on their account page) with you. If you subscribe with that \
           link you will both receive a month free!
           """
@@ -399,7 +399,7 @@ extension Array where Element == Faq {
           """
       ),
       Faq(
-        question: "Are livestreams subscriber-only?",
+        question: "Are livestreams members only?",
         answer: """
           Anyone can watch our livestreams _live_, but to watch a past livestream you will need to \
           be a subscriber. Past livestreams are available in 1080p, have chapter markers, \

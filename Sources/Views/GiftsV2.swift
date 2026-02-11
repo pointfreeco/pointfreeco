@@ -70,7 +70,7 @@ extension Array where Element == Faq {
 
 extension Faq {
   static let existingSubscriberRedeemGift = Self(
-    question: "Can I accept a gift if I already have a Point-Free subscription?",
+    question: "Can I accept a gift if I already have a Point-Free membership?",
     answer: """
       Yes! If you receive a gift and are currently a subscriber we will apply the credit to your \
       account and the amount will be applied to future invoices.

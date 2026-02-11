@@ -1,8 +1,8 @@
 It's the end of the year again, and we’re feeling nostalgic 😊. We’re really proud of everything we
 produced for 2021, so join us for a quick review of some of our favorite highlights.
 
-We are also offering [25% off](/discounts/2021-eoy) the first year for first-time subscribers. If
-you’ve been on the fence on whether or not to subscribe, now is the time!
+We are also offering [25% off](/discounts/2021-eoy) the first year for first-time members. If
+you’ve been on the fence on whether or not to join Point-Free, now is the time!
 
 # Highlights
 
@@ -100,7 +100,7 @@ the tools for driving alerts, modal sheets, and navigation links from state.
 
 # 🎉 2022 🎉
 
-We're thankful to all of our subscribers for supporting us and helping us create this content and
+We're thankful to all of our members for supporting us and helping us create this content and
 these libraries. We could not do it without you.
 
 Next year we have even more planned, including a deep dive into Swift's new concurrency tools,
@@ -109,7 +109,7 @@ as well as all new parsing episodes (including result builders, reversible parsi
 more!
 
 To celebrate the end of the year we are also offering [25% off](/discounts/2021-eoy) the first year
-for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now is the
+for first-time members. If you’ve been on the fence on whether or not to join, now is the
 time!
 
 See you in 2022!

@@ -1,7 +1,7 @@
 We’re happy to announce a [rare Point-Free sale](/discounts/cyber-monday-2020) this Cyber Monday by
-offering 30% off the first year of your subscription!
+offering 30% off the first year of your membership!
 
-Once subscribed you'll get instant access to all 127 episodes (and growing) of Point-Free, including
+Once a member you'll get instant access to all 127 episodes (and growing) of Point-Free, including
 popular collections that have grown this past year:
 
 - [Composable Architecture](/collections/composable-architecture): We started developing the

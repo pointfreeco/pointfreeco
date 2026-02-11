@@ -1,12 +1,12 @@
 It's the end of the year again, and we’re feeling nostalgic 😊. We’re really proud of everything we 
 produced for 2024, so join us for a quick review of some of our favorite highlights.
-We are also offering [25% off][eoy-discount] the first year for first-time subscribers. If you’ve 
-been on the fence on whether or not to subscribe, now is the time!
+We are also offering [25% off][eoy-discount] the first year for first-time members. If you’ve 
+been on the fence on whether or not to join Point-Free, now is the time!
 
 [eoy-discount]: /discounts/eoy-2024
 
 @Button(/discounts/eoy-2024) {
-  Subscribe today!
+  Become a member today!
 }
 
 [eoy-discount]: /discounts/eoy-2024
@@ -241,15 +241,15 @@ library excels at!
 
 # See you in 2025! 🥳
 
-We're thankful to all of our subscribers for [supporting us](/pricing) and helping us create our 
+We're thankful to all of our members for [supporting us](/pricing) and helping us create our 
 episodes and support our open source libraries. We could not do it without you!
 
 To celebrate the end of the year we are also offering [25% off][eoy-discount] the first year
-for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now
+for first-time members. If you’ve been on the fence on whether or not to join Point-Free, now
 is the time!
 
 [eoy-discount]: /discounts/eoy-2024
 
 @Button(/discounts/eoy-2024) {
-  Subscribe today!
+  Become a member today!
 }

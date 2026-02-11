@@ -15,7 +15,7 @@ think it's some of our most exciting stuff yet!
 * We will answer as many questions from our viewers as humanly possible. You can already add your
 question to the [Q&A](/live) (enter a user name and then tap "Ask") and upvote any other questions
 that you are interested in.
-* And finally, during the livestream we will **give away a yearly subscription** to 7 of our viewers
+* And finally, during the livestream we will **give away a yearly memberships** to 7 of our viewers
 to celebrate 7 years of Point-Free! 🎉
 
 You're not going to want to miss this!

@@ -89,8 +89,8 @@ private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
 
   let blurb =
     ep.subscriberOnly
-    ? "This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber today!"
-    : "This episode is free for everyone, made possible by our subscribers. Consider becoming a subscriber today!"
+    ? "This episode is for members only. To access it, and all past and future episodes, become a member today!"
+    : "This episode is free for everyone, made possible by our members. Consider becoming a member today!"
 
   let watchText =
     ep.subscriberOnly
@@ -106,7 +106,7 @@ private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
           .href(siteRouter.url(for: .pricingLanding)),
           .class([Class.pf.components.button(color: .purple)]),
         ],
-        "Subscribe to Point-Free!"
+        "Join Point-Free!"
       ),
       .a(
         attributes: [

@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0010_studentDiscounts = Self(
     author: .brandon,
     blurb: """
-      Get 50% off your Point-Free subscription with proof of enrollment at a university or coding \
+      Get 50% off your Point-Free membership with proof of enrollment at a university or coding \
       school.
       """,
     coverImage: "https://d3rccdn33rt8ze.cloudfront.net/social-assets/twitter-card-large.png",

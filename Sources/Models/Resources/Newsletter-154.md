@@ -1,13 +1,13 @@
 Point-Free offers some of the most advanced and original Swift content out there. It will help you
 bring your expertise of the Swift language to the next level, and starting today we're having a 
 [Black Friday sale](/discounts/black-friday-2024), which gives you **30% off** the first year
-of your subscription.
+of your membership.
 
 @Button(/discounts/black-friday-2024) {
-  Subscribe today!
+  Become a member today!
 }
 
-Once subscribed you'll get instant access to all [304 episodes][pf] of original Point-Free content. 
+When you're a Point-Free member you'll get instant access to all [304 episodes][pf] of original Point-Free content. 
 This includes popular [collections][collections] that were created or expanded this year, as well as 
 all of the material we have planned for 2025! Here are just a few of our additions from this year:
 
@@ -97,14 +97,14 @@ the file system, or any storage system of your choice.
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture
 [sharing-docs]: https://pointfreeco.github.io/swift-composable-architecture/main/documentation/composablearchitecture/sharingstate
 
-## Subscribe today!
+## Become a member today!
 
 This only scratches the surface of what we covered in 2024, and we have plenty of exciting topics 
 planned for 2025, including a new series we are calling "Modern Persistence" showing how to approach
 persistence in apps with modern techniques, as well as a new fundamental change to the Composable 
 Architecture that will unlock capabilities currently impossible, and a lot more.
 
-Be sure to [subscribe today][black-friday-sale] to get access to all of this and more. The
+Be sure to [become a member today][black-friday-sale] to get access to all of this and more. The
 offer is valid for only a few days, so you better hurry!
 
 [observation-collection]: /collections/swiftui/observation
@@ -124,5 +124,5 @@ offer is valid for only a few days, so you better hurry!
 [collections]: /collections
 
 @Button(/discounts/black-friday-2024) {
-  Subscribe today!
+  Become a member today!
 }

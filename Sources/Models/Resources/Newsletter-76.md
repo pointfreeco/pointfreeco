@@ -1,5 +1,5 @@
 The year's biggest Apple event is here, and to celebrate we are offering a 25% discount off the
-first year for first-time subscribers. Click [here](/discounts/wwdc-2022) to redeem the coupon now.
+first year for first-time members. Click [here](/discounts/wwdc-2022) to redeem the coupon now.
 The offer will only remain valid until June 12th.
 
 This is the perfect time to get full access to our videos:

@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0128_EOYSale = Self(
     author: .pointfree,
     blurb: """
-      Get 25% off for the first year of subscription with our end-of-year sale. Get access to all \
+      Get 25% off for the first year of membership with our end-of-year sale. Get access to all \
       past episodes, as well as everything we have planned for next year!
       """,
     coverImage: nil,

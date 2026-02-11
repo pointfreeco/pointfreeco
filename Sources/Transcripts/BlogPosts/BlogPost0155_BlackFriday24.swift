@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0155_BlackFriday2024 = Self(
     author: .pointfree,
     blurb: """
-      This week we are running a rare holiday sale! Save 30% when you subscribe to Point-Free today!
+      This week we are running a rare holiday sale! Save 30% when you join Point-Free today!
       You will get instant access to hours of content covering advanced Swift topics, including
       concurrency, generics, SwiftUI, domain modeling, testing, and so much more!
       """,

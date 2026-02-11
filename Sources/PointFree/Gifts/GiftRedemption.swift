@@ -54,7 +54,7 @@ private func redeemGift(
           to: .gifts(.redeem(gift.id)),
           headersMiddleware: flash(
             .error,
-            "You are already part of an active team subscription."
+            "You are already part of an active team."
           )
         )
     }

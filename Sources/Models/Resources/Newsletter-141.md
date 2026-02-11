@@ -16,7 +16,7 @@ App architecture is filled with trade-offs, and it is important to think deeply 
   * [Can large value types cause stack overflows?](#Can-large-value-types-cause-stack-overflows)
 * [Don't TCA features have excessive “ping-ponging”?](#Dont-TCA-features-have-excessive-ping-ponging)
 * [If features are built with value types, doesn't that mean they cannot share state since value types are copied?](#If-features-are-built-with-value-types-doesnt-that-mean-they-cannot-share-state-since-value-types-are-copied)
-* [Do I need a Point-Free subscription to learn or use TCA?](#Do-I-need-a-Point-Free-subscription-to-learn-or-use-TCA)
+* [Do I need a Point-Free membership to learn or use TCA?](#Do-I-need-a-Point-Free-subscription-to-learn-or-use-TCA)
 * [Do I need to be familiar with "functional programming" to use TCA?](#Do-I-need-to-be-familiar-with-functional-programming-to-use-TCA)
 
 <a name="Should-TCA-be-used-for-every-kind-of-app"></a>
@@ -207,9 +207,9 @@ This *used* to be true, but in [version 1.10][migration-1.10-article] of the lib
 Further, one of the dangers of introducing shared state to an app, any app, is that it can make it difficult to understand since it introduces reference semantics into your domain. But we put in extra work to make sure that shared state remains 100% testable, and even _exhaustively_ testable, which makes it far easier to keep track of how shared state is mutated in your features.
 
 <a name="Do-I-need-a-Point-Free-subscription-to-learn-or-use-TCA"></a>
-### Do I need a Point-Free subscription to learn or use TCA?
+### Do I need a Point-Free membership to learn or use TCA?
 
-While we do release a lot of material on our website that is subscriber-only, we also release a _ton_ of material completely for free. The [documentation][tca-docs] for TCA contains numerous articles and tutorials, including a [massive tutorial][sync-ups-tutorial] building a complex app from scratch that demonstrates domain modeling, navigation, dependencies, testing, and more.
+While we do release a lot of material on our website that is members only, we also release a _ton_ of material completely for free. The [documentation][tca-docs] for TCA contains numerous articles and tutorials, including a [massive tutorial][sync-ups-tutorial] building a complex app from scratch that demonstrates domain modeling, navigation, dependencies, testing, and more.
 
 <a name="Do-I-need-to-be-familiar-with-functional-programming-to-use-TCA"></a>
 ### Do I need to be familiar with "functional programming" to use TCA?

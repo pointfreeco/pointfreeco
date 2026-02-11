@@ -635,7 +635,7 @@ class GiftTests: TestCase {
         302 Found
         Location: /gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
         Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"You are already part of an active team subscription.","priority":"error"},"userId":"11111111-1111-1111-1111-111111111111"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        Set-Cookie: pf_session={"flash":{"message":"You are already part of an active team.","priority":"error"},"userId":"11111111-1111-1111-1111-111111111111"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
         X-Content-Type-Options: nosniff
         X-Download-Options: noopen
         X-Frame-Options: SAMEORIGIN

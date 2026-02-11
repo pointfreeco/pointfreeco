@@ -44,10 +44,10 @@ func giftCreateMiddleware(
     var paymentIntent = try await stripe.createPaymentIntent(
       amount: plan.amount,
       currency: .usd,
-      description: "Gift subscription: \(plan.monthCount) months",
+      description: "Gift membership: \(plan.monthCount) months",
       paymentMethodID: giftFormData.paymentMethodID,
       receiptEmail: giftFormData.fromEmail.rawValue,
-      statementDescriptorSuffix: "Gift Subscription"
+      statementDescriptorSuffix: "Gift Membership"
     )
     paymentIntent = try await stripe.confirmPaymentIntent(id: paymentIntent.id)
     _ = try await database.createGift(

@@ -1,6 +1,6 @@
-We do this only a few times a year: we're having a [rare, one-day Point-Free sale](/discounts/cyber-monday-2021) this Cyber Monday by offering 30% off the first year of your subscription!
+We do this only a few times a year: we're having a [rare, one-day Point-Free sale](/discounts/cyber-monday-2021) this Cyber Monday by offering 30% off the first year of your membership!
 
-Once subscribed you'll get instant access to all 169 episodes (96 hours of video and growing!) of Point-Free content, including popular collections that were created or expanded this past year:
+When you're a Point-Free member you'll get instant access to all 169 episodes (96 hours of video and growing!) of Point-Free content, including popular collections that were created or expanded this past year:
 
 ### [SwiftUI Navigation](/collections/swiftui/navigation)
 
@@ -22,7 +22,7 @@ We devoted a series of episodes to exploring some of the cool features announced
 
 Animation is one of the most impressive features of SwiftUI, but the APIs can be quite mysterious. Our series of episodes shows how each API can be used and builds a tool for "animating" Combine schedulers, which has amazing applications for vanilla SwiftUI _and_ [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) applications.
 
-## Subscribe today!
+## Become a member today!
 
 We have plenty of exciting topics planned for 2022, including all new episodes on parsing (improving ergonomics, "reversible" parsing, applications to iOS routing, and _more_), navigation in the [Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture), deep explorations into Swift concurrency, and more!
 

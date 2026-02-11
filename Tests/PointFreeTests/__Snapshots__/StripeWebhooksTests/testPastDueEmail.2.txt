@@ -2,7 +2,7 @@
 
 ### Payment failed
 
-Your most recent subscription payment was declined. This could be due to a change in your card
+Your most recent membership payment was declined. This could be due to a change in your card
 number, your card expiring, cancellation of your credit card, or the card issuer not recognizing
 the payment and therefore taking action to prevent it.
 

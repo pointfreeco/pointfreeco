@@ -16,10 +16,10 @@ public func giftsIndexMiddleware(
     .respondV2(
       layoutData: SimplePageLayoutData(
         description: """
-          Give the gift of Point-Free! Purchase a 3, 6, or 12 month subscription for a friend, \
+          Give the gift of Point-Free! Purchase a 3, 6, or 12 month membership for a friend, \
           colleague or loved one.
           """,
-        title: "🎁 Point-Free Gift Subscription"
+        title: "🎁 Point-Free Gift Memberhsip"
       )
     ) {
       GiftsV2()

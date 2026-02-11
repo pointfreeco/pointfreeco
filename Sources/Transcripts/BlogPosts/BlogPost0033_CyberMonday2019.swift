@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0033_CyberMondaySale = Self(
     author: .pointfree,
     blurb: """
-      For 24 hours only, we're offering personal Point-Free subscriptions for 30% off the first \
+      For 24 hours only, we're offering personal Point-Free memberships for 30% off the first \
       year!
       """,
     coverImage: nil,

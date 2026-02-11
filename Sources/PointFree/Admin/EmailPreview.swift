@@ -69,8 +69,8 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
     return newBlogPostEmail(
       (
         blogPosts().last!,
-        "This is a test announcement for subscribers.",
-        "This is a test announcement for non-subscribers.",
+        "This is a test announcement for members.",
+        "This is a test announcement for non-members.",
         blob
       )
     )
@@ -80,8 +80,8 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
     return newEpisodeEmail(
       (
         episodes().last!,
-        "This is a test announcement for subscribers.",
-        "This is a test announcement for non-subscribers.",
+        "This is a test announcement for members.",
+        "This is a test announcement for non-members.",
         blob
       )
     )

@@ -23,5 +23,5 @@ up a bit and make it more digestible for viewing in a non-live manner, including
   Watch recorded livestream
 }
 
-Future livestreams will be for subscribers-only, so if you found this video interesting, be sure to
-[subscribe today](/pricing)!
+Future livestreams will be for members only, so if you found this video interesting, be sure to
+[become a member today](/pricing)!

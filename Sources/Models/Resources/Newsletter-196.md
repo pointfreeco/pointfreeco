@@ -1,13 +1,13 @@
 It's the end of another year and we’re feeling nostalgic 😊. Join us for a quick review of 2025 and
 a preview of 2026. In the spirit of the holidays, we are also offering [25% off][eoy-discount] the
-first year of Point-Free for first-time subscribers and [gift givers]. If you've been on the fence,
-now is the perfect time to subscribe!
+first year of Point-Free for first-time members and [gift givers]. If you've been on the fence,
+now is the perfect time to become a member!
 
 [eoy-discount]: /discounts/eoy-2025
 [gift givers]: /gifts
 
 @Button(/discounts/eoy-2025) {
-  Subscribe today!
+  Become a member today!
 }
 
 # Highlights
@@ -218,7 +218,7 @@ it needs to optimally work with our libaries, _and_ to embrace the patterns we t
 episodes. Everything from domain modeling and controlled dependencies, to embracing value types
 and making code easier to preview and test.
 
-These documents will be free to all subscribers in early 2026.
+These documents will be free to all members in early 2026.
 
 ## The Composable Architecture 2
 
@@ -363,15 +363,15 @@ of reusing Swift on various platforms.
 
 # See you next year
 
-We're thankful to all of our subscribers for [supporting us](/pricing) and helping us create our 
+We're thankful to all of our members for [supporting us](/pricing) and helping us create our 
 episodes and support our open source libraries. We could not do it without you!
 
 To celebrate the end of the year we are also offering [25% off][eoy-discount] the first year
-for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now
+for first-time members. If you’ve been on the fence on whether or not to join Point-Free, now
 is the time!
 
 [eoy-discount]: /discounts/eoy-2025
 
 @Button(/discounts/eoy-2025) {
-  Subscribe today!
+  Become a member today!
 }

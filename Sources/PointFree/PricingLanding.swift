@@ -18,10 +18,11 @@ public func pricingMiddleware(_ conn: Conn<StatusLineOpen, Void>) -> Conn<Respon
     .respondV2(
       layoutData: SimplePageLayoutData(
         description: """
-          Get full access to all \(stats.allEpisodes) videos on Point-Free. Choose from a variety \
-          of plans, including personal, team, and enterprise subscriptions.
+          Get full access to the Point-Free Way AI skill documents, as well as \
+          \(stats.allEpisodes) videos covering advanced Swift topics. Choose from a variety of \
+          plans, including personal, team, and enterprise memberships.
           """,
-        title: "Point-Free: Subscribe Today"
+        title: "Join Point-Free Today"
       )
     ) {
       PricingLanding()
