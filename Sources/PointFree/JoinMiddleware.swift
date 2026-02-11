@@ -217,7 +217,7 @@ private func add<A>(
     _ = try? await sendEmail(
       to: [owner.email],
       subject: """
-        \(currentUser.displayName) has joined your Point-Free membership
+        \(currentUser.displayName) has joined your Point-Free team
         """,
       content: inj2(
         ownerNewTeammateJoinedEmail(
@@ -236,7 +236,7 @@ private func add<A>(
     _ = try? await sendEmail(
       to: [currentUser.email],
       subject: """
-        You have joined \(ownerName)'s Point-Free membership
+        You have joined \(ownerName)'s Point-Free team
         """,
       content: inj2(newTeammateEmail(currentUser: currentUser, owner: owner, code: code))
     )

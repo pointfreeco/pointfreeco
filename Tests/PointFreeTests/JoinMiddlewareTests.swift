@@ -329,8 +329,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       expectNoDifference(
         Set(sentEmails.value.map(\.subject)),
         [
-          "[testing] Blob has joined your Point-Free subscription",
-          "[testing] You have joined Blob Sr's Point-Free subscription",
+          "[testing] Blob has joined your Point-Free team",
+          "[testing] You have joined Blob Sr's Point-Free team",
           "[testing] Team invite link used",
         ]
       )
@@ -394,7 +394,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       XCTAssertEqual(sentEmails.value.flatMap(\.to), [currentUser.email])
       expectNoDifference(
         sentEmails.value.map(\.subject),
-        ["[testing] Confirm your email to join the Point-Free team subscription."]
+        ["[testing] Confirm your email to join the Point-Free team."]
       )
       let teammateIDs = try await self.database.fetchSubscriptionTeammatesByOwnerId(owner.id).map(
         \.id)
@@ -673,8 +673,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       expectNoDifference(
         Set(sentEmails.value.map(\.subject)),
         [
-          "[testing] Blob has joined your Point-Free subscription",
-          "[testing] You have joined pointfree.co's Point-Free subscription",
+          "[testing] Blob has joined your Point-Free team",
+          "[testing] You have joined pointfree.co's Point-Free team",
           "[testing] Team invite link used",
         ]
       )
@@ -750,8 +750,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       expectNoDifference(
         Set(sentEmails.value.map(\.subject)),
         [
-          "[testing] Blob has joined your Point-Free subscription",
-          "[testing] You have joined pointfree.co's Point-Free subscription",
+          "[testing] Blob has joined your Point-Free team",
+          "[testing] You have joined pointfree.co's Point-Free team",
           "[testing] Team invite link used",
         ]
       )
@@ -824,8 +824,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       expectNoDifference(
         Set(sentEmails.value.map(\.subject)),
         [
-          "[testing] Blob has joined your Point-Free subscription",
-          "[testing] You have joined pointfree.co's Point-Free subscription",
+          "[testing] Blob has joined your Point-Free team",
+          "[testing] You have joined pointfree.co's Point-Free team",
           "[testing] Team invite link used",
         ]
       )
