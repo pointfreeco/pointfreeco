@@ -68,15 +68,6 @@ public indirect enum SiteRoute: Equatable {
       case signUp
       case slack
     }
-
-    @available(*, deprecated)
-    public static func login(redirect: String?) -> Self {
-      .authLanding(kind: .login, redirect: redirect)
-    }
-    @available(*, deprecated)
-    public static func signUp(redirect: String?) -> Self {
-      .authLanding(kind: .signUp, redirect: redirect)
-    }
   }
 
   @CasePathable

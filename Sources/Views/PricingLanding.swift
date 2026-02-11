@@ -47,7 +47,7 @@ public struct PricingLanding: HTML {
             }
             .attribute(
               "href",
-              siteRouter.path(for: .auth(.signUp(redirect: siteRouter.url(for: currentRoute))))
+              siteRouter.path(for: .auth(.authLanding(kind: .signUp, redirect: siteRouter.url(for: currentRoute))))
             )
           } else if subscriberState.isNonSubscriber {
             Button(color: .purple, style: .outline) {

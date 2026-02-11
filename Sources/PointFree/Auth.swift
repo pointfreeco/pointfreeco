@@ -177,7 +177,7 @@ private func gitHubCallbackResponse(
   }
   guard let code
   else {
-    return conn.redirect(to: .auth(.login(redirect: nil))) {
+    return conn.redirect(to: .auth(.authLanding(kind: .login))) {
       $0.flash(.warning, "GitHub code wasn't found :(")
     }
   }
