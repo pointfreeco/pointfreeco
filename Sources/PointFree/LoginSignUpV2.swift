@@ -8,10 +8,11 @@ import Views
 
 func loginSignUpMiddleware(
   redirect: String?,
-  type: LoginSignUpView.LoginSignUpType,
+  kind: SiteRoute.Auth.Kind?,
   _ conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.currentUser) var currentUser
+  let kind = kind ?? .signUp
 
   guard currentUser == nil
   else {
@@ -29,18 +30,20 @@ func loginSignUpMiddleware(
       layoutData: SimplePageLayoutData(
         description: "Point-Free: A video series exploring advanced programming topics in Swift.",
         title: {
-          switch type {
+          switch kind {
           case .login:
             "Log into Point-Free"
           case .signUp:
             "Sign up for Point-Free"
+          case .slack:
+            "Sign up to access community Slack"
           }
         }()
       )
     ) {
       LoginSignUpView(
         redirect: redirect,
-        type: type
+        kind: kind
       )
     }
 }

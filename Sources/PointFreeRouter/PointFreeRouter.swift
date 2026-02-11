@@ -34,8 +34,7 @@ public struct PointFreeRouter: ParserPrinter {
   public func loginPath(redirect: SiteRoute? = nil) -> String {
     guard
       let redirect,
-      !redirect.is(\.auth.login),
-      !redirect.is(\.auth.signUp)
+      !redirect.is(\.auth.authLanding)
     else {
       return self.path(for: .auth(.login(redirect: nil)))
     }
@@ -45,8 +44,7 @@ public struct PointFreeRouter: ParserPrinter {
   public func signUpPath(redirect: SiteRoute? = nil) -> String {
     guard
       let redirect,
-      !redirect.is(\.auth.login),
-      !redirect.is(\.auth.signUp)
+      !redirect.is(\.auth.authLanding)
     else {
       return self.path(for: .auth(.signUp(redirect: nil)))
     }
