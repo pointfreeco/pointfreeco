@@ -9,7 +9,7 @@
 
  <http://localhost:8080/episodes/ep2-proof-in-functions>
 
-This episode is 23 minutes long.
+This video is 23 minutes long.
 
 Watch now! <http://localhost:8080/episodes/ep2-proof-in-functions>
 

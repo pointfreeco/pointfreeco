@@ -2,7 +2,7 @@ GET http://localhost:8080/episodes
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 69389
+Content-Length: 69353
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -14,7 +14,7 @@ X-XSS-Protection: 1; mode=block
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Point-Free: All episodes
+    <title>Point-Free: All videos
     </title>
     <meta charset="UTF-8">
     <meta name="theme-color" content="#121212">
@@ -87,11 +87,11 @@ body, html {
     <link rel="icon" sizes="16x16" type="image/png" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png">
     <link rel="manifest" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
     <link rel="mask-icon" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
-    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
+    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Videos" type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
-    <meta name="title" content="Point-Free: All episodes">
-    <meta property="og:title" content="Point-Free: All episodes">
-    <meta name="twitter:title" content="Point-Free: All episodes">
+    <meta name="title" content="Point-Free: All videos">
+    <meta property="og:title" content="Point-Free: All videos">
+    <meta name="twitter:title" content="Point-Free: All videos">
     <meta name="description" content="Point-Free: A video series exploring advanced programming topics in Swift.">
     <meta property="og:description" content="Point-Free: A video series exploring advanced programming topics in Swift.">
     <meta name="twitter:description" content="Point-Free: A video series exploring advanced programming topics in Swift.">
@@ -381,7 +381,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </li>
       <li class="padding-left-dR5Tt4 display-mFpu24 padding-left-dzKEp position-Pjz1G2 opacity-mJTmO2 pointer-events-7T0L22 transform-v3Gb72 visibility-ZTlvG1"><button class="color-Vt0a43 appearance-Wl0y44 background-JyKaz4 border-4sVnF2 border-radius-btBsa3 cursor-xmR5l display-MH46v1 font-size-zZ9yy3 font-weight-SywJI1 letter-spacing-B7Alk3 transition-6t4cq1 background-color-6OEwN1 border-color-TaUzd2" type="button">•••</button>
         <ul class="background-1tnR2 border-gjzas2 border-radius-rrfjb1 box-shadow-QuMln left-85P192 min-width-cW9sI opacity-FBkWQ3 padding-8jCYd1 pointer-events-Wl0y44 position-X8qzJ top-C8uWv transform-sbXOd4 transition-zUm2k visibility-PhNC81 z-index-7AUj1 padding-left-E4tBw4 list-style-type-Wl0y44">
-          <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/episodes"><span>Episodes</span></a>
+          <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/episodes"><span>Videos</span></a>
           </li>
           <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/clips"><span>Free clips</span></a>
           </li>
@@ -411,7 +411,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
         </pf-hstack></a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/episodes">
-        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Episodes
+        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Videos
         </pf-hstack></a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">
@@ -444,9 +444,9 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 <pf-vstack class="box-sizing-otfSh background-RMpfJ3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
   <pf-hstack class="box-sizing-otfSh flex-basis-C8uWv max-width-P6HnV width-C8uWv margin-gEzmi padding-jNK411 padding-jFt024 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
     <div class="flex-grow-tzL8I2">
-      <h2 class="color-nbn0i3 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">Episodes
+      <h2 class="color-nbn0i3 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">Videos
       </h2>
-      <p class="color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2">Watch some for free or explore all 4 episodes.
+      <p class="color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2">Watch some for free or explore all 4 videos.
       </p>
     </div>
     <div class="color-c5ixr2">
@@ -456,7 +456,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <div class="padding-bottom-Xin5E2 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-cQlZY2 align-items-CdPBO2">
-      <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Free episodes
+      <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">Free videos
       </h3><a class="margin-left-83zzS1 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/free">See all →</a>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
@@ -465,7 +465,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
             <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
               <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Episode 2 • Feb 5, 2018
+                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Video 2 • Feb 5, 2018
                 </div>
                 <div>
                   <h4 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/episodes/ep2-side-effects">Side Effects</a>
@@ -497,7 +497,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
             <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
               <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Episode 0 • Jan 29, 2018
+                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Video 0 • Jan 29, 2018
                 </div>
                 <div>
                   <h4 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/episodes/ep0-we-launched">We launched!</a>
@@ -544,7 +544,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <div class="padding-bottom-NBsge3 flex-basis-C8uWv display-BvS8W3 flex-direction-jlten2 flex-wrap-RLKFg3 justify-content-CdPBO2 align-items-CdPBO2">
-      <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">All episodes
+      <h3 class="color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">All videos
       </h3>
     </div>
     <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-oWJr1 row-gap-ZNGkd1">
@@ -553,7 +553,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
             <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
               <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Episode 10 • Mar 27, 2018
+                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Video 10 • Mar 27, 2018
                 </div>
                 <div>
                   <h4 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/episodes/ep10-a-tale-of-two-flat-maps">A Tale of Two Flat‑Maps</a>
@@ -585,7 +585,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
             <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
               <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Episode 2 • Feb 5, 2018
+                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Video 2 • Feb 5, 2018
                 </div>
                 <div>
                   <h4 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/episodes/ep2-side-effects">Side Effects</a>
@@ -617,7 +617,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
             <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
               <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Episode 1 • Jan 29, 2018
+                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Video 1 • Jan 29, 2018
                 </div>
                 <div>
                   <h4 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/episodes/ep1-functions">Functions</a>
@@ -649,7 +649,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
             <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
               <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Episode 0 • Jan 29, 2018
+                <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Video 0 • Jan 29, 2018
                 </div>
                 <div>
                   <h4 class="margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/episodes/ep0-we-launched">We launched!</a>
@@ -698,7 +698,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Episodes</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Videos</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">Collections</a>
           </li>

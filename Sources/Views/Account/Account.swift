@@ -50,10 +50,10 @@ private func creditsView(accountData: AccountData, allEpisodes: [Episode]) -> No
       .div(
         .h2(
           attributes: [.class([Class.pf.type.responsiveTitle4])],
-          "Episode Credits"
+          "Video Credits"
         ),
         .p(
-          "Episode credits allow you to see members only episodes before commiting to a full ",
+          "Video credits allow you to see members only videos before commiting to a full ",
           .text(
             "subscription. You currently have \(pluralizedCredits(count: accountData.currentUser.episodeCreditCount)) "
           ),
@@ -72,7 +72,7 @@ private func subscribeCallout(_ subscriberState: SubscriberState) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   return .p(
-    "To get all past and future episodes, ",
+    "To get all past and future videos, ",
     .a(
       attributes: [
         .class([Class.pf.colors.link.purple]),
@@ -279,7 +279,7 @@ private func newsletterDescription(_ type: EmailSetting.Newsletter) -> String {
   case .newBlogPost:
     return "New blog posts on Point-Free Pointers (about every two weeks)"
   case .newEpisode:
-    return "New episode is available (about once a week)"
+    return "New video is available (about once a week)"
   case .welcomeEmails:
     return "A short series of emails introducing Point-Free"
   }
@@ -366,8 +366,8 @@ private func rssTerms(stripeSubscription: Stripe.Subscription?) -> Node {
       ],
       "Because you are on a monthly subscription plan, you get access to the last ",
       .text("\(nonYearlyMaxRssItems)"),
-      " episodes in your RSS feed (don't worry, you can watch every past episode directly on this site).",
-      " To access all episodes from the RSS feed, please consider upgrading to a yearly subscription."
+      " videos in your RSS feed (don't worry, you can watch every past video directly on this site).",
+      " To access all videos from the RSS feed, please consider upgrading to a yearly subscription."
     )
     : []
 }

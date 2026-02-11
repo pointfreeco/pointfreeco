@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 143367
+Content-Length: 143351
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -87,7 +87,7 @@ body, html {
     <link rel="icon" sizes="16x16" type="image/png" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png">
     <link rel="manifest" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
     <link rel="mask-icon" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
-    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
+    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Videos" type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
     <meta name="title" content="Join Point-Free Today">
     <meta property="og:title" content="Join Point-Free Today">
@@ -432,7 +432,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
         </pf-hstack></a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/episodes">
-        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Episodes
+        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Videos
         </pf-hstack></a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">
@@ -492,11 +492,11 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
               <ul class="font-size-RTPM71 margin-yiBeC4 padding-left-E4tBw4 list-style-type-Wl0y44 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3 color-I8WpG4 color-VoDZ9">
                 <li>Weekly newsletter access
                 </li>
-                <li>1 free episodes with transcripts
+                <li>1 free videos with transcripts
                 </li>
-                <li>1 free credit to redeem any members only episode
+                <li>1 free credit to redeem any members only video
                 </li>
-                <li>Download all episode code samples
+                <li>Download all video code samples
                 </li>
               </ul>
             </pf-vstack>
@@ -518,7 +518,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
                 </div>
               </pf-hstack>
               <ul class="font-size-RTPM71 margin-yiBeC4 padding-left-E4tBw4 list-style-type-Wl0y44 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3 color-I8WpG4 color-VoDZ9">
-                <li>All 2 episodes with transcripts
+                <li>All 2 videos with transcripts
                 </li>
                 <li>Access to "<a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-H7Vre2 color-niHfY3 color-uLoSU3 color-PJVOr3 color-jj5LZ" href="/the-way">The Point-Free Way</a>"
                 </li>
@@ -616,7 +616,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           <h4 class="text-align-GE99b color-K2J0r1 color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Playground downloads
           </h4>
         </div>
-        <p class="text-align-GE99b color-GPfER1 color-r4foZ2 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2">Download a fully-functioning Swift playground from the episode so you can experiment with the concepts discussed.
+        <p class="text-align-GE99b color-GPfER1 color-r4foZ2 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2">Download a fully-functioning Swift playground from the video so you can experiment with the concepts discussed.
         </p>
       </pf-vstack>
       <pf-vstack class="padding-YB9JG padding-CTEDv4 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><img class="padding-FJnJ04 padding-gRWSc1 max-width-C8uWv max-width-C8uWv" loading="lazy" src="https://d3rccdn33rt8ze.cloudfront.net/pricing/video-transcription.jpg" alt>
@@ -915,7 +915,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Episodes</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Videos</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">Collections</a>
           </li>

@@ -25,7 +25,7 @@ let freeEpisodeEmail =
   }
 
 let freeEpisodeBlurb = """
-  Every once in awhile we release a past episode for free to all of our viewers, and today is that day!
+  Every once in awhile we release a past video for free to all of our viewers, and today is that day!
   """
 
 func freeEpisodeEmailContent(ep: Episode) -> Node {
@@ -49,13 +49,13 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
             .text(freeEpisodeBlurb),
             " Please consider ",
             .a(attributes: [.href(siteRouter.url(for: .pricingLanding))], "supporting us"),
-            " so that we can keep new episodes coming!"
+            " so that we can keep new videos coming!"
           ),
           .a(
             attributes: [.href(siteRouter.url(for: .episodes(.show(ep))))],
             .h3(
               attributes: [.class([Class.pf.type.responsiveTitle3])],
-              .text("Episode #\(ep.sequence) is now free!")
+              .text("Video #\(ep.sequence) is now free!")
             )
           ),
           .h4(
@@ -70,7 +70,7 @@ func freeEpisodeEmailContent(ep: Episode) -> Node {
               .img(attributes: [.src(ep.image), .alt(""), .style(maxWidth(.pct(100)))])
             )
           ),
-          .p(.text("This episode is \(ep.length.rawValue / 60) minutes long.")),
+          .p(.text("This video is \(ep.length.rawValue / 60) minutes long.")),
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             .a(

@@ -2,7 +2,7 @@ GET http://localhost:8080/404
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 404 Not Found
-Content-Length: 38829
+Content-Length: 38823
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -87,7 +87,7 @@ body, html {
     <link rel="icon" sizes="16x16" type="image/png" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png">
     <link rel="manifest" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
     <link rel="mask-icon" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
-    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
+    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Videos" type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
     <style>pre {
   position: relative;
@@ -499,7 +499,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
         </pf-hstack></a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/episodes">
-        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Episodes
+        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Videos
         </pf-hstack></a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">
@@ -561,7 +561,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Episodes</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Videos</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">Collections</a>
           </li>

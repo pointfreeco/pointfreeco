@@ -1965,7 +1965,7 @@ html {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free Episodes"
+          title="Point-Free Videos"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
@@ -2122,7 +2122,7 @@ html {
                      ts-d-r3
                      ts-m-r2
                      lh-2">
-            Subscribe
+            Become a member
           </h1>
         </div>
         <div class="start-m
@@ -2161,7 +2161,7 @@ html {
                      flex-basis:auto">
             <li class="m-pt1">
               <div class="pricing-plan-feature">
-                <p>All 2 episodes with transcripts</p>
+                <p>All 2 videos with transcripts</p>
 
               </div>
             </li>
@@ -2911,7 +2911,7 @@ window.addEventListener("load", function() {
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Episodes</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Videos</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">Collections</a>
           </li>

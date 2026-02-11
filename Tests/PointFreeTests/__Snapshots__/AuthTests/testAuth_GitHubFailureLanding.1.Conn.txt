@@ -2,7 +2,7 @@ GET http://localhost:8080/github-failure
 Cookie: pf_session={"gitHubAccessToken":"deadbeef-new"}
 
 200 OK
-Content-Length: 38693
+Content-Length: 38685
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -87,7 +87,7 @@ body, html {
     <link rel="icon" sizes="16x16" type="image/png" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/favicon-16x16.png">
     <link rel="manifest" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/site.webmanifest">
     <link rel="mask-icon" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
-    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Episodes" type="application/atom+xml">
+    <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Videos" type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
     <meta name="title" content="GitHub login">
     <meta property="og:title" content="GitHub login">
@@ -334,7 +334,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </li>
       <li class="padding-left-dR5Tt4 display-mFpu24 padding-left-dzKEp position-Pjz1G2 opacity-mJTmO2 pointer-events-7T0L22 transform-v3Gb72 visibility-ZTlvG1"><button class="color-Vt0a43 appearance-Wl0y44 background-JyKaz4 border-4sVnF2 border-radius-btBsa3 cursor-xmR5l display-MH46v1 font-size-zZ9yy3 font-weight-SywJI1 letter-spacing-B7Alk3 transition-6t4cq1 background-color-6OEwN1 border-color-TaUzd2" type="button">•••</button>
         <ul class="background-1tnR2 border-gjzas2 border-radius-rrfjb1 box-shadow-QuMln left-85P192 min-width-cW9sI opacity-FBkWQ3 padding-8jCYd1 pointer-events-Wl0y44 position-X8qzJ top-C8uWv transform-sbXOd4 transition-zUm2k visibility-PhNC81 z-index-7AUj1 padding-left-E4tBw4 list-style-type-Wl0y44">
-          <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/episodes"><span>Episodes</span></a>
+          <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/episodes"><span>Videos</span></a>
           </li>
           <li><a class="align-items-CdPBO2 display-BvS8W3 gap-NKv2f3 padding-iTSWe2 text-decoration-Wl0y44 white-space-RLKFg3 background-color-XQ7V51 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-Vv8Gw4 color-x5AlI2 color-KmPrN" href="/clips"><span>Free clips</span></a>
           </li>
@@ -364,7 +364,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
         </pf-hstack></a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/episodes">
-        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Episodes
+        <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Videos
         </pf-hstack></a>
       </li>
       <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-dwzNH2 color-hzlcf color-Vt0a43" href="/collections">
@@ -443,7 +443,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Episodes</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Videos</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">Collections</a>
           </li>

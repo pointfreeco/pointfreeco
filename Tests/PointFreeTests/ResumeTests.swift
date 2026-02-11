@@ -57,7 +57,7 @@ class ResumeTests: TestCase {
         302 Found
         Location: /
         Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"You are not currently watching any episodes.","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        Set-Cookie: pf_session={"flash":{"message":"You are not currently watching any videos.","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
         X-Content-Type-Options: nosniff
         X-Download-Options: noopen
         X-Frame-Options: SAMEORIGIN
@@ -95,7 +95,7 @@ class ResumeTests: TestCase {
         302 Found
         Location: /episodes/ep1-type-safe-html-in-swift
         Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"Resuming your last watched episode.","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        Set-Cookie: pf_session={"flash":{"message":"Resuming your last watched video.","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
         X-Content-Type-Options: nosniff
         X-Download-Options: noopen
         X-Frame-Options: SAMEORIGIN
@@ -221,7 +221,7 @@ class ResumeTests: TestCase {
         302 Found
         Location: /episodes/ep2-
         Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"Starting the next episode.","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        Set-Cookie: pf_session={"flash":{"message":"Starting the next video.","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
         X-Content-Type-Options: nosniff
         X-Download-Options: noopen
         X-Frame-Options: SAMEORIGIN

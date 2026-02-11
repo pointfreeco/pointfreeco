@@ -123,10 +123,10 @@ struct WelcomeEmailWeek1: EmailDocument {
     WelcomeEmail(
       preheader: user.episodeCreditCount > 0
         ? """
-        Use your episode credit to unlock any members only episode!
+        Use your video credit to unlock any members only video!
         """
         : """
-        Explore our most popular episodes and join our vibrant Slack community!
+        Explore our most popular videos and join our vibrant Slack community!
         """,
       user: user
     ) {
@@ -144,21 +144,21 @@ struct WelcomeEmailWeek1: EmailDocument {
             """
             if user.episodeCreditCount > 0 {
               """
-              ## Get a free episode!
+              ## Get a free video!
 
-              In the meantime, it looks like you have a **free episode credit**! You can use this to 
-              unlock *any* members only episode, completely for free. Just visit [our
-              site](\(siteRouter.url(for: .home))), go to any episode, and click the 
+              In the meantime, it looks like you have a **free video credit**! You can use this to 
+              unlock *any* members only video, completely for free. Just visit [our
+              site](\(siteRouter.url(for: .home))), go to any video, and click the 
               "\(useCreditCTA)" button.
 
-              Here are some of our most popular collections of episodes:
+              Here are some of our most popular collections of videos:
               """
             } else {
               """
               ## Explore Point-Free
 
               In the meantime, explore everything that Point-Free has to offer. You can check out
-              all of our [free episodes](\(siteRouter.url(for: .episodes(.list(.free))))), and here
+              all of our [free videos](\(siteRouter.url(for: .episodes(.list(.free))))), and here
               are some of our most popular collections on Point-Free:
               """
             }
@@ -167,8 +167,8 @@ struct WelcomeEmailWeek1: EmailDocument {
             ## Point-Free community
 
             We also have a vibrant [Point-Free Slack community](http://pointfree.co/slack-invite). 
-            Join today to discuss episodes with other community members, ask questions about our 
-            episodes or open source projects, and more.
+            Join today to discuss videos with other community members, ask questions about our 
+            videos or open source projects, and more.
 
             When you're ready to become a member _or_ bring your whole team, join today:
             """
@@ -198,7 +198,7 @@ struct WelcomeEmailWeek2: EmailDocument {
   var body: some HTML {
     WelcomeEmail(
       preheader: """
-        Explore our \(freeEpisodeCount) free episodes!
+        Explore our \(freeEpisodeCount) free videos!
         """,
       user: user
     ) {
@@ -212,7 +212,7 @@ struct WelcomeEmailWeek2: EmailDocument {
             ago but still haven't become a member!
 
             If you're still on the fence and want to see a little more of what we have to offer, we 
-            have a number of [free episodes](\(siteRouter.url(for: .episodes(.list(.free))))) for 
+            have a number of [free videos](\(siteRouter.url(for: .episodes(.list(.free))))) for 
             you to check out:
             """
             for id in Self.freeEpisodeIDs {
@@ -228,9 +228,9 @@ struct WelcomeEmailWeek2: EmailDocument {
             """
             if user.episodeCreditCount > 0 {
               """
-              You *also* have a **free episode credit** you can use to see *any* _members only_
-              episode, completely for free. Just visit [our site](\(siteRouter.url(for: .home))), go 
-              to an episode, and click the "\(useCreditCTA)" button.
+              You *also* have a **free video credit** you can use to see *any* _members only_
+              video, completely for free. Just visit [our site](\(siteRouter.url(for: .home))), go 
+              to a video, and click the "\(useCreditCTA)" button.
               """
             }
             """
@@ -266,10 +266,10 @@ struct WelcomeEmailWeek3: EmailDocument {
 
             It's been a few weeks since you signed up for 
             [Point-Free](\(siteRouter.url(for: .home))) and we wanted to reach out in the hope that 
-            we might make a member out of you yet. So, we've added an **episode credit** to your 
-            account, allowing you to watch _any_ members only episode on our site for free.
+            we might make a member out of you yet. So, we've added a **video credit** to your 
+            account, allowing you to watch _any_ members only video on our site for free.
 
-            If you're having trouble deciding on an episode, here are a few of the most popular 
+            If you're having trouble deciding on a video, here are a few of the most popular 
             collections on our site:
             """
             popularCollectionsList
@@ -297,4 +297,4 @@ private let popularCollectionsList = """
 
   """
 
-private let useCreditCTA = "Use an episode credit"
+private let useCreditCTA = "Use a video credit"

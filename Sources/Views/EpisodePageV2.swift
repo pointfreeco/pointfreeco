@@ -706,7 +706,7 @@ extension HTML {
   import SwiftUI
   import Transcripts
 
-  #Preview("Episode Detail", traits: .fixedLayout(width: 500, height: 1000)) {
+  #Preview("Video Detail", traits: .fixedLayout(width: 500, height: 1000)) {
     HTMLPreview {
       PageLayout(layoutData: SimplePageLayoutData(title: "")) {
         EpisodeDetail(
