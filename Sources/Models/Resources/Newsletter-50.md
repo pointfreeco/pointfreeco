@@ -1,8 +1,8 @@
 It’s the end of the year again, and we’re feeling nostalgic 😊. We’re really proud of everything we
 produced for 2020, so join us for a quick review of some of our favorite highlights.
 
-We are also offering [25% off](/discounts/2020-is-over) the first year for first-time subscribers.
-If you’ve been on the fence on whether or not to subscribe, now is the time!
+We are also offering [25% off](/discounts/2020-is-over) the first year for first-time members.
+If you’ve been on the fence on whether or not to join Point-Free, now is the time!
 
 ## Highlights
 
@@ -84,9 +84,9 @@ beta spots open, [contact us](mailto:support@pointfree.co) if you're interested!
 
 ## 🎉 2021 🎉
 
-We're thankful to all of our subscribers for supporting us and helping us create this content. To
+We're thankful to all of our members for supporting us and helping us create this content. To
 celebrate the end of the year we are also offering [25% off](/discounts/2020-is-over) the first year
-for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now is the
+for first-time members. If you’ve been on the fence on whether or not to join Point-Free, now is the
 time!
 
 See you in 2021!

@@ -1,6 +1,6 @@
-We’re happy to announce [an end-of-year sale](/discounts/2020-is-over) by offering 25% off the first year of your subscription!
+We’re happy to announce [an end-of-year sale](/discounts/2020-is-over) by offering 25% off the first year of your membership!
 
-Once subscribed you'll get instant access to all 130 episodes (and growing) of Point-Free, including popular collections that have grown this past year:
+Once you're a member you'll get instant access to all 130 episodes (and growing) of Point-Free, including popular collections that have grown this past year:
 
 - [Composable Architecture](/collections/composable-architecture): We started developing the Composable Architecture from first principles after breaking down the problems app architecture should solve, all the way back in July 2019. We continued to refine things over _17 hours_ (so far) in this collection of episodes, while covering aspects of SwiftUI, Combine, and more general concepts like testing and dependencies! We finally bundled things up into [an open source library](https://github.com/pointfreeco/swift-composable-architecture) so that you can immediately put these concepts to use in your applications!
 

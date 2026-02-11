@@ -10,15 +10,15 @@ and data sharing.
 
 We have an incredible amount of topics to cover next year, and to get a jump start on perfecting 
 your expertise in Swift we are offering a [Cyber Monday **30% discount**][cyber-monday-sale] for the 
-first year of your subscription.
+first year of your membership.
 
 [cyber-monday-sale]: /discounts/cyber-monday-2025
 
 @Button(/discounts/cyber-monday-2025) {
-  Subscribe today for 30% off!
+  Join today for 30% off!
 }
 
-Once subscribed you'll get instant access to all [346 episodes][pf] of original Point-Free content.
+When you're a Point-Free member you'll get instant access to all [346 episodes][pf] of original Point-Free content.
 This includes our popular ["Modern Persistence"][modern-persistence] series started just this year,
 where we show what it takes to build an app on a modern foundation using SQLite for persistence,
 including iCloud synchronization and data sharing. 
@@ -289,15 +289,15 @@ for your app.
 [android-sdk]: https://www.swift.org/blog/nightly-swift-sdk-for-android/ 
 [cross-platform]: /collections/cross-platform-swift
 
-## Subscribe today!
+## Become a member today!
 
 This only scratches the surface of what we plan on covering in 2026. Be sure to
-[subscribe today][cyber-monday-sale] to get access to all of this and more. The offer is valid for
+[become a member today][cyber-monday-sale] to get access to all of this and more. The offer is valid for
 only a few days, so you'd better hurry!
 
 [cyber-monday-sale]: /discounts/cyber-monday-2025
 
 @Button(/discounts/cyber-monday-2025) {
-  Subscribe today for 30% off!
+  Join today for 30% off!
 }
 

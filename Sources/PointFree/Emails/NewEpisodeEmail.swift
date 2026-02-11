@@ -19,7 +19,7 @@ public let newEpisodeEmail =
     SimpleEmailLayoutData(
       user: user,
       newsletter: .newEpisode,
-      title: "New Point-Free Episode: \(episode.fullTitle)",
+      title: "New Point-Free Video: \(episode.fullTitle)",
       preheader: episode.blurb,
       template: .default(includeHeaderImage: false),
       data: (
@@ -89,8 +89,8 @@ private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
 
   let blurb =
     ep.subscriberOnly
-    ? "This episode is for subscribers only. To access it, and all past and future episodes, become a subscriber today!"
-    : "This episode is free for everyone, made possible by our subscribers. Consider becoming a subscriber today!"
+    ? "This video is for members only. To access it, and all past and future videos, become a member today!"
+    : "This video is free for everyone, made possible by our members. Consider becoming a member today!"
 
   let watchText =
     ep.subscriberOnly
@@ -106,7 +106,7 @@ private func nonSubscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
           .href(siteRouter.url(for: .pricingLanding)),
           .class([Class.pf.components.button(color: .purple)]),
         ],
-        "Subscribe to Point-Free!"
+        "Join Point-Free!"
       ),
       .a(
         attributes: [
@@ -127,7 +127,7 @@ private func subscriberCtaView(ep: Episode, isSubscriber: Bool) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   return [
-    .p(.text("This episode is \(ep.length.rawValue / 60) minutes long.")),
+    .p(.text("This video is \(ep.length.rawValue / 60) minutes long.")),
     .p(
       attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
       .a(

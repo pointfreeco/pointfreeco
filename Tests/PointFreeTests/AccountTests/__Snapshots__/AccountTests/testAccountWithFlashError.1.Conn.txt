@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"An error has occurred!","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 80671
+Content-Length: 80658
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -1908,7 +1908,7 @@ html {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free Episodes"
+          title="Point-Free Videos"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
@@ -2191,7 +2191,7 @@ html {
                              name="emailSettings[newEpisode]"
                              checked
                              class="m-mr1">
-                      New episode is available (about once a week)
+                      New video is available (about once a week)
                     </label>
                   </p>
                   <input type="submit"
@@ -2929,7 +2929,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Episodes</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Videos</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">Collections</a>
           </li>
@@ -2945,7 +2945,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/about">About Us</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/slack-invite">Community Slack</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/slack">Community Slack</a>
           </li>
           <li rel="me"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
           </li>

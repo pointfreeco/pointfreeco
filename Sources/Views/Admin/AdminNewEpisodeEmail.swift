@@ -22,10 +22,10 @@ public struct AdminNewEpisodeEmailView: HTML {
               VStack(alignment: .leading, spacing: 0.75) {
                 textarea { "" }
                   .attribute("name", "subscriber_announcement")
-                  .attribute("placeholder", "Subscriber announcement")
+                  .attribute("placeholder", "Member announcement")
                 textarea { "" }
                   .attribute("name", "nonsubscriber_announcement")
-                  .attribute("placeholder", "Non-subscribers announcements")
+                  .attribute("placeholder", "Non-member announcements")
                 HStack(alignment: .center, spacing: 0.5) {
                   Button(tag: "input", color: .black, style: .outline)
                     .attribute("type", "submit")

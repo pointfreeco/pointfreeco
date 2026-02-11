@@ -1,8 +1,8 @@
 
 
-### Subscription canceled
+### Membership canceled
 
-Your **Individual Monthly** subscription has been canceled and will remain active through Mar 2, 2018. If you change your mind before then, you can reactivate from your account page <http://localhost:8080/account>.
+Your **Individual Monthly** membership has been canceled and will remain active through Mar 2, 2018. If you change your mind before then, you can reactivate from your account page <http://localhost:8080/account>.
 
 
 

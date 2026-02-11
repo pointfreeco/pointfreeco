@@ -14,7 +14,7 @@ public func enterpriseView(_ account: EnterpriseAccount) -> Node {
   let loggedOutView: Node = [
     .p(
       attributes: [.class([Class.pf.colors.fg.green, Class.padding([.mobile: [.bottom: 3]])])],
-      "Log in to gain access to every episode of ", pointFreeRaw, "."
+      "Log in to gain access to ", pointFreeRaw, "."
     ),
     .gitHubLink(
       text: "Sign in with GitHub",
@@ -26,7 +26,7 @@ public func enterpriseView(_ account: EnterpriseAccount) -> Node {
   let loggedInView: Node = [
     .p(
       attributes: [.class([Class.pf.colors.fg.green])],
-      "Enter your company email address to gain access to every episode of ", pointFreeRaw, "."
+      "Enter your company email address to gain access to ", pointFreeRaw, "."
     ),
     .gridRow(
       attributes: [

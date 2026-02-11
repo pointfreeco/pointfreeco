@@ -2,7 +2,7 @@ GET http://localhost:8080/gifts/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 170227
+Content-Length: 170208
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1953,7 +1953,7 @@ html {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free Episodes"
+          title="Point-Free Videos"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
@@ -2233,7 +2233,7 @@ html {
             </li>
             <li class="m-pt1">
               <div class="pricing-plan-feature">
-                <p>All 0 episodes with transcripts</p>
+                <p>All 0 videos with transcripts</p>
 
               </div>
             </li>
@@ -2251,7 +2251,7 @@ html {
             </li>
             <li class="m-pt1">
               <div class="pricing-plan-feature">
-                <p>Download all episode code samples</p>
+                <p>Download all video code samples</p>
 
               </div>
             </li>
@@ -2400,7 +2400,7 @@ html {
               Playground downloads
             </h4>
             <p class="fg-gray400">
-              Download a fully-functioning Swift playground from the episode so you can experiment with the concepts discussed.
+              Download a fully-functioning Swift playground from the video so you can experiment with the concepts discussed.
             </p>
           </div>
         </div>
@@ -2472,7 +2472,7 @@ html {
           </div>
           <p class="bold
                     fg-black">
-            Can I accept a gift if I already have a Point-Free subscription?
+            Can I accept a gift if I already have a Point-Free membership?
           </p>
           <div class="fg-gray400
                       m-pb2
@@ -3656,7 +3656,7 @@ html {
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Episodes</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Videos</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">Collections</a>
           </li>
@@ -3672,7 +3672,7 @@ html {
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/about">About Us</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/slack-invite">Community Slack</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/slack">Community Slack</a>
           </li>
           <li rel="me"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
           </li>

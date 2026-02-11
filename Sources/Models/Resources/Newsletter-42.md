@@ -4,8 +4,8 @@ why today we are excited to announce we now offer
 [regional discounts](/subscribe/personal?useRegionalDiscount=true).
 
 The [regional discount](/subscribe/personal?useRegionalDiscount=true) takes 50% off a monthly or
-yearly personal subscription to anyone whose credit card is issued from a particular list of
+yearly personal memberships to anyone whose credit card is issued from a particular list of
 countries. This is to help make up for currency discrepancies between the United States and other
-countries, and hopefully relieves some of the burden of paying for the subscription in US dollars.
+countries, and hopefully relieves some of the burden of paying for the membership in US dollars.
 
 If you have any questions, feel free to [reach out](mailto:support@pointfree.co)!

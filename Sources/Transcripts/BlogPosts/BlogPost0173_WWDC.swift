@@ -5,7 +5,7 @@ extension BlogPost {
     author: .pointfree,
     blurb: """
       WWDC is here! 🎉 We are excited to explore all of the new tools and APIs, and we will have \
-      a lot of exciting announcements to share really soon. Subscribe today with a 30% \
+      a lot of exciting announcements to share really soon. Become a member today with a 30% \
       discount to get unlock all past episodes and everything we have planned for the future.
       """,
     coverImage:

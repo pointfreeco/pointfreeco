@@ -309,8 +309,8 @@ private struct HowAccessWorks: HTML {
       LazyVGrid(columns: [.mobile: [1, 1], .desktop: [1, 1, 1, 1]]) {
         Step(
           count: 1,
-          title: "Subscribe to Point&#8209;Free",
-          blurb: "Unlock videos and all Point-Free Way skill documents."
+          title: "Become a member",
+          blurb: "Gain access to all Point&#8209;Free Way skill documents and videos."
         )
         Step(
           count: 2,
@@ -335,7 +335,7 @@ private struct HowAccessWorks: HTML {
       ) {
         if !subscriberState.isActiveSubscriber {
           PFWButton(type: .secondary) {
-            HTMLText("View subscription plans")
+            HTMLText("View plans")
           }
           .href(siteRouter.path(for: .pricingLanding))
         }
@@ -354,7 +354,7 @@ private struct PointFreeWayCTAButtons<Secondary: HTML>: HTML {
     CTAGroup {
       if !isSubscriber {
         PFWButton(type: .primary) {
-          HTMLText("Subscribe to unlock")
+          HTMLText("Become a member to unlock")
         }
         .href(subscribeHref)
       } else {
@@ -373,9 +373,9 @@ private struct NotReadyToSubscribe: HTML {
 
   var body: some HTML {
     PointFreeWayModule(
-      title: "Not ready to subscribe?",
+      title: "Not ready to become a member?",
       blurb: """
-        Create a free Point-Free account to access a limited preview of our architectural 
+        Create a free Point-Free account to access a limited preview of our architectural \
         philosophy and see how we think about building software.
         """
     ) {
@@ -406,8 +406,8 @@ private struct NotReadyToSubscribe: HTML {
         ChecklistModule(
           title: "Prefer the full experience?",
           blurb: """
-            Subscribe to unlock the complete collection of AI skills and access to hundreds of \
-            hours of advanced Swift videos.
+            Become a member to unlock the complete collection of AI skills and access to hundreds \
+            of hours of advanced Swift videos.
             """,
           items: [
             "Maintained with the same rigor as our codebases",
@@ -417,7 +417,7 @@ private struct NotReadyToSubscribe: HTML {
         ) {
           CTAGroup {
             PFWButton(type: .primary) {
-              HTMLText("Subscribe")
+              HTMLText("Join")
             }
             .href(siteRouter.path(for: .pricingLanding))
           }
@@ -440,8 +440,7 @@ private struct BuildSoftwareThatLasts: HTML {
           .titleColor()
           Paragraph(.big) {
             """
-            Subscribe to Point-Free and unlock the Point-Free Way: expert guidance, continuously 
-            refined.
+            Become a member and unlock the Point-Free Way: expert guidance, continuously refined.
             """
           }
           .contentColor()
@@ -449,7 +448,7 @@ private struct BuildSoftwareThatLasts: HTML {
         Spacer()
         VStack {
           PFWButton(type: .primary) {
-            "Subscribe now"
+            "Join now"
           }
           .href(siteRouter.path(for: .pricingLanding))
           .inlineStyle("margin-right", "auto")

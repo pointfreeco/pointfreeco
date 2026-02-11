@@ -1,13 +1,13 @@
 It's the end of the year again, and we’re feeling nostalgic 😊. We’re really proud of everything we 
 produced for 2023, so join us for a quick review of some of our favorite highlights.
 
-We are also offering [25% off 🎁][eoy-discount] the first year for first-time subscribers. If you’ve 
-been on the fence on whether or not to subscribe, now is the time!
+We are also offering [25% off 🎁][eoy-discount] the first year for first-time members. If you’ve 
+been on the fence on whether or not to join Point-Free, now is the time!
 
 [eoy-discount]: /discounts/2023-eoy
 
 @Button(/discounts/2023-eoy) {
-  Subscribe today!
+  Become a member today!
 }
 
 # Highlights
@@ -348,7 +348,7 @@ to use value types for our domains, concise domain modeling tools, easy testing,
 
 On average, our [open source libraries][pf-gh] are cloned over **120,000 times** per day! They are
 used by thousands of developers and companies all across the globe. It's a lot of work to maintain them,
-but it's all made possible thanks to our wonderful [subscribers][eoy-discount].
+but it's all made possible thanks to our wonderful [members][eoy-discount].
 
 <!--
 38000+175000+48000+12000+52000+620000+18000+56000+85000+58000+112000
@@ -722,7 +722,7 @@ libraries, and we are thankful to all the community members that spend their tim
 
 # See you in 2024! 🥳
 
-We're thankful to all of our subscribers for [supporting us](/pricing) and helping us create our 
+We're thankful to all of our members for [supporting us](/pricing) and helping us create our 
 episodes and support our open source libraries. We could not do it without you!
 
 Next year we have even more planned, including the final release of the observation tools in the
@@ -731,11 +731,11 @@ new techniques for modeling shared state), a deep dive into value types versus r
 and more that we are not yet ready to reveal. 😉
 
 To celebrate the end of the year we are also offering [25% off][eoy-discount] the first year
-for first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now
+for first-time members. If you’ve been on the fence on whether or not to join Point-Free, now
 is the time!
 
 [eoy-discount]: /discounts/2023-eoy
 
 @Button(/discounts/2023-eoy) {
-  Subscribe today!
+  Become a member today!
 }

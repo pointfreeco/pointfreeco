@@ -57,7 +57,7 @@ public struct PageLayout<Content: HTML>: HTMLDocument {
     link()
       .href(siteRouter.url(for: .feed(.episodes)))
       .attribute("rel", "alternate")
-      .attribute("title", "Point-Free Episodes")
+      .attribute("title", "Point-Free Videos")
       .attribute("type", "application/atom+xml")
     link()
       .href(siteRouter.url(for: .blog(.feed)))
@@ -276,7 +276,7 @@ struct MobileNavItems: HTML {
           "The Point-Free Way"
         }
         NavListItem(route: .episodes(.list(.all))) {
-          "Episodes"
+          "Videos"
         }
         NavListItem(route: .collections()) {
           "Collections"
@@ -552,7 +552,7 @@ struct CenteredNavItems: HTML {
       HTMLGroup {
         if subscriberState.isActiveSubscriber {
           NavListItem(route: .episodes(.list(.all))) {
-            "Episodes"
+            "Videos"
           }
         }
         NavListItem(route: .collections()) {
@@ -568,7 +568,7 @@ struct CenteredNavItems: HTML {
         }
         MoreMenu {
           if currentUser == nil {
-            MenuItem(title: "Episodes", destination: .episodes(.list(.all)))
+            MenuItem(title: "Videos", destination: .episodes(.list(.all)))
           }
           MenuItem(title: "Free clips", destination: .clips(.clips))
           MenuItem(title: "Blog", destination: .blog(.index))
@@ -648,28 +648,28 @@ public struct PastDueBanner: HTML {
 
     case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .none, deactivated: _):
       TopBanner(style: .warning) {
-        "Your subscription is past-due! Please "
+        "Your membership is past-due! Please "
         Link("update your payment info", destination: .account(.paymentInfo()))
         " to ensure access to Point-Free!"
       }
 
     case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .some, deactivated: _):
       TopBanner(style: .warning) {
-        "Your enterprise subscription is past-due! Please contact us at "
+        "Your enterprise membership is past-due! Please contact us at "
         Link("support@pointfree.co", href: "mailto:support@pointfree.co")
         " to regain access to Point-Free."
       }
 
     case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .none, deactivated: _):
       TopBanner(style: .warning) {
-        "Your subscription is canceled. To regain access to Point-Free, "
-        Link("resubscribe", destination: .pricingLanding)
+        "Your membership is canceled. To regain access to Point-Free, "
+        Link("rejoin", destination: .pricingLanding)
         " anytime!"
       }
 
     case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .some, deactivated: _):
       TopBanner(style: .warning) {
-        "Your enterprise subscription is canceled. Please contact us at "
+        "Your enterprise membership is canceled. Please contact us at "
         Link("support@pointfree.co", href: "mailto:support@pointfree.co")
         " to regain access to Point-Free."
       }
@@ -677,7 +677,7 @@ public struct PastDueBanner: HTML {
     case .owner(hasSeat: _, status: .active, enterpriseAccount: _, deactivated: true),
       .owner(hasSeat: _, status: .trialing, enterpriseAccount: _, deactivated: true):
       TopBanner(style: .warning) {
-        "Your subscription has been deactivated. Please contact us at "
+        "Your membership has been deactivated. Please contact us at "
         Link("support@pointfree.co", href: "mailto:support@pointfree.co")
         " to regain access to Point-Free."
       }
@@ -687,14 +687,14 @@ public struct PastDueBanner: HTML {
 
     case .teammate(status: .pastDue, enterpriseAccount: _, deactivated: _):
       TopBanner(style: .warning) {
-        "Your team’s subscription is past-due! Please contact "
+        "Your team’s membership is past-due! Please contact "
         owner
         " to regain access to Point-Free."
       }
 
     case .teammate(status: .canceled, enterpriseAccount: _, deactivated: _):
       TopBanner(style: .warning) {
-        "Your team’s subscription is canceled. Please contact "
+        "Your team’s membership is canceled. Please contact "
         owner
         " to regain access to Point-Free."
       }
@@ -702,7 +702,7 @@ public struct PastDueBanner: HTML {
     case .teammate(status: .active, enterpriseAccount: _, deactivated: true),
       .teammate(status: .trialing, enterpriseAccount: _, deactivated: true):
       TopBanner(style: .warning) {
-        "Your team’s subscription is deactivated. Please have "
+        "Your team’s membership is deactivated. Please have "
         owner
         " contact us at "
         Link("support@pointfree.co", href: "mailto:support@pointfree.co")
@@ -915,7 +915,7 @@ struct SaleBanner: HTML {
             Spacer()
             Button(color: .purple, size: .large) {
               span {
-                "Subscribe now"
+                "Become a member"
               }
               .padding(leftRight: .medium)
             }
@@ -1012,7 +1012,7 @@ struct SaleBanner: HTML {
         Spacer()
         Button(color: .purple) {
           span {
-            "Subscribe now"
+            "Become a member"
           }
           .padding(leftRight: .small)
         }

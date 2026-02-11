@@ -6,7 +6,7 @@ extension BlogPost {
     blurb: """
       In less than 24 hours we are going live! Join us at 9am PST / 5pm GMT where we will \ 
       officially launch the "Point-Free Way", give a sneak peek at the next version of the \
-      Composable Architecture, we'll give away 8 free yearly subscriptions (to celebrate 8 years \
+      Composable Architecture, we'll give away 8 free yearly memberships (to celebrate 8 years \
       of Point-Free), we'll answer tons of questions from our views, and more!
       """,
     coverImage: nil,

@@ -6,7 +6,7 @@ isOwnerTakingSeat=true&paymentMethodID=pm_stripe-deadbeef&pricing%5Bbilling%5D=y
 302 Found
 Location: /subscribe/team?billing=yearly&isOwnerTakingSeat=true&teammates=&useRegionalDiscount=false
 Referrer-Policy: strict-origin-when-cross-origin
-Set-Cookie: pf_session={"flash":{"message":"An invalid subscription quantity was used.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+Set-Cookie: pf_session={"flash":{"message":"An invalid team quantity was used.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
 X-Content-Type-Options: nosniff
 X-Download-Options: noopen
 X-Frame-Options: SAMEORIGIN

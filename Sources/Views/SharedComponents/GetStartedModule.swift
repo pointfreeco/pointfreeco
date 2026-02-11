@@ -17,7 +17,7 @@ struct GetStartedModule: HTML {
     CallToActionHeader(
       title: "Get started with our free&nbsp;plan",
       blurb: """
-        Our free plan includes 1 subscriber-only episode of your choice, access to \
+        Our free plan includes 1 members only episode of your choice, access to \
         \(freeEpisodeCount) free episodes with transcripts and code samples, and weekly updates \
         from our newsletter.
         """,

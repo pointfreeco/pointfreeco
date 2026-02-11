@@ -1,7 +1,7 @@
 We do this only a few times a year: we're having a [rare, Point-Free sale][cyber-monday-sale]
-this Black Friday by offering 30% off the first year of your subscription!
+this Black Friday by offering 30% off the first year of your membership!
 
-Once subscribed you'll get instant access to all [214 episodes][pf] (126 hours of video and
+When you're a Point-Free member you'll get instant access to all [214 episodes][pf] (126 hours of video and
 growing!) of Point-Free content. This includes popular [collections][collections] that were
 created or expanded this year, as well as all of the material we have planned for 2023!
 
@@ -52,13 +52,13 @@ parsers, which allows you to print values back into the original string format. 
 make our parser library one of the most powerful ways to turn unstructured data into structured
 data (and back again!), and our episodes show how we built it from the ground up.
 
-## Subscribe today!
+## Become a member today!
 
 We have plenty of exciting topics planned for 2023, including first class navigation
 tools for the Composable Architecture, more improvements to our parser builders, as well
 as all new styles of content from us (live streams!).
 
-Be sure to [subscribe today][cyber-monday-sale] to get access to all of this and more. The
+Be sure to [become a member today][cyber-monday-sale] to get access to all of this and more. The
 offer is valid for only a few days, so you better hurry!
 
 [tca-collection]: /collections/composable-architecture

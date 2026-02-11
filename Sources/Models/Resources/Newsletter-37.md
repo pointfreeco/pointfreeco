@@ -1,6 +1,6 @@
 It’s the end of the year [again](/blog/posts/25-2018-year-in-review), and we’re feeling nostalgic 😊. We’re really proud of everything we produced for 2019, so join us for a quick review of some of our favorite highlights.
 
-We are also offering [**30% off** the first year](/discounts/holiday-2019) for first-time subscribers. If you've been on the fence on whether or not to subscribe, [now](/discounts/holiday-2019) is the time!
+We are also offering [**30% off** the first year](/discounts/holiday-2019) for first-time members. If you've been on the fence on whether or not to join, [now](/discounts/holiday-2019) is the time!
 
 ## Episodes
 
@@ -127,8 +127,8 @@ Html
 
 ## 🎉 2020 🎉
 
-It was an incredible year, and thanks to all of our subscribers for supporting us and helping us create this content. We have a lot of great things planned for 2020: we have a few more things to discuss about the Composable Architecture, we have a few more advanced parser topics we want to cover, as well as some completely new topics and an exciting new project to announce!
+It was an incredible year, and thanks to all of our members for supporting us and helping us create this content. We have a lot of great things planned for 2020: we have a few more things to discuss about the Composable Architecture, we have a few more advanced parser topics we want to cover, as well as some completely new topics and an exciting new project to announce!
 
-To celebrate the end of the year we are also offering [**30% off** the first year](/discounts/holiday-2019) for first-time subscribers. If you've been on the fence on whether or not to subscribe, [now](/discounts/holiday-2019) is the time!
+To celebrate the end of the year we are also offering [**30% off** the first year](/discounts/holiday-2019) for first-time members. If you've been on the fence on whether or not to join, [now](/discounts/holiday-2019) is the time!
 
 See you in 2020!

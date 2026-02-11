@@ -5,7 +5,7 @@ extension BlogPost {
     author: .pointfree,
     blurb: """
       Today we're excited to announce support for referral bonuses! When friends and colleagues of \
-      yours subscribe to Point-Free with your referral link, both of you will get one month free.
+      yours join Point-Free with your referral link, both of you will get one month free.
       """,
     coverImage: nil,
     id: 39,

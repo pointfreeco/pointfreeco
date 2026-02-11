@@ -2,7 +2,7 @@ GET http://localhost:8080/account/rss/deadbeef-dead-beef-dead-beefdeadbeef
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 4215
+Content-Length: 4205
 Content-Type: text/xml; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -29,7 +29,7 @@ X-XSS-Protection: 1; mode=block
       en-US
     </language>
     <description>
-      ‼️ Your subscription has been deactivated. Please contact us at support@pointfree.co to regain access to Point-Free.
+      ‼️ Your membership has been deactivated. Please contact us at support@pointfree.co to regain access to Point-Free.
     </description>
     <copyright>
       Copyright Point-Free, Inc. 2018
@@ -55,7 +55,7 @@ X-XSS-Protection: 1; mode=block
       Functional programming concepts explained simply.
     </itunes:subtitle>
     <itunes:summary>
-      ‼️ Your subscription has been deactivated. Please contact us at support@pointfree.co to regain access to Point-Free.
+      ‼️ Your membership has been deactivated. Please contact us at support@pointfree.co to regain access to Point-Free.
     </itunes:summary>
     <itunes:explicit>
       no
@@ -100,7 +100,7 @@ X-XSS-Protection: 1; mode=block
         1517356800.0
       </guid>
       <description>
-        ‼️ Your subscription has been deactivated. Please contact us at support@pointfree.co to regain access to Point-Free.
+        ‼️ Your membership has been deactivated. Please contact us at support@pointfree.co to regain access to Point-Free.
       </description>
       <dc:creator>
         Brandon Williams
@@ -112,10 +112,10 @@ X-XSS-Protection: 1; mode=block
         Brandon Williams & Stephen Celis
       </itunes:author>
       <itunes:subtitle>
-        ‼️ Your subscription has been deactivated. Please contact us at support@pointfree.co to regain access to Point-Free.
+        ‼️ Your membership has been deactivated. Please contact us at support@pointfree.co to regain access to Point-Free.
       </itunes:subtitle>
       <itunes:summary>
-        ‼️ Your subscription has been deactivated. Please contact us at support@pointfree.co to regain access to Point-Free.
+        ‼️ Your membership has been deactivated. Please contact us at support@pointfree.co to regain access to Point-Free.
       </itunes:summary>
       <itunes:explicit>
         no

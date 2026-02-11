@@ -37,9 +37,9 @@ public struct PricingLanding: HTML {
       LazyVGrid(columns: [.desktop: [1, 1, 1, 1]]) {
         PricingLane("Free", annualPricePerMonth: 0) {
           li { "Weekly newsletter access" }
-          li { "\(stats.freeEpisodes) free episodes with transcripts" }
-          li { "1 free credit to redeem any subscriber-only episode" }
-          li { "Download all episode code samples" }
+          li { "\(stats.freeEpisodes) free videos with transcripts" }
+          li { "1 free credit to redeem any members only video" }
+          li { "Download all video code samples" }
         } callToAction: {
           if currentUser == nil {
             Button(color: .purple) {
@@ -61,7 +61,7 @@ public struct PricingLanding: HTML {
           br()
           "billed annually"
         } features: {
-          li { "All \(stats.allEpisodes) episodes with transcripts" }
+          li { "All \(stats.allEpisodes) videos with transcripts" }
           li {
             "Access to \""
             Link("The Point-Free Way", destination: .theWay)

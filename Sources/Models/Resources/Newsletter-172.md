@@ -1,10 +1,10 @@
 It's that time of year again! WWDC is just around the corner, and to celebrate we are offering a 
-[30% discount](/discounts/dubdub25) off the first year for first-time subscribers. Click
+[30% discount](/discounts/dubdub25) off the first year for first-time members. Click
 [here](/discounts/dubdub25) to redeem the coupon now. The offer will only remain valid until June 
 6th.
 
 @Button(/discounts/dubdub25) {
-  Subscribe for 30% off!
+  Join and save 30%!
 }
 
 This is the perfect time to get full access to all of our videos. In the past year we have explored 
@@ -88,12 +88,12 @@ using CloudKit.
 [tour-tca-1.0]: /collections/composable-architecture/composable-architecture-1-0
 [macros-collection]: /collections/macros
 
-## Subscribe today
+## Become a member today
 
 And that is just barely scratching the surface of what we offer on [Point-Free](/). We hope you'll 
 [join us](/discounts/wwdc-2023) for all of the great material we have planned for the rest of the 
 year!
 
 @Button(/discounts/dubdub25) {
-  Subscribe for 30% off!
+  Join and save 30%!
 }

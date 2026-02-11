@@ -29,7 +29,7 @@ to even more this time!
 
 ## To 6 more years!
 
-We are eternally grateful to all of our subscribers, who make it possible for us to create
+We are eternally grateful to all of our members, who make it possible for us to create
 our episodes and work on open source projects. We wouldn't be here without you. Here's
 to six more years! 🥳
 

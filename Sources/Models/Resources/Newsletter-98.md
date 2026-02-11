@@ -201,7 +201,7 @@ open source application to see how all of the ideas can be put to use in a real 
 complex application.
 
 And if you want even _more_ in-depth coverage of these topics, then consider
-[subscribing][pricing] today to get access to the [full series][modern-swiftui-collection],
+[becoming a member][pricing] today to get access to the [full series][modern-swiftui-collection],
 as well as our entire back catalog of episodes!
 
 [standups-gh]: https://github.com/pointfreeco/standups

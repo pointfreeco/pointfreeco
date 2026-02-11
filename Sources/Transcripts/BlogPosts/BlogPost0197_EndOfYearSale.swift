@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0197_EndOfYearSale = Self(
     author: .pointfree,
     blurb: """
-      Through the new year, we're offering personal Point-Free subscriptions for 25% off the first \
+      Through the new year, we're offering personal Point-Free memberships for 25% off the first \
       year!
       """,
     coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/5bae4cd4-eed4-452e-9e5a-55ac84c7c000/public",

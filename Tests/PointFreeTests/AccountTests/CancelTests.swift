@@ -39,7 +39,7 @@ final class CancelTests: TestCase {
       }
       $0.mailgun.sendEmail = { email in
         expectation.fulfill()
-        XCTAssertEqual(email.subject, "[testing] Your subscription has been canceled")
+        XCTAssertEqual(email.subject, "[testing] Your membership has been canceled")
         return SendEmailResponse(id: "mail-id", message: "")
       }
     } operation: {

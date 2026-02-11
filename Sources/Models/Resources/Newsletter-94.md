@@ -26,7 +26,7 @@ To celebrate the conclusion of the series we are going to release one new blog p
 day this week detailing an area of SwiftUI development that can be modernized, starting
 today with parent-child communication.
 
-If you find any of this interesting, then consider [subscribing][pricing] today to get
+If you find any of this interesting, then consider [becoming a member][pricing] today to get
 access to the [full series][modern-swiftui-collection], as well as our entire back catalog
 of episodes!
 

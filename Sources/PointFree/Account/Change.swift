@@ -20,7 +20,7 @@ let subscriptionChangeMiddleware =
     error: subscriptionModificationErrorMiddleware,
     success: redirect(
       to: .account(),
-      headersMiddleware: flash(.notice, "We’ve modified your subscription.")
+      headersMiddleware: flash(.notice, "We’ve modified your membership.")
     )
   )
 
@@ -77,7 +77,7 @@ func requireActiveSubscription<A>(
       to: .pricingLanding,
       headersMiddleware: flash(
         .error,
-        "You don’t have an active subscription. Would you like to subscribe?"
+        "You don’t have an active membership. Would you like to join Point-Free?"
       )
     )
   )
@@ -95,7 +95,7 @@ func subscriptionModificationErrorMiddleware<A>(_ error: Error)
         headersMiddleware: flash(
           .error,
           """
-          We couldn’t modify your subscription at this time. Please try again or contact
+          We couldn’t modify your membership at this time. Please try again or contact
           <support@pointfree.co>.
           """
         )

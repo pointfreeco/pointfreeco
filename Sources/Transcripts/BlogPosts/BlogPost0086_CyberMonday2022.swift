@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0086_CyberMonday2022 = Self(
     author: .pointfree,
     blurb: """
-      We're offering a 30% discount for the first year of a Point-Free subscription! Get instant \
+      We're offering a 30% discount for the first year of a Point-Free membership! Get instant \
       access to all past 214 episodes instantly, as well as access to everything we have planned \
       for 2023.
       """,

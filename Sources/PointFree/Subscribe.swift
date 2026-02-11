@@ -86,7 +86,7 @@ private func subscribe(
           error: .init(
             message: """
               The issuing country of your credit card is not on the list of countries that
-              qualify for a regional discount. Please use a different credit card, or subscribe
+              qualify for a regional discount. Please use a different credit card, or join
               without the discount.
               """
           )
@@ -169,7 +169,7 @@ private func subscribe(
         )
       } else {
         return conn.redirect(to: .account()) {
-          $0.flash(.notice, "You are now subscribed to Point-Free!")
+          $0.flash(.notice, "You are now a member of Point-Free!")
         }
       }
     }
@@ -177,7 +177,7 @@ private func subscribe(
     let errorMessage =
       (error as? StripeErrorEnvelope)?.error.message
         ?? """
-        Error creating subscription! If you believe you have been charged in error, please contact \
+        Error becoming a member! If you believe you have been charged in error, please contact \
         <support@pointfree.co>.
         """
 
@@ -296,7 +296,7 @@ private func requireSubscribeData(
       require2 >>> pure,
       or: redirect(
         with: get2 >>> subscribeConfirmationWithSubscribeData,
-        headersMiddleware: flash(.error, "Error creating subscription!")
+        headersMiddleware: flash(.error, "Error creating membership!")
       )
     )
 }
@@ -311,7 +311,7 @@ private func validateQuantity(
       get2 >>> \.pricing >>> validateQuantity,
       or: redirect(
         with: get2 >>> subscribeConfirmationWithSubscribeData,
-        headersMiddleware: flash(.error, "An invalid subscription quantity was used.")
+        headersMiddleware: flash(.error, "An invalid team quantity was used.")
       )
     )
 }
@@ -327,7 +327,7 @@ private func validateCoupon(
       or: redirect(
         with: get2 >>> subscribeConfirmationWithSubscribeData,
         headersMiddleware: flash(
-          .error, "Coupons can only be used on individual subscription plans.")
+          .error, "Coupons can only be used on individual plans.")
       )
     )
     |> filter(

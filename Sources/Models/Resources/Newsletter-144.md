@@ -1,16 +1,16 @@
 > Announcement: We have extended our [WWDC sale](/discounts/dubdub24) for just a few more days!
-> Subscribed today to get [25% off](/discounts/dubdub24) your first year of a Point-Free
-> subscription, and unlock access to all past episodes, and get access to our upcoming series, such
+> Become a member today to get [25% off](/discounts/dubdub24) your first year of a Point-Free
+> membership, and unlock access to all past episodes, and get access to our upcoming series, such
 > as ["Modern UIKit"](/collections/uikit), as well as all of our future deep dives into WWDC 24's
 > announcements!
 
 Swift officially turns 10 years old at this year's WWDC! To celebrate we are offering a 
-[25% discount](/discounts/dubdub24) off the first year for first-time subscribers. Click
+[25% discount](/discounts/dubdub24) off the first year for first-time members. Click
 [here](/discounts/dubdub24) to redeem the coupon now. The offer will only remain valid until June 
 14th.
 
 @Button(/discounts/dubdub24) {
-  Subscribe for 25% off!
+  Join and save 25%!
 }
 
 This is the perfect time to get full access to all of our videos. In the past year we have explored 
@@ -82,12 +82,12 @@ questions, and we will also have a very special announcement to make. Trust usâ€
 miss it!
 -->
 
-## Subscribe today
+## Become a member today
 
 And that is just barely scratching the surface of what we offer on [Point-Free](/). We hope you'll 
 [join us](/discounts/wwdc-2023) for all of the great material we have planned for the rest of the 
 year!
 
 @Button(/discounts/dubdub24) {
-  Subscribe for 25% off!
+  Join and save 25%!
 }

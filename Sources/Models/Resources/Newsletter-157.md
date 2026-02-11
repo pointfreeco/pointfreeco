@@ -1,6 +1,6 @@
 It's Cyber Monday and our [rare holiday sale](/discounts/cyber-monday-2024) is almost over!
 
-Subscribe today and gain instant access to hours of content covering advanced Swift topics,
+Become a member today and gain instant access to hours of content covering advanced Swift topics,
 including:
 
   * Dependencies: Learn what dependencies are and how they can make code difficult to exercise in
@@ -16,7 +16,7 @@ And so much more!
 
 Point-Free offers some of the most advanced and original Swift content out there and will help you
 bring your expertise of the Swift language to the next level.
-[Subscribe today](/discounts/cyber-monday-2024) to take advantage of our **30% off** Cyber Monday
+[Become a member today](/discounts/cyber-monday-2024) to take advantage of our **30% off** Cyber Monday
 sale!
 
 @Button(/discounts/cyber-monday-2024) {

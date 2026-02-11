@@ -1,10 +1,10 @@
 Swift officially turns 10 years old at this year's WWDC! To celebrate we are offering a 
-[25% discount](/discounts/dubdub24) off the first year for first-time subscribers. Click
+[25% discount](/discounts/dubdub24) off the first year for first-time members. Click
 [here](/discounts/dubdub24) to redeem the coupon now. The offer will only remain valid until June 
 14th.
 
 @Button(/discounts/dubdub24) {
-  Subscribe for 25% off!
+  Join and save 25%!
 }
 
 This is the perfect time to get full access to all of our videos. In the past year we have explored 
@@ -76,12 +76,12 @@ questions, and we will also have a very special announcement to make. Trust usâ€
 miss it!
 -->
 
-## Subscribe today
+## Become a member today
 
 And that is just barely scratching the surface of what we offer on [Point-Free](/). We hope you'll 
 [join us](/discounts/wwdc-2023) for all of the great material we have planned for the rest of the 
 year!
 
 @Button(/discounts/dubdub24) {
-  Subscribe for 25% off!
+  Join and save 25%!
 }

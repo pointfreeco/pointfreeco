@@ -47,9 +47,9 @@ private func episodesListMiddleware(
   let subtitle =
     switch listType {
     case .all:
-      "All episodes"
+      "All videos"
     case .free:
-      "Free episodes"
+      "Free videos"
     case .history:
       "Continue watching"
     }
@@ -86,7 +86,7 @@ private func progressMiddleware(
       userID: currentUser.id
     )
   } catch {
-    reportIssue(error, "Failed to update episode progress.")
+    reportIssue(error, "Failed to update video progress.")
   }
 
   return conn.writeStatus(.ok).empty()
@@ -98,7 +98,7 @@ private func showEpisode(
   collectionSlug: Episode.Collection.Slug?
 ) async -> Conn<ResponseEnded, Data> {
   guard episode.transcript != nil else {
-    reportIssue("Episode #\(episode.sequence) transcript not found")
+    reportIssue("Video #\(episode.sequence) transcript not found")
     return
       conn
       .writeStatus(.notFound)
@@ -128,7 +128,7 @@ private func showEpisode(
       layoutData: SimplePageLayoutData(
         description: String(stripping: episode.blurb),
         image: episode.image,
-        title: "Episode #\(episode.sequence): \(episode.fullTitle)",
+        title: "Video #\(episode.sequence): \(episode.fullTitle)",
         usePrismJs: true
       )
     ) {
@@ -193,7 +193,7 @@ private func useCreditMiddleware(
 
   guard !permission.isViewable else {
     return conn.redirect(to: .episodes(.show(episode))) {
-      $0.flash(.warning, "This episode is already available to you.")
+      $0.flash(.warning, "This video is already available to you.")
     }
   }
 
@@ -202,7 +202,7 @@ private func useCreditMiddleware(
     try await database.redeemEpisodeCredit(sequence: episode.sequence, userID: user.id)
     try await database.updateUser(id: user.id, episodeCreditCount: user.episodeCreditCount - 1)
     return conn.redirect(to: .episodes(.show(episode))) {
-      $0.flash(.notice, "You now have access to this episode!")
+      $0.flash(.notice, "You now have access to this video!")
     }
   } catch {
     return conn.redirect(to: .episodes(.show(episode))) {
@@ -222,7 +222,7 @@ private func episode(forParam param: Either<String, Episode.ID>) -> Episode? {
 private func episodeNotFoundView() -> Node {
   SimplePageLayoutData(
     data: (),
-    title: "Episode not found :("
+    title: "Video not found :("
   )
     |> simplePageLayout({
       .gridRow(
@@ -233,12 +233,12 @@ private func episodeNotFoundView() -> Node {
             attributes: [.style(padding(topBottom: .rem(12)))],
             .h5(
               attributes: [.class([Class.h5])],
-              "Episode not found :("
+              "Video not found :("
             ),
             .pre(
               .code(
                 attributes: [.class([Class.pf.components.code(lang: "swift")])],
-                "f: (Episode) -> Never"
+                "f: (Video) -> Never"
               )
             )
           )

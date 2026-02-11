@@ -19,7 +19,7 @@ public struct EpisodeCard: HTML {
       VStack {
         VStack(spacing: 0.5) {
           div {
-            "Episode \(episode.sequence.rawValue) • \(episode.publishedAt.monthDayYear())"
+            "Video \(episode.sequence.rawValue) • \(episode.publishedAt.monthDayYear())"
           }
           .color(.gray650.dark(.gray400))
           .fontStyle(.body(.small))
@@ -57,7 +57,7 @@ public struct EpisodeCard: HTML {
         if episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) {
           if !subscriberState.isActive {
             Link(destination: .pricingLanding) {
-              Label("Subscriber-only", icon: .locked)
+              Label("Members only", icon: .locked)
             }
             .linkColor(.currentColor)
           }
@@ -195,7 +195,7 @@ public struct CollectionCard: HTML {
       .inlineStyle("text-align", "center")
     } footer: {
       CardFooter {
-        Label("\(collection.numberOfEpisodes) episodes", icon: .play)
+        Label("\(collection.numberOfEpisodes) videos", icon: .play)
 
         Label(collection.length.formatted(), icon: .clock)
       }
@@ -240,7 +240,7 @@ extension SVG {
     }
   }
 
-  static let locked = Self("Subscriber-only") {
+  static let locked = Self("Members only") {
     """
     <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M12 5.83342H11.3334V4.50008C11.3334 2.66008 9.84002 1.16675 8.00002 1.16675C6.16002 1.16675 4.66669 2.66008 4.66669 4.50008V5.83342H4.00002C3.26669 5.83342 2.66669 6.43341 2.66669 7.16675V13.8334C2.66669 14.5667 3.26669 15.1667 4.00002 15.1667H12C12.7334 15.1667 13.3334 14.5667 13.3334 13.8334V7.16675C13.3334 6.43341 12.7334 5.83342 12 5.83342ZM7.99994 11.8335C7.26661 11.8335 6.66661 11.2335 6.66661 10.5001C6.66661 9.76679 7.26661 9.16679 7.99994 9.16679C8.73327 9.16679 9.33327 9.76679 9.33327 10.5001C9.33327 11.2335 8.73327 11.8335 7.99994 11.8335ZM10.0665 5.83347H5.93321V4.50014C5.93321 3.36014 6.85987 2.43347 7.99987 2.43347C9.13987 2.43347 10.0665 3.36014 10.0665 4.50014V5.83347Z" fill="currentColor"/>

@@ -99,7 +99,7 @@ public func simplePageLayout<A>(
             attributes: [
               .href(siteRouter.url(for: .feed(.episodes))),
               .rel(.alternate),
-              .title("Point-Free Episodes"),
+              .title("Point-Free Videos"),
               .type(.application(.init(rawValue: "atom+xml"))),
             ]
           ),
@@ -203,7 +203,7 @@ struct Banner {
   static let saleBanner = Self(
     endAt: yearMonthDayFormatter.date(from: "2026-01-05")!,
     markdownContent: ###"""
-      **🎉 Holiday Sale!** Save 25% when you [subscribe today](/discounts/eoy-2025).
+      **🎉 Holiday Sale!** Save 25% when you [become a member today](/discounts/eoy-2025).
       """###,
     shouldShow: { route in !route.is(\.subscribeConfirmation) && !route.is(\.teamInviteCode) },
     startAt: yearMonthDayFormatter.date(from: "2025-12-22")!
@@ -433,7 +433,7 @@ var pastDueBanner: Node {
       .init(
         .warning,
         """
-        Your subscription is past-due! Please
+        Your membership is past-due! Please
         [update your payment info](\(siteRouter.path(for: .account(.paymentInfo())))) to ensure 
         access to Point-Free!
         """
@@ -445,7 +445,7 @@ var pastDueBanner: Node {
       .init(
         .warning,
         """
-        Your subscription is past-due! Please
+        Your membership is past-due! Please
         contact us at <support@pointfree.co> to regain access to Point-Free.
         """
       )
@@ -456,8 +456,8 @@ var pastDueBanner: Node {
       .init(
         .warning,
         """
-        Your subscription is canceled. To regain access to Point-Free,
-        [resubscribe](\(siteRouter.path(for: .pricingLanding))) anytime!
+        Your membership is canceled. To regain access to Point-Free,
+        [rejoin](\(siteRouter.path(for: .pricingLanding))) anytime!
         """
       )
     )
@@ -467,7 +467,7 @@ var pastDueBanner: Node {
       .init(
         .warning,
         """
-        Your subscription is canceled. Please
+        Your membership is canceled. Please
         contact us at <support@pointfree.co> to regain access to Point-Free.
         """
       )
@@ -479,7 +479,7 @@ var pastDueBanner: Node {
       .init(
         .warning,
         """
-        Your subscription has been deactivated. Please
+        Your membership has been deactivated. Please
         contact us at <support@pointfree.co> to regain access to Point-Free.
         """
       )
@@ -493,7 +493,7 @@ var pastDueBanner: Node {
       .init(
         .warning,
         """
-        Your team's subscription is past-due! Please contact \(ownerMessage) to regain access to
+        Your team's membership is past-due! Please contact \(ownerMessage) to regain access to
         Point-Free.
         """
       )
@@ -504,7 +504,7 @@ var pastDueBanner: Node {
       .init(
         .warning,
         """
-        Your team's subscription is canceled. Please contact \(ownerMessage) to regain access to
+        Your team's membership is canceled. Please contact \(ownerMessage) to regain access to
         Point-Free.
         """
       )
@@ -516,7 +516,7 @@ var pastDueBanner: Node {
       .init(
         .warning,
         """
-        Your team's subscription is deactivated. Please contact \(ownerMessage) to regain access to
+        Your team's membership is deactivated. Please contact \(ownerMessage) to regain access to
         Point-Free.
         """
       )

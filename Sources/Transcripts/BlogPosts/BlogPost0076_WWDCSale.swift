@@ -5,7 +5,7 @@ extension BlogPost {
     author: .pointfree,
     blurb: """
       The year's biggest Apple event is here, and to celebrate we are offering a 25% discount off \
-      the first year for first-time subscribers.
+      the first year for first-time members.
       """,
     coverImage: nil,
     hidden: .yes,

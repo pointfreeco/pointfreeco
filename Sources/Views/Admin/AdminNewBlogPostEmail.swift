@@ -31,7 +31,7 @@ public struct AdminNewBlogPostEmailView: HTML {
 
                 textarea { "" }
                   .attribute("name", NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue)
-                  .attribute("placeholder", "Subscriber announcement")
+                  .attribute("placeholder", "Member announcement")
 
                 label {
                   input()
@@ -44,7 +44,7 @@ public struct AdminNewBlogPostEmailView: HTML {
 
                 textarea { "" }
                   .attribute("name", NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue)
-                  .attribute("placeholder", "Non-subscriber announcement")
+                  .attribute("placeholder", "Non-member announcement")
 
                 HStack(alignment: .center, spacing: 0.5) {
                   Button(tag: "input", color: .black, style: .outline)

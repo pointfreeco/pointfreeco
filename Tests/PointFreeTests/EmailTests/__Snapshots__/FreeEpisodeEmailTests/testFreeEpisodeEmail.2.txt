@@ -1,5 +1,5 @@
-Every once in awhile we release a past episode for free to all of our viewers, and today is that day! Please consider supporting us <http://localhost:8080/pricing> so that we can keep new episodes coming!
-### Episode #2 is now free!
+Every once in awhile we release a past video for free to all of our viewers, and today is that day! Please consider supporting us <http://localhost:8080/pricing> so that we can keep new videos coming!
+### Video #2 is now free!
 
  <http://localhost:8080/episodes/ep2-proof-in-functions>#### Proof in Functions
 
@@ -8,7 +8,7 @@ text, no markdown allowed. Here is some more text just to have some filler.
 
  <http://localhost:8080/episodes/ep2-proof-in-functions>
 
-This episode is 23 minutes long.
+This video is 23 minutes long.
 
 Watch now! <http://localhost:8080/episodes/ep2-proof-in-functions>
 

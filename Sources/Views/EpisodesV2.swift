@@ -62,13 +62,13 @@ public struct Episodes: HTML {
       } else {
         EpisodesModule(
           episodes: freeEpisodes,
-          title: "Free episodes",
+          title: "Free videos",
           omitSeeAllLink: false
         )
         InterstitialBanner()
         EpisodesModule(
           episodes: mainEpisodes,
-          title: "All episodes",
+          title: "All videos",
           omitSeeAllLink: true
         )
       }
@@ -167,9 +167,9 @@ private struct EpisodesHeader: HTML {
     PageHeader {
       switch listType {
       case .all:
-        "Episodes"
+        "Videos"
       case .free:
-        "Free Episodes"
+        "Free Videos"
       case .history:
         "Continue watching"
       }
@@ -177,14 +177,14 @@ private struct EpisodesHeader: HTML {
       switch listType {
       case .all:
         if subscriberState.isActiveSubscriber {
-          "Watch our entire catalogue of episodes, all \(episodeCount) of them."
+          "Watch our entire catalogue of videos, all \(episodeCount) of them."
         } else {
-          "Watch some for free or explore all \(episodeCount) episodes."
+          "Watch some for free or explore all \(episodeCount) videos."
         }
       case .free:
-        "All of our free episodes, in one place."
+        "All of our free videos, in one place."
       case .history:
-        "Your most recently watched episodes."
+        "Your most recently watched videos."
       }
     }
   }

@@ -49,7 +49,7 @@ private func registrationEmailBody(user: GitHubUser) -> Node {
                 .href(siteRouter.url(for: .pricingLanding)),
                 .class([Class.pf.components.button(color: .purple)]),
               ],
-              "Choose a subscription plan!"
+              "Choose a plan!"
             )
           )
         )

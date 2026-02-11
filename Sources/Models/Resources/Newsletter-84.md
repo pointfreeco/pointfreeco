@@ -79,7 +79,7 @@ leads to an explosion of invalid states, such as when more than 1 is non-`nil` a
 SwiftUI considers that a user error, and can lead to the interface becoming non-responsive or even
 crash.
 
-> Announcement: Subscribe to Point-Free through
+> Announcement: Become a member of Point-Free through
 > [our Black Friday sale](https://www.pointfree.co/discounts/black-friday-2022)
 > at a 30% discount! Learn how we motivated and built the SwiftUI Navigation library along
 > with [many other topics](https://www.pointfree.co/collections).

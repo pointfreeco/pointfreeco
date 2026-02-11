@@ -54,7 +54,7 @@ public func collectionSection(
     collectionHeader(
       title: section.title,
       category: "Section",
-      subcategory: "episode",
+      subcategory: "video",
       subcategoryCount: section.coreLessons.count,
       length: section.length,
       blurb: section.blurb

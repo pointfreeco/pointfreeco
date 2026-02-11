@@ -185,11 +185,23 @@ func fetchGitHubCompareCommits(
 public struct CompareCommitsResponse: Codable {
   public var commits: [Commit]
 
+  public init(commits: [Commit] = []) {
+    self.commits = commits
+  }
+
   public struct Commit: Codable {
     public var commit: Detail
 
+    public init(commit: Detail = Detail()) {
+      self.commit = commit
+    }
+
     public struct Detail: Codable {
       public var message: String
+
+      public init(message: String = "") {
+        self.message = message
+      }
     }
   }
 }

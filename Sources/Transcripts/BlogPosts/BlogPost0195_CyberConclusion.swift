@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0195_CyberConclusion = Self(
     author: .pointfree,
     blurb: """
-      Today marks the final day of our sale! We're offering a 30% off Point-Free subscriptions and \
+      Today marks the final day of our sale! We're offering a 30% off Point-Free memberships and \
       gifts! Get or gift instant access to all past 346 episodes instantly, as well as access to \
       everything we have planned for 2026.
       """,
