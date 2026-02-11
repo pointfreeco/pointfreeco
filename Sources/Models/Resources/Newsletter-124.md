@@ -1,12 +1,12 @@
 We do this only a few times a year: we‘re having a 
 [rare, Point-Free sale](/discounts/cyber-monday-plus-2023)
-through this Cyber Monday by offering 30% off the first year of your subscription!
+through this Cyber Monday by offering 30% off the first year of your membership!
 
 @Button(/discounts/cyber-monday-plus-2023) {
-  Subscribe today!
+  Become a member today!
 }
 
-Once subscribed you'll get instant access to all [259 episodes][pf] (163 hours of video and
+When you're a Point-Free member you'll get instant access to all [259 episodes][pf] (163 hours of video and
 growing!) of Point-Free content. This includes popular [collections][collections] that were
 created or expanded this year, as well as all of the material we have planned for 2024!
 
@@ -106,14 +106,14 @@ Swift is so difficult, and provided a solution. We even packaged the tool up int
 [open-source library][concurrency-extras-gh] that can help any code base test their async code
 in a fast and non-deterministic manner.
 
-## Subscribe today!
+## Become a member today!
 
 This only scratches the surface of what we covered in 2023, and we have plenty of exciting topics 
 planned for 2024, including bringing `@Observable` to the Composable Architecture, a new fundamental 
 change to the Composable Architecture that will unlock capabilities currently impossible, and 
 perhaps we will even start to explore some server-side Swift. 😀
 
-Be sure to [subscribe today][cyber-monday-sale] to get access to all of this and more. The
+Be sure to [become a member today][cyber-monday-sale] to get access to all of this and more. The
 offer is valid for only a few days, so you better hurry!
 
 [observation-collection]: /collections/swiftui/observation
@@ -133,5 +133,5 @@ offer is valid for only a few days, so you better hurry!
 [collections]: /collections
 
 @Button(/discounts/cyber-monday-plus-2023) {
-  Subscribe today!
+  Become a member today!
 }

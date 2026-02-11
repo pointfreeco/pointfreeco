@@ -1,8 +1,8 @@
 It's the end of the year again, and we’re feeling nostalgic 😊. We’re really proud of everything we
 produced for 2022, so join us for a quick review of some of our favorite highlights.
 
-We are also offering [25% off 🎁][eoy-discount] the first year for first-time subscribers. If you’ve
-been on the fence on whether or not to subscribe, now is the time!
+We are also offering [25% off 🎁][eoy-discount] the first year for first-time members. If you’ve
+been on the fence on whether or not to join Point-Free, now is the time!
 
 ## Highlights
 
@@ -146,7 +146,7 @@ SwiftUI architecture library: the [Composable Architecture][tca-gh].
 
     While covering these topics we also had a fun
     [digression into Swift 5.7's new existential type features][existential-digression] (starts at
-    18:12, subscription required). It shows how one can think of existential types as a kind of
+    18:12, membership required). It shows how one can think of existential types as a kind of
     "infinite" enum, which helps build intuition of why protocols seem so different from regular,
     concrete types.
 
@@ -158,7 +158,7 @@ SwiftUI architecture library: the [Composable Architecture][tca-gh].
 
     While covering these topics we also had a fun
     [digression into improving type inference in result builders][type-inference-builders] (starts
-    at 21:34, subscription required). We showed that a combination of generic result builders and
+    at 21:34, membership required). We showed that a combination of generic result builders and
     `buildExpression` can allow types to more fully propagate to all parts of the builder, greatly
     enhancing its ergonomics.
 
@@ -249,7 +249,7 @@ non-exhaustive testing can help.
 
 ## See you in 2023! 🥳
 
-We're thankful to all of our subscribers for supporting us and helping us create this content and
+We're thankful to all of our members for supporting us and helping us create this content and
 these libraries. We could not do it without you!
 
 Next year we have even more planned, including powerful new navigation tools in the Composable
@@ -257,7 +257,8 @@ Architecture, deep dives into existential types and other powerful type system c
 exploring new forms of content (live streams!).
 
 To celebrate the end of the year we are also offering [25% off][eoy-discount] the first year for
-first-time subscribers. If you’ve been on the fence on whether or not to subscribe, now is the time!
+first-time members. If you’ve been on the fence on whether or not to join Point-Free, now is the
+time!
 
 See you in 2023!
 

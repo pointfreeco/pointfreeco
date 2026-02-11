@@ -45,7 +45,7 @@ private func invalidRssFeedEmailBody(user: User, userAgent: String) -> Node {
 
             We detected that your private RSS feed URL was shared\(shareQualifier(userAgent: userAgent)). To protect your account, your RSS feed has been deactivated and a new URL has been generated for you, which is available on your [account](https://www.pointfree.co/account) page.
 
-            Please note that the RSS feed URL we provide to you is private to only you and should not be shared externally. If you would like to share Point-Free with friends or colleagues, please consider purchasing a [team](https://www.pointfree.co/pricing) subscription by adding them to your [account](https://www.pointfree.co/account), or send them a [gift subscription](https://www.pointfree.co/gifts).
+            Please note that the RSS feed URL we provide to you is private to only you and should not be shared externally. If you would like to share Point-Free with friends or colleagues, please consider purchasing a [team](https://www.pointfree.co/pricing) membership by adding them to your [account](https://www.pointfree.co/account), or send them a [gift membership](https://www.pointfree.co/gifts).
             """)
         )
       )

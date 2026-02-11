@@ -205,7 +205,7 @@ func invalidSubscriptionErrorMiddleware<A>(
       to: .account(),
       headersMiddleware: flash(
         .error,
-        "Invalid subscription data. Please try again or contact <support@pointfree.co>."
+        "Invalid membership data. Please try again or contact <support@pointfree.co>."
       )
     )
 }
@@ -291,8 +291,8 @@ private func redirectCurrentSubscribers<A, B>(
             headersMiddleware: flash(
               .warning,
               """
-              You already have an active subscription. If you want to accept this team invite you need to
-              cancel your current subscription.
+              You already have an active membership. If you want to accept this team invite you \
+              need to cancel your current membership.
               """
             )
           )

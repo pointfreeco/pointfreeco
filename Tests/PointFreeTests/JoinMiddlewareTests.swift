@@ -80,7 +80,7 @@ class JoinMiddlewareTests: TestCase {
         302 Found
         Location: /
         Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"Cannot join team as it is inactive. Contact the subscription owner to re-activate.","priority":"error"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        Set-Cookie: pf_session={"flash":{"message":"Cannot join team as it is inactive. Contact the owner to re-activate.","priority":"error"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
         X-Content-Type-Options: nosniff
         X-Download-Options: noopen
         X-Frame-Options: SAMEORIGIN
@@ -112,7 +112,7 @@ class JoinMiddlewareTests: TestCase {
         302 Found
         Location: /
         Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"Cannot join team as it is inactive. Contact the subscription owner to re-activate.","priority":"error"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        Set-Cookie: pf_session={"flash":{"message":"Cannot join team as it is inactive. Contact the owner to re-activate.","priority":"error"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
         X-Content-Type-Options: nosniff
         X-Download-Options: noopen
         X-Frame-Options: SAMEORIGIN
@@ -329,8 +329,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       expectNoDifference(
         Set(sentEmails.value.map(\.subject)),
         [
-          "[testing] Blob has joined your Point-Free subscription",
-          "[testing] You have joined Blob Sr's Point-Free subscription",
+          "[testing] Blob has joined your Point-Free team",
+          "[testing] You have joined Blob Sr's Point-Free team",
           "[testing] Team invite link used",
         ]
       )
@@ -394,7 +394,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       XCTAssertEqual(sentEmails.value.flatMap(\.to), [currentUser.email])
       expectNoDifference(
         sentEmails.value.map(\.subject),
-        ["[testing] Confirm your email to join the Point-Free team subscription."]
+        ["[testing] Confirm your email to join the Point-Free team."]
       )
       let teammateIDs = try await self.database.fetchSubscriptionTeammatesByOwnerId(owner.id).map(
         \.id)
@@ -433,7 +433,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         302 Found
         Location: /join/pointfree.co
         Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"Could not find subscription. Try again or contact support@pointfree.co.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        Set-Cookie: pf_session={"flash":{"message":"Could not find membership. Try again or contact support@pointfree.co.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
         X-Content-Type-Options: nosniff
         X-Download-Options: noopen
         X-Frame-Options: SAMEORIGIN
@@ -473,7 +473,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         302 Found
         Location: /join/pointfree.co
         Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"Cannot join team as it is inactive. Contact the subscription owner to re-activate.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        Set-Cookie: pf_session={"flash":{"message":"Cannot join team as it is inactive. Contact the owner to reactivate.","priority":"error"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
         X-Content-Type-Options: nosniff
         X-Download-Options: noopen
         X-Frame-Options: SAMEORIGIN
@@ -589,7 +589,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
         302 Found
         Location: /account
         Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"You cannot join this team as you already have an active subscription.","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+        Set-Cookie: pf_session={"flash":{"message":"You cannot join this team as you already have an active membership.","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
         X-Content-Type-Options: nosniff
         X-Download-Options: noopen
         X-Frame-Options: SAMEORIGIN
@@ -673,8 +673,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       expectNoDifference(
         Set(sentEmails.value.map(\.subject)),
         [
-          "[testing] Blob has joined your Point-Free subscription",
-          "[testing] You have joined pointfree.co's Point-Free subscription",
+          "[testing] Blob has joined your Point-Free team",
+          "[testing] You have joined pointfree.co's Point-Free team",
           "[testing] Team invite link used",
         ]
       )
@@ -750,8 +750,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       expectNoDifference(
         Set(sentEmails.value.map(\.subject)),
         [
-          "[testing] Blob has joined your Point-Free subscription",
-          "[testing] You have joined pointfree.co's Point-Free subscription",
+          "[testing] Blob has joined your Point-Free team",
+          "[testing] You have joined pointfree.co's Point-Free team",
           "[testing] Team invite link used",
         ]
       )
@@ -824,8 +824,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       expectNoDifference(
         Set(sentEmails.value.map(\.subject)),
         [
-          "[testing] Blob has joined your Point-Free subscription",
-          "[testing] You have joined pointfree.co's Point-Free subscription",
+          "[testing] Blob has joined your Point-Free team",
+          "[testing] You have joined pointfree.co's Point-Free team",
           "[testing] Team invite link used",
         ]
       )

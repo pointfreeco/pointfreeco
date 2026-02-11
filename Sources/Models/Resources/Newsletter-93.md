@@ -12,8 +12,8 @@ arrays][identified-collections-gh].
 
 …and a whole bunch more.
 
-Join us for a quick overview of the series, and consider [subscribing][pricing] today to get access
-to the [full series][modern-swiftui-collection]!
+Join us for a quick overview of the series, and consider [becoming a member][pricing] today to get
+access to the [full series][modern-swiftui-collection]!
 
 * [The Standups app](#the-standups-app)
 * [Identified arrays](#identified-arrays)

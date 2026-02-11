@@ -27,7 +27,7 @@ func resumeMiddleware(
       .first
   else {
     return conn.redirect(to: .home) {
-      $0.flash(.warning, "You are not currently watching any episodes.")
+      $0.flash(.warning, "You are not currently watching any videos.")
     }
   }
 
@@ -40,7 +40,7 @@ func resumeMiddleware(
         )
       )
     ) {
-      $0.flash(.notice, "Resuming your last watched episode.")
+      $0.flash(.notice, "Resuming your last watched video.")
     }
   }
 
@@ -53,6 +53,6 @@ func resumeMiddleware(
   }
 
   return conn.redirect(to: .episodes(.show(nextEpisode))) {
-    $0.flash(.notice, "Starting the next episode.")
+    $0.flash(.notice, "Starting the next video.")
   }
 }

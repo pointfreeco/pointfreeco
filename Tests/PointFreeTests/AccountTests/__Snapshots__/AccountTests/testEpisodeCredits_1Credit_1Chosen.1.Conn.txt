@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 54596
+Content-Length: 54566
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -1907,7 +1907,7 @@ html {
           content="width=device-width,initial-scale=1.0">
     <link href="http://localhost:8080/feed/episodes.xml"
           rel="alternate"
-          title="Point-Free Episodes"
+          title="Point-Free Videos"
           type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml"
           rel="alternate"
@@ -2148,7 +2148,7 @@ html {
                              name="emailSettings[newEpisode]"
                              checked
                              class="m-mr1">
-                      New episode is available (about once a week)
+                      New video is available (about once a week)
                     </label>
                     <label class="block">
                       <input type="checkbox"
@@ -2186,20 +2186,20 @@ html {
                            ts-d-r1_5
                            ts-m-r1_25
                            lh-2">
-                  Episode Credits
+                  Video Credits
                 </h2>
                 <p>
-                  Episode credits allow you to see subscriber-only episodes before commiting to a full 
+                  Video credits allow you to see members only videos before commiting to a full 
                   subscription. You currently have 1 credit 
                   remaining.
                 </p>
                 <p>
-                  To get all past and future episodes, 
+                  To get all past and future videos, 
                   <a class="pf-link-purple"
                      href="/pricing">
                     become
                   </a>
-                   a subscriber today!
+                   a member today!
                 </p>
                 <h3 class="fg-black
                            bold
@@ -2207,7 +2207,7 @@ html {
                            ts-m-r1
                            lh-1
                            m-pt2">
-                  Chosen episodes
+                  Chosen videos
                 </h3>
                 <ul>
                   <li>
@@ -2324,7 +2324,7 @@ html {
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/gifts">Gifts</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Episodes</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Videos</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">Collections</a>
           </li>
@@ -2340,7 +2340,7 @@ html {
         <ol class="padding-left-E4tBw4 list-style-type-Wl0y44">
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/about">About Us</a>
           </li>
-          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/slack-invite">Community Slack</a>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/slack">Community Slack</a>
           </li>
           <li rel="me"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="https://hachyderm.io/@pointfreeco">Mastodon</a>
           </li>

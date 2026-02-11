@@ -12,7 +12,7 @@ func leaveTeamMiddleware(
   guard let currentUser else { return conn.loginAndRedirect() }
   guard !subscriberState.isOwner else {
     return conn.redirect(to: .account()) {
-      $0.flash(.error, "You are the owner of the subscription, you can’t leave.")
+      $0.flash(.error, "You are the owner of the team, you can’t leave.")
     }
   }
 

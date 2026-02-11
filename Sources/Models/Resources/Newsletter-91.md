@@ -1,5 +1,5 @@
 Our final sale of the year ends today. Get 🎁[25% off the first year][eoy-discount]🎁 of
-your subscription today! Once subscribed you'll get instant access to all 218 episodes (and
+your membership today! When you're a Point-Free member you'll get instant access to all 218 episodes (and
 growing) of Point-Free, including popular collections that have grown this past year:
 
 - [Concurrency][concurrency-collection]: We devoted a 5-part series of episodes to
@@ -29,7 +29,7 @@ possible to _invert_ parsers so that they can turn well-structured data back int
 
 That's a very brief recap of our 2022 (see more [here][eoy-2022]), and we have even bigger
 plans for 2023! [Click here][eoy-discount]🎁 to redeem the coupon code now. The offer will
-only remain valid through the end of the year, so subscribe today! 🥳
+only remain valid through the end of the year, so join Point-Free today! 🥳
 
 [eoy-discount]: /discounts/eoy-2022
 [swiftui-nav-collection]: /collections/swiftui/navigation

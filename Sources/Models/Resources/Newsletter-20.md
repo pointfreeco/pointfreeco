@@ -10,20 +10,20 @@ along in their favorite podcast app!
 
 We have one feed that is open to the public, and you can find it [here](/feed/episodes.xml).
 Plug that into any podcast app and you should have up-to-date access to all of our videos. You will
-get access to full videos of all our free episodes (currently 9 of em) and trailers for the
-subscriber-only episodes. If you find any of our content enticing, then you may want to consider a
-[subscription](/pricing) 😃.
+get access to full videos of all our free episodes (currently 9 of them) and trailers for the
+members only episodes. If you find any of our content enticing, then you may want to consider a
+[joining](/pricing) 😃.
 
 ## Private Episode Feed
 
-If you are a subscriber, then we have one more additional RSS feed for you, and you'll find it on
+If you are a member, then we have one more additional RSS feed for you, and you'll find it on
 your [account](/account) page. This gives you full access to _every_ episode on Point-Free
 as they are released. We ask that you please do not share this URL with anyone, as it is private and
 tied directly to your account.
 
 > Correction: Since the time we launched this feature we have changed this slightly. Only yearly
-> subscribers get access to the entire catalogue of episodes in their podcast RSS feed, and monthly
-> subscribers get access to the last 4 episodes.
+> members get access to the entire catalogue of episodes in their podcast RSS feed, and monthly
+> members get access to the last 4 episodes.
 
 ## Functional Programming Everywhere
 

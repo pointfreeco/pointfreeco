@@ -70,7 +70,7 @@ extension Array where Element == Faq {
 
 extension Faq {
   static let existingSubscriberRedeemGift = Self(
-    question: "Can I accept a gift if I already have a Point-Free subscription?",
+    question: "Can I accept a gift if I already have a Point-Free membership?",
     answer: """
       Yes! If you receive a gift and are currently a subscriber we will apply the credit to your \
       account and the amount will be applied to future invoices.
@@ -128,7 +128,7 @@ extension Gifts.Plan {
     @Dependency(\.siteRouter) var siteRouter
     let stats = EpisodesStats()
 
-    li { "All \(stats.allEpisodes) episodes with transcripts" }
+    li { "All \(stats.allEpisodes) videos with transcripts" }
     li {
       "Access to \""
       Link("The Point-Free Way", destination: .theWay)
@@ -143,6 +143,6 @@ extension Gifts.Plan {
       " at 1080p"
     }
     li { "Private RSS feed for offline viewing" }
-    li { "Download all episode code samples" }
+    li { "Download all video code samples" }
   }
 }

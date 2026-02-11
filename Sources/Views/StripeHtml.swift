@@ -56,7 +56,7 @@ public enum StripeHtml {
               if (elementsMatching(formElement)) {
                 formElement.disabled = !isEnabled;
                 if (formElement.tagName == 'BUTTON') {
-                  formElement.textContent = isEnabled ? 'Subscribe to Point‑Free' : 'Subscribing…';
+                  formElement.textContent = isEnabled ? 'Join Point‑Free' : 'Joining…';
                 }
               }
             }

@@ -65,7 +65,7 @@ private func unlinkSubscription(
   }
   .mapExcept(const(pure(unit)))
   .catch(
-    notifyAdmins(subject: "Couldn't remove subscription from user: \(enterpriseEmail.userId)")
+    notifyAdmins(subject: "Couldn't remove membership from user: \(enterpriseEmail.userId)")
   )
   .flatMap { _ in notifyUserSubscriptionWasRemoved(user: user, enterpriseEmail: enterpriseEmail) }
 }

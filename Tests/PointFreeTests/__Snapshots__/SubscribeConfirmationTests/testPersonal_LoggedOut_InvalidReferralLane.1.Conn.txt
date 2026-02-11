@@ -4,7 +4,7 @@ Cookie: pf_session={}
 302 Found
 Location: /subscribe/team?billing=yearly&isOwnerTakingSeat=true&teammates=&useRegionalDiscount=false
 Referrer-Policy: strict-origin-when-cross-origin
-Set-Cookie: pf_session={"flash":{"message":"Referrals are only valid for personal subscriptions.","priority":"error"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+Set-Cookie: pf_session={"flash":{"message":"Referrals are only valid for personal memberships.","priority":"error"}}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
 X-Content-Type-Options: nosniff
 X-Download-Options: noopen
 X-Frame-Options: SAMEORIGIN

@@ -105,7 +105,7 @@ public func inviteNotFoundView() -> Node {
         .p(
           """
           Yikes! We couldn’t find that invite. Perhaps it was already taken, or it may have been revoked by
-          the sender. To see subscription plans available, click the link below:
+          the sender. To learn more about becoming a Point-Free member, click the link below:
           """
         ),
         .p(
@@ -115,7 +115,7 @@ public func inviteNotFoundView() -> Node {
               .href(siteRouter.path(for: .pricingLanding)),
               .class([Class.pf.components.button(color: .purple)]),
             ],
-            "Subscribe"
+            "Become a member"
           )
         )
       )

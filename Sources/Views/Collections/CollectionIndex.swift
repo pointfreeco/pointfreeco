@@ -10,7 +10,7 @@ public struct Collections: HTML {
     PageHeader {
       "Collections"
     } blurb: {
-      "We contextualize broad themes into episode collections."
+      "We contextualize broad themes into video collections."
     }
 
     PageModule(theme: .content) {

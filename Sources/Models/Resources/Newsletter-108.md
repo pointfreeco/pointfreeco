@@ -1,9 +1,9 @@
 The year's biggest Apple event is here, and to celebrate we are offering a 25% discount off the 
-first year for first-time subscribers. Click [here](/discounts/wwdc-2023) to redeem the coupon now. 
+first year for first-time members. Click [here](/discounts/wwdc-2023) to redeem the coupon now. 
 The offer will only remain valid until June 12th.
 
 @Button(/discounts/wwdc-2023) {
-  Subscribe for 25% off!
+  Join and save 25%!
 }
 
 This is the perfect time to get full access to our videos, including these very popular series:
@@ -67,12 +67,12 @@ complex navigation flows work as you expect.
 [tca-nav]: /collections/composable-architecture/navigation
 [tca-gh]: http://github.com/pointfreeco/swift-composable-architecture   
 
-## Subscribe today
+## Become a member today
 
 And that is just barely scratching the surface of what we offer on [Point-Free](/). We hope you'll 
 [join us](/discounts/wwdc-2023) for all of the great material we have planned for the rest of the 
 year!
 
 @Button(/discounts/wwdc-2023) {
-  Subscribe for 25% off!
+  Join and save 25%!
 }

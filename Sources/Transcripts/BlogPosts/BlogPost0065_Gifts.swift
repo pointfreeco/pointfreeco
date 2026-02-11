@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0065_PointFreeGifts = Self(
     author: .pointfree,
     blurb: """
-      Today we are excited to announce that you can now gift a Point-Free subscription to your \
+      Today we are excited to announce that you can now gift a Point-Free membership to your \
       friends, colleagues and loved ones.
       """,
     coverImage: nil,

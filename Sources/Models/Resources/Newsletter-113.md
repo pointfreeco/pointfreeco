@@ -234,8 +234,8 @@ this very site. It's called [`assertRequest`][assert-request-gh], and it allows 
 simultaneously assert the request being made to the server (including URL, query parameters, 
 headers, POST body) as well as the response from the server (including status code and headers).
 
-For example, to test that when a request is made for a user to join a team subscription, we can
-write the following:
+For example, to test that when a request is made for a user to join a team, we can write the
+following:
 
 ```swift
 await assertRequest(

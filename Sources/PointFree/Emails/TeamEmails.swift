@@ -52,7 +52,7 @@ private func youHaveBeenRemovedEmailBody(removalType: RemovalType) -> Node {
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             """
             You have been removed from \(removalType.displayName)’s Point-Free team, which means you no longer
-            have access to full episodes and transcripts. If you wish to subscribe to an individual plan,
+            have access to full episodes and transcripts. If you wish to become a Point-Free member,
             click the link below!
             """
           ),
@@ -63,7 +63,7 @@ private func youHaveBeenRemovedEmailBody(removalType: RemovalType) -> Node {
                 .href(siteRouter.url(for: .pricingLanding)),
                 .class([Class.pf.components.button(color: .purple)]),
               ],
-              "See subscription plans"
+              "See plans"
             )
           )
         )

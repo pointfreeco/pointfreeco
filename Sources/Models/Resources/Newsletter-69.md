@@ -1,4 +1,4 @@
-We’re happy to announce [an end-of-year sale](/discounts/2021-eoy) by offering 25% off the first year of your subscription! Once subscribed you'll get instant access to all 172 episodes (and growing) of Point-Free, including popular collections that have grown this past year:
+We’re happy to announce [an end-of-year sale](/discounts/2021-eoy) by offering 25% off the first year of your membership! When you're a Point-Free member you'll get instant access to all 172 episodes (and growing) of Point-Free, including popular collections that have grown this past year:
 
 - [SwiftUI Navigation](/collections/swiftui/navigation): We build the concepts of navigation from scratch, explore what SwiftUI has to offer for navigation, and then discover all new tools that allow us to embrace simpler and more concise domains for driving navigation.
 

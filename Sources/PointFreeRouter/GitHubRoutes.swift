@@ -10,6 +10,8 @@ public enum GitHubRoute {
   case repo(Repo)
 
   public enum Repo: String, CaseIterable {
+    case composableArchitecture = "swift-composable-architecture"
+    case dependencies = "swift-dependencies"
     case html = "swift-html"
     case htmlKitura = "swift-html-kitura"
     case htmlVapor = "swift-html-vapor"
@@ -19,6 +21,7 @@ public enum GitHubRoute {
     case pointfreeco
     case prelude = "swift-prelude"
     case snapshotTesting = "swift-snapshot-testing"
+    case sqliteData = "sqlite-data"
     case tagged = "swift-tagged"
     case validated = "swift-validated"
     case web = "swift-web"

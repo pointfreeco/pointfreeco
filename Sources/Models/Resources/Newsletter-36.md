@@ -1,4 +1,4 @@
-To end 2019 on a high note we’re offering a 30% discount to new subscribers for their first year.
+To end 2019 on a high note we’re offering a 30% discount to new members for their first year.
 Click [here](/discounts/holiday-2019) to redeem the coupon now. The offer will only remain valid
 through the end of the year.
 

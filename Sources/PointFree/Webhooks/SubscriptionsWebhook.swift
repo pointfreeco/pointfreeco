@@ -62,14 +62,14 @@ private func handleFailedPayment(
         await fireAndForget {
           try await sendEmail(
             to: adminEmails,
-            subject: "[PointFree Warning] Churning Subscription",
+            subject: "[PointFree Warning] Churning Membership",
             content: inj1(
               """
-              An important subscription is churning:
+              An important membership is churning:
 
               - Owner: \(user.email.description)
               - Seats: \(stripeSubscription.quantity)
-              - Subscriber since: \(stripeSubscription.created)
+              - Member since: \(stripeSubscription.created)
               """
             )
           )
@@ -92,7 +92,7 @@ private func handleFailedPayment(
 private func sendPastDueEmail(to owner: User) async throws {
   try await sendEmail(
     to: [owner.email],
-    subject: "Your subscription is past-due",
+    subject: "Your membership is past-due",
     content: inj2(pastDueEmailView(unit))
   )
 }
@@ -102,7 +102,7 @@ let pastDueEmailView =
     SimpleEmailLayoutData(
       user: nil,
       newsletter: nil,
-      title: "Your subscription is past-due",
+      title: "Your membership is past-due",
       preheader: "Your most recent payment was declined.",
       template: .default(),
       data: unit
@@ -126,7 +126,7 @@ private func pastDueEmailBodyView(_: Prelude.Unit) -> Node {
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             """
-            Your most recent subscription payment was declined. This could be due to a change in your card
+            Your most recent membership payment was declined. This could be due to a change in your card
             number, your card expiring, cancellation of your credit card, or the card issuer not recognizing
             the payment and therefore taking action to prevent it.
             """

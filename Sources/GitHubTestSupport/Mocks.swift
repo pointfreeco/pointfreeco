@@ -13,7 +13,8 @@ extension Client {
     fetchEmails: { _ in [.mock] },
     fetchUser: { _ in .mock },
     fetchUserByUserID: { _, _ in .mock },
-    fetchZipball: { _, _, _, _ in Data() }
+    fetchZipball: { _, _, _, _ in Data() },
+    fetchCommitMessages: { _, _, _, _, _ in CompareCommitsResponse() }
   )
 }
 

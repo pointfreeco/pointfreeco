@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0036_HolidayDiscount = Self(
     author: .pointfree,
     blurb: """
-      To celebrate the holdiays we're offering 30% off the first year for first-time subscribers!
+      To celebrate the holdiays we're offering 30% off the first year for first-time members!
       """,
     coverImage: nil,
     hidden: .yes,

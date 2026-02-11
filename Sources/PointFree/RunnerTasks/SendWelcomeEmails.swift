@@ -88,7 +88,7 @@ func welcomeEmail2(_ user: User) -> Email {
   let freeEpisodeCount = episodes().count(where: { $0.subscriberOnly })
   return prepareEmailV2(
     to: [user.email],
-    subject: "Free episodes on Point-Free",
+    subject: "Free videos on Point-Free",
     unsubscribeData: (user.id, .welcomeEmails),
     content: WelcomeEmailWeek2(freeEpisodeCount: freeEpisodeCount, user: user)
   )
@@ -97,7 +97,7 @@ func welcomeEmail2(_ user: User) -> Email {
 func welcomeEmail3(_ user: User) -> Email {
   return prepareEmailV2(
     to: [user.email],
-    subject: "Here's a free episode!",
+    subject: "Here's a free video!",
     unsubscribeData: (user.id, .welcomeEmails),
     content: WelcomeEmailWeek3(user: user)
   )

@@ -4,8 +4,7 @@ extension BlogPost {
   public static let post0090_2022EOYSaleLastChance = Self(
     author: .pointfree,
     blurb: """
-      Our end-of-year sale is almost over! Subscribe to Point-Free now and get 25% off the first \
-      year!
+      Our end-of-year sale is almost over! Become a member now and get 25% off the first year!
       """,
     coverImage: nil,
     hidden: .yes,

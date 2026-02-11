@@ -37,7 +37,7 @@ func adminEmailReportContent(data: (type: String, erroredUsers: [User], totalAtt
           attributes: [.class([Class.padding([.mobile: [.all: 1], .desktop: [.all: 2]])])],
           .h3(
             attributes: [.class([Class.pf.type.responsiveTitle3])],
-            "New episode email report"
+            "New video email report"
           ),
           .p(
             "A total of ",

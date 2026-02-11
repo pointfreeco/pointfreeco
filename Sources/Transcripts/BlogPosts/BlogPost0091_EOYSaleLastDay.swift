@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0091_2022EOYSaleLastDay = Self(
     author: .pointfree,
     blurb: """
-      It's the last day to take advantage of our end-of-year sale! Subscribe to Point-Free now and \
+      It's the last day to take advantage of our end-of-year sale! Become a member now and \
       get 25% off the first year!
       """,
     coverImage: nil,

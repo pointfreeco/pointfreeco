@@ -135,7 +135,7 @@ private func item(episode: Episode) -> RssItem {
     case .free:
       return """
         Every once in awhile we release a new episode free for all to see, and today is that day! Please enjoy \
-        this episode, and if you find this interesting you may want to consider a subscription \
+        this episode, and if you find this interesting you may want to consider a membership \
         \(siteRouter.url(for: .pricingLanding)).
 
         ---
@@ -146,7 +146,7 @@ private func item(episode: Episode) -> RssItem {
       return """
         Free Episode: Every once in awhile we release a past episode for free to all of our viewers, and today is \
         that day! Please enjoy this episode, and if you find this interesting you may want to consider a \
-        subscription \(siteRouter.url(for: .pricingLanding)).
+        membership \(siteRouter.url(for: .pricingLanding)).
 
         ---
 
@@ -154,8 +154,9 @@ private func item(episode: Episode) -> RssItem {
         """
     case .freeDuring, .subscriberOnly:
       return """
-        Subscriber-Only: Today's episode is available only to subscribers. If you are a Point-Free subscriber you \
-        can access your private podcast feed by visiting \(siteRouter.url(for: .account())).
+        Members Only: Today's episode is available only to members. If you are already a \
+        member, you can access your private podcast feed by visiting \
+        \(siteRouter.url(for: .account())).
 
         ---
 

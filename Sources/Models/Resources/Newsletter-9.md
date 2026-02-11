@@ -1,6 +1,6 @@
 This week marks 6 months since we launched [Point-Free](/). In that time we’ve
 released 24 episodes with over 12 hours of video, published 9 [blog posts](/blog), had
-33 thousand unique visitors, more than 400 subscriptions, and
+33 thousand unique visitors, more than 400 members, and
 [open sourced](https://github.com/pointfreeco) 3 libraries from the topics covered in our episodes.
 
 The content covered so far spans a broad range of topics, from core functional programming concepts
@@ -27,6 +27,4 @@ well-regarded as a good tool for parsing, but we haven't said anything about tha
 much more to cover!
 
 So, we hope you'll join us for the next 6 months in diving even deeper into functional programming and
-Swift. And if you're not a subscriber, please consider
-[subscribing](/pricing) today!
-
+Swift. And if you're not a member, please consider [joining](/pricing) today!

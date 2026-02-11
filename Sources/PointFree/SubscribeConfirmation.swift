@@ -44,8 +44,8 @@ public let subscribeConfirmation:
           extraStyles: extraSubscriptionLandingStyles,
           style: .base(.some(.minimal(.black))),
           title: referrer == nil
-            ? "Subscribe to Point-Free"
-            : "Subscribe and get a free month of Point-Free"
+            ? "Become a member"
+            : "Join Point-Free and get an extra free month of access"
         )
       }
     )
@@ -80,7 +80,7 @@ private func validateReferralCode(
             teammates: subscribeData.teammates,
             useRegionalDiscount: subscribeData.useRegionalDiscount
           ),
-          headersMiddleware: flash(.error, "Referrals are only valid for personal subscriptions.")
+          headersMiddleware: flash(.error, "Referrals are only valid for personal memberships.")
         )
     }
 
@@ -94,7 +94,7 @@ private func validateReferralCode(
             teammates: subscribeData.teammates,
             useRegionalDiscount: subscribeData.useRegionalDiscount
           ),
-          headersMiddleware: flash(.error, "Referrals are only valid for first-time subscribers.")
+          headersMiddleware: flash(.error, "Referrals are only valid for first-time members.")
         )
     }
 
@@ -189,7 +189,7 @@ func redirectActiveSubscribers<A>(
       return conn
         |> redirect(
           to: .account(),
-          headersMiddleware: flash(.notice, "You are already subscribed to Point-Free!")
+          headersMiddleware: flash(.notice, "You are already a Point-Free member!")
         )
     }
     return middleware(conn)

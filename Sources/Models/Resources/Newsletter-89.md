@@ -1,5 +1,5 @@
 We’re happy to announce an end-of-year sale by offering 🎁[25% off the first
-year][eoy-discount]🎁 of your subscription! Once subscribed you'll get instant access to
+year][eoy-discount]🎁 of your membership! When you're a Point-Free member you'll get instant access to
 all 218 episodes (and growing) of Point-Free, including popular collections that have grown
 this past year:
 

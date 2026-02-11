@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0142_WWDCSale = Self(
     author: .pointfree,
     blurb: """
-      Get 25% off the first year of your Point-Free subscription to celebrate 10 years of Swift \
+      Get 25% off the first year of your Point-Free membership to celebrate 10 years of Swift \
       and the beginning of WWDC 2024!
       """,
     coverImage: nil,

@@ -104,7 +104,7 @@ private struct LoggedOut: HTML {
         Point-Free is a video series exploring advanced topics in the Swift programming language, \
         hosted by industry experts, Brandon and Stephen.
         """,
-      ctaTitle: "Start with a free episode →",
+      ctaTitle: "Start with a free video →",
       ctaURL: siteRouter.path(for: .auth(.signUp(redirect: nil))),
       style: .gradient
     )
@@ -136,13 +136,13 @@ private struct EpisodeCredits: HTML {
         .inlineStyle("line-height", "0")
 
         span {
-          "You have \(creditsLeft) to redeem on any subscriber-only episode of your choice."
+          "You have \(creditsLeft) to redeem on any members only video of your choice."
         }
         .grow()
         .inlineStyle("padding", "0 1rem")
 
         VStack(alignment: .trailing) {
-          Link("Browse episodes", href: siteRouter.path(for: .home))
+          Link("Browse videos", href: siteRouter.path(for: .home))
             .linkStyle(LinkStyle(color: .black, underline: true))
         }
       }
@@ -267,7 +267,7 @@ private struct EpisodesModule: HTML {
 
   var body: some HTML {
     PageModule(
-      title: "All episodes",
+      title: "All videos",
       seeAllURL: siteRouter.path(for: .episodes(.list(.all))),
       theme: .content
     ) {
@@ -292,7 +292,7 @@ private struct FreeEpisodes: HTML {
 
   var body: some HTML {
     PageModule(
-      title: "Free episodes",
+      title: "Free videos",
       seeAllURL: siteRouter.path(for: .episodes(.list(.free))),
       theme: .content
     ) {

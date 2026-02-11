@@ -10,13 +10,13 @@ Later we started releasing more complex libraries that either tackle something w
 
 But a question (or concern) we get often is what happens if we decide to stop maintaining these projects? Funding in open source is a thorny problem with no universal solution. There’s plenty of stories out there of a sole developer [maintaining a library](https://www.explainxkcd.com/wiki/index.php/2347:_Dependency) that is critical to large swaths of infrastructure, or big tech companies using open source libraries without funding their support.
 
-We don’t know the solution to any of these problems, at large, but we do feel we have solved the problem for our specific situation. Our open source efforts are funded by the Point-Free community through [subscriptions to our educational video series](/pricing). Thousands of people and companies pay us monthly or yearly to get access to our videos, and in the process of making our videos we uncover new projects to open source and ways to improve upon our existing open source. 
+We don’t know the solution to any of these problems, at large, but we do feel we have solved the problem for our specific situation. Our open source efforts are funded by the Point-Free community through [memberships](/pricing). Thousands of people and companies pay us monthly or yearly to get access to our videos, and in the process of making our videos we uncover new projects to open source and ways to improve upon our existing open source. 
 
 It might sound strange to say, but our libraries are as stable and well-designed as they are because we create a comprehensive video series that builds their core components from scratch. And it’s icing on the cake that we get paid to do it. This funding cycle has sustained us for the past 7 years, and we see no reason it won’t for the next 7.
 
 ## Live Stream and Giveaway
 
-We are excited to announce that we are hosting a [live stream on February 14th](/live) (Valentine's Day 😍) at 9am PST / 5pm GMT. And to celebrate our 7th anniversary we will be giving away 7 yearly subscriptions to Point-Free. Simply tune into the live stream to join the giveaway!
+We are excited to announce that we are hosting a [live stream on February 14th](/live) (Valentine's Day 😍) at 9am PST / 5pm GMT. And to celebrate our 7th anniversary we will be giving away 7 yearly memberships to Point-Free. Simply tune into the live stream to join the giveaway!
 
 We will be discussing some recent updates around our popular [Sharing](http://github.com/pointfreeco/swift-sharing) library, which brings powerful state sharing and persistence tools to apps no matter if you are using SwiftUI, UIKit, or AppKit. We will even be able to get into some topics that haven’t gotten much attention, such as how Sharing can be used for global navigation patterns, how it can be used with Firebase, and even how it can be used with cross-platform Swift, such as Wasm.
 

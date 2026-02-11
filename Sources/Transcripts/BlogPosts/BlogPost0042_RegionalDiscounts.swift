@@ -4,7 +4,7 @@ extension BlogPost {
   public static let post0042_RegionalDiscounts = Self(
     author: .pointfree,
     blurb: """
-      Regional discounts takes 50% off a monthly or yearly personal subscription to anyone whose \
+      Regional discounts takes 50% off a monthly or yearly personal membership to anyone whose \
       credit card is issued from a particular list of countries.
       """,
     coverImage: nil,

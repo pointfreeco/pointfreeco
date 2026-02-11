@@ -1,5 +1,5 @@
 It's the end of the year and we are running [a holiday sale](/discounts/eoy-2025): 
-save 25% when you subscribe to Point-Free today!
+save 25% when you join Point-Free today!
 
 @Button(/discounts/eoy-2025) {
   Save 25% today!
@@ -24,7 +24,7 @@ And so much more!
 
 Point-Free offers some of the most advanced and original Swift content out there and will help you
 bring your expertise of the Swift language to the next level.
-[Subscribe today](/discounts/eoy-2025) to take advantage of our **25% off** end-of-year sale!
+[Become a member today](/discounts/eoy-2025) to take advantage of our **25% off** end-of-year sale!
 
 [SQLiteData]: https://github.com/pointfreeco/sqlite-data
 
