@@ -83,7 +83,7 @@ public struct Button<Label: HTML>: HTML {
     fileprivate func foregroundColor(for style: Style) -> PointFreeColor {
       switch (style, self) {
       case (.normal, .black), (.normal, .purple), (.normal, .red): .white
-      case (.normal, .white): .black
+      case (.normal, .white): .black.dark(.white)
       case (.outline, _), (.underline, _): rawValue
       }
     }

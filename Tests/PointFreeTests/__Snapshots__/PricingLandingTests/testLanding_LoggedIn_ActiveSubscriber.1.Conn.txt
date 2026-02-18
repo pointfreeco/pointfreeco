@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 142413
+Content-Length: 142501
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -369,18 +369,19 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 }
 @media (prefers-color-scheme: dark){
   .border-top-MR1dZ1{border-top:1px solid #555555}
+  .color-fIiIX2:visited{color:#fff}
+  .color-3tgnX1:link{color:#fff}
+  .color-wVkSF3{color:#fff}
   .background-color-dMv2U1{background-color:#121212}
+  .border-PrdaQ3{border:none #fff}
   .color-GOHNR{color:#fafafa}
   .border-bSHu21{border:1px #353535 solid}
   .background-color-Hakcq1{background-color:#242424}
   .border-bottom-a7wnM{border-bottom:1px solid #3d3d3d}
-  .color-wVkSF3{color:#fff}
   .color-VoDZ9{color:#ccc}
   .color-H7Vre2:link{color:#f6f6f6}
   .color-uLoSU3:visited{color:#f6f6f6}
   .color-jj5LZ{color:#f6f6f6}
-  .color-fIiIX2:visited{color:#fff}
-  .color-3tgnX1:link{color:#fff}
   .border-558L71{border:1px solid #fff}
   .background-color-xnERS1{background-color:#171717}
   .color-r4foZ2{color:#d8d8d8}
@@ -464,7 +465,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
       </p>
     </div>
     <div class="color-c5ixr2">
-      <pf-vstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">You’re already a member!<a href="/account" class="font-size-83zzS1 color-IVYQy2 color-T7UxR2 color-K2J0r1 background-color-nbn0i3 background-color-dMv2U1 border-lZmxm border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">Manage your membership</a>
+      <pf-vstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">You’re already a member!<a href="/account" class="font-size-83zzS1 color-IVYQy2 color-fIiIX2 color-T7UxR2 color-3tgnX1 color-K2J0r1 color-wVkSF3 background-color-nbn0i3 background-color-dMv2U1 border-lZmxm border-PrdaQ3 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">Manage your membership</a>
       </pf-vstack>
     </div>
   </pf-hstack>
