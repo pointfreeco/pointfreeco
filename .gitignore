@@ -42,9 +42,11 @@ Packages/
 
 # Miscellaneous
 *.xcodeproj/*
+.codex
 .DS_Store
 .pf-env
 .ssl/*
+AGENTS.md
 Sources/Transcripts/PrivateTranscripts
 bin/*
 gitignored/*
