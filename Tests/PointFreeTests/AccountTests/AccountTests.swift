@@ -180,6 +180,22 @@ final class AccountTests: TestCase {
   }
 
   @MainActor
+  func testAccount_ModernTeamYearlyPricing() async throws {
+    var subscription = Stripe.Subscription.individualYearly
+    subscription.plan.id = "price_pointfree_pro"
+    subscription.plan.amount = nil
+    subscription.plan.product = "prod_test"
+
+    await withDependencies {
+      $0.individualMonthly()
+      $0.stripe.fetchSubscription = { _ in subscription }
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn))
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
+  @MainActor
   func testAccount_InvoiceBilling() async throws {
     var customer = Stripe.Customer.mock
     customer.invoiceSettings.defaultPaymentMethod = nil

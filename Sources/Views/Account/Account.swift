@@ -647,13 +647,20 @@ private func planAmount(for subscription: Stripe.Subscription) -> Cents<Int> {
     billing: subscription.plan.interval == .month ? .monthly : .yearly,
     quantity: subscription.quantity
   )
-  if subscription.plan.product == envVars.stripe.pricingProductId,
-    let modernPricing = pricing.modernPricing
-  {
-    return modernPricing
+  if subscription.plan.product == envVars.stripe.pricingProductId {
+    if subscription.plan.interval == .year {
+      return modernTieredYearlySeatAmount()
+    }
+    if let modernPricing = pricing.modernPricing {
+      return modernPricing
+    }
   }
 
   return pricing.legacyPricing
+}
+
+private func modernTieredYearlySeatAmount() -> Cents<Int> {
+  Pricing(billing: .yearly, quantity: 2).modernPricing ?? 192_00
 }
 
 private func planPricingDescription(for subscription: Stripe.Subscription) -> String {
@@ -932,9 +939,15 @@ private func mainAction(
       : "This change moves you to our current pricing of "
 
     func formattedModernAmount(_ billing: Pricing.Billing) -> String? {
-      let pricing = Pricing(billing: billing, quantity: subscription.quantity)
-      guard let modernPricing = pricing.modernPricing else { return nil }
-      let amount = discount(modernPricing)
+      let seatAmount: Cents<Int>?
+      switch billing {
+      case .monthly:
+        seatAmount = Pricing(billing: .monthly, quantity: subscription.quantity).modernPricing
+      case .yearly:
+        seatAmount = modernTieredYearlySeatAmount()
+      }
+      guard let seatAmount else { return nil }
+      let amount = discount(seatAmount)
         .map { $0 * subscription.quantity }
       return currencyFormatter.string(
         from: NSNumber(value: Double(amount.rawValue) / 100)
@@ -1145,10 +1158,8 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
 
   @Dependency(\.siteRouter) var siteRouter
 
-  let amount = stripeSubscription.plan.amount
-    ?? (stripeSubscription.plan.interval == .some(.year)
-      ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00))
-  let interval = stripeSubscription.plan.interval == .some(.year) ? "year" : "month"
+  let amount = planAmount(for: stripeSubscription)
+  let interval = stripeSubscription.plan.interval == .year ? "year" : "month"
 
   let inviteViaEmail: Node
   let invitesRemaining = stripeSubscription.quantity - data.teamInvites.count - data.teammates.count
