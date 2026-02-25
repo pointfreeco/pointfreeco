@@ -572,6 +572,38 @@ public struct Plan: Codable, Equatable, Identifiable {
   }
 }
 
+public struct Price: Codable, Equatable, Identifiable {
+  public var id: StripeID<Self>
+  public var lookupKey: LookupKey?
+  public var product: Product.ID
+  public var recurring: Recurring?
+  public var unitAmount: Cents<Int>?
+
+  public init(
+    id: ID,
+    lookupKey: LookupKey?,
+    product: Product.ID,
+    recurring: Recurring?,
+    unitAmount: Cents<Int>?
+  ) {
+    self.id = id
+    self.lookupKey = lookupKey
+    self.product = product
+    self.recurring = recurring
+    self.unitAmount = unitAmount
+  }
+
+  public typealias LookupKey = Tagged<(Self, lookupKey: ()), String>
+
+  public struct Recurring: Codable, Equatable {
+    public var interval: Plan.Interval
+
+    public init(interval: Plan.Interval) {
+      self.interval = interval
+    }
+  }
+}
+
 public struct Product: Codable, Equatable, Identifiable {
   public var id: StripeID<Self>
 

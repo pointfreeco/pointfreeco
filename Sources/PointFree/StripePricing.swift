@@ -6,7 +6,7 @@ import TaggedMoney
 
 enum PricingResolutionError: Error, Equatable {
   case missingModernPrice(Pricing)
-  case modernPlanNotFound(Pricing, productID: Stripe.Product.ID)
+  case modernPriceNotFound(Pricing, productID: Stripe.Product.ID, lookupKey: Stripe.Price.LookupKey)
 }
 
 func resolvePlanID(
@@ -20,23 +20,38 @@ func resolvePlanID(
     return currentSubscription.plan.id
   }
 
-  guard let modernPrice = pricing.modernPricing
-  else { throw PricingResolutionError.missingModernPrice(pricing) }
-
-  let plans = try await stripe.fetchPlansForProduct(envVars.stripe.pricingProductId).data
+  let lookupKey = try modernLookupKey(for: pricing)
+  let prices = try await stripe
+    .fetchPricesForProduct(envVars.stripe.pricingProductId, [lookupKey])
+    .data
 
   guard
-    let plan = plans.first(where: {
-      $0.interval == pricing.interval
-        && $0.amount == modernPrice
+    let price = prices.first(where: {
+      $0.lookupKey == lookupKey
+        && $0.product == envVars.stripe.pricingProductId
     })
   else {
-    throw PricingResolutionError.modernPlanNotFound(pricing, productID: envVars.stripe.pricingProductId)
+    throw PricingResolutionError.modernPriceNotFound(
+      pricing,
+      productID: envVars.stripe.pricingProductId,
+      lookupKey: lookupKey
+    )
   }
 
-  return plan.id
+  return .init(rawValue: price.id.rawValue)
 }
 
 func isModernPricingPlan(_ plan: Stripe.Plan, envVars: EnvVars) -> Bool {
   plan.product == envVars.stripe.pricingProductId
+}
+
+private func modernLookupKey(for pricing: Pricing) throws -> Stripe.Price.LookupKey {
+  switch (pricing.lane, pricing.billing) {
+  case (.personal, .monthly):
+    "pointfree-monthly"
+  case (.personal, .yearly), (.team, .yearly):
+    "pointfree-pro"
+  case (.team, .monthly):
+    throw PricingResolutionError.missingModernPrice(pricing)
+  }
 }

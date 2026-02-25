@@ -523,6 +523,25 @@ final class StripeTests: TestCase {
       """
     }
     await assertInlineSnapshot(
+      of:
+        Stripe
+        .createSubscription(
+          customer: "cus_test",
+          plan: "price_pointfree_pro",
+          quantity: 4,
+          coupon: nil
+        )
+        .rawValue,
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/subscriptions?expand%5B%5D=customer.default_source&expand%5B%5D=latest_invoice.payment_intent
+      Stripe-Version: 2020-08-27
+
+      customer=cus_test&items[0][price]=price_pointfree_pro&items[0][quantity]=4
+      """
+    }
+    await assertInlineSnapshot(
       of: Stripe.deleteCoupon(id: "deadbeef").rawValue,
       as: .raw
     ) {
@@ -606,6 +625,16 @@ final class StripeTests: TestCase {
       """
     }
     await assertInlineSnapshot(
+      of: Stripe.fetchPrices(product: "prod_test", lookupKeys: ["pointfree-pro", "pointfree-monthly"])
+        .rawValue,
+      as: .raw
+    ) {
+      """
+      GET https://api.stripe.com/v1/prices?active=true&lookup_keys%5B%5D=pointfree-pro&lookup_keys%5B%5D=pointfree-monthly&product=prod_test
+      Stripe-Version: 2020-08-27
+      """
+    }
+    await assertInlineSnapshot(
       of: Stripe.fetchPlan(id: .monthly).rawValue,
       as: .raw
     ) {
@@ -685,6 +714,17 @@ final class StripeTests: TestCase {
       Stripe-Version: 2020-08-27
 
       cancel_at_period_end=false&coupon=&items[0][id]=si_test&items[0][plan]=monthly-2019&items[0][quantity]=2&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
+      """
+    }
+    await assertInlineSnapshot(
+      of: Stripe.updateSubscription(.mock, "price_pointfree_pro", 4)!.rawValue,
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
+      Stripe-Version: 2020-08-27
+
+      cancel_at_period_end=false&coupon=&items[0][id]=si_test&items[0][price]=price_pointfree_pro&items[0][quantity]=4&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
       """
     }
   }
