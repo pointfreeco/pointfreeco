@@ -68,7 +68,7 @@
     value: "whsec_test"
   ),
   [17]: (
-    key: "STRIPE_PRICING_PRODUCT_ID",
+    key: "STRIPE_PRODUCT_ID",
     value: "prod_test"
   ),
   [18]: (

@@ -187,25 +187,25 @@ public struct EnvVars: Codable {
 
   public struct Stripe: Codable {
     public var endpointSecret: StripeEndpointSecret = "whsec_test"
-    public var pricingProductId: StripeProductId = "prod_test"
+    public var productId: StripeProductId = "prod_test"
     public var publishableKey: StripePublishableKey = "pk_test"
     public var secretKey: StripeSecretKey = "sk_test"
 
     public init(
       endpointSecret: StripeEndpointSecret = "whsec_test",
-      pricingProductId: StripeProductId = "prod_test",
+      productId: StripeProductId = "prod_test",
       publishableKey: StripePublishableKey = "pk_test",
       secretKey: StripeSecretKey = "sk_test"
     ) {
       self.endpointSecret = endpointSecret
-      self.pricingProductId = pricingProductId
+      self.productId = productId
       self.publishableKey = publishableKey
       self.secretKey = secretKey
     }
 
     private enum CodingKeys: String, CodingKey {
       case endpointSecret = "STRIPE_ENDPOINT_SECRET"
-      case pricingProductId = "STRIPE_PRICING_PRODUCT_ID"
+      case productId = "STRIPE_PRODUCT_ID"
       case publishableKey = "STRIPE_PUBLISHABLE_KEY"
       case secretKey = "STRIPE_SECRET_KEY"
     }

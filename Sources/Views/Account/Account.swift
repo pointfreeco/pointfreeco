@@ -647,7 +647,7 @@ private func planAmount(for subscription: Stripe.Subscription) -> Cents<Int> {
     billing: subscription.plan.interval == .month ? .monthly : .yearly,
     quantity: subscription.quantity
   )
-  if subscription.plan.product == envVars.stripe.pricingProductId {
+  if subscription.plan.product == envVars.stripe.productId {
     if let modernPricing = pricing.modernPricing {
       return modernPricing
     }
@@ -676,7 +676,7 @@ private func inviteTeammateAmount(for subscription: Stripe.Subscription) -> Cent
     quantity: proposedQuantity
   )
 
-  if subscription.plan.product == envVars.stripe.pricingProductId {
+  if subscription.plan.product == envVars.stripe.productId {
     return proposedPricing.modernPricing ?? proposedPricing.legacyPricing
   }
   return proposedPricing.legacyPricing
@@ -942,7 +942,7 @@ private func mainAction(
 
     let discount = subscription.discount?.coupon.discount ?? { $0 }
     let isTeam = subscription.quantity > 1
-    let pricingTransitionPrefix = (subscription.plan.product == envVars.stripe.pricingProductId)
+    let pricingTransitionPrefix = (subscription.plan.product == envVars.stripe.productId)
       ? "Your new rate will be "
       : "This change moves you to our current pricing of "
 

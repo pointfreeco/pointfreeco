@@ -22,18 +22,18 @@ func resolvePlanID(
 
   let lookupKey = try modernLookupKey(for: pricing)
   let prices = try await stripe
-    .fetchPricesForProduct(envVars.stripe.pricingProductId, [lookupKey])
+    .fetchPricesForProduct(envVars.stripe.productId, [lookupKey])
     .data
 
   guard
     let price = prices.first(where: {
       $0.lookupKey == lookupKey
-        && $0.product == envVars.stripe.pricingProductId
+        && $0.product == envVars.stripe.productId
     })
   else {
     throw PricingResolutionError.modernPriceNotFound(
       pricing,
-      productID: envVars.stripe.pricingProductId,
+      productID: envVars.stripe.productId,
       lookupKey: lookupKey
     )
   }
@@ -42,7 +42,7 @@ func resolvePlanID(
 }
 
 func isModernPricingPlan(_ plan: Stripe.Plan, envVars: EnvVars) -> Bool {
-  plan.product == envVars.stripe.pricingProductId
+  plan.product == envVars.stripe.productId
 }
 
 private func modernLookupKey(for pricing: Pricing) throws -> Stripe.Price.LookupKey {
