@@ -47,6 +47,57 @@ final class StripePricingTests: TestCase {
   }
 
   @MainActor
+  func testResolvePlanIDUsesLegacyModernLookupKeyForGrandfatheredTeamSeatIncrease() async throws {
+    var legacyItem = Subscription.Item.mock
+    legacyItem.plan = .teamYearly
+    legacyItem.quantity = 3
+
+    var currentSubscription = Subscription.teamYearly
+    currentSubscription.items = .mock([legacyItem])
+    currentSubscription.quantity = 3
+
+    let planID = try await withDependencies {
+      $0.stripe.fetchPricesForProduct = { _, lookupKeys in
+        XCTAssertEqual(lookupKeys, ["pointfree-pro-legacy"])
+        return .mock([.pointFreeProLegacy])
+      }
+    } operation: {
+      try await resolvePlanID(
+        for: Pricing(billing: .yearly, quantity: 4),
+        currentSubscription: currentSubscription
+      )
+    }
+
+    XCTAssertEqual(planID.rawValue, Price.pointFreeProLegacy.id.rawValue)
+  }
+
+  @MainActor
+  func testResolvePlanIDUsesModernLookupKeyForNonGrandfatheredTeamSeatIncrease() async throws {
+    var proItem = Subscription.Item.mock
+    proItem.plan = .modernTeamYearly
+    proItem.quantity = 3
+
+    var currentSubscription = Subscription.teamYearly
+    currentSubscription.plan = .modernTeamYearly
+    currentSubscription.items = .mock([proItem])
+    currentSubscription.quantity = 3
+
+    let planID = try await withDependencies {
+      $0.stripe.fetchPricesForProduct = { _, lookupKeys in
+        XCTAssertEqual(lookupKeys, ["pointfree-pro"])
+        return .mock([.pointFreePro])
+      }
+    } operation: {
+      try await resolvePlanID(
+        for: Pricing(billing: .yearly, quantity: 4),
+        currentSubscription: currentSubscription
+      )
+    }
+
+    XCTAssertEqual(planID.rawValue, Price.pointFreePro.id.rawValue)
+  }
+
+  @MainActor
   func testResolvePlanIDUsesMonthlyLookupKeyForPersonalMonthly() async throws {
     let planID = try await withDependencies {
       $0.stripe.fetchPricesForProduct = { _, lookupKeys in

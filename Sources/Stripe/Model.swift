@@ -629,6 +629,24 @@ public struct Subscription: Codable, Equatable, Identifiable {
   public var startDate: Date
   public var status: Status
 
+  enum CodingKeys: String, CodingKey {
+    case canceledAt
+    case cancelAtPeriodEnd
+    case created
+    case currentPeriodStart
+    case currentPeriodEnd
+    case customer
+    case discount
+    case endedAt
+    case id
+    case items
+    case latestInvoice
+    case plan
+    case quantity
+    case startDate
+    case status
+  }
+
   public init(
     canceledAt: Date?,
     cancelAtPeriodEnd: Bool,
@@ -663,6 +681,57 @@ public struct Subscription: Codable, Equatable, Identifiable {
     self.status = status
   }
 
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    let items = try container.decode(ListEnvelope<Item>.self, forKey: .items)
+    guard let itemPlan = items.data.first?.plan else {
+      throw DecodingError.dataCorruptedError(
+        forKey: .items,
+        in: container,
+        debugDescription: "Expected at least one subscription item with a plan."
+      )
+    }
+
+    self.canceledAt = try container.decodeIfPresent(Date.self, forKey: .canceledAt)
+    self.cancelAtPeriodEnd = try container.decode(Bool.self, forKey: .cancelAtPeriodEnd)
+    self.created = try container.decode(Date.self, forKey: .created)
+    self.currentPeriodStart = try container.decode(Date.self, forKey: .currentPeriodStart)
+    self.currentPeriodEnd = try container.decode(Date.self, forKey: .currentPeriodEnd)
+    self.customer = try container.decode(Expandable<Customer>.self, forKey: .customer)
+    self.discount = try container.decodeIfPresent(Discount.self, forKey: .discount)
+    self.endedAt = try container.decodeIfPresent(Date.self, forKey: .endedAt)
+    self.id = try container.decode(StripeID<Self>.self, forKey: .id)
+    self.items = items
+    self.latestInvoice = try container.decodeIfPresent(
+      Either<Invoice.ID, Invoice>.self,
+      forKey: .latestInvoice
+    )
+    self.plan = try container.decodeIfPresent(Plan.self, forKey: .plan) ?? itemPlan
+    self.quantity = try container.decodeIfPresent(Int.self, forKey: .quantity)
+      ?? items.data.reduce(0) { $0 + $1.quantity }
+    self.startDate = try container.decode(Date.self, forKey: .startDate)
+    self.status = try container.decode(Status.self, forKey: .status)
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encodeIfPresent(self.canceledAt, forKey: .canceledAt)
+    try container.encode(self.cancelAtPeriodEnd, forKey: .cancelAtPeriodEnd)
+    try container.encode(self.created, forKey: .created)
+    try container.encode(self.currentPeriodStart, forKey: .currentPeriodStart)
+    try container.encode(self.currentPeriodEnd, forKey: .currentPeriodEnd)
+    try container.encode(self.customer, forKey: .customer)
+    try container.encodeIfPresent(self.discount, forKey: .discount)
+    try container.encodeIfPresent(self.endedAt, forKey: .endedAt)
+    try container.encode(self.id, forKey: .id)
+    try container.encode(self.items, forKey: .items)
+    try container.encodeIfPresent(self.latestInvoice, forKey: .latestInvoice)
+    try container.encode(self.plan, forKey: .plan)
+    try container.encode(self.quantity, forKey: .quantity)
+    try container.encode(self.startDate, forKey: .startDate)
+    try container.encode(self.status, forKey: .status)
+  }
+
   public var isCanceling: Bool {
     return self.status == .active && self.cancelAtPeriodEnd
   }
@@ -673,6 +742,11 @@ public struct Subscription: Codable, Equatable, Identifiable {
 
   public var isRenewing: Bool {
     return self.status != .canceled && !self.cancelAtPeriodEnd
+  }
+
+  public var totalQuantity: Int {
+    let itemTotal = self.items.data.reduce(0) { $0 + $1.quantity }
+    return max(self.quantity, itemTotal)
   }
 
   public struct Item: Codable, Equatable, Identifiable {

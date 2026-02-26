@@ -305,6 +305,50 @@ final class StripeTests: TestCase {
   }
 
   @MainActor
+  func testDecodingSubscriptionWithoutTopLevelPlanAndQuantity() async throws {
+    let jsonString = """
+      {
+        "id": "sub_test",
+        "cancel_at_period_end": false,
+        "created": 1578437899,
+        "current_period_start": 1578437899,
+        "current_period_end": 1581116299,
+        "customer": "cus_test",
+        "items": {
+          "data": [
+            {
+              "created": 1578437899,
+              "id": "si_test",
+              "plan": {
+                "id": "plan_legacy_team_yearly",
+                "amount": 14400,
+                "created": 1578437898,
+                "currency": "usd",
+                "interval": "year",
+                "metadata": {},
+                "nickname": "Team Yearly",
+                "product": "prod_legacy"
+              },
+              "quantity": 3
+            }
+          ],
+          "has_more": false
+        },
+        "latest_invoice": "in_test",
+        "plan": null,
+        "quantity": null,
+        "start_date": 1578437899,
+        "status": "active"
+      }
+      """
+
+    let subscription = try Stripe.jsonDecoder.decode(Subscription.self, from: Data(jsonString.utf8))
+
+    XCTAssertEqual(subscription.plan.id.rawValue, "plan_legacy_team_yearly")
+    XCTAssertEqual(subscription.quantity, 3)
+  }
+
+  @MainActor
   func testDecodingDiscountJson() async throws {
     let jsonString = """
         {
@@ -725,6 +769,51 @@ final class StripeTests: TestCase {
       Stripe-Version: 2020-08-27
 
       cancel_at_period_end=false&coupon=&items[0][id]=si_test&items[0][price]=price_pointfree_pro&items[0][quantity]=4&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
+      """
+    }
+
+    var legacyTeamItem = Subscription.Item.mock
+    legacyTeamItem.id = "si_legacy_team"
+    legacyTeamItem.plan = Plan.teamYearly
+    legacyTeamItem.quantity = 3
+
+    var legacyTeamSubscription = Subscription.teamYearly
+    legacyTeamSubscription.items = ListEnvelope<Subscription.Item>.mock([legacyTeamItem])
+    legacyTeamSubscription.quantity = 3
+    await assertInlineSnapshot(
+      of: Stripe.updateSubscription(legacyTeamSubscription, "price_pointfree_pro", 4)!.rawValue,
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
+      Stripe-Version: 2020-08-27
+
+      cancel_at_period_end=false&coupon=&items[0][id]=si_legacy_team&items[0][quantity]=3&items[1][price]=price_pointfree_pro&items[1][quantity]=1&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
+      """
+    }
+
+    var legacyItem = Subscription.Item.mock
+    legacyItem.id = "si_legacy"
+    legacyItem.plan = Plan.teamYearly
+    legacyItem.quantity = 3
+
+    var modernItem = Subscription.Item.mock
+    modernItem.id = "si_modern"
+    modernItem.plan = Plan.modernTeamYearly
+    modernItem.quantity = 1
+
+    var mixedSubscription = Subscription.teamYearly
+    mixedSubscription.items = ListEnvelope<Subscription.Item>.mock([legacyItem, modernItem])
+    mixedSubscription.quantity = 4
+    await assertInlineSnapshot(
+      of: Stripe.updateSubscription(mixedSubscription, "price_pointfree_pro", 5)!.rawValue,
+      as: .raw
+    ) {
+      """
+      POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
+      Stripe-Version: 2020-08-27
+
+      cancel_at_period_end=false&coupon=&items[0][id]=si_legacy&items[0][quantity]=3&items[1][id]=si_modern&items[1][quantity]=2&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
       """
     }
   }

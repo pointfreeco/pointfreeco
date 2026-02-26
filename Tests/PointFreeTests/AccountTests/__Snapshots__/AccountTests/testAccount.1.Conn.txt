@@ -2704,7 +2704,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                                   lh-4
                                   md-ctn">
                         <p>Invite your colleages to your membership by sharing the following URL. Your credit
-card will be charged a prorated amount of <strong>$144/year</strong>
+card will be charged a prorated amount of <strong>$192/year</strong>
 when a teammate joins.</p>
 
                       </div>

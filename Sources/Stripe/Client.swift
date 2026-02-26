@@ -486,8 +486,41 @@ func updateSubscription(
 )
   -> DecodableRequest<Subscription>?
 {
+  let currentQuantity = currentSubscription.totalQuantity
+  let items = currentSubscription.items.data
+  guard let item = items.first else { return nil }
 
-  guard let item = currentSubscription.items.data.first else { return nil }
+  if quantity > currentQuantity, currentQuantity > 1 {
+    let seatDelta = quantity - currentQuantity
+    var params: [String: Any?] = [
+      "cancel_at_period_end": "false",
+      "coupon": quantity > 1 ? "" : nil,
+      "payment_behavior": "error_if_incomplete",
+      "proration_behavior": "always_invoice",
+    ]
+
+    var targetItemIndex: Int?
+    for (index, item) in items.enumerated() {
+      params["items[\(index)][id]"] = item.id.rawValue
+      params["items[\(index)][quantity]"] = String(item.quantity)
+      if item.plan.id == plan {
+        targetItemIndex = index
+      }
+    }
+
+    if let targetItemIndex {
+      params["items[\(targetItemIndex)][quantity]"] = String(items[targetItemIndex].quantity + seatDelta)
+    } else {
+      let newItemIndex = items.count
+      params[subscriptionItemIDParamKey(for: plan, itemIndex: newItemIndex)] = plan.rawValue
+      params["items[\(newItemIndex)][quantity]"] = String(seatDelta)
+    }
+
+    return stripeRequest(
+      "subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer.default_source",
+      .post(params.compactMapValues { $0 })
+    )
+  }
 
   return stripeRequest(
     "subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer.default_source",
@@ -506,11 +539,11 @@ func updateSubscription(
   )
 }
 
-private func subscriptionItemIDParamKey(for planID: Plan.ID) -> String {
+private func subscriptionItemIDParamKey(for planID: Plan.ID, itemIndex: Int = 0) -> String {
   if planID.rawValue.hasPrefix("price_") {
-    return "items[0][price]"
+    return "items[\(itemIndex)][price]"
   } else {
-    return "items[0][plan]"
+    return "items[\(itemIndex)][plan]"
   }
 }
 

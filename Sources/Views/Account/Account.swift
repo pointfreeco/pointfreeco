@@ -631,12 +631,26 @@ private func subscriptionTeammateOverview(_ data: AccountData) -> Node {
 }
 
 private func planName(for subscription: Stripe.Subscription) -> String {
-  return subscription.quantity > 1
-    ? subscription.plan.description + " (×" + String(subscription.quantity) + ")"
-    : subscription.plan.description
+  let lineItems = planLineItems(for: subscription)
+  guard !lineItems.isEmpty else { return subscription.plan.description }
+
+  if lineItems.count == 1 {
+    let lineItem = lineItems[0]
+    return lineItem.quantity > 1
+      ? lineItem.name + " (×" + String(lineItem.quantity) + ")"
+      : lineItem.name
+  }
+
+  return lineItems
+    .map { lineItem in
+      lineItem.quantity == 1
+        ? lineItem.name + " (×1)"
+        : lineItem.name + " ×" + String(lineItem.quantity)
+    }
+    .joined(separator: ", ")
 }
 
-private func planAmount(for subscription: Stripe.Subscription) -> Cents<Int> {
+private func subscriptionSeatAmount(for subscription: Stripe.Subscription) -> Cents<Int> {
   if let amount = subscription.plan.amount {
     return amount
   }
@@ -645,7 +659,7 @@ private func planAmount(for subscription: Stripe.Subscription) -> Cents<Int> {
 
   let pricing = Pricing(
     billing: subscription.plan.interval == .month ? .monthly : .yearly,
-    quantity: subscription.quantity
+    quantity: subscription.totalQuantity
   )
   if subscription.plan.product == envVars.stripe.productId {
     if let modernPricing = pricing.modernPricing {
@@ -656,30 +670,95 @@ private func planAmount(for subscription: Stripe.Subscription) -> Cents<Int> {
   return pricing.legacyPricing
 }
 
-private func planPricingDescription(for subscription: Stripe.Subscription) -> String {
-  let interval = subscription.plan.interval.rawValue
-  let seatAmount = planAmount(for: subscription)
-  if subscription.quantity > 1 {
-    let total = Cents(rawValue: seatAmount.rawValue * subscription.quantity)
-    return "\(format(cents: seatAmount))/\(interval) per seat (\(format(cents: total))/\(interval) total)"
-  } else {
-    return "\(format(cents: seatAmount))/\(interval)"
+private func itemSeatAmount(
+  for item: Stripe.Subscription.Item,
+  subscription: Stripe.Subscription
+) -> Cents<Int> {
+  if let amount = item.plan.amount {
+    return amount
+  }
+
+  @Dependency(\.envVars) var envVars
+
+  let billing: Pricing.Billing = item.plan.interval == .month ? .monthly : .yearly
+  if item.plan.product == envVars.stripe.productId {
+    let quantityForTier = subscription.totalQuantity > 1
+      ? max(item.quantity, 2)
+      : max(item.quantity, 1)
+    let pricing = Pricing(billing: billing, quantity: quantityForTier)
+    return pricing.modernPricing ?? pricing.legacyPricing
+  }
+
+  return Pricing(billing: billing, quantity: max(item.quantity, 1)).legacyPricing
+}
+
+private func planDisplayName(for plan: Stripe.Plan) -> String {
+  if plan.description == plan.id.rawValue, plan.id.rawValue.contains("pointfree_pro") {
+    return "Pro"
+  }
+  return plan.description
+}
+
+private func planLineItems(for subscription: Stripe.Subscription) -> [PlanLineItem] {
+  let items = subscription.items.data.filter { $0.quantity > 0 }
+  guard items.count > 1
+  else {
+    return [
+      .init(
+        name: planDisplayName(for: subscription.plan),
+        quantity: subscription.totalQuantity,
+        seatAmount: subscriptionSeatAmount(for: subscription),
+        interval: subscription.plan.interval
+      )
+    ]
+  }
+
+  return items.map { item in
+    .init(
+      name: planDisplayName(for: item.plan),
+      quantity: item.quantity,
+      seatAmount: itemSeatAmount(for: item, subscription: subscription),
+      interval: item.plan.interval
+    )
   }
 }
 
-private func inviteTeammateAmount(for subscription: Stripe.Subscription) -> Cents<Int> {
-  @Dependency(\.envVars) var envVars
+private func planPricingDescription(for subscription: Stripe.Subscription) -> String {
+  let lineItems = planLineItems(for: subscription)
+  guard let firstLineItem = lineItems.first else { return "" }
+  let interval = firstLineItem.interval.rawValue
 
-  let proposedQuantity = max(subscription.quantity + 1, 2)
+  if lineItems.count == 1 {
+    if firstLineItem.quantity > 1 {
+      let total = Cents(rawValue: firstLineItem.seatAmount.rawValue * firstLineItem.quantity)
+      return "\(format(cents: firstLineItem.seatAmount))/\(interval) per seat (\(format(cents: total))/\(interval) total)"
+    } else {
+      return "\(format(cents: firstLineItem.seatAmount))/\(interval)"
+    }
+  }
+
+  let terms = lineItems
+    .map { "\(format(cents: $0.seatAmount))×\($0.quantity)" }
+    .joined(separator: " + ")
+  let total = Cents(rawValue: lineItems.reduce(0) { $0 + $1.seatAmount.rawValue * $1.quantity })
+  return "\(terms) (\(format(cents: total))/\(interval) total)"
+}
+
+private func inviteTeammateAmount(for subscription: Stripe.Subscription) -> Cents<Int> {
+  let proposedQuantity = max(subscription.totalQuantity + 1, 2)
   let proposedPricing = Pricing(
     billing: subscription.plan.interval == .month ? .monthly : .yearly,
     quantity: proposedQuantity
   )
 
-  if subscription.plan.product == envVars.stripe.productId {
-    return proposedPricing.modernPricing ?? proposedPricing.legacyPricing
-  }
-  return proposedPricing.legacyPricing
+  return proposedPricing.modernPricing ?? proposedPricing.legacyPricing
+}
+
+private struct PlanLineItem {
+  var name: String
+  var quantity: Int
+  var seatAmount: Cents<Int>
+  var interval: Stripe.Plan.Interval
 }
 
 public func status(for subscription: Stripe.Subscription) -> String {
