@@ -2437,7 +2437,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                         <div class="m-pl1
                                     m-pr1">
                           <p>
-                            $192.00/year
+                            $216.00/year
                           </p>
                         </div>
                       </div>

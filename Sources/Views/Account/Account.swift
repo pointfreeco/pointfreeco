@@ -648,19 +648,12 @@ private func planAmount(for subscription: Stripe.Subscription) -> Cents<Int> {
     quantity: subscription.quantity
   )
   if subscription.plan.product == envVars.stripe.pricingProductId {
-    if subscription.plan.interval == .year {
-      return modernTieredYearlySeatAmount()
-    }
     if let modernPricing = pricing.modernPricing {
       return modernPricing
     }
   }
 
   return pricing.legacyPricing
-}
-
-private func modernTieredYearlySeatAmount() -> Cents<Int> {
-  Pricing(billing: .yearly, quantity: 2).modernPricing ?? 192_00
 }
 
 private func planPricingDescription(for subscription: Stripe.Subscription) -> String {
@@ -672,6 +665,21 @@ private func planPricingDescription(for subscription: Stripe.Subscription) -> St
   } else {
     return "\(format(cents: seatAmount))/\(interval)"
   }
+}
+
+private func inviteTeammateAmount(for subscription: Stripe.Subscription) -> Cents<Int> {
+  @Dependency(\.envVars) var envVars
+
+  let proposedQuantity = max(subscription.quantity + 1, 2)
+  let proposedPricing = Pricing(
+    billing: subscription.plan.interval == .month ? .monthly : .yearly,
+    quantity: proposedQuantity
+  )
+
+  if subscription.plan.product == envVars.stripe.pricingProductId {
+    return proposedPricing.modernPricing ?? proposedPricing.legacyPricing
+  }
+  return proposedPricing.legacyPricing
 }
 
 public func status(for subscription: Stripe.Subscription) -> String {
@@ -939,13 +947,7 @@ private func mainAction(
       : "This change moves you to our current pricing of "
 
     func formattedModernAmount(_ billing: Pricing.Billing) -> String? {
-      let seatAmount: Cents<Int>?
-      switch billing {
-      case .monthly:
-        seatAmount = Pricing(billing: .monthly, quantity: subscription.quantity).modernPricing
-      case .yearly:
-        seatAmount = modernTieredYearlySeatAmount()
-      }
+      let seatAmount = Pricing(billing: billing, quantity: subscription.quantity).modernPricing
       guard let seatAmount else { return nil }
       let amount = discount(seatAmount)
         .map { $0 * subscription.quantity }
@@ -1158,7 +1160,64 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
 
   @Dependency(\.siteRouter) var siteRouter
 
-  let amount = planAmount(for: stripeSubscription)
+  if stripeSubscription.plan.interval == .month {
+    let upgradeAction: Node
+    if data.paymentMethod != nil {
+      upgradeAction = .form(
+        attributes: [
+          .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
+          .method(.post),
+          .onsubmit(
+            unsafe: """
+              if (!confirm("Upgrade to yearly billing to invite teammates? You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
+                return false
+              }
+              """
+          ),
+        ],
+        .input(attributes: [
+          .name("billing"),
+          .type(.hidden),
+          .value("yearly"),
+        ]),
+        .input(attributes: [
+          .name("quantity"),
+          .type(.hidden),
+          .value(stripeSubscription.quantity),
+        ]),
+        .button(
+          attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
+          "Upgrade to yearly billing"
+        )
+      )
+    } else {
+      upgradeAction = .a(
+        attributes: [
+          .class([Class.pf.components.button(color: .purple, size: .small)]),
+          .href(siteRouter.path(for: .account(.paymentInfo()))),
+        ],
+        "Add payment info to upgrade"
+      )
+    }
+
+    return .gridRow(
+      attributes: [.class([subscriptionInfoRowClass])],
+      .gridColumn(
+        sizes: [.mobile: 3],
+        .div(.p("Add teammate"))
+      ),
+      .gridColumn(
+        sizes: [.mobile: 9],
+        .div(
+          attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
+          .p("Inviting teammates requires yearly billing."),
+          .p(upgradeAction)
+        )
+      )
+    )
+  }
+
+  let amount = inviteTeammateAmount(for: stripeSubscription)
   let interval = stripeSubscription.plan.interval == .year ? "year" : "month"
 
   let inviteViaEmail: Node
@@ -1322,6 +1381,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
 private func subscriptionInviteMoreRowView(_ data: AccountData) -> Node {
   guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
   guard let subscription = data.stripeSubscription else { return [] }
+  guard subscription.plan.interval == .year else { return [] }
   guard data.isSubscriptionOwner else { return [] }
   let invites = data.teamInvites
   let teammates = data.teammates
