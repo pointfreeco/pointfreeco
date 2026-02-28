@@ -36,7 +36,7 @@ func testSignUp() {
 
 …then a test failure will be triggered:
 
-> Failed: APIClient has no test implementation, but was accessed from a test context: …
+> Failed: APIClient has no test implementation, but was accessed from a test context: …
 
 This helps make sure you never access a live dependency in tests, *and* forces you to prove that you know exactly which dependencies are being used in a particular execution flow. This makes your tests stronger and acts as documentation for what is involved to run your feature.
 

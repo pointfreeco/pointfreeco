@@ -15,7 +15,8 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2026-02-23")!,
     references: [
-      // TODO
+      .combineSchedulers,
+      .swiftClocks,
     ],
     sequence: 355,
     subtitle: "Isolation, ~Copyable, ~Escapable",

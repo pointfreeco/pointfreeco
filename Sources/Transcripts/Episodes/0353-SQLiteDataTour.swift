@@ -16,11 +16,7 @@ extension Episode {
     publishedAt: yearMonthDayFormatter.date(from: "2026-02-02")!,
     references: [
       .sqliteData,
-      Reference(
-        blurb: "A library for building SQL in a safe, expressive, and composable manner.",
-        link: "https://github.com/pointfreeco/swift-structured-queries",
-        title: "StructuredQueries"
-      ),
+      .structuredQueries,
     ],
     sequence: 353,
     subtitle: "Advanced Testing",

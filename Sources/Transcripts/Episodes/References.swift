@@ -1027,6 +1027,26 @@ extension Episode.Reference {
     title: "SE-0374: Add `sleep(for:)` to `Clock`"
   )
 
+  public static let se0390_noncopyable = Episode.Reference(
+    author: "Joe Groff, Michael Gottesman, Andrew Trick, Kavon Farvardin",
+    blurb: """
+      This proposal introduces the concept of noncopyable types (also known as "move-only" types). An instance of a noncopyable type always has unique ownership, unlike normal Swift types which can be freely copied.
+      """,
+    link: "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0390-noncopyable-structs-and-enums.md",
+    publishedAt: yearMonthDayFormatter.date(from: "2022-12-07"),
+    title: "SE-0390: Noncopyable structs and enums"
+  )
+
+  public static let se0446_nonescapable = Episode.Reference(
+    author: "Andrew Trick, Tim Kientzle",
+    blurb: """
+      We propose adding a new type constraint `~Escapable` for types that can be locally copied but cannot be assigned or transferred outside of the immediate context. This complements the `~Copyable` types added with SE-0390 by introducing another set of compile-time-enforced lifetime controls that can be used for safe, highly-performant APIs.
+      """,
+    link: "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0446-non-escapable.md",
+    publishedAt: yearMonthDayFormatter.date(from: "2024-02-05"),
+    title: "SE-0446: Nonescapable Types"
+  )
+
   public static let semanticEditorCombinators = Episode.Reference(
     author: "Conal Elliott",
     blurb: """
@@ -1463,6 +1483,12 @@ extension Episode.Reference {
     blurb: "A fast, lightweight replacement for SwiftData, powered by SQL.",
     link: "https://github.com/pointfreeco/sqlite-data",
     title: "SQLiteData"
+  )
+
+  public static let structuredQueries = Episode.Reference(
+    blurb: "A library for building SQL in a safe, expressive, and composable manner.",
+    link: "https://github.com/pointfreeco/swift-structured-queries",
+    title: "StructuredQueries"
   )
 
   public static let taggedSecondsAndMilliseconds = Episode.Reference(
