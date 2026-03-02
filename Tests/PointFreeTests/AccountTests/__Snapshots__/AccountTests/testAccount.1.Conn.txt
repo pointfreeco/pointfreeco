@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 83408
+Content-Length: 82476
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2389,37 +2389,28 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                                         m-pr1
                                         end-d">
                               <p>
-                                <form action="/account/subscription/change"
-                                      method="post"
-                                      onsubmit="if (!confirm("Switch to monthly billing? You will be charged $64.00 on a monthly basis at the end of your current billing period.")) {
-  return false
-}">
-                                  <input name="billing"
-                                         type="hidden"
-                                         value="monthly">
-                                  <input name="quantity"
-                                         type="hidden"
-                                         value="4">
-                                  <button class="medium
-                                                 cursor-pointer
-                                                 nowrap
-                                                 btn-normal
-                                                 border-none
-                                                 text-decoration-none
-                                                 pf-link-white
-                                                 fg-white
-                                                 bg-purple
-                                                 h6
-                                                 m-pl1
-                                                 m-pr1
-                                                 m-pt1
-                                                 m-pb1">
-                                    Switch to monthly billing
-                                  </button>
-                                </form>
                               </p>
                             </div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-m
+                                  col-m-3">
+                        <p>
+                          <div>
+                            Pricing
+                          </div>
+                        </p>
+                      </div>
+                      <div class="col-m
+                                  col-m-9">
+                        <div class="m-pl1
+                                    m-pr1">
+                          <p>
+                            $144.00/year per seat ($576.00/year total)
+                          </p>
                         </div>
                       </div>
                     </div>

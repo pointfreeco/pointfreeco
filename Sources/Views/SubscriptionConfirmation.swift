@@ -571,8 +571,8 @@ private func billingPeriod(
             ])
           ],
           lane == .team
-            ? "Yearly — Save 25% off monthly billing!"
-            : "Yearly — Save 22% off monthly billing!"
+            ? "Yearly"
+            : "Yearly — Save 25% off monthly billing!"
         ),
         .p(
           attributes: [
@@ -583,7 +583,7 @@ private func billingPeriod(
             ])
           ],
           lane == .team
-            ? "$144 per member per year"
+            ? "$192 per member per year"
             : discountedBillingIntervalSubtitle(
               interval: .year,
               coupon: coupon,
@@ -594,7 +594,9 @@ private func billingPeriod(
     )
   )
 
-  let monthlyColumn = Node.gridColumn(
+  let monthlyColumn: Node = lane == .team
+    ? []
+    : Node.gridColumn(
     sizes: [.mobile: 12],
     attributes: [
       .class([
@@ -644,13 +646,11 @@ private func billingPeriod(
               Class.pf.colors.fg.gray650,
             ])
           ],
-          lane == .team
-            ? "$16 per member, per month"
-            : discountedBillingIntervalSubtitle(
-              interval: .month,
-              coupon: coupon,
-              useRegionalDiscount: subscribeData.useRegionalDiscount
-            )
+          discountedBillingIntervalSubtitle(
+            interval: .month,
+            coupon: coupon,
+            useRegionalDiscount: subscribeData.useRegionalDiscount
+          )
         )
       )
     )
@@ -673,12 +673,12 @@ private func discountedBillingIntervalSubtitle(
 
   switch interval {
   case .month:
-    let amount = Double(coupon?.discount(for: 18_00).rawValue ?? 18_00) / 100 * regionalFactor
+    let amount = Double(coupon?.discount(for: 24_00).rawValue ?? 24_00) / 100 * regionalFactor
     let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)")
       .replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
     return .text("\(formattedAmount) per month")
   case .year:
-    let amount = Double(coupon?.discount(for: 168_00).rawValue ?? 168_00) / 100 * regionalFactor
+    let amount = Double(coupon?.discount(for: 216_00).rawValue ?? 216_00) / 100 * regionalFactor
     let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)")
       .replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
     return .text("\(formattedAmount) per year")
@@ -889,8 +889,8 @@ private func total(
               var monthly = form["pricing[billing]"].value == "monthly"
               var monthlyPricePerSeat = (
                 monthly
-                  ? \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01 * regionalDiscount
-                  : \#(discount(lane == .team ? 12_00 : 14_00)) * 0.01 * regionalDiscount
+                  ? \#(discount(24_00)) * 0.01 * regionalDiscount
+                  : \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01 * regionalDiscount
               )
               const monthlyPrice = seats * monthlyPricePerSeat
               const total = monthly

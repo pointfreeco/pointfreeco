@@ -46,10 +46,14 @@ func changeSubscription(
     let (currentSubscription, newPricing) = conn.data
 
     return EitherIO {
-      try await stripe
+      let planID = try await resolvePlanID(
+        for: newPricing,
+        currentSubscription: currentSubscription
+      )
+      _ = try await stripe
         .update(
           subscription: currentSubscription,
-          planID: newPricing.billing.plan,
+          planID: planID,
           quantity: newPricing.quantity
         )
     }
@@ -87,17 +91,25 @@ func requireActiveSubscription<A>(
 func subscriptionModificationErrorMiddleware<A>(_ error: Error)
   -> Middleware<StatusLineOpen, ResponseEnded, A, Data>
 {
+  let message: String
+  switch error {
+  case let PricingResolutionError.missingModernPrice(pricing)
+    where pricing.isTeam && pricing.billing == .monthly:
+    message = "Team monthly memberships are no longer available."
+  default:
+    message =
+      """
+      We couldn’t modify your membership at this time. Please try again or contact
+      <support@pointfree.co>.
+      """
+  }
 
   return { conn in
     conn
       |> redirect(
         to: .account(),
         headersMiddleware: flash(
-          .error,
-          """
-          We couldn’t modify your membership at this time. Please try again or contact
-          <support@pointfree.co>.
-          """
+          .error, message
         )
       )
   }

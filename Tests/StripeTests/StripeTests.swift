@@ -597,6 +597,15 @@ final class StripeTests: TestCase {
       """
     }
     await assertInlineSnapshot(
+      of: Stripe.fetchPlans(product: "prod_test").rawValue,
+      as: .raw
+    ) {
+      """
+      GET https://api.stripe.com/v1/plans?product=prod_test
+      Stripe-Version: 2020-08-27
+      """
+    }
+    await assertInlineSnapshot(
       of: Stripe.fetchPlan(id: .monthly).rawValue,
       as: .raw
     ) {

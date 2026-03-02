@@ -10,6 +10,7 @@ import PointFreeDependencies
 import PointFreeRouter
 import Styleguide
 import StyleguideV2
+import TaggedMoney
 import Views
 
 func emailPreview(
@@ -96,7 +97,7 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
     return ownerNewTeammateJoinedEmail(
       currentUser: blob,
       owner: blobJr,
-      newPricing: Pricing(billing: .yearly, quantity: 7)
+      newPricing: NewPricing(amount: 192_00, interval: .year, quantity: 7)
     )
   case .updateGitHubAccount:
     return Node {

@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 70599
+Content-Length: 71267
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2411,6 +2411,25 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                               </p>
                             </div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-m
+                                  col-m-3">
+                        <p>
+                          <div>
+                            Pricing
+                          </div>
+                        </p>
+                      </div>
+                      <div class="col-m
+                                  col-m-9">
+                        <div class="m-pl1
+                                    m-pr1">
+                          <p>
+                            $18.00/month
+                          </p>
                         </div>
                       </div>
                     </div>

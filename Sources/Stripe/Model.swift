@@ -533,27 +533,33 @@ public struct PaymentMethod: Codable, Equatable, Identifiable {
 }
 
 public struct Plan: Codable, Equatable, Identifiable {
+  public var amount: Cents<Int>?
   public var created: Date
   public var currency: Currency
   public var id: StripeID<Self>
   public var interval: Interval
   public var metadata: [String: String]
   public var nickname: String?
+  public var product: Product.ID?
 
   public init(
+    amount: Cents<Int>?,
     created: Date,
     currency: Currency,
     id: ID,
     interval: Interval,
     metadata: [String: String],
-    nickname: String?
+    nickname: String?,
+    product: Product.ID?
   ) {
+    self.amount = amount
     self.created = created
     self.currency = currency
     self.id = id
     self.interval = interval
     self.metadata = metadata
     self.nickname = nickname
+    self.product = product
   }
 
   public enum Interval: String, Codable {
@@ -563,6 +569,14 @@ public struct Plan: Codable, Equatable, Identifiable {
 
   public var description: String {
     self.nickname ?? self.id.rawValue
+  }
+}
+
+public struct Product: Codable, Equatable, Identifiable {
+  public var id: StripeID<Self>
+
+  public init(id: ID) {
+    self.id = id
   }
 }
 
@@ -785,6 +799,8 @@ extension Coupon: Codable {
 }
 
 extension Tagged<Plan, String> {
-  public static let monthly: Self = "monthly-2019"
-  public static var yearly: Self = "yearly-2019"
+  public static let legacyMonthly: Self = "monthly-2019"
+  public static var legacyYearly: Self = "yearly-2019"
+  public static let monthly = legacyMonthly
+  public static var yearly = legacyYearly
 }

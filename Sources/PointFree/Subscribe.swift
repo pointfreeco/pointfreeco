@@ -97,10 +97,11 @@ private func subscribe(
         subscribeData.useRegionalDiscount
         ? envVars.regionalDiscountCouponId
         : nil
+      let planID = try await resolvePlanID(for: subscribeData.pricing)
 
       stripeSubscription = try await stripe.createSubscription(
         customerID: customer.id,
-        planID: subscribeData.pricing.billing.plan,
+        planID: planID,
         quantity: subscribeData.pricing.quantity,
         coupon: subscribeData.coupon ?? regionalDiscountCouponId
       )
@@ -175,11 +176,18 @@ private func subscribe(
     }
   } catch {
     let errorMessage =
-      (error as? StripeErrorEnvelope)?.error.message
-        ?? """
+      switch error {
+      case let PricingResolutionError.missingModernPrice(pricing)
+        where pricing.isTeam && pricing.billing == .monthly:
+        "Team monthly memberships are no longer available."
+      case let stripeError as StripeErrorEnvelope:
+        stripeError.error.message
+      default:
+        """
         Error becoming a member! If you believe you have been charged in error, please contact \
         <support@pointfree.co>.
         """
+      }
 
     if conn.acceptJSON {
       return try! conn.writeStatus(.ok).respond(

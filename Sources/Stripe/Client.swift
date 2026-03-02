@@ -70,6 +70,7 @@ public struct Client {
   public var fetchPaymentIntent: (_ id: PaymentIntent.ID) async throws -> PaymentIntent
   public var fetchPaymentMethod: (_ id: PaymentMethod.ID) async throws -> PaymentMethod
   public var fetchPlans: () async throws -> ListEnvelope<Plan>
+  public var fetchPlansForProduct: (_ productID: Product.ID) async throws -> ListEnvelope<Plan>
   public var fetchPlan: (_ id: Plan.ID) async throws -> Plan
   public var fetchSubscription: (_ id: Subscription.ID) async throws -> Subscription
   public var fetchUpcomingInvoice: (_ customerID: Customer.ID) async throws -> Invoice
@@ -160,6 +161,9 @@ extension Client {
       },
       fetchPlans: {
         try await runStripe(secretKey)(Stripe.fetchPlans())
+      },
+      fetchPlansForProduct: {
+        try await runStripe(secretKey)(Stripe.fetchPlans(product: $0))
       },
       fetchPlan: {
         try await runStripe(secretKey)(Stripe.fetchPlan(id: $0))
@@ -384,6 +388,10 @@ func fetchPaymentMethod(id: PaymentMethod.ID) -> DecodableRequest<PaymentMethod>
 
 func fetchPlans() -> DecodableRequest<ListEnvelope<Plan>> {
   stripeRequest("plans")
+}
+
+func fetchPlans(product: Product.ID) -> DecodableRequest<ListEnvelope<Plan>> {
+  stripeRequest("plans?product=" + product.rawValue)
 }
 
 func fetchPlan(id: Plan.ID) -> DecodableRequest<Plan> {

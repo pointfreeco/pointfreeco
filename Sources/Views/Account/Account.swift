@@ -636,6 +636,37 @@ private func planName(for subscription: Stripe.Subscription) -> String {
     : subscription.plan.description
 }
 
+private func planAmount(for subscription: Stripe.Subscription) -> Cents<Int> {
+  if let amount = subscription.plan.amount {
+    return amount
+  }
+
+  @Dependency(\.envVars) var envVars
+
+  let pricing = Pricing(
+    billing: subscription.plan.interval == .month ? .monthly : .yearly,
+    quantity: subscription.quantity
+  )
+  if subscription.plan.product == envVars.stripe.pricingProductId,
+    let modernPricing = pricing.modernPricing
+  {
+    return modernPricing
+  }
+
+  return pricing.legacyPricing
+}
+
+private func planPricingDescription(for subscription: Stripe.Subscription) -> String {
+  let interval = subscription.plan.interval.rawValue
+  let seatAmount = planAmount(for: subscription)
+  if subscription.quantity > 1 {
+    let total = Cents(rawValue: seatAmount.rawValue * subscription.quantity)
+    return "\(format(cents: seatAmount))/\(interval) per seat (\(format(cents: total))/\(interval) total)"
+  } else {
+    return "\(format(cents: seatAmount))/\(interval)"
+  }
+}
+
 public func status(for subscription: Stripe.Subscription) -> String {
   switch subscription.status {
   case .active:
@@ -713,6 +744,20 @@ private func subscriptionPlanRows(
             .p(mainAction(for: subscription, paymentMethod: paymentMethod))
           )
         )
+      )
+    )
+  )
+
+  let pricingRow = Node.gridRow(
+    .gridColumn(
+      sizes: [.mobile: 3],
+      .p(.div("Pricing"))
+    ),
+    .gridColumn(
+      sizes: [.mobile: 9],
+      .div(
+        attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
+        .p(.text(planPricingDescription(for: subscription)))
       )
     )
   )
@@ -815,6 +860,7 @@ private func subscriptionPlanRows(
   return .div(
     attributes: [.class([Class.padding([.mobile: [.top: 1, .bottom: 3]])])],
     planRow,
+    pricingRow,
     statusRow,
     nextBillingRow,
     discountRow,
@@ -877,14 +923,27 @@ private func mainAction(
       "Rejoin"
     )
   } else {
-    switch subscription.plan.interval {
-    case .month:
-      let discount = subscription.discount?.coupon.discount ?? { $0 }
-      let amount = discount(subscription.quantity == 1 ? 168_00 : 144_00)
+    @Dependency(\.envVars) var envVars
+
+    let discount = subscription.discount?.coupon.discount ?? { $0 }
+    let isTeam = subscription.quantity > 1
+    let pricingTransitionPrefix = (subscription.plan.product == envVars.stripe.pricingProductId)
+      ? "Your new rate will be "
+      : "This change moves you to our current pricing of "
+
+    func formattedModernAmount(_ billing: Pricing.Billing) -> String? {
+      let pricing = Pricing(billing: billing, quantity: subscription.quantity)
+      guard let modernPricing = pricing.modernPricing else { return nil }
+      let amount = discount(modernPricing)
         .map { $0 * subscription.quantity }
-      let formattedAmount = currencyFormatter.string(
+      return currencyFormatter.string(
         from: NSNumber(value: Double(amount.rawValue) / 100)
       )
+    }
+
+    switch subscription.plan.interval {
+    case .month:
+      let formattedAmount = formattedModernAmount(.yearly)
       if paymentMethod != nil {
         return .form(
           attributes: [
@@ -892,7 +951,7 @@ private func mainAction(
             .method(.post),
             .onsubmit(
               unsafe: """
-                if (!confirm("Upgrade to yearly billing? You will be charged \(formattedAmount ?? "") immediately with a prorated refund for the time remaining in your billing period.")) {
+                if (!confirm("Upgrade to yearly billing? \(pricingTransitionPrefix)\(formattedAmount ?? "")/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
                   return false
                 }
                 """
@@ -923,19 +982,15 @@ private func mainAction(
         )
       }
     case .year:
-      let discount = subscription.discount?.coupon.discount ?? { $0 }
-      let amount = discount(subscription.quantity == 1 ? 18_00 : 16_00)
-        .map { $0 * subscription.quantity }
-      let formattedAmount = currencyFormatter.string(
-        from: NSNumber(value: Double(amount.rawValue) / 100)
-      )
+      guard !isTeam else { return [] }
+      let formattedAmount = formattedModernAmount(.monthly)
       return .form(
         attributes: [
           .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
           .method(.post),
           .onsubmit(
             unsafe: """
-              if (!confirm("Switch to monthly billing? You will be charged \(formattedAmount ?? "") on a monthly basis at the end of your current billing period.")) {
+              if (!confirm("Switch to monthly billing? \(pricingTransitionPrefix)\(formattedAmount ?? "")/month. You will be charged \(formattedAmount ?? "") on a monthly basis at the end of your current billing period.")) {
                 return false
               }
               """
@@ -1090,9 +1145,9 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
 
   @Dependency(\.siteRouter) var siteRouter
 
-  let amount =
-    stripeSubscription.plan.interval == .some(.year)
-    ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00)
+  let amount = stripeSubscription.plan.amount
+    ?? (stripeSubscription.plan.interval == .some(.year)
+      ? Cents(rawValue: 144_00) : Cents(rawValue: 16_00))
   let interval = stripeSubscription.plan.interval == .some(.year) ? "year" : "month"
 
   let inviteViaEmail: Node

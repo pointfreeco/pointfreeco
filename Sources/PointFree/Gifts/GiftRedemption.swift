@@ -116,7 +116,12 @@ private func redeemGift(
         try await stripe
         .createSubscription(
           customerID: customer.id,
-          planID: gift.monthsFree < 12 ? .monthly : .yearly,
+          planID: try await resolvePlanID(
+            for: .init(
+              billing: gift.monthsFree < 12 ? .monthly : .yearly,
+              quantity: 1
+            )
+          ),
           quantity: 1,
           coupon: gift.coupon
         )

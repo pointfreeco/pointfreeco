@@ -315,8 +315,14 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
     let useRegionalDiscount
   ):
     let teammates = lane == .team ? (teammates ?? [""]) : []
+    let billing =
+      if lane == .team, billing == .some(.monthly) {
+        Pricing.Billing.yearly
+      } else {
+        billing ?? .yearly
+      }
     let subscribeData = SubscribeConfirmationData(
-      billing: billing ?? .yearly,
+      billing: billing,
       isOwnerTakingSeat: isOwnerTakingSeat ?? true,
       referralCode: referralCode,
       teammates: teammates,

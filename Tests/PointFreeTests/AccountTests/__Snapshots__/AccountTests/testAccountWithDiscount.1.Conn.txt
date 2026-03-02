@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 84287
+Content-Length: 85010
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2391,7 +2391,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                               <p>
                                 <form action="/account/subscription/change"
                                       method="post"
-                                      onsubmit="if (!confirm("Upgrade to yearly billing? You will be charged $84.00 immediately with a prorated refund for the time remaining in your billing period.")) {
+                                      onsubmit="if (!confirm("Upgrade to yearly billing? This change moves you to our current pricing of $108.00/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
   return false
 }">
                                   <input name="billing"
@@ -2420,6 +2420,25 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                               </p>
                             </div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-m
+                                  col-m-3">
+                        <p>
+                          <div>
+                            Pricing
+                          </div>
+                        </p>
+                      </div>
+                      <div class="col-m
+                                  col-m-9">
+                        <div class="m-pl1
+                                    m-pr1">
+                          <p>
+                            $18.00/month
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -2669,7 +2688,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                                   h5
                                   lh-4
                                   md-ctn">
-                        <p>Add a teammate for a discounted rate of <strong>$16/month</strong>. Your first invoice will be prorated based on your current billing cycle.</p>
+                        <p>Add a teammate for a discounted rate of <strong>$18/month</strong>. Your first invoice will be prorated based on your current billing cycle.</p>
 
                       </div>
                       <form action="/invites/add"
@@ -2736,7 +2755,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                                   lh-4
                                   md-ctn">
                         <p>Invite your colleages to your membership by sharing the following URL. Your credit
-card will be charged a prorated amount of <strong>$16/month</strong>
+card will be charged a prorated amount of <strong>$18/month</strong>
 when a teammate joins.</p>
 
                       </div>

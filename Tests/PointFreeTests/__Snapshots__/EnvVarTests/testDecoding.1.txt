@@ -68,14 +68,18 @@
     value: "whsec_test"
   ),
   [17]: (
+    key: "STRIPE_PRICING_PRODUCT_ID",
+    value: "prod_test"
+  ),
+  [18]: (
     key: "STRIPE_PUBLISHABLE_KEY",
     value: "pk_test"
   ),
-  [18]: (
+  [19]: (
     key: "STRIPE_SECRET_KEY",
     value: "sk_test"
   ),
-  [19]: (
+  [20]: (
     key: "YOUTUBE_CHANNEL_ID",
     value: "yt_123"
   )
