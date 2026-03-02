@@ -6,7 +6,7 @@ extension Episode {
       We show off some superpowers unlocked by embracing isolation, noncopyable, and nonescapable \
       types by showing how they can be used to add incredible safety and performance to a legacy C \
       API, and we will bring everything together to see how these tools make testing an app that \
-      uses Composable Architecture 2.0 and SQLiteData is like magic.
+      uses Composable Architecture 2.0 and SQLiteData like magic.
       """,
     codeSampleDirectory: "0356-beyond-basics-isolation-pt2",
     exercises: _exercises,
