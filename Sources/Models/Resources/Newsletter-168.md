@@ -1,6 +1,6 @@
 > Important: The original release of this library was named SharingGRDB, but has since been 
 > renamed to SQLiteData, and now supports full CloudKit synchronization. See our
-> [announcement](blog/posts/184-sqlitedata-a-fast-lightweight-alternative-to-swiftdata-with-cloudkit-sync-and-sharing)
+> [announcement](blog/posts/184-sqlitedata-1-0-an-alternative-to-swiftdata-with-cloudkit-sync-and-sharing)
 > for more info.
 
 We are excited to announce the release of a brand new open source library: 
