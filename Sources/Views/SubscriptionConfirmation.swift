@@ -1204,12 +1204,12 @@ private func checkoutJS(
             const json = await response.json()
             if (json.error) {
               displayError.innerHTML = json.error || defaultError
-              setFormEnabled(true)
+              setFormEnabled(true, function() { return true })
             } else if (json.requiresAction) {
               const { paymentIntent, error } = await stripe.confirmCardPayment(json.clientSecret)
               if (error) {
                 displayError.innerHTML = error.message || defaultError
-                setFormEnabled(true)
+                setFormEnabled(true, function() { return true })
               } else if (paymentIntent.status === "succeeded") {
                 form.\(SubscribeData.CodingKeys.subscriptionID.rawValue).value = json.subscriptionID
                 form.submit()
