@@ -70,6 +70,9 @@ public struct Client {
   public var fetchPaymentIntent: (_ id: PaymentIntent.ID) async throws -> PaymentIntent
   public var fetchPaymentMethod: (_ id: PaymentMethod.ID) async throws -> PaymentMethod
   public var fetchPlans: () async throws -> ListEnvelope<Plan>
+  public var fetchPlansForProduct: (_ productID: Product.ID) async throws -> ListEnvelope<Plan>
+  public var fetchPricesForProduct:
+    (_ productID: Product.ID, _ lookupKeys: [Price.LookupKey]) async throws -> ListEnvelope<Price>
   public var fetchPlan: (_ id: Plan.ID) async throws -> Plan
   public var fetchSubscription: (_ id: Subscription.ID) async throws -> Subscription
   public var fetchUpcomingInvoice: (_ customerID: Customer.ID) async throws -> Invoice
@@ -160,6 +163,12 @@ extension Client {
       },
       fetchPlans: {
         try await runStripe(secretKey)(Stripe.fetchPlans())
+      },
+      fetchPlansForProduct: {
+        try await runStripe(secretKey)(Stripe.fetchPlans(product: $0))
+      },
+      fetchPricesForProduct: {
+        try await runStripe(secretKey)(Stripe.fetchPrices(product: $0, lookupKeys: $1))
       },
       fetchPlan: {
         try await runStripe(secretKey)(Stripe.fetchPlan(id: $0))
@@ -328,7 +337,7 @@ func createSubscription(
 
   var params: [String: Any] = [:]
   params["customer"] = customer.rawValue
-  params["items[0][plan]"] = plan.rawValue
+  params[subscriptionItemIDParamKey(for: plan)] = plan.rawValue
   params["items[0][quantity]"] = String(quantity)
   params["coupon"] = coupon?.rawValue
 
@@ -384,6 +393,23 @@ func fetchPaymentMethod(id: PaymentMethod.ID) -> DecodableRequest<PaymentMethod>
 
 func fetchPlans() -> DecodableRequest<ListEnvelope<Plan>> {
   stripeRequest("plans")
+}
+
+func fetchPlans(product: Product.ID) -> DecodableRequest<ListEnvelope<Plan>> {
+  stripeRequest("plans?product=" + product.rawValue)
+}
+
+func fetchPrices(
+  product: Product.ID,
+  lookupKeys: [Price.LookupKey]
+) -> DecodableRequest<ListEnvelope<Price>> {
+  let lookupKeyQuery = lookupKeys
+    .map { "lookup_keys[]=" + $0.rawValue }
+    .joined(separator: "&")
+  let query =
+    "active=true&product=" + product.rawValue
+    + (lookupKeyQuery.isEmpty ? "" : "&" + lookupKeyQuery)
+  return stripeRequest("prices?" + query)
 }
 
 func fetchPlan(id: Plan.ID) -> DecodableRequest<Plan> {
@@ -460,8 +486,41 @@ func updateSubscription(
 )
   -> DecodableRequest<Subscription>?
 {
+  let currentQuantity = currentSubscription.totalQuantity
+  let items = currentSubscription.items.data
+  guard let item = items.first else { return nil }
 
-  guard let item = currentSubscription.items.data.first else { return nil }
+  if quantity > currentQuantity, currentQuantity > 1 {
+    let seatDelta = quantity - currentQuantity
+    var params: [String: Any?] = [
+      "cancel_at_period_end": "false",
+      "coupon": quantity > 1 ? "" : nil,
+      "payment_behavior": "error_if_incomplete",
+      "proration_behavior": "always_invoice",
+    ]
+
+    var targetItemIndex: Int?
+    for (index, item) in items.enumerated() {
+      params["items[\(index)][id]"] = item.id.rawValue
+      params["items[\(index)][quantity]"] = String(item.quantity)
+      if item.plan.id == plan {
+        targetItemIndex = index
+      }
+    }
+
+    if let targetItemIndex {
+      params["items[\(targetItemIndex)][quantity]"] = String(items[targetItemIndex].quantity + seatDelta)
+    } else {
+      let newItemIndex = items.count
+      params[subscriptionItemIDParamKey(for: plan, itemIndex: newItemIndex)] = plan.rawValue
+      params["items[\(newItemIndex)][quantity]"] = String(seatDelta)
+    }
+
+    return stripeRequest(
+      "subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer.default_source",
+      .post(params.compactMapValues { $0 })
+    )
+  }
 
   return stripeRequest(
     "subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer.default_source",
@@ -470,7 +529,7 @@ func updateSubscription(
         "cancel_at_period_end": "false",
         "coupon": quantity > 1 ? "" : nil,
         "items[0][id]": item.id.rawValue,
-        "items[0][plan]": plan.rawValue,
+        subscriptionItemIDParamKey(for: plan): plan.rawValue,
         "items[0][quantity]": String(quantity),
         "payment_behavior": "error_if_incomplete",
         "proration_behavior": "always_invoice",
@@ -478,6 +537,14 @@ func updateSubscription(
       .compactMapValues { $0 }
     )
   )
+}
+
+private func subscriptionItemIDParamKey(for planID: Plan.ID, itemIndex: Int = 0) -> String {
+  if planID.rawValue.hasPrefix("price_") {
+    return "items[\(itemIndex)][price]"
+  } else {
+    return "items[\(itemIndex)][plan]"
+  }
 }
 
 public let jsonDecoder: JSONDecoder = {

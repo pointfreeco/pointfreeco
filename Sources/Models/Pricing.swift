@@ -63,6 +63,10 @@ public struct Pricing: Equatable {
   }
 
   public var defaultPricing: Cents<Int> {
+    self.modernPricing ?? self.legacyPricing
+  }
+
+  public var legacyPricing: Cents<Int> {
     switch (self.lane, self.billing) {
     case (.personal, .monthly):
       return 18_00
@@ -72,6 +76,19 @@ public struct Pricing: Equatable {
       return 16_00
     case (.team, .yearly):
       return 144_00
+    }
+  }
+
+  public var modernPricing: Cents<Int>? {
+    switch (self.lane, self.billing) {
+    case (.personal, .monthly):
+      return 24_00
+    case (.personal, .yearly):
+      return 216_00
+    case (.team, .monthly):
+      return nil
+    case (.team, .yearly):
+      return 192_00
     }
   }
 }

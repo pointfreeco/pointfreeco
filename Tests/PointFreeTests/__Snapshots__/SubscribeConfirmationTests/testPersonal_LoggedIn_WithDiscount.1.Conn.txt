@@ -2,7 +2,7 @@ GET http://localhost:8080/discounts/dead-beef
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 65344
+Content-Length: 65347
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2280,7 +2280,7 @@ available</p>
                          m-mr0
                          m-mt0
                          m-mb0">
-                Yearly — Save 22% off monthly billing!
+                Yearly — Save 25% off monthly billing!
               </h5>
               <p class="m-pt1
                         fg-black
@@ -2288,7 +2288,7 @@ available</p>
                         h6
                         lh-4
                         fg-gray650">
-                $84 per year
+                $108 per year
               </p>
             </div>
           </label>
@@ -2331,7 +2331,7 @@ available</p>
                         h6
                         lh-4
                         fg-gray650">
-                $9 per month
+                $12 per month
               </p>
             </div>
           </label>
@@ -2604,8 +2604,8 @@ function updateSeats() {
   var monthly = form["pricing[billing]"].value == "monthly"
   var monthlyPricePerSeat = (
     monthly
-      ? 900 * 0.01 * regionalDiscount
-      : 700 * 0.01 * regionalDiscount
+      ? 1200 * 0.01 * regionalDiscount
+      : 900 * 0.01 * regionalDiscount
   )
   const monthlyPrice = seats * monthlyPricePerSeat
   const total = monthly

@@ -34,6 +34,7 @@ class EnvVarTests: TestCase {
       "REGIONAL_DISCOUNT_COUPON_ID": "regional-discount",
       "RSS_USER_AGENT_WATCHLIST": "",
       "STRIPE_ENDPOINT_SECRET": "whsec_test",
+      "STRIPE_PRODUCT_ID": "prod_test",
       "STRIPE_PUBLISHABLE_KEY": "pk_test",
       "STRIPE_SECRET_KEY": "sk_test",
       "YOUTUBE_CHANNEL_ID": "yt_123"

@@ -12,6 +12,7 @@ import Prelude
 import Stripe
 import Styleguide
 import Tagged
+import TaggedMoney
 import URLRouting
 import Views
 
@@ -195,9 +196,13 @@ private func add<A>(
       }
     }
     if shouldAddSubscriptionSeat {
+      let planID = try await resolvePlanID(
+        for: newPricing,
+        currentSubscription: stripeSubscription
+      )
       _ = try await stripe.updateSubscription(
         stripeSubscription,
-        newPricing.billing.plan,
+        planID,
         newPricing.quantity
       )
     }
@@ -224,7 +229,11 @@ private func add<A>(
           currentUser: currentUser,
           owner: owner,
           newPricing: shouldAddSubscriptionSeat
-            ? newPricing
+            ? .init(
+              amount: stripeSubscription.plan.amount ?? newPricing.defaultPricing,
+              interval: stripeSubscription.plan.interval,
+              quantity: newPricing.quantity
+            )
             : nil
         )
       )
@@ -412,7 +421,7 @@ func newTeammateEmail(
 func ownerNewTeammateJoinedEmail(
   currentUser: User,
   owner: User,
-  newPricing: Pricing?
+  newPricing: NewPricing?
 ) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
@@ -423,7 +432,7 @@ func ownerNewTeammateJoinedEmail(
   let newPricingFooter: Node
   if let newPricing = newPricing {
     let newPricePerInterval = wholeCurrencyFormatter.string(
-      from: NSNumber(value: newPricing.defaultPricing.rawValue / 100 * newPricing.quantity)
+      from: NSNumber(value: newPricing.amount.rawValue / 100 * newPricing.quantity)
     )!
     newPricingFooter = .emailTable(
       attributes: [
@@ -494,4 +503,10 @@ func ownerNewTeammateJoinedEmail(
       newPricingFooter,
     ]
   }
+}
+
+struct NewPricing {
+  var amount: Cents<Int>
+  var interval: Stripe.Plan.Interval
+  var quantity: Int
 }

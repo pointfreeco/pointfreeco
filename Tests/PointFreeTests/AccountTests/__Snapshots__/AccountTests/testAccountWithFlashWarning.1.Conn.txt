@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"flash":{"message":"Your subscription is past-due!","priority":"warning"},"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 80545
+Content-Length: 76601
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
@@ -2406,7 +2406,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                               <p>
                                 <form action="/account/subscription/change"
                                       method="post"
-                                      onsubmit="if (!confirm("Upgrade to yearly billing? You will be charged $168.00 immediately with a prorated refund for the time remaining in your billing period.")) {
+                                      onsubmit="if (!confirm("Upgrade to yearly billing? This change moves you to our current pricing of $216.00/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
   return false
 }">
                                   <input name="billing"
@@ -2435,6 +2435,25 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                               </p>
                             </div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-m
+                                  col-m-3">
+                        <p>
+                          <div>
+                            Pricing
+                          </div>
+                        </p>
+                      </div>
+                      <div class="col-m
+                                  col-m-9">
+                        <div class="m-pl1
+                                    m-pr1">
+                          <p>
+                            $18.00/month
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -2587,153 +2606,48 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                                 col-m-3">
                       <div>
                         <p>
-                          Invite via email
+                          Add teammate
                         </p>
                       </div>
                     </div>
                     <div class="col-m
                                 col-m-9">
-                      <div class="fg-black
-                                  normal
-                                  h5
-                                  lh-4
-                                  md-ctn">
-                        <p>Add a teammate for a discounted rate of <strong>$16/month</strong>. Your first invoice will be prorated based on your current billing cycle.</p>
-
-                      </div>
-                      <form action="/invites/add"
-                            method="post"
-                            class="flex
-                                   m-pt1">
-                        <input class="font-family-inherit
-                                      fg-black
-                                      border-box
-                                      rounded
-                                      border
-                                      border-gray-800
-                                      h-2r
-                                      m-pl1
-                                      m-pr1
-                                      m-pt1
-                                      m-pb1
-                                      align-middle
-                                      w-100p"
-                               name="email"
-                               placeholder="blob@example.com"
-                               type="email"
-                               required>
-                        <input type="submit"
-                               class="medium
-                                      cursor-pointer
-                                      nowrap
-                                      btn-normal
-                                      border-none
-                                      text-decoration-none
-                                      pf-link-white
-                                      fg-white
-                                      bg-purple
-                                      h6
-                                      m-pl1
-                                      m-pr1
-                                      m-pt1
-                                      m-pb1
-                                      align-middle
-                                      d-ml2
-                                      m-ml1"
-                               value="Add">
-                      </form>
-                    </div>
-                  </div>
-                  <div class="border-top
-                              border-gray-800
-                              m-pb3
-                              m-pt2
-                              row">
-                    <div class="col-m
-                                col-m-3">
-                      <div>
+                      <div class="m-pl1
+                                  m-pr1">
                         <p>
-                          Invite via link
+                          Inviting teammates requires yearly billing.
                         </p>
-                      </div>
-                    </div>
-                    <div class="col-m
-                                col-m-9">
-                      <div class="fg-black
-                                  normal
-                                  h5
-                                  lh-4
-                                  md-ctn">
-                        <p>Invite your colleages to your membership by sharing the following URL. Your credit
-card will be charged a prorated amount of <strong>$16/month</strong>
-when a teammate joins.</p>
-
-                      </div>
-                      <div class="flex
-                                  m-pt1">
-                        <input class="font-family-inherit
-                                      fg-black
-                                      border-box
-                                      rounded
-                                      border
-                                      border-gray-800
-                                      h-2r
-                                      m-pl1
-                                      m-pr1
-                                      m-pt1
-                                      m-pb1
-                                      align-middle
-                                      w-100p"
-                               value="http://localhost:8080/join/cafed00d"
-                               type="text"
-                               readonly
-                               onclick="this.select();">
-                        <input type="button"
-                               class="medium
-                                      cursor-pointer
-                                      nowrap
-                                      btn-normal
-                                      border-none
-                                      text-decoration-none
-                                      pf-link-black
-                                      fg-black
-                                      bg-white
-                                      h6
-                                      m-pl1
-                                      m-pr1
-                                      m-pt1
-                                      m-pb1
-                                      align-middle
-                                      d-ml2
-                                      m-ml1"
-                               value="Copy"
-                               onclick="navigator.clipboard.writeText("http://localhost:8080/join/cafed00d");
-this.value = "Copied!";
-setTimeout(() => { this.value = "Copy"; }, 3000);">
-                      </div>
-                      <form action="/account/regenerate-team-invite-code"
-                            class="fg-black
-                                   normal
-                                   h6
-                                   lh-4
-                                   fg-gray400
-                                   m-pt1"
-                            method="post"
-                            onsubmit="if (!confirm("Really invalidate the current invite link? Team mates will need an updated link to join.")) {
+                        <p>
+                          <form action="/account/subscription/change"
+                                method="post"
+                                onsubmit="if (!confirm("Upgrade to yearly billing to invite teammates? You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
   return false
 }">
-                        <button class="border-none
-                                       cursor-pointer
-                                       m-pl0
-                                       m-pr0
-                                       m-pt0
-                                       m-pb0
-                                       bg-white
-                                       underline">
-                          Click here
-                        </button>
-                         to invalidate the current invite link and generate a new one.
-                      </form>
+                            <input name="billing"
+                                   type="hidden"
+                                   value="yearly">
+                            <input name="quantity"
+                                   type="hidden"
+                                   value="1">
+                            <button class="medium
+                                           cursor-pointer
+                                           nowrap
+                                           btn-normal
+                                           border-none
+                                           text-decoration-none
+                                           pf-link-white
+                                           fg-white
+                                           bg-purple
+                                           h6
+                                           m-pl1
+                                           m-pr1
+                                           m-pt1
+                                           m-pb1">
+                              Upgrade to yearly billing
+                            </button>
+                          </form>
+                        </p>
+                      </div>
                     </div>
                   </div>
                   <h2 class="fg-black

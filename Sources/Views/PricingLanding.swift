@@ -56,7 +56,7 @@ public struct PricingLanding: HTML {
             .inlineStyle("cursor", "not-allowed")
           }
         }
-        PricingLane("Individual", annualPricePerMonth: 14) {
+        PricingLane("Individual", annualPricePerMonth: 18) {
           "per month,"
           br()
           "billed annually"
@@ -96,7 +96,7 @@ public struct PricingLanding: HTML {
             .attribute("href", siteRouter.path(for: .subscribeConfirmation(lane: .personal)))
           }
         }
-        PricingLane("Team", annualPricePerMonth: 12) {
+        PricingLane("Team", annualPricePerMonth: 16) {
           "per member, per month,"
           br()
           "billed annually"
@@ -139,12 +139,12 @@ public struct PricingLanding: HTML {
 
       VStack(alignment: .center) {
         small {
-          "Prices shown with annual billing. When billed month to month, the "
+          "Prices shown with annual billing. The "
           br()
           strong { "Personal" }
-          " plan is $18, and the "
+          " plan is $216/year or $24/month, and the "
           strong { "Team" }
-          " plan is $16 per member per month."
+          " plan is $192 per member per year."
         }
         .color(.gray500)
         .inlineStyle("font-size", "0.875rem")

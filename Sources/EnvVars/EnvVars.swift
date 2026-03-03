@@ -13,6 +13,7 @@ public typealias MailgunApiKey = Mailgun.Client.ApiKey
 public typealias MailgunDomain = Mailgun.Client.Domain
 
 public typealias StripeEndpointSecret = Stripe.Client.EndpointSecret
+public typealias StripeProductId = Stripe.Product.ID
 public typealias StripePublishableKey = Stripe.Client.PublishableKey
 public typealias StripeSecretKey = Stripe.Client.SecretKey
 
@@ -186,21 +187,25 @@ public struct EnvVars: Codable {
 
   public struct Stripe: Codable {
     public var endpointSecret: StripeEndpointSecret = "whsec_test"
+    public var productId: StripeProductId = "prod_test"
     public var publishableKey: StripePublishableKey = "pk_test"
     public var secretKey: StripeSecretKey = "sk_test"
 
     public init(
       endpointSecret: StripeEndpointSecret = "whsec_test",
+      productId: StripeProductId = "prod_test",
       publishableKey: StripePublishableKey = "pk_test",
       secretKey: StripeSecretKey = "sk_test"
     ) {
       self.endpointSecret = endpointSecret
+      self.productId = productId
       self.publishableKey = publishableKey
       self.secretKey = secretKey
     }
 
     private enum CodingKeys: String, CodingKey {
       case endpointSecret = "STRIPE_ENDPOINT_SECRET"
+      case productId = "STRIPE_PRODUCT_ID"
       case publishableKey = "STRIPE_PUBLISHABLE_KEY"
       case secretKey = "STRIPE_SECRET_KEY"
     }

@@ -22,6 +22,8 @@ extension Client {
     fetchPaymentIntent: { _ in .succeeded },
     fetchPaymentMethod: { _ in .mock },
     fetchPlans: { .mock([.mock]) },
+    fetchPlansForProduct: { _ in .mock([.modernPersonalMonthly, .modernPersonalYearly, .modernTeamYearly]) },
+    fetchPricesForProduct: { _, _ in .mock([.pointFreeMonthly, .pointFreePro, .pointFreeProLegacy]) },
     fetchPlan: { _ in .mock },
     fetchSubscription: { _ in .mock },
     fetchUpcomingInvoice: { _ in .upcoming },
@@ -220,31 +222,83 @@ extension PaymentMethod.Card {
 
 extension Plan {
   public static let mock = Plan(
+    amount: 18_00,
     created: .mock,
     currency: .usd,
     id: .monthly,
     interval: .month,
     metadata: [:],
-    nickname: "Individual Monthly"
+    nickname: "Individual Monthly",
+    product: "prod_legacy"
   )
 
   public static let individualMonthly = mock
 
   public static let individualYearly = update(mock) {
     $0.id = .yearly
+    $0.amount = 168_00
     $0.interval = .year
     $0.nickname = "Individual Yearly"
   }
 
   public static let teamMonthly = update(individualMonthly) {
-    $0.id = .monthly
+    $0.amount = 16_00
     $0.nickname = "Team Monthly"
   }
 
   public static let teamYearly = update(individualYearly) {
-    $0.id = .yearly
+    $0.amount = 144_00
     $0.nickname = "Team Yearly"
   }
+
+  public static let modernPersonalMonthly = update(mock) {
+    $0.amount = 24_00
+    $0.id = "price_pointfree_monthly"
+    $0.nickname = "Personal Monthly"
+    $0.product = "prod_test"
+  }
+
+  public static let modernPersonalYearly = update(mock) {
+    $0.amount = 216_00
+    $0.id = "price_pointfree_pro"
+    $0.interval = .year
+    $0.nickname = "Personal Yearly"
+    $0.product = "prod_test"
+  }
+
+  public static let modernTeamYearly = update(mock) {
+    $0.amount = 192_00
+    $0.id = "price_pointfree_pro"
+    $0.interval = .year
+    $0.nickname = "Team Yearly"
+    $0.product = "prod_test"
+  }
+}
+
+extension Price {
+  public static let pointFreeMonthly = Price(
+    id: "price_pointfree_monthly",
+    lookupKey: "pointfree-monthly",
+    product: "prod_test",
+    recurring: .init(interval: .month),
+    unitAmount: 24_00
+  )
+
+  public static let pointFreePro = Price(
+    id: "price_pointfree_pro",
+    lookupKey: "pointfree-pro",
+    product: "prod_test",
+    recurring: .init(interval: .year),
+    unitAmount: nil
+  )
+
+  public static let pointFreeProLegacy = Price(
+    id: "price_pointfree_pro_legacy",
+    lookupKey: "pointfree-pro-legacy",
+    product: "prod_test",
+    recurring: .init(interval: .year),
+    unitAmount: 192_00
+  )
 }
 
 extension Subscription {

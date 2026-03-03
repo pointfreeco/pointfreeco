@@ -180,6 +180,62 @@ final class AccountTests: TestCase {
   }
 
   @MainActor
+  func testAccount_ModernTeamYearlyPricing() async throws {
+    var subscription = Stripe.Subscription.individualYearly
+    subscription.plan.id = "price_pointfree_pro"
+    subscription.plan.amount = nil
+    subscription.plan.product = "prod_test"
+
+    await withDependencies {
+      $0.individualMonthly()
+      $0.stripe.fetchSubscription = { _ in subscription }
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn))
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
+  @MainActor
+  func testAccount_MixedLegacyAndProTeamPricing() async throws {
+    var legacyPlan = Stripe.Plan.teamYearly
+    legacyPlan.nickname = "Yearly (2019)"
+    legacyPlan.amount = 144_00
+
+    var proPlan = Stripe.Plan.modernTeamYearly
+    proPlan.id = "price_pointfree_pro"
+    proPlan.nickname = "Pro"
+    proPlan.amount = nil
+    proPlan.product = "prod_test"
+    proPlan.interval = .year
+
+    var legacyItem = Stripe.Subscription.Item.mock
+    legacyItem.id = "si_legacy"
+    legacyItem.plan = legacyPlan
+    legacyItem.quantity = 3
+
+    var proItem = Stripe.Subscription.Item.mock
+    proItem.id = "si_pro"
+    proItem.plan = proPlan
+    proItem.quantity = 1
+
+    var subscription = Stripe.Subscription.teamYearly
+    subscription.plan = legacyPlan
+    subscription.quantity = 4
+    subscription.items = .mock([legacyItem, proItem])
+
+    await withDependencies {
+      $0.teamYearly()
+      $0.stripe.fetchSubscription = { _ in subscription }
+    } operation: {
+      let conn = connection(from: request(to: .account(), session: .loggedIn))
+      let html = String(decoding: await siteMiddleware(conn).data, as: UTF8.self)
+
+      XCTAssertTrue(html.contains("Yearly (2019) ×3, Pro (×1)"))
+      XCTAssertTrue(html.contains("$144.00×3 + $192.00×1 ($624.00/year total)"))
+    }
+  }
+
+  @MainActor
   func testAccount_InvoiceBilling() async throws {
     var customer = Stripe.Customer.mock
     customer.invoiceSettings.defaultPaymentMethod = nil
