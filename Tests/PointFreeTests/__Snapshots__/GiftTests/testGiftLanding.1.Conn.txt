@@ -497,7 +497,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
               </h4>
               <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
                 <div>
-                  <h3 class="font-size-hS6a7 font-weight-lQ6Km4 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">$54
+                  <h3 class="font-size-hS6a7 font-weight-lQ6Km4 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">$72
                   </h3>
                 </div>
                 <div class="font-size-xlo1p4">One-time payment
@@ -529,7 +529,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
               </h4>
               <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
                 <div>
-                  <h3 class="font-size-hS6a7 font-weight-lQ6Km4 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">$108
+                  <h3 class="font-size-hS6a7 font-weight-lQ6Km4 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">$144
                   </h3>
                 </div>
                 <div class="font-size-xlo1p4">One-time payment
@@ -561,14 +561,14 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
               </h4>
               <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
                 <div>
-                  <h3 class="font-size-hS6a7 font-weight-lQ6Km4 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">$168
+                  <h3 class="font-size-hS6a7 font-weight-lQ6Km4 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">$216
                   </h3>
                 </div>
                 <div class="font-size-xlo1p4">One-time payment
                 </div>
               </pf-hstack>
               <ul class="font-size-RTPM71 margin-yiBeC4 padding-left-E4tBw4 list-style-type-Wl0y44 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3 color-I8WpG4 color-VoDZ9">
-                <li class="margin-LDhNn4 padding-B7Alk3 background-color-QNGbR3 color-K2J0r1">22% off the 3 and 6 month gift options
+                <li class="margin-LDhNn4 padding-B7Alk3 background-color-QNGbR3 color-K2J0r1">25% off the 3 and 6 month gift options
                 </li>
                 <li>Full access for 1 year
                 </li>

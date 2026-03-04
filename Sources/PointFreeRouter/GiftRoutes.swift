@@ -32,11 +32,11 @@ public enum Gifts: Equatable {
     public var amount: Cents<Int> {
       switch self {
       case .threeMonths:
-        return 54_00
+        return 72_00
       case .sixMonths:
-        return 108_00
+        return 144_00
       case .year:
-        return 168_00
+        return 216_00
       }
     }
 

@@ -343,7 +343,7 @@ class GiftTests: TestCase {
         }
       }
       $0.stripe.createSubscription = { _, _, _, _ in .individualMonthly }
-      $0.stripe.fetchPaymentIntent = { _ in .succeeded }
+      $0.stripe.fetchPaymentIntent = { _ in update(.succeeded) { $0.amount = 72_00 } }
     } operation: {
       let conn = connection(
         from: request(
@@ -377,7 +377,7 @@ class GiftTests: TestCase {
         """
       }
 
-      XCTAssertEqual(credit, -54_00)
+      XCTAssertEqual(credit, -72_00)
       XCTAssertNotNil(stripeSubscriptionId)
       XCTAssertNotNil(userId)
     }
@@ -416,7 +416,7 @@ class GiftTests: TestCase {
         XCTAssertEqual($3, "deadbeef-25-off")
         return .individualMonthly
       }
-      $0.stripe.fetchPaymentIntent = { _ in .succeeded }
+      $0.stripe.fetchPaymentIntent = { _ in update(.succeeded) { $0.amount = 72_00 } }
     } operation: {
       let conn = connection(
         from: request(
@@ -450,7 +450,7 @@ class GiftTests: TestCase {
         """
       }
 
-      XCTAssertEqual(credit, -54_00)
+      XCTAssertEqual(credit, -72_00)
       XCTAssertNotNil(stripeSubscriptionId)
       XCTAssertNotNil(userId)
     }
@@ -473,7 +473,7 @@ class GiftTests: TestCase {
         return .fulfilled
       }
       $0.date.now = .mock
-      $0.stripe.fetchPaymentIntent = { _ in .succeeded }
+      $0.stripe.fetchPaymentIntent = { _ in update(.succeeded) { $0.amount = 72_00 } }
       $0.stripe.fetchSubscription = { _ in .individualMonthly }
       $0.stripe.updateCustomerBalance = { _, amount in
         credit = amount
@@ -511,7 +511,7 @@ class GiftTests: TestCase {
         """
       }
 
-      XCTAssertEqual(credit, -54_00)
+      XCTAssertEqual(credit, -72_00)
       XCTAssertNotNil(stripeSubscriptionId)
     }
   }
@@ -519,7 +519,7 @@ class GiftTests: TestCase {
   @MainActor
   func testGiftRedeem_Invalid_LoggedOut() async throws {
     await withDependencies {
-      $0.stripe.fetchCoupon = { _ in update(.mock) { $0.rate = .amountOff(54_00) } }
+      $0.stripe.fetchCoupon = { _ in update(.mock) { $0.rate = .amountOff(72_00) } }
     } operation: {
       let conn = connection(
         from: request(

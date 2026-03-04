@@ -35,7 +35,7 @@ extension Gifts.Plan {
       ] + base
     case .year:
       return [
-        .init(isHighlighted: true, name: "22% off the 3 and 6 month gift options"),
+        .init(isHighlighted: true, name: "25% off the 3 and 6 month gift options"),
         .init(name: "Full access for 1 year"),
       ] + base
     }
