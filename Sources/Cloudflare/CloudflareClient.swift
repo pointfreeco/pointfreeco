@@ -7,7 +7,6 @@ import FoundationPrelude
 
 @DependencyClient
 public struct CloudflareClient: Sendable {
-  public var captions: @Sendable (Cloudflare.Video.ID) async throws -> Envelope<[Caption]>
   public var copy: @Sendable (String) async throws -> Envelope<DirectUploadResult>
   public var editVideo: @Sendable (EditVideoArguments) async throws -> Envelope<Video>
   public var generateCaption:
@@ -55,13 +54,6 @@ extension CloudflareClient: TestDependencyKey {
 extension CloudflareClient {
   public static func live(accountID: String, apiToken: String) -> Self {
     Self(
-      captions: { videoID in
-        try await cloudflareRequest(
-          accountID: accountID,
-          apiToken: apiToken,
-          path: "stream/\(videoID)/captions"
-        )
-      },
       copy: { url in
         try await cloudflareRequest(
           accountID: accountID,
