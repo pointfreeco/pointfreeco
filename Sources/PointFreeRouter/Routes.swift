@@ -156,12 +156,7 @@ public indirect enum SiteRoute: Equatable {
   }
 
   public enum Webhooks: Equatable {
-    case cloudflare(Cloudflare)
     case stripe(_Stripe)
-
-    public enum Cloudflare: Equatable {
-      case stream
-    }
 
     public enum _Stripe: Equatable {
       case paymentIntents(Event<PaymentIntent>)
@@ -435,16 +430,6 @@ struct TeamRouter: ParserPrinter {
 struct WebhooksRouter: ParserPrinter {
   var body: some Router<SiteRoute.Webhooks> {
     OneOf {
-      Route(.case(SiteRoute.Webhooks.cloudflare)) {
-        Path { "cloudflare" }
-        OneOf {
-          Route(.case(SiteRoute.Webhooks.Cloudflare.stream)) {
-            Method.post
-            Path { "stream" }
-          }
-        }
-      }
-
       Route(.case(SiteRoute.Webhooks.stripe)) {
         Method.post
         Path { "stripe" }

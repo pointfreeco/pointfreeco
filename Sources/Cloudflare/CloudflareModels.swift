@@ -4,13 +4,6 @@ public struct Envelope<Result: Decodable>: Decodable {
   public let result: Result
 }
 
-public struct Caption: Decodable {
-  public let language: String
-  public let label: String
-  public let generated: Bool?
-  public let status: String?
-}
-
 public struct Image: Decodable {
   public typealias ID = Tagged<Self, String>
   public let id: ID

@@ -113,23 +113,19 @@ public struct EnvVars: Codable {
     public var accountID: String
     public var customerSubdomain: String
     public var streamAPIKey: String
-    public var streamWebhookSecret: String
     public init(
       accountID: String = "deadbeef",
       customerSubdomain: String = "customer-deadbeef.cloudflarestream.com",
       streamAPIKey: String = "deadbeef",
-      streamWebhookSecret: String = "deadbeef"
     ) {
       self.accountID = accountID
       self.customerSubdomain = customerSubdomain
       self.streamAPIKey = streamAPIKey
-      self.streamWebhookSecret = streamWebhookSecret
     }
     private enum CodingKeys: String, CodingKey {
       case accountID = "CLOUDFLARE_ACCOUNT_ID"
       case customerSubdomain = "CLOUDFLARE_CUSTOMER_SUBDOMAIN"
       case streamAPIKey = "CLOUDFLARE_STREAM_API_KEY"
-      case streamWebhookSecret = "CLOUDFLARE_STREAM_WEBHOOK_SECRET"
     }
   }
 

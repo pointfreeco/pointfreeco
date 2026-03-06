@@ -55,7 +55,6 @@ public func siteMiddleware(
     !isAllowed(host: url.host ?? ""),
     let canonicalURL = canonicalizeHost(url: url)
   {
-    fatalError()
     return await redirect(to: canonicalURL.absoluteString, status: .movedPermanently)(conn)
       .performAsync()
   }
@@ -353,9 +352,6 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
       teammateID: teammateId,
       currentUser: currentUser
     )
-
-  case .webhooks(.cloudflare(.stream)):
-    return await cloudflareStreamWebhookMiddleware(conn)
 
   case .webhooks(.stripe(.paymentIntents(let event))):
     return await stripePaymentIntentsWebhookMiddleware(conn, event: event)
