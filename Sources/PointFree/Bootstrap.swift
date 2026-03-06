@@ -101,13 +101,13 @@ private func updateCloudflareVideos() async throws {
   @Dependency(\.episodes) var episodes
   @Dependency(CloudflareClient.self) var cloudflare
 
-  guard
-    envVars.appEnv == .production,
-    envVars.baseUrl.absoluteString.contains("pointfree.co")
-  else {
-    print("    ⏩ Skip updating Cloudflare videos when not in production environment.")
-    return
-  }
+//  guard
+//    envVars.appEnv == .production,
+//    envVars.baseUrl.absoluteString.contains("pointfree.co")
+//  else {
+//    print("    ⏩ Skip updating Cloudflare videos when not in production environment.")
+//    return
+//  }
 
   await withErrorReporting {
     // TODO: Paginate to make sure we get all. Currently this endpoint is limited to 1,000 videos.
@@ -122,25 +122,37 @@ private func updateCloudflareVideos() async throws {
       let clip = clips.first(where: { $0.cloudflareVideoID == video.uid })
       if let episode {
         let didUpdate = try await retry(maxRetries: 100, backoff: { _ in .seconds(10) }) {
-          try await cloudflare.editVideo(
-            cloudflareVideo: video,
-            episode: episode,
-            kind: episode.trailerVideo.id == video.uid ? .trailer : .episode
-          )
+          false
+//          try await cloudflare.editVideo(
+//            cloudflareVideo: video,
+//            episode: episode,
+//            kind: episode.trailerVideo.id == video.uid ? .trailer : .episode
+//          )
         }
         if didUpdate {
           try await Task.sleep(for: .seconds(0.5))
         }
       } else if let clip {
         let didUpdate = try await retry(maxRetries: 100, backoff: { _ in .seconds(10) }) {
-          try await cloudflare.editVideo(
-            cloudflareVideo: video,
-            clip: clip
-          )
+          false
+//          try await cloudflare.editVideo(
+//            cloudflareVideo: video,
+//            clip: clip
+//          )
         }
         if didUpdate {
           try await Task.sleep(for: .seconds(0.5))
         }
+      }
+
+      let captions = try await cloudflare.captions(video.uid)
+      let hasEnglishCaption = captions.result.contains(where: { $0.language == "en" })
+      if !hasEnglishCaption {
+        print("    🔄 Generating English captions for video \(video.uid)")
+        try await retry(maxRetries: 100, backoff: { _ in .seconds(10) }) {
+          _ = try await cloudflare.generateCaption(video.uid, "en")
+        }
+        try await Task.sleep(for: .seconds(0.5))
       }
     }
   }
