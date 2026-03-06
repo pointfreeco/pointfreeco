@@ -353,6 +353,9 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
       currentUser: currentUser
     )
 
+  case .webhooks(.cloudflare(.stream)):
+    return await cloudflareStreamWebhookMiddleware(conn)
+
   case .webhooks(.stripe(.paymentIntents(let event))):
     return await stripePaymentIntentsWebhookMiddleware(conn, event: event)
 
