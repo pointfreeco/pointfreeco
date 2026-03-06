@@ -122,23 +122,21 @@ private func updateCloudflareVideos() async throws {
       let clip = clips.first(where: { $0.cloudflareVideoID == video.uid })
       if let episode {
         let didUpdate = try await retry(maxRetries: 100, backoff: { _ in .seconds(10) }) {
-          false
-//          try await cloudflare.editVideo(
-//            cloudflareVideo: video,
-//            episode: episode,
-//            kind: episode.trailerVideo.id == video.uid ? .trailer : .episode
-//          )
+          try await cloudflare.editVideo(
+            cloudflareVideo: video,
+            episode: episode,
+            kind: episode.trailerVideo.id == video.uid ? .trailer : .episode
+          )
         }
         if didUpdate {
           try await Task.sleep(for: .seconds(0.5))
         }
       } else if let clip {
         let didUpdate = try await retry(maxRetries: 100, backoff: { _ in .seconds(10) }) {
-          false
-//          try await cloudflare.editVideo(
-//            cloudflareVideo: video,
-//            clip: clip
-//          )
+          try await cloudflare.editVideo(
+            cloudflareVideo: video,
+            clip: clip
+          )
         }
         if didUpdate {
           try await Task.sleep(for: .seconds(0.5))
