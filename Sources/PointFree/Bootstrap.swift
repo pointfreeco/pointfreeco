@@ -142,16 +142,6 @@ private func updateCloudflareVideos() async throws {
           try await Task.sleep(for: .seconds(0.5))
         }
       }
-
-      let captions = try await cloudflare.captions(video.uid)
-      let hasEnglishCaption = captions.result.contains(where: { $0.language == "en" })
-      if !hasEnglishCaption {
-        print("    🔄 Generating English captions for video \(video.uid)")
-        try await retry(maxRetries: 100, backoff: { _ in .seconds(10) }) {
-          _ = try await cloudflare.generateCaption(video.uid, "en")
-        }
-        try await Task.sleep(for: .seconds(0.5))
-      }
     }
   }
 }
