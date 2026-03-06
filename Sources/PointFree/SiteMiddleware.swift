@@ -55,6 +55,7 @@ public func siteMiddleware(
     !isAllowed(host: url.host ?? ""),
     let canonicalURL = canonicalizeHost(url: url)
   {
+    fatalError()
     return await redirect(to: canonicalURL.absoluteString, status: .movedPermanently)(conn)
       .performAsync()
   }
