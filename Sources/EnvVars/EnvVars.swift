@@ -116,7 +116,7 @@ public struct EnvVars: Codable {
     public init(
       accountID: String = "deadbeef",
       customerSubdomain: String = "customer-deadbeef.cloudflarestream.com",
-      streamAPIKey: String = "deadbeef",
+      streamAPIKey: String = "deadbeef"
     ) {
       self.accountID = accountID
       self.customerSubdomain = customerSubdomain

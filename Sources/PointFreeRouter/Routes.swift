@@ -429,44 +429,42 @@ struct TeamRouter: ParserPrinter {
 
 struct WebhooksRouter: ParserPrinter {
   var body: some Router<SiteRoute.Webhooks> {
-    OneOf {
-      Route(.case(SiteRoute.Webhooks.stripe)) {
-        Method.post
-        Path { "stripe" }
+    Route(.case(SiteRoute.Webhooks.stripe)) {
+      Method.post
+      Path { "stripe" }
 
-        OneOf {
-          Route(.case(SiteRoute.Webhooks._Stripe.paymentIntents)) {
-            Body(
-              .json(
-                Stripe.Event<PaymentIntent>.self,
-                decoder: Stripe.jsonDecoder,
-                encoder: Stripe.jsonEncoder
-              )
+      OneOf {
+        Route(.case(SiteRoute.Webhooks._Stripe.paymentIntents)) {
+          Body(
+            .json(
+              Stripe.Event<PaymentIntent>.self,
+              decoder: Stripe.jsonDecoder,
+              encoder: Stripe.jsonEncoder
             )
-          }
-
-          Route(.case(SiteRoute.Webhooks._Stripe.subscriptions)) {
-            Body(
-              .json(
-                Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
-                decoder: Stripe.jsonDecoder,
-                encoder: Stripe.jsonEncoder
-              )
-            )
-          }
-
-          Route(.case(SiteRoute.Webhooks._Stripe.unknown)) {
-            Body(
-              .json(
-                Stripe.Event<Prelude.Unit>.self,
-                decoder: Stripe.jsonDecoder,
-                encoder: Stripe.jsonEncoder
-              )
-            )
-          }
+          )
         }
-        .replaceError(with: .fatal)
+
+        Route(.case(SiteRoute.Webhooks._Stripe.subscriptions)) {
+          Body(
+            .json(
+              Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
+              decoder: Stripe.jsonDecoder,
+              encoder: Stripe.jsonEncoder
+            )
+          )
+        }
+
+        Route(.case(SiteRoute.Webhooks._Stripe.unknown)) {
+          Body(
+            .json(
+              Stripe.Event<Prelude.Unit>.self,
+              decoder: Stripe.jsonDecoder,
+              encoder: Stripe.jsonEncoder
+            )
+          )
+        }
       }
+      .replaceError(with: .fatal)
     }
   }
 }
