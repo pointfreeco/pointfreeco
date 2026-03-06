@@ -101,13 +101,13 @@ private func updateCloudflareVideos() async throws {
   @Dependency(\.episodes) var episodes
   @Dependency(CloudflareClient.self) var cloudflare
 
-//  guard
-//    envVars.appEnv == .production,
-//    envVars.baseUrl.absoluteString.contains("pointfree.co")
-//  else {
-//    print("    ⏩ Skip updating Cloudflare videos when not in production environment.")
-//    return
-//  }
+  guard
+    envVars.appEnv == .production,
+    envVars.baseUrl.absoluteString.contains("pointfree.co")
+  else {
+    print("    ⏩ Skip updating Cloudflare videos when not in production environment.")
+    return
+  }
 
   await withErrorReporting {
     // TODO: Paginate to make sure we get all. Currently this endpoint is limited to 1,000 videos.
