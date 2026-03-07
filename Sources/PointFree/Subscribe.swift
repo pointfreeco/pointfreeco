@@ -85,9 +85,24 @@ private func subscribe(
         throw StripeErrorEnvelope(
           error: .init(
             message: """
-              The issuing country of your credit card is not on the list of countries that
-              qualify for a regional discount. Please use a different credit card, or join
+              The issuing country of your credit card is not on the list of countries that \
+              qualify for a regional discount. Please use a different credit card, or join \
               without the discount.
+              """
+          )
+        )
+      }
+
+      let ipCountry = conn.request.value(forHTTPHeaderField: "CF-IPCountry")
+        .map(Stripe.Country.init(rawValue:))
+      guard
+        !subscribeData.useRegionalDiscount
+          || ipCountry == country
+      else {
+        throw StripeErrorEnvelope(
+          error: .init(
+            message: """
+              Cannot apply regional discount.
               """
           )
         )
