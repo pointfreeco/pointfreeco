@@ -1,0 +1,8 @@
+{
+  "name": "stream-captions",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "wrangler": "^3"
+  }
+}

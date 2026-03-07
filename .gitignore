@@ -50,3 +50,5 @@ AGENTS.md
 Sources/Transcripts/PrivateTranscripts
 bin/*
 gitignored/*
+workers/*/node_modules/
+workers/*/.wrangler/
