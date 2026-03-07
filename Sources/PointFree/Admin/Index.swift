@@ -17,13 +17,16 @@ public let adminEmails: [EmailAddress] = [
 ]
 
 func adminIndex(_ conn: Conn<StatusLineOpen, Void>) -> Conn<ResponseEnded, Data> {
-  conn.writeStatus(.ok)
+  let ipCountry = conn.request.value(forHTTPHeaderField: "CF-IPCountry")
+  return conn.writeStatus(.ok)
     .respondV2(layoutData: SimplePageLayoutData(title: "Admin Dashboard")) {
-      AdminIndexView()
+      AdminIndexView(ipCountry: ipCountry)
     }
 }
 
 private struct AdminIndexView: HTML {
+  let ipCountry: String?
+
   var body: some HTML {
     PageModule(title: "Admin Dashboard", theme: .content) {
       ul {
@@ -34,6 +37,10 @@ private struct AdminIndexView: HTML {
         li { Link("Ghost a user", destination: .admin(.ghost())) }
         li { Link("Preview an email", destination: .admin(.emailPreview(template: nil))) }
       }
+      .linkColor(.purple)
+    }
+    PageModule(title: "Debug Info", theme: .content) {
+      p { "CF-IPCountry: \(ipCountry ?? "N/A")" }
     }
   }
 }
