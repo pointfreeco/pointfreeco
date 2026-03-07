@@ -87,10 +87,13 @@ private func fetchAccountData<I>(
       (try? await database.fetchSubscriptionTeammates(ownerID: user.id)) ?? []
     }()
 
+    let ipCountry = conn.request.value(forHTTPHeaderField: "CF-IPCountry")
+
     return await AccountData(
       currentUser: user,
       emailSettings: emailSettings,
       episodeCredits: episodeCredits,
+      ipCountry: ipCountry,
       paymentMethod: paymentMethod,
       stripeSubscription: stripeSubscription,
       subscriberState: subscriberState,

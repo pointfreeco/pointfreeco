@@ -166,6 +166,21 @@ private func profileRowView(_ data: AccountData) -> Node {
     ),
   ]
 
+  let ipCountryField: Node =
+    data.currentUser.isAdmin
+    ? [
+      .label(attributes: [.class([labelClass])], "IP Country (CF-IPCountry)"),
+      .input(
+        attributes: [
+          .class([blockInputClass]),
+          .type(.text),
+          .value(data.ipCountry ?? "N/A"),
+          .disabled(true),
+        ]
+      ),
+    ]
+    : []
+
   let showExtraInvoiceInfo =
     data.isSubscriptionOwner && !data.subscriberState.isEnterpriseSubscriber
   let extraInvoiceInfoFields: Node =
@@ -218,6 +233,7 @@ private func profileRowView(_ data: AccountData) -> Node {
   let formContent: Node = [
     nameFields,
     emailFields,
+    ipCountryField,
     extraInvoiceInfoFields,
     emailSettingCheckboxes(data.emailSettings, data.subscriberState),
     submit,
@@ -1683,6 +1699,7 @@ public struct AccountData {
   public let currentUser: User
   public let emailSettings: [EmailSetting]
   public let episodeCredits: [EpisodeCredit]
+  public let ipCountry: String?
   public let paymentMethod: Either<any CardProtocol, PaymentMethod>?
   public let stripeSubscription: Stripe.Subscription?
   public let subscriberState: SubscriberState
@@ -1696,6 +1713,7 @@ public struct AccountData {
     currentUser: User,
     emailSettings: [EmailSetting],
     episodeCredits: [EpisodeCredit],
+    ipCountry: String? = nil,
     paymentMethod: Either<any CardProtocol, PaymentMethod>?,
     stripeSubscription: Stripe.Subscription?,
     subscriberState: SubscriberState,
@@ -1708,6 +1726,7 @@ public struct AccountData {
     self.currentUser = currentUser
     self.emailSettings = emailSettings
     self.episodeCredits = episodeCredits
+    self.ipCountry = ipCountry
     self.paymentMethod = paymentMethod
     self.stripeSubscription = stripeSubscription
     self.subscriberState = subscriberState
