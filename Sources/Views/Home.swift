@@ -142,13 +142,14 @@ private struct EpisodeCredits: HTML {
 
         VStack(alignment: .trailing) {
           Link("Browse videos", href: siteRouter.path(for: .home))
-            .linkStyle(LinkStyle(color: .black, underline: true))
+            .linkStyle(LinkStyle(color: .black.dark(.black), underline: true))
         }
       }
       .inlineStyle("padding", "1rem")
       .inlineStyle("border-radius", "0.5rem")
       .inlineStyle("width", "100%")
       .backgroundColor(.yellow)
+      .color(.black.dark(.black))
     }
   }
   var creditsLeft: String {

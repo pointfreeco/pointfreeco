@@ -2,6 +2,7 @@ import Dependencies
 import Either
 import EmailAddress
 import HttpPipeline
+import InlineSnapshotTesting
 import Mailgun
 import Models
 import ModelsTestSupport
@@ -235,7 +236,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .upsertUser(.mock, update(.mock) { $0.id = 1 }, "referrer@pointfree.co", { .mock })
 
     /*let referrerSubscription*/_ = try await self.database.createSubscription(
-      .mock, referrer.id, true, nil
+      .mock,
+      referrer.id,
+      true,
+      nil
     )
 
     let referred = try await self.database
@@ -267,14 +271,17 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
                 $0.id = "cus_referrer"
                 $0.balance = -18_00
               }
-            })
+            }
+          )
         }
       }
       $0.stripe.createSubscription = { _, _, _, _ in
         update(.mock) {
           $0.id = "sub_referred"
           $0.customer = $0.customer.bimap(
-            { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+            { _ in "cus_referred" },
+            { update($0) { $0.id = "cus_referred" } }
+          )
         }
       }
       $0.stripe.createCustomer = {
@@ -334,14 +341,18 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       $0.stripe.fetchSubscription = { _ in
         update(.mock) {
           $0.customer = $0.customer.bimap(
-            { _ in "cus_referrer" }, { update($0) { $0.id = "cus_referrer" } })
+            { _ in "cus_referrer" },
+            { update($0) { $0.id = "cus_referrer" } }
+          )
         }
       }
       $0.stripe.createSubscription = { _, _, _, _ in
         update(.mock) {
           $0.id = "sub_referred"
           $0.customer = $0.customer.bimap(
-            { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+            { _ in "cus_referred" },
+            { update($0) { $0.id = "cus_referred" } }
+          )
         }
       }
       $0.stripe.createCustomer = {
@@ -411,8 +422,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       var subscribeData = SubscribeData.individualMonthly
       subscribeData.useRegionalDiscount = true
 
+      var req = request(to: .subscribe(.some(subscribeData)), session: session)
+      req.setValue("BO", forHTTPHeaderField: "CF-IPCountry")
       let conn = await siteMiddleware(
-        connection(from: request(to: .subscribe(.some(subscribeData)), session: session))
+        connection(from: req)
       )
 
       #if !os(Linux)
@@ -427,6 +440,56 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       XCTAssertEqual(subscriptionCoupon, self.regionalDiscountCouponId)
       XCTAssertNil(balance)
       XCTAssertEqual(balanceUpdates, [:])
+    }
+  }
+
+  @MainActor
+  func testUnhappyPath_RegionalDiscount_IPCountryMismatch() async throws {
+    let user = try await self.database.upsertUser(.mock, .mock, "hello@pointfree.co", { .mock })
+    var session = Session.loggedIn
+    session.user = .standard(user.id)
+
+    var customer = Customer.mock
+    customer.invoiceSettings = .init(defaultPaymentMethod: "pm_card")
+    var subscriptionCoupon: Coupon.ID?
+
+    await withDependencies {
+      $0.stripe.createSubscription = { _, _, _, coupon in
+        subscriptionCoupon = coupon
+        return .mock
+      }
+      $0.stripe.createCustomer = { _, _, _, _, _ in
+        return customer
+      }
+      $0.stripe.fetchPaymentMethod = { _ in
+        .init(
+          card: .init(
+            brand: .visa,
+            country: "BO",
+            expMonth: 12,
+            expYear: 2025,
+            funding: .credit,
+            last4: "1111"
+          ),
+          customer: .left(customer.id),
+          id: "pm_card"
+        )
+      }
+    } operation: {
+      var subscribeData = SubscribeData.individualMonthly
+      subscribeData.useRegionalDiscount = true
+
+      var req = request(to: .subscribe(.some(subscribeData)), session: session)
+      req.setValue("GB", forHTTPHeaderField: "CF-IPCountry")
+      let conn = await siteMiddleware(
+        connection(from: req)
+      )
+
+      #if !os(Linux)
+        await assertInlineSnapshot(of: conn, as: .conn)
+      #endif
+
+      XCTAssertEqual(subscriptionCoupon, nil)
     }
   }
 
@@ -493,7 +556,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .upsertUser(.mock, update(.mock) { $0.id = 1 }, "referrer@pointfree.co", { .mock })
 
     /*let referrerSubscription*/_ = try await self.database.createSubscription(
-      .mock, referrer.id, true, nil
+      .mock,
+      referrer.id,
+      true,
+      nil
     )
 
     let referred = try await self.database
@@ -543,7 +609,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
                 $0.id = "cus_referrer"
                 $0.balance = -18_00
               }
-            })
+            }
+          )
         }
       }
       $0.stripe.createSubscription = { _, _, _, coupon in
@@ -551,7 +618,9 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         return update(.mock) {
           $0.id = "sub_referred"
           $0.customer = $0.customer.bimap(
-            { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+            { _ in "cus_referred" },
+            { update($0) { $0.id = "cus_referred" } }
+          )
         }
       }
       $0.stripe.createCustomer = { _, _, _, _, newBalance in
@@ -585,7 +654,10 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .upsertUser(.mock, update(.mock) { $0.id = 1 }, "referrer@pointfree.co", { .mock })
 
     /*let referrerSubscription*/_ = try await self.database.createSubscription(
-      .mock, referrer.id, true, nil
+      .mock,
+      referrer.id,
+      true,
+      nil
     )
 
     let referred = try await self.database
@@ -635,7 +707,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
                 $0.id = "cus_referrer"
                 $0.balance = -18_00
               }
-            })
+            }
+          )
         }
       }
       $0.stripe.createSubscription = { _, _, _, coupon in
@@ -643,7 +716,9 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
         return update(.mock) {
           $0.id = "sub_referred"
           $0.customer = $0.customer.bimap(
-            { _ in "cus_referred" }, { update($0) { $0.id = "cus_referred" } })
+            { _ in "cus_referred" },
+            { update($0) { $0.id = "cus_referred" } }
+          )
         }
       }
       $0.stripe.createCustomer = { _, _, _, _, newBalance in
