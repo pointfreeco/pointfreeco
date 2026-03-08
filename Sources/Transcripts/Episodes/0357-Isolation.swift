@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep357_isolation = Episode(
     blurb: """
-      TODO
+      What _is_ "isolation" in Swift? We define the term based on Swift's open "evolution" process \
+      and flesh out an example from the proposal to get an understanding of its purpose, and see \
+      how legacy tools can lead to dangerous situations at runtime.
       """,
     codeSampleDirectory: "0357-beyond-basics-isolation-pt3",
     exercises: _exercises,
@@ -12,7 +14,7 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2026-03-09")!,
     references: [
-      // TODO
+      .se0306_actors,
     ],
     sequence: 357,
     subtitle: "What Is It?",

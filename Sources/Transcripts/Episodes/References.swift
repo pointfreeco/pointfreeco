@@ -984,6 +984,17 @@ extension Episode.Reference {
     title: "SE-0293: Extend Property Wrappers to Function and Closure Parameters"
   )
 
+  public static let se0306_actors = Episode.Reference(
+    author: "John McCall, Doug Gregor, Konrad Malawski, Chris Lattner",
+    blurb: """
+      This proposal introduces actors into Swift. An actor is a reference type that protects \
+      access to its mutable state."
+      """,
+    link: "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0306-actors.md",
+    publishedAt: yearMonthDayFormatter.date(from: "2020-10-30"),
+    title: "SE-0306: Actors"
+  )
+
   public static let se0329_clockInstantDuration = Episode.Reference(
     author: "Philippe Hausler",
     blurb: """
