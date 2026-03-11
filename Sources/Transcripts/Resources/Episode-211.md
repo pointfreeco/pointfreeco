@@ -414,7 +414,7 @@ It holds onto the item that populates the row, as well as an optional `destinati
 But the `destination` state is a lot more interesting. This follows the exact same pattern that we saw over in the `InventoryModel`. It represents all of the places one can navigate to from this screen, and it's optional because `nil` represents to not navigate anywhere.
 
 @T(00:21:28)
-The `Destination` type is an enum, just like over in the InventoryModel`, and it’s got 3 cases:
+The `Destination` type is an enum, just like over in the `InventoryModel`, and it’s got 3 cases:
 
 ```swift
 public enum Destination: Equatable {
