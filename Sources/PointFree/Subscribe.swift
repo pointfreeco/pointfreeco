@@ -99,6 +99,13 @@ private func subscribe(
         !subscribeData.useRegionalDiscount
           || ipCountry == country
       else {
+        reportIssue("""
+          Cannot apply regional discount.
+          
+          userID: \(user.id.rawValue)
+          cardCountry: \(country)
+          ipCountry: \(ipCountry)
+          """)
         throw StripeErrorEnvelope(
           error: .init(
             message: """
