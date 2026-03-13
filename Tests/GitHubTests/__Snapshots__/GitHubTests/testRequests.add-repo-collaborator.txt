@@ -1,0 +1,6 @@
+PUT https://api.github.com/repos/pointfreeco/swift-beta-package/collaborators/blob
+accept: application/vnd.github.v3+json
+authorization: token deadbeef
+content-type: application/json
+
+{"permission":"pull"}

@@ -10,6 +10,17 @@ import XCTest
 final class GitHubTests: TestCase {
   @MainActor
   func testRequests() async throws {
+    await assertSnapshot(
+      matching: addGitHubRepoCollaborator(
+        owner: "pointfreeco",
+        repo: "swift-beta-package",
+        username: "blob",
+        permission: .pull,
+        token: .mock
+      ),
+      as: .raw,
+      named: "add-repo-collaborator"
+    )
     let fetchAuthToken = fetchGitHubAuthToken(
       clientId: "deadbeef-client-id",
       clientSecret: "deadbeef-client-secret",
