@@ -63,7 +63,7 @@ For example, this helper will become deprecated when the trait is enabled:
  }
 ```
 
-This will pave the way for a much more powerful `Effect` type in the Composable Architecture.
+This will pave the way for a much more powerful `Effect` type in the Composable Architecture 2.0.
 
 And the older `onChange` style will likewise get flagged:
 
@@ -114,7 +114,7 @@ This accomplishes 3 things at once:
 * Silently deprecate APIs so that users do not add more usages of them and so that docs reflect
   their status correctly.
 * And finally, allow our users to opt into _hard_ deprecations so that they can fix them on
-their own timeline.
+  their own timeline.
 
 It's the perfect fit for a major migration: you can turn the warnings on when you are ready, chip 
 away at them over time, and leave your code base in a much better spot for the eventual 2.0 upgrade.
