@@ -219,5 +219,6 @@ extension BlogPost {
     .post0200_LiveStreamReminder,
     .post0201_WereLive,
     .post0202_pfwRelease,
+    .post0203_TCA2Deprecations,
   ]
 }
