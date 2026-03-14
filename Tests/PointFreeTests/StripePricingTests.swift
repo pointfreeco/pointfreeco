@@ -122,6 +122,34 @@ final class StripePricingTests: TestCase {
   }
 
   @MainActor
+  func testResolvePlanIDUsesMaxLookupKeyForPersonalMax() async throws {
+    let planID = try await withDependencies {
+      $0.stripe.fetchPricesForProduct = { _, lookupKeys in
+        XCTAssertEqual(lookupKeys, ["pointfree-max"])
+        return .mock([.pointFreeMax])
+      }
+    } operation: {
+      try await resolvePlanID(for: Pricing(plan: .max, billing: .yearly, quantity: 1))
+    }
+
+    XCTAssertEqual(planID.rawValue, Price.pointFreeMax.id.rawValue)
+  }
+
+  @MainActor
+  func testResolvePlanIDUsesMaxLookupKeyForTeamMax() async throws {
+    let planID = try await withDependencies {
+      $0.stripe.fetchPricesForProduct = { _, lookupKeys in
+        XCTAssertEqual(lookupKeys, ["pointfree-max"])
+        return .mock([.pointFreeMax])
+      }
+    } operation: {
+      try await resolvePlanID(for: Pricing(plan: .max, billing: .yearly, quantity: 4))
+    }
+
+    XCTAssertEqual(planID.rawValue, Price.pointFreeMax.id.rawValue)
+  }
+
+  @MainActor
   func testResolvePlanIDFailsWhenModernPlanCannotBeFound() async throws {
     do {
       _ = try await withDependencies {

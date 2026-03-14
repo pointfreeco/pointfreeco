@@ -1045,46 +1045,122 @@ private func mainAction(
       ? "Your new rate will be "
       : "This change moves you to our current pricing of "
 
-    func formattedModernAmount(_ billing: Pricing.Billing) -> String? {
-      let seatAmount = Pricing(plan: plan, billing: billing, quantity: subscription.quantity).modernPricing
-      guard let seatAmount else { return nil }
+    func formattedModernAmount(_ pricing: Pricing) -> String? {
+      guard let seatAmount = pricing.modernPricing else { return nil }
       let amount = discount(seatAmount)
-        .map { $0 * subscription.quantity }
+        .map { $0 * pricing.quantity }
       return currencyFormatter.string(
         from: NSNumber(value: Double(amount.rawValue) / 100)
       )
     }
 
+    func formattedModernAmount(_ billing: Pricing.Billing) -> String? {
+      formattedModernAmount(
+        Pricing(plan: plan, billing: billing, quantity: subscription.quantity)
+      )
+    }
+
+    func formattedSeatAmount(_ pricing: Pricing) -> String? {
+      guard let seatAmount = pricing.modernPricing else { return nil }
+      let amount = discount(seatAmount)
+      return currencyFormatter.string(
+        from: NSNumber(value: Double(amount.rawValue) / 100)
+      )
+    }
+
+    func maxUpgradeButton() -> Node {
+      let pricing = Pricing(plan: .max, billing: .yearly, quantity: subscription.quantity)
+      let formattedAmount =
+        isTeam
+        ? "\(formattedSeatAmount(pricing) ?? "$329.00") per teammate/year"
+        : "\(formattedModernAmount(pricing) ?? "$349.00")/year"
+
+      return .form(
+        attributes: [
+          .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
+          .class([accountActionFormClass]),
+          .method(.post),
+          .onsubmit(
+            unsafe: """
+              if (!confirm("Upgrade to Max? \(pricingTransitionPrefix)\(formattedAmount). You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
+                return false
+              }
+              """
+          ),
+        ],
+        .input(attributes: [
+          .name("billing"),
+          .type(.hidden),
+          .value("yearly"),
+        ]),
+        .input(attributes: [
+          .name("plan"),
+          .type(.hidden),
+          .value("max"),
+        ]),
+        .input(attributes: [
+          .name("quantity"),
+          .type(.hidden),
+          .value(subscription.quantity),
+        ]),
+        .button(
+          attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
+          "Upgrade to Max"
+        )
+      )
+    }
+
+    func yearlyUpgradeButton() -> Node {
+      let formattedAmount = formattedModernAmount(.yearly)
+
+      return .form(
+        attributes: [
+          .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
+          .class([accountActionFormClass]),
+          .method(.post),
+          .onsubmit(
+            unsafe: """
+              if (!confirm("Upgrade to yearly billing? \(pricingTransitionPrefix)\(formattedAmount ?? "")/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
+                return false
+              }
+              """
+          ),
+        ],
+        .input(attributes: [
+          .name("billing"),
+          .type(.hidden),
+          .value("yearly"),
+        ]),
+        .input(attributes: [
+          .name("quantity"),
+          .type(.hidden),
+          .value(subscription.quantity),
+        ]),
+        .button(
+          attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
+          "Upgrade to yearly billing"
+        )
+      )
+    }
+
+    if plan == .max {
+      return []
+    }
+
     switch subscription.plan.interval {
     case .month:
-      let formattedAmount = formattedModernAmount(.yearly)
       if paymentMethod != nil {
-        return .form(
+        return .div(
           attributes: [
-            .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
-            .method(.post),
-            .onsubmit(
-              unsafe: """
-                if (!confirm("Upgrade to yearly billing? \(pricingTransitionPrefix)\(formattedAmount ?? "")/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
-                  return false
-                }
-                """
+            .class([Class.grid.end(.desktop)]),
+            .style(
+              key("display", "flex")
+                <> key("flex-direction", "column")
+                <> key("align-items", "flex-end")
             ),
           ],
-          .input(attributes: [
-            .name("billing"),
-            .type(.hidden),
-            .value("yearly"),
-          ]),
-          .input(attributes: [
-            .name("quantity"),
-            .type(.hidden),
-            .value(subscription.quantity),
-          ]),
-          .button(
-            attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
-            "Upgrade to yearly billing"
-          )
+          yearlyUpgradeButton(),
+          maxUpgradeButton()
         )
       } else {
         return .a(
@@ -1096,36 +1172,7 @@ private func mainAction(
         )
       }
     case .year:
-      guard plan == .pro else { return [] }
-      guard !isTeam else { return [] }
-      let formattedAmount = formattedModernAmount(.monthly)
-      return .form(
-        attributes: [
-          .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
-          .method(.post),
-          .onsubmit(
-            unsafe: """
-              if (!confirm("Switch to monthly billing? \(pricingTransitionPrefix)\(formattedAmount ?? "")/month. You will be charged \(formattedAmount ?? "") on a monthly basis at the end of your current billing period.")) {
-                return false
-              }
-              """
-          ),
-        ],
-        .input(attributes: [
-          .name("billing"),
-          .type(.hidden),
-          .value("monthly"),
-        ]),
-        .input(attributes: [
-          .name("quantity"),
-          .type(.hidden),
-          .value(subscription.quantity),
-        ]),
-        .button(
-          attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
-          "Switch to monthly billing"
-        )
-      )
+      return maxUpgradeButton()
     }
   }
 }
@@ -1699,6 +1746,9 @@ private let subscriptionInfoRowClass =
   Class.border.top
   | Class.pf.colors.border.gray800
   | Class.padding([.mobile: [.top: 2, .bottom: 3]])
+
+private let accountActionFormClass =
+  Class.display.block
 
 let labelClass =
   Class.h5
