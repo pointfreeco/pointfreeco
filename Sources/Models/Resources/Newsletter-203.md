@@ -1,4 +1,4 @@
-SwiftPM traits are typically thought of as a way to opt in to extra functionality, but we have
+SwiftPM traits are typically thought of as a way to opt into extra functionality, but we have
 been using them for something a little different: library evolution.
 
 When preparing a library for a major release, there is often a tension between two competing goals.
