@@ -820,7 +820,7 @@ private func total(
   @Dependency(\.siteRouter) var siteRouter
 
   let discount = coupon?.discount(for:) ?? { $0 }
-  let referralDiscount = referrer == nil ? 0 : 18
+  let referralDiscount = referrer == nil ? 0 : 24
 
   return .gridRow(
     attributes: [
@@ -890,7 +890,7 @@ private func total(
               var monthlyPricePerSeat = (
                 monthly
                   ? \#(discount(24_00)) * 0.01 * regionalDiscount
-                  : \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01 * regionalDiscount
+                  : \#(discount(lane == .team ? 16_00 : 24_00)) * 0.01 * regionalDiscount
               )
               const monthlyPrice = seats * monthlyPricePerSeat
               const total = monthly

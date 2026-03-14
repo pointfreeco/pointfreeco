@@ -508,7 +508,7 @@ final class StripeTests: TestCase {
       of: Stripe.createCustomer(
         paymentMethodID: "pm_tok_test", description: "blob", email: "blob@pointfree.co",
         vatNumber: "1",
-        balance: -18_00
+        balance: -24_00
       ).rawValue,
       as: .raw
     ) {
@@ -516,7 +516,7 @@ final class StripeTests: TestCase {
       POST https://api.stripe.com/v1/customers
       Stripe-Version: 2020-08-27
 
-      balance=-1800&business_vat_id=1&description=blob&email=blob%40pointfree.co&invoice_settings[default_payment_method]=pm_tok_test&payment_method=pm_tok_test
+      balance=-2400&business_vat_id=1&description=blob&email=blob%40pointfree.co&invoice_settings[default_payment_method]=pm_tok_test&payment_method=pm_tok_test
       """
     }
     await assertInlineSnapshot(

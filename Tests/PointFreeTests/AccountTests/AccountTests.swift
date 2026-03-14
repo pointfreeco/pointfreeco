@@ -635,7 +635,7 @@ final class AccountTests: TestCase {
   @MainActor
   func testAccountWithCredit() async throws {
     var subscription = Stripe.Subscription.mock
-    subscription.customer = .right(update(.mock) { $0.balance = -18_00 })
+    subscription.customer = .right(update(.mock) { $0.balance = -24_00 })
 
     await withDependencies {
       $0.individualMonthly()

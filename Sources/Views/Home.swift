@@ -398,7 +398,7 @@ private struct ReferAFriend: HTML {
       CallToActionHeader(
         title: "Refer a friend",
         blurb: """
-          You'll both get one month free ($18 credit) when they sign up from your personal referral \
+          You'll both get one month free ($24 credit) when they sign up from your personal referral \
           link:
           """,
         style: .gradient

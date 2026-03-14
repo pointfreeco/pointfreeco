@@ -41,12 +41,12 @@ private func subscribe(
   let (user, subscribeData, referrer) = conn.data
   let referrerDiscount: Cents<Int> =
     referrer?.stripeSubscription.discount?.coupon.id == envVars.regionalDiscountCouponId
-    ? -9_00
-    : -18_00
+    ? -12_00
+    : -24_00
   let referredDiscount: Cents<Int> =
     subscribeData.useRegionalDiscount
-    ? -9_00
-    : -18_00
+    ? -12_00
+    : -24_00
 
   do {
     let customer: Stripe.Customer

@@ -19,7 +19,7 @@ struct ReferAFriendModule: HTML {
           div {
             Paragraph(.big) {
               """
-              You'll both get one month free ($18 credit) when they sign up from your personal \
+              You'll both get one month free ($24 credit) when they sign up from your personal \
               referral link:
               """
             }
