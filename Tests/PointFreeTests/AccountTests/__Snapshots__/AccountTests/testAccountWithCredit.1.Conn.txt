@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 76961
+Content-Length: 76960
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2297,7 +2297,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                   Refer a Friend
                 </h4>
                 <p>
-                  Refer Point-Free to a friend! You'll both get one month free (an $18 credit) when they sign up from your personal referral link:
+                  Refer Point-Free to a friend! You'll both get one month free (a $24 credit) when they sign up from your personal referral link:
                 </p>
                 <div class="flex
                             m-pt1">
@@ -2532,7 +2532,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                         <div class="m-pl1
                                     m-pr1">
                           <p>
-                            -$18.00
+                            -$24.00
                           </p>
                         </div>
                       </div>

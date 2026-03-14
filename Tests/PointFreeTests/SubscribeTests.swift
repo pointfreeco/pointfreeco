@@ -269,7 +269,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
             {
               update($0) {
                 $0.id = "cus_referrer"
-                $0.balance = -18_00
+                $0.balance = -24_00
               }
             }
           )
@@ -305,7 +305,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let referredSubscription = try await self.database.fetchSubscriptionByOwnerId(referred.id)
 
       XCTAssertNil(balance)
-      XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00, "cus_referred": -18_00])
+      XCTAssertEqual(balanceUpdates, ["cus_referrer": -48_00, "cus_referred": -24_00])
       XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
     }
   }
@@ -373,8 +373,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
       let referredSubscription = try await self.database.fetchSubscriptionByOwnerId(referred.id)
 
-      XCTAssertEqual(balance, -18_00)
-      XCTAssertEqual(balanceUpdates, ["cus_referrer": -18_00])
+      XCTAssertEqual(balance, -24_00)
+      XCTAssertEqual(balanceUpdates, ["cus_referrer": -24_00])
       XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
     }
   }
@@ -607,7 +607,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
             {
               update($0) {
                 $0.id = "cus_referrer"
-                $0.balance = -18_00
+                $0.balance = -24_00
               }
             }
           )
@@ -642,7 +642,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       let referredSubscription = try await self.database.fetchSubscriptionByOwnerId(referred.id)
 
       XCTAssertNil(balance)
-      XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00, "cus_referred": -9_00])
+      XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00, "cus_referred": -12_00])
       XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
       XCTAssertEqual(subscriptionCoupon, self.regionalDiscountCouponId)
     }
@@ -705,7 +705,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
             {
               update($0) {
                 $0.id = "cus_referrer"
-                $0.balance = -18_00
+                $0.balance = -24_00
               }
             }
           )
@@ -739,7 +739,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
 
       let referredSubscription = try await self.database.fetchSubscriptionByOwnerId(referred.id)
 
-      XCTAssertEqual(balance, -9_00)
+      XCTAssertEqual(balance, -12_00)
       XCTAssertEqual(balanceUpdates, ["cus_referrer": -36_00])
       XCTAssertEqual("sub_referred", referredSubscription.stripeSubscriptionId)
       XCTAssertEqual(subscriptionCoupon, self.regionalDiscountCouponId)
