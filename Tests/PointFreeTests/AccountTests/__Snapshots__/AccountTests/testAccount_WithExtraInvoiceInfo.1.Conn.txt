@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 79677
+Content-Length: 79739
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2673,7 +2673,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                         <p>
                           <form action="/account/subscription/change"
                                 method="post"
-                                onsubmit="if (!confirm("Upgrade to yearly billing to invite teammates? You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
+                                onsubmit="if (!confirm("Upgrade to yearly billing to invite teammates? This change moves you to our current pricing of $216.00/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
   return false
 }">
                             <input name="billing"

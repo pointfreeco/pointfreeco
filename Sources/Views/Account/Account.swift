@@ -658,6 +658,7 @@ private func subscriptionSeatAmount(for subscription: Stripe.Subscription) -> Ce
   @Dependency(\.envVars) var envVars
 
   let pricing = Pricing(
+    plan: pricingPlan(for: subscription.plan),
     billing: subscription.plan.interval == .month ? .monthly : .yearly,
     quantity: subscription.totalQuantity
   )
@@ -685,7 +686,11 @@ private func itemSeatAmount(
     let quantityForTier = subscription.totalQuantity > 1
       ? max(item.quantity, 2)
       : max(item.quantity, 1)
-    let pricing = Pricing(billing: billing, quantity: quantityForTier)
+    let pricing = Pricing(
+      plan: pricingPlan(for: item.plan),
+      billing: billing,
+      quantity: quantityForTier
+    )
     return pricing.modernPricing ?? pricing.legacyPricing
   }
 
@@ -693,6 +698,9 @@ private func itemSeatAmount(
 }
 
 private func planDisplayName(for plan: Stripe.Plan) -> String {
+  if pricingPlan(for: plan) == .max {
+    return "Max"
+  }
   if plan.description == plan.id.rawValue, plan.id.rawValue.contains("pointfree_pro") {
     return "Pro"
   }
@@ -747,11 +755,22 @@ private func planPricingDescription(for subscription: Stripe.Subscription) -> St
 private func inviteTeammateAmount(for subscription: Stripe.Subscription) -> Cents<Int> {
   let proposedQuantity = max(subscription.totalQuantity + 1, 2)
   let proposedPricing = Pricing(
+    plan: pricingPlan(for: subscription.plan),
     billing: subscription.plan.interval == .month ? .monthly : .yearly,
     quantity: proposedQuantity
   )
 
   return proposedPricing.modernPricing ?? proposedPricing.legacyPricing
+}
+
+private func pricingPlan(for plan: Stripe.Plan) -> Pricing.Plan {
+  let identifier = plan.id.rawValue.lowercased()
+  let name = plan.description.lowercased()
+  return identifier.contains("pointfree_max")
+    || identifier.contains("pointfree-max")
+    || name.contains("max")
+    ? .max
+    : .pro
 }
 
 private struct PlanLineItem {
@@ -1021,12 +1040,13 @@ private func mainAction(
 
     let discount = subscription.discount?.coupon.discount ?? { $0 }
     let isTeam = subscription.quantity > 1
+    let plan = pricingPlan(for: subscription.plan)
     let pricingTransitionPrefix = (subscription.plan.product == envVars.stripe.productId)
       ? "Your new rate will be "
       : "This change moves you to our current pricing of "
 
     func formattedModernAmount(_ billing: Pricing.Billing) -> String? {
-      let seatAmount = Pricing(billing: billing, quantity: subscription.quantity).modernPricing
+      let seatAmount = Pricing(plan: plan, billing: billing, quantity: subscription.quantity).modernPricing
       guard let seatAmount else { return nil }
       let amount = discount(seatAmount)
         .map { $0 * subscription.quantity }
@@ -1076,6 +1096,7 @@ private func mainAction(
         )
       }
     case .year:
+      guard plan == .pro else { return [] }
       guard !isTeam else { return [] }
       let formattedAmount = formattedModernAmount(.monthly)
       return .form(
@@ -1240,6 +1261,25 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   if stripeSubscription.plan.interval == .month {
+    @Dependency(\.envVars) var envVars
+
+    let discount = stripeSubscription.discount?.coupon.discount ?? { $0 }
+    let plan = pricingPlan(for: stripeSubscription.plan)
+    let pricingTransitionPrefix = (stripeSubscription.plan.product == envVars.stripe.productId)
+      ? "Your new rate will be "
+      : "This change moves you to our current pricing of "
+    let formattedAmount: String? = {
+      guard
+        let seatAmount = Pricing(plan: plan, billing: .yearly, quantity: stripeSubscription.quantity)
+          .modernPricing
+      else { return nil }
+      let amount = discount(seatAmount)
+        .map { $0 * stripeSubscription.quantity }
+      return currencyFormatter.string(
+        from: NSNumber(value: Double(amount.rawValue) / 100)
+      )
+    }()
+
     let upgradeAction: Node
     if data.paymentMethod != nil {
       upgradeAction = .form(
@@ -1248,7 +1288,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
           .method(.post),
           .onsubmit(
             unsafe: """
-              if (!confirm("Upgrade to yearly billing to invite teammates? You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
+              if (!confirm("Upgrade to yearly billing to invite teammates? \(pricingTransitionPrefix)\(formattedAmount ?? "")/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
                 return false
               }
               """

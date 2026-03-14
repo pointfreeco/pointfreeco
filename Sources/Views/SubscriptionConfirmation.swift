@@ -59,6 +59,7 @@ public func subscriptionConfirmation(
       lane: lane,
       coupon: coupon,
       referrer: referrer,
+      plan: subscribeData.plan,
       useRegionalDiscount: subscribeData.useRegionalDiscount
     )
   )
@@ -205,12 +206,18 @@ private func header(
   subscribeData: SubscribeConfirmationData
 ) -> Node {
   @Dependency(\.siteRouter) var siteRouter
+  let pricing = Pricing(plan: subscribeData.plan, billing: subscribeData.billing, quantity: lane == .team ? 2 : 1)
+  let planName = subscribeData.plan == .max ? "Max" : "Pro"
 
   let header: Node = [
     .gridColumn(
       sizes: [:],
       attributes: [.class([Class.grid.start(.mobile)])],
-      "You selected the \(.strong(lane == .personal ? "Personal" : "Team")) plan"
+      .fragment([
+        .text("You selected the "),
+        .strong(.text(planName)),
+        .text(lane == .team ? " plan for your team" : " plan"),
+      ])
     ),
     .gridColumn(
       sizes: [:],
@@ -228,7 +235,7 @@ private func header(
     ),
     planFeatures(
       episodeStats: episodeStats,
-      lane: lane,
+      pricing: pricing,
       subscribeData: subscribeData
     ),
     additionalDiscountInfo(
@@ -240,6 +247,11 @@ private func header(
       .name("pricing[lane]"),
       .type(.hidden),
       .value(lane.rawValue),
+    ]),
+    .input(attributes: [
+      .name("pricing[plan]"),
+      .type(.hidden),
+      .value(subscribeData.plan.rawValue),
     ]),
     .gridRow(
       attributes: [.class([moduleRowClass])],
@@ -254,11 +266,56 @@ private func header(
 
 func planFeatures(
   episodeStats: EpisodeStats,
-  lane: Pricing.Lane,
+  pricing: Pricing,
   showDiscountOptions: Bool = true,
   subscribeData: SubscribeConfirmationData
 ) -> Node {
-  .gridColumn(
+  @Dependency(\.siteRouter) var siteRouter
+
+  let proFeatures = Pricing.proFeaturesMarkdown(
+    allVideosCount: episodeStats.allEpisodeCount.rawValue,
+    theWayPath: siteRouter.path(for: .theWay),
+    livestreamsPath: siteRouter.path(for: .live(.current)),
+    regionalDiscountPath: siteRouter.path(
+      for: .subscribeConfirmation(
+        lane: .personal,
+        billing: .monthly,
+        plan: .pro,
+        referralCode: subscribeData.referralCode,
+        useRegionalDiscount: true
+      )
+    ),
+    educationalDiscountPath: siteRouter.path(for: .blog(.show(.post0010_studentDiscounts))),
+    includeDiscounts: showDiscountOptions
+  )
+
+  let maxFeatures = Pricing.maxFeaturesMarkdown(
+    allVideosCount: episodeStats.allEpisodeCount.rawValue,
+    theWayPath: siteRouter.path(for: .theWay),
+    livestreamsPath: siteRouter.path(for: .live(.current)),
+    regionalDiscountPath: siteRouter.path(
+      for: .subscribeConfirmation(
+        lane: .personal,
+        billing: .yearly,
+        plan: .max,
+        referralCode: subscribeData.referralCode,
+        useRegionalDiscount: true
+      )
+    ),
+    educationalDiscountPath: siteRouter.path(for: .blog(.show(.post0010_studentDiscounts))),
+    includeDiscounts: showDiscountOptions
+  )
+
+  let teamSavingsFeature: String? = {
+    guard pricing.isTeam else { return nil }
+    return pricing.plan == .max
+      ? Pricing.maxTeamSavingsFeature
+      : Pricing.proTeamSavingsFeature
+  }()
+  let planFeatures = pricing.plan == .max ? maxFeatures : proFeatures
+  let features = (teamSavingsFeature.map { [$0] } ?? []) + planFeatures
+
+  return .gridColumn(
     sizes: [.mobile: 12],
     .ul(
       attributes: [
@@ -273,14 +330,7 @@ func planFeatures(
         .style(flex(grow: 1, shrink: 0, basis: .auto)),
       ],
       .fragment(
-        PricingPlan.personal(
-          allEpisodeCount: episodeStats.allEpisodeCount,
-          episodeHourCount: episodeStats.episodeHourCount,
-          referralCode: subscribeData.referralCode,
-          showDiscountOptions: showDiscountOptions
-        )
-        .features
-        .map { feature in
+        features.map { feature in
           .li(
             attributes: [.class([Class.padding([.mobile: [.top: 1]])])],
             .div(
@@ -525,12 +575,83 @@ private func billingPeriod(
   lane: Pricing.Lane,
   subscribeData: SubscribeConfirmationData
 ) -> Node {
-
+  let pricing = Pricing(
+    plan: subscribeData.plan,
+    billing: subscribeData.billing,
+    quantity: lane == .team ? 2 : 1
+  )
   let titleColumn = Node.gridColumn(
     sizes: [.mobile: 12],
     attributes: [.class([moduleTitleColumnClass])],
-    .h1(attributes: [.class([moduleTitleClass])], "Billing interval")
+    .h1(attributes: [.class([moduleTitleClass])], pricing.isPro && pricing.isPersonal ? "Billing interval" : "Billing")
   )
+
+  guard pricing.isPro && pricing.isPersonal else {
+    let title = pricing.isPro && pricing.isTeam ? "Annual billing" : "Yearly"
+    let subtitle: String
+    if pricing.plan == .max {
+      let amount = discountedPriceString(
+        subscribePriceCents(plan: pricing.plan, quantity: pricing.quantity, isMonthly: false),
+        coupon: coupon,
+        useRegionalDiscount: subscribeData.useRegionalDiscount
+      )
+      subtitle = pricing.isTeam ? "\(amount) per member per year" : "\(amount) per year"
+    } else if pricing.isTeam {
+      let amount = discountedPriceString(
+        subscribePriceCents(plan: pricing.plan, quantity: pricing.quantity, isMonthly: true),
+        coupon: coupon,
+        useRegionalDiscount: subscribeData.useRegionalDiscount
+      )
+      subtitle = "\(amount) per member per month (billed annually)"
+    } else {
+      let amount = discountedPriceString(
+        subscribePriceCents(plan: pricing.plan, quantity: pricing.quantity, isMonthly: false),
+        coupon: coupon,
+        useRegionalDiscount: subscribeData.useRegionalDiscount
+      )
+      subtitle = "\(amount) per year"
+    }
+
+    return .gridRow(
+      attributes: [.class([moduleRowClass])],
+      titleColumn,
+      .gridColumn(
+        sizes: [.mobile: 12],
+        attributes: [
+          .class([
+            Class.border.all,
+            Class.pf.colors.border.gray850,
+            Class.padding([.mobile: [.all: 2]]),
+          ]),
+          .style(lineHeight(0)),
+        ],
+        .input(attributes: [
+          .name("pricing[billing]"),
+          .type(.hidden),
+          .value("yearly"),
+        ]),
+        .h5(
+          attributes: [
+            .class([
+              Class.pf.type.responsiveTitle6,
+              Class.margin([.mobile: [.all: 0]]),
+            ])
+          ],
+          .text(title)
+        ),
+        .p(
+          attributes: [
+            .class([
+              Class.padding([.mobile: [.top: 1]]),
+              Class.pf.type.body.small,
+              Class.pf.colors.fg.gray650,
+            ])
+          ],
+          .text(subtitle)
+        )
+      )
+    )
+  }
 
   let yearlyColumn = Node.gridColumn(
     sizes: [.mobile: 12],
@@ -570,9 +691,7 @@ private func billingPeriod(
               Class.margin([.mobile: [.all: 0]]),
             ])
           ],
-          lane == .team
-            ? "Yearly"
-            : "Yearly — Save 25% off monthly billing!"
+          "Yearly"
         ),
         .p(
           attributes: [
@@ -582,21 +701,15 @@ private func billingPeriod(
               Class.pf.colors.fg.gray650,
             ])
           ],
-          lane == .team
-            ? "$192 per member per year"
-            : discountedBillingIntervalSubtitle(
-              interval: .year,
-              coupon: coupon,
-              useRegionalDiscount: subscribeData.useRegionalDiscount
-            )
+          .text(
+            "\(discountedPriceString(216_00, coupon: coupon, useRegionalDiscount: subscribeData.useRegionalDiscount)) per year"
+          )
         )
       )
     )
   )
 
-  let monthlyColumn: Node = lane == .team
-    ? []
-    : Node.gridColumn(
+  let monthlyColumn = Node.gridColumn(
     sizes: [.mobile: 12],
     attributes: [
       .class([
@@ -646,43 +759,49 @@ private func billingPeriod(
               Class.pf.colors.fg.gray650,
             ])
           ],
-          discountedBillingIntervalSubtitle(
-            interval: .month,
-            coupon: coupon,
-            useRegionalDiscount: subscribeData.useRegionalDiscount
+          .text(
+            "\(discountedPriceString(24_00, coupon: coupon, useRegionalDiscount: subscribeData.useRegionalDiscount)) per month"
           )
         )
       )
     )
   )
 
-  return .gridRow(
-    attributes: [.class([moduleRowClass])],
-    titleColumn,
-    yearlyColumn,
-    monthlyColumn
-  )
+  return .gridRow(attributes: [.class([moduleRowClass])], titleColumn, yearlyColumn, monthlyColumn)
 }
 
-private func discountedBillingIntervalSubtitle(
-  interval: Plan.Interval,
+private func subscribePriceCents(
+  plan: Pricing.Plan,
+  quantity: Int,
+  isMonthly: Bool
+) -> Cents<Int> {
+  switch (plan, quantity > 1, isMonthly) {
+  case (.pro, false, true):
+    return 24_00
+  case (.pro, false, false):
+    return 216_00
+  case (.pro, true, true):
+    return 16_00
+  case (.pro, true, false):
+    return 192_00
+  case (.max, false, _):
+    return 349_00
+  case (.max, true, _):
+    return 329_00
+  }
+}
+
+private func discountedPriceString(
+  _ amount: Cents<Int>,
   coupon: Coupon?,
   useRegionalDiscount: Bool
-) -> Node {
+) -> String {
   let regionalFactor = useRegionalDiscount ? 0.5 : 1.0
+  let discountedAmount = coupon?.discount(for: amount) ?? amount
+  let decimalAmount = Double(discountedAmount.rawValue) / 100 * regionalFactor
 
-  switch interval {
-  case .month:
-    let amount = Double(coupon?.discount(for: 24_00).rawValue ?? 24_00) / 100 * regionalFactor
-    let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)")
-      .replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
-    return .text("\(formattedAmount) per month")
-  case .year:
-    let amount = Double(coupon?.discount(for: 216_00).rawValue ?? 216_00) / 100 * regionalFactor
-    let formattedAmount = (currencyFormatter.string(from: NSNumber(value: amount)) ?? "$\(amount)")
-      .replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
-    return .text("\(formattedAmount) per year")
-  }
+  return (currencyFormatter.string(from: NSNumber(value: decimalAmount)) ?? "$\(decimalAmount)")
+    .replacingOccurrences(of: #"\.0{1,2}$"#, with: "", options: .regularExpression)
 }
 
 private func payment(
@@ -815,12 +934,31 @@ private func total(
   lane: Pricing.Lane,
   coupon: Stripe.Coupon?,
   referrer: User?,
+  plan: Pricing.Plan,
   useRegionalDiscount: Bool
 ) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
+  let isTeam = lane == .team
   let discount = coupon?.discount(for:) ?? { $0 }
+  let discountedMonthlySeatPriceInCents = discount(
+    subscribePriceCents(plan: plan, quantity: isTeam ? 2 : 1, isMonthly: true)
+  ).rawValue
+  let discountedYearlySeatPriceInCents = discount(
+    subscribePriceCents(plan: plan, quantity: isTeam ? 2 : 1, isMonthly: false)
+  ).rawValue
   let referralDiscount = referrer == nil ? 0 : 18
+  let supportsBillingToggle = plan == .pro && !isTeam
+  let isProTeamAnnual = plan == .pro && isTeam
+  let defaultIsMonthly = !isTeam && plan == .pro
+  let defaultPreviewUnitText =
+    if isProTeamAnnual {
+      "per member per month"
+    } else if isTeam {
+      "per member per year"
+    } else {
+      defaultIsMonthly ? "per month" : "per year"
+    }
 
   return .gridRow(
     attributes: [
@@ -887,22 +1025,34 @@ private func total(
               form["pricing[quantity]"].value = seats
               var regionalDiscount = \#(useRegionalDiscount ? 0.5 : 1.0)
               var monthly = form["pricing[billing]"].value == "monthly"
-              var monthlyPricePerSeat = (
-                monthly
-                  ? \#(discount(24_00)) * 0.01 * regionalDiscount
-                  : \#(discount(lane == .team ? 16_00 : 18_00)) * 0.01 * regionalDiscount
-              )
-              const monthlyPrice = seats * monthlyPricePerSeat
+              if (!\#(supportsBillingToggle)) {
+                monthly = \#(defaultIsMonthly)
+              }
+              const monthlySeatPrice = \#(discountedMonthlySeatPriceInCents) * 0.01 * regionalDiscount
+              const yearlySeatPrice = \#(discountedYearlySeatPriceInCents) * 0.01 * regionalDiscount
+              const seatPrice = monthly ? monthlySeatPrice : yearlySeatPrice
+              const subtotal = seats * seatPrice
               const total = monthly
-                ? monthlyPrice
-                : (monthlyPrice * 12 - \#(referralDiscount) * regionalDiscount)
+                ? subtotal
+                : Math.max(0, subtotal - \#(referralDiscount) * regionalDiscount)
+              var previewUnitPrice = seatPrice
+              var previewUnitText = "\#(defaultPreviewUnitText)"
+              var monthMultiplierSuffix = ""
+              if (\#(supportsBillingToggle)) {
+                previewUnitText = monthly ? "per month" : "per year"
+              }
+              if (\#(isProTeamAnnual)) {
+                previewUnitPrice = seatPrice / 12
+                previewUnitText = "per member per month"
+                monthMultiplierSuffix = " times <strong>12 months</strong>"
+              }
               document.getElementById("total").textContent = format(total)
               document.getElementById("pricing-preview").innerHTML = (
                 "You will be charged <strong>"
-                  + format(monthlyPricePerSeat)
-                  + " per month</strong>"
+                  + format(previewUnitPrice)
+                  + " " + previewUnitText + "</strong>"
                   + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
-                  + (monthly ? "" : " times <strong>12 months</strong>")
+                  + monthMultiplierSuffix
                   + "."
               )
               if (window.paymentRequest) {
@@ -958,9 +1108,10 @@ private func total(
           text: "Log in to become a member",
           type: .black,
           href: siteRouter.loginPath(
-            redirect: coupon.map { SiteRoute.discounts(code: $0.id, nil) }
+            redirect: coupon.map { SiteRoute.discounts(code: $0.id, nil, plan) }
               ?? .subscribeConfirmation(
                 lane: lane,
+                plan: plan,
                 referralCode: referrer?.referralCode,
                 useRegionalDiscount: useRegionalDiscount
               )

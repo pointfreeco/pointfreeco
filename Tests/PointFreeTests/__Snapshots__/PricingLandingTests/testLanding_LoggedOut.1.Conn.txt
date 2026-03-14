@@ -2,7 +2,7 @@ GET http://localhost:8080/pricing
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 146831
+Content-Length: 155098
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -246,6 +246,16 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .padding-bFon03{padding:4.0rem 2.0rem 4.0rem}
 .justify-content-n56cj2{justify-content:flex-start}
 .align-items-0Zubr3{align-items:baseline}
+.row-gap-Xin5E2{row-gap:1.5rem}
+.background-color-KLogm2{background-color:#111}
+#pricing-mode-team:checked ~ .pricing-mode-content .background-color-ypxLw2{background-color:transparent}
+.border-0qDJQ1{border:1px solid #111}
+#pricing-mode-team:checked ~ .pricing-mode-content .color-vqKrh3{color:#111}
+.padding-yen5Y1{padding:0.5rem 0.875rem}
+.background-color-JyKaz4{background-color:transparent}
+#pricing-mode-team:checked ~ .pricing-mode-content .background-color-vqKrh3{background-color:#111}
+.color-KLogm2{color:#111}
+#pricing-mode-team:checked ~ .pricing-mode-content .color-3RCur{color:#fff}
 .box-shadow-91xof{box-shadow:0 2px 10px -2px rgba(0,0,0,0.3)}
 .border-radius-YwIIn{border-radius:5px}
 .margin-yehVj4{margin:1rem 0 2rem 0}
@@ -257,34 +267,35 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .margin-top-EvtWd3:not(:first-child){margin-top:1.5rem}
 .margin-bottom-yQEjs3:not(:last-child){margin-bottom:0.5rem}
 .font-size-Xin5E2{font-size:1.5rem}
-.font-size-hS6a7{font-size:2rem}
-.font-weight-lQ6Km4{font-weight:300}
-.font-size-QgYLk2{font-size:2.0rem}
-.font-size-xlo1p4{font-size:0.75rem}
 .margin-yiBeC4{margin:0 0 1.5rem}
 .row-gap-NKv2f3{row-gap:0.5rem}
 .color-I8WpG4{color:#808080}
 .justify-content-CdPBO2{justify-content:center}
 .padding-8K2qP3{padding:1.0rem 1.25rem}
+#pricing-mode-team:checked ~ .pricing-mode-content .display-I0I2u1{display:list-item}
+article .content-xD6dy1:is(p):last-of-type::after{content:"❖"}
+article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
+.padding-FBkWQ3{padding:0}
 .text-decoration-gUV393:visited{text-decoration:underline}
 .text-decoration-tfb0F1:link{text-decoration:underline}
 .color-miorV3:link{color:#242424}
 .color-niHfY3:visited{color:#242424}
 .color-PJVOr3{color:#242424}
+#pricing-mode-team:checked ~ .pricing-mode-content .display-fZsan{display:none}
+#pricing-mode-team:checked ~ .pricing-mode-content .display-Jdy9A4{display:inline-flex}
 .color-IVYQy2:visited{color:#121212}
 .color-T7UxR2:link{color:#121212}
 .border-Hc5Su2{border:1px solid #121212}
+#pricing-mode-team:checked ~ .pricing-mode-content .display-kZznh{display:block}
 .background-color-c5ixr2{background-color:#fafafa}
 .color-BoTGL{color:#171717}
 .padding-bottom-NBsge3{padding-bottom:3.0rem}
 .flex-wrap-RLKFg3{flex-wrap:nowrap}
+.font-size-QgYLk2{font-size:2.0rem}
 .padding-FJnJ04{padding:2.5%}
 .color-GPfER1{color:#555555}
 .line-height-Xin5E2{line-height:1.5rem}
 .row-gap-NBsge3{row-gap:3.0rem}
-article .content-xD6dy1:is(p):last-of-type::after{content:"❖"}
-article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
-.padding-FBkWQ3{padding:0}
 .text-decoration-line-Wl0y44{text-decoration-line:none}
 .border-9YkDE1{border:1px solid #e8e8e8}
 .padding-Xin5E2{padding:1.5rem}
@@ -322,6 +333,7 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 .color-ov8tN1{color:#79f2b0}
 .display-mqllb2{display:grid}
 .grid-template-columns-hE9y01{grid-template-columns:minmax(0, 1fr) minmax(0, 2fr)}
+.font-size-xlo1p4{font-size:0.75rem}
 .letter-spacing-fGWfX2{letter-spacing:0.54pt}
 .line-height-9Xzre{line-height:1.25}
 @media only screen and (max-width: 831px){
@@ -492,118 +504,188 @@ article .margin-left-rhxaL1:is(p):last-of-type::after{margin-left:0.5rem}
 </pf-vstack>
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-9TexL row-gap-ZNGkd1">
-      <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-        <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-          <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
-            <pf-vstack class="color-K2J0r1 color-wVkSF3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-              <h4 class="margin-top-Xin5E2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Free
-              </h4>
-              <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
-                <div>
-                  <h3 class="font-size-hS6a7 font-weight-lQ6Km4 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">$0
-                  </h3>
-                </div>
-                <div class="font-size-xlo1p4">
-                </div>
-              </pf-hstack>
-              <ul class="font-size-RTPM71 margin-yiBeC4 padding-left-E4tBw4 list-style-type-Wl0y44 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3 color-I8WpG4 color-VoDZ9">
-                <li>Weekly newsletter access
-                </li>
-                <li>1 free videos with transcripts
-                </li>
-                <li>1 free credit to redeem any members only video
-                </li>
-                <li>Download all video code samples
-                </li>
-              </ul>
+    <div class="width-C8uWv"><input class="opacity-FBkWQ3 pointer-events-Wl0y44 position-X8qzJ" id="pricing-mode-individual" type="radio" name="pricing-mode" checked><input class="opacity-FBkWQ3 pointer-events-Wl0y44 position-X8qzJ" id="pricing-mode-team" type="radio" name="pricing-mode">
+      <pf-vstack class="pricing-mode-content align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-Xin5E2">
+        <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><label class="background-color-KLogm2 background-color-ypxLw2 border-0qDJQ1 border-radius-btBsa3 color-nbn0i3 color-vqKrh3 cursor-xmR5l font-size-RTPM71 font-weight-aG4U6 padding-yen5Y1" for="pricing-mode-individual">Individual</label><label class="background-color-JyKaz4 background-color-vqKrh3 border-0qDJQ1 border-radius-btBsa3 color-KLogm2 color-3RCur cursor-xmR5l font-size-RTPM71 font-weight-aG4U6 padding-yen5Y1" for="pricing-mode-team">Team</label>
+        </pf-hstack>
+        <pf-vgrid class="width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-9TexL row-gap-ZNGkd1">
+          <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+            <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+              <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
+                <pf-vstack class="color-K2J0r1 color-wVkSF3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+                  <h4 class="margin-top-Xin5E2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Free
+                  </h4>
+                  <ul class="font-size-RTPM71 margin-yiBeC4 padding-left-E4tBw4 list-style-type-Wl0y44 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3 color-I8WpG4 color-VoDZ9">
+                    <li>Weekly newsletter access
+                    </li>
+                    <li>1 free videos with transcripts
+                    </li>
+                    <li>1 free credit to redeem any members only video
+                    </li>
+                    <li>Download all video code samples
+                    </li>
+                  </ul>
+                </pf-vstack>
+              </pf-vstack><a class="display-BvS8W3 justify-content-CdPBO2 font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/auth?kind=signUp&redirect=http://localhost:8080/pricing">Choose plan</a>
             </pf-vstack>
-          </pf-vstack><a class="display-BvS8W3 justify-content-CdPBO2 font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/auth?kind=signUp&redirect=http://localhost:8080/pricing">Choose plan</a>
-        </pf-vstack>
-      </pf-vstack>
-      <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-        <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-          <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
-            <pf-vstack class="color-K2J0r1 color-wVkSF3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-              <h4 class="margin-top-Xin5E2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Individual
-              </h4>
-              <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
-                <div>
-                  <h3 class="font-size-hS6a7 font-weight-lQ6Km4 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">$18
-                  </h3>
-                </div>
-                <div class="font-size-xlo1p4">per month,<br>billed annually
-                </div>
-              </pf-hstack>
-              <ul class="font-size-RTPM71 margin-yiBeC4 padding-left-E4tBw4 list-style-type-Wl0y44 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3 color-I8WpG4 color-VoDZ9">
-                <li>All 2 videos with transcripts
-                </li>
-                <li>Access to "<a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-H7Vre2 color-niHfY3 color-uLoSU3 color-PJVOr3 color-jj5LZ" href="/the-way">The Point-Free Way</a>"
-                </li>
-                <li>Watch past <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-H7Vre2 color-niHfY3 color-uLoSU3 color-PJVOr3 color-jj5LZ" href="/live">livestreams</a>
-                </li>
-                <li>Private podcast feed for offline viewing
-                </li>
-                <li><a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-H7Vre2 color-niHfY3 color-uLoSU3 color-PJVOr3 color-jj5LZ" href="/subscribe/personal?useRegionalDiscount=true">Regional</a> and <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-H7Vre2 color-niHfY3 color-uLoSU3 color-PJVOr3 color-jj5LZ" href="/blog/posts/10-announcing-student-discounts">educational</a> discounts available
-                </li>
-              </ul>
+          </pf-vstack>
+          <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+            <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+              <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
+                <pf-vstack class="color-K2J0r1 color-wVkSF3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+                  <h4 class="margin-top-Xin5E2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Pro
+                  </h4>
+                  <ul class="font-size-RTPM71 margin-yiBeC4 padding-left-E4tBw4 list-style-type-Wl0y44 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3 color-I8WpG4 color-VoDZ9">
+                    <li class="display-Wl0y44 display-I0I2u1">Save 25% per member
+                    </li>
+                    <li>
+                      <pf-markdown class="display-ix08W2">
+                        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Access to “<a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-H7Vre2 color-niHfY3 color-uLoSU3 color-PJVOr3 color-jj5LZ" href="/the-way">The Point-Free Way</a>”
+                          </p>
+                        </pf-vstack>
+                      </pf-markdown>
+                    </li>
+                    <li>
+                      <pf-markdown class="display-ix08W2">
+                        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">All 2 videos with transcripts
+                          </p>
+                        </pf-vstack>
+                      </pf-markdown>
+                    </li>
+                    <li>
+                      <pf-markdown class="display-ix08W2">
+                        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Private podcast feed for offline viewing
+                          </p>
+                        </pf-vstack>
+                      </pf-markdown>
+                    </li>
+                    <li>
+                      <pf-markdown class="display-ix08W2">
+                        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Past <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-H7Vre2 color-niHfY3 color-uLoSU3 color-PJVOr3 color-jj5LZ" href="/live">livestreams</a> on demand
+                          </p>
+                        </pf-vstack>
+                      </pf-markdown>
+                    </li>
+                    <li>
+                      <pf-markdown class="display-ix08W2">
+                        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3"><a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-H7Vre2 color-niHfY3 color-uLoSU3 color-PJVOr3 color-jj5LZ" href="/subscribe/personal?billing=monthly&plan=pro&useRegionalDiscount=true">Regional</a> and <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-H7Vre2 color-niHfY3 color-uLoSU3 color-PJVOr3 color-jj5LZ" href="/blog/posts/10-announcing-student-discounts">educational</a> discounts available
+                          </p>
+                        </pf-vstack>
+                      </pf-markdown>
+                    </li>
+                  </ul>
+                </pf-vstack>
+              </pf-vstack><a class="display-BvS8W3 justify-content-CdPBO2 display-MH46v1 display-fZsan font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/subscribe/personal?billing=monthly&plan=pro">Choose plan</a><a class="display-BvS8W3 justify-content-CdPBO2 display-Wl0y44 display-Jdy9A4 font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/subscribe/team?billing=yearly&plan=pro">Choose plan</a>
             </pf-vstack>
-          </pf-vstack><a class="display-BvS8W3 justify-content-CdPBO2 font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/subscribe/personal">Choose plan</a>
-        </pf-vstack>
-      </pf-vstack>
-      <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-        <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-          <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
-            <pf-vstack class="color-K2J0r1 color-wVkSF3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-              <h4 class="margin-top-Xin5E2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Team
-              </h4>
-              <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
-                <div>
-                  <h3 class="font-size-hS6a7 font-weight-lQ6Km4 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-QgYLk2 font-weight-SywJI1 line-height-auF6B">$16
-                  </h3>
-                </div>
-                <div class="font-size-xlo1p4">per member, per month,<br>billed annually
-                </div>
-              </pf-hstack>
-              <ul class="font-size-RTPM71 margin-yiBeC4 padding-left-E4tBw4 list-style-type-Wl0y44 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3 color-I8WpG4 color-VoDZ9">
-                <li>All individual plan features
-                </li>
-                <li>For teams of 2 or more
-                </li>
-                <li>Add teammates at any time with prorated billing
-                </li>
-                <li>Reassign team mates at any time
-                </li>
-              </ul>
+          </pf-vstack>
+          <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+            <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+              <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
+                <pf-vstack class="color-K2J0r1 color-wVkSF3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+                  <h4 class="margin-top-Xin5E2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Max
+                  </h4>
+                  <ul class="font-size-RTPM71 margin-yiBeC4 padding-left-E4tBw4 list-style-type-Wl0y44 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3 color-I8WpG4 color-VoDZ9">
+                    <li class="display-Wl0y44 display-I0I2u1">Save $20 per member
+                    </li>
+                    <li>
+                      <pf-markdown class="display-ix08W2">
+                        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Access to “<a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-H7Vre2 color-niHfY3 color-uLoSU3 color-PJVOr3 color-jj5LZ" href="/the-way">The Point-Free Way</a>”
+                          </p>
+                        </pf-vstack>
+                      </pf-markdown>
+                    </li>
+                    <li>
+                      <pf-markdown class="display-ix08W2">
+                        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">All 2 videos with transcripts
+                          </p>
+                        </pf-vstack>
+                      </pf-markdown>
+                    </li>
+                    <li>
+                      <pf-markdown class="display-ix08W2">
+                        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Private podcast feed for offline viewing
+                          </p>
+                        </pf-vstack>
+                      </pf-markdown>
+                    </li>
+                    <li>
+                      <pf-markdown class="display-ix08W2">
+                        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Past <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-H7Vre2 color-niHfY3 color-uLoSU3 color-PJVOr3 color-jj5LZ" href="/live">livestreams</a> on demand
+                          </p>
+                        </pf-vstack>
+                      </pf-markdown>
+                    </li>
+                    <li>
+                      <pf-markdown class="display-ix08W2">
+                        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3"><a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-H7Vre2 color-niHfY3 color-uLoSU3 color-PJVOr3 color-jj5LZ" href="/subscribe/personal?billing=yearly&plan=max&useRegionalDiscount=true">Regional</a> and <a class="text-decoration-gUV393 text-decoration-tfb0F1 text-decoration-Zf0gY color-miorV3 color-H7Vre2 color-niHfY3 color-uLoSU3 color-PJVOr3 color-jj5LZ" href="/blog/posts/10-announcing-student-discounts">educational</a> discounts available
+                          </p>
+                        </pf-vstack>
+                      </pf-markdown>
+                    </li>
+                    <li>
+                      <pf-markdown class="display-ix08W2">
+                        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Early access to beta tools, features, and new projects
+                          </p>
+                        </pf-vstack>
+                      </pf-markdown>
+                    </li>
+                    <li>
+                      <pf-markdown class="display-ix08W2">
+                        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Attend office hours and private livestreams
+                          </p>
+                        </pf-vstack>
+                      </pf-markdown>
+                    </li>
+                    <li>
+                      <pf-markdown class="display-ix08W2">
+                        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+                          <p class="content-xD6dy1 margin-left-rhxaL1 line-height-9Qkso4 padding-FBkWQ3 margin-FBkWQ3">Help support the Point-Free ecosystem
+                          </p>
+                        </pf-vstack>
+                      </pf-markdown>
+                    </li>
+                  </ul>
+                </pf-vstack>
+              </pf-vstack><a class="display-BvS8W3 justify-content-CdPBO2 display-MH46v1 display-fZsan font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/subscribe/personal?billing=yearly&plan=max">Choose plan</a><a class="display-BvS8W3 justify-content-CdPBO2 display-Wl0y44 display-Jdy9A4 font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/subscribe/team?billing=yearly&plan=max">Choose plan</a>
             </pf-vstack>
-          </pf-vstack><a class="display-BvS8W3 justify-content-CdPBO2 font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/subscribe/team">Choose plan</a>
-        </pf-vstack>
-      </pf-vstack>
-      <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-        <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-          <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
-            <pf-vstack class="color-K2J0r1 color-wVkSF3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-              <h4 class="margin-top-Xin5E2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Enterprise
-              </h4>
-              <ul class="font-size-RTPM71 margin-yiBeC4 padding-left-E4tBw4 list-style-type-Wl0y44 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3 color-I8WpG4 color-VoDZ9">
-                <li>For large teams
-                </li>
-                <li>Unlimited, company-wide access to all content
-                </li>
-                <li>Hassle-free team management
-                </li>
-                <li>Custom sign up landing page for your company
-                </li>
-                <li>Invoiced billing
-                </li>
-              </ul>
+          </pf-vstack>
+          <pf-vstack class="border-bSHu21 box-shadow-91xof border-radius-YwIIn margin-yehVj4 overflow-PhNC81 background-color-nbn0i3 background-color-Hakcq1 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+            <pf-vstack class="padding-sjJTB1 flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+              <pf-vstack class="flex-grow-tzL8I2 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FBkWQ3">
+                <pf-vstack class="color-K2J0r1 color-wVkSF3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+                  <h4 class="margin-top-Xin5E2 margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Enterprise
+                  </h4>
+                  <ul class="font-size-RTPM71 margin-yiBeC4 padding-left-E4tBw4 list-style-type-Wl0y44 display-BvS8W3 flex-direction-7gclL row-gap-NKv2f3 color-I8WpG4 color-VoDZ9">
+                    <li>For large teams
+                    </li>
+                    <li>Unlimited, company-wide access to all content
+                    </li>
+                    <li>Hassle-free team management
+                    </li>
+                    <li>Custom sign up landing page for your company
+                    </li>
+                    <li>Invoiced billing
+                    </li>
+                  </ul>
+                </pf-vstack>
+              </pf-vstack><a class="display-BvS8W3 justify-content-CdPBO2 font-size-83zzS1 color-IVYQy2 color-fIiIX2 color-T7UxR2 color-3tgnX1 color-K2J0r1 color-wVkSF3 border-Hc5Su2 border-558L71 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="mailto:support@pointfree.co">Contact us</a>
             </pf-vstack>
-          </pf-vstack><a class="display-BvS8W3 justify-content-CdPBO2 font-size-83zzS1 color-IVYQy2 color-fIiIX2 color-T7UxR2 color-3tgnX1 color-K2J0r1 color-wVkSF3 border-Hc5Su2 border-558L71 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="mailto:support@pointfree.co">Contact us</a>
-        </pf-vstack>
+          </pf-vstack>
+        </pf-vgrid><small class="display-Wl0y44 display-kZznh font-size-RTPM71 text-align-CdPBO2 color-I8WpG4">*All team memberships billed annually.</small>
       </pf-vstack>
-    </pf-vgrid>
-    <pf-vstack class="width-C8uWv align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1"><small class="font-size-RTPM71 text-align-CdPBO2 color-I8WpG4">Prices shown with annual billing. The <br><strong>Personal</strong> plan is $216/year or $24/month, and the <strong>Team</strong> plan is $192 per member per year.</small>
-    </pf-vstack>
+    </div>
   </div>
 </div>
 <div class="background-color-c5ixr2 background-color-xnERS1">

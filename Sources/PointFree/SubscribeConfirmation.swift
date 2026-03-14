@@ -77,6 +77,7 @@ private func validateReferralCode(
             lane: lane,
             billing: subscribeData.billing,
             isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+            plan: subscribeData.plan,
             teammates: subscribeData.teammates,
             useRegionalDiscount: subscribeData.useRegionalDiscount
           ),
@@ -91,6 +92,7 @@ private func validateReferralCode(
             lane: lane,
             billing: subscribeData.billing,
             isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+            plan: subscribeData.plan,
             teammates: subscribeData.teammates,
             useRegionalDiscount: subscribeData.useRegionalDiscount
           ),
@@ -99,7 +101,7 @@ private func validateReferralCode(
     }
 
     if let coupon = coupon {
-      return conn |> redirect(to: .discounts(code: coupon.id, subscribeData.billing))
+      return conn |> redirect(to: .discounts(code: coupon.id, subscribeData.billing, subscribeData.plan))
     }
 
     return EitherIO {
@@ -121,6 +123,7 @@ private func validateReferralCode(
                 lane: lane,
                 billing: subscribeData.billing,
                 isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+                plan: subscribeData.plan,
                 teammates: subscribeData.teammates,
                 useRegionalDiscount: subscribeData.useRegionalDiscount
               ),
