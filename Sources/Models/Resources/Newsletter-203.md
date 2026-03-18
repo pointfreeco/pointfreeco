@@ -48,7 +48,7 @@ This gives us a few benefits all at once:
 
 - The library remains source compatible by default.
 - The APIs are silently marked deprecated in documentation and in the type system.
-- Users who want to prepare early can opt in to much hard deprecations.
+- Users who want to prepare early can opt into hard deprecations.
 - The migration can happen gradually by enabling and disabling the trait when needed, rather than 
   all at once at the moment 2.0 ships.
 
