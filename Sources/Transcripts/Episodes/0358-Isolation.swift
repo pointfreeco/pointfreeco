@@ -14,6 +14,11 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2026-03-16")!,
     references: [
+      Episode.Reference(
+        blurb: "An object that coordinates the operation of multiple threads of execution within the same application.",
+        link: "https://developer.apple.com/documentation/foundation/nslock",
+        title: "NSLock"
+      ),
       .se0306_actors,
     ],
     sequence: 358,
