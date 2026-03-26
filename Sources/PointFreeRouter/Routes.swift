@@ -16,6 +16,7 @@ public typealias Encrypted<A> = Tagged<EncryptedTag, A>
 @CasePathable
 public indirect enum SiteRoute: Equatable {
   case about
+  case betas
   case theWay
   case account(Account = .index)
   case admin(Admin = .index)
@@ -477,6 +478,10 @@ struct SiteRouter: ParserPrinter {
 
       Route(.case(SiteRoute.about)) {
         Path { "about" }
+      }
+
+      Route(.case(SiteRoute.betas)) {
+        Path { "betas" }
       }
 
       Route(.case(SiteRoute.theWay)) {

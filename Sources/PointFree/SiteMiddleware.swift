@@ -124,6 +124,9 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
   case .about:
     return aboutResponse(conn)
 
+  case .betas:
+    return betasMiddleware(conn)
+
   case .theWay:
     return pointFreeWayMiddleware(conn)
 

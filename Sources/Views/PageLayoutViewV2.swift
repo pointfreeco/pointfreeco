@@ -275,6 +275,9 @@ struct MobileNavItems: HTML {
         NavListItem(isNew: true, route: .theWay) {
           "The Point-Free Way"
         }
+        NavListItem(isNew: true, route: .betas) {
+          "Betas"
+        }
         NavListItem(route: .episodes(.list(.all))) {
           "Videos"
         }
@@ -486,6 +489,7 @@ struct MoreMenu<Content: HTML>: HTML {
 private struct MenuItem: HTML {
   let iconBase64: String?
   let href: String
+  let isNew: Bool
   let opensInNewWindow: Bool
   let title: String
 
@@ -493,6 +497,7 @@ private struct MenuItem: HTML {
     title: String,
     destination: SiteRoute,
     iconBase64: String? = nil,
+    isNew: Bool = false,
     opensInNewWindow: Bool = false
   ) {
     @Dependency(\.siteRouter) var siteRouter
@@ -500,6 +505,7 @@ private struct MenuItem: HTML {
       title: title,
       href: siteRouter.path(for: destination),
       iconBase64: iconBase64,
+      isNew: isNew,
       opensInNewWindow: opensInNewWindow
     )
   }
@@ -508,11 +514,13 @@ private struct MenuItem: HTML {
     title: String,
     href: String,
     iconBase64: String? = nil,
+    isNew: Bool = false,
     opensInNewWindow: Bool = false
   ) {
     self.title = title
     self.href = href
     self.iconBase64 = iconBase64
+    self.isNew = isNew
     self.opensInNewWindow = opensInNewWindow
   }
 
@@ -528,6 +536,9 @@ private struct MenuItem: HTML {
             .inlineStyle("width", "1rem")
         }
         span { HTMLText(title) }
+        if isNew {
+          NewBadge()
+        }
       }
       .attribute("rel", opensInNewWindow ? "noopener noreferrer" : nil)
       .attribute("target", opensInNewWindow ? "_blank" : nil)
@@ -570,6 +581,7 @@ struct CenteredNavItems: HTML {
           if currentUser == nil {
             MenuItem(title: "Videos", destination: .episodes(.list(.all)))
           }
+          MenuItem(title: "Betas", destination: .betas, isNew: true)
           MenuItem(title: "Free clips", destination: .clips(.clips))
           MenuItem(title: "Blog", destination: .blog(.index))
           MenuItem(title: "Gifts", destination: .gifts())
