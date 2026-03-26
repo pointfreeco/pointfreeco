@@ -24,7 +24,7 @@ private struct BetasHeader: HTML {
     PageModule(theme: .content) {
       VStack(spacing: 1) {
         Header(2) {
-          HTMLText("Max previews")
+          HTMLText("Beta previews")
         }
         .color(.black.dark(.white))
         Paragraph(.big) {

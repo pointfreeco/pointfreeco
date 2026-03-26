@@ -10,6 +10,10 @@ import Views
 func betasMiddleware(
   _ conn: Conn<StatusLineOpen, Void>
 ) -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  guard currentUser.hasAccess(to: .betas) else {
+    return routeNotFoundMiddleware(conn)
+  }
   return conn
     .writeStatus(.ok)
     .respondV2(
