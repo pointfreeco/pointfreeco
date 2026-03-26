@@ -767,7 +767,12 @@ private func billingPeriod(
     )
   )
 
-  return .gridRow(attributes: [.class([moduleRowClass])], titleColumn, yearlyColumn, monthlyColumn)
+  return .gridRow(
+    attributes: [.class([moduleRowClass])],
+    titleColumn,
+    yearlyColumn,
+    monthlyColumn
+  )
 }
 
 private func subscribePriceCents(
@@ -947,7 +952,7 @@ private func total(
   let discountedYearlySeatPriceInCents = discount(
     subscribePriceCents(plan: plan, quantity: isTeam ? 2 : 1, isMonthly: false)
   ).rawValue
-  let referralDiscount = referrer == nil ? 0 : 18
+  let referralDiscount = referrer == nil ? 0 : 24
   let supportsBillingToggle = plan == .pro && !isTeam
   let isProTeamAnnual = plan == .pro && isTeam
   let defaultIsMonthly = !isTeam && plan == .pro

@@ -34,7 +34,7 @@ private func referralEmailBody(_: Prelude.Unit) -> Node {
           .p(
             attributes: [.class([Class.padding([.mobile: [.topBottom: 2]])])],
             """
-            Someone just joined Point-Free with your referral code, which means you get one month of access for free! We've applied a credit of $18 to your account, which you should see reflected on \(.a(attributes: [.href(siteRouter.url(for: .account()))], "your account page")).
+            Someone just joined Point-Free with your referral code, which means you get one month of access for free! We've applied a credit of $24 to your account, which you should see reflected on \(.a(attributes: [.href(siteRouter.url(for: .account()))], "your account page")).
             """
           ),
           .p(

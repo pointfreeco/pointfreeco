@@ -592,7 +592,7 @@ So, that’s a quick tour of a simple feature built with the Composable Architec
 Using Combine is really convenient because it’s a first class library provided by Apple that expresses the emission of values over time, and that’s exactly what we need to model side effects that can talk with the outside world and send us back information.
 
 @T(00:21:15)
-However, as we saw in our previous [episodes on Swift’s new concurrency tools](TODO), Combine can be a lot clunkier than the equivalent code using async/await. Let’s see why that is, and see how we can use async/await in our effects.
+However, as we saw in our previous [episodes on Swift’s new concurrency tools](https://www.pointfree.co/collections/concurrency/threads-queues-and-tasks), Combine can be a lot clunkier than the equivalent code using async/await. Let’s see why that is, and see how we can use async/await in our effects.
 
 @T(00:21:33)
 Suppose we wanted to do something silly like add exclamation to the end of the fact fetched from the fact service to really give it some pop. If we wanted to do this in the effect we would need to `map` on the publisher so that we could transform the string before sending it on its way:

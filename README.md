@@ -99,7 +99,6 @@ Brandon gave a talk about most of the core ideas that went into this project at 
   <img src=".github/serve-side-swift-from-scratch.jpg" width="560" style="max-width: 100%;" alt="The two sides of writing testable code" />
 </a>
 
-
 ## Find this interesting?
 
 Then check out [Point-Free](https://www.pointfree.co)!

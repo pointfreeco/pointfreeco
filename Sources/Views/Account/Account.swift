@@ -422,7 +422,7 @@ private func referAFriend(
         ),
         .p(
           """
-          Refer Point-Free to a friend! You'll both get one month free (an $18 credit) when they sign up from your personal referral link:
+          Refer Point-Free to a friend! You'll both get one month free (a $24 credit) when they sign up from your personal referral link:
           """
         ),
         copyToPasteboard(text: referralUrl, buttonColor: .black)

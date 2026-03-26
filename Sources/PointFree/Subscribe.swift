@@ -41,12 +41,12 @@ private func subscribe(
   let (user, subscribeData, referrer) = conn.data
   let referrerDiscount: Cents<Int> =
     referrer?.stripeSubscription.discount?.coupon.id == envVars.regionalDiscountCouponId
-    ? -9_00
-    : -18_00
+    ? -12_00
+    : -24_00
   let referredDiscount: Cents<Int> =
     subscribeData.useRegionalDiscount
-    ? -9_00
-    : -18_00
+    ? -12_00
+    : -24_00
 
   do {
     let customer: Stripe.Customer
@@ -85,9 +85,31 @@ private func subscribe(
         throw StripeErrorEnvelope(
           error: .init(
             message: """
-              The issuing country of your credit card is not on the list of countries that
-              qualify for a regional discount. Please use a different credit card, or join
+              The issuing country of your credit card is not on the list of countries that \
+              qualify for a regional discount. Please use a different credit card, or join \
               without the discount.
+              """
+          )
+        )
+      }
+
+      let ipCountry = conn.request.value(forHTTPHeaderField: "CF-IPCountry")
+        .map(Stripe.Country.init(rawValue:))
+      guard
+        !subscribeData.useRegionalDiscount
+          || ipCountry == country
+      else {
+        reportIssue("""
+          Cannot apply regional discount.
+          
+          userID: \(user.id.rawValue)
+          cardCountry: \(country)
+          ipCountry: \(ipCountry)
+          """)
+        throw StripeErrorEnvelope(
+          error: .init(
+            message: """
+              Cannot apply regional discount.
               """
           )
         )

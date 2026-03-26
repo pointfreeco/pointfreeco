@@ -2297,7 +2297,7 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                   Refer a Friend
                 </h4>
                 <p>
-                  Refer Point-Free to a friend! You'll both get one month free (an $18 credit) when they sign up from your personal referral link:
+                  Refer Point-Free to a friend! You'll both get one month free (a $24 credit) when they sign up from your personal referral link:
                 </p>
                 <div class="flex
                             m-pt1">
@@ -3039,4 +3039,3 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
 </footer>
   </body>
 </html>
-

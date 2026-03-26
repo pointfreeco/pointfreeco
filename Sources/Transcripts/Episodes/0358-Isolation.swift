@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep358_isolation = Episode(
     blurb: """
-      TODO
+      We have a data race on our hands, which is exactly what Swift concurrency is supposed to \
+      solve for. Let's figure out how we managed to get into this mess, and then we will get our \
+      feet wet with an isolation tool that predates Swift concurrency: locking.
       """,
     codeSampleDirectory: "0358-beyond-basics-isolation-pt4",
     exercises: _exercises,
@@ -12,7 +14,12 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2026-03-16")!,
     references: [
-      // TODO
+      Episode.Reference(
+        blurb: "An object that coordinates the operation of multiple threads of execution within the same application.",
+        link: "https://developer.apple.com/documentation/foundation/nslock",
+        title: "NSLock"
+      ),
+      .se0306_actors,
     ],
     sequence: 358,
     subtitle: "Legacy Locking",

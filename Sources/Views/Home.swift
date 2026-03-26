@@ -142,13 +142,14 @@ private struct EpisodeCredits: HTML {
 
         VStack(alignment: .trailing) {
           Link("Browse videos", href: siteRouter.path(for: .home))
-            .linkStyle(LinkStyle(color: .black, underline: true))
+            .linkStyle(LinkStyle(color: .black.dark(.black), underline: true))
         }
       }
       .inlineStyle("padding", "1rem")
       .inlineStyle("border-radius", "0.5rem")
       .inlineStyle("width", "100%")
       .backgroundColor(.yellow)
+      .color(.black.dark(.black))
     }
   }
   var creditsLeft: String {
@@ -398,7 +399,7 @@ private struct ReferAFriend: HTML {
       CallToActionHeader(
         title: "Refer a friend",
         blurb: """
-          You'll both get one month free ($18 credit) when they sign up from your personal referral \
+          You'll both get one month free ($24 credit) when they sign up from your personal referral \
           link:
           """,
         style: .gradient
