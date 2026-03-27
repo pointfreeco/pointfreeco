@@ -47,6 +47,7 @@ public struct PricingLanding: HTML {
     let maxFeatures = Pricing.maxFeaturesMarkdown(
       allVideosCount: stats.allEpisodes,
       theWayPath: siteRouter.path(for: .theWay),
+      betasPath: siteRouter.path(for: .betas()),
       livestreamsPath: siteRouter.path(for: .live(.current)),
       regionalDiscountPath: siteRouter.path(
         for: .subscribeConfirmation(

@@ -292,6 +292,7 @@ func planFeatures(
   let maxFeatures = Pricing.maxFeaturesMarkdown(
     allVideosCount: episodeStats.allEpisodeCount.rawValue,
     theWayPath: siteRouter.path(for: .theWay),
+    betasPath: siteRouter.path(for: .betas()),
     livestreamsPath: siteRouter.path(for: .live(.current)),
     regionalDiscountPath: siteRouter.path(
       for: .subscribeConfirmation(

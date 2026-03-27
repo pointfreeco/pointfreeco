@@ -17,7 +17,7 @@ public struct Beta {
         composability that make the ComposableArchitecture great.
         """,
       imageSrc:
-        "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/tca-2-beta/public",
+        "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/cf5ce39b-dba6-42ad-e63b-8b43a838d800/public",
       repo: "TCA26"
     ),
     Beta(
@@ -28,7 +28,7 @@ public struct Beta {
         making it easy to catch unexpected changes.
         """,
       imageSrc:
-        "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/debug-snapshots-beta/public",
+        "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/2b4c6522-30c7-4036-f9ed-c938f3935200/public",
       repo: "swift-debug-snapshots"
     ),
   ]

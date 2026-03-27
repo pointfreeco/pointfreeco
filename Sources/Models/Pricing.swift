@@ -148,11 +148,15 @@ public extension Pricing {
   static let proTeamSavingsFeature = "Save 25% per member"
   static let maxTeamSavingsFeature = "Save $20 per member"
 
-  static let maxExtraFeatures: [String] = [
-    "Early access to beta tools, features, and new projects",
-    "Attend office hours and private livestreams",
-    "Help support the Point-Free ecosystem",
-  ]
+  static func maxExtraFeatures(
+    betasPath: String
+  ) -> [String] {
+    [
+      "[Early access](\(betasPath)) to beta tools, features, and new projects",
+      "Attend office hours and private livestreams",
+      "Help support the [Point-Free ecosystem](https://github.com/pointfreeco)",
+    ]
+  }
 
   static func proFeaturesMarkdown(
     allVideosCount: Int,
@@ -181,6 +185,7 @@ public extension Pricing {
   static func maxFeaturesMarkdown(
     allVideosCount: Int,
     theWayPath: String,
+    betasPath: String,
     livestreamsPath: String,
     regionalDiscountPath: String,
     educationalDiscountPath: String,
@@ -193,6 +198,6 @@ public extension Pricing {
       regionalDiscountPath: regionalDiscountPath,
       educationalDiscountPath: educationalDiscountPath,
       includeDiscounts: includeDiscounts
-    ) + maxExtraFeatures
+    ) + maxExtraFeatures(betasPath: betasPath)
   }
 }

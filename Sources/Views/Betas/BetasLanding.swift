@@ -160,11 +160,17 @@ private struct BetaProjectsList: HTML {
       ul {
         for beta in Beta.all {
           li {
+            span {}
+              .inlineStyle("width", "6px")
+              .inlineStyle("height", "6px")
+              .inlineStyle("border-radius", "50%")
+              .inlineStyle("background", "#974dff")
+              .inlineStyle("flex-shrink", "0")
             HTMLText(beta.title)
           }
           .inlineStyle("display", "flex")
           .inlineStyle("align-items", "center")
-          .inlineStyle("gap", "6px")
+          .inlineStyle("gap", "8px")
         }
       }
       .inlineStyle("margin", "0")
@@ -214,8 +220,8 @@ private struct BetaCard: HTML {
       .attribute("src", beta.imageSrc)
       .attribute("alt", beta.title)
       .inlineStyle("width", "100%")
-      .inlineStyle("height", "200px")
-      .inlineStyle("object-fit", "cover")
+      .inlineStyle("height", "auto")
+      .inlineStyle("display", "block")
       .inlineStyle("border-radius", "0.75rem 0.75rem 0 0")
       .inlineStyle("border-bottom", "1px solid rgba(15, 18, 32, 0.08)")
       .inlineStyle("border-bottom-color", "rgba(255, 255, 255, 0.08)", media: .dark)

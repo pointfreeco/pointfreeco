@@ -116,7 +116,10 @@ private func removeBetaAccess(for subscription: Models.Subscription) async {
       else { continue }
       for beta in Beta.all {
         try? await gitHub.removeRepoCollaborator(
-          "pointfreeco", beta.repo, gitHubUser.login, gitHubAccessToken
+          owner: "pointfreeco",
+          repo: beta.repo,
+          username: gitHubUser.login,
+          token: gitHubAccessToken
         )
       }
     }
