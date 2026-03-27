@@ -107,6 +107,7 @@ private func betasJoinMiddleware(
       $0
         .flash(
           .notice,
+          // CLAUDE-TODO: add link to go to repo page so they can accept invite.
           "You've been invited to the \(beta.title) beta! Check your GitHub notifications."
         )
     }

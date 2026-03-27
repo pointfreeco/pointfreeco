@@ -5,6 +5,8 @@ import IssueReporting
 import Models
 import PointFreePrelude
 
+// TODO: touch each beta preview repo to make sure we have permission
+
 public func bootstrap() async {
   prepareDependencies {
     $0[CloudflareClient.self] =

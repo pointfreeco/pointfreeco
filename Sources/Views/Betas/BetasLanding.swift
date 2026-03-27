@@ -209,6 +209,7 @@ private struct BetaCard: HTML {
   let beta: Beta
   let isCollaborator: Bool
 
+  // CLAUDE-TODO: Make card image and title link to repo when a collaborator
   var body: some HTML {
     VStack(alignment: .leading, spacing: 0) {
       img()
@@ -262,6 +263,7 @@ private struct BetaJoinButton: HTML {
 
   var body: some HTML {
     if isCollaborator {
+      // CLAUDE-TODO: add link to repo
       span {
         HTMLRaw("&#10003; You're invited!")
       }
