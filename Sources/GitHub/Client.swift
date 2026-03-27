@@ -172,7 +172,7 @@ extension Client {
         )
       },
       checkRepoCollaborator: { owner, repo, username, token in
-        let (_, response) = try await dataTask(
+        let (bytes, response) = try await dataTask(
           with: checkGitHubRepoCollaborator(
             owner: owner,
             repo: repo,
@@ -180,6 +180,12 @@ extension Client {
             token: token
           )
         )
+        guard (200..<300).contains(response.status.code) else {
+          throw GitHubAPIError(
+            statusCode: Int(response.status.code),
+            body: String(decoding: Array(buffer: bytes), as: UTF8.self)
+          )
+        }
         return response.status == .noContent
       },
       fetchEmails: {
