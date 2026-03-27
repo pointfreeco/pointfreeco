@@ -220,5 +220,6 @@ extension BlogPost {
     .post0201_WereLive,
     .post0202_pfwRelease,
     .post0203_TCA2Deprecations,
+    .post0204_betaPreviews,
   ]
 }

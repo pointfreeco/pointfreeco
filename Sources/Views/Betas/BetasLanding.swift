@@ -217,7 +217,7 @@ private struct BetaCard: HTML {
 
   var betaImage: some HTML {
     img()
-      .attribute("src", beta.imageSrc)
+      .attribute("src", beta.imageURL)
       .attribute("alt", beta.title)
       .inlineStyle("width", "100%")
       .inlineStyle("height", "auto")
