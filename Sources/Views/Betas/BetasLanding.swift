@@ -30,45 +30,150 @@ private struct BetasHeader: HTML {
 
   var body: some HTML {
     PageModule(theme: .content) {
-      VStack(spacing: 1) {
-        if subscriberState.isMaxSubscriber {
-          Header(2) {
-            HTMLText("Your betas")
-          }
-          .color(.black.dark(.white))
-          Paragraph(.big) {
-            """
-            You have early access to the next generation of Point-Free libraries. \
-            Join any of the private betas below to help shape them before they go public.
-            """
-          }
-          .color(.gray300.dark(.gray800))
-          .inlineStyle("padding", "0")
-        } else {
-          Header(2) {
-            HTMLText("Beta previews")
-          }
-          .color(.black.dark(.white))
-          Paragraph(.big) {
-            """
-            Get early access to the next generation of Point-Free libraries. \
-            As a Point-Free Max subscriber, you can join private betas for projects \
-            we're actively developing and help shape them before they go public.
-            """
-          }
-          .color(.gray300.dark(.gray800))
-          .inlineStyle("padding", "0")
-          CTAGroup {
-            PFWButton(type: .primary) {
-              HTMLText("Subscribe to Max")
-            }
-            .href(siteRouter.path(for: .pricingLanding))
-          }
-          .inlineStyle("padding-top", "0.5rem")
-        }
+      if subscriberState.isMaxSubscriber {
+        MaxSubscriberHeader()
+      } else {
+        NonSubscriberHeader()
       }
     }
     .betasHeroBackground()
+  }
+}
+
+private struct MaxSubscriberHeader: HTML {
+  var body: some HTML {
+    VStack(spacing: 1) {
+      Header(2) {
+        HTMLText("Your betas")
+      }
+      .color(.black.dark(.white))
+      Paragraph(.big) {
+        """
+        You have early access to the next generation of Point-Free libraries. \
+        Join any of the private betas below to help shape them before they go public.
+        """
+      }
+      .color(.gray300.dark(.gray800))
+      .inlineStyle("padding", "0")
+    }
+  }
+}
+
+private struct NonSubscriberHeader: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    LazyVGrid(columns: [.desktop: [1, 1]], alignItems: .start, verticalSpacing: 2) {
+      VStack(spacing: 1) {
+        BetasBadge()
+        Header(2) {
+          HTMLText("Beta previews")
+        }
+        .color(.black.dark(.white))
+        Paragraph(.big) {
+          """
+          Get early access to the next generation of Point-Free libraries before they go public.
+          """
+        }
+        .color(.gray300.dark(.gray800))
+        .inlineStyle("padding", "0")
+        Paragraph(.small) {
+          """
+          Point-Free Max subscribers can join private betas for projects we're actively \
+          developing and help shape them before public release.
+          """
+        }
+        .color(.gray300.dark(.gray800))
+        CTAGroup {
+          PFWButton(type: .primary) {
+            HTMLText("Subscribe to Max")
+          }
+          .href(siteRouter.path(for: .pricingLanding))
+        }
+        .inlineStyle("padding-top", "0.5rem")
+      }
+
+      BetaAccessChecklist()
+    }
+  }
+}
+
+private struct BetasBadge: HTML {
+  var body: some HTML {
+    span {
+      HTMLText("MAX EXCLUSIVE")
+    }
+    .inlineStyle("display", "inline-block")
+    .inlineStyle("align-self", "flex-start")
+    .inlineStyle("font-size", "0.7rem")
+    .inlineStyle("font-weight", "700")
+    .inlineStyle("letter-spacing", "0.08em")
+    .inlineStyle("text-transform", "uppercase")
+    .inlineStyle("padding", "0.3rem 0.7rem")
+    .inlineStyle("border-radius", "999px")
+    .inlineStyle("color", "#974dff")
+    .inlineStyle(
+      "background",
+      "color-mix(in oklab, #974dff 12%, #ffffff)"
+    )
+    .inlineStyle(
+      "background",
+      "color-mix(in oklab, #974dff 20%, #0f1220)",
+      media: .dark
+    )
+    .inlineStyle(
+      "border",
+      "1px solid color-mix(in oklab, #974dff 30%, rgba(15, 18, 32, 0.12))"
+    )
+    .inlineStyle(
+      "border-color",
+      "color-mix(in oklab, #974dff 30%, rgba(255, 255, 255, 0.12))",
+      media: .dark
+    )
+  }
+}
+
+private struct BetaAccessChecklist: HTML {
+  var body: some HTML {
+    ChecklistModule(
+      title: "What you get with beta access",
+      items: [
+        "Early access to pre-release libraries",
+        "Private GitHub repo access",
+        "Direct influence on APIs before public launch",
+        "All current and future betas included",
+      ]
+    ) {
+      BetaProjectsList()
+    }
+  }
+}
+
+private struct BetaProjectsList: HTML {
+  var body: some HTML {
+    VStack(alignment: .leading, spacing: 0.5) {
+      Header(5) {
+        HTMLText("Currently in beta")
+      }
+      .color(.black.dark(.white))
+      .inlineStyle("margin-top", "0.5rem")
+      ul {
+        for beta in Beta.all {
+          li {
+            HTMLText(beta.title)
+          }
+          .inlineStyle("display", "flex")
+          .inlineStyle("align-items", "center")
+          .inlineStyle("gap", "6px")
+        }
+      }
+      .inlineStyle("margin", "0")
+      .inlineStyle("padding", "0")
+      .inlineStyle("list-style", "none")
+      .inlineStyle("display", "grid")
+      .inlineStyle("gap", "0.4rem")
+      .color(.gray300.dark(.gray800))
+    }
   }
 }
 
