@@ -276,8 +276,8 @@ struct MobileNavItems: HTML {
           "The Point-Free Way"
         }
         if currentUser.hasAccess(to: .betas) {
-          NavListItem(isNew: true, route: .betas) {
-            "Betas"
+          NavListItem(isNew: true, route: .betas()) {
+            "Beta previews"
           }
         }
         NavListItem(route: .episodes(.list(.all))) {
@@ -584,7 +584,7 @@ struct CenteredNavItems: HTML {
             MenuItem(title: "Videos", destination: .episodes(.list(.all)))
           }
           if currentUser.hasAccess(to: .betas) {
-            MenuItem(title: "Betas", destination: .betas, isNew: true)
+            MenuItem(title: "Beta previews", destination: .betas(), isNew: true)
           }
           MenuItem(title: "Free clips", destination: .clips(.clips))
           MenuItem(title: "Blog", destination: .blog(.index))

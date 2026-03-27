@@ -1,5 +1,6 @@
 import Dependencies
 import Foundation
+import GitHub
 import HttpPipeline
 import Models
 import PointFreeRouter
@@ -8,12 +9,54 @@ import Tuple
 import Views
 
 func betasMiddleware(
-  _ conn: Conn<StatusLineOpen, Void>
-) -> Conn<ResponseEnded, Data> {
+  route: SiteRoute.Betas,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.currentUser) var currentUser
   guard currentUser.hasAccess(to: .betas) else {
     return routeNotFoundMiddleware(conn)
   }
+  switch route {
+  case .landing:
+    return await betasLandingMiddleware(conn)
+  case .join(let repo):
+    return await betasJoinMiddleware(repo: repo, conn: conn)
+  }
+}
+
+private func betasLandingMiddleware(
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var gitHubAccessToken
+  @Dependency(\.gitHub) var gitHub
+  @Dependency(\.subscriberState) var subscriberState
+
+  var collaboratorStatuses: [String: Bool] = [:]
+  if let currentUser, subscriberState.isMaxSubscriber {
+    if let gitHubUser = try? await gitHub.fetchUser(currentUser.gitHubAccessToken) {
+      await withTaskGroup(of: (String, Bool).self) { group in
+        for beta in Beta.all {
+          group.addTask {
+            let isCollaborator =
+            (
+              try? await gitHub.checkRepoCollaborator(
+                owner: "pointfreeco",
+                repo: beta.repo,
+                username: gitHubUser.login,
+                token: gitHubAccessToken
+              )
+            ) ?? false
+            return (beta.repo, isCollaborator)
+          }
+        }
+        for await (repo, isCollaborator) in group {
+          collaboratorStatuses[repo] = isCollaborator
+        }
+      }
+    }
+  }
+
   return conn
     .writeStatus(.ok)
     .respondV2(
@@ -25,6 +68,51 @@ func betasMiddleware(
         title: "Private Betas"
       )
     ) {
-      BetasLanding()
+      BetasLanding(collaboratorStatuses: collaboratorStatuses)
     }
+}
+
+private func betasJoinMiddleware(
+  repo: String,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var gitHubAccessToken
+  @Dependency(\.gitHub) var gitHub
+  @Dependency(\.subscriberState) var subscriberState
+
+  guard let currentUser else {
+    return conn.loginAndRedirect()
+  }
+  guard subscriberState.isMaxSubscriber else {
+    return conn.redirect(to: .betas()) {
+      $0.flash(.error, "You must be a Point-Free Max subscriber to join betas.")
+    }
+  }
+  guard let beta = Beta.all.first(where: { $0.repo == repo }) else {
+    return conn.redirect(to: .betas()) {
+      $0.flash(.error, "Unknown beta.")
+    }
+  }
+  do {
+    let gitHubUser = try await gitHub.fetchUser(currentUser.gitHubAccessToken)
+    _ = try await gitHub.addRepoCollaborator(
+      owner: "pointfreeco",
+      repo: repo,
+      username: gitHubUser.login,
+      permission: .pull,
+      token: gitHubAccessToken
+    )
+    return conn.redirect(to: .betas()) {
+      $0
+        .flash(
+          .notice,
+          "You've been invited to the \(beta.title) beta! Check your GitHub notifications."
+        )
+    }
+  } catch {
+    return conn.redirect(to: .betas()) {
+      $0.flash(.error, "Something went wrong joining the beta. Please try again.")
+    }
+  }
 }

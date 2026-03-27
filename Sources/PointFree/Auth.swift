@@ -250,7 +250,9 @@ private func fetchOrRegisterUser(
   @Dependency(\.database) var database
 
   do {
-    return try await database.fetchUser(gitHubID: gitHubUser.id)
+    let user = try await database.fetchUser(gitHubID: gitHubUser.id)
+    try await database.updateUser(id: user.id, githubAccessToken: accessToken)
+    return user
   } catch {
     return try await registerUser(accessToken: accessToken, gitHubUser: gitHubUser)
   }

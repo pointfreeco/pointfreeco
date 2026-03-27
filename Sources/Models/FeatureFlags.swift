@@ -8,7 +8,7 @@ public struct Feature: Equatable {
   public var allowedUserIDs: Set<User.ID> = []
   public var name: String
 
-  public static let betas = Self(isAdminEnabled: true, isEnabled: false, name: "betas")
+  public static let betas = Self(isAdminEnabled: true, isEnabled: inDebug, name: "betas")
 
   public static let allFeatures: [Self] = [
     .betas,

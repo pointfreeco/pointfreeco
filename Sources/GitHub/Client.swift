@@ -41,6 +41,15 @@ public struct Client {
       _ token: GitHubAccessToken
     ) async throws -> CompareCommitsResponse
 
+  /// Checks if a user is a collaborator on a repo.
+  public var checkRepoCollaborator:
+    (
+      _ owner: String,
+      _ repo: String,
+      _ username: String,
+      _ token: GitHubAccessToken
+    ) async throws -> Bool
+
   /// Fetches a GitHub user's emails.
   public var fetchEmails: (_ accessToken: GitHubAccessToken) async throws -> [GitHubUser.Email]
 
@@ -55,12 +64,13 @@ public struct Client {
     ) async throws -> GitHubUser
 
   /// Fetches a zipball of a given repo.
-  public var fetchZipball: (
-    _ owner: String,
-    _ repo: String,
-    _ ref: Repo.Commit.SHA,
-    _ token: GitHubAccessToken
-  ) async throws -> Data
+  public var fetchZipball:
+    (
+      _ owner: String,
+      _ repo: String,
+      _ ref: Repo.Commit.SHA,
+      _ token: GitHubAccessToken
+    ) async throws -> Data
 
   public struct AddRepoCollaboratorResponse: Equatable, Sendable {
     public var invitationCreated: Bool
@@ -96,7 +106,7 @@ extension Client {
   public init(clientId: ID, clientSecret: Secret) {
     self.init(
       addRepoCollaborator: { owner, repo, username, permission, token in
-        let (_, response) = try await dataTask(
+        let (bytes, response) = try await dataTask(
           with: addGitHubRepoCollaborator(
             owner: owner,
             repo: repo,
@@ -105,6 +115,12 @@ extension Client {
             token: token
           )
         )
+        guard response.status == .created || response.status == .noContent else {
+          throw GitHubAPIError(
+            statusCode: Int(response.status.code),
+            body: String(decoding: Array(buffer: bytes), as: UTF8.self)
+          )
+        }
         return AddRepoCollaboratorResponse(invitationCreated: response.status == .created)
       },
       fetchAuthToken: { code in
@@ -129,6 +145,17 @@ extension Client {
           ),
           decoder: gitHubJsonDecoder
         )
+      },
+      checkRepoCollaborator: { owner, repo, username, token in
+        let (_, response) = try await dataTask(
+          with: checkGitHubRepoCollaborator(
+            owner: owner,
+            repo: repo,
+            username: username,
+            token: token
+          )
+        )
+        return response.status == .noContent
       },
       fetchEmails: {
         try await jsonDataTask(with: fetchGitHubEmails(token: $0), decoder: gitHubJsonDecoder)
@@ -219,6 +246,15 @@ func fetchGitHubCompareCommits(
   apiDataTask("repos/\(owner)/\(repo)/compare/\(base)...\(head)", token: token)
 }
 
+func checkGitHubRepoCollaborator(
+  owner: String,
+  repo: String,
+  username: String,
+  token: GitHubAccessToken
+) -> HTTPClientRequest {
+  apiDataTask("repos/\(owner)/\(repo)/collaborators/\(username)", token: token)
+}
+
 func addGitHubRepoCollaborator(
   owner: String,
   repo: String,
@@ -237,6 +273,11 @@ func addGitHubRepoCollaborator(
     )
   )
   return request
+}
+
+public struct GitHubAPIError: Error {
+  public var statusCode: Int
+  public var body: String
 }
 
 public struct CompareCommitsResponse: Codable {

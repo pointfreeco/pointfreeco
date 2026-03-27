@@ -130,21 +130,25 @@ public struct EnvVars: Codable {
   }
 
   public struct GitHub: Codable {
+    public var betaPreviewsAccessToken: GitHubAccessToken
     public var clientId: GitHubClientId
     public var clientSecret: GitHubClientSecret
     public var pfwDownloadsAccessToken: GitHubAccessToken
 
     public init(
+      betaPreviewsAccessToken: GitHubAccessToken = "github_pat_deadbeef",
       clientId: GitHubClientId = "deadbeef-client-id",
       clientSecret: GitHubClientSecret = "deadbeef-client-secret",
       pfwDownloadsAccessToken: GitHubAccessToken = "github_pat_deadbeef"
     ) {
+      self.betaPreviewsAccessToken = betaPreviewsAccessToken
       self.clientId = clientId
       self.clientSecret = clientSecret
       self.pfwDownloadsAccessToken = pfwDownloadsAccessToken
     }
 
     private enum CodingKeys: String, CodingKey {
+      case betaPreviewsAccessToken = "PF_MAX_BETA_PREVIEWS_ACCESS_TOKEN"
       case clientId = "GITHUB_CLIENT_ID"
       case clientSecret = "GITHUB_CLIENT_SECRET"
       case pfwDownloadsAccessToken = "PFW_DOWNLOADS_ACCESS_TOKEN"

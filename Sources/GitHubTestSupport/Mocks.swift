@@ -14,6 +14,7 @@ extension Client {
       Repo(commit: Repo.Commit(sha: "deadbeef"))
     },
     fetchCommitMessages: { _, _, _, _, _ in CompareCommitsResponse() },
+    checkRepoCollaborator: { _, _, _, _ in false },
     fetchEmails: { _ in [.mock] },
     fetchUser: { _ in .mock },
     fetchUserByUserID: { _, _ in .mock },

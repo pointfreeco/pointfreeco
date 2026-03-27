@@ -1,9 +1,15 @@
 public struct PFWButton<Label: HTML>: HTML {
   public let type: ButtonType?
+  public let tagName: String
   public let label: Label
 
-  public init(type: ButtonType? = nil, @HTMLBuilder label: () -> Label) {
+  public init(
+    type: ButtonType? = nil,
+    tag: HTMLTag = a,
+    @HTMLBuilder label: () -> Label
+  ) {
     self.type = type
+    self.tagName = tag.rawValue
     self.label = label()
   }
 
@@ -56,7 +62,7 @@ public struct PFWButton<Label: HTML>: HTML {
   }
 
   var base: some HTML {
-    a {
+    tag(tagName) {
       label
     }
     .inlineStyle("display", "inline-flex")

@@ -8,34 +8,64 @@ public struct BetasLanding: HTML {
   @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.siteRouter) var siteRouter
 
-  public init() {}
+  public var collaboratorStatuses: [String: Bool]
+
+  public init(collaboratorStatuses: [String: Bool] = [:]) {
+    self.collaboratorStatuses = collaboratorStatuses
+  }
 
   public var body: some HTML {
     BetasHeader()
-    BetasList()
+    BetasList(collaboratorStatuses: collaboratorStatuses)
     if !subscriberState.isActiveSubscriber {
+      Divider(size: 100)
       BetasCTA()
     }
   }
 }
 
 private struct BetasHeader: HTML {
+  @Dependency(\.subscriberState) var subscriberState
+  @Dependency(\.siteRouter) var siteRouter
+
   var body: some HTML {
     PageModule(theme: .content) {
       VStack(spacing: 1) {
-        Header(2) {
-          HTMLText("Beta previews")
+        if subscriberState.isMaxSubscriber {
+          Header(2) {
+            HTMLText("Your betas")
+          }
+          .color(.black.dark(.white))
+          Paragraph(.big) {
+            """
+            You have early access to the next generation of Point-Free libraries. \
+            Join any of the private betas below to help shape them before they go public.
+            """
+          }
+          .color(.gray300.dark(.gray800))
+          .inlineStyle("padding", "0")
+        } else {
+          Header(2) {
+            HTMLText("Beta previews")
+          }
+          .color(.black.dark(.white))
+          Paragraph(.big) {
+            """
+            Get early access to the next generation of Point-Free libraries. \
+            As a Point-Free Max subscriber, you can join private betas for projects \
+            we're actively developing and help shape them before they go public.
+            """
+          }
+          .color(.gray300.dark(.gray800))
+          .inlineStyle("padding", "0")
+          CTAGroup {
+            PFWButton(type: .primary) {
+              HTMLText("Subscribe to Max")
+            }
+            .href(siteRouter.path(for: .pricingLanding))
+          }
+          .inlineStyle("padding-top", "0.5rem")
         }
-        .color(.black.dark(.white))
-        Paragraph(.big) {
-          """
-          Get early access to the next generation of Point-Free libraries. \
-          As a Point-Free Max subscriber, you can join private betas for projects \
-          we're actively developing and help shape them before they go public.
-          """
-        }
-        .color(.gray300.dark(.gray800))
-        .inlineStyle("padding", "0")
       }
     }
     .betasHeroBackground()
@@ -43,8 +73,7 @@ private struct BetasHeader: HTML {
 }
 
 private struct BetasList: HTML {
-  @Dependency(\.subscriberState) var subscriberState
-  @Dependency(\.siteRouter) var siteRouter
+  let collaboratorStatuses: [String: Bool]
 
   var body: some HTML {
     PageModule(theme: .content) {
@@ -59,48 +88,27 @@ private struct BetasList: HTML {
           horizontalSpacing: 2,
           verticalSpacing: 2
         ) {
-          BetaCard(
-            imageSrc:
-              "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/tca-2-beta/public",
-            title: "ComposableArchitecture 2.0",
-            blurb: """
-              A ground-up reimagining of the Composable Architecture. Simpler, faster, \
-              and more flexible, while keeping the same principles of testability and \
-              composability that make TCA great.
-              """,
-            isMaxSubscriber: subscriberState.isMaxSubscriber
-          )
-          BetaCard(
-            imageSrc:
-              "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/debug-snapshots-beta/public",
-            title: "DebugSnapshots",
-            blurb: """
-              A tool for making it possible to test non-equatable types and reference types. \
-              Capture and compare snapshots of your app's state in a human-readable format, \
-              making it easy to catch unexpected changes.
-              """,
-            isMaxSubscriber: subscriberState.isMaxSubscriber
-          )
+          for beta in Beta.all {
+            BetaCard(beta: beta, isCollaborator: collaboratorStatuses[beta.repo] ?? false)
+          }
         }
       }
     }
-    Divider(size: 100)
   }
 }
 
 private struct BetaCard: HTML {
+  @Dependency(\.subscriberState) var subscriberState
   @Dependency(\.siteRouter) var siteRouter
 
-  let imageSrc: String
-  let title: String
-  let blurb: String
-  let isMaxSubscriber: Bool
+  let beta: Beta
+  let isCollaborator: Bool
 
   var body: some HTML {
     VStack(alignment: .leading, spacing: 0) {
       img()
-        .attribute("src", imageSrc)
-        .attribute("alt", title)
+        .attribute("src", beta.imageSrc)
+        .attribute("alt", beta.title)
         .inlineStyle("width", "100%")
         .inlineStyle("height", "200px")
         .inlineStyle("object-fit", "cover")
@@ -110,20 +118,18 @@ private struct BetaCard: HTML {
 
       VStack(alignment: .leading, spacing: 0.5) {
         Header(4) {
-          HTMLText(title)
+          HTMLText(beta.title)
         }
         .color(.black.dark(.white))
 
         Paragraph {
-          HTMLText(blurb)
+          HTMLText(beta.blurb)
         }
         .color(.gray300.dark(.gray800))
 
-        if isMaxSubscriber {
-          PFWButton(type: .primary) {
-            HTMLText("Join beta")
-          }
-          .inlineStyle("margin-top", "1rem")
+        if subscriberState.isMaxSubscriber {
+          BetaJoinButton(beta: beta, isCollaborator: isCollaborator)
+            .inlineStyle("margin-top", "1rem")
         } else {
           PFWButton(type: .secondary) {
             HTMLText("Subscribe to Point-Free Max")
@@ -140,6 +146,34 @@ private struct BetaCard: HTML {
     .inlineStyle("background", "#fcfcfc")
     .inlineStyle("background", "#0f1220", media: .dark)
     .inlineStyle("overflow", "hidden")
+  }
+}
+
+private struct BetaJoinButton: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+
+  let beta: Beta
+  let isCollaborator: Bool
+
+  var body: some HTML {
+    if isCollaborator {
+      span {
+        HTMLRaw("&#10003; You're invited!")
+      }
+      .inlineStyle("color", "rgb(24, 158, 72)")
+      .inlineStyle("color", "rgb(162, 255, 200)", media: .dark)
+      .inlineStyle("font-weight", "600")
+      .inlineStyle("font-size", "0.95rem")
+    } else {
+      form {
+        PFWButton(type: .primary, tag: button) {
+          HTMLText("Join beta")
+        }
+        .attribute("type", "submit")
+      }
+      .attribute("action", siteRouter.path(for: .betas(.join(repo: beta.repo))))
+      .attribute("method", "post")
+    }
   }
 }
 
@@ -222,7 +256,7 @@ extension HTML {
 }
 
 extension SubscriberState {
-  var isMaxSubscriber: Bool {
+  public var isMaxSubscriber: Bool {
     // TODO: Implement actual Max plan check
     isActiveSubscriber
   }
