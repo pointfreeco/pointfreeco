@@ -109,7 +109,7 @@ private func betasJoinMiddleware(
           .notice,
           """
           You've been invited to the \(beta.title) beta! \
-          <a href="\(beta.repoURL)/invitations" style="color: inherit; font-weight: 600;">Accept your invite on GitHub &rarr;</a>
+          [Accept your invite on GitHub →](\(beta.repoURL)/invitations)
           """
         )
     }

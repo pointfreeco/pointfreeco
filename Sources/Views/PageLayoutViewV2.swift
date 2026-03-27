@@ -809,7 +809,7 @@ struct TopBanner<Content: HTML>: HTML {
     self.content = content()
   }
 
-  init(flash: Flash) where Content == HTMLText {
+  init(flash: Flash) where Content == HTMLMarkdown {
     switch flash.priority {
     case .error:
       self.style = .error
@@ -818,7 +818,7 @@ struct TopBanner<Content: HTML>: HTML {
     case .warning:
       self.style = .warning
     }
-    self.content = HTMLText(flash.message)
+    self.content = HTMLMarkdown(flash.message)
   }
 
   var body: some HTML {
