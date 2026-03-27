@@ -5,7 +5,7 @@ import IssueReporting
 import Models
 import PointFreePrelude
 
-// TODO: touch each beta preview repo to make sure we have permission
+// CLAUDE-TODO: for each Beta in the list perform an idempotent API request to that repo so that we can confirm we have access to it. if we do not, report an issue that describes the repo that does not yet have access so that we get an admin email and can update the token permissions on GitHub
 
 public func bootstrap() async {
   prepareDependencies {

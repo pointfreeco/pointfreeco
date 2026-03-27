@@ -209,22 +209,40 @@ private struct BetaCard: HTML {
   let beta: Beta
   let isCollaborator: Bool
 
-  // CLAUDE-TODO: Make card image and title link to repo when a collaborator
+  var betaImage: some HTML {
+    img()
+      .attribute("src", beta.imageSrc)
+      .attribute("alt", beta.title)
+      .inlineStyle("width", "100%")
+      .inlineStyle("height", "200px")
+      .inlineStyle("object-fit", "cover")
+      .inlineStyle("border-radius", "0.75rem 0.75rem 0 0")
+      .inlineStyle("border-bottom", "1px solid rgba(15, 18, 32, 0.08)")
+      .inlineStyle("border-bottom-color", "rgba(255, 255, 255, 0.08)", media: .dark)
+  }
+
   var body: some HTML {
     VStack(alignment: .leading, spacing: 0) {
-      img()
-        .attribute("src", beta.imageSrc)
-        .attribute("alt", beta.title)
-        .inlineStyle("width", "100%")
-        .inlineStyle("height", "200px")
-        .inlineStyle("object-fit", "cover")
-        .inlineStyle("border-radius", "0.75rem 0.75rem 0 0")
-        .inlineStyle("border-bottom", "1px solid rgba(15, 18, 32, 0.08)")
-        .inlineStyle("border-bottom-color", "rgba(255, 255, 255, 0.08)", media: .dark)
+      if isCollaborator {
+        a {
+          betaImage
+        }
+        .href(beta.repoURL)
+      } else {
+        betaImage
+      }
 
       VStack(alignment: .leading, spacing: 0.5) {
         Header(4) {
-          HTMLText(beta.title)
+          if isCollaborator {
+            a { HTMLText(beta.title) }
+              .href(beta.repoURL)
+              .inlineStyle("color", "inherit")
+              .inlineStyle("text-decoration", "none")
+              .inlineStyle("text-decoration", "underline", pseudo: .hover)
+          } else {
+            HTMLText(beta.title)
+          }
         }
         .color(.black.dark(.white))
 
@@ -263,14 +281,16 @@ private struct BetaJoinButton: HTML {
 
   var body: some HTML {
     if isCollaborator {
-      // CLAUDE-TODO: add link to repo
-      span {
+      a {
         HTMLRaw("&#10003; You're invited!")
       }
+      .href(beta.repoURL)
       .inlineStyle("color", "rgb(24, 158, 72)")
       .inlineStyle("color", "rgb(162, 255, 200)", media: .dark)
       .inlineStyle("font-weight", "600")
       .inlineStyle("font-size", "0.95rem")
+      .inlineStyle("text-decoration", "none")
+      .inlineStyle("text-decoration", "underline", pseudo: .hover)
     } else {
       form {
         PFWButton(type: .primary, tag: button) {
