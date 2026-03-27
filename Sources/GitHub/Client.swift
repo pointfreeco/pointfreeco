@@ -23,6 +23,15 @@ public struct Client {
       _ token: GitHubAccessToken
     ) async throws -> AddRepoCollaboratorResponse
 
+  /// Removes a collaborator from a repo.
+  public var removeRepoCollaborator:
+    (
+      _ owner: String,
+      _ repo: String,
+      _ username: String,
+      _ token: GitHubAccessToken
+    ) async throws -> Void
+
   /// Fetches an access token from GitHub from a `code` that was obtained from the callback redirect.
   public var fetchAuthToken: (_ code: String) async throws -> AuthTokenResponse
 
@@ -122,6 +131,22 @@ extension Client {
           )
         }
         return AddRepoCollaboratorResponse(invitationCreated: response.status == .created)
+      },
+      removeRepoCollaborator: { owner, repo, username, token in
+        let (bytes, response) = try await dataTask(
+          with: removeGitHubRepoCollaborator(
+            owner: owner,
+            repo: repo,
+            username: username,
+            token: token
+          )
+        )
+        guard response.status == .noContent else {
+          throw GitHubAPIError(
+            statusCode: Int(response.status.code),
+            body: String(decoding: Array(buffer: bytes), as: UTF8.self)
+          )
+        }
       },
       fetchAuthToken: { code in
         try await jsonDataTask(
@@ -253,6 +278,17 @@ func checkGitHubRepoCollaborator(
   token: GitHubAccessToken
 ) -> HTTPClientRequest {
   apiDataTask("repos/\(owner)/\(repo)/collaborators/\(username)", token: token)
+}
+
+func removeGitHubRepoCollaborator(
+  owner: String,
+  repo: String,
+  username: String,
+  token: GitHubAccessToken
+) -> HTTPClientRequest {
+  var request = apiDataTask("repos/\(owner)/\(repo)/collaborators/\(username)", token: token)
+  request.method = .DELETE
+  return request
 }
 
 func addGitHubRepoCollaborator(

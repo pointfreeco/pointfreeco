@@ -9,6 +9,7 @@ extension Client {
     addRepoCollaborator: { _, _, _, _, _ in
       Client.AddRepoCollaboratorResponse(invitationCreated: true)
     },
+    removeRepoCollaborator: { _, _, _, _ in },
     fetchAuthToken: { _ in Client.AuthTokenResponse("deadbeef") },
     fetchBranch: { _, _, _, _ in
       Repo(commit: Repo.Commit(sha: "deadbeef"))

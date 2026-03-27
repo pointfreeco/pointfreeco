@@ -3,6 +3,7 @@ import Dependencies
 import Either
 import Foundation
 import FunctionalCss
+import GitHub
 import Html
 import HtmlCssSupport
 import HttpPipeline
@@ -14,6 +15,7 @@ import PointFreeRouter
 import Prelude
 import Stripe
 import Styleguide
+import Views
 
 func stripeSubscriptionsWebhookMiddleware(
   _ conn: Conn<StatusLineOpen, Void>,
@@ -51,6 +53,14 @@ private func handleFailedPayment(
 
     let subscription = try await database.updateStripeSubscription(stripeSubscription)
 
+    if subscription.stripeSubscriptionStatus == .canceled
+      || subscription.stripeSubscriptionStatus == .pastDue
+    {
+      await fireAndForget {
+        await removeBetaAccess(for: subscription)
+      }
+    }
+
     if subscription.stripeSubscriptionStatus == .pastDue {
       let user = try await database.fetchUser(id: subscription.userId)
 
@@ -87,6 +97,30 @@ private func handleFailedPayment(
     }
     return conn.writeStatus(.badRequest).empty()
   }
+}
+
+private func removeBetaAccess(for subscription: Models.Subscription) async {
+  @Dependency(\.database) var database
+  @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var gitHubAccessToken
+  @Dependency(\.gitHub) var gitHub
+
+  do {
+    let owner = try await database.fetchUser(id: subscription.userId)
+    var users = [owner]
+    if let teammates = try? await database.fetchSubscriptionTeammatesByOwnerId(owner.id) {
+      users.append(contentsOf: teammates)
+    }
+    for user in users {
+      guard
+        let gitHubUser = try? await gitHub.fetchUserByUserID(user.gitHubUserId, gitHubAccessToken)
+      else { continue }
+      for beta in Beta.all {
+        try? await gitHub.removeRepoCollaborator(
+          "pointfreeco", beta.repo, gitHubUser.login, gitHubAccessToken
+        )
+      }
+    }
+  } catch {}
 }
 
 private func sendPastDueEmail(to owner: User) async throws {
