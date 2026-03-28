@@ -1,16 +1,18 @@
-<!--
-We are excited to announce a new feature of the Point-Free website:
-[Beta Previews](/betas). It's something we've wanted to do for a long time, and we think it's going
-to be a great way for our most dedicated subscribers to help shape the future of our libraries.
+We are excited to announce a new feature of Point-Free: [Beta Previews]. It's
+a great way for our most dedicated subscribers to help shape the future of our libraries and the
+greater Point-Free ecosystem.
+
+[Beta Previews]: /betas
 
 ## What are Beta Previews?
 
-When we're working on a major new release or building a brand new library, there's a period where the
-code is functional but not yet ready for the public. During that time we're iterating on APIs, fixing
+When we're working on a major new release or building a brand new library, there's a period where 
+the code is functional but not yet ready for the public. During that time we're iterating on APIs, fixing
 edge cases, and stress-testing ideas against real-world usage.
 
-Beta Previews give you access to that work _before_ it goes public. You get a private GitHub
-invitation to the pre-release repo, where you can:
+Historically we have used the development of [episodes](/episodes) to help finalize APIs and 
+features of these libraries, but now [Beta Previews] give _you_ access to our experimental work before 
+it goes public. You get a private GitHub invitation to the pre-release repo, where you can:
 
 - Pull the library into your own projects and try it out
 - Open issues and give feedback on API design
@@ -18,12 +20,170 @@ invitation to the pre-release repo, where you can:
 
 We're launching with two betas today, and we plan to add more as new projects take shape.
 
-## Composable Architecture 2.0
+---
 
-The first beta is the one many of you have been waiting for: **Composable Architecture 2.0**. This
-is our biggest release ever — a fundamental redesign that rethinks how features are built, how side
-effects are managed, and how composition works. The result is dramatically less boilerplate, a more
-intuitive mental model, and testing that is more powerful than ever.
+## DebugSnapshots
+
+The first beta is a brand new library: **DebugSnapshots**. It solves a problem that comes up
+constantly when building apps with reference types, such as `@Observable` classes: how do you test 
+them?
+
+Classes cannot be meaningfully made `Equatable` due to their reference characteristics (
+[_do not_](/collections/back-to-basics/equatable-and-hashable) use their data to make the 
+`Equatable`), but often they hold onto basic data that you do want to assert how it changes
+over time. DebugSnapshots gives you a way to assert on the _content_ of your models, not their 
+identity.
+
+Once you apply the `@DebugSnapshot` macro to your class, the library generates an equatable, 
+value-type snapshot of the class's underlying data. You can then use the `expect` function to
+exhaustively assert how the data changes in the class after an action takes place.
+
+Take for instance a feature model that allows you to increment a count and then fetch a fact
+for that number:
+
+```swift
+@DebugSnapshot
+@Observable
+final class NumberFactModel {
+  var count = 0
+  var fact: String?
+  var isLoading = false
+  
+  func incrementButtonTapped() {
+    count += 1
+    fact = nil
+  }
+
+  func factButtonTapped() async throws {
+    isLoading = true
+    defer { isLoading = false }
+    fact = try await factClient.fetch(count)
+  }
+}
+```
+
+> Note: We are assuming we have a `factClient` dependency that can fetch facts for a number. You
+may want to use our [Dependencies] library to control that dependency.
+
+[Dependencies]: https://github.com/pointfreeco/swift-dependencies
+
+Now you can write tests that exhaustively describe how the model changes when its various methods
+are invoke:
+
+```swift
+@Test func increment() async {
+  let model = NumberFactModel()
+
+  expect(model) {
+    model.incrementButtonTapped()
+  } changes: {
+    $0.count = 1
+  }
+}
+```
+
+The first trailing closure allows you to execute any logic in your model, and the second trailing
+closure allows you to assert how the underlying data in the model changed from _before_ that logic
+to _after_ that logic. The `$0` handed to the closure is actually a value-type representation of 
+the data in the class. That's the magic that allows you to exhaustive assert on this state even
+though it's held in a reference type.
+
+If you forget to assert a change, the test fails with a clear diff showing exactly what you missed:
+
+```swift:7:fail
+@Test func increment() async {
+  let model = NumberFactModel()
+
+  expect(model) {
+    model.incrementButtonTapped()
+  } changes: {
+    $0.count = 2
+  }
+}
+```
+
+> Failed: Issue recorded: Expected changes do not match: ...
+>
+> ```
+>     #1 NumberFactModel.DebugSnapshot(
+>   −   count: 2,
+>   +   count: 1,
+>       fact: nil,
+>       isLoading: false
+>     )
+> 
+> (Expected: −, Actual: +)
+> ```
+
+This is giving you exhaustive testing for classes, something that was previously only possible with 
+value types.
+
+The macro is also smart about what it includes. It automatically skips private properties, 
+underscored properties, and computed properties. But, you can use `@DebugSnapshotTracked` to include
+any of those properties if you wish.
+
+This can be incredibly powerful to gain exhaustive testing on even computed properties:
+
+```swift
+@DebugSnapshot
+@Observable
+final class NumberFactModel {
+  …
+  @DebugSnapshotTracked var countIsEven: Bool {
+    count.isMultiple(of: 2)
+  }
+}
+```
+
+Now when using `expect` you must assert how the computed property changes, otherwise you will
+get a test failure:
+
+```swift
+@Test func increment() async {
+  let model = NumberFactModel()
+
+  expect(model) {
+    model.incrementButtonTapped()
+  } changes: {
+    $0.count = 1
+    $0.countIsEven = false
+  }
+}
+```
+
+You can also apply the `@DebugSnapshotConvertible` macro to other reference types held in order to 
+recursively snapshot nested `@DebugSnapshot` models:
+
+```swift
+@DebugSnapshot
+@Observable
+final class AppModel {
+  @DebugSnapshotConvertible var settings: SettingsModel
+  @DebugSnapshotConvertible var profile: ProfileModel
+  …
+}
+```
+
+Then in tests you can perform a nested mutation to assert how state changes:
+
+```swift
+expect(model) {
+  model.disableNotificationsButtonTapped()
+} changes: {
+  $0.settings.isEmailOn = false
+  $0.settings.isPushOn = false
+  $0.settings.isTextOn = false
+}
+```
+
+This is only a small preview of what the library is capable of.
+
+---
+
+<!--
+
+
+
 
 ### The `@Feature` macro
 
@@ -183,97 +343,7 @@ state assertions:
 Because `TestStore` uses snapshots under the hood, it can test features whose state contains
 non-equatable types and reference types — something that was impossible in 1.x.
 
-## DebugSnapshots
-
-The second beta is a brand new library: **DebugSnapshots**. It solves a problem that comes up
-constantly when building apps with `@Observable` classes: how do you test them?
-
-Classes aren't `Equatable`, they can contain closures and other non-equatable types, and their
-reference semantics make simple equality assertions meaningless. DebugSnapshots gives you a way to
-assert on the _content_ of your models, not their identity.
-
-The core idea: apply the `@DebugSnapshot` macro to your class, and the library generates an
-equatable, value-type snapshot that mirrors your model's public state. You can then use the `expect`
-function to assert exactly how that snapshot changes:
-
-```swift
-@DebugSnapshot
-@Observable
-final class SearchModel {
-  var query = ""
-  var results: [String] = []
-  var isLoading = false
-
-  func searchButtonTapped() async {
-    isLoading = true
-    results = await search(query)
-    isLoading = false
-  }
-}
-```
-
-Now you can write tests that exhaustively describe how the model changes:
-
-```swift
-@Test func search() async {
-  let model = SearchModel()
-  model.query = "Blob"
-
-  await expect(model) {
-    await model.searchButtonTapped()
-  } changes: {
-    $0.results = ["Blob", "Blob Jr.", "Blob Sr."]
-  }
-}
-```
-
-If you forget to assert a change — say `isLoading` flipped to `true` and back — the test fails with
-a clear diff showing exactly what you missed. This is exhaustive testing for classes, something that
-was previously only possible with value types.
-
-The macro is smart about what it includes. It automatically skips private properties, underscored
-properties, and computed properties. You can override this with `@DebugSnapshotTracked` to include
-a computed property, `@DebugSnapshotIgnored` to exclude a public one, or
-`@DebugSnapshotConvertible` to recursively snapshot nested `@DebugSnapshot` models:
-
-```swift
-@DebugSnapshot
-@Observable
-final class AppModel {
-  var userName = ""
-  @DebugSnapshotConvertible var settings: SettingsModel?
-  @DebugSnapshotIgnored var analyticsID: UUID
-  @DebugSnapshotTracked var isLoggedIn: Bool {
-    !userName.isEmpty
-  }
-}
-```
-
-You can also use `expect` non-exhaustively — without an `operation` closure — to assert on just the
-fields you care about:
-
-```swift
-model.query = "Blob"
-expect(model) {
-  $0.query = "Blob"
-}
-```
-
-And for debugging, the `diff` function prints how a model changes over an operation:
-
-```swift
-diff(model) {
-  model.searchButtonTapped()
-}
-// Difference: ...
-//
-//     SearchModel(
-//   -   results: []
-//   +   results: ["Blob", "Blob Jr."]
-//     )
-//
-// (Before: -, After: +)
-```
+---
 
 ## How to get access
 
