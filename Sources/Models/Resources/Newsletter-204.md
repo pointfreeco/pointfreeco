@@ -1,6 +1,7 @@
 We are excited to announce a new feature of Point-Free: [Beta Previews]. It's
 a great way for our most dedicated subscribers to help shape the future of our libraries and the
-greater Point-Free ecosystem.
+greater Point-Free ecosystem. And we are launching today with two betas already: a brand new 
+library for exhaustively testing reference types, and a preview of Composable Architecture 2.0.
 
 [Beta Previews]: /betas
 
@@ -28,11 +29,11 @@ The first beta is a brand new library: **DebugSnapshots**. It solves a problem t
 constantly when building apps with reference types, such as `@Observable` classes: how do you test 
 them?
 
-Classes cannot be meaningfully made `Equatable` due to their reference characteristics (
-[_do not_](/collections/back-to-basics/equatable-and-hashable) use their data to make the 
-`Equatable`), but often they hold onto basic data that you do want to assert how it changes
-over time. DebugSnapshots gives you a way to assert on the _content_ of your models, not their 
-identity.
+Classes cannot be meaningfully made `Equatable` due to their reference characteristics. It is
+_not correct_ to use their underlying data for the `Equatable` conformance (and doing so can cause 
+[many problems](/collections/back-to-basics/equatable-and-hashable)), but they often hold data that 
+you do want to assert on as it changes over time. DebugSnapshots gives you a way to assert on the 
+_content_ of your models, not their identity.
 
 Once you apply the `@DebugSnapshot` macro to your class, the library generates an equatable, 
 value-type snapshot of the class's underlying data. You can then use the `expect` function to
@@ -68,7 +69,7 @@ may want to use our [Dependencies] library to control that dependency.
 [Dependencies]: https://github.com/pointfreeco/swift-dependencies
 
 Now you can write tests that exhaustively describe how the model changes when its various methods
-are invoke:
+are invoked:
 
 ```swift
 @Test func increment() async {
@@ -85,7 +86,7 @@ are invoke:
 The first trailing closure allows you to execute any logic in your model, and the second trailing
 closure allows you to assert how the underlying data in the model changed from _before_ that logic
 to _after_ that logic. The `$0` handed to the closure is actually a value-type representation of 
-the data in the class. That's the magic that allows you to exhaustive assert on this state even
+the data in the class. That's the magic that allows you to exhaustively assert on this state even
 though it's held in a reference type.
 
 If you forget to assert a change, the test fails with a clear diff showing exactly what you missed:
@@ -151,7 +152,7 @@ get a test failure:
 }
 ```
 
-You can also apply the `@DebugSnapshotConvertible` macro to other reference types held in order to 
+You can also apply the `@DebugSnapshotConvertible` macro to reference-type properties in order to 
 recursively snapshot nested `@DebugSnapshot` models:
 
 ```swift
@@ -180,12 +181,18 @@ This is only a small preview of what the library is capable of.
 
 ---
 
-<!--
+## Composable Architecture 2.0
 
-
-
+The second beta is the one many of you have been waiting for: **Composable Architecture 2.0**. This
+is our biggest release ever, and is a fundamental redesign of how features are built, how side
+effects are managed, and how composition works. The result is dramatically less boilerplate, a more
+intuitive mental model, and testing that is more powerful than ever.
 
 ### The `@Feature` macro
+
+The most visible change in 2.0, 
+
+
 
 In TCA 1.x you defined features by conforming to the `Reducer` protocol. In 2.0, the `@Feature`
 macro does the heavy lifting:
@@ -342,6 +349,12 @@ state assertions:
 
 Because `TestStore` uses snapshots under the hood, it can test features whose state contains
 non-equatable types and reference types — something that was impossible in 1.x.
+
+### Migration path
+
+CLAUDE-DO: write about how we have a ComposableArchitecture1 shim module that can be linked to 
+provide a smooth migration path to ComposableArchitecture 2.0. and talk about the SPM traits trick
+we wrote about previously in Newsletter-203.md to also provide a smooth migration path.
 
 ---
 
