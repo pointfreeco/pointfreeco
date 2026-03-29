@@ -197,8 +197,8 @@ describes _what to render_, `Feature` describes _what to do_. And by moving thes
 a simpler, more controlled environment, it all becomes 100% unit testable.
 
 - [The `@Feature` macro](#the-feature-macro)
-- [Better bindings](#better-bindings)
 - [Feature stores](#feature-stores)
+- [Better bindings](#better-bindings)
 - [Better encapsulation](#better-encapsulation)
 - [Lifecycle hooks](#lifecycle-hooks)
 - [Communication patterns](#communication-patterns)
@@ -245,25 +245,6 @@ relevant to the ComposableArchitecture anymore.
 Also notice there's no return statements in `Update`. In ComposableArchitecture 2.0 the `Update` 
 feature handles synchronous state mutations, and async work is handled through a completely new 
 mechanism.
-
-## Better bindings
-
-In 1.x, two-way bindings between SwiftUI and your feature required conforming your action to
-`BindableAction`, adding a `BindingReducer` to your body, and using a special `$store.scope`
-syntax. In 2.0, bindings just work:
-
-```swift
-struct MyView: View {
-  @Bindable var store: StoreOf<MyFeature>
-  var body: some View {
-    TextField("Name", text: $store.name)
-    Toggle("Notifications", isOn: $store.isNotificationsEnabled)
-  }
-}
-```
-
-No protocol conformances, no extra reducers. Every writable property in your feature's state is
-automatically bindable through `$store`.
 
 ## Feature stores
 
@@ -340,6 +321,25 @@ state change in your feature, not just ones coming from sending actions:
 
 This trailing closure will be invoked whenever `searchQuery` changes, no matter where it was
 changed from, including parent features, effects, SwiftUI bindings, anywhere!
+
+## Better bindings
+
+In 1.x, two-way bindings between SwiftUI and your feature required conforming your action to
+`BindableAction`, adding a `BindingReducer` to your body, and using a special `$store.scope`
+syntax. In 2.0, bindings just work:
+
+```swift
+struct MyView: View {
+  @Bindable var store: StoreOf<MyFeature>
+  var body: some View {
+    TextField("Name", text: $store.name)
+    Toggle("Notifications", isOn: $store.isNotificationsEnabled)
+  }
+}
+```
+
+No protocol conformances, no extra reducers. Every writable property in your feature's state is
+automatically bindable through `$store`.
 
 ## Better encapsulation
 
@@ -492,7 +492,7 @@ one-shot notifications rather than continuous state:
   Events bubble upward through the feature tree and can optionally be consumed by intermediate
   features to stop propagation.
 
-* **Triggers** let parents command children to perform an action:
+* **Triggers** let parent features command child features to perform an action:
 
   ```swift
   @Feature struct Child {
@@ -562,7 +562,7 @@ var body: some Feature {
   Update { state, action in
     …
   }
-  .spawn(\.settings) { store in
+  .spawn(\.settings) { settingsStore in
     SettingsFeature()
   }
 }
