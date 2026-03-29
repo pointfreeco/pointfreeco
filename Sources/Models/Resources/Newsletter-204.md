@@ -196,6 +196,7 @@ than ever.
 - [Better encapsulation](#better-encapsulation)
 - [Lifecycle hooks](#lifecycle-hooks)
 - [Communication patterns](#communication-patterns)
+- [Spawned stores](#spawned-stores)
 - [Testing](#testing)
 - [Feature isolation controlled through every layer](#feature-isolation-controlled-through-every-layer)
 - [Migration path](#migration-path)
@@ -314,6 +315,34 @@ state change in your feature, not just ones coming from sending actions:
 
 This trailing closure will be invoked whenever `searchQuery` changes, no matter where it was
 changed from.
+
+## Spawned stores
+
+While tightly integrating parent and child features together can be powerful, and is sometimes 
+necessary, not every child feature needs this. Sometimes the overhead of scoping from a parent
+domain to a child domain is not worth the benefits. When a child feature operates
+independently and doesn't need to send actions back through the parent, you can `spawn` it instead:
+
+```swift
+var body: some Feature {
+  Update { state, action in 
+    … 
+  }
+  .spawn(\.settings) { store in
+    SettingsFeature()
+  }
+}
+```
+
+A spawned feature gets its own independent store backed by the parent's state at the given key path.
+It processes its own actions without routing through the parent's `Update`, which means better
+performance for features that don't need tight integration.
+
+Best of all, all of the communication tools mentioned [above](#communication-patterns)  
+still work for spawned stores. Events bubble up from spawned stores to the root, preferences 
+aggregate, dependencies flow down, and even delegate closures work. You get the performance 
+benefits of independent stores without losing the communication tools that make the architecture 
+composable.
 
 ## Better bindings
 
