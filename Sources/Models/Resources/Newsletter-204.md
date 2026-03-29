@@ -188,6 +188,17 @@ is our biggest release ever, and is a fundamental redesign of how features are b
 effects are managed, and how composition works. The result is dramatically less boilerplate, a more
 intuitive mental model, and testing that is more powerful than ever.
 
+- [The `@Feature` macro](#the-feature-macro)
+- [Side effects with `store`](#side-effects-with-store)
+- [Feature stores](#feature-stores)
+- [Better bindings](#better-bindings)
+- [Better encapsulation](#better-encapsulation)
+- [Lifecycle hooks](#lifecycle-hooks)
+- [Communication patterns](#communication-patterns)
+- [Testing](#testing)
+- [Feature isolation controlled through every layer](#feature-isolation-controlled-through-every-layer)
+- [Migration path](#migration-path)
+
 ### The `@Feature` macro
 
 The most visible change in 2.0, but also perhaps the most boring, is that we are moving away
@@ -255,9 +266,60 @@ actions, and as mentioned above, enqueue async work. This opens up all new patte
 previously impossible, and simplifies features by reducing the need to ping-pong many actions back 
 and forth.
 
-CLAUDE-DO: show example of reading state from store task
-CLAUDE-DO: show example of writing state from store task
-CLAUDE-DO: show example of `onChange`
+For example, an autosave feature could be implemented as a long-living effect that periodically 
+saves the current document, and to do that we can read the current state directly from the `store`:
+
+```swift
+case .openButtonTapped:
+  store.addTask {
+    while true {
+      try await Task.sleep(for: .seconds(30))
+      try await documentClient.save(store.document)
+    }
+  }
+```
+
+This is in stark contract to 1.x which would have required us to send an action back into the
+system to get access to the current feature state. We now get to implement the same logic with
+fewer actions and less ping-ponging of logic.
+
+You can also _write_ state from an async context using `store.modify`:
+
+```swift
+case .startTimerButtonTapped:
+  store.addTask {
+    while true {
+      try await Task.sleep(for: .seconds(1))
+      try store.modify { $0.secondsElapsed += 1 }
+    }
+  }
+```
+
+No intermediate `timerTick` action is needed, you mutate state directly from the async task. This 
+may seem counter to ComposableArchitecture's core tenet that state only be modified in one place, 
+the `Update`. But we now extend this tenet to include not only `Update` but also any tasks enqueued.
+
+The implicitly available store in each feature also gives us the ability to finally implement
+`onChange` in a manner that aligns better with SwiftUI's `onChange`. You can now listen to _any_ 
+state change in your feature, not just ones coming from sending actions:
+
+```swift
+.onChange(of: store.isEnabled) { oldValue, state in
+  store.addTask {
+    await analytics.track("Feature changed enable", ["isEnabled": state.isEnabled])
+  }
+}
+```
+
+### Better bindings
+
+CLAUDE-DO: describe how bindings are immediately available to all features without any extra work. no more `BindableAction` or `BindingReducer`.
+
+### Better encapsulation
+
+CLAUDE-DO: describe how private properties in `State` work better now since they are not included in their `DebugSnapshot` and hence does not harm the exhaustive testability of features
+CLAUDE-DO: further we now offer `@FeatureLocal` state that is similar to `@State` from SwiftUI. it gives you local state to your feature that is not readable from the outside
+CLAUDE-DO: describe how certain actions can be made private using the "events" tool in 2.0. this is particularly useful for actions that effects send. if you model those as events then you can handle them in the reducer and make it impossible for the actions to be sent from the view  
 
 ### Lifecycle hooks
 
@@ -321,11 +383,102 @@ the `onDisappear` view modifier in SwiftUI views.
 The library includes all new tools to allow disparate features to communicate with each other
 and decouple unrelated features.
 
-CLAUDE-DO: explore the case studies in the TCA26 repo to implement these TODOs
-CLAUDE-DO: describe preferences as a child-to-ancestor communication tool driven by state
-CLAUDE-DO: describe events as a child-to-ancestor communication tool driven by notifications
-CLAUDE-DO: describe triggers as a parent-to-child communication tool
-CLAUDE-DO: describe delegate closures as a direct child-to-parent communication tool that replaces the need for delegate actions
+* **Preferences** let child features aggregate state upward through the feature tree, just like
+preferences in SwiftUI. You define a preference key, publish values from children, and listen from 
+an ancestor:
+
+  ```swift
+  private enum TotalBadgeCount: FeaturePreferenceKey {
+    static let defaultValue = 0
+    static func reduce(value: inout Value, nextValue: () -> Value) {
+      value += nextValue()
+    }
+  }
+  ```
+
+  Any child feature can publish their badge count with 
+  `.preference(key: TotalBadgeCount.self, value: store.badgeCount)`, and any parent listens with
+  `.onPreferenceChange(TotalBadgeCount.self)`.
+
+* **Events** let children notify ancestors of important occurrences. Unlike preferences, events are
+one-shot notifications rather than continuous state:
+
+  ```swift
+  // 1. Declare the event
+  private enum PresentSettings: FeatureEventKey {
+  }
+
+  // 2. Child posts an event:
+  store.addTask {
+    try store.post(key: PresentSettings.self)
+  }
+
+  // Any ancestor can listen for the event:
+  .onEvent(PresentSettings.self) { _, state in
+    state.isSettingsPresented = true
+  }
+  ```
+
+  Events bubble upward through the feature tree and can optionally be consumed by intermediate
+  features to stop propagation.
+
+* **Triggers** let parents command children to perform an action:
+
+  ```swift
+  @Feature struct Child {
+    struct State {
+      @Trigger var refresh
+    }
+    var body: some Feature {
+      Update { state, action in … }
+      .onTrigger(store.refresh) { state in
+        store.addTask { … }
+      }
+    }
+  }
+
+  // In parent:
+  case .refreshAllButtonTapped:
+    state.child.refresh()
+  ```
+
+  The parent mutates the child's trigger, and the child's `onTrigger` hook fires in response.
+  This is a far more efficient way to achieve what one does today in 1.x, which is for the parent
+  to explicitly send a child action.
+
+* **Delegate closures** replace 1.x's delegate actions with a simpler pattern. The child holds
+onto closures that represents events it wants to communicate to the parent:
+
+  ```swift
+  @Feature struct MessageComposer {
+    let onSend: (String) throws -> Void
+    var body: some Feature {
+      Update { state, action in
+        case .sendButtonTapped:
+          store.addTask { [draft = state.draft] in
+            try onSend(draft)
+          }
+          state.draft = ""
+      }
+    }
+  }
+  ```
+  
+  And the parent can provide closures when constructing the child feature, and can even modify
+  feature state directly in those closures:
+
+  ```swift
+  // In parent:
+  Scope(state: \.messageComposer, action: \.messageComposer) {
+    MessageComposer { message in
+      try store.modify {
+        $0.messages.insert(message, at: 0)
+      }
+    }
+  }
+  ```
+
+  No more delegate action enums or parent reducers switching on child actions.
 
 ### Testing
 
@@ -352,8 +505,21 @@ on the main thread.
 
 ### Feature isolation controlled through every layer
 
-CLAUDE-DO: discuss how isolation is controlled through every layer of a feature (`Store`, `Feature`, `Update` and `addTask { … }`), which is how we are able to accomplish everything above. and dovetail this with our current collection of episodes discussing isolation from first principles
+All of the features described above are only possible because isolation is controlled through every 
+layer of the stack. This requires use of nearly every advanced concurrency tool Swift offers, and, 
+surprisingly, shunning `Sendable` from nearly every type in the library.
 
+`Store` is `@MainActor` by default, ensuring all state mutations and UI observations happen on the
+main thread. When you call `store.addTask`, the task is automatically associated with the store's
+actor, which allows one to synchronously read and write to the store from async contexts.
+
+For features that don't need the main actor, `StoreActor` provides the same API on a custom actor,
+enabling features to run _all_ of their logic and behavior off the main thread.
+
+If you've been following our recent [collection on isolation](/collections/concurrency/isolation),
+ComposableArchitecture 2.0 is the culmination of those ideas applied to a real framework. Every 
+layer, starting with the `Store` through to the `Feature`, `Update` and all the way to `addTask`,
+has a clear isolation boundary, and the result is a system that is both safe and ergonomic.
 
 ### Migration path
 
