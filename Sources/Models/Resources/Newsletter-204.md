@@ -177,7 +177,8 @@ expect(model) {
 }
 ```
 
-This is only a small preview of what the library is capable of.
+This is only a small preview of what the library is capable of, and it turned out to be quite
+important for the second beta we are previewing today…
 
 ---
 
@@ -188,6 +189,12 @@ is our biggest release ever, and is a fundamental redesign of how features are b
 effects are managed, how features communicate, how features are tested, and a lot more. The result 
 is dramatically less boilerplate, a more intuitive mental model, and testing that is more powerful 
 than ever.
+
+If many of these APIs feel familiar, that's by design. We intentionally mirror SwiftUI's
+vocabulary (`onChange`, preferences, etc.) so that the mental model you
+already have for views translates directly to business logic. Where SwiftUI's `View` protocol
+describes _what to render_, `Feature` describes _what to do_. And by moving these concepts into
+a simpler, more controlled environment, it all becomes 100% unit testable.
 
 - [The `@Feature` macro](#the-feature-macro)
 - [Side effects with `store`](#side-effects-with-store)
@@ -268,13 +275,13 @@ actions, and as mentioned above, enqueue async work. This opens up all new patte
 previously impossible, and simplifies features by reducing the need to ping-pong many actions back 
 and forth.
 
-For example, suppose you have an timer counting down that you want to stop when it reaches 0. You
+For example, suppose you have a timer counting down that you want to stop when it reaches 0. You
 can now read that state directly in the task:
 
 ```swift
 case .startCountdownButtonTapped:
   store.addTask {
-    while try store.remaingSeconds > 0 {
+    while try store.remainingSeconds > 0 {
       try await Task.sleep(for: .seconds(1))
       …
     }
@@ -290,16 +297,19 @@ You can also _write_ state from an async context using `store.modify`:
 ```swift
 case .startCountdownButtonTapped:
   store.addTask {
-    while try store.remaingSeconds > 0 {
+    while try store.remainingSeconds > 0 {
       try await Task.sleep(for: .seconds(1))
       try store.modify { $0.remainingSeconds -= 1 }
     }
   }
 ```
 
-No intermediate `timerTick` action is needed, you mutate state directly from the async task. This 
-may seem counter to ComposableArchitecture's core tenet that state only be modified in one place, 
-the `Update`. But we now extend this tenet to include not only `Update` but also any tasks enqueued.
+No intermediate `timerTick` action is needed and you can mutate state directly from the async task. 
+
+This may seem counter to ComposableArchitecture's core tenet that state only be modified in one 
+place, but the isolation model makes it safe. All mutations made with `store.modify` are serialized 
+on the store's actor, fully observable by SwiftUI, and fully visible to `TestStore`. Everything
+is still 100% testable, whether you mutate state in `Update` or in a task.
 
 The implicitly available store in each feature also gives us the ability to finally implement
 `onChange` in a manner that aligns better with SwiftUI's `onChange`. You can now listen to _any_ 
@@ -315,34 +325,6 @@ state change in your feature, not just ones coming from sending actions:
 
 This trailing closure will be invoked whenever `searchQuery` changes, no matter where it was
 changed from.
-
-## Spawned stores
-
-While tightly integrating parent and child features together can be powerful, and is sometimes 
-necessary, not every child feature needs this. Sometimes the overhead of scoping from a parent
-domain to a child domain is not worth the benefits. When a child feature operates
-independently and doesn't need to send actions back through the parent, you can `spawn` it instead:
-
-```swift
-var body: some Feature {
-  Update { state, action in 
-    … 
-  }
-  .spawn(\.settings) { store in
-    SettingsFeature()
-  }
-}
-```
-
-A spawned feature gets its own independent store backed by the parent's state at the given key path.
-It processes its own actions without routing through the parent's `Update`, which means better
-performance for features that don't need tight integration.
-
-Best of all, all of the communication tools mentioned [above](#communication-patterns)  
-still work for spawned stores. Events bubble up from spawned stores to the root, preferences 
-aggregate, dependencies flow down, and even delegate closures work. You get the performance 
-benefits of independent stores without losing the communication tools that make the architecture 
-composable.
 
 ## Better bindings
 
@@ -539,7 +521,7 @@ one-shot notifications rather than continuous state:
   to explicitly send a child action.
 
 * **Delegate closures** replace 1.x's delegate actions with a simpler pattern. The child holds
-onto closures that represents events it wants to communicate to the parent:
+onto closures that represent events it wants to communicate to the parent:
 
   ```swift
   @Feature struct MessageComposer {
@@ -572,23 +554,33 @@ onto closures that represents events it wants to communicate to the parent:
 
   No more delegate action enums or parent reducers switching on child actions.
 
-## Feature isolation controlled through every layer
+## Spawned stores
 
-All of the features described above are only possible because isolation is controlled through every 
-layer of the stack. This requires use of nearly every advanced concurrency tool Swift offers, and, 
-surprisingly, shunning `Sendable` from nearly every type in the library.
+While tightly integrating parent and child features together can be powerful, and is sometimes
+necessary, not every child feature needs this. Sometimes the overhead of scoping from a parent
+domain to a child domain is not worth the benefits. When a child feature operates
+independently and doesn't need to send actions back through the parent, you can `spawn` it instead:
 
-`Store` is `@MainActor` by default, ensuring all state mutations and UI observations happen on the
-main thread. When you call `store.addTask`, the task is automatically associated with the store's
-actor, which allows one to synchronously read and write to the store from async contexts.
+```swift
+var body: some Feature {
+  Update { state, action in
+    …
+  }
+  .spawn(\.settings) { store in
+    SettingsFeature()
+  }
+}
+```
 
-For features that don't need the main actor, `StoreActor` provides the same API on a custom actor,
-enabling features to run _all_ of their logic and behavior off the main thread.
+A spawned feature gets its own independent store backed by the parent's state at the given key path.
+It processes its own actions without routing through the parent's `Update`, which means better
+performance for features that don't need tight integration.
 
-If you've been following our recent [collection on isolation](/collections/concurrency/isolation),
-ComposableArchitecture 2.0 is the culmination of those ideas applied to a real framework. Every 
-layer, starting with the `Store` through to the `Feature`, `Update` and all the way to `addTask`,
-has a clear isolation boundary, and the result is a system that is both safe and ergonomic.
+Best of all, all of the communication tools mentioned [above](#communication-patterns)
+still work for spawned stores. Events bubble up from spawned stores to the root, preferences
+aggregate, dependencies flow down, and even delegate closures work. You get the performance
+benefits of independent stores without losing the communication tools that make the architecture
+composable.
 
 ## Testing
 
@@ -605,13 +597,31 @@ of isolation throughout the entire stack. In most applications there will be no 
 in sleeps and yields just to get tests passing.
 
 * We integrated the `TestStore` with our new [DebugSnapshots](#debugsnapshots) library to allow
-for testing without making the `State` of your features `Equatable`, and you can even store 
+for testing without making the `State` of your features `Equatable`, and you can even store
 reference types in `State` without hurting testability.
 
 * The `TestStore` type remains `@MainActor` bound, as it is in 1.x, but we are introducing a new
 `TestStoreActor` that provides the same testing experience, but runs on a non-global actor.
-This means you can maximize parallelization of your tests since all features will not be running
+This means you can maximize parallelization of your tests since your features no longer need to run 
 on the main thread.
+
+## Feature isolation controlled through every layer
+
+All of the features described above are only possible because isolation is controlled through every
+layer of the stack. This requires use of nearly every advanced concurrency tool Swift offers, and,
+surprisingly, shunning `Sendable` from nearly every type in the library.
+
+`Store` is `@MainActor` by default, ensuring all state mutations and UI observations happen on the
+main thread. When you call `store.addTask`, the task is automatically associated with the store's
+actor, which allows one to synchronously read and write to the store from async contexts.
+
+For features that don't need the main actor, `StoreActor` provides the same API on a custom actor,
+enabling features to run _all_ of their logic and behavior off the main thread.
+
+If you've been following our recent [collection on isolation](/collections/concurrency/isolation),
+ComposableArchitecture 2.0 is the culmination of those ideas applied to a real framework. Every
+layer, starting with the `Store` through to the `Feature`, `Update` and all the way to `addTask`,
+has a clear isolation boundary, and the result is a system that is both safe and ergonomic.
 
 <!--
 ## Migration path
