@@ -267,15 +267,15 @@ actions, and as mentioned above, enqueue async work. This opens up all new patte
 previously impossible, and simplifies features by reducing the need to ping-pong many actions back 
 and forth.
 
-For example, an autosave feature could be implemented as a long-living effect that periodically 
-saves the current document, and to do that we can read the current state directly from the `store`:
+For example, suppose you have an timer counting down that you want to stop when it reaches 0. You
+can now read that state directly in the task:
 
 ```swift
-case .openButtonTapped:
+case .startCountdownButtonTapped:
   store.addTask {
-    while true {
-      try await Task.sleep(for: .seconds(30))
-      try await documentClient.save(store.document)
+    while try store.remaingSeconds > 0 {
+      try await Task.sleep(for: .seconds(1))
+      …
     }
   }
 ```
@@ -287,11 +287,11 @@ fewer actions and less ping-ponging of logic.
 You can also _write_ state from an async context using `store.modify`:
 
 ```swift
-case .startTimerButtonTapped:
+case .startCountdownButtonTapped:
   store.addTask {
-    while true {
+    while try store.remaingSeconds > 0 {
       try await Task.sleep(for: .seconds(1))
-      try store.modify { $0.secondsElapsed += 1 }
+      try store.modify { $0.remainingSeconds -= 1 }
     }
   }
 ```
