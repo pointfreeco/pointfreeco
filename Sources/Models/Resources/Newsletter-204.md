@@ -1,7 +1,7 @@
 We are excited to announce a new feature of Point-Free: [Beta Previews]. It's
 a great way for our most dedicated subscribers to help shape the future of our libraries and the
 greater Point-Free ecosystem. And we are launching today with two betas already: a brand new 
-library for exhaustively testing reference types, and a preview of Composable Architecture 2.0.
+library for exhaustively testing reference types, and a preview of ComposableArchitecture 2.0.
 
 [Beta Previews]: /betas
 
@@ -181,21 +181,22 @@ This is only a small preview of what the library is capable of.
 
 ---
 
-## Composable Architecture 2.0
+## ComposableArchitecture 2.0
 
-The second beta is the one many of you have been waiting for: **Composable Architecture 2.0**. This
+The second beta is the one many of you have been waiting for: **ComposableArchitecture 2.0**. This
 is our biggest release ever, and is a fundamental redesign of how features are built, how side
 effects are managed, and how composition works. The result is dramatically less boilerplate, a more
 intuitive mental model, and testing that is more powerful than ever.
 
 ### The `@Feature` macro
 
-The most visible change in 2.0, 
+The most visible change in 2.0, but also perhaps the most boring, is that we are moving away
+from "reducer" terminology. While the roots of ComposableArchitecture were nurished by projects 
+such as Redux and Elm, over time we have deviated so far from those ideas that it no longer feels
+correct to channel their terminology.
 
-
-
-In TCA 1.x you defined features by conforming to the `Reducer` protocol. In 2.0, the `@Feature`
-macro does the heavy lifting:
+In 2.0 we now offer the `@Feature` macro for defining features, and in the body of features we
+provide `Update`:
 
 ```swift
 @Feature struct Counter {
@@ -219,142 +220,168 @@ macro does the heavy lifting:
 }
 ```
 
-The macro generates all the conformances and wiring you used to write by hand. State and action
-types are just plain types nested inside the feature, and the `body` property uses a builder to
-compose your feature's logic — similar to how SwiftUI's `View` protocol describes UI, `Feature`
-describes business logic.
+It's a small change, but we hope it helps shed off any comparison to old libraries that aren't
+relevant to the ComposableArchitecture anymore.
 
-Notice there's no `Effect` return type. In TCA 2.0 the `Update` feature handles synchronous state
-mutations directly, and async work is handled through a completely new mechanism.
+Also notice there's no return statements in `Update`. In ComposableArchitecture 2.0 the `Update` 
+feature handles synchronous state mutations, and async work is handled through a completely new 
+mechanism.
 
 ### Side effects with `store`
 
-TCA 1.x required you to return `Effect` values from your reducer. In 2.0, you use the `store`
-property to kick off async work directly:
+ComposableArchitecture 1.x required you to return `Effect` values from your reducer. In 2.0, every
+feature implicitly has access to a `Store`-like object that can be used to enqueue async work:
 
 ```swift
-@Feature struct FactFeature {
-  struct State {
-    var count = 0
-    var fact: String?
-    var isLoading = false
-    @StoreTaskID var factRequest
-  }
-  enum Action {
-    case factButtonTapped
-    case cancelButtonTapped
-    case factResponse(String)
-  }
-  var body: some Feature {
-    Update { state, action in
-      switch action {
-      case .factButtonTapped:
-        state.isLoading = true
-        store.addTask(id: state.factRequest) {
-          let (data, _) = try await URLSession.shared
-            .data(from: URL(string: "http://numberapi.com/\(store.count)")!)
-          try store.send(.factResponse(String(decoding: data, as: UTF8.self)))
-        }
-      case .cancelButtonTapped:
-        store.addTask { await store.factRequest.cancel() }
-      case .factResponse(let fact):
-        state.fact = fact
-        state.isLoading = false
-      }
+case .startTimerButtonTapped:
+  store.addTask {
+    while true {
+      try await Task.sleep(for: .seconds(1))
+      try store.send(.timerTick)
     }
   }
-}
 ```
 
-`store.addTask` schedules async work, and `@StoreTaskID` gives you automatic cancellation tracking
-— no more managing raw cancellation IDs by hand.
+The `store` variable is always available in the body of your features and `store.addTask` schedules
+async work to be performed. It can be invoked as many times as you want and all tasks run 
+concurrently.
+
+This implicitly available store has other super powers too…
+
+### Feature stores 
+
+The store available to all features can be used to read and write state in your feature, send 
+actions, and as mentioned above, enqueue async work. This opens up all new patterns that were 
+previously impossible, and simplifies features by reducing the need to ping-pong many actions back 
+and forth.
+
+CLAUDE-DO: show example of reading state from store task
+CLAUDE-DO: show example of writing state from store task
+CLAUDE-DO: show example of `onChange`
 
 ### Lifecycle hooks
 
-TCA 2.0 adds lifecycle hooks that replace many patterns that were awkward in 1.x:
+ComposableArchitecture 2.0 adds lifecycle hooks that replace many patterns that were awkward in 1.x.
+Previously one would use `onAppear` actions to perform start-up work in features, but these are
+no longer necessary. You can now use `onMount` to perform one-time work when your feature state
+is first created:
 
 ```swift
 Update { state, action in
-  // ...
+  …
 }
 .onMount { state in
-  state.isLoading = true
-}
-.onChange(of: state.query) { oldValue, state in
-  store.addTask(id: state.searchRequest) {
-    try await Task.sleep(for: .seconds(0.3))
-    let results = try await search(store.query)
-    try store.send(.searchResponse(results))
+  store.addTask {
+    try await analytics.track("Feature presented")
   }
-}
-.onDismount { state in
-  try await cleanup(state)
 }
 ```
 
-`onMount` runs once when the feature's store is created, `onChange` reacts to state changes, and
-`onDismount` handles cleanup. These replace the common pattern of sending an `.onAppear` action from
-SwiftUI.
+Any async work enqueued when mounted will automatically be cancelled when the feature state is
+torn down. You can think of this tool as being analagous to SwiftUI's `task` view modifier, except
+it is called only when the feature is created and destroyed, not everytime the feature merely 
+appears on the screen.
 
-### Composition
-
-Child features compose naturally with `Scope`, `ifLet`, and `forEach`:
+And like SwiftUI's `task` view modifier, there is also a variation of `onMount` that takes an `id`
+argument that causes the trailing closure to be invoked again when the ID changes:
 
 ```swift
-@Feature struct ParentFeature {
-  struct State {
-    var counter = Counter.State()
-    var detail: Detail.State?
-    var items: [Item.State] = []
-  }
-  // ...
-  var body: some Feature {
-    Update { state, action in ... }
-    Scope(state: \.counter, action: \.counter) {
-      Counter()
-    }
-    .ifLet(\.detail, action: \.detail) {
-      Detail()
-    }
-    .forEach(\.items, action: \.item, id: \.id) {
-      Item()
-    }
+Update { state, action in
+  …
+}
+.onMount(id: store.query) { state in
+  store.addTask {
+    try await searchClient.search(store.query)
   }
 }
 ```
+
+When the feature's `query` state changes any inflight async work will be cancelled and a new async
+job will be enqueued and run.
+
+And just as there is `onMount`, there is `onDismount`, which is called a single time when the 
+feature is fully torn down:
+
+```swift
+Update { state, action in
+  …
+}
+.onDismount { state in
+  store.addTask {
+    try await analytics.track("Feature dismissed")
+  }
+}
+```
+
+This fixes a long standing annoyance of 1.x in which it was not possible to send actions from
+the `onDisappear` view modifier in SwiftUI views.
+
+### Communication patterns
+
+The library includes all new tools to allow disparate features to communicate with each other
+and decouple unrelated features.
+
+CLAUDE-DO: explore the case studies in the TCA26 repo to implement these TODOs
+CLAUDE-DO: describe preferences as a child-to-ancestor communication tool driven by state
+CLAUDE-DO: describe events as a child-to-ancestor communication tool driven by notifications
+CLAUDE-DO: describe triggers as a parent-to-child communication tool
+CLAUDE-DO: describe delegate closures as a direct child-to-parent communication tool that replaces the need for delegate actions
 
 ### Testing
 
-`TestStore` integrates with our new [DebugSnapshots](#debugsnapshots) library for snapshot-based
-state assertions:
+Testing is by far the most important feature of the ComposableArchitecture, and you may be worried
+that some of the amazing tools shown off above would hurt testability. Well, we are happy to report
+that all features built using those tools are still 100% testable, and exhaustively testable.
+The `TestStore` will still catch you every step of the way to make sure you assert on every piece
+of state change, every effect, and every dependency.
 
-```swift
-@Test func incrementAndLoadFact() async {
-  let store = TestStore(initialState: FactFeature.State()) {
-    FactFeature()
-  }
+And we made three big improvements to `TestStore`s in 2.0:
 
-  store.send(.incrementButtonTapped) {
-    $0.count = 1
-  }
-  store.send(.factButtonTapped) {
-    $0.isLoading = true
-  }
-  await store.receive(\.factResponse) {
-    $0.fact = "1 is the loneliest number."
-    $0.isLoading = false
-  }
-}
-```
+* Tests involving asynchrony are now less flakey and more deterministic thanks to our full control
+of isolation throughout the entire stack. In more applications there will be no need to splinkle
+in sleeps and yields just to get tests passing.
 
-Because `TestStore` uses snapshots under the hood, it can test features whose state contains
-non-equatable types and reference types — something that was impossible in 1.x.
+* We integrated the `TestStore` with our new [DebugSnapshots](#debugsnapshots) library to allow
+for testing without making the `State` of your features `Equatable`, and you can even store 
+reference types in `State` without hurting testability.
+
+* The `TestStore` type remains `@MainActor` bound, as it is in 1.x, but we are introducing a new
+`TestStoreActor` that provides the same testing experience, but runs on a non-global actors.
+This means you can maximize parallelization of your tests since all features will not be running
+on the main thread.
+
+### Feature isolation controlled through every layer
+
+CLAUDE-DO: discuss how isolation is controlled through every layer of a feature (`Store`, `Feature`, `Update` and `addTask { … }`), which is how we are able to accomplish everything above. and dovetail this with our current collection of episodes discussing isolation from first principles
+
 
 ### Migration path
 
-CLAUDE-DO: write about how we have a ComposableArchitecture1 shim module that can be linked to 
-provide a smooth migration path to ComposableArchitecture 2.0. and talk about the SPM traits trick
-we wrote about previously in Newsletter-203.md to also provide a smooth migration path.
+<!--
+TODO: Audit
+
+We've put a lot of thought into making the transition to 2.0 as smooth as possible. The package
+ships with three modules:
+
+- **`ComposableArchitecture2`**: The new APIs described above.
+- **`ComposableArchitecture1`**: A compatibility shim that provides the familiar 1.x API surface
+  (`Reducer`, `Effect`, `Reduce`, etc.) built on top of the 2.0 runtime. Your existing code
+  continues to compile — everything is simply marked as deprecated with messages pointing you to
+  the 2.0 equivalent.
+- **`ComposableArchitecture`**: An umbrella module that re-exports `ComposableArchitecture1`. If
+  you `import ComposableArchitecture` today, your code will keep working as-is.
+
+This means you can adopt 2.0 incrementally: migrate one feature at a time by switching its import
+from `ComposableArchitecture` to `ComposableArchitecture2`, and the rest of your app keeps running
+on the compatibility shim.
+
+And if you want a head start _before_ joining the beta, we recently
+[wrote about](/blog/posts/203-hard-deprecations-and-soft-landings-with-swiftpm-traits) how you can
+enable the `ComposableArchitecture2Deprecations` SwiftPM trait in version 1.25 today. This upgrades
+soft deprecations to hard warnings, so you can work through the migration at your own pace with
+compiler guidance.
+
+-->
 
 ---
 
