@@ -5,7 +5,7 @@ library for exhaustively testing reference types, and a preview of ComposableArc
 
 [Beta Previews]: /betas
 
-## What are Beta Previews?
+# What are Beta Previews?
 
 When we're working on a major new release or building a brand new library, there's a period where 
 the code is functional but not yet ready for the public. During that time we're iterating on APIs, fixing
@@ -23,7 +23,7 @@ We're launching with two betas today, and we plan to add more as new projects ta
 
 ---
 
-## DebugSnapshots
+# DebugSnapshots
 
 The first beta is a brand new library: **DebugSnapshots**. It solves a problem that comes up
 constantly when building apps with reference types, such as `@Observable` classes: how do you test 
@@ -86,8 +86,8 @@ are invoked:
 The first trailing closure allows you to execute any logic in your model, and the second trailing
 closure allows you to assert how the underlying data in the model changed from _before_ that logic
 to _after_ that logic. The `$0` handed to the closure is actually a value-type representation of 
-the data in the class. That's the magic that allows you to exhaustively assert on this state even
-though it's held in a reference type.
+the data in the class, and that's how you can exhaustively assert on this state even though it's 
+held in a reference type.
 
 If you forget to assert a change, the test fails with a clear diff showing exactly what you missed:
 
@@ -121,16 +121,16 @@ value types.
 
 The macro is also smart about what it includes. It automatically skips private properties, 
 underscored properties, and computed properties. But, you can use `@DebugSnapshotTracked` to include
-any of those properties if you wish.
-
-This can be incredibly powerful to gain exhaustive testing on even computed properties:
+any of those properties if you wish. This can be incredibly powerful to gain exhaustive testing on 
+even computed properties:
 
 ```swift
 @DebugSnapshot
 @Observable
 final class NumberFactModel {
   …
-  @DebugSnapshotTracked var countIsEven: Bool {
+  @DebugSnapshotTracked 
+  var countIsEven: Bool {
     count.isMultiple(of: 2)
   }
 }
@@ -181,12 +181,13 @@ This is only a small preview of what the library is capable of.
 
 ---
 
-## ComposableArchitecture 2.0
+# ComposableArchitecture 2.0
 
 The second beta is the one many of you have been waiting for: **ComposableArchitecture 2.0**. This
 is our biggest release ever, and is a fundamental redesign of how features are built, how side
-effects are managed, and how composition works. The result is dramatically less boilerplate, a more
-intuitive mental model, and testing that is more powerful than ever.
+effects are managed, how features communicate, how features are tested, and a lot more. The result 
+is dramatically less boilerplate, a more intuitive mental model, and testing that is more powerful 
+than ever.
 
 - [The `@Feature` macro](#the-feature-macro)
 - [Side effects with `store`](#side-effects-with-store)
@@ -199,10 +200,10 @@ intuitive mental model, and testing that is more powerful than ever.
 - [Feature isolation controlled through every layer](#feature-isolation-controlled-through-every-layer)
 - [Migration path](#migration-path)
 
-### The `@Feature` macro
+## The `@Feature` macro
 
 The most visible change in 2.0, but also perhaps the most boring, is that we are moving away
-from "reducer" terminology. While the roots of ComposableArchitecture were nurished by projects 
+from "reducer" terminology. While the roots of ComposableArchitecture were nourished by projects 
 such as Redux and Elm, over time we have deviated so far from those ideas that it no longer feels
 correct to channel their terminology.
 
@@ -238,7 +239,7 @@ Also notice there's no return statements in `Update`. In ComposableArchitecture 
 feature handles synchronous state mutations, and async work is handled through a completely new 
 mechanism.
 
-### Side effects with `store`
+## Side effects with `store`
 
 ComposableArchitecture 1.x required you to return `Effect` values from your reducer. In 2.0, every
 feature implicitly has access to a `Store`-like object that can be used to enqueue async work:
@@ -259,7 +260,7 @@ concurrently.
 
 This implicitly available store has other super powers too…
 
-### Feature stores 
+## Feature stores 
 
 The store available to all features can be used to read and write state in your feature, send 
 actions, and as mentioned above, enqueue async work. This opens up all new patterns that were 
@@ -279,7 +280,7 @@ case .openButtonTapped:
   }
 ```
 
-This is in stark contract to 1.x which would have required us to send an action back into the
+This is in stark contrast to 1.x which would have required us to send an action back into the
 system to get access to the current feature state. We now get to implement the same logic with
 fewer actions and less ping-ponging of logic.
 
@@ -304,24 +305,86 @@ The implicitly available store in each feature also gives us the ability to fina
 state change in your feature, not just ones coming from sending actions:
 
 ```swift
-.onChange(of: store.isEnabled) { oldValue, state in
+.onChange(of: store.searchQuery) { oldValue, state in
   store.addTask {
-    await analytics.track("Feature changed enable", ["isEnabled": state.isEnabled])
+    await analytics.track("Search query changed")
   }
 }
 ```
 
-### Better bindings
+This trailing closure will be invoked whenever `searchQuery` changes, no matter where it was
+changed from.
 
-CLAUDE-DO: describe how bindings are immediately available to all features without any extra work. no more `BindableAction` or `BindingReducer`.
+## Better bindings
 
-### Better encapsulation
+In 1.x, two-way bindings between SwiftUI and your feature required conforming your action to
+`BindableAction`, adding a `BindingReducer` to your body, and using a special `$store.scope`
+syntax. In 2.0, bindings just work:
 
-CLAUDE-DO: describe how private properties in `State` work better now since they are not included in their `DebugSnapshot` and hence does not harm the exhaustive testability of features
-CLAUDE-DO: further we now offer `@FeatureLocal` state that is similar to `@State` from SwiftUI. it gives you local state to your feature that is not readable from the outside
-CLAUDE-DO: describe how certain actions can be made private using the "events" tool in 2.0. this is particularly useful for actions that effects send. if you model those as events then you can handle them in the reducer and make it impossible for the actions to be sent from the view  
+```swift
+struct MyView: View {
+  @Bindable var store: StoreOf<MyFeature>
+  var body: some View {
+    TextField("Name", text: $store.name)
+    Toggle("Notifications", isOn: $store.isNotificationsEnabled)
+  }
+}
+```
 
-### Lifecycle hooks
+No protocol conformances, no extra reducers. Every writable property in your feature's state is
+automatically bindable through `$store`.
+
+## Better encapsulation
+
+2.0 makes it much easier to hide implementation details from parent features and views.
+
+* **Private state is invisible to tests.** In 1.x, private properties in `State` were a pain because
+`Equatable` conformance meant you still had to account for them in test assertions. In 2.0,
+`TestStore` uses [DebugSnapshots](#debugsnapshots) under the hood, and `@DebugSnapshot` automatically
+skips private properties. You can keep internal bookkeeping in private state without cluttering your
+tests.
+
+* **`@FeatureLocal` for truly local state.** Similar to SwiftUI's `@State`, `@FeatureLocal` gives
+your feature state that is completely invisible to parent features:
+
+  ```swift
+  @Feature struct Editor {
+    struct State { … }
+    @FeatureLocal var isHighlighting = false
+    var body: some Feature { … }
+  }
+  ```
+
+  No parent can read or write `isHighlighting` as it's scoped entirely to the feature.
+
+* **Private actions via events.** In 1.x, actions sent from effects (like `.factResponse`) had to be
+  part of the public `Action` enum, which meant views could technically send them. In 2.0, you can
+  model effect responses as private events instead:
+
+  ```swift
+  @Feature struct FactFeature {
+    private enum Event: FeatureEventKey {
+      typealias Value = String
+    }
+    var body: some Feature {
+      Update { state, action in
+        case .factButtonTapped:
+          store.addTask {
+            let fact = try await factClient.fetch(store.count)
+            try store.post(key: Event.self, value: fact)
+          }
+      }
+      .onEvent(Event.self) { fact, state in
+        state.fact = fact
+      }
+    }
+  }
+  ```
+
+  The event is private to the feature. Views can never trigger it, and the `Action` enum stays clean
+  with only user-initiated actions.
+
+## Lifecycle hooks
 
 ComposableArchitecture 2.0 adds lifecycle hooks that replace many patterns that were awkward in 1.x.
 Previously one would use `onAppear` actions to perform start-up work in features, but these are
@@ -340,8 +403,8 @@ Update { state, action in
 ```
 
 Any async work enqueued when mounted will automatically be cancelled when the feature state is
-torn down. You can think of this tool as being analagous to SwiftUI's `task` view modifier, except
-it is called only when the feature is created and destroyed, not everytime the feature merely 
+torn down. You can think of this tool as being analogous to SwiftUI's `task` view modifier, except
+it is called only when the feature is created, not every time the feature merely 
 appears on the screen.
 
 And like SwiftUI's `task` view modifier, there is also a variation of `onMount` that takes an `id`
@@ -378,7 +441,7 @@ Update { state, action in
 This fixes a long standing annoyance of 1.x in which it was not possible to send actions from
 the `onDisappear` view modifier in SwiftUI views.
 
-### Communication patterns
+## Communication patterns
 
 The library includes all new tools to allow disparate features to communicate with each other
 and decouple unrelated features.
@@ -480,30 +543,7 @@ onto closures that represents events it wants to communicate to the parent:
 
   No more delegate action enums or parent reducers switching on child actions.
 
-### Testing
-
-Testing is by far the most important feature of the ComposableArchitecture, and you may be worried
-that some of the amazing tools shown off above would hurt testability. Well, we are happy to report
-that all features built using those tools are still 100% testable, and exhaustively testable.
-The `TestStore` will still catch you every step of the way to make sure you assert on every piece
-of state change, every effect, and every dependency.
-
-And we made three big improvements to `TestStore`s in 2.0:
-
-* Tests involving asynchrony are now less flakey and more deterministic thanks to our full control
-of isolation throughout the entire stack. In more applications there will be no need to splinkle
-in sleeps and yields just to get tests passing.
-
-* We integrated the `TestStore` with our new [DebugSnapshots](#debugsnapshots) library to allow
-for testing without making the `State` of your features `Equatable`, and you can even store 
-reference types in `State` without hurting testability.
-
-* The `TestStore` type remains `@MainActor` bound, as it is in 1.x, but we are introducing a new
-`TestStoreActor` that provides the same testing experience, but runs on a non-global actors.
-This means you can maximize parallelization of your tests since all features will not be running
-on the main thread.
-
-### Feature isolation controlled through every layer
+## Feature isolation controlled through every layer
 
 All of the features described above are only possible because isolation is controlled through every 
 layer of the stack. This requires use of nearly every advanced concurrency tool Swift offers, and, 
@@ -521,9 +561,31 @@ ComposableArchitecture 2.0 is the culmination of those ideas applied to a real f
 layer, starting with the `Store` through to the `Feature`, `Update` and all the way to `addTask`,
 has a clear isolation boundary, and the result is a system that is both safe and ergonomic.
 
-### Migration path
+## Testing
+
+Testing is by far the most important feature of the ComposableArchitecture, and you may be worried
+that some of the amazing tools shown off above would hurt testability. Well, we are happy to report
+that all features built using those tools are still 100% testable, and exhaustively testable.
+The `TestStore` will still catch you every step of the way to make sure you assert on every piece
+of state change, every effect, and every dependency.
+
+And we made three big improvements to `TestStore`s in 2.0:
+
+* Tests involving asynchrony are now less flaky and more deterministic thanks to our full control
+of isolation throughout the entire stack. In most applications there will be no need to sprinkle
+in sleeps and yields just to get tests passing.
+
+* We integrated the `TestStore` with our new [DebugSnapshots](#debugsnapshots) library to allow
+for testing without making the `State` of your features `Equatable`, and you can even store 
+reference types in `State` without hurting testability.
+
+* The `TestStore` type remains `@MainActor` bound, as it is in 1.x, but we are introducing a new
+`TestStoreActor` that provides the same testing experience, but runs on a non-global actor.
+This means you can maximize parallelization of your tests since all features will not be running
+on the main thread.
 
 <!--
+## Migration path
 TODO: Audit
 
 We've put a lot of thought into making the transition to 2.0 as smooth as possible. The package
@@ -532,7 +594,7 @@ ships with three modules:
 - **`ComposableArchitecture2`**: The new APIs described above.
 - **`ComposableArchitecture1`**: A compatibility shim that provides the familiar 1.x API surface
   (`Reducer`, `Effect`, `Reduce`, etc.) built on top of the 2.0 runtime. Your existing code
-  continues to compile — everything is simply marked as deprecated with messages pointing you to
+  continues to compile. Everything is simply marked as deprecated with messages pointing you to
   the 2.0 equivalent.
 - **`ComposableArchitecture`**: An umbrella module that re-exports `ComposableArchitecture1`. If
   you `import ComposableArchitecture` today, your code will keep working as-is.
@@ -551,7 +613,7 @@ compiler guidance.
 
 ---
 
-## How to get access
+# How to get access
 
 Beta Previews are available exclusively to subscribers of our
 [Point-Free Max](/pricing) plan. Max subscribers can visit the
@@ -566,4 +628,4 @@ We have more betas planned, and Max subscribers will automatically get access to
 it opens. We can't wait to hear what you think.
 
 [custom-dump-gh]: https://github.com/pointfreeco/swift-custom-dump
---!>
+
