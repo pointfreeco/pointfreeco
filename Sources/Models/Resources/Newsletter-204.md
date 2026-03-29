@@ -197,9 +197,8 @@ describes _what to render_, `Feature` describes _what to do_. And by moving thes
 a simpler, more controlled environment, it all becomes 100% unit testable.
 
 - [The `@Feature` macro](#the-feature-macro)
-- [Side effects with `store`](#side-effects-with-store)
-- [Feature stores](#feature-stores)
 - [Better bindings](#better-bindings)
+- [Feature stores](#feature-stores)
 - [Better encapsulation](#better-encapsulation)
 - [Lifecycle hooks](#lifecycle-hooks)
 - [Communication patterns](#communication-patterns)
@@ -247,10 +246,33 @@ Also notice there's no return statements in `Update`. In ComposableArchitecture 
 feature handles synchronous state mutations, and async work is handled through a completely new 
 mechanism.
 
-## Side effects with `store`
+## Better bindings
+
+In 1.x, two-way bindings between SwiftUI and your feature required conforming your action to
+`BindableAction`, adding a `BindingReducer` to your body, and using a special `$store.scope`
+syntax. In 2.0, bindings just work:
+
+```swift
+struct MyView: View {
+  @Bindable var store: StoreOf<MyFeature>
+  var body: some View {
+    TextField("Name", text: $store.name)
+    Toggle("Notifications", isOn: $store.isNotificationsEnabled)
+  }
+}
+```
+
+No protocol conformances, no extra reducers. Every writable property in your feature's state is
+automatically bindable through `$store`.
+
+## Feature stores
 
 ComposableArchitecture 1.x required you to return `Effect` values from your reducer. In 2.0, every
-feature implicitly has access to a `Store`-like object that can be used to enqueue async work:
+feature implicitly has access to a `store` that can enqueue async work, and in that async work it
+can further read and write state, and send actions. This opens up patterns that were previously 
+impossible, and simplifies features by reducing the need to ping-pong actions back and forth.
+
+To enqueue async work, use `store.addTask`:
 
 ```swift
 case .startTimerButtonTapped:
@@ -262,18 +284,10 @@ case .startTimerButtonTapped:
   }
 ```
 
-The `store` variable is always available in the body of your features and `store.addTask` schedules
-async work to be performed. It can be invoked as many times as you want and all tasks run 
-concurrently.
+It can be invoked as many times as you want and all tasks run concurrently.
 
-This implicitly available store has other super powers too…
-
-## Feature stores 
-
-The store available to all features can be used to read and write state in your feature, send 
-actions, and as mentioned above, enqueue async work. This opens up all new patterns that were 
-previously impossible, and simplifies features by reducing the need to ping-pong many actions back 
-and forth.
+But `store.addTask` is just the beginning. The `store` also gives you direct access to your
+feature's state from inside async tasks, which was impossible in 1.x.
 
 For example, suppose you have a timer counting down that you want to stop when it reaches 0. You
 can now read that state directly in the task:
@@ -283,7 +297,7 @@ case .startCountdownButtonTapped:
   store.addTask {
     while try store.remainingSeconds > 0 {
       try await Task.sleep(for: .seconds(1))
-      …
+      try store.send(.timerTick)
     }
   }
 ```
@@ -304,7 +318,8 @@ case .startCountdownButtonTapped:
   }
 ```
 
-No intermediate `timerTick` action is needed and you can mutate state directly from the async task. 
+Here we are decrementing `remainingSeconds` for each tick of the timer without sending an
+intermediate `timerTick` action. This is all happening from within the async task. 
 
 This may seem counter to ComposableArchitecture's core tenet that state only be modified in one 
 place, but the isolation model makes it safe. All mutations made with `store.modify` are serialized 
@@ -324,26 +339,7 @@ state change in your feature, not just ones coming from sending actions:
 ```
 
 This trailing closure will be invoked whenever `searchQuery` changes, no matter where it was
-changed from.
-
-## Better bindings
-
-In 1.x, two-way bindings between SwiftUI and your feature required conforming your action to
-`BindableAction`, adding a `BindingReducer` to your body, and using a special `$store.scope`
-syntax. In 2.0, bindings just work:
-
-```swift
-struct MyView: View {
-  @Bindable var store: StoreOf<MyFeature>
-  var body: some View {
-    TextField("Name", text: $store.name)
-    Toggle("Notifications", isOn: $store.isNotificationsEnabled)
-  }
-}
-```
-
-No protocol conformances, no extra reducers. Every writable property in your feature's state is
-automatically bindable through `$store`.
+changed from, including parent features, effects, SwiftUI bindings, anywhere!
 
 ## Better encapsulation
 
