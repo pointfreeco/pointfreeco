@@ -2279,7 +2279,7 @@ html {
                                   <form action="/account/subscription/change"
                                         class="block"
                                         method="post"
-                                        onsubmit="if (!confirm("Upgrade to Max? This change moves you to our current pricing of $329.00 per teammate/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
+                                        onsubmit="if (!confirm("Upgrade to Max? This change moves you to our current pricing of $299.00 per teammate/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
   return false
 }">
                                     <input name="billing"

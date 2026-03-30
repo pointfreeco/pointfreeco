@@ -1072,7 +1072,7 @@ private func mainAction(
       let pricing = Pricing(plan: .max, billing: .yearly, quantity: subscription.quantity)
       let formattedAmount =
         isTeam
-        ? "\(formattedSeatAmount(pricing) ?? "$329.00") per teammate/year"
+        ? "\(formattedSeatAmount(pricing) ?? "$299.00") per teammate/year"
         : "\(formattedModernAmount(pricing) ?? "$349.00")/year"
 
       return .form(

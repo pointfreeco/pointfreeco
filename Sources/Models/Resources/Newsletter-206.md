@@ -1,5 +1,5 @@
 This is the second of two [Beta Previews](/betas) we are launching today as part of our new
-[Point-Free Max](/pricing) subscription plan. Read the
+[Point-Free Max](/pricing) membership tier. Read the
 [announcement post](/blog/posts/204-introducing-point-free-beta-previews) for more on what Beta
 Previews are and how to get access.
 

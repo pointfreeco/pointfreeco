@@ -793,7 +793,7 @@ private func subscribePriceCents(
   case (.max, false, _):
     return 349_00
   case (.max, true, _):
-    return 329_00
+    return 299_00
   }
 }
 

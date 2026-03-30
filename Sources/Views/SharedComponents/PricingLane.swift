@@ -4,20 +4,17 @@ import TaggedMoney
 
 struct PricingLane<PriceDetails: HTML, Features: HTML, CallToAction: HTML>: HTML {
   var name: String
-  var annualPricePerMonth: Dollars<Int>?
   var priceDetails: PriceDetails?
   var features: Features
   var callToAction: CallToAction
 
   init(
     _ name: String,
-    annualPricePerMonth: Dollars<Int>? = nil,
     @HTMLBuilder priceDetails: () -> PriceDetails = { Never?.none },
     @HTMLBuilder features: () -> Features,
     @HTMLBuilder callToAction: () -> CallToAction
   ) {
     self.name = name
-    self.annualPricePerMonth = annualPricePerMonth
     self.priceDetails = priceDetails()
     self.features = features()
     self.callToAction = callToAction()
@@ -28,22 +25,21 @@ struct PricingLane<PriceDetails: HTML, Features: HTML, CallToAction: HTML>: HTML
       VStack {
         Header(4) { HTMLText(name) }
           .inlineStyle("margin-top", "1.5rem")
-        if let annualPricePerMonth {
-          HStack(alignment: .center) {
-            div {
-              Header(3) { HTMLText("$\(annualPricePerMonth)") }
-                .inlineStyle("font-size", "2rem")
-                .inlineStyle("font-weight", "300")
-            }
 
-            if let priceDetails {
-              div {
-                priceDetails
-              }
-              .inlineStyle("font-size", "0.75rem")
-            }
+//          HStack(alignment: .center) {
+//            div {
+//              Header(3) { HTMLText("$\(annualPricePerMonth)") }
+//                .inlineStyle("font-size", "2rem")
+//                .inlineStyle("font-weight", "300")
+//            }
+
+        if let priceDetails {
+          div {
+            priceDetails
           }
+          .inlineStyle("font-size", "0.75rem")
         }
+//        }
         ul {
           features
         }

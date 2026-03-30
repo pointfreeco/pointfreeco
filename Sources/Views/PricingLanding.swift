@@ -137,13 +137,13 @@ public struct PricingLanding: HTML {
 
             PricingLane("Pro") {
               ToggleablePrice(
-                individualAmount: 24,
-                individualDetails: "per month",
+                individualAmount: 18,
+                individualDetails: "per month*",
                 teamAmount: 16,
                 teamDetails: "per member/month*"
               )
             } features: {
-              li { HTMLText(Pricing.proTeamSavingsFeature) }
+              li { HTMLMarkdown(Pricing.proTeamSavingsFeature) }
                 .inlineStyle("display", "none")
                 .inlineStyle("display", "list-item", pre: teamPricingCheckedSelector)
               for feature in proFeatures {
@@ -188,11 +188,11 @@ public struct PricingLanding: HTML {
               ToggleablePrice(
                 individualAmount: 349,
                 individualDetails: "per year",
-                teamAmount: 329,
+                teamAmount: 299,
                 teamDetails: "per member/year"
               )
             } features: {
-              li { HTMLText(Pricing.maxTeamSavingsFeature) }
+              li { HTMLMarkdown(Pricing.maxTeamSavingsFeature) }
                 .inlineStyle("display", "none")
                 .inlineStyle("display", "list-item", pre: teamPricingCheckedSelector)
               for feature in maxFeatures {
@@ -262,6 +262,14 @@ public struct PricingLanding: HTML {
           .color(.gray500)
           .inlineStyle("display", "none")
           .inlineStyle("display", "block", pre: teamPricingCheckedSelector)
+          .inlineStyle("font-size", "0.875rem")
+          .inlineStyle("text-align", "center")
+          small {
+            "*When billed anually."
+          }
+          .color(.gray500)
+          .inlineStyle("display", "block")
+          .inlineStyle("display", "none", pre: teamPricingCheckedSelector)
           .inlineStyle("font-size", "0.875rem")
           .inlineStyle("text-align", "center")
         }

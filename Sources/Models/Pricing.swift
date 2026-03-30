@@ -87,9 +87,9 @@ public struct Pricing: Equatable {
     case (.max, .personal, .yearly):
       return 349_00
     case (.max, .team, .yearly):
-      return 329_00
+      return 299_00
     case (.max, _, .monthly):
-      return self.lane == .personal ? 349_00 : 329_00
+      return self.lane == .personal ? 349_00 : 299_00
     case (.pro, .personal, .monthly):
       return 18_00
     case (.pro, .personal, .yearly):
@@ -108,7 +108,7 @@ public struct Pricing: Equatable {
     case (.max, .personal, .yearly):
       return 349_00
     case (.max, .team, .yearly):
-      return 329_00
+      return 299_00
     case (.pro, .personal, .monthly):
       return 24_00
     case (.pro, .personal, .yearly):
@@ -145,13 +145,14 @@ extension Pricing: Codable {
 }
 
 public extension Pricing {
-  static let proTeamSavingsFeature = "Save 25% per member"
-  static let maxTeamSavingsFeature = "Save $20 per member"
+  static let proTeamSavingsFeature = "Save **25%** per member"
+  static let maxTeamSavingsFeature = "Save **$50** per member"
 
   static func maxExtraFeatures(
     betasPath: String
   ) -> [String] {
     [
+      "Everything from **Pro**, plus…",
       "[Early access](\(betasPath)) to beta tools, features, and new projects",
       "Attend office hours and private livestreams",
       "Help support the [Point-Free ecosystem](https://github.com/pointfreeco)",
@@ -167,6 +168,7 @@ public extension Pricing {
     includeDiscounts: Bool = true
   ) -> [String] {
     var features: [String] = [
+      "Everything from **Free**, plus…",
       "Access to \"[The Point-Free Way](\(theWayPath))\"",
       "All \(allVideosCount) videos with transcripts",
       "Private podcast feed for offline viewing",
@@ -191,13 +193,6 @@ public extension Pricing {
     educationalDiscountPath: String,
     includeDiscounts: Bool = true
   ) -> [String] {
-    proFeaturesMarkdown(
-      allVideosCount: allVideosCount,
-      theWayPath: theWayPath,
-      livestreamsPath: livestreamsPath,
-      regionalDiscountPath: regionalDiscountPath,
-      educationalDiscountPath: educationalDiscountPath,
-      includeDiscounts: includeDiscounts
-    ) + maxExtraFeatures(betasPath: betasPath)
+    maxExtraFeatures(betasPath: betasPath)
   }
 }

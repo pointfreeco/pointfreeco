@@ -1,5 +1,5 @@
 We are excited to announce a new feature of Point-Free: [Beta Previews]. It's
-a great way for our most dedicated subscribers to help shape the future of our libraries and the
+a great way for our most dedicated members to help shape the future of our libraries and the
 greater Point-Free ecosystem. And we are launching today with two betas already: a brand new
 library for exhaustively testing reference types, and a preview of ComposableArchitecture 2.0.
 
@@ -56,14 +56,14 @@ Read the full details in our dedicated blog post:
 
 # How to get access
 
-Beta Previews are available exclusively to subscribers of our
-[Point-Free Max](/pricing) plan. Max subscribers can visit the
+Beta Previews are available exclusively to members of our
+[Point-Free Max](/pricing) tier. Max members can visit the
 [Beta Previews](/betas) page and join any open beta with a single click. You'll receive a GitHub
 invitation to the private repo, and from there you can pull the library into your projects
 immediately.
 
-If you're already a Max subscriber, head over to [Beta Previews](/betas) now to get started. If
+If you're already a Max member, head over to [Beta Previews](/betas) now to get started. If
 you're not yet a member, check out our [plans](/pricing) to see everything that's included.
 
-We have more betas planned, and Max subscribers will automatically get access to every new one as
+We have more betas planned, and Max members will automatically get access to every new one as
 it opens. We can't wait to hear what you think.

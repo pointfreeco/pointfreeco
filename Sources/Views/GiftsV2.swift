@@ -23,7 +23,7 @@ public struct GiftsV2: HTML {
     PageModule(theme: .content) {
       LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
         HTMLForEach(Gifts.Plan.allCases) { plan in
-          PricingLane(plan.laneTitle, annualPricePerMonth: plan.laneAnnualPricePerMonth) {
+          PricingLane(plan.laneTitle) {
             "One-time payment"
           } features: {
             plan.laneFeatures

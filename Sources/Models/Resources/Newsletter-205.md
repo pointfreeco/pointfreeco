@@ -1,5 +1,5 @@
 This is the first of two [Beta Previews](/betas) we are launching today as part of our new
-[Point-Free Max](/pricing) subscription plan. Read the
+[Point-Free Max](/pricing) membership tier. Read the
 [announcement post](/blog/posts/204-introducing-point-free-beta-previews) for more on what Beta
 Previews are and how to get access.
 
@@ -14,8 +14,8 @@ _not correct_ to use their underlying data for the `Equatable` conformance (and 
 you do want to assert on as it changes over time. DebugSnapshots gives you a way to assert on the
 _content_ of your models, not their identity.
 
-Once you apply the `@DebugSnapshot` macro to your class, the library generates an equatable,
-value-type snapshot of the class's underlying data. You can then use the `expect` function to
+Once you apply the `@DebugSnapshot` macro to your class, the library generates test-friendly
+snapshot of the class's underlying data. You can then use the `expect` function to
 exhaustively assert how the data changes in the class after an action takes place.
 
 Take for instance a feature model that allows you to increment a count and then fetch a fact
@@ -64,7 +64,7 @@ are invoked:
 
 The first trailing closure allows you to execute any logic in your model, and the second trailing
 closure allows you to assert how the underlying data in the model changed from _before_ that logic
-to _after_ that logic. The `$0` handed to the closure is actually a value-type representation of
+to _after_ that logic. The `$0` handed to the closure is actually a test-friendly representation of
 the data in the class, and that's how you can exhaustively assert on this state even though it's
 held in a reference type.
 
