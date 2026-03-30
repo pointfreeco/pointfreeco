@@ -970,6 +970,12 @@ extension Client {
           "plan" character varying NOT NULL DEFAULT 'pro'
           """
         )
+        try await database.run(
+          """
+          ALTER TABLE "subscriptions"
+          ALTER COLUMN "plan" DROP DEFAULT
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(

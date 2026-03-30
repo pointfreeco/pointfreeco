@@ -153,7 +153,7 @@ public extension Pricing {
   ) -> [String] {
     [
       "Everything from **Pro**, plus…",
-      "[Early access](\(betasPath)) to beta tools, features, and new projects",
+      "[Early access](\(betasPath)) to new libraries and AI skills",
       "Attend office hours and private livestreams",
       "Help support the [Point-Free ecosystem](https://github.com/pointfreeco)",
     ]

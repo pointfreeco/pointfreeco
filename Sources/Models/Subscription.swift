@@ -14,7 +14,7 @@ public struct Subscription: Decodable, Identifiable {
   public init(
     deactivated: Bool,
     id: ID,
-    plan: Pricing.Plan = .pro,
+    plan: Pricing.Plan,
     stripeSubscriptionId: Stripe.Subscription.ID,
     stripeSubscriptionStatus: Stripe.Subscription.Status,
     teamInviteCode: TeamInviteCode,

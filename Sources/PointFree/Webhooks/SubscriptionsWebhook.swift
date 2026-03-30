@@ -104,7 +104,7 @@ func removeBetaAccess(for subscription: Models.Subscription) async {
   @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var gitHubAccessToken
   @Dependency(\.gitHub) var gitHub
 
-  do {
+  await withErrorReporting("Remove beta access") {
     let owner = try await database.fetchUser(id: subscription.userId)
     var users = [owner]
     if let teammates = try? await database.fetchSubscriptionTeammatesByOwnerId(owner.id) {
@@ -115,15 +115,17 @@ func removeBetaAccess(for subscription: Models.Subscription) async {
         let gitHubUser = try? await gitHub.fetchUserByUserID(user.gitHubUserId, gitHubAccessToken)
       else { continue }
       for beta in Beta.all {
-        try? await gitHub.removeRepoCollaborator(
-          owner: "pointfreeco",
-          repo: beta.repo,
-          username: gitHubUser.login,
-          token: gitHubAccessToken
-        )
+        await withErrorReporting("Could not remove '\(user.gitHubUserId)' from '\(beta.repo)'") {
+          try await gitHub.removeRepoCollaborator(
+            owner: "pointfreeco",
+            repo: beta.repo,
+            username: gitHubUser.login,
+            token: gitHubAccessToken
+          )
+        }
       }
     }
-  } catch {}
+  }
 }
 
 private func sendPastDueEmail(to owner: User) async throws {
