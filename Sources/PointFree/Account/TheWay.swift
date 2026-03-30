@@ -233,9 +233,29 @@ func theWayMiddleware(
         }
       }
 
+      var zipSourceURL = skillsURL
+      if !subscriberState.isMaxSubscriber {
+        let betaSkillNames = Beta.allSkillNames
+        let filteredURL = URL.temporaryDirectory.appending(
+          path: "\(sha.rawValue)-\(token)-\(whoami)-filtered"
+        )
+        try? FileManager.default.removeItem(at: filteredURL)
+        try FileManager.default.copyItem(at: skillsURL, to: filteredURL)
+        let skillDirectories = try FileManager.default.contentsOfDirectory(
+          at: filteredURL,
+          includingPropertiesForKeys: nil
+        )
+        for skillDirectory in skillDirectories {
+          if betaSkillNames.contains(skillDirectory.lastPathComponent) {
+            try FileManager.default.removeItem(at: skillDirectory)
+          }
+        }
+        zipSourceURL = filteredURL
+      }
+
       let destinationURL = URL.temporaryDirectory.appending(path: UUID().uuidString + ".zip")
       try FileManager.default.zipItem(
-        at: skillsURL,
+        at: zipSourceURL,
         to: destinationURL,
         compressionMethod: .deflate
       )
