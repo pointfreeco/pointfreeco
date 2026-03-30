@@ -156,5 +156,76 @@ expect(model) {
 }
 ```
 
+## SwiftData
+
+DebugSnapshots also works seamlessly with SwiftData. If you aren't ready to adopt
+[SQLiteData](https://github.com/pointfreeco/sqlite-data) just yet, we've got your back.
+
+Just apply `@DebugSnapshot` alongside `@Model`, mark your relationships with
+`@DebugSnapshotConvertible`, and use `@DebugSnapshotIgnored` on inverse relationships to avoid
+circular references:
+
+```swift
+@DebugSnapshot
+@Model final class RemindersList {
+  var title: String
+
+  @DebugSnapshotConvertible
+  @Relationship(deleteRule: .cascade, inverse: \Reminder.list)
+  var reminders: [Reminder] = []
+}
+
+@DebugSnapshot
+@Model final class Reminder {
+  var title: String
+  var isCompleted: Bool
+  var notes: String
+  @DebugSnapshotIgnored var list: RemindersList?
+}
+```
+
+Now you can exhaustively test how your SwiftData models change, including across relationships:
+
+```swift
+@Test func addReminder() throws {
+  let schema = Schema([
+    Reminder.self,
+    RemindersList.self,
+  ])
+  let container = try ModelContainer(
+    for: schema,
+    configurations: [ModelConfiguration(isStoredInMemoryOnly: true)]
+  )
+  let context = ModelContext(container)
+
+  let list = RemindersList(title: "Groceries", color: "blue")
+  context.insert(list)
+
+  let reminder = Reminder(
+    title: "Oat milk",
+    isCompleted: false,
+    notes: "The good kind"
+  )
+  context.insert(reminder)
+
+  expect(list) {
+    list.reminders.append(reminder)
+  } changes: {
+    $0.reminders = [
+      Reminder.DebugSnapshot(
+        title: "Oat milk",
+        isCompleted: false,
+        notes: "The good kind"
+      )
+    ]
+  }
+}
+```
+
+The diff output even traces through nested relationships, so if you forget to assert on a change
+in a related model you'll get a clear failure showing exactly what was missed.
+
+---
+
 This is only a small preview of what the library is capable of. Join the
 [beta](/betas) to try it out and help shape the API before it goes public.
