@@ -46,9 +46,10 @@ struct PricingLane<PriceDetails: HTML, Badge: HTML, Features: HTML, CallToAction
         .color(.gray500.dark(.gray800))
         .linkColor(.gray150.dark(.gray900))
         .flexContainer(direction: "column", rowGap: "0.5rem")
-        .listStyle(.reset)
         .inlineStyle("font-size", "0.875rem")
+        .inlineStyle("list-style", "disc")
         .inlineStyle("margin", "0 0 1.5rem")
+        .inlineStyle("padding-left", "1.25rem")
       }
       .color(.black.dark(.white))
       .inlineStyle("position", "relative")
