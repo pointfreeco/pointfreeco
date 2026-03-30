@@ -280,10 +280,8 @@ struct MobileNavItems: HTML {
         NavListItem(isNew: true, route: .theWay) {
           "The Point-Free Way"
         }
-        if currentUser.hasAccess(to: .betas) {
-          NavListItem(isNew: true, route: .betas()) {
-            "Beta previews"
-          }
+        NavListItem(isNew: true, route: .betas()) {
+          "Beta previews"
         }
         NavListItem(route: .episodes(.list(.all))) {
           "Videos"
@@ -601,9 +599,7 @@ struct CenteredNavItems: HTML {
           if currentUser == nil {
             MenuItem(title: "Videos", destination: .episodes(.list(.all)))
           }
-          if currentUser.hasAccess(to: .betas) {
-            MenuItem(title: "Beta previews", destination: .betas(), isNew: true)
-          }
+          MenuItem(title: "Beta previews", destination: .betas(), isNew: true)
           MenuItem(title: "Free clips", destination: .clips(.clips))
           MenuItem(title: "Blog", destination: .blog(.index))
           MenuItem(title: "Gifts", destination: .gifts())

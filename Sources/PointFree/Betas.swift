@@ -12,10 +12,6 @@ func betasMiddleware(
   route: SiteRoute.Betas,
   conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
-  @Dependency(\.currentUser) var currentUser
-  guard currentUser.hasAccess(to: .betas) else {
-    return routeNotFoundMiddleware(conn)
-  }
   switch route {
   case .landing:
     return await betasLandingMiddleware(conn)

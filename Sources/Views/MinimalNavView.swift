@@ -106,9 +106,7 @@ private func loggedInNavItemsView(
       blogLinkView(style: style)
     ),
     .li(attributes: [.class([navListItemClass])], giftLinkView(style: style)),
-    Optional(currentUser).hasAccess(to: .betas)
-      ? .li(attributes: [.class([navListItemClass])], betasLinkView(style: style))
-      : [],
+    .li(attributes: [.class([navListItemClass])], betasLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], accountLinkView(style: style))
   )
 }
