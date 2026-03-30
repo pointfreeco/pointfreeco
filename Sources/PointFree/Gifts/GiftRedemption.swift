@@ -118,6 +118,7 @@ private func redeemGift(
           customerID: customer.id,
           planID: try await resolvePlanID(
             for: .init(
+              plan: gift.plan,
               billing: gift.monthsFree < 12 ? .monthly : .yearly,
               quantity: 1
             )
@@ -131,7 +132,7 @@ private func redeemGift(
           userID: currentUser.id,
           isOwnerTakingSeat: true,
           referrerID: nil,
-          plan: .pro
+          plan: gift.plan
         )
       _ = try await database.updateGift(id: gift.id, subscriptionID: stripeSubscription.id)
     }

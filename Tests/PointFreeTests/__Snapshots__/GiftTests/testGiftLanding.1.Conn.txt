@@ -14,7 +14,7 @@ X-XSS-Protection: 1; mode=block
 <!doctype html>
 <html lang="en">
   <head>
-    <title>🎁 Point-Free Gift Memberhsip
+    <title>🎁 Point-Free Gift Membership
     </title>
     <meta charset="UTF-8">
     <meta name="theme-color" content="#121212">
@@ -89,9 +89,9 @@ body, html {
     <link rel="mask-icon" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Videos" type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
-    <meta name="title" content="🎁 Point-Free Gift Memberhsip">
-    <meta property="og:title" content="🎁 Point-Free Gift Memberhsip">
-    <meta name="twitter:title" content="🎁 Point-Free Gift Memberhsip">
+    <meta name="title" content="🎁 Point-Free Gift Membership">
+    <meta property="og:title" content="🎁 Point-Free Gift Membership">
+    <meta name="twitter:title" content="🎁 Point-Free Gift Membership">
     <meta name="description" content="Give the gift of Point-Free! Purchase a 3, 6, or 12 month membership for a friend, colleague or loved one.">
     <meta property="og:description" content="Give the gift of Point-Free! Purchase a 3, 6, or 12 month membership for a friend, colleague or loved one.">
     <meta name="twitter:description" content="Give the gift of Point-Free! Purchase a 3, 6, or 12 month membership for a friend, colleague or loved one.">

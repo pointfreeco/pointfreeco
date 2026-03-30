@@ -26,7 +26,7 @@ public let giftPaymentMiddleware:
         return SimplePageLayoutData(
           data: (giftPlan, js, stripeKey),
           description: """
-            Give the gift of Point-Free! Purchase a \(giftPlan.monthCount) month membership for a \
+            Give the gift of Point-Free! Purchase a \(giftPlan.laneTitle) membership for a \
             friend or loved one.
             """,
           extraStyles: extraGiftLandingStyles <> testimonialStyle,

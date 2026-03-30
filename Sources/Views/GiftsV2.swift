@@ -16,7 +16,7 @@ public struct GiftsV2: HTML {
       "Gifts"
     } blurb: {
       """
-      Purchase a 3, 6, or 12 month membership for a friend, colleague or loved one.
+      Purchase a Point-Free membership for a friend, colleague or loved one.
       """
     }
 
@@ -24,7 +24,11 @@ public struct GiftsV2: HTML {
       LazyVGrid(columns: [.desktop: [1, 1, 1]]) {
         HTMLForEach(Gifts.Plan.allCases) { plan in
           PricingLane(plan.laneTitle) {
-            "One-time payment"
+            Header(3) { "$\(plan.amount.rawValue / 100)" }
+              .inlineStyle("font-size", "2rem")
+              .inlineStyle("font-weight", "300")
+            div { "one-time payment" }
+              .inlineStyle("font-size", "0.75rem")
           } features: {
             plan.laneFeatures
           } callToAction: {
@@ -89,45 +93,49 @@ extension Faq {
 }
 
 extension Gifts.Plan {
-  fileprivate var laneTitle: String {
+  public var laneTitle: String {
     switch self {
-    case .threeMonths: "3 months"
-    case .sixMonths: "6 months"
-    case .year: "1 year"
+    case .sixMonthsPro: "6 Months Pro"
+    case .yearlyPro: "1 Year Pro"
+    case .yearlyMax: "1 Year Max"
     }
   }
 
-  fileprivate var laneAnnualPricePerMonth: Dollars<Int> {
-    amount.map(Double.init).dollars.map(Int.init)
+  var duration: String {
+    switch self {
+    case .sixMonthsPro: "6 months"
+    case .yearlyPro: "1 year"
+    case .yearlyMax: "1 year"
+    }
+  }
+  var tier: String {
+    switch self {
+    case .sixMonthsPro, .yearlyPro: "Pro"
+    case .yearlyMax: "Max"
+    }
   }
 
   @HTMLBuilder
   fileprivate var laneFeatures: some HTML {
-    switch self {
-    case .threeMonths:
-      li { "Full access for 3 months" }
-      baseFeatures
-    case .sixMonths:
-      li { "Full access for 6 months" }
-      baseFeatures
-    case .year:
-      li { "25% off the 3 and 6 month gift options" }
-        .color(.black)
-        .backgroundColor(.yellow)
-        .inlineStyle("margin", "-2px")
-        .inlineStyle("padding", "2px")
-      li { "Full access for 1 year" }
-      baseFeatures
-    }
-  }
-
-  @HTMLBuilder
-  private var baseFeatures: some HTML {
-    @Dependency(\.currentUser) var currentUser
     @Dependency(\.siteRouter) var siteRouter
     let stats = EpisodesStats()
 
+    switch self {
+    case .sixMonthsPro:
+      li { "Full Pro access for 6 months" }
+    case .yearlyPro:
+      li { "Full Pro access for 1 year" }
+    case .yearlyMax:
+      li { "Full Max access for 1 year" }
+    }
     li { "All \(stats.allEpisodes) videos with transcripts" }
+    if self == .yearlyMax {
+      li {
+        Link("Early access", href: siteRouter.path(for: .betas()))
+        " to new libraries and AI skills"
+      }
+      li { "Attend office hours and private livestreams" }
+    }
     li {
       "Access to \""
       Link("The Point-Free Way", destination: .theWay)

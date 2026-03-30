@@ -16,38 +16,36 @@ public enum Gifts: Equatable {
   }
 
   public enum Plan: String, CaseIterable {
-    case threeMonths
-    case sixMonths
-    case year
-
-    public init?(monthCount: Int) {
-      switch monthCount {
-      case 3: self = .threeMonths
-      case 6: self = .sixMonths
-      case 12: self = .year
-      default: return nil
-      }
-    }
+    case sixMonthsPro
+    case yearlyPro
+    case yearlyMax
 
     public var amount: Cents<Int> {
       switch self {
-      case .threeMonths:
-        return 72_00
-      case .sixMonths:
-        return 144_00
-      case .year:
+      case .sixMonthsPro:
+        return 108_00
+      case .yearlyPro:
         return 216_00
+      case .yearlyMax:
+        return 349_00
       }
     }
 
     public var monthCount: Int {
       switch self {
-      case .threeMonths:
-        return 3
-      case .sixMonths:
+      case .sixMonthsPro:
         return 6
-      case .year:
+      case .yearlyPro, .yearlyMax:
         return 12
+      }
+    }
+
+    public var pricingPlan: Pricing.Plan {
+      switch self {
+      case .sixMonthsPro, .yearlyPro:
+        return .pro
+      case .yearlyMax:
+        return .max
       }
     }
   }

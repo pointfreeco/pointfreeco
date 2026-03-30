@@ -49,6 +49,7 @@ extension Client {
         fromName,
         message,
         monthsFree,
+        plan,
         stripePaymentIntentId,
         toEmail,
         toName
@@ -62,6 +63,7 @@ extension Client {
             "from_name",
             "message",
             "months_free",
+            "plan",
             "stripe_payment_intent_id",
             "to_email",
             "to_name"
@@ -73,6 +75,7 @@ extension Client {
             \(bind: fromName),
             \(bind: message),
             \(bind: monthsFree),
+            \(bind: plan),
             \(bind: stripePaymentIntentId),
             \(bind: toEmail),
             \(bind: toName)
@@ -973,6 +976,19 @@ extension Client {
         try await database.run(
           """
           ALTER TABLE "subscriptions"
+          ALTER COLUMN "plan" DROP DEFAULT
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "gifts"
+          ADD COLUMN IF NOT EXISTS
+          "plan" character varying NOT NULL DEFAULT 'pro'
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "gifts"
           ALTER COLUMN "plan" DROP DEFAULT
           """
         )

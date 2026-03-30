@@ -17,7 +17,7 @@ func sendGiftEmail(for gift: Gift) async throws -> SendEmailResponse {
   do {
     return try await sendEmail(
       to: ["\(gift.toName) <\(gift.toEmail)>"],
-      subject: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
+      subject: "\(gift.fromName) sent you \(gift.planDescription) of Point-Free!",
       content: inj2(giftEmail(gift))
     )
   } catch {
@@ -41,8 +41,8 @@ private let giftEmail =
     SimpleEmailLayoutData(
       user: nil,
       newsletter: nil,
-      title: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
-      preheader: "\(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!",
+      title: "\(gift.fromName) sent you \(gift.planDescription) of Point-Free!",
+      preheader: "\(gift.fromName) sent you \(gift.planDescription) of Point-Free!",
       template: .default(),
       data: gift
     )
@@ -58,7 +58,7 @@ private func giftEmailBody(gift: Gift) -> Node {
   return [
     .markdownBlock(
       """
-      \(gift.fromName) sent you \(gift.monthsFree) months of Point-Free!
+      \(gift.fromName) sent you \(gift.planDescription) of Point-Free!
 
       \(quotedMessage)
 

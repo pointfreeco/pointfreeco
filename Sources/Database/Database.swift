@@ -38,6 +38,7 @@ public struct Client {
       _ fromName: String,
       _ message: String,
       _ monthsFree: Int,
+      _ plan: Pricing.Plan,
       _ stripePaymentIntentId: PaymentIntent.ID,
       _ toEmail: EmailAddress,
       _ toName: String
