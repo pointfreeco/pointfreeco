@@ -253,10 +253,9 @@ private struct BetaCard: HTML {
         }
         .color(.black.dark(.white))
 
-        Paragraph {
-          HTMLText(beta.blurb)
-        }
-        .color(.gray300.dark(.gray800))
+        HTMLMarkdown(beta.blurb)
+          .color(.gray300.dark(.gray800))
+          .linkColor(.purple)
 
         if subscriberState.isMaxSubscriber {
           BetaJoinButton(beta: beta, isCollaborator: isCollaborator)

@@ -14,7 +14,8 @@ public struct Beta {
       blurb: """
         A ground-up reimagining of the ComposableArchitecture. Simpler, faster, \
         and more flexible, while keeping the same principles of testability and \
-        composability that make the ComposableArchitecture great.
+        composability that make the ComposableArchitecture great. \
+        [Read more →](/blog/posts/206-beta-preview-composablearchitecture-2-0)
         """,
       imageURL:
         "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/cf5ce39b-dba6-42ad-e63b-8b43a838d800/public",
@@ -25,7 +26,8 @@ public struct Beta {
       blurb: """
         A tool for making it possible to test non-equatable types and reference types. \
         Capture and compare snapshots of your app's state in a human-readable format, \
-        making it easy to catch unexpected changes.
+        making it easy to catch unexpected changes. \
+        [Read more →](/blog/posts/205-beta-preview-debugsnapshots)
         """,
       imageURL:
         "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/2b4c6522-30c7-4036-f9ed-c938f3935200/public",
