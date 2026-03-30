@@ -25,21 +25,12 @@ struct PricingLane<PriceDetails: HTML, Features: HTML, CallToAction: HTML>: HTML
       VStack {
         Header(4) { HTMLText(name) }
           .inlineStyle("margin-top", "1.5rem")
-
-//          HStack(alignment: .center) {
-//            div {
-//              Header(3) { HTMLText("$\(annualPricePerMonth)") }
-//                .inlineStyle("font-size", "2rem")
-//                .inlineStyle("font-weight", "300")
-//            }
-
         if let priceDetails {
           div {
             priceDetails
           }
           .inlineStyle("font-size", "0.75rem")
         }
-//        }
         ul {
           features
         }

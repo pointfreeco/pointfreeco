@@ -138,9 +138,10 @@ private struct BetaAccessChecklist: HTML {
     ChecklistModule(
       title: "What you get with beta access",
       items: [
-        "Early access to pre-release libraries",
-        "Private GitHub repo access",
-        "Direct influence on APIs before public launch",
+        "Access pre-release libraries on GitHub",
+        "Directly influence our APIs before public launch",
+        "Join us for private office hour discussions",
+        "Peek behind the curtain at how we build libraries",
         "All current and future betas included",
       ]
     ) {
