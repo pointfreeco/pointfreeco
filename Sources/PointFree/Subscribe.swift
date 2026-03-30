@@ -103,8 +103,8 @@ private func subscribe(
           Cannot apply regional discount.
           
           userID: \(user.id.rawValue)
-          cardCountry: \(country)
-          ipCountry: \(ipCountry)
+          cardCountry: \(country, default: "Unknown")
+          ipCountry: \(ipCountry, default: "Unknown")
           """)
         throw StripeErrorEnvelope(
           error: .init(
@@ -161,7 +161,8 @@ private func subscribe(
         subscription: stripeSubscription,
         userID: user.id,
         isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
-        referrerID: referrer?.user.id
+        referrerID: referrer?.user.id,
+        plan: subscribeData.pricing.plan
       )
 
       if let referrer {

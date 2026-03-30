@@ -239,7 +239,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .mock,
       referrer.id,
       true,
-      nil
+      nil,
+      .pro
     )
 
     let referred = try await self.database
@@ -316,7 +317,7 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .upsertUser(.mock, update(.mock) { $0.id = 1 }, "referrer@pointfree.co", { .mock })
 
     /*let referrerSubscription*/_ =
-      try await self.database.createSubscription(.mock, referrer.id, true, nil)
+      try await self.database.createSubscription(.mock, referrer.id, true, nil, .pro)
 
     let referred = try await self.database
       .upsertUser(.mock, update(.mock) { $0.id = 2 }, "referred@pointfree.co", { .mock })
@@ -559,7 +560,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .mock,
       referrer.id,
       true,
-      nil
+      nil,
+      .pro
     )
 
     let referred = try await self.database
@@ -657,7 +659,8 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       .mock,
       referrer.id,
       true,
-      nil
+      nil,
+      .pro
     )
 
     let referred = try await self.database
@@ -975,7 +978,7 @@ final class SubscribeTests: TestCase {
   @MainActor
   func testCreateDatabaseSubscriptionFailure() async throws {
     await withDependencies {
-      $0.database.createSubscription = { _, _, _, _ in throw unit }
+      $0.database.createSubscription = { _, _, _, _, _ in throw unit }
       $0.database.fetchSubscriptionById = { _ in throw unit }
       $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
     } operation: {

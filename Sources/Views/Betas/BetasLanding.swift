@@ -390,7 +390,6 @@ extension HTML {
 
 extension SubscriberState {
   public var isMaxSubscriber: Bool {
-    // TODO: Implement actual Max plan check
-    isActiveSubscriber
+    isActiveSubscriber && plan == .max
   }
 }

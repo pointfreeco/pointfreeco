@@ -130,7 +130,8 @@ private func redeemGift(
           subscription: stripeSubscription,
           userID: currentUser.id,
           isOwnerTakingSeat: true,
-          referrerID: nil
+          referrerID: nil,
+          plan: .pro
         )
       _ = try await database.updateGift(id: gift.id, subscriptionID: stripeSubscription.id)
     }

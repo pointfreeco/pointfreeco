@@ -428,7 +428,7 @@ var pastDueBanner: Node {
   case .nonSubscriber:
     return []
 
-  case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .none, deactivated: _):
+  case .owner(hasSeat: _, plan: _, status: .pastDue, enterpriseAccount: .none, deactivated: _):
     return flashView(
       .init(
         .warning,
@@ -440,7 +440,7 @@ var pastDueBanner: Node {
       )
     )
 
-  case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .some, deactivated: _):
+  case .owner(hasSeat: _, plan: _, status: .pastDue, enterpriseAccount: .some, deactivated: _):
     return flashView(
       .init(
         .warning,
@@ -451,7 +451,7 @@ var pastDueBanner: Node {
       )
     )
 
-  case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .none, deactivated: _):
+  case .owner(hasSeat: _, plan: _, status: .canceled, enterpriseAccount: .none, deactivated: _):
     return flashView(
       .init(
         .warning,
@@ -462,7 +462,7 @@ var pastDueBanner: Node {
       )
     )
 
-  case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .some, deactivated: _):
+  case .owner(hasSeat: _, plan: _, status: .canceled, enterpriseAccount: .some, deactivated: _):
     return flashView(
       .init(
         .warning,
@@ -473,8 +473,8 @@ var pastDueBanner: Node {
       )
     )
 
-  case .owner(hasSeat: _, status: .active, enterpriseAccount: _, deactivated: true),
-    .owner(hasSeat: _, status: .trialing, enterpriseAccount: _, deactivated: true):
+  case .owner(hasSeat: _, plan: _, status: .active, enterpriseAccount: _, deactivated: true),
+    .owner(hasSeat: _, plan: _, status: .trialing, enterpriseAccount: _, deactivated: true):
     return flashView(
       .init(
         .warning,
@@ -485,10 +485,10 @@ var pastDueBanner: Node {
       )
     )
 
-  case .owner(hasSeat: _, status: _, enterpriseAccount: _, deactivated: _):
+  case .owner(hasSeat: _, plan: _, status: _, enterpriseAccount: _, deactivated: _):
     return []
 
-  case .teammate(status: .pastDue, enterpriseAccount: _, deactivated: _):
+  case .teammate(plan: _, status: .pastDue, enterpriseAccount: _, deactivated: _):
     return flashView(
       .init(
         .warning,
@@ -499,7 +499,7 @@ var pastDueBanner: Node {
       )
     )
 
-  case .teammate(status: .canceled, enterpriseAccount: _, deactivated: _):
+  case .teammate(plan: _, status: .canceled, enterpriseAccount: _, deactivated: _):
     return flashView(
       .init(
         .warning,
@@ -510,8 +510,8 @@ var pastDueBanner: Node {
       )
     )
 
-  case .teammate(status: .active, enterpriseAccount: _, deactivated: true),
-    .teammate(status: .trialing, enterpriseAccount: _, deactivated: true):
+  case .teammate(plan: _, status: .active, enterpriseAccount: _, deactivated: true),
+    .teammate(plan: _, status: .trialing, enterpriseAccount: _, deactivated: true):
     return flashView(
       .init(
         .warning,
@@ -522,7 +522,7 @@ var pastDueBanner: Node {
       )
     )
 
-  case .teammate(status: _, enterpriseAccount: _, deactivated: _):
+  case .teammate(plan: _, status: _, enterpriseAccount: _, deactivated: _):
     return []
   }
 }

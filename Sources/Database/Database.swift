@@ -47,7 +47,8 @@ public struct Client {
       _ subscription: Stripe.Subscription,
       _ userID: Models.User.ID,
       _ isOwnerTakingSeat: Bool,
-      _ referrerID: Models.User.ID?
+      _ referrerID: Models.User.ID?,
+      _ plan: Pricing.Plan
     ) async throws -> Models.Subscription
   public var deleteEnterpriseEmail: (_ userID: User.ID) async throws -> Void
   public var deleteTeamInvite: (_ id: TeamInvite.ID) async throws -> Void
@@ -144,6 +145,8 @@ public struct Client {
   public var updateGiftStatus:
     (_ id: Gift.ID, _ status: Stripe.PaymentIntent.Status, _ delivered: Bool) async throws -> Gift
   public var updateStripeSubscription: (Stripe.Subscription) async throws -> Models.Subscription
+  public var updateSubscriptionPlan:
+    (_ subscriptionId: Models.Subscription.ID, _ plan: Pricing.Plan) async throws -> Void
   public var updateUser:
     (
       _ id: Models.User.ID,

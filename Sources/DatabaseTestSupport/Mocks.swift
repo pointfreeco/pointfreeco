@@ -12,7 +12,7 @@ extension Client {
     createEnterpriseEmail: { _, _ in .mock },
     createFeedRequestEvent: { _, _, _ in },
     createGift: { _, _, _, _, _, _, _, _, _ in .unfulfilled },
-    createSubscription: { _, _, _, _ in .mock },
+    createSubscription: { _, _, _, _, _ in .mock },
     deleteEnterpriseEmail: { _ in },
     deleteTeamInvite: { _ in },
     deleteTheWayAccess: { _, _ in },
@@ -72,6 +72,7 @@ extension Client {
     updateGift: { _, _ in .fulfilled },
     updateGiftStatus: { _, _, _ in .fulfilled },
     updateStripeSubscription: { _ in .mock },
+    updateSubscriptionPlan: { _, _ in },
     updateUser: { _, _, _, _, _, _, _ in },
     upsertTheWayAccess: { $0 },
     upsertUser: { _, _, _, _ in .mock }

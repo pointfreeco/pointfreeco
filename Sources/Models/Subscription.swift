@@ -5,6 +5,7 @@ import Tagged
 public struct Subscription: Decodable, Identifiable {
   public var deactivated: Bool
   public var id: Tagged<Self, UUID>
+  public var plan: Pricing.Plan
   public var stripeSubscriptionId: Stripe.Subscription.ID
   public var stripeSubscriptionStatus: Stripe.Subscription.Status
   public var teamInviteCode: TeamInviteCode
@@ -13,6 +14,7 @@ public struct Subscription: Decodable, Identifiable {
   public init(
     deactivated: Bool,
     id: ID,
+    plan: Pricing.Plan = .pro,
     stripeSubscriptionId: Stripe.Subscription.ID,
     stripeSubscriptionStatus: Stripe.Subscription.Status,
     teamInviteCode: TeamInviteCode,
@@ -20,6 +22,7 @@ public struct Subscription: Decodable, Identifiable {
   ) {
     self.deactivated = deactivated
     self.id = id
+    self.plan = plan
     self.stripeSubscriptionId = stripeSubscriptionId
     self.stripeSubscriptionStatus = stripeSubscriptionStatus
     self.teamInviteCode = teamInviteCode

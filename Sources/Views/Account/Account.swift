@@ -474,7 +474,7 @@ private func teammatesSection(
 private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
   guard let subscription = data.stripeSubscription else { return [] }
   guard
-    case let .owner(_, _, .some(enterpriseAccount), _) = data.subscriberState
+    case let .owner(_, _, _, .some(enterpriseAccount), _) = data.subscriberState
   else { return [] }
 
   @Dependency(\.siteRouter) var siteRouter
@@ -584,7 +584,7 @@ private func subscriptionTeammateOverview(_ data: AccountData) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   var enterpriseShareLink: Node
-  if case let .teammate(_, .some(enterpriseAccount), _) = data.subscriberState {
+  if case let .teammate(_, _, .some(enterpriseAccount), _) = data.subscriberState {
     let shareUrl = siteRouter.url(for: .enterprise(enterpriseAccount.domain))
     enterpriseShareLink = .p(
       "Share Point-Free with your co-workers by sending them this link: ",

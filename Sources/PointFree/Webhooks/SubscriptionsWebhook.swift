@@ -99,7 +99,7 @@ private func handleFailedPayment(
   }
 }
 
-private func removeBetaAccess(for subscription: Models.Subscription) async {
+func removeBetaAccess(for subscription: Models.Subscription) async {
   @Dependency(\.database) var database
   @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var gitHubAccessToken
   @Dependency(\.gitHub) var gitHub

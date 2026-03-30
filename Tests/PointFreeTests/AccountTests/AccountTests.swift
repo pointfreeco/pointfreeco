@@ -59,7 +59,8 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       Stripe.Subscription.mock,
       owner.id,
       false,
-      nil
+      nil,
+      .pro
     )
 
     _ = try await self.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
@@ -94,7 +95,8 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       Stripe.Subscription.mock,
       currentUser.id,
       false,
-      nil
+      nil,
+      .pro
     )
     try await self.database.addUserIdToSubscriptionId(currentUser.id, subscription.id)
 
@@ -126,7 +128,8 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       subscription: cancelledStripeSubscription,
       userID: user.id,
       isOwnerTakingSeat: true,
-      referrerID: nil
+      referrerID: nil,
+      plan: .pro
     )
 
     let teammate = try await self.database.registerUser(
@@ -143,7 +146,8 @@ final class AccountIntegrationTests: LiveDatabaseTestCase {
       subscription: activeStripeSubscription,
       userID: user.id,
       isOwnerTakingSeat: true,
-      referrerID: nil
+      referrerID: nil,
+      plan: .pro
     )
 
     let teammates = try await self.database.fetchSubscriptionTeammates(ownerID: user.id)
