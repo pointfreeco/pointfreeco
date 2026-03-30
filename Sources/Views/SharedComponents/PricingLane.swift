@@ -2,20 +2,23 @@ import StyleguideV2
 import Tagged
 import TaggedMoney
 
-struct PricingLane<PriceDetails: HTML, Features: HTML, CallToAction: HTML>: HTML {
+struct PricingLane<PriceDetails: HTML, Badge: HTML, Features: HTML, CallToAction: HTML>: HTML {
   var name: String
   var priceDetails: PriceDetails?
+  var badge: Badge?
   var features: Features
   var callToAction: CallToAction
 
   init(
     _ name: String,
     @HTMLBuilder priceDetails: () -> PriceDetails = { Never?.none },
+    @HTMLBuilder badge: () -> Badge = { Never?.none },
     @HTMLBuilder features: () -> Features,
     @HTMLBuilder callToAction: () -> CallToAction
   ) {
     self.name = name
     self.priceDetails = priceDetails()
+    self.badge = badge()
     self.features = features()
     self.callToAction = callToAction()
   }
@@ -23,6 +26,12 @@ struct PricingLane<PriceDetails: HTML, Features: HTML, CallToAction: HTML>: HTML
   var body: some HTML {
     Card {
       VStack {
+        if let badge {
+          div { badge }
+            .inlineStyle("position", "absolute")
+            .inlineStyle("top", "0.75rem")
+            .inlineStyle("right", "0.75rem")
+        }
         Header(4) { HTMLText(name) }
           .inlineStyle("margin-top", "1.5rem")
         if let priceDetails {
@@ -42,6 +51,7 @@ struct PricingLane<PriceDetails: HTML, Features: HTML, CallToAction: HTML>: HTML
         .inlineStyle("margin", "0 0 1.5rem")
       }
       .color(.black.dark(.white))
+      .inlineStyle("position", "relative")
     } footer: {
       callToAction
         .flexContainer(justification: "center")

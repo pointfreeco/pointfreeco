@@ -145,8 +145,8 @@ extension Pricing: Codable {
 }
 
 public extension Pricing {
-  static let proTeamSavingsFeature = "Save **25%** per member"
-  static let maxTeamSavingsFeature = "Save **$50** per member"
+  static let proTeamSavingsFeature = "Save **25%**"
+  static let maxTeamSavingsFeature = "Save **15%**"
 
   static func maxExtraFeatures(
     betasPath: String

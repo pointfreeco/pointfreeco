@@ -142,10 +142,9 @@ public struct PricingLanding: HTML {
                 teamAmount: 16,
                 teamDetails: "per member/month*"
               )
+            } badge: {
+              SavingsBadge(Pricing.proTeamSavingsFeature)
             } features: {
-              li { HTMLMarkdown(Pricing.proTeamSavingsFeature) }
-                .inlineStyle("display", "none")
-                .inlineStyle("display", "list-item", pre: teamPricingCheckedSelector)
               for feature in proFeatures {
                 li { HTMLMarkdown(feature) }
               }
@@ -191,10 +190,9 @@ public struct PricingLanding: HTML {
                 teamAmount: 299,
                 teamDetails: "per member/year"
               )
+            } badge: {
+              SavingsBadge(Pricing.maxTeamSavingsFeature)
             } features: {
-              li { HTMLMarkdown(Pricing.maxTeamSavingsFeature) }
-                .inlineStyle("display", "none")
-                .inlineStyle("display", "list-item", pre: teamPricingCheckedSelector)
               for feature in maxFeatures {
                 li { HTMLMarkdown(feature) }
               }
@@ -335,5 +333,26 @@ private struct ToggleablePrice: HTML {
         .inlineStyle("display", "none")
         .inlineStyle("display", "flex", pre: teamPricingCheckedSelector)
     }
+  }
+}
+
+private struct SavingsBadge: HTML {
+  let text: String
+  init(_ text: String) {
+    self.text = text
+  }
+  var body: some HTML {
+    span { HTMLMarkdown(text) }
+      .inlineStyle("background-color", "rgba(121, 80, 242, 0.1)")
+      .inlineStyle("background-color", "rgba(161, 128, 255, 0.15)", media: .dark)
+      .inlineStyle("border-radius", "999px")
+      .inlineStyle("color", "rgb(121, 80, 242)")
+      .inlineStyle("color", "rgb(161, 128, 255)", media: .dark)
+      .inlineStyle("display", "none")
+      .inlineStyle("display", "inline-block", pre: teamPricingCheckedSelector)
+      .inlineStyle("font-size", "0.7rem")
+      .inlineStyle("font-weight", "600")
+      .inlineStyle("padding", "0.2rem 0.5rem")
+      .inlineStyle("white-space", "nowrap")
   }
 }
