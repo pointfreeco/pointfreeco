@@ -1389,14 +1389,30 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
       ),
       .gridColumn(
         sizes: [.mobile: 9],
-        .markdownBlock(
+        isLegacy || isProMonthly
+        ? .markdownBlock(
+          attributes: [
+            .class([
+              Class.pf.type.body.regular,
+              Class.padding([.mobile: [.all: 2]]),
+            ]),
+            .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
+          ],
+          """
+          Invite your colleagues to your membership by sharing the following URL. When a \
+          teammate joins, your subscription will automatically upgrade to the **Pro yearly** \
+          tier with new pricing of **$\(proYearlyTeamAmount.rawValue / 100)/teammate per \
+          year** prorated based on your current billing cycle.
+          """
+        )
+        : .markdownBlock(
           attributes: [
             .class([
               Class.pf.type.body.regular
             ])
           ],
           """
-          Invite your colleages to your membership by sharing the following URL. Your credit
+          Invite your colleagues to your membership by sharing the following URL. Your credit
           card will be charged a prorated amount of **$\(amount.rawValue / 100)/\(interval)**
           when a teammate joins.
           """
