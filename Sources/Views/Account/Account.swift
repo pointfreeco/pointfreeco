@@ -1037,7 +1037,6 @@ private func mainAction(
     @Dependency(\.envVars) var envVars
 
     let discount = subscription.discount?.coupon.discount ?? { $0 }
-    let isTeam = subscription.quantity > 1
     let pricingTransitionPrefix = (subscription.plan.product == envVars.stripe.productId)
       ? "Your new rate will be "
       : "This change moves you to our current pricing of "
@@ -1233,6 +1232,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   let amount = inviteTeammateAmount(for: stripeSubscription)
   let interval = stripeSubscription.plan.interval == .year ? "year" : "month"
   let isLegacy = stripeSubscription.plan.product != envVars.stripe.productId
+  let isProMonthly = !isLegacy && stripeSubscription.plan.interval == .month
   let proYearlyTeamAmount = Pricing(billing: .yearly, quantity: 2).modernPricing
     ?? Pricing(billing: .yearly, quantity: 2).legacyPricing
 
@@ -1253,6 +1253,22 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
       your current billing cycle.
       """
     )
+    : isProMonthly
+    ? .markdownBlock(
+      attributes: [
+        .class([
+          Class.pf.type.body.regular,
+          Class.padding([.mobile: [.all: 2]]),
+        ]),
+        .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
+      ],
+      """
+      You are on a **Pro monthly** membership tier. Adding a teammate will \
+      automatically upgrade you to the **Pro yearly** tier with new pricing of \
+      **$\(proYearlyTeamAmount.rawValue / 100)/teammate per year** prorated based on \
+      your current billing cycle.
+      """
+    )
     : .markdownBlock(
       attributes: [
         .class([
@@ -1265,8 +1281,8 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
       """
     )
 
-  let legacyConfirmAttributes: [Attribute<Tag.Form>] =
-    isLegacy
+  let upgradeConfirmAttributes: [Attribute<Tag.Form>] =
+    isLegacy || isProMonthly
     ? [
       .onsubmit(
         unsafe: """
@@ -1294,7 +1310,7 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
             .action(siteRouter.path(for: .invite(.addTeammate(nil)))),
             .method(.post),
             .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
-          ] + legacyConfirmAttributes,
+          ] + upgradeConfirmAttributes,
           .input(
             attributes: [
               .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
