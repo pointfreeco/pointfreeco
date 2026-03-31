@@ -158,7 +158,7 @@ public struct PricingLanding: HTML {
                   siteRouter.path(
                     for: .subscribeConfirmation(
                       lane: .personal,
-                      billing: .monthly,
+                      billing: .yearly,
                       plan: .pro
                     )
                   )

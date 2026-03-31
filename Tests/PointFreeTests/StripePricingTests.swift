@@ -150,6 +150,23 @@ final class StripePricingTests: TestCase {
   }
 
   @MainActor
+  func testResolvePlanIDResolvesMaxWhenProSubscriberUpgradesOnSameInterval() async throws {
+    let planID = try await withDependencies {
+      $0.stripe.fetchPricesForProduct = { _, lookupKeys in
+        XCTAssertEqual(lookupKeys, ["pointfree-max"])
+        return .mock([.pointFreeMax])
+      }
+    } operation: {
+      try await resolvePlanID(
+        for: Pricing(plan: .max, billing: .yearly, quantity: 1),
+        currentSubscription: .individualYearly
+      )
+    }
+
+    XCTAssertEqual(planID.rawValue, Price.pointFreeMax.id.rawValue)
+  }
+
+  @MainActor
   func testResolvePlanIDFailsWhenModernPlanCannotBeFound() async throws {
     do {
       _ = try await withDependencies {
