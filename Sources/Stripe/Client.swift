@@ -116,7 +116,11 @@ extension Client {
       createCustomer: {
         try await runStripe(secretKey)(
           Stripe.createCustomer(
-            paymentMethodID: $0, description: $1, email: $2, vatNumber: $3, balance: $4
+            paymentMethodID: $0,
+            description: $1,
+            email: $2,
+            vatNumber: $3,
+            balance: $4
           )
         )
       },
@@ -254,7 +258,7 @@ func createCoupon(
     params["duration"] = "once"
   case .forever:
     params["duration"] = "forever"
-  case let .repeating(months):
+  case .repeating(let months):
     params["duration"] = "repeating"
     params["duration_in_months"] = months
   case .none:
@@ -270,9 +274,9 @@ func createCoupon(
   }
 
   switch rate {
-  case let .amountOff(cents):
+  case .amountOff(let cents):
     params["amount_off"] = cents
-  case let .percentOff(percent):
+  case .percentOff(let percent):
     params["percent_off"] = percent
   }
 
@@ -337,7 +341,7 @@ func createSubscription(
 
   var params: [String: Any] = [:]
   params["customer"] = customer.rawValue
-  params[subscriptionItemIDParamKey(for: plan)] = plan.rawValue
+  params["items[0][price]"] = plan.rawValue
   params["items[0][quantity]"] = String(quantity)
   params["coupon"] = coupon?.rawValue
 
@@ -373,7 +377,8 @@ func fetchInvoice(id: Invoice.ID) -> DecodableRequest<Invoice> {
 }
 
 func fetchInvoices(
-  for customer: Customer.ID, status: Invoice.Status
+  for customer: Customer.ID,
+  status: Invoice.Status
 ) -> DecodableRequest<ListEnvelope<Invoice>> {
   stripeRequest(
     "invoices?customer="
@@ -403,7 +408,8 @@ func fetchPrices(
   product: Product.ID,
   lookupKeys: [Price.LookupKey]
 ) -> DecodableRequest<ListEnvelope<Price>> {
-  let lookupKeyQuery = lookupKeys
+  let lookupKeyQuery =
+    lookupKeys
     .map { "lookup_keys[]=" + $0.rawValue }
     .joined(separator: "&")
   let query =
@@ -436,7 +442,8 @@ func invoiceCustomer(_ customer: Customer.ID)
     "invoices",
     .post([
       "customer": customer.rawValue
-    ]))
+    ])
+  )
 }
 
 func payInvoice(_ invoice: Invoice.ID)
@@ -467,7 +474,8 @@ func updateCustomer(id: Customer.ID, balance: Cents<Int>) -> DecodableRequest<Cu
     "customers/" + id.rawValue,
     .post([
       "balance": balance.rawValue
-    ]))
+    ])
+  )
 }
 
 func updateCustomer(id: Customer.ID, extraInvoiceInfo: String) -> DecodableRequest<Customer> {
@@ -476,7 +484,8 @@ func updateCustomer(id: Customer.ID, extraInvoiceInfo: String) -> DecodableReque
     "customers/" + id.rawValue,
     .post([
       "metadata": ["extraInvoiceInfo": extraInvoiceInfo]
-    ]))
+    ])
+  )
 }
 
 func updateSubscription(
@@ -486,65 +495,39 @@ func updateSubscription(
 )
   -> DecodableRequest<Subscription>?
 {
-  let currentQuantity = currentSubscription.totalQuantity
   let items = currentSubscription.items.data
-  guard let item = items.first else { return nil }
+  guard !items.isEmpty
+  else { return nil }
 
-  if quantity > currentQuantity, currentQuantity > 1 {
-    let seatDelta = quantity - currentQuantity
-    var params: [String: Any?] = [
-      "cancel_at_period_end": "false",
-      "discounts[]": quantity > 1 ? [Any]() : nil,
-      "payment_behavior": "error_if_incomplete",
-      "proration_behavior": "always_invoice",
-    ]
+  var params: [String: Any?] = [
+    "cancel_at_period_end": "false",
+    "discounts": quantity > 1 ? [Any]() : nil,
+    "payment_behavior": "error_if_incomplete",
+    "proration_behavior": "always_invoice",
+  ]
 
-    var targetItemIndex: Int?
-    for (index, item) in items.enumerated() {
-      params["items[\(index)][id]"] = item.id.rawValue
-      params["items[\(index)][quantity]"] = String(item.quantity)
-      if item.plan.id == plan {
-        targetItemIndex = index
-      }
-    }
-
-    if let targetItemIndex {
-      params["items[\(targetItemIndex)][quantity]"] = String(items[targetItemIndex].quantity + seatDelta)
+  var targetItemIndex: Int?
+  for (index, item) in items.enumerated() {
+    params["items[\(index)][id]"] = item.id.rawValue
+    if item.plan.id == plan {
+      targetItemIndex = index
     } else {
-      let newItemIndex = items.count
-      params[subscriptionItemIDParamKey(for: plan, itemIndex: newItemIndex)] = plan.rawValue
-      params["items[\(newItemIndex)][quantity]"] = String(seatDelta)
+      params["items[\(index)][deleted]"] = true
     }
+  }
 
-    return stripeRequest(
-      "subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer.default_source",
-      .post(params.compactMapValues { $0 })
-    )
+  if let targetItemIndex {
+    params["items[\(targetItemIndex)][quantity]"] = quantity
+  } else {
+    let newItemIndex = items.count
+    params["items[\(newItemIndex)][price]"] = plan.rawValue
+    params["items[\(newItemIndex)][quantity]"] = quantity
   }
 
   return stripeRequest(
     "subscriptions/" + currentSubscription.id.rawValue + "?expand[]=customer.default_source",
-    .post(
-      [
-        "cancel_at_period_end": "false",
-        "discounts[]": quantity > 1 ? [Any]() as Any : nil,
-        "items[0][id]": item.id.rawValue,
-        subscriptionItemIDParamKey(for: plan): plan.rawValue,
-        "items[0][quantity]": String(quantity),
-        "payment_behavior": "error_if_incomplete",
-        "proration_behavior": "always_invoice",
-      ]
-      .compactMapValues { $0 }
-    )
+    .post(params.compactMapValues { $0 })
   )
-}
-
-private func subscriptionItemIDParamKey(for planID: Plan.ID, itemIndex: Int = 0) -> String {
-  if planID.rawValue.hasPrefix("price_") {
-    return "items[\(itemIndex)][price]"
-  } else {
-    return "items[\(itemIndex)][plan]"
-  }
 }
 
 public let jsonDecoder: JSONDecoder = {

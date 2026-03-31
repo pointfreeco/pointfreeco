@@ -126,7 +126,7 @@ let addTeammateViaInviteMiddleware =
 
     let (stripeSubscription, inviter, email) = lower(conn.data)
     let newPricing = Pricing(
-      billing: stripeSubscription.plan.interval == .month ? .monthly : .yearly,
+      billing: .yearly,
       quantity: stripeSubscription.quantity + 1
     )
 
