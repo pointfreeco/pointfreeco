@@ -1419,7 +1419,10 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
         ),
         copyToPasteboard(
           text: siteRouter.url(for: .teamInviteCode(.landing(code: subscription.teamInviteCode))),
-          buttonColor: .white
+          buttonColor: .white,
+          confirmMessage: isLegacy || isProMonthly
+            ? "Are you sure you want to share this link? When a teammate joins your entire membership will be upgraded to the Pro yearly tier with new pricing of $\(proYearlyTeamAmount.rawValue / 100)/teammate per year (prorated based on your current billing cycle)."
+            : nil
         ),
         .form(
           attributes: [
@@ -1619,9 +1622,26 @@ private var logoutView: Node {
 
 private func copyToPasteboard(
   text: String,
-  buttonColor: Class.pf.components.Color
+  buttonColor: Class.pf.components.Color,
+  confirmMessage: String? = nil
 ) -> Node {
-  .div(
+  let copyScript: String
+  if let confirmMessage {
+    copyScript = """
+      if (confirm("\(confirmMessage)")) {
+        navigator.clipboard.writeText("\(text)");
+        this.value = "Copied!";
+        setTimeout(() => { this.value = "Copy"; }, 3000);
+      }
+      """
+  } else {
+    copyScript = """
+      navigator.clipboard.writeText("\(text)");
+      this.value = "Copied!";
+      setTimeout(() => { this.value = "Copy"; }, 3000);
+      """
+  }
+  return .div(
     attributes: [
       .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])])
     ],
@@ -1643,13 +1663,7 @@ private func copyToPasteboard(
           Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
         ]),
         .value("Copy"),
-        .onclick(
-          unsafe: """
-            navigator.clipboard.writeText("\(text)");
-            this.value = "Copied!";
-            setTimeout(() => { this.value = "Copy"; }, 3000);
-            """
-        ),
+        .onclick(unsafe: copyScript),
       ]
     )
   )
