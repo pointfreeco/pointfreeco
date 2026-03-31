@@ -333,6 +333,12 @@ extension Client {
           SELECT "created_at", "email", "id", "inviter_user_id"
           FROM "team_invites"
           WHERE "inviter_user_id" = \(bind: inviterId)
+          AND "created_at" >= (
+            SELECT MAX("created_at") 
+            FROM "subscriptions" 
+            WHERE "user_id" = \(bind: inviterId) 
+            AND "stripe_subscription_status" = 'active'
+          )
           """
         )
       },

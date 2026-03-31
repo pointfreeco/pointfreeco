@@ -434,6 +434,22 @@ private func referAFriend(
 private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Date) -> Node {
   guard let subscription = accountData.stripeSubscription else { return [] }
 
+  @Dependency(\.envVars) var envVars
+
+  let legacyCallout: Node =
+    subscription.plan.product != envVars.stripe.productId
+  ? .markdownBlock(
+      attributes: [
+        .class([Class.padding([.mobile: [.all: 2]]), Class.margin([.mobile: [.bottom: 2]])]),
+        .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
+      ],
+      """
+      You are currently on a **legacy membership** tier. _Any changes you make will automatically \
+      upgrade you to the **Pro membership** tier._
+      """
+    )
+    : []
+
   let content: Node =
     accountData.subscriberState.isEnterpriseSubscriber
     ? enterpriseSubscriptionOverview(accountData)
@@ -454,6 +470,7 @@ private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Da
       sizes: [.mobile: 12],
       .div(
         .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], ["Subscription overview"]),
+        legacyCallout,
         .gridColumn(sizes: [.mobile: 12], content)
       )
     )
@@ -1045,7 +1062,7 @@ private func mainAction(
             .method(.post),
             .onsubmit(
               unsafe: """
-                if (!confirm("Upgrade to yearly billing? \(pricingTransitionPrefix)\(formattedAmount ?? "")/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
+                if (!confirm("Upgrade to Pro yearly? \(pricingTransitionPrefix)\(formattedAmount ?? "")/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
                   return false
                 }
                 """
@@ -1063,7 +1080,7 @@ private func mainAction(
           ]),
           .button(
             attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
-            "Upgrade to yearly billing"
+            "Upgrade to Pro yearly"
           )
         )
       } else {
