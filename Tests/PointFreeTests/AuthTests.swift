@@ -330,6 +330,33 @@ class AuthTests: TestCase {
     await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
   }
 
+  @MainActor
+  func testAuth_LoginWithExternalRedirect() async throws {
+    let conn = connection(
+      from: request(
+        to: .auth(
+          .gitHubCallback(code: "deadbeef", redirect: "https://attacker.example.com/phishing")
+        )
+      )
+    )
+    await assertInlineSnapshot(of: await siteMiddleware(conn), as: .conn) {
+      """
+      GET http://localhost:8080/github-auth?code=deadbeef&redirect=https://attacker.example.com/phishing
+      Cookie: pf_session={}
+
+      302 Found
+      Location: /
+      Referrer-Policy: strict-origin-when-cross-origin
+      Set-Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
+      X-Content-Type-Options: nosniff
+      X-Download-Options: noopen
+      X-Frame-Options: SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies: none
+      X-XSS-Protection: 1; mode=block
+      """
+    }
+  }
+
   #if !os(Linux)
     @MainActor
     func testLogin_StripeFailure() async throws {
