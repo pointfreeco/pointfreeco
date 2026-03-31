@@ -1093,35 +1093,7 @@ private func mainAction(
         )
       }
     case .year:
-      guard !isTeam else { return [] }
-      let formattedAmount = formattedModernAmount(.monthly)
-      return .form(
-        attributes: [
-          .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
-          .method(.post),
-          .onsubmit(
-            unsafe: """
-              if (!confirm("Switch to monthly billing? \(pricingTransitionPrefix)\(formattedAmount ?? "")/month. You will be charged \(formattedAmount ?? "") on a monthly basis at the end of your current billing period.")) {
-                return false
-              }
-              """
-          ),
-        ],
-        .input(attributes: [
-          .name("billing"),
-          .type(.hidden),
-          .value("monthly"),
-        ]),
-        .input(attributes: [
-          .name("quantity"),
-          .type(.hidden),
-          .value(subscription.quantity),
-        ]),
-        .button(
-          attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
-          "Switch to monthly billing"
-        )
-      )
+      return []
     }
   }
 }
