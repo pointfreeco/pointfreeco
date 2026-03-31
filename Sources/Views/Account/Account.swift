@@ -1256,65 +1256,54 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
 
   @Dependency(\.siteRouter) var siteRouter
 
-  if stripeSubscription.plan.interval == .month {
-    let upgradeAction: Node
-    if data.paymentMethod != nil {
-      upgradeAction = .form(
-        attributes: [
-          .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
-          .method(.post),
-          .onsubmit(
-            unsafe: """
-              if (!confirm("Upgrade to yearly billing to invite teammates? You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
-                return false
-              }
-              """
-          ),
-        ],
-        .input(attributes: [
-          .name("billing"),
-          .type(.hidden),
-          .value("yearly"),
-        ]),
-        .input(attributes: [
-          .name("quantity"),
-          .type(.hidden),
-          .value(stripeSubscription.quantity),
-        ]),
-        .button(
-          attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
-          "Upgrade to yearly billing"
-        )
-      )
-    } else {
-      upgradeAction = .a(
-        attributes: [
-          .class([Class.pf.components.button(color: .purple, size: .small)]),
-          .href(siteRouter.path(for: .account(.paymentInfo()))),
-        ],
-        "Add payment info to upgrade"
-      )
-    }
-
-    return .gridRow(
-      attributes: [.class([subscriptionInfoRowClass])],
-      .gridColumn(
-        sizes: [.mobile: 3],
-        .div(.p("Add teammate"))
-      ),
-      .gridColumn(
-        sizes: [.mobile: 9],
-        .div(
-          attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-          .p("Inviting teammates requires yearly billing."),
-          .p(upgradeAction)
-        )
-      )
-    )
-  }
+  @Dependency(\.envVars) var envVars
 
   let amount = inviteTeammateAmount(for: stripeSubscription)
   let interval = stripeSubscription.plan.interval == .year ? "year" : "month"
+  let isLegacy = stripeSubscription.plan.product != envVars.stripe.productId
+  let proYearlyTeamAmount = Pricing(billing: .yearly, quantity: 2).modernPricing
+    ?? Pricing(billing: .yearly, quantity: 2).legacyPricing
+
+  let inviteDescription: Node =
+    isLegacy
+    ? .markdownBlock(
+      attributes: [
+        .class([
+          Class.pf.type.body.regular,
+          Class.padding([.mobile: [.all: 2]]),
+        ]),
+        .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
+      ],
+      """
+      You are on a **legacy \(interval)ly** membership tier. Adding a teammate will \
+      automatically upgrade you to the **Pro yearly** tier with new pricing of \
+      **$\(proYearlyTeamAmount.rawValue / 100)/teammate per year** prorated based on \
+      your current billing cycle.
+      """
+    )
+    : .markdownBlock(
+      attributes: [
+        .class([
+          Class.pf.type.body.regular
+        ])
+      ],
+      """
+      Add a teammate for a discounted rate of **$\(amount.rawValue / 100)/\
+      \(interval)**. Your first invoice will be prorated based on your current billing cycle.
+      """
+    )
+
+  let legacyConfirmAttributes: [Attribute<Tag.Form>] =
+    isLegacy
+    ? [
+      .onsubmit(
+        unsafe: """
+          if (!confirm("Adding a teammate will upgrade your subscription to Pro yearly billing. You will be charged immediately with a prorated refund for the time remaining in your billing period. Continue?")) {
+            return false
+          }
+          """)
+    ]
+    : []
 
   let inviteViaEmail: Node
   let invitesRemaining = stripeSubscription.quantity - data.teamInvites.count - data.teammates.count
@@ -1327,23 +1316,13 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
       ),
       .gridColumn(
         sizes: [.mobile: 9],
-        .markdownBlock(
-          attributes: [
-            .class([
-              Class.pf.type.body.regular
-            ])
-          ],
-          """
-          Add a teammate for a discounted rate of **$\(amount.rawValue / 100)/\
-          \(interval)**. Your first invoice will be prorated based on your current billing cycle.
-          """
-        ),
+        inviteDescription,
         .form(
           attributes: [
             .action(siteRouter.path(for: .invite(.addTeammate(nil)))),
             .method(.post),
             .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
-          ],
+          ] + legacyConfirmAttributes,
           .input(
             attributes: [
               .class([smallInputClass, Class.align.middle, Class.size.width100pct]),

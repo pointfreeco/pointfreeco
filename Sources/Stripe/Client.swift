@@ -494,7 +494,7 @@ func updateSubscription(
     let seatDelta = quantity - currentQuantity
     var params: [String: Any?] = [
       "cancel_at_period_end": "false",
-      "coupon": quantity > 1 ? "" : nil,
+      "discounts[]": quantity > 1 ? [Any]() : nil,
       "payment_behavior": "error_if_incomplete",
       "proration_behavior": "always_invoice",
     ]
@@ -527,7 +527,7 @@ func updateSubscription(
     .post(
       [
         "cancel_at_period_end": "false",
-        "coupon": quantity > 1 ? "" : nil,
+        "discounts[]": quantity > 1 ? [Any]() as Any : nil,
         "items[0][id]": item.id.rawValue,
         subscriptionItemIDParamKey(for: plan): plan.rawValue,
         "items[0][quantity]": String(quantity),
