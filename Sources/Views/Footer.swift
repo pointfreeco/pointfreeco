@@ -63,7 +63,6 @@ private struct TaglineColumn: HTML {
 }
 
 private struct ContentColumn: HTML {
-  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {

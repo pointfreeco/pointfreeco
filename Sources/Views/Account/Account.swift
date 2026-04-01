@@ -719,7 +719,7 @@ private func planDisplayName(for plan: Stripe.Plan) -> String {
   if pricingPlan(for: plan) == .max {
     return "Max"
   }
-  if plan.description == plan.id.rawValue, plan.id.rawValue.contains("pointfree_pro") {
+  if plan.description == plan.id.rawValue, plan.id.rawValue.contains("pointfree-pro") {
     return "Pro"
   }
   return plan.description
