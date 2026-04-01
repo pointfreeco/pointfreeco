@@ -1,5 +1,6 @@
 {
   "APP_SECRET": "deadbeefdeadbeefdeadbeefdeadbeef",
+  "SESSION_SECRET": "beefdeadbeefdeadbeefdeadbeefdead",
   "BASE_URL": "http://localhost:8080",
   "BASIC_AUTH_PASSWORD": "world",
   "BASIC_AUTH_USERNAME": "hello",

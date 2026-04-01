@@ -30,6 +30,7 @@ public struct EnvVars: Codable {
   public var postgres: Postgres
   public var regionalDiscountCouponId: Coupon.ID
   public var rssUserAgentWatchlist: [String]
+  public var sessionSecret: String
   public var slackInviteURL: String
   public var stripe: Stripe
   public var yearlyGiftCoupon: Coupon.ID?
@@ -48,6 +49,7 @@ public struct EnvVars: Codable {
     postgres: Postgres = Postgres(),
     regionalDiscountCouponId: Coupon.ID = "regional-discount",
     rssUserAgentWatchlist: [String] = [],
+    sessionSecret: String = "deadbeefdeadbeefdeadbeefdeadbeef",
     slackInviteURL: String = "http://slack.com",
     stripe: Stripe = Stripe(),
     yearlyGiftCoupon: Coupon.ID? = nil,
@@ -65,6 +67,7 @@ public struct EnvVars: Codable {
     self.postgres = postgres
     self.regionalDiscountCouponId = regionalDiscountCouponId
     self.rssUserAgentWatchlist = rssUserAgentWatchlist
+    self.sessionSecret = sessionSecret
     self.slackInviteURL = slackInviteURL
     self.stripe = stripe
     self.yearlyGiftCoupon = yearlyGiftCoupon
@@ -79,6 +82,7 @@ public struct EnvVars: Codable {
     case port = "PORT"
     case rssUserAgentWatchlist = "RSS_USER_AGENT_WATCHLIST"
     case regionalDiscountCouponId = "REGIONAL_DISCOUNT_COUPON_ID"
+    case sessionSecret = "SESSION_SECRET"
     case slackInviteURL = "PF_COMMUNITY_SLACK_INVITE_URL"
     case yearlyGiftCoupon = "YEARLY_GIFT_COUPON"
     case youtubeChannelID = "YOUTUBE_CHANNEL_ID"
@@ -235,6 +239,8 @@ extension EnvVars {
     self.rssUserAgentWatchlist = (try container.decode(String.self, forKey: .rssUserAgentWatchlist))
       .split(separator: ",")
       .map(String.init)
+    self.sessionSecret = try container.decodeIfPresent(String.self, forKey: .sessionSecret)
+      ?? "deadbeefdeadbeefdeadbeefdeadbeef"
     self.slackInviteURL = try container.decode(String.self, forKey: .slackInviteURL)
     self.stripe = try .init(from: decoder)
     self.yearlyGiftCoupon = try container.decodeIfPresent(Coupon.ID.self, forKey: .yearlyGiftCoupon)
@@ -257,6 +263,7 @@ extension EnvVars {
       String(self.rssUserAgentWatchlist.joined(separator: ",")), forKey: .rssUserAgentWatchlist
     )
     try container.encode(self.regionalDiscountCouponId, forKey: .regionalDiscountCouponId)
+    try container.encode(self.sessionSecret, forKey: .sessionSecret)
     try container.encode(self.slackInviteURL, forKey: .slackInviteURL)
     try self.stripe.encode(to: encoder)
     try container.encodeIfPresent(self.yearlyGiftCoupon, forKey: .yearlyGiftCoupon)

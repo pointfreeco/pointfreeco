@@ -27,7 +27,7 @@ extension DependencyValues {
   }
 }
 
-private let cookieExpirationDuration: TimeInterval = 315_360_000  // 60 * 60 * 24 * 365 * 10
+private let cookieExpirationDuration: TimeInterval = 60 * 60 * 24 * 7
 
 extension Conn where Step == HeadersOpen {
   public func writeSessionCookie(_ update: @escaping (inout Session) -> Void) -> Self {
@@ -71,7 +71,7 @@ public func flash<A>(_ priority: Flash.Priority, _ message: String) -> Middlewar
 
 extension URLRequest {
   var session: Session {
-    @Dependency(\.envVars.appSecret) var appSecret
+    @Dependency(\.envVars.sessionSecret) var sessionSecret
     @Dependency(\.cookieTransform) var cookieTransform
 
     return self.cookies[pointFreeUserSessionCookieName]
@@ -81,7 +81,7 @@ extension URLRequest {
           return try? JSONDecoder().decode(Session.self, from: Data(value.utf8))
         case .encrypted:
           return Response.Header
-            .verifiedValue(signedCookieValue: value, secret: appSecret.rawValue)
+            .verifiedValue(signedCookieValue: value, secret: sessionSecret)
         }
       }
       ?? .empty
@@ -210,7 +210,7 @@ private let pointFreeUserSessionCookieName = "pf_session"
 private func setCookie<A: Encodable>(
   key: String, value: A, options: Set<Response.Header.CookieOption> = []
 ) -> Response.Header? {
-  @Dependency(\.envVars.appSecret) var appSecret
+  @Dependency(\.envVars.sessionSecret) var sessionSecret
   @Dependency(\.cookieTransform) var cookieTransform
 
   switch cookieTransform {
@@ -225,7 +225,7 @@ private func setCookie<A: Encodable>(
         key: key,
         value: value,
         options: options,
-        secret: appSecret.rawValue,
+        secret: sessionSecret,
         encrypt: true
       )
   }
