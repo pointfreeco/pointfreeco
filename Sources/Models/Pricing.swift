@@ -6,12 +6,13 @@ public struct Pricing: Equatable {
   public var plan: Plan
   public var quantity: Int
 
-  public init(plan: Plan = .pro, billing: Billing, quantity: Int) {
+  public init(plan: Plan, billing: Billing, quantity: Int) {
     self.billing = billing
     self.plan = plan
     self.quantity = quantity
   }
 
+  // CLAUDE-DO: audit this usage
   public static let `default` = Pricing(plan: .pro, billing: .monthly, quantity: 1)
 
   public static let validTeamQuantities = 2..<100
