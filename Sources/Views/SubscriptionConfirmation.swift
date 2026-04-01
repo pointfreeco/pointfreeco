@@ -1372,7 +1372,7 @@ private func checkoutJS(
                 form.submit()
               }
             } else {
-              form.submit()
+              window.location.href = '/account'
             }
             return
           }

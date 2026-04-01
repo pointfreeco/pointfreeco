@@ -35,7 +35,7 @@ func authMiddleware(
   case .gitHubCallback(let code, let redirect):
     return await gitHubCallbackResponse(code: code, redirect: redirect, conn)
 
-  case .authLanding(kind: let kind, redirect: let redirect):
+  case .authLanding(let kind, let redirect):
     return await loginSignUpMiddleware(redirect: redirect, kind: kind, conn)
 
   case .logout:
@@ -98,7 +98,7 @@ private func updateGitHub(
         reportIssue(error, "Unable to send email: \"Your GitHub account has been updated\"")
       }
     }
-    return conn.redirect(to: redirect ?? siteRouter.path(for: .home)) {
+    return conn.redirect(to: sanitizeRedirect(redirect) ?? siteRouter.path(for: .home)) {
       $0
         .writeSessionCookie {
           $0.flash = Flash(
@@ -315,7 +315,7 @@ private func gitHubAuthTokenMiddleware(
     await notifyError("GitHub Auth: Refresh stripe failed") {
       try await refreshStripeSubscription(for: user)
     }
-    return conn.redirect(to: redirect ?? siteRouter.path(for: .home)) {
+    return conn.redirect(to: sanitizeRedirect(redirect) ?? siteRouter.path(for: .home)) {
       $0.writeSessionCookie { $0.user = .standard(user.id) }
     }
   } catch is GitHubUser.AlreadyRegistered {
@@ -443,4 +443,24 @@ struct SimpleEmailLayout<Content: HTML>: HTML {
     .inlineStyle("clear", "both")
     .linkStyle(LinkStyle(color: .purple, underline: true))
   }
+}
+
+private func sanitizeRedirect(_ redirect: String?) -> String? {
+  @Dependency(\.envVars.baseUrl) var baseUrl
+  guard
+    let redirect,
+    let url = URL(string: redirect)
+  else { return nil }
+  guard
+    let host = url.host,
+    host == baseUrl.host
+  else {
+    guard
+      redirect.hasPrefix("/"),
+      !redirect.hasPrefix("//")
+    else { return nil }
+    return redirect
+  }
+
+  return redirect
 }
