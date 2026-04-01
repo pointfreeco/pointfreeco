@@ -307,14 +307,6 @@ extension Price {
     recurring: .init(interval: .year),
     unitAmount: nil
   )
-
-  public static let pointFreeProLegacy = Price(
-    id: "price_pointfree_pro_legacy",
-    lookupKey: "pointfree-pro-legacy",
-    product: "prod_test",
-    recurring: .init(interval: .year),
-    unitAmount: 192_00
-  )
 }
 
 extension Subscription {

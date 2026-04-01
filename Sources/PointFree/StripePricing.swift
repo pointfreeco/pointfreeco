@@ -17,19 +17,19 @@ func resolvePlanID(
   @Dependency(\.stripe) var stripe
 
   if let currentSubscription, currentSubscription.plan.interval == pricing.interval {
-    guard
-      pricing.isTeam,
-      pricing.billing == .yearly,
-      pricing.quantity > currentSubscription.totalQuantity
-    else {
-      return currentSubscription.plan.id
+    let isLegacy = !isModernPricingPlan(currentSubscription.plan, envVars: envVars)
+    let quantityChanged = pricing.quantity != currentSubscription.totalQuantity
+    if !(isLegacy && quantityChanged) {
+      guard
+        pricing.isTeam,
+        pricing.billing == .yearly,
+        pricing.quantity > currentSubscription.totalQuantity
+      else {
+        return currentSubscription.plan.id
+      }
     }
 
-    let lookupKey = try modernLookupKey(
-      for: pricing,
-      currentSubscription: currentSubscription,
-      envVars: envVars
-    )
+    let lookupKey = try modernLookupKey(for: pricing)
     let prices =
       try await stripe
       .fetchPricesForProduct(envVars.stripe.productId, [lookupKey])
