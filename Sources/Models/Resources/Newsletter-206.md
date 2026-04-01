@@ -440,9 +440,7 @@ ComposableArchitecture 2.0 is the culmination of those ideas applied to a real f
 layer, starting with the `Store` through to the `Feature`, `Update` and all the way to `addTask`,
 has a clear isolation boundary, and the result is a system that is both safe and ergonomic.
 
-<!--
 ## Migration path
-TODO: Audit
 
 We've put a lot of thought into making the transition to 2.0 as smooth as possible. The package
 ships with three modules:
@@ -465,8 +463,7 @@ enable the `ComposableArchitecture2Deprecations` SwiftPM trait in version 1.25 t
 soft deprecations to hard warnings, so you can work through the migration at your own pace with
 compiler guidance.
 
--->
-
 ---
 
-Join the [beta](/beta-previews) to try it out and help shape the future of the ComposableArchitecture.
+Join the [beta preview](/beta-previews) to try it out and help shape the future of the
+ComposableArchitecture.

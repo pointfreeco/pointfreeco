@@ -230,4 +230,4 @@ in a related model you'll get a clear failure showing exactly what was missed.
 ---
 
 This is only a small preview of what the library is capable of. Join the
-[beta](/beta-previews) to try it out and help shape the API before it goes public.
+[beta preview](/beta-previews) to try it out and help shape the API before it goes public.
