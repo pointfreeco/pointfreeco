@@ -101,7 +101,7 @@ private func handleFailedPayment(
 
 func removeBetaAccess(for subscription: Models.Subscription) async {
   @Dependency(\.database) var database
-  @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var gitHubAccessToken
+  @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var betaPreviewsAccessToken
   @Dependency(\.gitHub) var gitHub
 
   await withErrorReporting("Remove beta access") {
@@ -112,7 +112,7 @@ func removeBetaAccess(for subscription: Models.Subscription) async {
     }
     for user in users {
       guard
-        let gitHubUser = try? await gitHub.fetchUserByUserID(user.gitHubUserId, gitHubAccessToken)
+        let gitHubUser = try? await gitHub.fetchUserByUserID(user.gitHubUserId, betaPreviewsAccessToken)
       else { continue }
       for beta in Beta.all {
         await withErrorReporting("Could not remove '\(user.gitHubUserId)' from '\(beta.repo)'") {
@@ -120,7 +120,7 @@ func removeBetaAccess(for subscription: Models.Subscription) async {
             owner: "pointfreeco",
             repo: beta.repo,
             username: gitHubUser.login,
-            token: gitHubAccessToken
+            token: betaPreviewsAccessToken
           )
         }
       }

@@ -11,7 +11,7 @@ extension BlogPost {
     coverImage:
       "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/tca-2-beta/public",
     id: 206,
-    publishedAt: .distantFuture,
+    publishedAt: yearMonthDayFormatter.date(from: "2026-04-01")!,
     title: "Beta Preview: ComposableArchitecture 2.0"
   )
 }

@@ -593,23 +593,18 @@ struct SiteRouter: ParserPrinter {
       }
 
       Route(.case(SiteRoute.discounts)) {
-        Parse(
-          .convert(
-            apply: { ($0, $1.0, $1.1) },
-            unapply: { ($0, ($1, $2)) }
-          )
-        ) {
-          Path {
-            "discounts"
-            Parse(.string.representing(Stripe.Coupon.ID.self))
+        Path {
+          "discounts"
+          Parse(.string.representing(Stripe.Coupon.ID.self))
+        }
+        Query {
+          Optionally {
+            Field("billing") { Pricing.Billing.parser() }
           }
-          Query {
-            Optionally {
-              Field("billing") { Pricing.Billing.parser() }
-            }
-            Optionally {
-              Field("plan") { Pricing.Plan.parser() }
-            }
+        }
+        Query {
+          Optionally {
+            Field("plan") { Pricing.Plan.parser() }
           }
         }
       }
@@ -755,17 +750,8 @@ struct SubscribeDataParser: ParserPrinter {
               SubscribeData.CodingKeys.paymentMethodID.rawValue,
               .string.representing(PaymentMethod.ID.self)
             )
-            Parse(
-              .convert(
-                apply: { Pricing(plan: $0 ?? .pro, billing: $1, quantity: $2) },
-                unapply: {
-                  ($0.plan == .pro ? nil : $0.plan, $0.billing, $0.quantity)
-                }
-              )
-            ) {
-              Optionally {
-                Field("pricing[plan]") { Pricing.Plan.parser() }
-              }
+            Parse(.memberwise(Pricing.init(plan:billing:quantity:))) {
+              Field("pricing[plan]") { Pricing.Plan.parser() }
               Field("pricing[billing]") { Pricing.Billing.parser() }
               Field("pricing[quantity]") { Digits() }
             }

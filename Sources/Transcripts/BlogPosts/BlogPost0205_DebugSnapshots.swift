@@ -11,7 +11,7 @@ extension BlogPost {
     coverImage:
       "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/debug-snapshots-beta/public",
     id: 205,
-    publishedAt: .distantFuture,
+    publishedAt: yearMonthDayFormatter.date(from: "2026-04-01")!,
     title: "Beta Preview: DebugSnapshots"
   )
 }

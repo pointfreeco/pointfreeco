@@ -77,36 +77,15 @@ func isModernPricingPlan(_ plan: Stripe.Plan, envVars: EnvVars) -> Bool {
   plan.product == envVars.stripe.productId
 }
 
-private func modernLookupKey(
-  for pricing: Pricing,
-  currentSubscription: Stripe.Subscription,
-  envVars: EnvVars
-) throws -> Stripe.Price.LookupKey {
-  guard pricing.isTeam, pricing.billing == .yearly else {
-    return try modernLookupKey(for: pricing)
-  }
-
-  guard pricing.plan == .pro else {
-    return try modernLookupKey(for: pricing)
-  }
-
-  let hasLegacyTeamSeats = currentSubscription.items.data.contains {
-    $0.plan.interval == .year && $0.plan.product != envVars.stripe.productId
-  }
-  return hasLegacyTeamSeats ? "pointfree-pro-legacy" : "pointfree-pro"
-}
-
 private func modernLookupKey(for pricing: Pricing) throws -> Stripe.Price.LookupKey {
   switch (pricing.plan, pricing.lane, pricing.billing) {
-  case (.max, _, .monthly):
+  case (.max, _, .monthly), (.pro, .team, .monthly):
     throw PricingResolutionError.missingModernPrice(pricing)
   case (.max, _, .yearly):
     "pointfree-max"
   case (.pro, .personal, .monthly):
     "pointfree-monthly"
-  case (.pro, .personal, .yearly), (.pro, .team, .yearly):
+  case (.pro, _, .yearly):
     "pointfree-pro"
-  case (.pro, .team, .monthly):
-    throw PricingResolutionError.missingModernPrice(pricing)
   }
 }

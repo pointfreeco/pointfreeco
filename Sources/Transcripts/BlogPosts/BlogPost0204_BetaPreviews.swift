@@ -11,7 +11,7 @@ extension BlogPost {
     coverImage:
       "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/cf5ce39b-dba6-42ad-e63b-8b43a838d800/public",
     id: 204,
-    publishedAt: .distantFuture,// yearMonthDayFormatter.date(from: "2026-03-27")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2026-04-01")!,
     title: "Introducing: Point-Free Beta Previews"
   )
 }

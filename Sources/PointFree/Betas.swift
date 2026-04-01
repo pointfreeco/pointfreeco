@@ -24,7 +24,7 @@ private func betasLandingMiddleware(
   _ conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.currentUser) var currentUser
-  @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var gitHubAccessToken
+  @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var betaPreviewsAccessToken
   @Dependency(\.gitHub) var gitHub
   @Dependency(\.subscriberState) var subscriberState
 
@@ -40,7 +40,7 @@ private func betasLandingMiddleware(
                 owner: "pointfreeco",
                 repo: beta.repo,
                 username: gitHubUser.login,
-                token: gitHubAccessToken
+                token: betaPreviewsAccessToken
               )
             ) ?? false
             return (beta.repo, isCollaborator)
@@ -73,7 +73,7 @@ private func betasJoinMiddleware(
   conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.currentUser) var currentUser
-  @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var gitHubAccessToken
+  @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var betaPreviewsAccessToken
   @Dependency(\.gitHub) var gitHub
   @Dependency(\.subscriberState) var subscriberState
 
@@ -97,7 +97,7 @@ private func betasJoinMiddleware(
       repo: repo,
       username: gitHubUser.login,
       permission: .pull,
-      token: gitHubAccessToken
+      token: betaPreviewsAccessToken
     )
     return conn.redirect(to: .betas()) {
       $0
