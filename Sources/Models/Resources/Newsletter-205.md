@@ -1,4 +1,4 @@
-This is the first of two [Beta Previews](/betas) we are launching today as part of our new
+This is the first of two [Beta Previews](/beta-previews) we are launching today as part of our new
 [Point-Free Max](/pricing) membership tier. Read the
 [announcement post](/blog/posts/204-introducing-point-free-beta-previews) for more on what Beta
 Previews are and how to get access.
@@ -156,6 +156,7 @@ expect(model) {
 }
 ```
 
+<!--
 ## SwiftData
 
 DebugSnapshots also works seamlessly with SwiftData. If you aren't ready to adopt
@@ -224,8 +225,9 @@ Now you can exhaustively test how your SwiftData models change, including across
 
 The diff output even traces through nested relationships, so if you forget to assert on a change
 in a related model you'll get a clear failure showing exactly what was missed.
+-->
 
 ---
 
 This is only a small preview of what the library is capable of. Join the
-[beta](/betas) to try it out and help shape the API before it goes public.
+[beta](/beta-previews) to try it out and help shape the API before it goes public.

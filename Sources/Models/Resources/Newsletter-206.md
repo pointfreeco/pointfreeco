@@ -1,4 +1,4 @@
-This is the second of two [Beta Previews](/betas) we are launching today as part of our new
+This is the second of two [Beta Previews](/beta-previews) we are launching today as part of our new
 [Point-Free Max](/pricing) membership tier. Read the
 [announcement post](/blog/posts/204-introducing-point-free-beta-previews) for more on what Beta
 Previews are and how to get access.
@@ -469,4 +469,4 @@ compiler guidance.
 
 ---
 
-Join the [beta](/betas) to try it out and help shape the future of the ComposableArchitecture.
+Join the [beta](/beta-previews) to try it out and help shape the future of the ComposableArchitecture.

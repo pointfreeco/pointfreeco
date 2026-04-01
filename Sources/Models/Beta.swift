@@ -25,7 +25,7 @@ public struct Beta {
       imageURL:
         "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/cf5ce39b-dba6-42ad-e63b-8b43a838d800/public",
       repo: "TCA26",
-      skillName: "pfw-composable-architecture"
+      skillName: "composable-architecture-2"
     ),
     Beta(
       title: "DebugSnapshots",
@@ -38,7 +38,7 @@ public struct Beta {
       imageURL:
         "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/2b4c6522-30c7-4036-f9ed-c938f3935200/public",
       repo: "swift-debug-snapshots",
-      skillName: "pfw-debug-snapshots"
+      skillName: "debug-snapshots"
     ),
   ]
 }

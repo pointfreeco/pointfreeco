@@ -487,7 +487,7 @@ struct SiteRouter: ParserPrinter {
       }
 
       Route(.case(SiteRoute.betas)) {
-        Path { "betas" }
+        Path { "beta-previews" }
         OneOf {
           Route(.case(SiteRoute.Betas.landing))
           Route(.case(SiteRoute.Betas.join)) {

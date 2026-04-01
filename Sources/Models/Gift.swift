@@ -28,7 +28,7 @@ public struct Gift: Decodable, Identifiable {
     id: ID,
     message: String,
     monthsFree: Int,
-    plan: Pricing.Plan = .pro,
+    plan: Pricing.Plan,
     stripePaymentIntentId: PaymentIntent.ID,
     stripePaymentIntentStatus: PaymentIntent.Status,
     stripeSubscriptionId: Stripe.Subscription.ID?,
