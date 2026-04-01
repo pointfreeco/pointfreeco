@@ -187,9 +187,9 @@ private func subscribe(
       }
 
       if conn.acceptJSON {
-        return try conn.writeStatus(.ok).respond(
-          json: ["success": true]
-        )
+        return try conn.writeStatus(.ok)
+          .flash(.notice, "You are now a member of Point-Free!")
+          .respond(json: ["success": true])
       } else {
         return conn.redirect(to: .account()) {
           $0.flash(.notice, "You are now a member of Point-Free!")
