@@ -1329,7 +1329,6 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
   let interval = stripeSubscription.plan.interval == .year ? "year" : "month"
   let isLegacy = stripeSubscription.plan.product != envVars.stripe.productId
   let isProMonthly = !isLegacy && stripeSubscription.plan.interval == .month
-  // CLAUDE-DO: extract pricing information into static constants that can be used more easily instead of jumping through hoops like the below where we construct a Pricing just to get the Cents out of it
   let proYearlyTeamAmount = Pricing(plan: subscription.plan, billing: .yearly, quantity: 2).modernPricing
     ?? Pricing(plan: subscription.plan, billing: .yearly, quantity: 2).legacyPricing
 

@@ -12,7 +12,6 @@ public struct Pricing: Equatable {
     self.quantity = quantity
   }
 
-  // CLAUDE-DO: audit this usage
   public static let `default` = Pricing(plan: .pro, billing: .monthly, quantity: 1)
 
   public static let validTeamQuantities = 2..<100

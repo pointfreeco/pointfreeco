@@ -110,7 +110,6 @@ func joinMiddleware(
   }
 }
 
-// CLAUDE-DO: rename 'add' to 'addToTeamViaInviteCode'
 private func add<A>(
   currentUser: User,
   code: Models.Subscription.TeamInviteCode,
