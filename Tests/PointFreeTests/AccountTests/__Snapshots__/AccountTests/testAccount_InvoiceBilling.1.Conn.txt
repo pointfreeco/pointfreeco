@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 80516
+Content-Length: 82425
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2389,6 +2389,38 @@ setTimeout(() => { this.value = "Copy"; }, 3000);">
                                         m-pr1
                                         end-d">
                               <p>
+                                <form action="/account/subscription/change"
+                                      class="block"
+                                      method="post"
+                                      onsubmit="if (!confirm("Upgrade to Max? This change moves you to our current pricing of $299.00 per teammate/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
+  return false
+}">
+                                  <input name="billing"
+                                         type="hidden"
+                                         value="yearly">
+                                  <input name="plan"
+                                         type="hidden"
+                                         value="max">
+                                  <input name="quantity"
+                                         type="hidden"
+                                         value="4">
+                                  <button class="medium
+                                                 cursor-pointer
+                                                 nowrap
+                                                 btn-normal
+                                                 border-none
+                                                 text-decoration-none
+                                                 pf-link-white
+                                                 fg-white
+                                                 bg-purple
+                                                 h6
+                                                 m-pl1
+                                                 m-pr1
+                                                 m-pt1
+                                                 m-pb1">
+                                    Upgrade to Max
+                                  </button>
+                                </form>
                               </p>
                             </div>
                           </div>

@@ -124,6 +124,9 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
   case .about:
     return aboutResponse(conn)
 
+  case .betas(let route):
+    return await betasMiddleware(route: route, conn: conn)
+
   case .theWay:
     return pointFreeWayMiddleware(conn)
 
@@ -175,10 +178,11 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
       conn
     )
 
-  case .discounts(let couponId, let billing):
+  case .discounts(let couponId, let billing, let plan):
     let subscribeData = SubscribeConfirmationData(
       billing: billing ?? .yearly,
       isOwnerTakingSeat: true,
+      plan: plan ?? .pro,
       referralCode: nil,
       teammates: [],
       useRegionalDiscount: false
@@ -310,13 +314,15 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
       lane,
     let billing,
     let isOwnerTakingSeat,
+    let plan,
     let teammates,
     let referralCode,
     let useRegionalDiscount
   ):
     let teammates = lane == .team ? (teammates ?? [""]) : []
+    let plan = plan ?? .pro
     let billing =
-      if lane == .team, billing == .some(.monthly) {
+      if plan == .max || (lane == .team && billing == .some(.monthly)) {
         Pricing.Billing.yearly
       } else {
         billing ?? .yearly
@@ -324,6 +330,7 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
     let subscribeData = SubscribeConfirmationData(
       billing: billing,
       isOwnerTakingSeat: isOwnerTakingSeat ?? true,
+      plan: plan,
       referralCode: referralCode,
       teammates: teammates,
       useRegionalDiscount: useRegionalDiscount ?? false

@@ -31,7 +31,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       accessToken: .mock, gitHubUser: .mock, email: "hello@pointfree.co", now: { .mock }
     )
 
-    _ = try await self.database.createSubscription(.teamYearly, inviterUser.id, true, nil)
+    _ = try await self.database.createSubscription(.teamYearly, inviterUser.id, true, nil, .pro)
 
     await withDependencies {
       $0.stripe.fetchSubscription = { _ in .teamYearly }
@@ -52,7 +52,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
 
     let sub = update(Stripe.Subscription.teamYearly) { $0.quantity = 2 }
-    _ = try await self.database.createSubscription(sub, inviterUser.id, true, nil)
+    _ = try await self.database.createSubscription(sub, inviterUser.id, true, nil, .pro)
 
     try await withDependencies {
       $0.stripe.fetchSubscription = { _ in sub }
@@ -149,7 +149,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
 
     _ = try await self.database
-      .createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
+      .createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil, .pro)
 
     let teamInvite = try await self.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
@@ -212,7 +212,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
 
     _ = try await self.database
-      .createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil)
+      .createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil, .pro)
 
     let teamInvite = try await self.database
       .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
@@ -247,7 +247,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
     )
 
     _ = try await self.database.createSubscription(
-      Stripe.Subscription.canceling, inviterUser.id, true, nil
+      Stripe.Subscription.canceling, inviterUser.id, true, nil, .pro
     )
 
     let teamInvite = try await self.database
@@ -282,7 +282,7 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
       let teammateEmailAddress: EmailAddress = "blob.jr@pointfree.co"
 
       _ = try await self.database.createSubscription(
-        stripeSubscription, currentUser.id, true, nil)
+        stripeSubscription, currentUser.id, true, nil, .pro)
 
       var session = Session.loggedIn
       session.user = .standard(currentUser.id)

@@ -3,6 +3,7 @@ import Dependencies
 import Either
 import Foundation
 import FunctionalCss
+import GitHub
 import Html
 import HtmlCssSupport
 import HttpPipeline
@@ -14,6 +15,7 @@ import PointFreeRouter
 import Prelude
 import Stripe
 import Styleguide
+import Views
 
 func stripeSubscriptionsWebhookMiddleware(
   _ conn: Conn<StatusLineOpen, Void>,
@@ -51,6 +53,14 @@ private func handleFailedPayment(
 
     let subscription = try await database.updateStripeSubscription(stripeSubscription)
 
+    if subscription.stripeSubscriptionStatus == .canceled
+      || subscription.stripeSubscriptionStatus == .pastDue
+    {
+      await fireAndForget {
+        await removeBetaAccess(for: subscription)
+      }
+    }
+
     if subscription.stripeSubscriptionStatus == .pastDue {
       let user = try await database.fetchUser(id: subscription.userId)
 
@@ -86,6 +96,35 @@ private func handleFailedPayment(
       )
     }
     return conn.writeStatus(.badRequest).empty()
+  }
+}
+
+func removeBetaAccess(for subscription: Models.Subscription) async {
+  @Dependency(\.database) var database
+  @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var betaPreviewsAccessToken
+  @Dependency(\.gitHub) var gitHub
+
+  await withErrorReporting("Remove beta access") {
+    let owner = try await database.fetchUser(id: subscription.userId)
+    var users = [owner]
+    if let teammates = try? await database.fetchSubscriptionTeammatesByOwnerId(owner.id) {
+      users.append(contentsOf: teammates)
+    }
+    for user in users {
+      guard
+        let gitHubUser = try? await gitHub.fetchUserByUserID(user.gitHubUserId, betaPreviewsAccessToken)
+      else { continue }
+      for beta in Beta.all {
+        await withErrorReporting("Could not remove '\(user.gitHubUserId)' from '\(beta.repo)'") {
+          try await gitHub.removeRepoCollaborator(
+            owner: "pointfreeco",
+            repo: beta.repo,
+            username: gitHubUser.login,
+            token: betaPreviewsAccessToken
+          )
+        }
+      }
+    }
   }
 }
 

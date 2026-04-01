@@ -2,7 +2,7 @@ GET http://localhost:8080/account
 Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
 
 200 OK
-Content-Length: 71150
+Content-Length: 73556
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2272,34 +2272,72 @@ access to Point-Free!</p>
                                         m-pr1
                                         end-d">
                               <p>
-                                <form action="/account/subscription/change"
-                                      method="post"
-                                      onsubmit="if (!confirm("Upgrade to yearly billing? This change moves you to our current pricing of $216.00/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
+                                <div class="end-d"
+                                     style="display:flex;
+                                            flex-direction:column;
+                                            align-items:flex-end">
+                                  <form action="/account/subscription/change"
+                                        class="block"
+                                        method="post"
+                                        onsubmit="if (!confirm("Upgrade to yearly billing? This change moves you to our current pricing of $216.00/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
   return false
 }">
-                                  <input name="billing"
-                                         type="hidden"
-                                         value="yearly">
-                                  <input name="quantity"
-                                         type="hidden"
-                                         value="1">
-                                  <button class="medium
-                                                 cursor-pointer
-                                                 nowrap
-                                                 btn-normal
-                                                 border-none
-                                                 text-decoration-none
-                                                 pf-link-white
-                                                 fg-white
-                                                 bg-purple
-                                                 h6
-                                                 m-pl1
-                                                 m-pr1
-                                                 m-pt1
-                                                 m-pb1">
-                                    Upgrade to yearly billing
-                                  </button>
-                                </form>
+                                    <input name="billing"
+                                           type="hidden"
+                                           value="yearly">
+                                    <input name="quantity"
+                                           type="hidden"
+                                           value="1">
+                                    <button class="medium
+                                                   cursor-pointer
+                                                   nowrap
+                                                   btn-normal
+                                                   border-none
+                                                   text-decoration-none
+                                                   pf-link-white
+                                                   fg-white
+                                                   bg-purple
+                                                   h6
+                                                   m-pl1
+                                                   m-pr1
+                                                   m-pt1
+                                                   m-pb1">
+                                      Upgrade to yearly billing
+                                    </button>
+                                  </form>
+                                  <form action="/account/subscription/change"
+                                        class="block"
+                                        method="post"
+                                        onsubmit="if (!confirm("Upgrade to Max? This change moves you to our current pricing of $349.00/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
+  return false
+}">
+                                    <input name="billing"
+                                           type="hidden"
+                                           value="yearly">
+                                    <input name="plan"
+                                           type="hidden"
+                                           value="max">
+                                    <input name="quantity"
+                                           type="hidden"
+                                           value="1">
+                                    <button class="medium
+                                                   cursor-pointer
+                                                   nowrap
+                                                   btn-normal
+                                                   border-none
+                                                   text-decoration-none
+                                                   pf-link-white
+                                                   fg-white
+                                                   bg-purple
+                                                   h6
+                                                   m-pl1
+                                                   m-pr1
+                                                   m-pt1
+                                                   m-pb1">
+                                      Upgrade to Max
+                                    </button>
+                                  </form>
+                                </div>
                               </p>
                             </div>
                           </div>
@@ -2487,7 +2525,7 @@ access to Point-Free!</p>
                         <p>
                           <form action="/account/subscription/change"
                                 method="post"
-                                onsubmit="if (!confirm("Upgrade to yearly billing to invite teammates? You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
+                                onsubmit="if (!confirm("Upgrade to yearly billing to invite teammates? This change moves you to our current pricing of $216.00/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
   return false
 }">
                             <input name="billing"

@@ -64,6 +64,64 @@ class PointFreeRouterTests: TestCase {
   }
 
   @MainActor
+  func testSubscribeRoute_FormData_Max() async throws {
+    let subscribeData = SubscribeData(
+      coupon: nil,
+      isOwnerTakingSeat: true,
+      paymentMethodID: "pm_deadbeef",
+      pricing: .init(plan: .max, billing: .yearly, quantity: 2),
+      referralCode: nil,
+      subscriptionID: nil,
+      teammates: ["blob.jr@pointfree.co"],
+      useRegionalDiscount: false
+    )
+    let route = SiteRoute.subscribe(subscribeData)
+    let request = try! siteRouter.request(for: route)
+
+    await assertInlineSnapshot(of: request, as: .raw) {
+      """
+      POST http://localhost:8080/subscribe
+
+      isOwnerTakingSeat=true&paymentMethodID=pm_deadbeef&pricing%5Bplan%5D=max&pricing%5Bbilling%5D=yearly&pricing%5Bquantity%5D=2&teammate=blob.jr%40pointfree.co
+      """
+    }
+
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+  }
+
+  @MainActor
+  func testDiscountsRoute_MaxPlan() async throws {
+    let route = SiteRoute.discounts(code: "blobfest", .yearly, .max)
+    let request = try siteRouter.request(for: route)
+
+    XCTAssertEqual(
+      request.url?.absoluteString,
+      "http://localhost:8080/discounts/blobfest?billing=yearly&plan=max"
+    )
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+  }
+
+  @MainActor
+  func testSubscribeConfirmationRoute_MaxPlan() async throws {
+    let route = SiteRoute.subscribeConfirmation(
+      lane: .team,
+      billing: .yearly,
+      isOwnerTakingSeat: true,
+      plan: .max,
+      teammates: ["blob.jr@pointfree.co"],
+      referralCode: "deadbeef",
+      useRegionalDiscount: false
+    )
+    let request = try siteRouter.request(for: route)
+
+    XCTAssertEqual(
+      request.url?.absoluteString,
+      "http://localhost:8080/subscribe/team?billing=yearly&isOwnerTakingSeat=true&plan=max&teammates=blob.jr@pointfree.co&ref=deadbeef&useRegionalDiscount=false"
+    )
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+  }
+
+  @MainActor
   func testEpisodeShowRoute() async throws {
     let request = URLRequest(url: URL(string: "http://localhost:8080/episodes/ep10-hello-world")!)
 

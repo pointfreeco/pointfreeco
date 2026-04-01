@@ -40,6 +40,7 @@ func changeSubscription(
 ) -> (Conn<StatusLineOpen, (Stripe.Subscription, Pricing)>)
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.database) var database
   @Dependency(\.stripe) var stripe
 
   return { conn in
@@ -50,12 +51,17 @@ func changeSubscription(
         for: newPricing,
         currentSubscription: currentSubscription
       )
-      _ = try await stripe
+      let updatedSubscription = try await stripe
         .update(
           subscription: currentSubscription,
           planID: planID,
           quantity: newPricing.quantity
         )
+      let localSubscription = try await database.updateStripeSubscription(updatedSubscription)
+      try await database.updateSubscriptionPlan(localSubscription.id, newPricing.plan)
+      if newPricing.plan != .max {
+        await removeBetaAccess(for: localSubscription)
+      }
     }
     .run
     .flatMap(

@@ -27,7 +27,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
     let user = try await self.database.registerUser(
       accessToken: .mock, gitHubUser: .mock, email: "blob@pointfree.co", now: { .mock }
     )
-    let subscription = try await self.database.createSubscription(.mock, user.id, true, nil)
+    let subscription = try await self.database.createSubscription(.mock, user.id, true, nil, .pro)
 
     _ = try await self.database.execute(
       """
@@ -52,7 +52,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
       accessToken: .mock, gitHubUser: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
-    _ = try await self.database.createSubscription(.mock, user.id, false, nil)
+    _ = try await self.database.createSubscription(.mock, user.id, false, nil, .pro)
 
     let freshUser = try await self.database.fetchUserById(user.id)
 
@@ -64,7 +64,7 @@ final class DatabaseTests: LiveDatabaseTestCase {
       accessToken: .mock, gitHubUser: .mock, email: "blob@pointfree.co", now: { .mock }
     )
 
-    let subscription = try await self.database.createSubscription(.mock, user.id, true, nil)
+    let subscription = try await self.database.createSubscription(.mock, user.id, true, nil, .pro)
 
     let freshUser = try await self.database.fetchUserById(user.id)
 

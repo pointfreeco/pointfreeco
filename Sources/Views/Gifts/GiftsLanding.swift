@@ -25,18 +25,19 @@ extension Gifts.Plan {
     ]
 
     switch self {
-    case .threeMonths:
+    case .sixMonthsPro:
       return [
-        .init(name: "Full access for 3 months")
+        .init(name: "Full Pro access for 6 months")
       ] + base
-    case .sixMonths:
+    case .yearlyPro:
       return [
-        .init(name: "Full access for 6 months")
+        .init(name: "Full Pro access for 1 year")
       ] + base
-    case .year:
+    case .yearlyMax:
       return [
-        .init(isHighlighted: true, name: "25% off the 3 and 6 month gift options"),
-        .init(name: "Full access for 1 year"),
+        .init(name: "Full Max access for 1 year"),
+        .init(name: "Early access to new libraries and AI skills"),
+        .init(name: "Attend office hours and private livestreams"),
       ] + base
     }
   }

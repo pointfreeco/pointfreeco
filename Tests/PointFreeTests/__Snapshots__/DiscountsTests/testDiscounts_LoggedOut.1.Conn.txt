@@ -2,7 +2,7 @@ GET http://localhost:8080/discounts/blobfest
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 62386
+Content-Length: 62899
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -2127,6 +2127,9 @@ html {
       <input name="pricing[lane]"
              type="hidden"
              value="personal">
+      <input name="pricing[plan]"
+             type="hidden"
+             value="pro">
       <div class="d-ml4
                   d-mr4
                   m-ml2
@@ -2150,7 +2153,7 @@ html {
                     col-m">
           You selected the 
           <strong>
-            Personal
+            Pro
           </strong>
            plan
         </div>
@@ -2182,33 +2185,31 @@ html {
                      flex-basis:auto">
             <li class="m-pt1">
               <div class="pricing-plan-feature">
+                <p>Access to “<a href="/the-way">The Point-Free Way</a>”</p>
+
+              </div>
+            </li>
+            <li class="m-pt1">
+              <div class="pricing-plan-feature">
                 <p>All 2 videos with transcripts</p>
 
               </div>
             </li>
             <li class="m-pt1">
               <div class="pricing-plan-feature">
-                <p>Over 0 hours of video</p>
+                <p>Private podcast feed for offline viewing</p>
 
               </div>
             </li>
             <li class="m-pt1">
               <div class="pricing-plan-feature">
-                <p>Watch past <a href="/live">livestreams</a> at 1080p</p>
+                <p>Past <a href="/live">livestreams</a> on demand</p>
 
               </div>
             </li>
             <li class="m-pt1">
               <div class="pricing-plan-feature">
-                <p>Private RSS feed for offline viewing in podcast apps</p>
-
-              </div>
-            </li>
-            <li class="m-pt1">
-              <div class="pricing-plan-feature">
-                <p><a href="/subscribe/personal?useRegionalDiscount=true">Regional</a>
-and <a href="/blog/posts/10-announcing-student-discounts">education</a> discounts
-available</p>
+                <p><a href="/subscribe/personal?billing=monthly&plan=pro&useRegionalDiscount=true">Regional</a> and <a href="/blog/posts/10-announcing-student-discounts">educational</a> discounts available</p>
 
               </div>
             </li>
@@ -2298,7 +2299,7 @@ available</p>
                          m-mr0
                          m-mt0
                          m-mb0">
-                Yearly — Save 22% off monthly billing!
+                Yearly
               </h5>
               <p class="m-pt1
                         fg-black
@@ -2306,7 +2307,7 @@ available</p>
                         h6
                         lh-4
                         fg-gray650">
-                $84 per year
+                $108 per year
               </p>
             </div>
           </label>
@@ -2349,7 +2350,7 @@ available</p>
                         h6
                         lh-4
                         fg-gray650">
-                $9 per month
+                $12 per month
               </p>
             </div>
           </label>
@@ -2411,22 +2412,34 @@ function updateSeats() {
   form["pricing[quantity]"].value = seats
   var regionalDiscount = 1.0
   var monthly = form["pricing[billing]"].value == "monthly"
-  var monthlyPricePerSeat = (
-    monthly
-      ? 900 * 0.01 * regionalDiscount
-      : 700 * 0.01 * regionalDiscount
-  )
-  const monthlyPrice = seats * monthlyPricePerSeat
+  if (!true) {
+    monthly = true
+  }
+  const monthlySeatPrice = 1200 * 0.01 * regionalDiscount
+  const yearlySeatPrice = 10800 * 0.01 * regionalDiscount
+  const seatPrice = monthly ? monthlySeatPrice : yearlySeatPrice
+  const subtotal = seats * seatPrice
   const total = monthly
-    ? monthlyPrice
-    : (monthlyPrice * 12 - 0 * regionalDiscount)
+    ? subtotal
+    : Math.max(0, subtotal - 0 * regionalDiscount)
+  var previewUnitPrice = seatPrice
+  var previewUnitText = "per month"
+  var monthMultiplierSuffix = ""
+  if (true) {
+    previewUnitText = monthly ? "per month" : "per year"
+  }
+  if (false) {
+    previewUnitPrice = seatPrice / 12
+    previewUnitText = "per member per month"
+    monthMultiplierSuffix = " times <strong>12 months</strong>"
+  }
   document.getElementById("total").textContent = format(total)
   document.getElementById("pricing-preview").innerHTML = (
     "You will be charged <strong>"
-      + format(monthlyPricePerSeat)
-      + " per month</strong>"
+      + format(previewUnitPrice)
+      + " " + previewUnitText + "</strong>"
       + (seats > 1 ? " times <strong>" + seats + " seats</strong>" : "")
-      + (monthly ? "" : " times <strong>12 months</strong>")
+      + monthMultiplierSuffix
       + "."
   )
   if (window.paymentRequest) {
@@ -2457,7 +2470,7 @@ window.addEventListener("load", function() {
         </div>
         <div class="end-m
                     col-m">
-          <a href="/auth?kind=login&redirect=http://localhost:8080/discounts/coupon-deadbeef"
+          <a href="/auth?kind=login&redirect=http://localhost:8080/discounts/coupon-deadbeef?plan%3Dpro"
              class="medium
                     cursor-pointer
                     nowrap

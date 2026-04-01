@@ -103,8 +103,8 @@ private func subscribe(
           Cannot apply regional discount.
           
           userID: \(user.id.rawValue)
-          cardCountry: \(country)
-          ipCountry: \(ipCountry)
+          cardCountry: \(country ?? "Unknown")
+          ipCountry: \(ipCountry ?? "Unknown")
           """)
         throw StripeErrorEnvelope(
           error: .init(
@@ -161,7 +161,8 @@ private func subscribe(
         subscription: stripeSubscription,
         userID: user.id,
         isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
-        referrerID: referrer?.user.id
+        referrerID: referrer?.user.id,
+        plan: subscribeData.pricing.plan
       )
 
       if let referrer {
@@ -299,6 +300,7 @@ private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeDa
       lane: .team,
       billing: .yearly,
       isOwnerTakingSeat: true,
+      plan: .pro,
       teammates: [""],
       useRegionalDiscount: false
     )
@@ -308,12 +310,13 @@ private func subscribeConfirmationWithSubscribeData(_ subscribeData: SubscribeDa
       lane: subscribeData.pricing.isPersonal ? .personal : .team,
       billing: subscribeData.pricing.billing,
       isOwnerTakingSeat: subscribeData.isOwnerTakingSeat,
+      plan: subscribeData.pricing.plan,
       teammates: subscribeData.teammates,
       referralCode: subscribeData.referralCode,
       useRegionalDiscount: subscribeData.useRegionalDiscount
     )
   }
-  return .discounts(code: coupon, subscribeData.pricing.billing)
+  return .discounts(code: coupon, subscribeData.pricing.billing, subscribeData.pricing.plan)
 }
 
 private func requireSubscribeData(

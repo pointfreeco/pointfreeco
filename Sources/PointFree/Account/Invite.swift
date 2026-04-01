@@ -123,9 +123,10 @@ let addTeammateViaInviteMiddleware =
   <<< requireStripeSubscription
   <<< requireActiveSubscription
   <| { (conn: Conn<StatusLineOpen, Tuple3<Stripe.Subscription, User, EmailAddress>>) in
-
+    @Dependency(\.subscriberState) var subscriberState
     let (stripeSubscription, inviter, email) = lower(conn.data)
     let newPricing = Pricing(
+      plan: subscriberState.plan ?? .pro,
       billing: .yearly,
       quantity: stripeSubscription.quantity + 1
     )

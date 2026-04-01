@@ -323,7 +323,7 @@ class GiftTests: TestCase {
     var userId: User.ID?
 
     await withDependencies {
-      $0.database.createSubscription = { _, id, _, _ in
+      $0.database.createSubscription = { _, id, _, _, _ in
         userId = id
         return .mock
       }
@@ -391,7 +391,7 @@ class GiftTests: TestCase {
     var userId: User.ID?
 
     await withDependencies {
-      $0.database.createSubscription = { _, id, _, _ in
+      $0.database.createSubscription = { _, id, _, _, _ in
         userId = id
         return .mock
       }

@@ -3,14 +3,16 @@ import TaggedMoney
 
 public struct Pricing: Equatable {
   public var billing: Billing
+  public var plan: Plan
   public var quantity: Int
 
-  public init(billing: Billing, quantity: Int) {
+  public init(plan: Plan, billing: Billing, quantity: Int) {
     self.billing = billing
+    self.plan = plan
     self.quantity = quantity
   }
 
-  public static let `default` = Pricing(billing: .monthly, quantity: 1)
+  public static let `default` = Pricing(plan: .pro, billing: .monthly, quantity: 1)
 
   public static let validTeamQuantities = 2..<100
 
@@ -33,9 +35,15 @@ public struct Pricing: Equatable {
     case team
   }
 
+  public enum Plan: String, CaseIterable, Codable {
+    case max
+    case pro
+  }
+
   private enum CodingKeys: String, CodingKey {
     case billing
     case lane
+    case plan
     case quantity
   }
 
@@ -52,8 +60,16 @@ public struct Pricing: Equatable {
     return self.lane == .personal
   }
 
+  public var isPro: Bool {
+    self.plan == .pro
+  }
+
   public var isTeam: Bool {
     return self.lane == .team
+  }
+
+  public var isYearlyOnly: Bool {
+    self.plan == .max
   }
 
   public var lane: Lane {
@@ -67,27 +83,39 @@ public struct Pricing: Equatable {
   }
 
   public var legacyPricing: Cents<Int> {
-    switch (self.lane, self.billing) {
-    case (.personal, .monthly):
+    switch (self.plan, self.lane, self.billing) {
+    case (.max, .personal, .yearly):
+      return 349_00
+    case (.max, .team, .yearly):
+      return 299_00
+    case (.max, _, .monthly):
+      return self.lane == .personal ? 349_00 : 299_00
+    case (.pro, .personal, .monthly):
       return 18_00
-    case (.personal, .yearly):
+    case (.pro, .personal, .yearly):
       return 168_00
-    case (.team, .monthly):
+    case (.pro, .team, .monthly):
       return 16_00
-    case (.team, .yearly):
+    case (.pro, .team, .yearly):
       return 144_00
     }
   }
 
   public var modernPricing: Cents<Int>? {
-    switch (self.lane, self.billing) {
-    case (.personal, .monthly):
-      return 24_00
-    case (.personal, .yearly):
-      return 216_00
-    case (.team, .monthly):
+    switch (self.plan, self.lane, self.billing) {
+    case (.max, .personal, .monthly), (.max, .team, .monthly):
       return nil
-    case (.team, .yearly):
+    case (.max, .personal, .yearly):
+      return 349_00
+    case (.max, .team, .yearly):
+      return 299_00
+    case (.pro, .personal, .monthly):
+      return 24_00
+    case (.pro, .personal, .yearly):
+      return 216_00
+    case (.pro, .team, .monthly):
+      return nil
+    case (.pro, .team, .yearly):
       return 192_00
     }
   }
@@ -98,11 +126,12 @@ extension Pricing: Codable {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     let lane = try container.decodeIfPresent(Lane.self, forKey: .lane)
     let billing = try container.decode(Billing.self, forKey: .billing)
+    let plan = try container.decodeIfPresent(Plan.self, forKey: .plan) ?? .pro
     if lane == .some(.personal) {
-      self.init(billing: billing, quantity: 1)
+      self.init(plan: plan, billing: billing, quantity: 1)
     } else {
       let quantity = try container.decode(Int.self, forKey: .quantity)
-      self.init(billing: billing, quantity: quantity)
+      self.init(plan: plan, billing: billing, quantity: quantity)
     }
   }
 
@@ -110,6 +139,60 @@ extension Pricing: Codable {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(self.lane, forKey: .lane)
     try container.encode(self.billing, forKey: .billing)
+    try container.encode(self.plan, forKey: .plan)
     try container.encode(self.quantity, forKey: .quantity)
+  }
+}
+
+public extension Pricing {
+  static let proTeamSavingsFeature = "Save **25%**"
+  static let maxTeamSavingsFeature = "Save **15%**"
+
+  static func maxExtraFeatures(
+    betasPath: String
+  ) -> [String] {
+    [
+      "Everything from **Pro**, plus…",
+      "[Early access](\(betasPath)) to new libraries and AI skills",
+      "Attend office hours and private livestreams",
+      "Help support the [Point-Free ecosystem](https://github.com/pointfreeco)",
+    ]
+  }
+
+  static func proFeaturesMarkdown(
+    allVideosCount: Int,
+    theWayPath: String,
+    livestreamsPath: String,
+    regionalDiscountPath: String,
+    educationalDiscountPath: String,
+    includeDiscounts: Bool = true
+  ) -> [String] {
+    var features: [String] = [
+      "Everything from **Free**, plus…",
+      "Access to \"[The Point-Free Way](\(theWayPath))\"",
+      "All \(allVideosCount) videos with transcripts",
+      "Private podcast feed for offline viewing",
+      "Past [livestreams](\(livestreamsPath)) on demand",
+    ]
+
+    if includeDiscounts {
+      features.append(
+        "[Regional](\(regionalDiscountPath)) and [educational](\(educationalDiscountPath)) discounts available"
+      )
+    }
+
+    return features
+  }
+
+  static func maxFeaturesMarkdown(
+    allVideosCount: Int,
+    theWayPath: String,
+    betasPath: String,
+    livestreamsPath: String,
+    regionalDiscountPath: String,
+    educationalDiscountPath: String,
+    includeDiscounts: Bool = true
+  ) -> [String] {
+    maxExtraFeatures(betasPath: betasPath)
   }
 }

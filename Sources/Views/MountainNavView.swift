@@ -162,6 +162,8 @@ private func headerLinks(
 
     .a(attributes: [.href(siteRouter.path(for: .gifts())), .class([navLinkClasses])], "Gifts"),
 
+    .a(attributes: [.href(siteRouter.path(for: .betas())), .class([navLinkClasses])], "Beta previews"),
+
     currentUser == nil
       ? .gitHubLink(
         text: "Login",

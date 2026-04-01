@@ -61,7 +61,7 @@ public func giftsPayment(
             country: 'US',
             currency: 'usd',
             total: {
-              label: 'Gift membership: \(plan.monthCount) months',
+              label: 'Gift membership: \(plan.laneTitle)',
               amount: \(plan.amount),
             }
           });
@@ -154,7 +154,7 @@ private func titleView(plan: Gifts.Plan) -> Node {
       sizes: [.mobile: 12],
       .div(
         .h1(attributes: [.class([Class.pf.type.responsiveTitle2])], "Gift membership"),
-        .p(.text("Give \(plan.monthCount) months of Point-Free access"))
+        .p(.text("Give \(plan.laneTitle) of Point-Free access"))
       )
     )
   )
@@ -257,7 +257,7 @@ private func formView(
         .rows(5),
       ],
       """
-      Hope you enjoy \(plan.monthCount) months of Point-Free!
+      Hope you enjoy \(plan.duration) of Point-Free \(plan.tier)!
       """
     ),
 
@@ -381,8 +381,8 @@ private func formView(
     .input(
       attributes: [
         .type(.hidden),
-        .name(GiftFormData.CodingKeys.monthsFree.stringValue),
-        .value("\(plan.monthCount)"),
+        .name(GiftFormData.CodingKeys.plan.stringValue),
+        .value(plan.rawValue),
       ]
     ),
     .input(

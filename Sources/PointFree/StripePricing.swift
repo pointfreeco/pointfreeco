@@ -78,12 +78,14 @@ func isModernPricingPlan(_ plan: Stripe.Plan, envVars: EnvVars) -> Bool {
 }
 
 private func modernLookupKey(for pricing: Pricing) throws -> Stripe.Price.LookupKey {
-  switch (pricing.lane, pricing.billing) {
-  case (.personal, .monthly):
-    "pointfree-monthly"
-  case (.personal, .yearly), (.team, .yearly):
-    "pointfree-pro"
-  case (.team, .monthly):
+  switch (pricing.plan, pricing.lane, pricing.billing) {
+  case (.max, _, .monthly), (.pro, .team, .monthly):
     throw PricingResolutionError.missingModernPrice(pricing)
+  case (.max, _, .yearly):
+    "pointfree-max"
+  case (.pro, .personal, .monthly):
+    "pointfree-monthly"
+  case (.pro, _, .yearly):
+    "pointfree-pro"
   }
 }

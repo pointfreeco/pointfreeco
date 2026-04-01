@@ -82,17 +82,9 @@ func giftOption(
   gift: Gift,
   episodeStats: EpisodeStats
 ) -> ChildOf<Tag.Ul> {
-  guard let plan = Gifts.Plan(monthCount: gift.monthsFree)
-  else { return [] }
-  let title: Node
-  switch plan {
-  case .threeMonths:
-    title = .text("3 months free")
-  case .sixMonths:
-    title = .text("6 months free")
-  case .year:
-    title = .text("1 year free")
-  }
+  let planName = gift.plan == .max ? "Max" : "Pro"
+  let duration = gift.monthsFree < 12 ? "\(gift.monthsFree) months" : "1 year"
+  let title: Node = .text("\(duration) \(planName) free")
 
   return .li(
     attributes: [
@@ -131,7 +123,7 @@ func giftOption(
           .style(flex(grow: 1, shrink: 0, basis: .auto)),
         ],
         .fragment(
-          plan.features(episodeStats: episodeStats)
+          giftFeatures(gift: gift, episodeStats: episodeStats)
             .filter { !$0.isHighlighted }
             .map { feature in
               .li(
@@ -207,6 +199,25 @@ private func loginOrRedeem(gift: Gift) -> Node {
       )
     )
   }
+}
+
+private func giftFeatures(gift: Gift, episodeStats: EpisodeStats) -> [Gifts.Plan.Feature] {
+  @Dependency(\.siteRouter) var siteRouter
+
+  var features: [Gifts.Plan.Feature] = [
+    .init(name: "All \(episodeStats.allEpisodeCount) videos with transcripts"),
+    .init(
+      name:
+        "Access to all past [livestreams](\(siteRouter.path(for: .live(.current)))) at 1080p"
+    ),
+    .init(name: "Private RSS feed for offline viewing"),
+    .init(name: "Download all video code samples"),
+  ]
+  if gift.plan == .max {
+    features.append(.init(name: "Early access to new libraries and AI skills"))
+    features.append(.init(name: "Attend office hours and private livestreams"))
+  }
+  return features
 }
 
 extension Array where Element == Faq {

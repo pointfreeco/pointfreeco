@@ -26,7 +26,7 @@ func giftCreateMiddleware(
   @Dependency(\.stripe) var stripe
 
   let giftFormData = conn.data
-  guard let plan = Gifts.Plan.init(monthCount: giftFormData.monthsFree)
+  guard let plan = Gifts.Plan(rawValue: giftFormData.plan)
   else {
     return conn
       |> redirect(to: .gifts(), headersMiddleware: flash(.notice, "Unknown gift option."))
@@ -44,19 +44,20 @@ func giftCreateMiddleware(
     var paymentIntent = try await stripe.createPaymentIntent(
       amount: plan.amount,
       currency: .usd,
-      description: "Gift membership: \(plan.monthCount) months",
+      description: "Gift membership: \(plan.laneTitle)",
       paymentMethodID: giftFormData.paymentMethodID,
       receiptEmail: giftFormData.fromEmail.rawValue,
       statementDescriptorSuffix: "Gift Membership"
     )
     paymentIntent = try await stripe.confirmPaymentIntent(id: paymentIntent.id)
     _ = try await database.createGift(
-      coupon: giftFormData.monthsFree == 12 ? yearlyGiftCoupon : nil,
+      coupon: plan.monthCount == 12 ? yearlyGiftCoupon : nil,
       deliverAt: deliverAt,
       fromEmail: giftFormData.fromEmail,
       fromName: giftFormData.fromName,
       message: giftFormData.message,
-      monthsFree: giftFormData.monthsFree,
+      monthsFree: plan.monthCount,
+      plan: plan.pricingPlan,
       stripePaymentIntentId: paymentIntent.id,
       toEmail: giftFormData.toEmail,
       toName: giftFormData.toName

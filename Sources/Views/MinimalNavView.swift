@@ -106,6 +106,7 @@ private func loggedInNavItemsView(
       blogLinkView(style: style)
     ),
     .li(attributes: [.class([navListItemClass])], giftLinkView(style: style)),
+    .li(attributes: [.class([navListItemClass])], betasLinkView(style: style)),
     .li(attributes: [.class([navListItemClass])], accountLinkView(style: style))
   )
 }
@@ -154,6 +155,14 @@ private func giftLinkView(style: NavStyle.MinimalStyle) -> Node {
 
   return .a(
     attributes: [.href(siteRouter.path(for: .gifts())), .class([navLinkClass(for: style)])], "Gifts"
+  )
+}
+
+private func betasLinkView(style: NavStyle.MinimalStyle) -> Node {
+  @Dependency(\.siteRouter) var siteRouter
+
+  return .a(
+    attributes: [.href(siteRouter.path(for: .betas())), .class([navLinkClass(for: style)])], "Beta previews"
   )
 }
 

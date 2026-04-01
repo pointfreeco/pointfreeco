@@ -272,19 +272,22 @@ struct MobileNavItems: HTML {
   var body: some HTML {
     ul {
       HTMLGroup {
+        if !subscriberState.isActiveSubscriber {
+          NavListItem(highlight: true, route: .pricingLanding) {
+            "Become a member"
+          }
+        }
         NavListItem(isNew: true, route: .theWay) {
           "The Point-Free Way"
+        }
+        NavListItem(isNew: true, route: .betas()) {
+          "Beta previews"
         }
         NavListItem(route: .episodes(.list(.all))) {
           "Videos"
         }
         NavListItem(route: .collections()) {
           "Collections"
-        }
-        if !subscriberState.isActiveSubscriber {
-          NavListItem(route: .pricingLanding) {
-            "Become a member"
-          }
         }
         NavListItem(route: .clips(.clips)) {
           "Free clips"
@@ -342,10 +345,17 @@ struct MobileNavItems: HTML {
   struct NavListItem<Title: HTML>: HTML {
     @Dependency(\.siteRouter) var siteRouter
     let title: Title
+    var highlight: Bool
     var isNew: Bool
     let route: SiteRoute
-    init(isNew: Bool = false, route: SiteRoute, @HTMLBuilder title: () -> Title) {
+    init(
+      highlight: Bool = false,
+      isNew: Bool = false,
+      route: SiteRoute,
+      @HTMLBuilder title: () -> Title
+    ) {
       self.title = title()
+      self.highlight = highlight
       self.isNew = isNew
       self.route = route
     }
@@ -359,8 +369,19 @@ struct MobileNavItems: HTML {
             }
           }
         }
-        .linkColor(.gray650)
-        .inlineStyle("display", "block")
+        .linkColor(highlight ? .purple : .gray650)
+        .inlineStyle("display", highlight ? "inline-block" : "block")
+        .inlineStyle("padding", highlight ? "0.35rem 0.75rem" : nil)
+        .inlineStyle("border-radius", highlight ? "999px" : nil)
+        .inlineStyle(
+          "background",
+          highlight ? "color-mix(in oklab, #974dff 10%, transparent)" : nil
+        )
+        .inlineStyle(
+          "background",
+          highlight ? "color-mix(in oklab, #974dff 15%, transparent)" : nil,
+          media: .dark
+        )
       }
     }
   }
@@ -486,6 +507,7 @@ struct MoreMenu<Content: HTML>: HTML {
 private struct MenuItem: HTML {
   let iconBase64: String?
   let href: String
+  let isNew: Bool
   let opensInNewWindow: Bool
   let title: String
 
@@ -493,6 +515,7 @@ private struct MenuItem: HTML {
     title: String,
     destination: SiteRoute,
     iconBase64: String? = nil,
+    isNew: Bool = false,
     opensInNewWindow: Bool = false
   ) {
     @Dependency(\.siteRouter) var siteRouter
@@ -500,6 +523,7 @@ private struct MenuItem: HTML {
       title: title,
       href: siteRouter.path(for: destination),
       iconBase64: iconBase64,
+      isNew: isNew,
       opensInNewWindow: opensInNewWindow
     )
   }
@@ -508,11 +532,13 @@ private struct MenuItem: HTML {
     title: String,
     href: String,
     iconBase64: String? = nil,
+    isNew: Bool = false,
     opensInNewWindow: Bool = false
   ) {
     self.title = title
     self.href = href
     self.iconBase64 = iconBase64
+    self.isNew = isNew
     self.opensInNewWindow = opensInNewWindow
   }
 
@@ -528,6 +554,9 @@ private struct MenuItem: HTML {
             .inlineStyle("width", "1rem")
         }
         span { HTMLText(title) }
+        if isNew {
+          NewBadge()
+        }
       }
       .attribute("rel", opensInNewWindow ? "noopener noreferrer" : nil)
       .attribute("target", opensInNewWindow ? "_blank" : nil)
@@ -559,7 +588,7 @@ struct CenteredNavItems: HTML {
           "Collections"
         }
         if !subscriberState.isActiveSubscriber {
-          NavListItem(route: .pricingLanding) {
+          NavListItem(highlight: true, route: .pricingLanding) {
             "Become a member"
           }
         }
@@ -570,6 +599,7 @@ struct CenteredNavItems: HTML {
           if currentUser == nil {
             MenuItem(title: "Videos", destination: .episodes(.list(.all)))
           }
+          MenuItem(title: "Beta previews", destination: .betas(), isNew: true)
           MenuItem(title: "Free clips", destination: .clips(.clips))
           MenuItem(title: "Blog", destination: .blog(.index))
           MenuItem(title: "Gifts", destination: .gifts())
@@ -598,10 +628,17 @@ struct CenteredNavItems: HTML {
 
   struct NavListItem<Title: HTML>: HTML {
     let title: Title
+    let highlight: Bool
     let isNew: Bool
     let route: SiteRoute
-    init(isNew: Bool = false, route: SiteRoute, @HTMLBuilder title: () -> Title) {
+    init(
+      highlight: Bool = false,
+      isNew: Bool = false,
+      route: SiteRoute,
+      @HTMLBuilder title: () -> Title
+    ) {
       self.title = title()
+      self.highlight = highlight
       self.isNew = isNew
       self.route = route
     }
@@ -614,6 +651,18 @@ struct CenteredNavItems: HTML {
               .inlineStyle("margin-left", "0.25rem")
           }
         }
+        .inlineStyle("padding", highlight ? "0.35rem 0.75rem" : nil)
+        .inlineStyle("border-radius", highlight ? "999px" : nil)
+        .inlineStyle(
+          "background",
+          highlight ? "color-mix(in oklab, #974dff 10%, transparent)" : nil
+        )
+        .inlineStyle(
+          "background",
+          highlight ? "color-mix(in oklab, #974dff 15%, transparent)" : nil,
+          media: .dark
+        )
+        .linkColor(highlight ? .purple : .gray650)
       }
       .inlineStyle("padding-left", "2rem", pseudo: .not(.firstChild))
       .inlineStyle("display", "inline")
@@ -646,61 +695,61 @@ public struct PastDueBanner: HTML {
     case .nonSubscriber:
       HTMLEmpty()
 
-    case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .none, deactivated: _):
+    case .owner(hasSeat: _, plan: _, status: .pastDue, enterpriseAccount: .none, deactivated: _):
       TopBanner(style: .warning) {
         "Your membership is past-due! Please "
         Link("update your payment info", destination: .account(.paymentInfo()))
         " to ensure access to Point-Free!"
       }
 
-    case .owner(hasSeat: _, status: .pastDue, enterpriseAccount: .some, deactivated: _):
+    case .owner(hasSeat: _, plan: _, status: .pastDue, enterpriseAccount: .some, deactivated: _):
       TopBanner(style: .warning) {
         "Your enterprise membership is past-due! Please contact us at "
         Link("support@pointfree.co", href: "mailto:support@pointfree.co")
         " to regain access to Point-Free."
       }
 
-    case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .none, deactivated: _):
+    case .owner(hasSeat: _, plan: _, status: .canceled, enterpriseAccount: .none, deactivated: _):
       TopBanner(style: .warning) {
         "Your membership is canceled. To regain access to Point-Free, "
         Link("rejoin", destination: .pricingLanding)
         " anytime!"
       }
 
-    case .owner(hasSeat: _, status: .canceled, enterpriseAccount: .some, deactivated: _):
+    case .owner(hasSeat: _, plan: _, status: .canceled, enterpriseAccount: .some, deactivated: _):
       TopBanner(style: .warning) {
         "Your enterprise membership is canceled. Please contact us at "
         Link("support@pointfree.co", href: "mailto:support@pointfree.co")
         " to regain access to Point-Free."
       }
 
-    case .owner(hasSeat: _, status: .active, enterpriseAccount: _, deactivated: true),
-      .owner(hasSeat: _, status: .trialing, enterpriseAccount: _, deactivated: true):
+    case .owner(hasSeat: _, plan: _, status: .active, enterpriseAccount: _, deactivated: true),
+      .owner(hasSeat: _, plan: _, status: .trialing, enterpriseAccount: _, deactivated: true):
       TopBanner(style: .warning) {
         "Your membership has been deactivated. Please contact us at "
         Link("support@pointfree.co", href: "mailto:support@pointfree.co")
         " to regain access to Point-Free."
       }
 
-    case .owner(hasSeat: _, status: _, enterpriseAccount: _, deactivated: _):
+    case .owner(hasSeat: _, plan: _, status: _, enterpriseAccount: _, deactivated: _):
       HTMLEmpty()
 
-    case .teammate(status: .pastDue, enterpriseAccount: _, deactivated: _):
+    case .teammate(plan: _, status: .pastDue, enterpriseAccount: _, deactivated: _):
       TopBanner(style: .warning) {
         "Your team’s membership is past-due! Please contact "
         owner
         " to regain access to Point-Free."
       }
 
-    case .teammate(status: .canceled, enterpriseAccount: _, deactivated: _):
+    case .teammate(plan: _, status: .canceled, enterpriseAccount: _, deactivated: _):
       TopBanner(style: .warning) {
         "Your team’s membership is canceled. Please contact "
         owner
         " to regain access to Point-Free."
       }
 
-    case .teammate(status: .active, enterpriseAccount: _, deactivated: true),
-      .teammate(status: .trialing, enterpriseAccount: _, deactivated: true):
+    case .teammate(plan: _, status: .active, enterpriseAccount: _, deactivated: true),
+      .teammate(plan: _, status: .trialing, enterpriseAccount: _, deactivated: true):
       TopBanner(style: .warning) {
         "Your team’s membership is deactivated. Please have "
         owner
@@ -709,7 +758,7 @@ public struct PastDueBanner: HTML {
         " to regain access to Point-Free."
       }
 
-    case .teammate(status: _, enterpriseAccount: _, deactivated: _):
+    case .teammate(plan: _, status: _, enterpriseAccount: _, deactivated: _):
       HTMLEmpty()
     }
   }
@@ -793,7 +842,7 @@ struct TopBanner<Content: HTML>: HTML {
     self.content = content()
   }
 
-  init(flash: Flash) where Content == HTMLText {
+  init(flash: Flash) where Content == HTMLMarkdown {
     switch flash.priority {
     case .error:
       self.style = .error
@@ -802,7 +851,7 @@ struct TopBanner<Content: HTML>: HTML {
     case .warning:
       self.style = .warning
     }
-    self.content = HTMLText(flash.message)
+    self.content = HTMLMarkdown(flash.message)
   }
 
   var body: some HTML {

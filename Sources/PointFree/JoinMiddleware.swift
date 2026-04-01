@@ -170,6 +170,7 @@ private func add<A>(
   }
 
   let newPricing = Pricing(
+    plan: subscription.plan,
     billing: stripeSubscription.plan.interval == .month ? .monthly : .yearly,
     quantity: stripeSubscription.quantity + 1
   )

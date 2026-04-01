@@ -1046,7 +1046,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       },
       owner.id,
       isOwnerTakingSeat,
-      nil
+      nil,
+      .pro
     )
     if let code = code {
       subscription.teamInviteCode = code

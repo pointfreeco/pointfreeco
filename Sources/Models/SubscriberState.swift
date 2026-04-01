@@ -3,10 +3,12 @@ import Stripe
 public enum SubscriberState {
   case nonSubscriber
   case owner(
-    hasSeat: Bool, status: Stripe.Subscription.Status, enterpriseAccount: EnterpriseAccount?,
+    hasSeat: Bool, plan: Pricing.Plan, status: Stripe.Subscription.Status,
+    enterpriseAccount: EnterpriseAccount?,
     deactivated: Bool)
   case teammate(
-    status: Stripe.Subscription.Status, enterpriseAccount: EnterpriseAccount?, deactivated: Bool)
+    plan: Pricing.Plan, status: Stripe.Subscription.Status, enterpriseAccount: EnterpriseAccount?,
+    deactivated: Bool)
 
   public init(
     user: User?,
@@ -18,12 +20,14 @@ public enum SubscriberState {
       if subscription.userId == user.id {
         self = .owner(
           hasSeat: user.subscriptionId != nil,
+          plan: subscription.plan,
           status: subscription.stripeSubscriptionStatus,
           enterpriseAccount: enterpriseAccount,
           deactivated: subscription.deactivated
         )
       } else {
         self = .teammate(
+          plan: subscription.plan,
           status: subscription.stripeSubscriptionStatus,
           enterpriseAccount: enterpriseAccount,
           deactivated: subscription.deactivated
@@ -35,13 +39,24 @@ public enum SubscriberState {
     }
   }
 
+  public var plan: Pricing.Plan? {
+    switch self {
+    case .nonSubscriber:
+      return nil
+    case let .owner(_, plan, _, _, _):
+      return plan
+    case let .teammate(plan, _, _, _):
+      return plan
+    }
+  }
+
   public var status: Stripe.Subscription.Status? {
     switch self {
     case .nonSubscriber:
       return nil
-    case let .owner(_, status, _, _):
+    case let .owner(_, _, status, _, _):
       return status
-    case let .teammate(status, _, _):
+    case let .teammate(_, status, _, _):
       return status
     }
   }
@@ -50,8 +65,8 @@ public enum SubscriberState {
     switch self {
     case .nonSubscriber:
       return nil
-    case let .owner(_, _, _, deactivated),
-      let .teammate(_, _, deactivated):
+    case let .owner(_, _, _, _, deactivated),
+      let .teammate(_, _, _, deactivated):
       return deactivated
     }
   }
@@ -76,10 +91,10 @@ public enum SubscriberState {
 
   public var isNonSubscriber: Bool {
     switch self {
-    case .teammate(status: .active, _, _),
-      .teammate(status: .trialing, _, _),
-      .owner(hasSeat: _, status: .active, _, _),
-      .owner(hasSeat: _, status: .trialing, _, _):
+    case .teammate(_, status: .active, _, _),
+      .teammate(_, status: .trialing, _, _),
+      .owner(hasSeat: _, _, status: .active, _, _),
+      .owner(hasSeat: _, _, status: .trialing, _, _):
       return false
     default:
       return true
@@ -88,8 +103,8 @@ public enum SubscriberState {
 
   public var isActiveSubscriber: Bool {
     switch self {
-    case let .teammate(status: status, _, deactivated: false),
-      let .owner(hasSeat: true, status: status, _, deactivated: false):
+    case let .teammate(_, status: status, _, deactivated: false),
+      let .owner(hasSeat: true, _, status: status, _, deactivated: false):
       return status.isActive
     default:
       return false
@@ -98,7 +113,8 @@ public enum SubscriberState {
 
   public var isEnterpriseSubscriber: Bool {
     switch self {
-    case .owner(_, _, enterpriseAccount: .some, _), .teammate(_, enterpriseAccount: .some, _):
+    case .owner(_, _, _, enterpriseAccount: .some, _),
+      .teammate(_, _, enterpriseAccount: .some, _):
       return true
     case .nonSubscriber, .owner, .teammate:
       return false

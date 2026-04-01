@@ -1,9 +1,11 @@
 import Cloudflare
 import Dependencies
 import EnvVars
+import GitHub
 import IssueReporting
 import Models
 import PointFreePrelude
+import Views
 
 public func bootstrap() async {
   prepareDependencies {
@@ -30,6 +32,9 @@ public func bootstrap() async {
   }
   await fireAndForget {
     try await updateCloudflareVideos()
+  }
+  await fireAndForget {
+    await verifyBetaRepoAccess()
   }
 }
 
@@ -142,6 +147,37 @@ private func updateCloudflareVideos() async throws {
           try await Task.sleep(for: .seconds(0.5))
         }
       }
+    }
+  }
+}
+
+private func verifyBetaRepoAccess() async {
+  print("  ⏳ Verifying beta repo access")
+  var failedRepoCount = 0
+  defer { print("  \(failedRepoCount == 0 ? "✅" : "⚠️") Beta repo access verified") }
+
+  @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var token
+  @Dependency(\.gitHub) var gitHub
+
+  for beta in Beta.all {
+    do {
+      _ = try await gitHub.checkRepoCollaborator(
+        owner: "pointfreeco",
+        repo: beta.repo,
+        username: "mbrandonw",
+        token: token
+      )
+      print("    ✅ \(beta.repo) access verified")
+    } catch {
+      failedRepoCount += 1
+      print("    ⚠️ \(beta.repo) access denied")
+      reportIssue(
+        """
+        Beta repo access check failed for "\(beta.repo)". \
+        Update the token permissions on GitHub to include \
+        the pointfreeco/\(beta.repo) repository.
+        """
+      )
     }
   }
 }

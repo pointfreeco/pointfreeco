@@ -6,15 +6,20 @@ import Tagged
 
 extension Client {
   public static let mock = Client(
+    addRepoCollaborator: { _, _, _, _, _ in
+      Client.AddRepoCollaboratorResponse(invitationCreated: true)
+    },
+    removeRepoCollaborator: { _, _, _, _ in },
     fetchAuthToken: { _ in Client.AuthTokenResponse("deadbeef") },
     fetchBranch: { _, _, _, _ in
       Repo(commit: Repo.Commit(sha: "deadbeef"))
     },
+    fetchCommitMessages: { _, _, _, _, _ in CompareCommitsResponse() },
+    checkRepoCollaborator: { _, _, _, _ in false },
     fetchEmails: { _ in [.mock] },
     fetchUser: { _ in .mock },
     fetchUserByUserID: { _, _ in .mock },
-    fetchZipball: { _, _, _, _ in Data() },
-    fetchCommitMessages: { _, _, _, _, _ in CompareCommitsResponse() }
+    fetchZipball: { _, _, _, _ in Data() }
   )
 }
 

@@ -49,6 +49,7 @@ extension Client {
         fromName,
         message,
         monthsFree,
+        plan,
         stripePaymentIntentId,
         toEmail,
         toName
@@ -62,6 +63,7 @@ extension Client {
             "from_name",
             "message",
             "months_free",
+            "plan",
             "stripe_payment_intent_id",
             "to_email",
             "to_name"
@@ -73,6 +75,7 @@ extension Client {
             \(bind: fromName),
             \(bind: message),
             \(bind: monthsFree),
+            \(bind: plan),
             \(bind: stripePaymentIntentId),
             \(bind: toEmail),
             \(bind: toName)
@@ -81,11 +84,11 @@ extension Client {
           """
         )
       },
-      createSubscription: { stripeSubscription, userId, isOwnerTakingSeat, referrerId in
+      createSubscription: { stripeSubscription, userId, isOwnerTakingSeat, referrerId, plan in
         let subscription = try await pool.sqlDatabase.first(
           """
-          INSERT INTO "subscriptions" ("stripe_subscription_id", "stripe_subscription_status", "user_id")
-          VALUES (\(bind: stripeSubscription.id), \(bind: stripeSubscription.status), \(bind: userId))
+          INSERT INTO "subscriptions" ("stripe_subscription_id", "stripe_subscription_status", "user_id", "plan")
+          VALUES (\(bind: stripeSubscription.id), \(bind: stripeSubscription.status), \(bind: userId), \(bind: plan))
           RETURNING *
           """,
           decoding: Models.Subscription.self
@@ -969,6 +972,32 @@ extension Client {
           CREATE UNIQUE INDEX IF NOT EXISTS "index_the_way_accesses_on_machine_whoami"
           ON "the_way_accesses"("machine", "whoami")
           """)
+        try await database.run(
+          """
+          ALTER TABLE "subscriptions"
+          ADD COLUMN IF NOT EXISTS
+          "plan" character varying NOT NULL DEFAULT 'pro'
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "subscriptions"
+          ALTER COLUMN "plan" DROP DEFAULT
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "gifts"
+          ADD COLUMN IF NOT EXISTS
+          "plan" character varying NOT NULL DEFAULT 'pro'
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "gifts"
+          ALTER COLUMN "plan" DROP DEFAULT
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(
@@ -1062,6 +1091,15 @@ extension Client {
           SET "stripe_subscription_status" = \(bind: stripeSubscription.status)
           WHERE "subscriptions"."stripe_subscription_id" = \(bind: stripeSubscription.id)
           RETURNING *
+          """
+        )
+      },
+      updateSubscriptionPlan: { subscriptionId, plan in
+        try await pool.sqlDatabase.run(
+          """
+          UPDATE "subscriptions"
+          SET "plan" = \(bind: plan)
+          WHERE "subscriptions"."id" = \(bind: subscriptionId)
           """
         )
       },
