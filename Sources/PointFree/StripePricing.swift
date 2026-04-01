@@ -16,51 +16,15 @@ func resolvePlanID(
   @Dependency(\.envVars) var envVars
   @Dependency(\.stripe) var stripe
 
-  if let currentSubscription, currentSubscription.plan.interval == pricing.interval {
-    let isLegacy = !isModernPricingPlan(currentSubscription.plan, envVars: envVars)
-    let quantityChanged = pricing.quantity != currentSubscription.totalQuantity
-    if !(isLegacy && quantityChanged) {
-      guard
-        pricing.isTeam,
-        pricing.billing == .yearly,
-        pricing.quantity > currentSubscription.totalQuantity
-      else {
-        return currentSubscription.plan.id
-      }
-    }
-
-    let lookupKey = try modernLookupKey(for: pricing)
-    let prices =
-      try await stripe
-      .fetchPricesForProduct(envVars.stripe.productId, [lookupKey])
-      .data
-
-    guard
-      let price = prices.first(where: {
-        $0.lookupKey == lookupKey
-          && $0.product == envVars.stripe.productId
-      })
-    else {
-      throw PricingResolutionError.modernPriceNotFound(
-        pricing,
-        productID: envVars.stripe.productId,
-        lookupKey: lookupKey
-      )
-    }
-
-    return Stripe.Plan.ID(rawValue: price.id.rawValue)
-  }
-
   let lookupKey = try modernLookupKey(for: pricing)
-  let prices =
-    try await stripe
+  let prices = try await stripe
     .fetchPricesForProduct(envVars.stripe.productId, [lookupKey])
     .data
 
   guard
     let price = prices.first(where: {
       $0.lookupKey == lookupKey
-        && $0.product == envVars.stripe.productId
+      && $0.product == envVars.stripe.productId
     })
   else {
     throw PricingResolutionError.modernPriceNotFound(
