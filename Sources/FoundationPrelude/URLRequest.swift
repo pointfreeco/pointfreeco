@@ -3,7 +3,6 @@ import Either
 import Foundation
 import Logging
 import LoggingDependencies
-import UrlFormEncoding
 
 #if canImport(FoundationNetworking)
   import FoundationNetworking

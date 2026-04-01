@@ -17,19 +17,19 @@ func resolvePlanID(
   @Dependency(\.stripe) var stripe
 
   if let currentSubscription, currentSubscription.plan.interval == pricing.interval {
-    guard
-      pricing.isTeam,
-      pricing.billing == .yearly,
-      pricing.quantity > currentSubscription.totalQuantity
-    else {
-      return currentSubscription.plan.id
+    let isLegacy = !isModernPricingPlan(currentSubscription.plan, envVars: envVars)
+    let quantityChanged = pricing.quantity != currentSubscription.totalQuantity
+    if !(isLegacy && quantityChanged) {
+      guard
+        pricing.isTeam,
+        pricing.billing == .yearly,
+        pricing.quantity > currentSubscription.totalQuantity
+      else {
+        return currentSubscription.plan.id
+      }
     }
 
-    let lookupKey = try modernLookupKey(
-      for: pricing,
-      currentSubscription: currentSubscription,
-      envVars: envVars
-    )
+    let lookupKey = try modernLookupKey(for: pricing)
     let prices =
       try await stripe
       .fetchPricesForProduct(envVars.stripe.productId, [lookupKey])
@@ -75,21 +75,6 @@ func resolvePlanID(
 
 func isModernPricingPlan(_ plan: Stripe.Plan, envVars: EnvVars) -> Bool {
   plan.product == envVars.stripe.productId
-}
-
-private func modernLookupKey(
-  for pricing: Pricing,
-  currentSubscription: Stripe.Subscription,
-  envVars: EnvVars
-) throws -> Stripe.Price.LookupKey {
-  guard pricing.isTeam, pricing.billing == .yearly else {
-    return try modernLookupKey(for: pricing)
-  }
-
-  let hasLegacyTeamSeats = currentSubscription.items.data.contains {
-    $0.plan.interval == .year && $0.plan.product != envVars.stripe.productId
-  }
-  return hasLegacyTeamSeats ? "pointfree-pro-legacy" : "pointfree-pro"
 }
 
 private func modernLookupKey(for pricing: Pricing) throws -> Stripe.Price.LookupKey {

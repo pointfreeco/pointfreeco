@@ -23,7 +23,7 @@ extension Client {
     fetchPaymentMethod: { _ in .mock },
     fetchPlans: { .mock([.mock]) },
     fetchPlansForProduct: { _ in .mock([.modernPersonalMonthly, .modernPersonalYearly, .modernTeamYearly]) },
-    fetchPricesForProduct: { _, _ in .mock([.pointFreeMonthly, .pointFreePro, .pointFreeProLegacy]) },
+    fetchPricesForProduct: { _, _ in .mock([.pointFreeMonthly, .pointFreePro]) },
     fetchPlan: { _ in .mock },
     fetchSubscription: { _ in .mock },
     fetchUpcomingInvoice: { _ in .upcoming },
@@ -290,14 +290,6 @@ extension Price {
     product: "prod_test",
     recurring: .init(interval: .year),
     unitAmount: nil
-  )
-
-  public static let pointFreeProLegacy = Price(
-    id: "price_pointfree_pro_legacy",
-    lookupKey: "pointfree-pro-legacy",
-    product: "prod_test",
-    recurring: .init(interval: .year),
-    unitAmount: 192_00
   )
 }
 

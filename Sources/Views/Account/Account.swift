@@ -434,6 +434,22 @@ private func referAFriend(
 private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Date) -> Node {
   guard let subscription = accountData.stripeSubscription else { return [] }
 
+  @Dependency(\.envVars) var envVars
+
+  let legacyCallout: Node =
+    subscription.plan.product != envVars.stripe.productId
+  ? .markdownBlock(
+      attributes: [
+        .class([Class.padding([.mobile: [.all: 2]]), Class.margin([.mobile: [.bottom: 2]])]),
+        .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
+      ],
+      """
+      You are currently on a **legacy membership** tier. _Any changes you make will automatically \
+      upgrade you to the **Pro membership** tier._
+      """
+    )
+    : []
+
   let content: Node =
     accountData.subscriberState.isEnterpriseSubscriber
     ? enterpriseSubscriptionOverview(accountData)
@@ -454,6 +470,7 @@ private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Da
       sizes: [.mobile: 12],
       .div(
         .h2(attributes: [.class([Class.pf.type.responsiveTitle4])], ["Subscription overview"]),
+        legacyCallout,
         .gridColumn(sizes: [.mobile: 12], content)
       )
     )
@@ -1020,7 +1037,6 @@ private func mainAction(
     @Dependency(\.envVars) var envVars
 
     let discount = subscription.discount?.coupon.discount ?? { $0 }
-    let isTeam = subscription.quantity > 1
     let pricingTransitionPrefix = (subscription.plan.product == envVars.stripe.productId)
       ? "Your new rate will be "
       : "This change moves you to our current pricing of "
@@ -1045,7 +1061,7 @@ private func mainAction(
             .method(.post),
             .onsubmit(
               unsafe: """
-                if (!confirm("Upgrade to yearly billing? \(pricingTransitionPrefix)\(formattedAmount ?? "")/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
+                if (!confirm("Upgrade to Pro yearly? \(pricingTransitionPrefix)\(formattedAmount ?? "")/year. You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
                   return false
                 }
                 """
@@ -1063,7 +1079,7 @@ private func mainAction(
           ]),
           .button(
             attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
-            "Upgrade to yearly billing"
+            "Upgrade to Pro yearly"
           )
         )
       } else {
@@ -1076,35 +1092,7 @@ private func mainAction(
         )
       }
     case .year:
-      guard !isTeam else { return [] }
-      let formattedAmount = formattedModernAmount(.monthly)
-      return .form(
-        attributes: [
-          .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
-          .method(.post),
-          .onsubmit(
-            unsafe: """
-              if (!confirm("Switch to monthly billing? \(pricingTransitionPrefix)\(formattedAmount ?? "")/month. You will be charged \(formattedAmount ?? "") on a monthly basis at the end of your current billing period.")) {
-                return false
-              }
-              """
-          ),
-        ],
-        .input(attributes: [
-          .name("billing"),
-          .type(.hidden),
-          .value("monthly"),
-        ]),
-        .input(attributes: [
-          .name("quantity"),
-          .type(.hidden),
-          .value(subscription.quantity),
-        ]),
-        .button(
-          attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
-          "Switch to monthly billing"
-        )
-      )
+      return []
     }
   }
 }
@@ -1239,65 +1227,71 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
 
   @Dependency(\.siteRouter) var siteRouter
 
-  if stripeSubscription.plan.interval == .month {
-    let upgradeAction: Node
-    if data.paymentMethod != nil {
-      upgradeAction = .form(
-        attributes: [
-          .action(siteRouter.path(for: .account(.subscription(.change(.update()))))),
-          .method(.post),
-          .onsubmit(
-            unsafe: """
-              if (!confirm("Upgrade to yearly billing to invite teammates? You will be charged immediately with a prorated refund for the time remaining in your billing period.")) {
-                return false
-              }
-              """
-          ),
-        ],
-        .input(attributes: [
-          .name("billing"),
-          .type(.hidden),
-          .value("yearly"),
-        ]),
-        .input(attributes: [
-          .name("quantity"),
-          .type(.hidden),
-          .value(stripeSubscription.quantity),
-        ]),
-        .button(
-          attributes: [.class([Class.pf.components.button(color: .purple, size: .small)])],
-          "Upgrade to yearly billing"
-        )
-      )
-    } else {
-      upgradeAction = .a(
-        attributes: [
-          .class([Class.pf.components.button(color: .purple, size: .small)]),
-          .href(siteRouter.path(for: .account(.paymentInfo()))),
-        ],
-        "Add payment info to upgrade"
-      )
-    }
-
-    return .gridRow(
-      attributes: [.class([subscriptionInfoRowClass])],
-      .gridColumn(
-        sizes: [.mobile: 3],
-        .div(.p("Add teammate"))
-      ),
-      .gridColumn(
-        sizes: [.mobile: 9],
-        .div(
-          attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-          .p("Inviting teammates requires yearly billing."),
-          .p(upgradeAction)
-        )
-      )
-    )
-  }
+  @Dependency(\.envVars) var envVars
 
   let amount = inviteTeammateAmount(for: stripeSubscription)
   let interval = stripeSubscription.plan.interval == .year ? "year" : "month"
+  let isLegacy = stripeSubscription.plan.product != envVars.stripe.productId
+  let isProMonthly = !isLegacy && stripeSubscription.plan.interval == .month
+  let proYearlyTeamAmount = Pricing(billing: .yearly, quantity: 2).modernPricing
+    ?? Pricing(billing: .yearly, quantity: 2).legacyPricing
+
+  let inviteDescription: Node =
+    isLegacy
+    ? .markdownBlock(
+      attributes: [
+        .class([
+          Class.pf.type.body.regular,
+          Class.padding([.mobile: [.all: 2]]),
+        ]),
+        .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
+      ],
+      """
+      You are on a **legacy \(interval)ly** membership tier. Adding a teammate will \
+      automatically upgrade you to the **Pro yearly** tier with new pricing of \
+      **$\(proYearlyTeamAmount.rawValue / 100)/teammate per year** prorated based on \
+      your current billing cycle.
+      """
+    )
+    : isProMonthly
+    ? .markdownBlock(
+      attributes: [
+        .class([
+          Class.pf.type.body.regular,
+          Class.padding([.mobile: [.all: 2]]),
+        ]),
+        .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
+      ],
+      """
+      You are on a **Pro monthly** membership tier. Adding a teammate will \
+      automatically upgrade you to the **Pro yearly** tier with new pricing of \
+      **$\(proYearlyTeamAmount.rawValue / 100)/teammate per year** prorated based on \
+      your current billing cycle.
+      """
+    )
+    : .markdownBlock(
+      attributes: [
+        .class([
+          Class.pf.type.body.regular
+        ])
+      ],
+      """
+      Add a teammate for a discounted rate of **$\(amount.rawValue / 100)/\
+      \(interval)**. Your first invoice will be prorated based on your current billing cycle.
+      """
+    )
+
+  let upgradeConfirmAttributes: [Attribute<Tag.Form>] =
+    isLegacy || isProMonthly
+    ? [
+      .onsubmit(
+        unsafe: """
+          if (!confirm("Adding a teammate will upgrade your subscription to Pro yearly billing. You will be charged immediately with a prorated refund for the time remaining in your billing period. Continue?")) {
+            return false
+          }
+          """)
+    ]
+    : []
 
   let inviteViaEmail: Node
   let invitesRemaining = stripeSubscription.quantity - data.teamInvites.count - data.teammates.count
@@ -1310,23 +1304,13 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
       ),
       .gridColumn(
         sizes: [.mobile: 9],
-        .markdownBlock(
-          attributes: [
-            .class([
-              Class.pf.type.body.regular
-            ])
-          ],
-          """
-          Add a teammate for a discounted rate of **$\(amount.rawValue / 100)/\
-          \(interval)**. Your first invoice will be prorated based on your current billing cycle.
-          """
-        ),
+        inviteDescription,
         .form(
           attributes: [
             .action(siteRouter.path(for: .invite(.addTeammate(nil)))),
             .method(.post),
             .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])]),
-          ],
+          ] + upgradeConfirmAttributes,
           .input(
             attributes: [
               .class([smallInputClass, Class.align.middle, Class.size.width100pct]),
@@ -1405,21 +1389,40 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
       ),
       .gridColumn(
         sizes: [.mobile: 9],
-        .markdownBlock(
+        isLegacy || isProMonthly
+        ? .markdownBlock(
+          attributes: [
+            .class([
+              Class.pf.type.body.regular,
+              Class.padding([.mobile: [.all: 2]]),
+            ]),
+            .style(backgroundColor(.rgb(0xff, 0xff, 0xdd))),
+          ],
+          """
+          Invite your colleagues to your membership by sharing the following URL. When a \
+          teammate joins, your subscription will automatically upgrade to the **Pro yearly** \
+          tier with new pricing of **$\(proYearlyTeamAmount.rawValue / 100)/teammate per \
+          year** prorated based on your current billing cycle.
+          """
+        )
+        : .markdownBlock(
           attributes: [
             .class([
               Class.pf.type.body.regular
             ])
           ],
           """
-          Invite your colleages to your membership by sharing the following URL. Your credit
+          Invite your colleagues to your membership by sharing the following URL. Your credit
           card will be charged a prorated amount of **$\(amount.rawValue / 100)/\(interval)**
           when a teammate joins.
           """
         ),
         copyToPasteboard(
           text: siteRouter.url(for: .teamInviteCode(.landing(code: subscription.teamInviteCode))),
-          buttonColor: .white
+          buttonColor: .white,
+          confirmMessage: isLegacy || isProMonthly
+            ? "Are you sure you want to share this link? When a teammate joins your entire membership will be upgraded to the Pro yearly tier with new pricing of $\(proYearlyTeamAmount.rawValue / 100)/teammate per year (prorated based on your current billing cycle)."
+            : nil
         ),
         .form(
           attributes: [
@@ -1619,9 +1622,26 @@ private var logoutView: Node {
 
 private func copyToPasteboard(
   text: String,
-  buttonColor: Class.pf.components.Color
+  buttonColor: Class.pf.components.Color,
+  confirmMessage: String? = nil
 ) -> Node {
-  .div(
+  let copyScript: String
+  if let confirmMessage {
+    copyScript = """
+      if (confirm("\(confirmMessage)")) {
+        navigator.clipboard.writeText("\(text)");
+        this.value = "Copied!";
+        setTimeout(() => { this.value = "Copy"; }, 3000);
+      }
+      """
+  } else {
+    copyScript = """
+      navigator.clipboard.writeText("\(text)");
+      this.value = "Copied!";
+      setTimeout(() => { this.value = "Copy"; }, 3000);
+      """
+  }
+  return .div(
     attributes: [
       .class([Class.flex.flex, Class.padding([.mobile: [.top: 1]])])
     ],
@@ -1643,13 +1663,7 @@ private func copyToPasteboard(
           Class.margin([.mobile: [.left: 1], .desktop: [.left: 2]]),
         ]),
         .value("Copy"),
-        .onclick(
-          unsafe: """
-            navigator.clipboard.writeText("\(text)");
-            this.value = "Copied!";
-            setTimeout(() => { this.value = "Copy"; }, 3000);
-            """
-        ),
+        .onclick(unsafe: copyScript),
       ]
     )
   )
