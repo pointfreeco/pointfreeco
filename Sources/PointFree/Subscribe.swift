@@ -187,9 +187,9 @@ private func subscribe(
       }
 
       if conn.acceptJSON {
-        return try conn.writeStatus(.ok).respond(
-          json: ["success": true]
-        )
+        return try conn.writeStatus(.ok)
+          .flash(.notice, "You are now a member of Point-Free!")
+          .respond(json: ["success": true])
       } else {
         return conn.redirect(to: .account()) {
           $0.flash(.notice, "You are now a member of Point-Free!")
@@ -273,7 +273,7 @@ private func loginAndRedirectToPricing<A>(
   @Dependency(\.siteRouter) var siteRouter
 
   return conn
-    |> redirect(to: .auth(.gitHubAuth(redirect: siteRouter.url(for: .pricingLanding))))
+    |> redirect(to: .auth(.gitHubAuth(redirect: siteRouter.path(for: .pricingLanding))))
 }
 
 private func validateCoupon(forSubscribeData subscribeData: SubscribeData) -> Bool {

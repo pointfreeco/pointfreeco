@@ -28,7 +28,7 @@ public struct PointFreeRouter: ParserPrinter {
   }
 
   public func gitHubAuthPath(redirect: SiteRoute? = nil) -> String {
-    self.path(for: .auth(.gitHubAuth(redirect: redirect.map(self.url(for:)))))
+    self.path(for: .auth(.gitHubAuth(redirect: redirect.map(self.path(for:)))))
   }
 
   public func loginPath(redirect: SiteRoute? = nil) -> String {
@@ -38,7 +38,7 @@ public struct PointFreeRouter: ParserPrinter {
     else {
       return self.path(for: .auth(.authLanding(kind: .login)))
     }
-    return self.path(for: .auth(.authLanding(kind: .login, redirect: url(for: redirect))))
+    return self.path(for: .auth(.authLanding(kind: .login, redirect: path(for: redirect))))
   }
 
   public func signUpPath(redirect: SiteRoute? = nil) -> String {
@@ -48,7 +48,7 @@ public struct PointFreeRouter: ParserPrinter {
     else {
       return self.path(for: .auth(.authLanding(kind: .signUp)))
     }
-    return self.path(for: .auth(.authLanding(kind: .signUp, redirect: url(for: redirect))))
+    return self.path(for: .auth(.authLanding(kind: .signUp, redirect: path(for: redirect))))
   }
 }
 
