@@ -23,7 +23,7 @@ extension Client {
     fetchPaymentMethod: { _ in .mock },
     fetchPlans: { .mock([.mock]) },
     fetchPlansForProduct: { _ in .mock([.modernPersonalMonthly, .modernPersonalYearly, .modernTeamYearly]) },
-    fetchPricesForProduct: { _, _ in .mock([.pointFreeMonthly, .pointFreePro, .pointFreeProLegacy]) },
+    fetchPricesForProduct: { _, _ in .mock([.pointFreeMonthly, .pointFreePro]) },
     fetchPlan: { _ in .mock },
     fetchSubscription: { _ in .mock },
     fetchUpcomingInvoice: { _ in .upcoming },

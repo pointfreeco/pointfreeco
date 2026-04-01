@@ -549,7 +549,7 @@ final class StripeTests: TestCase {
       POST https://api.stripe.com/v1/subscriptions?expand%5B%5D=customer.default_source&expand%5B%5D=latest_invoice.payment_intent
       Stripe-Version: 2020-08-27
 
-      customer=cus_test&items[0][plan]=yearly-2019&items[0][quantity]=2
+      customer=cus_test&items[0][price]=yearly-2019&items[0][quantity]=2
       """
     }
     await assertInlineSnapshot(
@@ -563,7 +563,7 @@ final class StripeTests: TestCase {
       POST https://api.stripe.com/v1/subscriptions?expand%5B%5D=customer.default_source&expand%5B%5D=latest_invoice.payment_intent
       Stripe-Version: 2020-08-27
 
-      coupon=freebie&customer=cus_test&items[0][plan]=monthly-2019&items[0][quantity]=1
+      coupon=freebie&customer=cus_test&items[0][price]=monthly-2019&items[0][quantity]=1
       """
     }
     await assertInlineSnapshot(
@@ -735,7 +735,7 @@ final class StripeTests: TestCase {
       POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
       Stripe-Version: 2020-08-27
 
-      cancel_at_period_end=false&items[0][id]=si_test&items[0][plan]=yearly-2019&items[0][quantity]=1&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
+      cancel_at_period_end=false&items[0][deleted]=true&items[0][id]=si_test&items[1][price]=yearly-2019&items[1][quantity]=1&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
       """
     }
     await assertInlineSnapshot(
@@ -746,7 +746,7 @@ final class StripeTests: TestCase {
       POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
       Stripe-Version: 2020-08-27
 
-      cancel_at_period_end=false&items[0][id]=si_test&items[0][plan]=monthly-2019&items[0][quantity]=1&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
+      cancel_at_period_end=false&items[0][id]=si_test&items[0][quantity]=1&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
       """
     }
     await assertInlineSnapshot(
@@ -757,7 +757,7 @@ final class StripeTests: TestCase {
       POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
       Stripe-Version: 2020-08-27
 
-      cancel_at_period_end=false&coupon=&items[0][id]=si_test&items[0][plan]=monthly-2019&items[0][quantity]=2&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
+      cancel_at_period_end=false&discounts[]&items[0][id]=si_test&items[0][quantity]=2&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
       """
     }
     await assertInlineSnapshot(
@@ -768,7 +768,7 @@ final class StripeTests: TestCase {
       POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
       Stripe-Version: 2020-08-27
 
-      cancel_at_period_end=false&coupon=&items[0][id]=si_test&items[0][price]=price_pointfree_pro&items[0][quantity]=4&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
+      cancel_at_period_end=false&discounts[]&items[0][deleted]=true&items[0][id]=si_test&items[1][price]=price_pointfree_pro&items[1][quantity]=4&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
       """
     }
 
@@ -788,7 +788,7 @@ final class StripeTests: TestCase {
       POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
       Stripe-Version: 2020-08-27
 
-      cancel_at_period_end=false&coupon=&items[0][id]=si_legacy_team&items[0][quantity]=3&items[1][price]=price_pointfree_pro&items[1][quantity]=1&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
+      cancel_at_period_end=false&discounts[]&items[0][deleted]=true&items[0][id]=si_legacy_team&items[1][price]=price_pointfree_pro&items[1][quantity]=4&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
       """
     }
 
@@ -813,7 +813,7 @@ final class StripeTests: TestCase {
       POST https://api.stripe.com/v1/subscriptions/sub_test?expand%5B%5D=customer.default_source
       Stripe-Version: 2020-08-27
 
-      cancel_at_period_end=false&coupon=&items[0][id]=si_legacy&items[0][quantity]=3&items[1][id]=si_modern&items[1][quantity]=2&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
+      cancel_at_period_end=false&discounts[]&items[0][deleted]=true&items[0][id]=si_legacy&items[1][id]=si_modern&items[1][quantity]=5&payment_behavior=error_if_incomplete&proration_behavior=always_invoice
       """
     }
   }
