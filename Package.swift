@@ -88,7 +88,7 @@ var package = Package(
         .product(name: "SQLKit", package: "sql-kit"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "XCTestDynamicOverlay", package: "xctest-dynamic-overlay"),
-      ],
+      ]
     ),
 
     .target(
