@@ -67,11 +67,14 @@ func giftCreateMiddleware(
   .run
   .flatMap { errorOrPaymentIntent in
     switch errorOrPaymentIntent {
-    case .left:
+    case .left(let error):
+      let message =
+        (error as? StripeErrorEnvelope).map(\.error.message)
+        ?? "Unknown error with our payment processor."
       return conn
         |> redirect(
           to: .gifts(),
-          headersMiddleware: flash(.notice, "Unknown error with our payment processor")
+          headersMiddleware: flash(.error, message)
         )
 
     case .right:

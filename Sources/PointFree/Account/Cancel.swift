@@ -48,9 +48,12 @@ private func cancelResponse(
     return conn.redirect(to: .account()) {
       $0.flash(.notice, "We’ve canceled your membership.")
     }
-  } catch {
+  } catch let error {
+    let message =
+      (error as? StripeErrorEnvelope).map(\.error.message)
+      ?? "We couldn’t cancel your membership at this time."
     return conn.redirect(to: .account()) {
-      $0.flash(.error, "We couldn’t cancel your membership at this time.")
+      $0.flash(.error, message)
     }
   }
 }
@@ -81,15 +84,15 @@ private func reactivateResponse(
     return conn.redirect(to: .account()) {
       $0.flash(.notice, "We’ve reactivated your membership.")
     }
-  } catch {
+  } catch let error {
+    let message =
+      (error as? StripeErrorEnvelope).map(\.error.message)
+      ?? """
+      We were unable to reactivate your membership at this time. Please contact \
+      <support@pointfree.co> or join from our pricing page.
+      """
     return conn.redirect(to: .account()) {
-      $0.flash(
-        .error,
-        """
-        We were unable to reactivate your membership at this time. Please contact \
-        <support@pointfree.co> or join from our pricing page.
-        """
-      )
+      $0.flash(.error, message)
     }
   }
 }
