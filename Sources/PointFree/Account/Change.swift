@@ -40,6 +40,7 @@ func changeSubscription(
 ) -> (Conn<StatusLineOpen, (Stripe.Subscription, Pricing)>)
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.database) var database
   @Dependency(\.stripe) var stripe
 
@@ -59,7 +60,14 @@ func changeSubscription(
         )
       let localSubscription = try await database.updateStripeSubscription(updatedSubscription)
       try await database.updateSubscriptionPlan(localSubscription.id, newPricing.plan)
-      if newPricing.plan != .max {
+
+      switch newPricing.plan {
+
+      case .max:
+        guard let currentUser
+        else { break }
+        await sendMaxWelcomeEmail(to: currentUser)
+      case .pro:
         await removeBetaAccess(for: localSubscription)
       }
     }
@@ -172,5 +180,33 @@ private func fetchSeatsTaken<A>(
     return
       invitesAndTeammates
       .flatMap { middleware(conn.map(const(user .*. $0 .*. conn.data.second))) }
+  }
+}
+
+func sendMaxWelcomeEmail(to user: User) async {
+  @Dependency(\.fireAndForget) var fireAndForget
+
+  await fireAndForget {
+    _ = try await send(
+      email: prepareEmailV2(
+        to: [user.email],
+        subject: "Welcome to Point-Free Max!",
+        content: MaxWelcomeEmail(user: user)
+      )
+    )
+  }
+}
+
+func sendProWelcomeEmail(to user: User) async {
+  @Dependency(\.fireAndForget) var fireAndForget
+
+  await fireAndForget {
+    _ = try await send(
+      email: prepareEmailV2(
+        to: [user.email],
+        subject: "Welcome to Point-Free!",
+        content: ProWelcomeEmail(user: user)
+      )
+    )
   }
 }
