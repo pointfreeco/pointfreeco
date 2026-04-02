@@ -40,6 +40,7 @@ func changeSubscription(
 ) -> (Conn<StatusLineOpen, (Stripe.Subscription, Pricing)>)
   -> IO<Conn<ResponseEnded, Data>>
 {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.database) var database
   @Dependency(\.stripe) var stripe
 
@@ -59,10 +60,10 @@ func changeSubscription(
         )
       let localSubscription = try await database.updateStripeSubscription(updatedSubscription)
       try await database.updateSubscriptionPlan(localSubscription.id, newPricing.plan)
-      if newPricing.plan == .max {
-        let user = try await database.fetchUser(id: localSubscription.userId)
-        await sendMaxWelcomeEmail(to: user)
-      } else {
+
+      if newPricing.plan == .max, let currentUser {
+        await sendMaxWelcomeEmail(to: currentUser)
+      } else if newPricing.plan != .max {
         await removeBetaAccess(for: localSubscription)
       }
     }

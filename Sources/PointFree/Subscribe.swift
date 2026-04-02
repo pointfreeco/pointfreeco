@@ -165,9 +165,10 @@ private func subscribe(
         plan: subscribeData.pricing.plan
       )
 
-      if subscribeData.pricing.plan == .max {
+      switch subscribeData.pricing.plan {
+      case .max:
         await sendMaxWelcomeEmail(to: user)
-      } else {
+      case .pro:
         await sendProWelcomeEmail(to: user)
       }
 
