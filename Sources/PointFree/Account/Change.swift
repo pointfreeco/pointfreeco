@@ -61,9 +61,13 @@ func changeSubscription(
       let localSubscription = try await database.updateStripeSubscription(updatedSubscription)
       try await database.updateSubscriptionPlan(localSubscription.id, newPricing.plan)
 
-      if newPricing.plan == .max, let currentUser {
+      switch newPricing.plan {
+
+      case .max:
+        guard let currentUser
+        else { break }
         await sendMaxWelcomeEmail(to: currentUser)
-      } else if newPricing.plan != .max {
+      case .pro:
         await removeBetaAccess(for: localSubscription)
       }
     }
