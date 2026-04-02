@@ -61,7 +61,7 @@ private func betasLandingMiddleware(
           Get early access to the next generation of Point-Free libraries. Join private betas \
           for projects we're actively developing and help shape them before they go public.
           """,
-        title: "Private Betas"
+        title: "Beta previews"
       )
     ) {
       BetasLanding(collaboratorStatuses: collaboratorStatuses)
