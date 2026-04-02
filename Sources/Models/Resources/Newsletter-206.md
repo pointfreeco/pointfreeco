@@ -75,7 +75,7 @@ impossible, and simplifies features by reducing the need to ping-pong actions ba
 
 To enqueue async work, use `store.addTask`:
 
-```swift
+```swift:2
 case .startTimerButtonTapped:
   store.addTask {
     while true {
@@ -93,7 +93,7 @@ feature's state from inside async tasks, which was impossible in 1.x.
 For example, suppose you have a timer counting down that you want to stop when it reaches 0. You
 can now read that state directly in the task:
 
-```swift
+```swift:3
 case .startCountdownButtonTapped:
   store.addTask {
     while try store.remainingSeconds > 0 {
@@ -109,7 +109,7 @@ fewer actions and less ping-ponging of logic.
 
 You can also _write_ state from an async context using `store.modify`:
 
-```swift
+```swift:5
 case .startCountdownButtonTapped:
   store.addTask {
     while try store.remainingSeconds > 0 {
