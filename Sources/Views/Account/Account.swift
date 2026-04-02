@@ -1559,7 +1559,6 @@ private func addTeammateToSubscriptionRow(_ data: AccountData) -> Node {
 private func subscriptionInviteMoreRowView(_ data: AccountData) -> Node {
   guard !data.subscriberState.isEnterpriseSubscriber else { return [] }
   guard let subscription = data.stripeSubscription else { return [] }
-  guard subscription.plan.interval == .year else { return [] }
   guard data.isSubscriptionOwner else { return [] }
   let invites = data.teamInvites
   let teammates = data.teammates
