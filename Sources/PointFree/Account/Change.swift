@@ -59,7 +59,10 @@ func changeSubscription(
         )
       let localSubscription = try await database.updateStripeSubscription(updatedSubscription)
       try await database.updateSubscriptionPlan(localSubscription.id, newPricing.plan)
-      if newPricing.plan != .max {
+      if newPricing.plan == .max {
+        let user = try await database.fetchUser(id: localSubscription.userId)
+        await sendMaxWelcomeEmail(to: user)
+      } else {
         await removeBetaAccess(for: localSubscription)
       }
     }
@@ -170,5 +173,33 @@ private func fetchSeatsTaken<A>(
     return
       invitesAndTeammates
       .flatMap { middleware(conn.map(const(user .*. $0 .*. conn.data.second))) }
+  }
+}
+
+func sendMaxWelcomeEmail(to user: User) async {
+  @Dependency(\.fireAndForget) var fireAndForget
+
+  await fireAndForget {
+    _ = try await send(
+      email: prepareEmailV2(
+        to: [user.email],
+        subject: "Welcome to Point-Free Max!",
+        content: MaxWelcomeEmail(user: user)
+      )
+    )
+  }
+}
+
+func sendProWelcomeEmail(to user: User) async {
+  @Dependency(\.fireAndForget) var fireAndForget
+
+  await fireAndForget {
+    _ = try await send(
+      email: prepareEmailV2(
+        to: [user.email],
+        subject: "Welcome to Point-Free!",
+        content: ProWelcomeEmail(user: user)
+      )
+    )
   }
 }

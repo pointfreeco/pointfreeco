@@ -165,6 +165,12 @@ private func subscribe(
         plan: subscribeData.pricing.plan
       )
 
+      if subscribeData.pricing.plan == .max {
+        await sendMaxWelcomeEmail(to: user)
+      } else {
+        await sendProWelcomeEmail(to: user)
+      }
+
       if let referrer {
         async let updateReferrerBalance: Void = {
           _ = try await stripe.updateCustomerBalance(
