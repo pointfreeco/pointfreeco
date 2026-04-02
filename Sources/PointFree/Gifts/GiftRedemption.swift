@@ -80,16 +80,16 @@ private func redeemGift(
       switch errorOrCustomer {
       case .left(let error):
         reportIssue(error)
+        let message =
+          (error as? StripeErrorEnvelope).map(\.error.message)
+          ?? """
+          We were unable to redeem your gift. Please try again, or contact \
+          <support@pointfree.co> for more help.
+          """
         return conn
           |> redirect(
             to: .gifts(.redeem(gift.id)),
-            headersMiddleware: flash(
-              .error,
-              """
-              We were unable to redeem your gift. Please try again, or contact \
-              <support@pointfree.co> for more help.
-              """
-            )
+            headersMiddleware: flash(.error, message)
           )
 
       case .right:
@@ -141,16 +141,16 @@ private func redeemGift(
       switch errorOrNot {
       case .left(let error):
         reportIssue(error)
+        let message =
+          (error as? StripeErrorEnvelope).map(\.error.message)
+          ?? """
+          We were unable to redeem your gift. Please try again, or contact \
+          <support@pointfree.co> for more help.
+          """
         return conn
           |> redirect(
             to: .gifts(.redeem(gift.id)),
-            headersMiddleware: flash(
-              .error,
-              """
-              We were unable to redeem your gift. Please try again, or contact \
-              <support@pointfree.co> for more help.
-              """
-            )
+            headersMiddleware: flash(.error, message)
           )
 
       case .right:

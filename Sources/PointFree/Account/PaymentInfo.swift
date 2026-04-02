@@ -87,9 +87,17 @@ let updatePaymentInfoMiddleware =
       conn
         |> redirect(
           to: .account(.paymentInfo()),
-          headersMiddleware: $0.isLeft
-            ? flash(.error, genericPaymentInfoError)
-            : flash(.notice, "Your payment information has been updated.")
+          headersMiddleware: {
+            switch $0 {
+            case .left(let error):
+              if let stripeError = error as? StripeErrorEnvelope {
+                return flash(.error, stripeError.error.message)
+              }
+              return flash(.error, genericPaymentInfoError)
+            case .right:
+              return flash(.notice, "Your payment information has been updated.")
+            }
+          }($0)
         )
     }
   }

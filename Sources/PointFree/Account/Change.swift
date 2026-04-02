@@ -102,6 +102,8 @@ func subscriptionModificationErrorMiddleware<A>(_ error: Error)
   case let PricingResolutionError.missingModernPrice(pricing)
     where pricing.isTeam && pricing.billing == .monthly:
     message = "Team monthly memberships are no longer available."
+  case let stripeError as StripeErrorEnvelope:
+    message = stripeError.error.message
   default:
     message =
       """
