@@ -195,11 +195,13 @@ your feature state that is completely invisible to parent features:
     }
     var body: some Feature {
       Update { state, action in
+        switch action {
         case .factButtonTapped:
           store.addTask {
             let fact = try await factClient.fetch(store.count)
             try store.post(key: Event.self, value: fact)
           }
+        }
       }
       .onEvent(Event.self) { fact, state in
         state.fact = fact
@@ -344,11 +346,13 @@ onto closures that represent events it wants to communicate to the parent:
     let onSend: (String) throws -> Void
     var body: some Feature {
       Update { state, action in
+        switch action {
         case .sendButtonTapped:
           store.addTask { [draft = state.draft] in
             try onSend(draft)
           }
           state.draft = ""
+        }
       }
     }
   }
