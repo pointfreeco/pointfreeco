@@ -558,14 +558,7 @@ final class StripeTests: TestCase {
         .createSubscription(customer: "cus_test", plan: .monthly, quantity: 1, coupon: "freebie")
         .rawValue,
       as: .raw
-    ) {
-      """
-      POST https://api.stripe.com/v1/subscriptions?expand%5B%5D=customer.default_source&expand%5B%5D=latest_invoice.payment_intent
-      Stripe-Version: 2020-08-27
-
-      coupon=freebie&customer=cus_test&items[0][price]=monthly-2019&items[0][quantity]=1
-      """
-    }
+    )
     await assertInlineSnapshot(
       of:
         Stripe

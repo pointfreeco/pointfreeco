@@ -343,7 +343,11 @@ func createSubscription(
   params["customer"] = customer.rawValue
   params["items[0][price]"] = plan.rawValue
   params["items[0][quantity]"] = String(quantity)
-  params["coupon"] = coupon?.rawValue
+  if let coupon {
+    params["discounts[0][coupon]"] = coupon.rawValue
+  } else {
+    params["discounts"] = [Any]()
+  }
 
   return stripeRequest(
     "subscriptions?expand[]=customer.default_source&expand[]=latest_invoice.payment_intent",
