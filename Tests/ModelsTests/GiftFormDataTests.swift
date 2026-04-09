@@ -12,7 +12,6 @@ final class GiftFormDataTests: TestCase {
       fromEmail: "blob@pointfree.co",
       fromName: "Blob",
       message: "Happy Birthday!",
-      monthsFree: 12,
       paymentMethodID: "pm_deadbeef",
       toEmail: "blob.jr",
       toName: "Blob Jr."
@@ -44,7 +43,6 @@ final class GiftFormDataTests: TestCase {
       fromEmail: "blob@pointfree.co",
       fromName: "Blob",
       message: "Happy Birthday!",
-      monthsFree: 12,
       paymentMethodID: "pm_deadbeef",
       toEmail: "blob.jr",
       toName: "Blob Jr."

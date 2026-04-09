@@ -22,7 +22,7 @@ final class StripePricingTests: TestCase {
       }
     } operation: {
       try await resolvePlanID(
-        for: Pricing(billing: .monthly, quantity: 8),
+        for: Pricing(plan: .pro, billing: .monthly, quantity: 8),
         currentSubscription: .teamMonthly
       )
     }
@@ -38,7 +38,7 @@ final class StripePricingTests: TestCase {
       }
     } operation: {
       try await resolvePlanID(
-        for: Pricing(billing: .yearly, quantity: 4),
+        for: Pricing(plan: .pro, billing: .yearly, quantity: 4),
         currentSubscription: .teamMonthly
       )
     }
@@ -64,7 +64,7 @@ final class StripePricingTests: TestCase {
       }
     } operation: {
       try await resolvePlanID(
-        for: Pricing(billing: .yearly, quantity: 4),
+        for: Pricing(plan: .pro, billing: .yearly, quantity: 4),
         currentSubscription: currentSubscription
       )
     }
@@ -80,7 +80,7 @@ final class StripePricingTests: TestCase {
         return .mock([.pointFreeMonthly])
       }
     } operation: {
-      try await resolvePlanID(for: Pricing(billing: .monthly, quantity: 1))
+      try await resolvePlanID(for: Pricing(plan: .pro, billing: .monthly, quantity: 1))
     }
 
     XCTAssertEqual(planID.rawValue, Price.pointFreeMonthly.id.rawValue)
@@ -89,10 +89,10 @@ final class StripePricingTests: TestCase {
   @MainActor
   func testResolvePlanIDFailsForTeamMonthlyWithoutCurrentSubscription() async throws {
     do {
-      _ = try await resolvePlanID(for: Pricing(billing: .monthly, quantity: 4))
+      _ = try await resolvePlanID(for: Pricing(plan: .pro, billing: .monthly, quantity: 4))
       XCTFail("Expected team monthly pricing to be unavailable")
     } catch let error as PricingResolutionError {
-      XCTAssertEqual(error, .missingModernPrice(Pricing(billing: .monthly, quantity: 4)))
+      XCTAssertEqual(error, .missingModernPrice(Pricing(plan: .pro, billing: .monthly, quantity: 4)))
     }
   }
 
@@ -149,14 +149,14 @@ final class StripePricingTests: TestCase {
           .mock([.pointFreeMonthly])
         }
       } operation: {
-        try await resolvePlanID(for: Pricing(billing: .yearly, quantity: 1))
+        try await resolvePlanID(for: Pricing(plan: .pro, billing: .yearly, quantity: 1))
       }
       XCTFail("Expected missing modern plan error")
     } catch let error as PricingResolutionError {
       XCTAssertEqual(
         error,
         .modernPriceNotFound(
-          Pricing(billing: .yearly, quantity: 1),
+          Pricing(plan: .pro, billing: .yearly, quantity: 1),
           productID: "prod_test",
           lookupKey: "pointfree-pro"
         )

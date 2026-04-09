@@ -43,7 +43,7 @@ class PointFreeRouterTests: TestCase {
       coupon: "student-discount",
       isOwnerTakingSeat: false,
       paymentMethodID: "pm_deadbeef",
-      pricing: .init(billing: .monthly, quantity: 4),
+      pricing: .init(plan: .pro, billing: .monthly, quantity: 4),
       referralCode: "cafed00d",
       subscriptionID: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.com"],
@@ -211,7 +211,7 @@ class PointFreeRouterTests: TestCase {
   func testGiftsPlan() async throws {
     let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/threeMonths")!)
 
-    let route = SiteRoute.gifts(.plan(.threeMonths))
+    let route = SiteRoute.gifts(.plan(.sixMonthsPro))
 
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
