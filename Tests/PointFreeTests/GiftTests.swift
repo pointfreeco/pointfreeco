@@ -35,9 +35,10 @@ class GiftTests: TestCase {
         XCTAssertEqual($3, "Blob")
         XCTAssertEqual($4, "HBD!")
         XCTAssertEqual($5, 3)
-        XCTAssertEqual($6, "pi_test")
-        XCTAssertEqual($7, "blob.jr@pointfree.co")
-        XCTAssertEqual($8, "Blob Jr.")
+        XCTAssertEqual($6, .pro)
+        XCTAssertEqual($7, "pi_test")
+        XCTAssertEqual($8, "blob.jr@pointfree.co")
+        XCTAssertEqual($9, "Blob Jr.")
         expectation.fulfill()
         return .unfulfilled
       }
@@ -51,7 +52,6 @@ class GiftTests: TestCase {
                 fromEmail: "blob@pointfree.co",
                 fromName: "Blob",
                 message: "HBD!",
-                monthsFree: 3,
                 toEmail: "blob.jr@pointfree.co",
                 toName: "Blob Jr."
               )
@@ -98,9 +98,10 @@ class GiftTests: TestCase {
         XCTAssertEqual($3, "Blob")
         XCTAssertEqual($4, "HBD!")
         XCTAssertEqual($5, 12)
-        XCTAssertEqual($6, "pi_test")
-        XCTAssertEqual($7, "blob.jr@pointfree.co")
-        XCTAssertEqual($8, "Blob Jr.")
+        XCTAssertEqual($6, .pro)
+        XCTAssertEqual($7, "pi_test")
+        XCTAssertEqual($8, "blob.jr@pointfree.co")
+        XCTAssertEqual($9, "Blob Jr.")
         expectation.fulfill()
         return .unfulfilled
       }
@@ -115,7 +116,6 @@ class GiftTests: TestCase {
                 fromEmail: "blob@pointfree.co",
                 fromName: "Blob",
                 message: "HBD!",
-                monthsFree: 12,
                 toEmail: "blob.jr@pointfree.co",
                 toName: "Blob Jr."
               )
@@ -162,9 +162,10 @@ class GiftTests: TestCase {
         XCTAssertEqual($3, "Blob")
         XCTAssertEqual($4, "HBD!")
         XCTAssertEqual($5, 3)
-        XCTAssertEqual($6, "pi_test")
-        XCTAssertEqual($7, "blob.jr@pointfree.co")
-        XCTAssertEqual($8, "Blob Jr.")
+        XCTAssertEqual($6, .pro)
+        XCTAssertEqual($7, "pi_test")
+        XCTAssertEqual($8, "blob.jr@pointfree.co")
+        XCTAssertEqual($9, "Blob Jr.")
         expectation.fulfill()
         return .unfulfilled
       }
@@ -179,7 +180,6 @@ class GiftTests: TestCase {
                 fromEmail: "blob@pointfree.co",
                 fromName: "Blob",
                 message: "HBD!",
-                monthsFree: 3,
                 toEmail: "blob.jr@pointfree.co",
                 toName: "Blob Jr."
               )
@@ -232,7 +232,6 @@ class GiftTests: TestCase {
                 fromEmail: "blob@pointfree.co",
                 fromName: "Blob",
                 message: "HBD!",
-                monthsFree: 3,
                 toEmail: "blob.jr@pointfree.co",
                 toName: "Blob Jr."
               )
@@ -282,7 +281,6 @@ class GiftTests: TestCase {
                 fromEmail: "blob@pointfree.co",
                 fromName: "Blob",
                 message: "HBD!",
-                monthsFree: 1,
                 toEmail: "blob.jr@pointfree.co",
                 toName: "Blob Jr."
               )

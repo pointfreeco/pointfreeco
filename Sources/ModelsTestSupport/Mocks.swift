@@ -47,6 +47,7 @@ extension Gift {
     id: .init(rawValue: .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!),
     message: "Happy birthday, junior!",
     monthsFree: 3,
+    plan: .pro,
     stripePaymentIntentId: "pi_test",
     stripePaymentIntentStatus: .requiresPaymentMethod,
     stripeSubscriptionId: nil,

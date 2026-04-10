@@ -1,7 +1,7 @@
-FROM swift:6.0-focal
+FROM swift:6.3-noble
 
 RUN apt-get --fix-missing update
-RUN apt-get install -y cmake libpq-dev libz-dev python
+RUN apt-get install -y cmake libpq-dev libz-dev python-is-python3
 
 WORKDIR /build
 
