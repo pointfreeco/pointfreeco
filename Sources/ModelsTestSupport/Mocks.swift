@@ -39,7 +39,6 @@ extension EpisodeCredit {
 
 extension Gift {
   public static let unfulfilled = Self(
-    coupon: nil,
     deliverAt: nil,
     delivered: false,
     fromEmail: "blob.sr@pointfree.co",

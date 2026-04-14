@@ -30,15 +30,14 @@ class GiftTests: TestCase {
     await withDependencies {
       $0.database.createGift = {
         XCTAssertEqual($0, nil)
-        XCTAssertEqual($1, nil)
-        XCTAssertEqual($2, "blob@pointfree.co")
-        XCTAssertEqual($3, "Blob")
-        XCTAssertEqual($4, "HBD!")
-        XCTAssertEqual($5, 3)
-        XCTAssertEqual($6, .pro)
-        XCTAssertEqual($7, "pi_test")
-        XCTAssertEqual($8, "blob.jr@pointfree.co")
-        XCTAssertEqual($9, "Blob Jr.")
+        XCTAssertEqual($1, "blob@pointfree.co")
+        XCTAssertEqual($2, "Blob")
+        XCTAssertEqual($3, "HBD!")
+        XCTAssertEqual($4, 3)
+        XCTAssertEqual($5, .pro)
+        XCTAssertEqual($6, "pi_test")
+        XCTAssertEqual($7, "blob.jr@pointfree.co")
+        XCTAssertEqual($8, "Blob Jr.")
         expectation.fulfill()
         return .unfulfilled
       }
@@ -93,15 +92,14 @@ class GiftTests: TestCase {
     await withDependencies {
       $0.database.createGift = {
         XCTAssertEqual($0, nil)
-        XCTAssertEqual($1, nil)
-        XCTAssertEqual($2, "blob@pointfree.co")
-        XCTAssertEqual($3, "Blob")
-        XCTAssertEqual($4, "HBD!")
-        XCTAssertEqual($5, 12)
-        XCTAssertEqual($6, .pro)
-        XCTAssertEqual($7, "pi_test")
-        XCTAssertEqual($8, "blob.jr@pointfree.co")
-        XCTAssertEqual($9, "Blob Jr.")
+        XCTAssertEqual($1, "blob@pointfree.co")
+        XCTAssertEqual($2, "Blob")
+        XCTAssertEqual($3, "HBD!")
+        XCTAssertEqual($4, 12)
+        XCTAssertEqual($5, .pro)
+        XCTAssertEqual($6, "pi_test")
+        XCTAssertEqual($7, "blob.jr@pointfree.co")
+        XCTAssertEqual($8, "Blob Jr.")
         expectation.fulfill()
         return .unfulfilled
       }
@@ -156,15 +154,14 @@ class GiftTests: TestCase {
     await withDependencies {
       $0.database.createGift = {
         XCTAssertEqual($0, nil)
-        XCTAssertEqual($1, nil)
-        XCTAssertEqual($2, "blob@pointfree.co")
-        XCTAssertEqual($3, "Blob")
-        XCTAssertEqual($4, "HBD!")
-        XCTAssertEqual($5, 3)
-        XCTAssertEqual($6, .pro)
-        XCTAssertEqual($7, "pi_test")
-        XCTAssertEqual($8, "blob.jr@pointfree.co")
-        XCTAssertEqual($9, "Blob Jr.")
+        XCTAssertEqual($1, "blob@pointfree.co")
+        XCTAssertEqual($2, "Blob")
+        XCTAssertEqual($3, "HBD!")
+        XCTAssertEqual($4, 3)
+        XCTAssertEqual($5, .pro)
+        XCTAssertEqual($6, "pi_test")
+        XCTAssertEqual($7, "blob.jr@pointfree.co")
+        XCTAssertEqual($8, "Blob Jr.")
         expectation.fulfill()
         return .unfulfilled
       }

@@ -43,7 +43,6 @@ extension Client {
         )
       },
       createGift: {
-        coupon,
         deliverAt,
         fromEmail,
         fromName,
@@ -57,7 +56,6 @@ extension Client {
         try await pool.sqlDatabase.first(
           """
           INSERT INTO "gifts" (
-            "coupon",
             "deliver_at",
             "from_email",
             "from_name",
@@ -69,7 +67,6 @@ extension Client {
             "to_name"
           )
           VALUES (
-            \(bind: coupon),
             \(bind: deliverAt),
             \(bind: fromEmail),
             \(bind: fromName),

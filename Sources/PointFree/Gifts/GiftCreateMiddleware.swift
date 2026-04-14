@@ -50,7 +50,6 @@ func giftCreateMiddleware(
     )
     paymentIntent = try await stripe.confirmPaymentIntent(id: paymentIntent.id)
     _ = try await database.createGift(
-      coupon: nil,
       deliverAt: deliverAt,
       fromEmail: giftFormData.fromEmail,
       fromName: giftFormData.fromName,
