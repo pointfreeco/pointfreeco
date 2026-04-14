@@ -173,17 +173,11 @@ private func fetchAndValidateGiftAndDiscount(
     let giftId = conn.data
     return EitherIO<_, (Gift, Cents<Int>)> {
       let gift = try await database.fetchGift(id: giftId)
-      let billing: Pricing.Billing = gift.monthsFree < 12 ? .monthly : .yearly
-      let price = try await resolvePrice(
-        for: Pricing(plan: gift.plan, billing: billing, quantity: 1)
-      )
-      guard let unitAmount = price.unitAmount else {
-        reportIssue("Price has no unit amount")
+      guard let giftPlan = Gifts.Plan(monthsFree: gift.monthsFree, plan: gift.plan) else {
+        reportIssue("Unknown gift plan: monthsFree=\(gift.monthsFree), plan=\(gift.plan)")
         throw unit
       }
-      let numberOfPeriods = gift.monthsFree < 12 ? gift.monthsFree : gift.monthsFree / 12
-      let discount: Cents<Int> = .init(rawValue: unitAmount.rawValue * numberOfPeriods)
-      return (gift, discount)
+      return (gift, giftPlan.amount)
     }
     .run
     .flatMap { errorOrGiftAndDiscount in
