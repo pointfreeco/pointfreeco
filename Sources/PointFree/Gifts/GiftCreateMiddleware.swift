@@ -40,7 +40,6 @@ func giftCreateMiddleware(
     }
 
   return EitherIO<_, PaymentIntent> {
-    @Dependency(\.envVars.yearlyGiftCoupon) var yearlyGiftCoupon
     var paymentIntent = try await stripe.createPaymentIntent(
       amount: plan.amount,
       currency: .usd,
@@ -51,7 +50,7 @@ func giftCreateMiddleware(
     )
     paymentIntent = try await stripe.confirmPaymentIntent(id: paymentIntent.id)
     _ = try await database.createGift(
-      coupon: plan.monthCount == 12 ? yearlyGiftCoupon : nil,
+      coupon: nil,
       deliverAt: deliverAt,
       fromEmail: giftFormData.fromEmail,
       fromName: giftFormData.fromName,

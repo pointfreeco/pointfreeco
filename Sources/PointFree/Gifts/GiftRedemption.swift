@@ -124,7 +124,7 @@ private func redeemGift(
             )
           ),
           quantity: 1,
-          coupon: gift.coupon
+          coupon: nil
         )
       _ =
         try await database.createSubscription(

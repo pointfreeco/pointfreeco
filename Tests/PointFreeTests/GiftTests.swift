@@ -92,7 +92,7 @@ class GiftTests: TestCase {
     let expectation = self.expectation(description: "createGift")
     await withDependencies {
       $0.database.createGift = {
-        XCTAssertEqual($0, "deadbeef-25-off")
+        XCTAssertEqual($0, nil)
         XCTAssertEqual($1, nil)
         XCTAssertEqual($2, "blob@pointfree.co")
         XCTAssertEqual($3, "Blob")
@@ -105,7 +105,6 @@ class GiftTests: TestCase {
         expectation.fulfill()
         return .unfulfilled
       }
-      $0.envVars.yearlyGiftCoupon = "deadbeef-25-off"
     } operation: {
       let conn = connection(
         from: request(
@@ -169,7 +168,6 @@ class GiftTests: TestCase {
         expectation.fulfill()
         return .unfulfilled
       }
-      $0.envVars.yearlyGiftCoupon = "deadbeef-25-off"
     } operation: {
       let conn = connection(
         from: request(
@@ -341,80 +339,6 @@ class GiftTests: TestCase {
         }
       }
       $0.stripe.createSubscription = { _, _, _, _ in .individualMonthly }
-      $0.stripe.fetchPaymentIntent = { _ in update(.succeeded) { $0.amount = 72_00 } }
-    } operation: {
-      let conn = connection(
-        from: request(
-          to: .gifts(
-            .redeem(
-              .init(uuidString: "61f761f7-61f7-61f7-61f7-61f761f761f7")!,
-              .confirm
-            )
-          ),
-          session: .loggedIn(as: user),
-          basicAuth: true
-        )
-      )
-      await assertRequest(conn) {
-        """
-        POST http://localhost:8080/gifts/61F761F7-61F7-61F7-61F7-61F761F761F7
-        Authorization: Basic aGVsbG86d29ybGQ=
-        Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000000"}
-        """
-      } response: {
-        """
-        302 Found
-        Location: /account
-        Referrer-Policy: strict-origin-when-cross-origin
-        Set-Cookie: pf_session={"flash":{"message":"You now have access to Point-Free!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000000"}; Expires=Sat, 29 Jan 2028 00:00:00 GMT; Path=/
-        X-Content-Type-Options: nosniff
-        X-Download-Options: noopen
-        X-Frame-Options: SAMEORIGIN
-        X-Permitted-Cross-Domain-Policies: none
-        X-XSS-Protection: 1; mode=block
-        """
-      }
-
-      XCTAssertEqual(credit, -72_00)
-      XCTAssertNotNil(stripeSubscriptionId)
-      XCTAssertNotNil(userId)
-    }
-  }
-
-  @MainActor
-  func testGiftRedeem_Coupon() async throws {
-    let user = User.nonSubscriber
-    var credit: Cents<Int>?
-    var stripeSubscriptionId: Stripe.Subscription.ID?
-    var userId: User.ID?
-
-    await withDependencies {
-      $0.database.createSubscription = { _, id, _, _, _ in
-        userId = id
-        return .mock
-      }
-      $0.database.fetchGift = { _ in
-        update(.unfulfilled) { $0.coupon = "deadbeef-25-off" }
-      }
-      $0.database.fetchSubscriptionByOwnerId = { _ in throw unit }
-      $0.database.fetchUserById = { _ in user }
-      $0.database.sawUser = { _ in }
-      $0.database.updateGift = { _, id in
-        stripeSubscriptionId = id
-        return .fulfilled
-      }
-      $0.date.now = .mock
-      $0.stripe.createCustomer = { _, _, _, _, amount in
-        credit = amount
-        return update(.mock) {
-          $0.invoiceSettings = .init(defaultPaymentMethod: nil)
-        }
-      }
-      $0.stripe.createSubscription = {
-        XCTAssertEqual($3, "deadbeef-25-off")
-        return .individualMonthly
-      }
-      $0.stripe.fetchPaymentIntent = { _ in update(.succeeded) { $0.amount = 72_00 } }
     } operation: {
       let conn = connection(
         from: request(
@@ -471,7 +395,6 @@ class GiftTests: TestCase {
         return .fulfilled
       }
       $0.date.now = .mock
-      $0.stripe.fetchPaymentIntent = { _ in update(.succeeded) { $0.amount = 72_00 } }
       $0.stripe.fetchSubscription = { _ in .individualMonthly }
       $0.stripe.updateCustomerBalance = { _, amount in
         credit = amount
@@ -561,7 +484,7 @@ class GiftTests: TestCase {
       $0.database.fetchUserById = { _ in user }
       $0.database.sawUser = { _ in }
       $0.date.now = .mock
-      $0.stripe.fetchPaymentIntent = { _ in .succeeded }
+
     } operation: {
       let conn = connection(
         from: request(
@@ -608,7 +531,7 @@ class GiftTests: TestCase {
       $0.database.fetchUserById = { _ in user }
       $0.database.sawUser = { _ in }
       $0.date.now = .mock
-      $0.stripe.fetchPaymentIntent = { _ in .succeeded }
+
       $0.stripe.fetchSubscription = { _ in .teamYearly }
     } operation: {
       let conn = connection(
@@ -673,7 +596,7 @@ class GiftTests: TestCase {
       $0.date.now = .mock
       $0.episodes = { [] }
       $0.database.fetchGift = { _ in .unfulfilled }
-      $0.stripe.fetchPaymentIntent = { _ in .succeeded }
+
     } operation: {
       let conn = connection(from: request(to: .gifts(.redeem(.init(rawValue: .mock)))))
 
