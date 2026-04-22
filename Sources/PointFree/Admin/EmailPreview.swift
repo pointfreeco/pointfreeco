@@ -65,6 +65,8 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
       code: "pointfree.co",
       currentUser: blob
     )
+  case .maxWelcomeEmail:
+    return Node { MaxWelcomeEmail(user: blob) }
   case .newBlogPost:
     @Dependency(\.blogPosts) var blogPosts
     return newBlogPostEmail(
@@ -138,6 +140,8 @@ extension EmailTemplate {
     switch self {
     case .joinTeamConfirmation:
       "Join team confirmation"
+    case .maxWelcomeEmail:
+      "Max Welcome Email"
     case .newBlogPost:
       "New blog post"
     case .newEpisode:
