@@ -8,7 +8,7 @@ extension Episode {
       up when we naively communicate between actors, but we can solve things in a non-naive way \
       and make actor communication completely synchronous.
       """,
-    codeSampleDirectory: "0363-beyond-basics-isolation-pt7",
+    codeSampleDirectory: "0363-beyond-basics-isolation-pt9",
     exercises: _exercises,
     id: 363,
     length: 25 * 60 + 11,
