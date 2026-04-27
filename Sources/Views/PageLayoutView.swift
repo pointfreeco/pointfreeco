@@ -11,16 +11,6 @@ import Styleguide
 import StyleguideV2
 import Transcripts
 
-public enum PageStyle {
-  case minimal
-  case base(NavStyle?)
-
-  public var isMinimal: Bool {
-    guard case .minimal = self else { return false }
-    return true
-  }
-}
-
 // TODO: should all of this be in @Dependency?
 public struct SimplePageLayoutData<A> {
   public var data: A
@@ -61,6 +51,16 @@ public struct SimplePageLayoutData<A> {
     self.title = title
     self.twitterCard = twitterCard
     self.usePrismJs = usePrismJs
+  }
+}
+
+public enum PageStyle {
+  case minimal
+  case base(NavStyle?)
+
+  public var isMinimal: Bool {
+    guard case .minimal = self else { return false }
+    return true
   }
 }
 
