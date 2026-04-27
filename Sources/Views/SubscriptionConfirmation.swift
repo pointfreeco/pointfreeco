@@ -1362,14 +1362,19 @@ private func checkoutJS(
             if (json.error) {
               displayError.innerHTML = json.error || defaultError
               setFormEnabled(true, function() { return true })
+              submitting = false
             } else if (json.requiresAction) {
               const { paymentIntent, error } = await stripe.confirmCardPayment(json.clientSecret)
               if (error) {
                 displayError.innerHTML = error.message || defaultError
                 setFormEnabled(true, function() { return true })
+                submitting = false
               } else if (paymentIntent.status === "succeeded") {
                 form.\(SubscribeData.CodingKeys.subscriptionID.rawValue).value = json.subscriptionID
                 form.submit()
+              } else {
+                setFormEnabled(true, function() { return true })
+                submitting = false
               }
             } else {
               window.location.href = '/account'
