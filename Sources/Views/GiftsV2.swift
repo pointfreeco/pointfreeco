@@ -95,6 +95,7 @@ extension Faq {
 extension Gifts.Plan {
   public var laneTitle: String {
     switch self {
+    case .threeMonthsPro: "3 Months Pro"
     case .sixMonthsPro: "6 Months Pro"
     case .yearlyPro: "1 Year Pro"
     case .yearlyMax: "1 Year Max"
@@ -103,6 +104,7 @@ extension Gifts.Plan {
 
   var duration: String {
     switch self {
+    case .threeMonthsPro: "3 months"
     case .sixMonthsPro: "6 months"
     case .yearlyPro: "1 year"
     case .yearlyMax: "1 year"
@@ -110,7 +112,7 @@ extension Gifts.Plan {
   }
   var tier: String {
     switch self {
-    case .sixMonthsPro, .yearlyPro: "Pro"
+    case .threeMonthsPro, .sixMonthsPro, .yearlyPro: "Pro"
     case .yearlyMax: "Max"
     }
   }
@@ -121,6 +123,8 @@ extension Gifts.Plan {
     let stats = EpisodesStats()
 
     switch self {
+    case .threeMonthsPro:
+      li { "Full Pro access for 3 months" }
     case .sixMonthsPro:
       li { "Full Pro access for 6 months" }
     case .yearlyPro:

@@ -124,7 +124,7 @@ private func redeemGift(
             )
           ),
           quantity: 1,
-          coupon: gift.coupon
+          coupon: nil
         )
       _ =
         try await database.createSubscription(
@@ -168,22 +168,24 @@ private func fetchAndValidateGiftAndDiscount(
   _ middleware: @escaping Middleware<StatusLineOpen, ResponseEnded, (Gift, Cents<Int>), Data>
 ) -> Middleware<StatusLineOpen, ResponseEnded, Gift.ID, Data> {
   @Dependency(\.database) var database
-  @Dependency(\.stripe) var stripe
 
   return { conn in
     let giftId = conn.data
-    return EitherIO<_, (Gift, PaymentIntent)> {
+    return EitherIO<_, (Gift, Cents<Int>)> {
       let gift = try await database.fetchGift(id: giftId)
-      let paymentIntent = try await stripe.fetchPaymentIntent(gift.stripePaymentIntentId)
-      return (gift, paymentIntent)
+      guard let giftPlan = Gifts.Plan(monthsFree: gift.monthsFree, plan: gift.plan) else {
+        reportIssue("Unknown gift plan: monthsFree=\(gift.monthsFree), plan=\(gift.plan)")
+        throw unit
+      }
+      return (gift, giftPlan.amount)
     }
     .run
-    .flatMap { errorOrGiftAndPaymentIntent in
-      switch errorOrGiftAndPaymentIntent {
+    .flatMap { errorOrGiftAndDiscount in
+      switch errorOrGiftAndDiscount {
       case .left:
         return IO { routeNotFoundMiddleware(conn)}
 
-      case let .right((gift, paymentIntent)):
+      case let .right((gift, discount)):
         guard gift.stripeSubscriptionId == nil
         else {
           return conn
@@ -193,7 +195,7 @@ private func fetchAndValidateGiftAndDiscount(
             )
         }
 
-        return conn.map(const((gift, paymentIntent.amount))) |> middleware
+        return conn.map(const((gift, discount))) |> middleware
       }
     }
   }

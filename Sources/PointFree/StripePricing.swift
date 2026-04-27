@@ -9,10 +9,9 @@ enum PricingResolutionError: Error, Equatable {
   case modernPriceNotFound(Pricing, productID: Stripe.Product.ID, lookupKey: Stripe.Price.LookupKey)
 }
 
-func resolvePlanID(
-  for pricing: Pricing,
-  currentSubscription: Stripe.Subscription? = nil
-) async throws -> Stripe.Plan.ID {
+func resolvePrice(
+  for pricing: Pricing
+) async throws -> Stripe.Price {
   @Dependency(\.envVars) var envVars
   @Dependency(\.stripe) var stripe
 
@@ -34,6 +33,14 @@ func resolvePlanID(
     )
   }
 
+  return price
+}
+
+func resolvePlanID(
+  for pricing: Pricing,
+  currentSubscription: Stripe.Subscription? = nil
+) async throws -> Stripe.Plan.ID {
+  let price = try await resolvePrice(for: pricing)
   return Stripe.Plan.ID(rawValue: price.id.rawValue)
 }
 

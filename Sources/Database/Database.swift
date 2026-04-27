@@ -32,7 +32,6 @@ public struct Client {
     ) async throws -> Void
   public var createGift:
     (
-      _ coupon: Coupon.ID?,
       _ deliverAt: Date?,
       _ fromEmail: EmailAddress,
       _ fromName: String,

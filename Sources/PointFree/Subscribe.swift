@@ -93,8 +93,12 @@ private func subscribe(
         )
       }
 
-      let ipCountry = conn.request.value(forHTTPHeaderField: "CF-IPCountry")
-        .map(Stripe.Country.init(rawValue:))
+      #if DEBUG
+        let ipCountry = country
+      #else
+        let ipCountry = conn.request.value(forHTTPHeaderField: "CF-IPCountry")
+          .map(Stripe.Country.init(rawValue:))
+        #endif
       guard
         !subscribeData.useRegionalDiscount
           || ipCountry == country
@@ -190,8 +194,7 @@ private func subscribe(
           )
         }()
 
-        // TODO: Log errors?
-        _ = try await (sendEmails, updateReferrerBalance, updateReferredBalance)
+        _ = try await (updateReferrerBalance, updateReferredBalance)
       }
       _ = try await sendEmails
 

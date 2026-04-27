@@ -128,15 +128,23 @@ func theWayMiddleware(
       @Dependency(\.gitHub) var gitHub
       @Dependency(\.envVars.gitHub.pfwDownloadsAccessToken) var pfwDownloadsAccessToken
 
+      #if DEBUG
+        let pfwBranch = "develop"
+      #else
+        let pfwBranch = "main"
+      #endif
       let sha = try await gitHub.fetchBranch(
         owner: "pointfreeco",
         repo: "the-point-free-way",
-        branch: "main",
+        branch: pfwBranch,
         token: pfwDownloadsAccessToken
       )
       .commit.sha
 
-      guard sha != lastSHA
+      let planTag = subscriberState.isMaxSubscriber ? "max" : "pro"
+      let etag = "\(sha.rawValue)-\(planTag)"
+
+      guard etag != lastSHA?.rawValue
       else {
         return
           conn
@@ -233,29 +241,33 @@ func theWayMiddleware(
         }
       }
 
-      // var zipSourceURL = skillsURL
-      // if !subscriberState.isMaxSubscriber {
-      //   let betaSkillNames = Beta.allSkillNames
-      //   let filteredURL = URL.temporaryDirectory.appending(
-      //     path: "\(sha.rawValue)-\(token)-\(whoami)-filtered"
-      //   )
-      //   try? FileManager.default.removeItem(at: filteredURL)
-      //   try FileManager.default.copyItem(at: skillsURL, to: filteredURL)
-      //   let skillDirectories = try FileManager.default.contentsOfDirectory(
-      //     at: filteredURL,
-      //     includingPropertiesForKeys: nil
-      //   )
-      //   for skillDirectory in skillDirectories {
-      //     if betaSkillNames.contains(skillDirectory.lastPathComponent) {
-      //       try FileManager.default.removeItem(at: skillDirectory)
-      //     }
-      //   }
-      //   zipSourceURL = filteredURL
-      // }
+      var zipSourceURL = skillsURL
+      if !subscriberState.isMaxSubscriber {
+        let betaSkillNames = Beta.allSkillNames
+        let filteredParent = URL.temporaryDirectory.appending(
+          path: "\(sha.rawValue)-\(token)-\(whoami)-filtered"
+        )
+        let filteredSkillsURL = filteredParent.appending(path: "skills")
+        try? FileManager.default.removeItem(at: filteredParent)
+        try FileManager.default.createDirectory(
+          at: filteredParent, withIntermediateDirectories: true
+        )
+        try FileManager.default.copyItem(at: skillsURL, to: filteredSkillsURL)
+        let skillDirectories = try FileManager.default.contentsOfDirectory(
+          at: filteredSkillsURL,
+          includingPropertiesForKeys: nil
+        )
+        for skillDirectory in skillDirectories {
+          if betaSkillNames.contains(skillDirectory.lastPathComponent) {
+            try FileManager.default.removeItem(at: skillDirectory)
+          }
+        }
+        zipSourceURL = filteredSkillsURL
+      }
 
       let destinationURL = URL.temporaryDirectory.appending(path: UUID().uuidString + ".zip")
       try FileManager.default.zipItem(
-        at: skillsURL,  // zipSourceURL,
+        at: zipSourceURL,
         to: destinationURL,
         compressionMethod: .deflate
       )
@@ -263,7 +275,7 @@ func theWayMiddleware(
       return
         try conn
         .writeStatus(.ok)
-        .writeHeader(Response.Header("ETag", sha.rawValue))
+        .writeHeader(Response.Header("ETag", etag))
         .respond(data: Data(contentsOf: destinationURL))
     } catch {
       return

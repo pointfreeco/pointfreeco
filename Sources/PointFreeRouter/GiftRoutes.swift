@@ -16,14 +16,21 @@ public enum Gifts: Equatable {
   }
 
   public enum Plan: String, CaseIterable {
+    case threeMonthsPro
     case sixMonthsPro
     case yearlyPro
     case yearlyMax
 
+    public static var allCases: [Plan] {
+      [.sixMonthsPro, .yearlyPro, .yearlyMax]
+    }
+
     public var amount: Cents<Int> {
       switch self {
+      case .threeMonthsPro:
+        return 72_00
       case .sixMonthsPro:
-        return 108_00
+        return 144_00
       case .yearlyPro:
         return 216_00
       case .yearlyMax:
@@ -31,8 +38,20 @@ public enum Gifts: Equatable {
       }
     }
 
+    public init?(monthsFree: Int, plan: Pricing.Plan) {
+      switch (monthsFree, plan) {
+      case (3, .pro): self = .threeMonthsPro
+      case (6, .pro): self = .sixMonthsPro
+      case (12, .pro): self = .yearlyPro
+      case (12, .max): self = .yearlyMax
+      default: return nil
+      }
+    }
+
     public var monthCount: Int {
       switch self {
+      case .threeMonthsPro:
+        return 3
       case .sixMonthsPro:
         return 6
       case .yearlyPro, .yearlyMax:
@@ -42,7 +61,7 @@ public enum Gifts: Equatable {
 
     public var pricingPlan: Pricing.Plan {
       switch self {
-      case .sixMonthsPro, .yearlyPro:
+      case .threeMonthsPro, .sixMonthsPro, .yearlyPro:
         return .pro
       case .yearlyMax:
         return .max

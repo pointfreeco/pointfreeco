@@ -20,7 +20,6 @@ public struct Gift: Decodable, Identifiable {
   public var toName: String
 
   public init(
-    coupon: Stripe.Coupon.ID?,
     deliverAt: Date?,
     delivered: Bool,
     fromEmail: EmailAddress,
@@ -35,7 +34,7 @@ public struct Gift: Decodable, Identifiable {
     toEmail: EmailAddress,
     toName: String
   ) {
-    self.coupon = coupon
+    self.coupon = nil
     self.deliverAt = deliverAt
     self.delivered = delivered
     self.fromEmail = fromEmail

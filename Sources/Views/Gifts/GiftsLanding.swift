@@ -25,6 +25,10 @@ extension Gifts.Plan {
     ]
 
     switch self {
+    case .threeMonthsPro:
+      return [
+        .init(name: "Full Pro access for 3 months")
+      ] + base
     case .sixMonthsPro:
       return [
         .init(name: "Full Pro access for 6 months")
