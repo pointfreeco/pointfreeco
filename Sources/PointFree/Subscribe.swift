@@ -193,6 +193,7 @@ private func subscribe(
         // TODO: Log errors?
         _ = try await (sendEmails, updateReferrerBalance, updateReferredBalance)
       }
+      _ = try await sendEmails
 
       if conn.acceptJSON {
         return try conn.writeStatus(.ok)

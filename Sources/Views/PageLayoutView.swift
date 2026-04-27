@@ -11,18 +11,18 @@ import Styleguide
 import StyleguideV2
 import Transcripts
 
+public enum PageStyle {
+  case minimal
+  case base(NavStyle?)
+
+  public var isMinimal: Bool {
+    guard case .minimal = self else { return false }
+    return true
+  }
+}
+
 // TODO: should all of this be in @Dependency?
 public struct SimplePageLayoutData<A> {
-  public enum Style {
-    case minimal
-    case base(NavStyle?)
-
-    public var isMinimal: Bool {
-      guard case .minimal = self else { return false }
-      return true
-    }
-  }
-
   public var data: A
   public var description: String?
   public var extraHead: ChildOf<Tag.Head>
@@ -30,7 +30,7 @@ public struct SimplePageLayoutData<A> {
   public var flash: Flash?
   public var image: String?
   public var openGraphType: OpenGraphType
-  public var style: Style
+  public var style: PageStyle
   public var title: String
   public var twitterCard: TwitterCard
   public var usePrismJs: Bool
@@ -43,7 +43,7 @@ public struct SimplePageLayoutData<A> {
     extraStyles: Stylesheet = .empty,
     image: String? = nil,
     openGraphType: OpenGraphType = .website,
-    style: Style = .base(.some(.minimal(.light))),
+    style: PageStyle = .base(.some(.minimal(.light))),
     title: String,
     twitterCard: TwitterCard = .summaryLargeImage,
     usePrismJs: Bool = false
@@ -272,7 +272,7 @@ func emergencyModeBanner<A>(_ emergencyMode: Bool, _ data: SimplePageLayoutData<
   )
 }
 
-private func navView<A>(style: SimplePageLayoutData<A>.Style) -> Node {
+private func navView(style: PageStyle) -> Node {
   switch style {
   case let .base(.some(.mountains(style))):
     return mountainNavView(mountainsStyle: style)
