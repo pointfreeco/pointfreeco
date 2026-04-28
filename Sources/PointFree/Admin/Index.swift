@@ -35,7 +35,7 @@ private struct AdminIndexView: HTML {
         li { Link("Send free video email", destination: .admin(.freeEpisodeEmail())) }
         li { Link("Send new blog post email", destination: .admin(.newBlogPostEmail())) }
         li { Link("Ghost a user", destination: .admin(.ghost())) }
-        li { Link("Preview an email", destination: .admin(.emailPreview(template: nil))) }
+        li { Link("Preview an email", destination: .admin(.emailPreview())) }
       }
       .linkColor(.purple)
     }
