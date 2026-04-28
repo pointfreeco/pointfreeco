@@ -30,7 +30,7 @@ class JoinMiddlewareTests: TestCase {
 
   @MainActor
   func testLanding() async throws {
-    await withDependencies {
+    try await withDependencies {
       $0.database.fetchLivestreams = { [] }
       $0.database.fetchSubscriptionByTeamInviteCode = { _ in .mock }
       $0.database.fetchUserById = { _ in .mock }
@@ -44,7 +44,7 @@ class JoinMiddlewareTests: TestCase {
 
   @MainActor
   func testLanding_Domain() async throws {
-    await withDependencies {
+    try await withDependencies {
       $0.database.fetchLivestreams = { [] }
       $0.database.fetchSubscriptionByTeamInviteCode = { _ in .mock }
       $0.database.fetchUserById = { _ in .mock }
@@ -58,7 +58,7 @@ class JoinMiddlewareTests: TestCase {
 
   @MainActor
   func testLanding_InvalidTeamCode() async throws {
-    await withDependencies {
+    try await withDependencies {
       $0.database.fetchLivestreams = { [] }
       $0.database.fetchSubscriptionByTeamInviteCode = { _ in
         struct SomeError: Error {}
@@ -93,7 +93,7 @@ class JoinMiddlewareTests: TestCase {
 
   @MainActor
   func testLanding_InactiveSubscription() async throws {
-    await withDependencies {
+    try await withDependencies {
       $0.database.fetchLivestreams = { [] }
       $0.database.fetchSubscriptionByTeamInviteCode = { _ in .canceled }
       $0.database.fetchUserById = { _ in .mock }
@@ -125,7 +125,7 @@ class JoinMiddlewareTests: TestCase {
 
   @MainActor
   func testJoin_InvalidEmail() async throws {
-    await withDependencies {
+    try await withDependencies {
       struct SomeError: Error {}
       $0.database.fetchEpisodeProgresses = { _ in [] }
       $0.database.fetchLivestreams = { [] }
@@ -203,7 +203,7 @@ class JoinMiddlewareTests: TestCase {
   @MainActor
   func testConfirm_InvalidCode() async throws {
     let user = User.nonSubscriber
-    await withDependencies {
+    try await withDependencies {
       $0.database.fetchEpisodeProgresses = { _ in [] }
       $0.database.fetchLivestreams = { [] }
       $0.database.fetchSubscriptionByOwnerId = { _ in
@@ -408,7 +408,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     let owner = try await self.registerBlobSr()
     let subscription = try await self.createSubscription(owner: owner, code: "pointfree.co")
 
-    await withDependencies {
+    try await withDependencies {
       $0.date = .constant(.mock)
       $0.stripe.fetchSubscription = { _ in
         struct SomeError: Error {}
@@ -452,7 +452,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       owner: owner, code: "pointfree.co", status: .canceled
     )
 
-    await withDependencies {
+    try await withDependencies {
       $0.date = .constant(.mock)
       $0.uuid = .incrementing
     } operation: {
@@ -488,7 +488,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
   func testJoin_LoggedIn_InvalidDomain() async throws {
     let currentUser = try await self.registerBlob()
 
-    await withDependencies {
+    try await withDependencies {
       $0.date = .constant(.mock)
       $0.uuid = .incrementing
     } operation: {
@@ -526,7 +526,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     let owner = try await self.registerBlobSr()
     let subscription = try await self.createSubscription(owner: owner, code: "pointfree.co")
 
-    await withDependencies {
+    try await withDependencies {
       $0.date = .constant(.mock)
       $0.stripe.fetchSubscription = { _ in .mock }
       $0.uuid = .incrementing
@@ -567,7 +567,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     let owner = try await self.registerBlobSr()
     let subscription = try await self.createSubscription(owner: owner, code: "xyz")
 
-    await withDependencies {
+    try await withDependencies {
       $0.date = .constant(.mock)
       $0.stripe.fetchSubscription = { _ in .mock }
       $0.uuid = .incrementing
@@ -833,6 +833,42 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
   }
 
   @MainActor
+  func testJoin_LoggedIn_Code_MaxTeamSendsMaxWelcomeEmail() async throws {
+    let currentUser = try await self.registerBlob()
+    let owner = try await self.registerBlobSr()
+    let subscription = try await self.createSubscription(owner: owner, plan: .max)
+
+    let sentEmails = LockIsolated<[Email]>([])
+
+    await withDependencies {
+      $0.date = .constant(.mock)
+      $0.mailgun.sendEmail = { email in
+        sentEmails.withValue { $0.append(email) }
+        return SendEmailResponse(id: "", message: "")
+      }
+      $0.stripe.fetchSubscription = { _ in
+        var stripeSubscription = Stripe.Subscription.teamYearly
+        stripeSubscription.quantity = 10
+        return stripeSubscription
+      }
+      $0.uuid = .incrementing
+    } operation: {
+      _ = await siteMiddleware(
+        connection(
+          from: request(
+            to: .teamInviteCode(.join(code: subscription.teamInviteCode, email: nil)),
+            session: .loggedIn(as: currentUser)
+          )
+        )
+      )
+    }
+
+    XCTAssertTrue(
+      sentEmails.value.map(\.subject).contains("[testing] Welcome to Point-Free Max!")
+    )
+  }
+
+  @MainActor
   func testConfirm_LoggedIn_Domain_StripeFailure() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -1038,7 +1074,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     owner: User,
     isOwnerTakingSeat: Bool = true,
     code: Models.Subscription.TeamInviteCode? = nil,
-    status: Stripe.Subscription.Status? = nil
+    status: Stripe.Subscription.Status? = nil,
+    plan: Pricing.Plan = .pro
   ) async throws -> Models.Subscription {
     var subscription = try await self.database.createSubscription(
       update(.teamYearly) {
@@ -1047,7 +1084,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       owner.id,
       isOwnerTakingSeat,
       nil,
-      .pro
+      plan
     )
     if let code = code {
       subscription.teamInviteCode = code

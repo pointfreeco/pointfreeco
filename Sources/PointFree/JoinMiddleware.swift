@@ -211,6 +211,7 @@ private func add<A>(
       id: currentUser.id,
       toSubscriptionID: subscription.id
     )
+    await sendWelcomeEmail(to: currentUser, ownerName: owner.displayName, plan: subscription.plan)
   } catch {
     return conn.redirect(to: .teamInviteCode(.landing(code: code))) {
       $0.flash(

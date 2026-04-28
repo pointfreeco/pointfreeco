@@ -5,6 +5,7 @@ import Either
 import EmailAddress
 import GitHub
 import HttpPipeline
+import Mailgun
 import Models
 import ModelsTestSupport
 import PointFreePrelude
@@ -168,6 +169,47 @@ class InviteIntegrationTests: LiveDatabaseTestCase {
 
     let subscriptionId = try await self.database.fetchUserById(currentUser.id).subscriptionId
     XCTAssertNotNil(subscriptionId, "Current user now has a subscription")
+  }
+
+  @MainActor
+  func testAcceptInvitation_MaxTeamSendsMaxWelcomeEmail() async throws {
+    var gitHubUser = GitHubUser.mock
+    gitHubUser.id = 1
+    let currentUser = try await self.database.registerUser(
+      accessToken: .mock, gitHubUser: gitHubUser, email: "hello@pointfree.co", now: { .mock }
+    )
+
+    gitHubUser.id = 2
+    let inviterUser = try await self.database.registerUser(
+      accessToken: .mock, gitHubUser: gitHubUser, email: "inviter@pointfree.co", now: { .mock }
+    )
+
+    _ = try await self.database
+      .createSubscription(Stripe.Subscription.mock, inviterUser.id, true, nil, .max)
+
+    let teamInvite = try await self.database
+      .insertTeamInvite("blobber@pointfree.co", inviterUser.id)
+
+    let sentEmails = LockIsolated<[Mailgun.Email]>([])
+
+    await withDependencies {
+      $0.mailgun.sendEmail = { email in
+        sentEmails.withValue { $0.append(email) }
+        return SendEmailResponse(id: "", message: "")
+      }
+    } operation: {
+      let acceptInvite = request(
+        to: .invite(.invitation(teamInvite.id, .accept)),
+        session: .init(flash: nil, userId: currentUser.id)
+      )
+      let conn = connection(from: acceptInvite)
+
+      _ = await siteMiddleware(conn)
+    }
+
+    XCTAssertTrue(
+      sentEmails.value.map(\.subject).contains("[testing] Welcome to Point-Free Max!")
+    )
   }
 
   @MainActor

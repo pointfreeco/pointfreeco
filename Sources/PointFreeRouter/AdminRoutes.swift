@@ -5,6 +5,7 @@ import URLRouting
 public enum EmailTemplate: String, CaseIterable {
   case joinTeamConfirmation
   case maxWelcomeEmail
+  case proWelcomeEmail
   case newBlogPost
   case newEpisode
   case newTeammateJoined
