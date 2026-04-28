@@ -99,6 +99,11 @@ let acceptInviteMiddleware: M<Tuple2<TeamInvite.ID, User?>> =
         .fetchSubscription(id: subscription.stripeSubscriptionId)
       guard stripeSubscription.status.isActive else { throw unit }
       try await database.addUser(id: currentUser.id, toSubscriptionID: subscription.id)
+      await sendWelcomeEmail(
+        to: currentUser,
+        ownerName: inviter.displayName,
+        plan: subscription.plan
+      )
 
       await fireAndForget {
         _ = try await sendEmail(

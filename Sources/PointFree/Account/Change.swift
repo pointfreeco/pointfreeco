@@ -62,11 +62,10 @@ func changeSubscription(
       try await database.updateSubscriptionPlan(localSubscription.id, newPricing.plan)
 
       switch newPricing.plan {
-
       case .max:
         guard let currentUser
         else { break }
-        await sendMaxWelcomeEmail(to: currentUser)
+        await sendWelcomeEmail(to: currentUser, plan: .max)
       case .pro:
         await removeBetaAccess(for: localSubscription)
       }
@@ -183,30 +182,31 @@ private func fetchSeatsTaken<A>(
   }
 }
 
-func sendMaxWelcomeEmail(to user: User) async {
+func sendWelcomeEmail(
+  to user: User,
+  ownerName: String? = nil,
+  plan: Pricing.Plan
+) async {
   @Dependency(\.fireAndForget) var fireAndForget
 
   await fireAndForget {
-    _ = try await send(
-      email: prepareEmailV2(
-        to: [user.email],
-        subject: "Welcome to Point-Free Max!",
-        content: MaxWelcomeEmail(user: user)
+    switch plan {
+    case .max:
+      _ = try await send(
+        email: prepareEmailV2(
+          to: [user.email],
+          subject: "Welcome to Point-Free Max!",
+          content: MaxWelcomeEmail(user: user, ownerName: ownerName)
+        )
       )
-    )
-  }
-}
-
-func sendProWelcomeEmail(to user: User) async {
-  @Dependency(\.fireAndForget) var fireAndForget
-
-  await fireAndForget {
-    _ = try await send(
-      email: prepareEmailV2(
-        to: [user.email],
-        subject: "Welcome to Point-Free!",
-        content: ProWelcomeEmail(user: user)
+    case .pro:
+      _ = try await send(
+        email: prepareEmailV2(
+          to: [user.email],
+          subject: "Welcome to Point-Free!",
+          content: ProWelcomeEmail(user: user, ownerName: ownerName)
+        )
       )
-    )
+    }
   }
 }

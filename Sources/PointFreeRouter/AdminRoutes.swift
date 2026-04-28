@@ -4,6 +4,8 @@ import URLRouting
 
 public enum EmailTemplate: String, CaseIterable {
   case joinTeamConfirmation
+  case maxWelcomeEmail
+  case proWelcomeEmail
   case newBlogPost
   case newEpisode
   case newTeammateJoined
@@ -15,13 +17,18 @@ public enum EmailTemplate: String, CaseIterable {
 }
 
 public enum Admin: Equatable {
-  case emailPreview(template: EmailTemplate?)
+  case emailPreview(EmailPreview = .show(template: nil))
   case episodeCredits(EpisodeCredit = .show)
   case freeEpisodeEmail(FreeEpisodeEmail = .index)
   case ghost(Ghost = .index)
   case index
   case newBlogPostEmail(NewBlogPostEmail = .index)
   case newEpisodeEmail(NewEpisodeEmail = .show)
+
+  public enum EmailPreview: Equatable {
+    case send(template: EmailTemplate, email: String)
+    case show(template: EmailTemplate?)
+  }
 
   public enum EpisodeCredit: Equatable {
     case add(userId: User.ID?, episodeSequence: Episode.Sequence?)
@@ -57,13 +64,28 @@ public enum Admin: Equatable {
 struct AdminRouter: ParserPrinter {
   var body: some Router<Admin> {
     OneOf {
-      Route(.case(Admin.emailPreview(template:))) {
+      Route(.case(Admin.emailPreview)) {
         Path { "email-preview" }
-        Optionally {
-          Method.post
-          Body {
-            FormData {
-              Field("template", .string.map(.representing(EmailTemplate.self)))
+
+        OneOf {
+          Route(.case(Admin.EmailPreview.send(template:email:))) {
+            Method.post
+            Body {
+              FormData {
+                Field("template", .string.map(.representing(EmailTemplate.self)))
+                Field("email")
+              }
+            }
+          }
+
+          Route(.case(Admin.EmailPreview.show(template:))) {
+            Optionally {
+              Method.post
+              Body {
+                FormData {
+                  Field("template", .string.map(.representing(EmailTemplate.self)))
+                }
+              }
             }
           }
         }

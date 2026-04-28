@@ -19,7 +19,10 @@ public func adminMiddleware(
   }
 
   switch route {
-  case .emailPreview(let template):
+  case .emailPreview(.send(let template, let email)):
+    return await sendTestEmail(conn, template: template, recipientEmail: email)
+
+  case .emailPreview(.show(let template)):
     return await emailPreview(conn, template: template)
 
   case .episodeCredits(.add(let userID, let episodeSequence)):

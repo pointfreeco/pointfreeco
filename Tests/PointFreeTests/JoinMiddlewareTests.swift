@@ -203,7 +203,7 @@ class JoinMiddlewareTests: TestCase {
   @MainActor
   func testConfirm_InvalidCode() async throws {
     let user = User.nonSubscriber
-    await withDependencies {
+    try await withDependencies {
       $0.database.fetchEpisodeProgresses = { _ in [] }
       $0.database.fetchLivestreams = { [] }
       $0.database.fetchSubscriptionByOwnerId = { _ in
@@ -833,6 +833,42 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
   }
 
   @MainActor
+  func testJoin_LoggedIn_Code_MaxTeamSendsMaxWelcomeEmail() async throws {
+    let currentUser = try await self.registerBlob()
+    let owner = try await self.registerBlobSr()
+    let subscription = try await self.createSubscription(owner: owner, plan: .max)
+
+    let sentEmails = LockIsolated<[Email]>([])
+
+    await withDependencies {
+      $0.date = .constant(.mock)
+      $0.mailgun.sendEmail = { email in
+        sentEmails.withValue { $0.append(email) }
+        return SendEmailResponse(id: "", message: "")
+      }
+      $0.stripe.fetchSubscription = { _ in
+        var stripeSubscription = Stripe.Subscription.teamYearly
+        stripeSubscription.quantity = 10
+        return stripeSubscription
+      }
+      $0.uuid = .incrementing
+    } operation: {
+      _ = await siteMiddleware(
+        connection(
+          from: request(
+            to: .teamInviteCode(.join(code: subscription.teamInviteCode, email: nil)),
+            session: .loggedIn(as: currentUser)
+          )
+        )
+      )
+    }
+
+    XCTAssertTrue(
+      sentEmails.value.map(\.subject).contains("[testing] Welcome to Point-Free Max!")
+    )
+  }
+
+  @MainActor
   func testConfirm_LoggedIn_Domain_StripeFailure() async throws {
     let currentUser = try await self.registerBlob()
     let owner = try await self.registerBlobSr()
@@ -1038,7 +1074,8 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
     owner: User,
     isOwnerTakingSeat: Bool = true,
     code: Models.Subscription.TeamInviteCode? = nil,
-    status: Stripe.Subscription.Status? = nil
+    status: Stripe.Subscription.Status? = nil,
+    plan: Pricing.Plan = .pro
   ) async throws -> Models.Subscription {
     var subscription = try await self.database.createSubscription(
       update(.teamYearly) {
@@ -1047,7 +1084,7 @@ class JoinMiddlewareIntegrationTests: LiveDatabaseTestCase {
       owner.id,
       isOwnerTakingSeat,
       nil,
-      .pro
+      plan
     )
     if let code = code {
       subscription.teamInviteCode = code

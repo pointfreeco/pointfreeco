@@ -169,12 +169,7 @@ private func subscribe(
         plan: subscribeData.pricing.plan
       )
 
-      switch subscribeData.pricing.plan {
-      case .max:
-        await sendMaxWelcomeEmail(to: user)
-      case .pro:
-        await sendProWelcomeEmail(to: user)
-      }
+      await sendWelcomeEmail(to: user, plan: subscribeData.pricing.plan)
 
       if let referrer {
         async let updateReferrerBalance: Void = {
@@ -182,7 +177,9 @@ private func subscribe(
             customerID: referrer.stripeSubscription.customer.id,
             amount: (referrer.stripeSubscription.customer.right?.balance ?? 0) + referrerDiscount
           )
-          Task { try await sendReferralEmail(to: referrer.user).performAsync() }
+          await fireAndForget {
+            _ = try await sendReferralEmail(to: referrer.user).performAsync()
+          }
         }()
 
         async let updateReferredBalance: Void = {
@@ -196,7 +193,7 @@ private func subscribe(
 
         _ = try await (updateReferrerBalance, updateReferredBalance)
       }
-      try await sendEmails
+      _ = try await sendEmails
 
       if conn.acceptJSON {
         return try conn.writeStatus(.ok)

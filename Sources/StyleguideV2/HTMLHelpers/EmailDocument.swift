@@ -35,6 +35,12 @@ private struct Email: HTML {
         meta()
           .attribute("name", "viewport")
           .attribute("content", "width=device-width, initial-scale=1.0, viewport-fit=cover")
+        meta()
+          .attribute("name", "color-scheme")
+          .attribute("content", "light only")
+        meta()
+          .attribute("name", "supported-color-schemes")
+          .attribute("content", "light only")
       }
       tag("body") {
         HTMLRaw(bodyBytes)
