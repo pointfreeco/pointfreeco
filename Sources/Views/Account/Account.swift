@@ -438,6 +438,7 @@ private func subscriptionOwnerOverview(accountData: AccountData, currentDate: Da
 
   let legacyCallout: Node =
     subscription.plan.product != envVars.stripe.productId
+    && !accountData.subscriberState.isEnterpriseSubscriber
   ? .markdownBlock(
       attributes: [
         .class([Class.padding([.mobile: [.all: 2]]), Class.margin([.mobile: [.bottom: 2]])]),
