@@ -28,6 +28,7 @@ extension Episode.Collection {
           .init(episode: .ep362_isolation),
           .init(episode: .ep363_isolation),
           .init(episode: .ep364_isolation),
+          .init(episode: .ep365_isolation),
         ],
         isFinished: false,
         isHidden: false,
