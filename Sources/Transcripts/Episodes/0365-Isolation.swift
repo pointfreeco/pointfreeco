@@ -29,6 +29,7 @@ extension Episode {
       .se0306_actors,
     ],
     sequence: 365,
+    socialImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/69f31486-8339-4351-ae21-67934abb6300/public",
     subtitle: "Approachability",
     title: "Isolation",
     trailerVideo: Video(

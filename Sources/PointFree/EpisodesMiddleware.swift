@@ -127,7 +127,7 @@ private func showEpisode(
     .respondV2(
       layoutData: SimplePageLayoutData(
         description: String(stripping: episode.blurb),
-        image: episode.image,
+        image: episode.socialImage ?? episode.image,
         title: "Video #\(episode.sequence): \(episode.fullTitle)",
         usePrismJs: true
       )
