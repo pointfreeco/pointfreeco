@@ -20,6 +20,7 @@ public struct Episode: Equatable, Identifiable {
   public var questions: [Question]
   public var references: [Reference]
   public var sequence: Sequence
+  public var socialImage: String?
   public var subtitle: String?
   public var title: String
   public var trailerVideo: Video
@@ -39,6 +40,7 @@ public struct Episode: Equatable, Identifiable {
     questions: [Question] = [],
     references: [Reference] = [],
     sequence: Sequence,
+    socialImage: String? = nil,
     subtitle: String? = nil,
     title: String,
     trailerVideo: Video
@@ -61,6 +63,7 @@ public struct Episode: Equatable, Identifiable {
     self.questions = questions
     self.references = references
     self.sequence = sequence
+    self.socialImage = socialImage
     self.subtitle = subtitle
     self.title = title
     self.trailerVideo = trailerVideo
