@@ -163,10 +163,20 @@ extension Client {
           """
         )
       },
+      fetchEnterpriseAccountForCIToken: { ciToken in
+        try await pool.sqlDatabase.first(
+          """
+          SELECT "ci_token", "company_name", "domain", "domains", "id", "subscription_id"
+          FROM "enterprise_accounts"
+          WHERE "ci_token" = \(bind: ciToken)
+          LIMIT 1
+          """
+        )
+      },
       fetchEnterpriseAccountForDomain: { domain in
         try await pool.sqlDatabase.first(
           """
-          SELECT "company_name", "domain", "domains", "id", "subscription_id"
+          SELECT "ci_token", "company_name", "domain", "domains", "id", "subscription_id"
           FROM "enterprise_accounts"
           WHERE "domain" = \(bind: domain)
           LIMIT 1
@@ -176,7 +186,7 @@ extension Client {
       fetchEnterpriseAccountForSubscription: { subscriptionId in
         try await pool.sqlDatabase.first(
           """
-          SELECT "company_name", "domain", "domains", "id", "subscription_id"
+          SELECT "ci_token", "company_name", "domain", "domains", "id", "subscription_id"
           FROM "enterprise_accounts"
           WHERE "subscription_id" = \(bind: subscriptionId)
           LIMIT 1
@@ -993,6 +1003,20 @@ extension Client {
           """
           ALTER TABLE "gifts"
           ALTER COLUMN "plan" DROP DEFAULT
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "enterprise_accounts"
+          ADD COLUMN IF NOT EXISTS
+          "ci_token" character varying NOT NULL
+          DEFAULT 'ent-' || gen_shortid('enterprise_accounts', 'ci_token')
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS "index_enterprise_accounts_on_ci_token"
+          ON "enterprise_accounts" ("ci_token")
           """
         )
       },

@@ -560,6 +560,25 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
     )
   )
 
+  let ciTokenRow = Node.gridRow(
+    .gridColumn(
+      sizes: [.mobile: 3],
+      .p(.div("PFW CI Token"))
+    ),
+    .gridColumn(
+      sizes: [.mobile: 9],
+      .gridRow(
+        .gridColumn(
+          sizes: [.mobile: 12, .desktop: 6],
+          .div(
+            attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
+            .p(.code(.text(enterpriseAccount.ciToken.rawValue)))
+          )
+        )
+      )
+    )
+  )
+
   let contactUsRow = Node.gridRow(
     .gridColumn(
       sizes: [.mobile: 3],
@@ -591,6 +610,7 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
     planRow,
     statusRow,
     shareRow,
+    ciTokenRow,
     contactUsRow,
     teammatesSection(accountData: data)
   )

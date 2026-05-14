@@ -62,6 +62,9 @@ public struct Client {
   @DependencyEndpoint(method: "fetchEmailSettings")
   public var fetchEmailSettingsForUserId: (_ userID: Models.User.ID) async throws -> [EmailSetting]
   @DependencyEndpoint(method: "fetchEnterpriseAccount")
+  public var fetchEnterpriseAccountForCIToken:
+    (_ forCIToken: EnterpriseAccount.CIToken) async throws -> EnterpriseAccount
+  @DependencyEndpoint(method: "fetchEnterpriseAccount")
   public var fetchEnterpriseAccountForDomain:
     (_ forDomain: EnterpriseAccount.Domain) async throws -> EnterpriseAccount
   @DependencyEndpoint(method: "fetchEnterpriseAccount")

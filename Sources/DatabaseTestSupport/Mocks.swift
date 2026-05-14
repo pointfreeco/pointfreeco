@@ -21,6 +21,7 @@ extension Client {
     fetchClipByCloudflareVideoID: { _ in throw unit },
     fetchClips: { _ in throw unit },
     fetchEmailSettingsForUserId: { _ in [.mock] },
+    fetchEnterpriseAccountForCIToken: { _ in .mock },
     fetchEnterpriseAccountForDomain: { _ in .mock },
     fetchEnterpriseAccountForSubscription: { _ in throw unit },
     fetchEnterpriseEmails: { [.mock] },

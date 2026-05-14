@@ -46,6 +46,12 @@ public enum Account: Equatable {
       lastSHA: Repo.Commit.SHA?,
       version: String?
     )
+    case downloadEnterprise(
+      token: EnterpriseAccount.CIToken,
+      machine: UUID,
+      lastSHA: Repo.Commit.SHA?,
+      version: String?
+    )
   }
 }
 
@@ -163,6 +169,21 @@ struct AccountRouter: ParserPrinter {
             }
             Query {
               Field("whoami", .string)
+            }
+            Query {
+              Field("machine") { UUID.parser() }
+            }
+            Headers {
+              Optionally { Field("If-None-Match", .string.representing(Repo.Commit.SHA.self)) }
+            }
+            Headers {
+              Optionally { Field("X-PFW-Version", .string) }
+            }
+          }
+          Route(.case(Account.TheWay.downloadEnterprise)) {
+            Path { "download" }
+            Query {
+              Field("token", .string.representing(EnterpriseAccount.CIToken.self))
             }
             Query {
               Field("machine") { UUID.parser() }

@@ -14,6 +14,7 @@ extension EmailSetting {
 
 extension EnterpriseAccount {
   public static let mock = EnterpriseAccount(
+    ciToken: "ent-mockmockmock",
     companyName: "Blob Inc.",
     domain: "blob.biz",
     domains: ["blob.biz"],

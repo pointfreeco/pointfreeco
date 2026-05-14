@@ -3,6 +3,7 @@ import Foundation
 import Tagged
 
 public struct EnterpriseAccount: Decodable, Equatable, Identifiable {
+  public var ciToken: CIToken
   public var companyName: String
   public var domain: Domain
   public var domains: [Domain]
@@ -10,12 +11,14 @@ public struct EnterpriseAccount: Decodable, Equatable, Identifiable {
   public var subscriptionId: Subscription.ID
 
   public init(
+    ciToken: CIToken,
     companyName: String,
     domain: Domain,
     domains: [Domain],
     id: ID,
     subscriptionId: Subscription.ID
   ) {
+    self.ciToken = ciToken
     self.companyName = companyName
     self.domain = domain
     self.domains = domains
@@ -23,6 +26,7 @@ public struct EnterpriseAccount: Decodable, Equatable, Identifiable {
     self.subscriptionId = subscriptionId
   }
 
+  public typealias CIToken = Tagged<(Self, ciToken: ()), String>
   public typealias Domain = Tagged<Self, String>
 }
 
