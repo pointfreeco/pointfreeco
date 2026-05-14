@@ -247,6 +247,7 @@ public struct PricingLanding: HTML {
               li { "Hassle-free team management" }
               li { "Custom sign up landing page for your company" }
               li { "Invoiced billing" }
+              li { "Integrate the Point-Free Way into your CI" }
             } callToAction: {
               if !subscriberState.isEnterpriseSubscriber {
                 Button(color: .black, style: .outline) {
