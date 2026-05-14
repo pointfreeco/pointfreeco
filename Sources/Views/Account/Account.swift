@@ -569,10 +569,20 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
       sizes: [.mobile: 9],
       .gridRow(
         .gridColumn(
-          sizes: [.mobile: 12, .desktop: 6],
+          sizes: [.mobile: 12],
           .div(
             attributes: [.class([Class.padding([.mobile: [.leftRight: 1]])])],
-            .p(.code(.text(enterpriseAccount.ciToken.rawValue)))
+            .p(
+              "Use this token to authenticate ",
+              .code("pfw"),
+              " on CI:"
+            ),
+            .pre(
+              .code(
+                attributes: [.class([Class.pf.components.code(lang: "sh")])],
+                .text("pfw login --token \(enterpriseAccount.ciToken.rawValue)")
+              )
+            )
           )
         )
       )
