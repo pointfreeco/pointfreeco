@@ -580,7 +580,10 @@ private func enterpriseSubscriptionOverview(_ data: AccountData) -> Node {
             .pre(
               .code(
                 attributes: [.class([Class.pf.components.code(lang: "sh")])],
-                .text("pfw login --token \(enterpriseAccount.ciToken.rawValue)")
+                copyToPasteboard(
+                  text: "pfw login --token \(enterpriseAccount.ciToken.rawValue)",
+                  buttonColor: .black
+                )
               )
             )
           )
