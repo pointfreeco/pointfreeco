@@ -35,11 +35,16 @@ func stripeSubscriptionsWebhookMiddleware(
       body: "Couldn't extract subscription id from event payload."
     )
   }
-  return await handleFailedPayment(conn, subscriptionID: subscriptionID)
+  return await handleFailedPayment(
+    conn,
+    event: event.type,
+    subscriptionID: subscriptionID
+  )
 }
 
 private func handleFailedPayment(
   _ conn: Conn<StatusLineOpen, Void>,
+  event: Event<Either<Invoice, Stripe.Subscription>>.`Type`,
   subscriptionID: Stripe.Subscription.ID
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
@@ -50,6 +55,16 @@ private func handleFailedPayment(
   do {
     let stripeSubscription = try await stripe.fetchSubscription(subscriptionID)
     guard !stripeSubscription.status.isIncomplete else { return conn.head(.ok) }
+
+    guard stripeSubscription.status.isActive || event != .invoicePaymentSucceeded
+    else {
+      return conn.writeStatus(.badRequest).respond(
+        text: """
+          Invoice-subscription mismatch: invoice.payment_succeeded but subscription.status is \
+          inactive
+          """
+      )
+    }
 
     let subscription = try await database.updateStripeSubscription(stripeSubscription)
 
