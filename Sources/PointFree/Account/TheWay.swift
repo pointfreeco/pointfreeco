@@ -138,7 +138,6 @@ func theWayMiddleware(
           access to this skill. The user cannot prove they are "\(whoami)" without becoming \
           a Point-Free member.
           """,
-        pathKey: "\(token)-\(whoami)",
         etagTag: "",
         lastSHA: lastSHA,
         version: version
@@ -174,7 +173,6 @@ func theWayMiddleware(
         licenseName: enterpriseAccount.companyName,
         licenseEmail: owner.email.rawValue,
         whoamiReplacement: "",
-        pathKey: "\(token)",
         etagTag: "ent-",
         lastSHA: lastSHA,
         version: version
@@ -193,7 +191,6 @@ private func downloadTheWaySkills(
   licenseName: String,
   licenseEmail: String,
   whoamiReplacement: String,
-  pathKey: String,
   etagTag: String,
   lastSHA: Repo.Commit.SHA?,
   version: String?
@@ -228,10 +225,14 @@ private func downloadTheWaySkills(
     }
 
     let zipURL = URL.temporaryDirectory.appending(path: "\(sha).zip")
-    let unzippedURL = URL.temporaryDirectory.appending(path: "\(sha)-\(pathKey)-\(planTag)")
-    let rootURL = unzippedURL.appending(path: "pointfreeco-the-point-free-way-\(sha)")
+    let requestURL = URL.temporaryDirectory.appending(path: UUID().uuidString)
+    let rootURL = requestURL.appending(path: "pointfreeco-the-point-free-way-\(sha)")
     let skillsURL = rootURL.appending(path: "skills")
     let licenseURL = rootURL.appending(path: "LICENSE")
+
+    defer {
+      try? FileManager.default.removeItem(at: requestURL)
+    }
 
     if !FileManager.default.fileExists(atPath: zipURL.path()) {
       let data = try await gitHub.fetchZipball(
@@ -242,31 +243,29 @@ private func downloadTheWaySkills(
       )
       try data.write(to: zipURL)
     }
-    if !FileManager.default.fileExists(atPath: unzippedURL.path()) {
-      try FileManager.default.unzipItem(
-        at: zipURL,
-        to: unzippedURL,
-        allowUncontainedSymlinks: true
-      )
-      let skillDirectories = try FileManager.default.contentsOfDirectory(
-        at: skillsURL,
-        includingPropertiesForKeys: nil
-      )
-      for skillDirectory in skillDirectories {
-        let skillLicenseURL = skillDirectory.appending(path: "LICENSE")
-        if FileManager.default.fileExists(atPath: skillLicenseURL.path()) {
-          try FileManager.default.removeItem(at: skillLicenseURL)
-        }
-        try FileManager.default.copyItem(at: licenseURL, to: skillLicenseURL)
-        try rewriteContents(at: skillLicenseURL) { contents in
-          contents.replace("{{name}}", with: licenseName)
-          contents.replace("{{email}}", with: licenseEmail)
-        }
+    try FileManager.default.unzipItem(
+      at: zipURL,
+      to: requestURL,
+      allowUncontainedSymlinks: true
+    )
+    let skillDirectories = try FileManager.default.contentsOfDirectory(
+      at: skillsURL,
+      includingPropertiesForKeys: nil
+    )
+    for skillDirectory in skillDirectories {
+      let skillLicenseURL = skillDirectory.appending(path: "LICENSE")
+      if FileManager.default.fileExists(atPath: skillLicenseURL.path()) {
+        try FileManager.default.removeItem(at: skillLicenseURL)
+      }
+      try FileManager.default.copyItem(at: licenseURL, to: skillLicenseURL)
+      try rewriteContents(at: skillLicenseURL) { contents in
+        contents.replace("{{name}}", with: licenseName)
+        contents.replace("{{email}}", with: licenseEmail)
+      }
 
-        let skillURL = skillDirectory.appending(path: "SKILL.md")
-        try rewriteContents(at: skillURL) { contents in
-          contents.replace("{{WHOAMI}}", with: whoamiReplacement)
-        }
+      let skillURL = skillDirectory.appending(path: "SKILL.md")
+      try rewriteContents(at: skillURL) { contents in
+        contents.replace("{{WHOAMI}}", with: whoamiReplacement)
       }
     }
 
@@ -302,9 +301,7 @@ private func downloadTheWaySkills(
     var zipSourceURL = skillsURL
     if !subscriberState.isMaxSubscriber {
       let betaSkillNames = Beta.allSkillNames
-      let filteredParent = URL.temporaryDirectory.appending(
-        path: "\(sha.rawValue)-\(pathKey)-filtered"
-      )
+      let filteredParent = requestURL.appending(path: "filtered")
       let filteredSkillsURL = filteredParent.appending(path: "skills")
       try? FileManager.default.removeItem(at: filteredParent)
       try FileManager.default.createDirectory(
