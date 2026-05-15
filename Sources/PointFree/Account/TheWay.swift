@@ -228,7 +228,7 @@ private func downloadTheWaySkills(
     }
 
     let zipURL = URL.temporaryDirectory.appending(path: "\(sha).zip")
-    let unzippedURL = URL.temporaryDirectory.appending(path: "\(sha)-\(pathKey)")
+    let unzippedURL = URL.temporaryDirectory.appending(path: "\(sha)-\(pathKey)-\(planTag)")
     let rootURL = unzippedURL.appending(path: "pointfreeco-the-point-free-way-\(sha)")
     let skillsURL = rootURL.appending(path: "skills")
     let licenseURL = rootURL.appending(path: "LICENSE")
@@ -327,7 +327,7 @@ private func downloadTheWaySkills(
     try FileManager.default.zipItem(
       at: zipSourceURL,
       to: destinationURL,
-      compressionMethod: .deflate
+      compressionMethod: .none
     )
 
     return try conn
