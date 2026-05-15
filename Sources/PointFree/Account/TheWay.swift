@@ -148,7 +148,7 @@ func theWayMiddleware(
         .respond(text: "🛑 Could not download skills.")
     }
 
-  case .downloadEnterprise(let token, _, let lastSHA, let version):
+  case .downloadEnterprise(let token, let lastSHA, let version):
     do {
       let enterpriseAccount = try await database.fetchEnterpriseAccount(forCIToken: token)
       let subscription = try await database.fetchSubscription(

@@ -48,7 +48,6 @@ public enum Account: Equatable {
     )
     case downloadEnterprise(
       token: EnterpriseAccount.CIToken,
-      machine: UUID,
       lastSHA: Repo.Commit.SHA?,
       version: String?
     )
@@ -184,9 +183,6 @@ struct AccountRouter: ParserPrinter {
             Path { "download" }
             Query {
               Field("token", .string.representing(EnterpriseAccount.CIToken.self))
-            }
-            Query {
-              Field("machine") { UUID.parser() }
             }
             Headers {
               Optionally { Field("If-None-Match", .string.representing(Repo.Commit.SHA.self)) }
