@@ -1048,6 +1048,29 @@ extension Episode.Reference {
     title: "SE-0390: Noncopyable structs and enums"
   )
 
+  public static let se0414_regionBasedIsolation = Episode.Reference(
+    author: "Michael Gottesman, Joshua Turcotti",
+    blurb: """
+      > Swift Concurrency assigns values to isolation domains determined by actor and task boundaries. Code running in distinct isolation domains can execute concurrently, and Sendable checking defines away concurrent access to shared mutable state by preventing non-Sendable values from being passed across isolation boundaries full stop. In practice, this is a significant semantic restriction, because it forbids natural programming patterns that are free of data races.
+      >
+      > In this document, we propose loosening these rules by introducing a new control flow sensitive diagnostic that determines whether a non-Sendable value can safely be transferred over an isolation boundary. This is done by introducing the concept of isolation regions that allows the compiler to reason conservatively if two values can affect each other. Through the usage of isolation regions, the language can prove that transferring a non-Sendable value over an isolation boundary cannot result in races because the value (and any other value that might reference it) is not used in the caller after the point of transfer.
+
+      """,
+    link: "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0414-region-based-isolation.md",
+    publishedAt: yearMonthDayFormatter.date(from: "2023-12-04"),
+    title: "SE-0414: Region-based Isolation"
+  )
+
+  public static let se0430_sending = Episode.Reference(
+    author: "Michael Gottesman, Holly Borla, John McCall",
+    blurb: """
+      > This proposal extends region isolation to enable the application of an explicit `sending` annotation to function parameters and results. A function parameter or result that is annotated with `sending` is required to be disconnected at the function boundary and thus possesses the capability of being safely sent across an isolation domain or merged into an actor-isolated region in the function's body or the function's caller respectively.
+      """,
+    link: "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0414-region-based-isolation.md",
+    publishedAt: yearMonthDayFormatter.date(from: "2023-12-04"),
+    title: "`sending` parameter and result values"
+  )
+
   public static let se0446_nonescapable = Episode.Reference(
     author: "Andrew Trick, Tim Kientzle",
     blurb: """
