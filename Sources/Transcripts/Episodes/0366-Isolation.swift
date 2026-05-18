@@ -15,7 +15,7 @@ extension Episode {
       .se0414_regionBasedIsolation,
     ],
     sequence: 366,
-    socialImage: nil,
+    socialImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/cd54a69d-355f-4427-7a72-dfdf282b7100/public",
     subtitle: "Regions",
     title: "Isolation",
     trailerVideo: Video(
