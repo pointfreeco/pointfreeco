@@ -228,7 +228,7 @@ private struct BetasList: HTML {
             verticalSpacing: 2
           ) {
             for beta in Beta.graduated {
-              GraduatedBetaCard(beta: beta)
+              BetaCard(beta: beta)
             }
           }
         }
@@ -242,7 +242,11 @@ private struct BetaCard: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   let beta: Beta
-  let isCollaborator: Bool
+  var isCollaborator = false
+
+  var destinationURL: String? {
+    beta.publicURL ?? (isCollaborator ? beta.repoURL : nil)
+  }
 
   var betaImage: some HTML {
     img()
@@ -258,20 +262,20 @@ private struct BetaCard: HTML {
 
   var body: some HTML {
     VStack(alignment: .leading, spacing: 0) {
-      if isCollaborator {
+      if let destinationURL {
         a {
           betaImage
         }
-        .href(beta.repoURL)
+        .href(destinationURL)
       } else {
         betaImage
       }
 
       VStack(alignment: .leading, spacing: 0.5) {
         Header(4) {
-          if isCollaborator {
+          if let destinationURL {
             a { HTMLText(beta.title) }
-              .href(beta.repoURL)
+              .href(destinationURL)
               .inlineStyle("color", "inherit")
               .inlineStyle("text-decoration", "none")
               .inlineStyle("text-decoration", "underline", pseudo: .hover)
@@ -285,7 +289,13 @@ private struct BetaCard: HTML {
           .color(.gray300.dark(.gray800))
           .linkColor(.purple)
 
-        if subscriberState.isMaxSubscriber {
+        if let publicURL = beta.publicURL {
+          PFWButton(type: .secondary) {
+            HTMLText("View public project")
+          }
+          .href(publicURL)
+          .inlineStyle("margin-top", "1rem")
+        } else if subscriberState.isMaxSubscriber {
           BetaJoinButton(beta: beta, isCollaborator: isCollaborator)
             .inlineStyle("margin-top", "1rem")
         } else {
@@ -295,63 +305,6 @@ private struct BetaCard: HTML {
           .href(siteRouter.path(for: .pricingLanding))
           .inlineStyle("margin-top", "1rem")
         }
-      }
-      .inlineStyle("padding", "1.5rem")
-    }
-    .inlineStyle("border", "1px solid rgba(15, 18, 32, 0.12)")
-    .inlineStyle("border-color", "rgba(255, 255, 255, 0.12)", media: .dark)
-    .inlineStyle("border-radius", "1rem")
-    .inlineStyle("background", "#fcfcfc")
-    .inlineStyle("background", "#0f1220", media: .dark)
-    .inlineStyle("overflow", "hidden")
-  }
-}
-
-private struct GraduatedBetaCard: HTML {
-  let beta: Beta
-
-  var publicURL: String {
-    beta.publicURL ?? beta.repoURL
-  }
-
-  var betaImage: some HTML {
-    img()
-      .attribute("src", beta.imageURL)
-      .attribute("alt", beta.title)
-      .inlineStyle("width", "100%")
-      .inlineStyle("height", "auto")
-      .inlineStyle("display", "block")
-      .inlineStyle("border-radius", "0.75rem 0.75rem 0 0")
-      .inlineStyle("border-bottom", "1px solid rgba(15, 18, 32, 0.08)")
-      .inlineStyle("border-bottom-color", "rgba(255, 255, 255, 0.08)", media: .dark)
-  }
-
-  var body: some HTML {
-    VStack(alignment: .leading, spacing: 0) {
-      a {
-        betaImage
-      }
-      .href(publicURL)
-
-      VStack(alignment: .leading, spacing: 0.5) {
-        Header(4) {
-          a { HTMLText(beta.title) }
-            .href(publicURL)
-            .inlineStyle("color", "inherit")
-            .inlineStyle("text-decoration", "none")
-            .inlineStyle("text-decoration", "underline", pseudo: .hover)
-        }
-        .color(.black.dark(.white))
-
-        HTMLMarkdown(beta.blurb)
-          .color(.gray300.dark(.gray800))
-          .linkColor(.purple)
-
-        PFWButton(type: .secondary) {
-          HTMLText("View public project")
-        }
-        .href(publicURL)
-        .inlineStyle("margin-top", "1rem")
       }
       .inlineStyle("padding", "1.5rem")
     }
