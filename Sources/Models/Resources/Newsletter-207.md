@@ -26,7 +26,7 @@ after.
 DebugSnapshots gives you a tool that helps with this, and a lot more. Apply the `@DebugSnapshot` 
 macro with the `.logChanges` option:
 
-```swift
+```swift:1
 @DebugSnapshot(.logChanges)
 @Observable
 final class FeatureModel {
@@ -92,10 +92,11 @@ final class FeatureModel {
 }
 ```
 
-And to be even more precise you can invoke `$logChanges()` anywhere inside you method to see how 
+And to be even more precise you can invoke `$logChanges()` anywhere inside the method to see how 
 state has changed up to that point:
 
 ```swift
+@LogChanges
 func onAppear() async {
   data = await client.fetch()
   $logChanges("Fetch responded")
