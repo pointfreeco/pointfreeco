@@ -1066,7 +1066,7 @@ extension Episode.Reference {
     blurb: """
       > This proposal extends region isolation to enable the application of an explicit `sending` annotation to function parameters and results. A function parameter or result that is annotated with `sending` is required to be disconnected at the function boundary and thus possesses the capability of being safely sent across an isolation domain or merged into an actor-isolated region in the function's body or the function's caller respectively.
       """,
-    link: "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0414-region-based-isolation.md",
+    link: "https://github.com/swiftlang/swift-evolution/blob/main/proposals/0430-transferring-parameters-and-results.md",
     publishedAt: yearMonthDayFormatter.date(from: "2023-12-04"),
     title: "`sending` parameter and result values"
   )

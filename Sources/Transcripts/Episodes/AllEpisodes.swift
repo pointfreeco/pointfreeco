@@ -369,5 +369,8 @@ extension Episode {
     .ep364_isolation,
     .ep365_isolation,
     .ep366_isolation,
+    .ep367_isolation,
+    .ep368_isolation,
+    .ep369_isolation,
   ]
 }
