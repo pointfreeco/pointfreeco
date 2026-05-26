@@ -18,7 +18,7 @@ extension Episode {
       .se0430_sending,
     ],
     sequence: 367,
-    socialImage: nil,
+    socialImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/dc311cc8-d30d-4c63-582d-1ca488847500/public",
     subtitle: "Sending Values",
     title: "Isolation",
     trailerVideo: Video(
