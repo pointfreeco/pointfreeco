@@ -56,6 +56,9 @@ model.incrementButtonTapped()
 //     )
 ```
 
+> Note: Changes are logged to an `OSLog` so that they are easy to filter for (or filter out), and
+> logging only happens in DEBUG mode and never for release builds.
+
 This becomes even more useful when a method changes a collection or some larger value:
 
 ```swift
