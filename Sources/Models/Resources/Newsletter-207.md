@@ -79,7 +79,7 @@ changed element instead of dumping the entire collection.
 [CustomDump]: https://github.com/pointfreeco/swift-custom-dump
 
 If logging every method is too noisy, you can be more precise. Apply `@LogChanges` to a single
-method
+method instead of passing the `.logChanges` option to `@DebugSnapshot`:
 
 ```swift
 @DebugSnapshot
@@ -259,7 +259,7 @@ DebugSnapshots is available today from its public GitHub repository:
 ```swift
 .package(
   url: "https://github.com/pointfreeco/swift-debug-snapshots",
-  from: "0.0.1"
+  from: "0.1.0"
 )
 ```
 
