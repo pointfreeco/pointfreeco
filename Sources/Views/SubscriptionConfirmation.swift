@@ -1175,6 +1175,7 @@ public struct DiscountCountry {
     .init(countryCode: "BG", name: "Bulgaria"),
     .init(countryCode: "BF", name: "Burkina Faso"),
     .init(countryCode: "BI", name: "Burundi"),
+    .init(countryCode: "KH", name: "Cambodia"),
     .init(countryCode: "CM", name: "Cameroon"),
     .init(countryCode: "CV", name: "Cape Verde"),
     .init(countryCode: "CF", name: "Central African Republic"),
