@@ -204,6 +204,34 @@ private struct BetasList: HTML {
             BetaCard(beta: beta, isCollaborator: collaboratorStatuses[beta.repo] ?? false)
           }
         }
+
+        if !Beta.graduated.isEmpty {
+          VStack(alignment: .leading, spacing: 1) {
+            Header(3) {
+              HTMLText("Graduated Betas")
+            }
+            .color(.black.dark(.white))
+            Paragraph {
+              """
+              These projects were incubated in Beta Previews and have since become publicly \
+              available.
+              """
+            }
+            .color(.gray300.dark(.gray800))
+            .inlineStyle("padding", "0")
+          }
+          .inlineStyle("padding-top", "2rem")
+
+          LazyVGrid(
+            columns: [.desktop: [1, 1], .mobile: [1]],
+            horizontalSpacing: 2,
+            verticalSpacing: 2
+          ) {
+            for beta in Beta.graduated {
+              BetaCard(beta: beta)
+            }
+          }
+        }
       }
     }
   }
@@ -214,7 +242,11 @@ private struct BetaCard: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   let beta: Beta
-  let isCollaborator: Bool
+  var isCollaborator = false
+
+  var destinationURL: String? {
+    beta.publicURL ?? (isCollaborator ? beta.repoURL : nil)
+  }
 
   var betaImage: some HTML {
     img()
@@ -230,20 +262,20 @@ private struct BetaCard: HTML {
 
   var body: some HTML {
     VStack(alignment: .leading, spacing: 0) {
-      if isCollaborator {
+      if let destinationURL {
         a {
           betaImage
         }
-        .href(beta.repoURL)
+        .href(destinationURL)
       } else {
         betaImage
       }
 
       VStack(alignment: .leading, spacing: 0.5) {
         Header(4) {
-          if isCollaborator {
+          if let destinationURL {
             a { HTMLText(beta.title) }
-              .href(beta.repoURL)
+              .href(destinationURL)
               .inlineStyle("color", "inherit")
               .inlineStyle("text-decoration", "none")
               .inlineStyle("text-decoration", "underline", pseudo: .hover)
@@ -257,7 +289,13 @@ private struct BetaCard: HTML {
           .color(.gray300.dark(.gray800))
           .linkColor(.purple)
 
-        if subscriberState.isMaxSubscriber {
+        if let publicURL = beta.publicURL {
+          PFWButton(type: .secondary) {
+            HTMLText("View public project")
+          }
+          .href(publicURL)
+          .inlineStyle("margin-top", "1rem")
+        } else if subscriberState.isMaxSubscriber {
           BetaJoinButton(beta: beta, isCollaborator: isCollaborator)
             .inlineStyle("margin-top", "1rem")
         } else {

@@ -223,5 +223,6 @@ extension BlogPost {
     .post0204_betaPreviews,
     .post0205_debugSnapshots,
     .post0206_tca2,
+    .post0207_debugSnapshotsPublicBeta,
   ]
 }

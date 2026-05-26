@@ -1,9 +1,10 @@
 public struct Beta {
-  public let title: String
-  public let blurb: String
-  public let imageURL: String
-  public let repo: String
-  public let skillName: String
+  public var title: String
+  public var blurb: String
+  public var imageURL: String
+  public var publicURL: String?
+  public var repo: String
+  public var skillName: String
 
   public var repoURL: String {
     "https://github.com/pointfreeco/\(repo)"
@@ -27,16 +28,19 @@ public struct Beta {
       repo: "TCA26",
       skillName: "composable-architecture-2"
     ),
+  ]
+
+  public static let graduated: [Beta] = [
     Beta(
       title: "DebugSnapshots",
       blurb: """
-        A tool for making it possible to test non-equatable types and reference types. \
-        Capture and compare snapshots of your app's state in a human-readable format, \
-        making it easy to catch unexpected changes. \
-        [Read more →](/blog/posts/205-beta-preview-debugsnapshots)
+        A tool for exhaustively testing non-equatable types and reference types. Capture and \
+        compare snapshots of your app's state in a human-readable format, making it easy to catch \
+        unexpected changes.
         """,
       imageURL:
         "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/2b4c6522-30c7-4036-f9ed-c938f3935200/public",
+      publicURL: "https://github.com/pointfreeco/swift-debug-snapshots",
       repo: "swift-debug-snapshots",
       skillName: "debug-snapshots"
     ),
