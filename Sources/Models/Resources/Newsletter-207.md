@@ -12,7 +12,7 @@ That private preview gave us a chance to put the library in the hands of people 
 iterate on the API, and make sure the core ideas held up before opening things up more broadly. And
 now everyone can try it out.
 
-## Debug your models with one macro
+## Debug your classes with @DebugSnapshot
 
 Classes are necessary when building applications because they allow the state of your features to
 evolve over time. Further, the `@Observable` macro only works on classes, which is the de facto tool
@@ -112,9 +112,9 @@ and immediately get a running log of how its state evolves.
 
 But testing is where the library really shines…
 
-## Exhaustive tests for reference types
+## Exhaustive tests for classes
 
-Once you have a snapshot of your model's data, you can do more than log it. You can test it.
+Once you have a snapshot of your model's data, you can unlock testing superpowers from the library.
 
 Classes are awkward to test exhaustively. It is not generally correct to make a class `Equatable`
 by comparing its stored properties (we talked a lot about that [here]). Classes have identity and
@@ -197,7 +197,7 @@ final class FeatureModel {
 
 This will force you to assert on `countIsEven` in tests:
 
-```swift
+```swift:7,13
 @Test func basics() {
   let model = FeatureModel()
   expect(model) {
