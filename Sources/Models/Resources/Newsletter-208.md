@@ -125,7 +125,7 @@ import ConcurrencyExtrasTestSupport
   User.$current.set(.mock)
 )
 struct FeatureTests {
-  ...
+  …
 }
 ```
 
@@ -140,7 +140,7 @@ nicely with Xcode's build system.
 
 Suppose you have a library, Widget, which contains a task local `$style` that alters the behavior
 of the library. You want users of the library to be able to write tests with this `$style` 
-task local overriden to any value, and so you would like to provide a `.style(…)` test trait
+task local overridden to any value, and so you would like to provide a `.style(…)` test trait
 so that they can easily override it on `@Test` and `@Suite`.
 
 The question is: where should this trait be defined? It cannot be defined in the Widget library
