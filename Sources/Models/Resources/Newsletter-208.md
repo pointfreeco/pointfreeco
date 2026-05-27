@@ -6,8 +6,10 @@ for overriding task locals in tests, but it also works around a thorny build sys
 
 ## The problem
 
-Task locals are a great tool for modeling global configuration in a concurrency-safe way. They 
+[Task locals] are a great tool for modeling global configuration in a concurrency-safe way. They 
 are globally accessible, but they can only be changed for a well-defined, lexical scope:
+
+[Task locals]: https://developer.apple.com/documentation/swift/tasklocal
 
 ```swift
 enum FeatureFlags {
@@ -86,14 +88,14 @@ especially if you have many task locals that you want to be able to control in t
 
 ## The new trait
 
-Concurrency Extras now ships a `ConcurrencyExtrasTestSupport` product with a generic `.taskLocal`
-trait:
+Concurrency Extras now ships a `ConcurrencyExtrasTestSupport` product that provides an easy
+way to derive a test trait from any task local for the purpose of overriding it:
 
 ```swift
 import ConcurrencyExtrasTestSupport
 import Testing
 
-@Test(.taskLocal(FeatureFlags.$isEnabled, true))
+@Test(FeatureFlags.$isEnabled.set(true))
 func basics() {
   #expect(FeatureFlags.isEnabled)
 }
@@ -104,7 +106,7 @@ The same trait can be applied to an entire suite:
 ```swift
 import ConcurrencyExtrasTestSupport
 
-@Suite(.taskLocal(FeatureFlags.$isEnabled, true))
+@Suite(FeatureFlags.$isEnabled.set(true))
 struct FeatureTests {
   @Test func basics() {
     #expect(FeatureFlags.isEnabled)
@@ -119,8 +121,8 @@ nested suites. It also flattens the nesting when you need to override multiple t
 import ConcurrencyExtrasTestSupport
 
 @Suite(
-  .taskLocal(FeatureFlags.$isEnabled, true),
-  .taskLocal(User.$current, .mock)
+  FeatureFlags.$isEnabled.set(true),
+  User.$current.set(.mock)
 )
 struct FeatureTests {
   ...
@@ -162,7 +164,7 @@ only on ConcurrencyExtrasTestSupport to get a general purpose tool for overridin
 import ConcurrencyExtrasTestSupport
 import Testing 
 
-@Suite(.taskLocal(Widget.$style, .dark))
+@Suite(Widget.$style.set(.dark))
 struct MySuite {
  …
 }
@@ -192,7 +194,7 @@ Swift Testing:
 import ConcurrencyExtrasTestSupport
 import Testing
 
-@Test(.taskLocal(FeatureFlags.$isEnabled, true))
+@Test(FeatureFlags.$isEnabled.set(true))
 func basics() {
   …
 }
