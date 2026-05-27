@@ -23,7 +23,7 @@ FeatureFlags.$isEnabled.withValue(true) {
 FeatureFlags.isEnabled  // false
 ```
 
-This makes test locals safe to use in parallel tests that run in-process, such as in Swift Testing,
+This makes task locals safe to use in parallel tests that run in-process, such as in Swift Testing,
 but it can create quite a bit of boilerplate to override a task local for a test case. You have
 to wrap your entire test function in `$local.withValue`:
 
@@ -144,9 +144,9 @@ task local overridden to any value, and so you would like to provide a `.style(â
 so that they can easily override it on `@Test` and `@Suite`.
 
 The question is: where should this trait be defined? It cannot be defined in the Widget library
-because you cannot import Testing into non-testing targets. So, instead you create a 
-WidgetTestSupport library that depends on Widget and defines the trait. This library is only meant
-to be linked to test targets, and so it is fine to import the Testing framework.
+because you cannot import Testing into targets that are linked to app targets. So, instead you 
+create a WidgetTestSupport library that depends on Widget and defines the trait. This library is 
+only meant to be linked to test targets, and so it is fine to import the Testing framework.
 
 Unfortunately, such a WidgetTestSupport library is not actually usable in Xcode, generally speaking.
 If Widget depends on some other library, say [Swift Collections], and if the target you are testing
