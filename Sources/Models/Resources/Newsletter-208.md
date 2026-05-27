@@ -1,5 +1,6 @@
 We have added a small but useful new tool to [Concurrency Extras]: a Swift Testing trait that
-overrides any task local value for the duration of a test or suite.
+overrides any task local value for the duration of a test or suite. It not only reduces boilerplate
+for overriding task locals in tests, but it also works around a thorny build system bug in Xcode.
 
 [Concurrency Extras]: https://github.com/pointfreeco/swift-concurrency-extras
 
