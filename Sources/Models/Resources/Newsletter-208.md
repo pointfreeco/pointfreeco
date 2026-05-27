@@ -97,7 +97,7 @@ import Testing
 
 @Test(FeatureFlags.$isEnabled.set(true))
 func basics() {
-  #expect(FeatureFlags.isEnabled)
+  // Assert feature logic with flag enabled
 }
 ```
 
@@ -109,7 +109,7 @@ import ConcurrencyExtrasTestSupport
 @Suite(FeatureFlags.$isEnabled.set(true))
 struct FeatureTests {
   @Test func basics() {
-    #expect(FeatureFlags.isEnabled)
+    // Assert feature logic with flag enabled
   }
 }
 ```

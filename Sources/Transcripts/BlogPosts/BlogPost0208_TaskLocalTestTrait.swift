@@ -10,7 +10,7 @@ extension BlogPost {
       """,
     coverImage: nil,
     id: 208,
-    publishedAt: yearMonthDayFormatter.date(from: "2026-05-28")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2026-06-02")!,
     title: "TaskLocal test traits"
   )
 }
