@@ -28,7 +28,7 @@ extension Episode {
         hd720: "0368-trailer-1080p-678ad02338974e20aaaf72a02d806906",
         sd540: "0368-trailer-1080p-678ad02338974e20aaaf72a02d806906"
       ),
-      id: "f7cfc64b394c8a3344e8fd37fec800a4"
+      id: "bd3ef5f0a12ca7f1a9c336ce6265b00b"
     )
   )
 }
