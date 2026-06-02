@@ -3,7 +3,10 @@ import Foundation
 extension Episode {
   public static let ep368_isolation = Episode(
     blurb: """
-      TODO
+      The `sending` keyword has special behavior when applied to closure arguments, as well as \
+      `inout` arguments. We will employ our knowledge of "disconnected" and "task-isolated" \
+      regions to get an understanding for how they work, why nested closures are problematic, and \
+      how a throwback from our second episode can help us grapple with `inout sending`.
       """,
     codeSampleDirectory: "0368-beyond-basics-isolation-pt14",
     exercises: _exercises,
