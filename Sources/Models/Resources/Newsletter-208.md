@@ -50,7 +50,7 @@ And we have some huge material coming in 2026:
 
 * **Advanced concurrency in practice**
 
-  We will build [ComposableArchitecture 2.0]'s `Store` type from scratch, giving us an opporunity
+  We will build [ComposableArchitecture 2.0]'s `Store` type from scratch, giving us an opportunity
   to use every advanced concurrency tool we discussed in our recent [series][isolation]. We will
   show that by designing a library with isolation in mind we can make its tools more testable, 
   easier to understand, and safer to use in concurrent contexts.
