@@ -317,7 +317,7 @@ struct UnlockEpisodeCallout: HTML {
         icon: SVG(base64: circleLockSvgBase64, description: "Locked")
       ) {
         """
-        Our Free plan includes 1 members only video of your choice, plus weekly updates from \
+        Our Free plan includes 1 members-only video of your choice, plus weekly updates from \
         our newsletter.
         """
       } callToAction: {

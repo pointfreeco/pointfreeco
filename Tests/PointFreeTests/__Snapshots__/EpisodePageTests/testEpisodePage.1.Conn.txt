@@ -858,7 +858,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
             </div>
             <h4 class="color-BoTGL color-GOHNR margin-FBkWQ3 margin-top-EvtWd3 margin-bottom-yQEjs3 font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B">Unlock This Video
             </h4>
-            <p class="margin-bottom-dnNPN1 text-wrap-aqIE4 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2">Our Free plan includes 1 members only video of your choice, plus weekly updates from our newsletter.
+            <p class="margin-bottom-dnNPN1 text-wrap-aqIE4 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2">Our Free plan includes 1 members-only video of your choice, plus weekly updates from our newsletter.
             </p>
             <pf-vstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><a href="/auth?kind=login&redirect=http://localhost:8080/episodes/ep1-proof-in-functions" class="font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg">
               <pf-hstack class="font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1"><svg width="21" height="19" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -980,7 +980,7 @@ article div:hover > * > .display-Vk1P81{display:initial}
       </h2>
     </div>
     <div class="text-align-GE99b">
-      <p class="margin-mBI0f2 max-width-3zifi color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2">Our free plan includes 1 members only episode of your choice, access to 0 free episodes with transcripts and code samples, and weekly updates from our newsletter.
+      <p class="margin-mBI0f2 max-width-3zifi color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2">Our free plan includes 1 members-only episode of your choice, access to 0 free episodes with transcripts and code samples, and weekly updates from our newsletter.
       </p>
     </div>
     <div class="text-align-GE99b width-C8uWv"><a class="margin-top-H64QF2 display-qrAHi font-size-83zzS1 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-8K2qP3 transition-DjHPg" href="/auth?kind=signUp">Sign up for free →</a>

@@ -54,6 +54,8 @@ And we have some huge material coming in 2026:
   to use every advanced concurrency tool we discussed in our recent [series][isolation]. We will
   show that by designing a library with isolation in mind we can make its tools more testable, 
   easier to understand, and safer to use in concurrent contexts.
+  
+  [ComposableArchitecture 2.0]: /blog/posts/206-beta-preview-composablearchitecture-2-0
 
 * **A new SQLite driver**
 
@@ -80,5 +82,5 @@ take advantage of the **30% off** WWDC 2026 sale before it ends.
 }
 
 @Button(/discounts/WWDC-26) {
-  Save 30% on Point-Free
+  Save 30% on Point-Free Pro
 }
