@@ -201,7 +201,7 @@ struct Banner {
   }
 
   static let saleBanner = Self(
-    endAt: yearMonthDayFormatter.date(from: "2026-06-14")!,
+    endAt: yearMonthDayFormatter.date(from: "2026-06-16")!,
     markdownContent: ###"""
       **🎉 WWDC 2026 Sale!** Save 30% when you [become a member today](/discounts/WWDC-26).
       """###,
