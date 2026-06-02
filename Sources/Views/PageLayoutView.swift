@@ -201,12 +201,12 @@ struct Banner {
   }
 
   static let saleBanner = Self(
-    endAt: yearMonthDayFormatter.date(from: "2026-01-05")!,
+    endAt: yearMonthDayFormatter.date(from: "2026-06-16")!,
     markdownContent: ###"""
-      **🎉 Holiday Sale!** Save 25% when you [become a member today](/discounts/eoy-2025).
+      **🎉 WWDC 2026 Sale!** Save 30% when you [become a member today](/discounts/WWDC-26).
       """###,
     shouldShow: { route in !route.is(\.subscribeConfirmation) && !route.is(\.teamInviteCode) },
-    startAt: yearMonthDayFormatter.date(from: "2025-12-22")!
+    startAt: yearMonthDayFormatter.date(from: "2026-06-02")!
   )
 }
 
