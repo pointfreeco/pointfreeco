@@ -224,6 +224,6 @@ extension BlogPost {
     .post0205_debugSnapshots,
     .post0206_tca2,
     .post0207_debugSnapshotsPublicBeta,
-    .post0208_taskLocalTestTrait,
+    .post0209_taskLocalTestTrait,
   ]
 }

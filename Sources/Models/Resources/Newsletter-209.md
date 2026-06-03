@@ -1,8 +1,8 @@
-We have added a small but useful new tool to [Concurrency Extras]: a Swift Testing trait that
+We have added a small but useful new tool to [ConcurrencyExtras]: a Swift Testing trait that
 overrides any task local value for the duration of a test or suite. It not only reduces boilerplate
 for overriding task locals in tests, but it also works around a thorny build system bug in Xcode.
 
-[Concurrency Extras]: https://github.com/pointfreeco/swift-concurrency-extras
+[ConcurrencyExtras]: https://github.com/pointfreeco/swift-concurrency-extras
 
 ## The problem
 
@@ -88,14 +88,14 @@ especially if you have many task locals that you want to be able to control in t
 
 ## The new trait
 
-Concurrency Extras now ships a `ConcurrencyExtrasTestSupport` product that provides an easy
-way to derive a test trait from any task local for the purpose of overriding it:
+ConcurrencyExtras now ships a `ConcurrencyExtrasTestSupport` product that provides a single
+test trait that can override any task local:
 
 ```swift
 import ConcurrencyExtrasTestSupport
 import Testing
 
-@Test(FeatureFlags.$isEnabled.set(true))
+@Test(.taskLocal(FeatureFlags.$isEnabled, true))
 func basics() {
   // Assert feature logic with flag enabled
 }
@@ -106,7 +106,7 @@ The same trait can be applied to an entire suite:
 ```swift
 import ConcurrencyExtrasTestSupport
 
-@Suite(FeatureFlags.$isEnabled.set(true))
+@Suite(.taskLocal(FeatureFlags.$isEnabled, true))
 struct FeatureTests {
   @Test func basics() {
     // Assert feature logic with flag enabled
@@ -121,8 +121,8 @@ nested suites. It also flattens the nesting when you need to override multiple t
 import ConcurrencyExtrasTestSupport
 
 @Suite(
-  FeatureFlags.$isEnabled.set(true),
-  User.$current.set(.mock)
+  .taskLocal(FeatureFlags.$isEnabled, true),
+  .taskLocal(User.$current, .mock)
 )
 struct FeatureTests {
   …
@@ -135,7 +135,7 @@ and no need to indent your test code inside `withValue` for each task local you 
 ## A better test-support story
 
 While reducing boilerplate is great, it's not actually the reason we added this feature. The real
-reason is that it is not currently possible to ship test support libraries in a way that plays 
+reason is that it is not generally possible to ship test support libraries in a way that plays 
 nicely with Xcode's build system.
 
 Suppose you have a library, Widget, which contains a task local `$style` that alters the behavior
