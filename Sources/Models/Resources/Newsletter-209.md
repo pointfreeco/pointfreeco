@@ -132,7 +132,7 @@ struct FeatureTests {
 That is all it takes. No need to recreate 20 lines of boilerplate for each individual task local,
 and no need to indent your test code inside `withValue` for each task local you override.
 
-## A better test-support story
+## A workaround for an Xcode bug
 
 While reducing boilerplate is great, it's not actually the reason we added this feature. The real
 reason is that it is not generally possible to ship test support libraries in a way that plays 
@@ -149,12 +149,11 @@ create a WidgetTestSupport library that depends on Widget and defines the trait.
 only meant to be linked to test targets, and so it is fine to import the Testing framework.
 
 Unfortunately, such a WidgetTestSupport library is not actually usable in Xcode, generally speaking.
-If Widget depends on some other library, say [Swift Collections], and if the target you are testing
-also depends on Swift Collections, then Xcode cannot build the test target. It's not clear what the
-root issue is, or whether Apple considers it a bug, but it's the reality. It's worth noting that 
-this issue is _not_ present in Swift Package Manager.  
+It is very easy to end up in a situation where Xcode will duplicate symbols in the Widget library
+when building for tests, causing different parts of your code base to use different versions of
+Widget's symbols. We have a full accounting of this Xcode bug in [this repo].
 
-[Swift Collections]: https://github.com/apple/swift-collections
+[this repo]: https://github.com/pointfreeco/xcode-test-support-bug
 
 This problem is fixed using our newly released tool. There is no need for you to create a 
 WidgetTestSupport just to provide a way to override a task local. Instead, your users can depend
@@ -164,7 +163,7 @@ only on ConcurrencyExtrasTestSupport to get a general purpose tool for overridin
 import ConcurrencyExtrasTestSupport
 import Testing 
 
-@Suite(Widget.$style.set(.dark))
+@Suite(.taskLocal(Widget.$style, .dark))
 struct MySuite {
  …
 }
@@ -194,7 +193,7 @@ Swift Testing:
 import ConcurrencyExtrasTestSupport
 import Testing
 
-@Test(FeatureFlags.$isEnabled.set(true))
+@Test(.taskLocal(FeatureFlags.$isEnabled, true))
 func basics() {
   …
 }
