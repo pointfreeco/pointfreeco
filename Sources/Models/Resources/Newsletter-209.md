@@ -86,7 +86,7 @@ struct MySuite {
 It gets the job done, but it's also 20 lines of boilerplate that is going to be a pain to maintain,
 especially if you have many task locals that you want to be able to control in tests.
 
-## The new trait
+## Introducing the `.taskLocal` test trait
 
 ConcurrencyExtras now ships a `ConcurrencyExtrasTestSupport` product that provides a single
 test trait that can override any task local:
