@@ -10,7 +10,7 @@ extension BlogPost {
       """,
     coverImage: nil,
     id: 210,
-    publishedAt: yearMonthDayFormatter.date(from: "2026-06-09")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2026-06-16")!,
     title: "Introducing @DependencyEntry"
   )
 }
