@@ -226,5 +226,6 @@ extension BlogPost {
     .post0207_debugSnapshotsPublicBeta,
     .post0208_WWDC2026Sale,
     .post0209_taskLocalTestTrait,
+    .post0210_dependencyEntry,
   ]
 }
