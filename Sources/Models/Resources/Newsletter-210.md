@@ -44,7 +44,7 @@ But in Dependencies we separated the concepts of the "live" dependency you want 
 your app in the simulator or on device, from the "preview" dependency you want to use in Xcode
 previews (that serve up reasonable mock data), and the "test" dependency you want to use during
 testing. This separation makes previews easy to use because it reduces how often you need to
-explicitly override dependencies for previews, and makes tests safer because you are guarnateed to
+explicitly override dependencies for previews, and makes tests safer because you are guaranteed to
 never access live dependencies in a testing environment.
 
 But with that power comes complications when porting something like `@Entry` to Dependencies. We
@@ -79,7 +79,7 @@ extension DependencyValues {
 }
 ```
 
-…expands to rougly the equivalent of:
+…expands to roughly the equivalent of:
 
 ```swift
 extension DependencyValues {
@@ -96,13 +96,21 @@ extension DependencyValues {
 }
 ```
 
-And if you omit `liveValue`, then the synthesized key conforms only to `TestDependencyKey`. That
-allows you to continue separating your dependency's interface from its live implementation, while
-still allowing one to fully specify a dependency's live/preview/test value inline when appropriate.
+If you omit `liveValue`, then the synthesized key conforms only to `TestDependencyKey`. That allows
+you to continue separating your dependency's interface from its live implementation, while still
+allowing one to fully specify a dependency's live/preview/test value inline when appropriate.
 
-And we decided to make the value specified for the property to be the `testValue` because the
-main reason to control your dependencies is to make your code testable, and we want to make that 
-clear by baking it into the defaults of the library.
+We decided to make the value specified for the property to be the `testValue` because the main
+reason to control your dependencies is to make your code testable, and we want to make that clear
+by baking it into the defaults of the library. But it is still possible to omit this value provided
+you configure a `liveValue`:
+
+```swift
+extension DependencyValues {
+  @DependencyEntry(liveValue: LiveAPIClient())
+  var apiClient: any APIClient
+}
+```
 
 ## Get started
 
