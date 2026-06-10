@@ -1034,21 +1034,22 @@ private func total(
               if (!\#(supportsBillingToggle)) {
                 monthly = \#(defaultIsMonthly)
               }
-              const monthlySeatPrice = \#(discountedMonthlySeatPriceInCents) * 0.01 * regionalDiscount
-              const yearlySeatPrice = \#(discountedYearlySeatPriceInCents) * 0.01 * regionalDiscount
-              const seatPrice = monthly ? monthlySeatPrice : yearlySeatPrice
-              const subtotal = seats * seatPrice
-              const total = monthly
-                ? subtotal
-                : Math.max(0, subtotal - \#(referralDiscount) * regionalDiscount)
-              var previewUnitPrice = seatPrice
+              const monthlySeatPriceInCents = Math.round(\#(discountedMonthlySeatPriceInCents) * regionalDiscount)
+              const yearlySeatPriceInCents = Math.round(\#(discountedYearlySeatPriceInCents) * regionalDiscount)
+              const seatPriceInCents = monthly ? monthlySeatPriceInCents : yearlySeatPriceInCents
+              const subtotalInCents = seats * seatPriceInCents
+              const totalInCents = monthly
+                ? subtotalInCents
+                : Math.max(0, subtotalInCents - Math.round(\#(referralDiscount * 100) * regionalDiscount))
+              const total = totalInCents / 100
+              var previewUnitPrice = seatPriceInCents / 100
               var previewUnitText = "\#(defaultPreviewUnitText)"
               var monthMultiplierSuffix = ""
               if (\#(supportsBillingToggle)) {
                 previewUnitText = monthly ? "per month" : "per year"
               }
               if (\#(isProTeamAnnual)) {
-                previewUnitPrice = seatPrice / 12
+                previewUnitPrice = seatPriceInCents / 1200
                 previewUnitText = "per member per month"
                 monthMultiplierSuffix = " times <strong>12 months</strong>"
               }
@@ -1065,7 +1066,7 @@ private func total(
                 window.paymentRequest.update({
                   total: {
                     label: monthly ? "Monthly membership" : "Yearly membership",
-                    amount: total * 100
+                    amount: totalInCents
                   }
                 })
               }
