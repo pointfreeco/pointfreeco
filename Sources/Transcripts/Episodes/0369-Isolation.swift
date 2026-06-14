@@ -3,7 +3,9 @@ import Foundation
 extension Episode {
   public static let ep369_isolation = Episode(
     blurb: """
-      TODO
+      We conclude our series by exploring the mode of main actor by default. New Xcode projects \
+      come with with setting turned on, so it's important to know the ins and outs of working with
+      it, and how it is affected by "sendable" protocols.
       """,
     codeSampleDirectory: "0369-beyond-basics-isolation-pt14",
     exercises: _exercises,
@@ -12,7 +14,6 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2026-06-15")!,
     references: [
-      .se0430_sending,
     ],
     sequence: 369,
     socialImage: nil,
