@@ -4,7 +4,7 @@ extension Episode {
   public static let ep369_isolation = Episode(
     blurb: """
       We conclude our series by exploring the mode of main actor by default. New Xcode projects \
-      come with with setting turned on, so it's important to know the ins and outs of working with
+      come with with setting turned on, so it's important to know the ins and outs of working with \
       it, and how it is affected by "sendable" protocols.
       """,
     codeSampleDirectory: "0369-beyond-basics-isolation-pt14",
