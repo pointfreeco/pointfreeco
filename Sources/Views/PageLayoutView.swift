@@ -189,7 +189,7 @@ struct Banner {
     @Dependency(\.subscriberState) var subscriberState
     @Dependency(\.envVars.appEnv) var appEnv
 
-    let banners: [Self] = [.saleBanner]
+    let banners: [Self] = []
 
     return banners.filter { banner in
       return

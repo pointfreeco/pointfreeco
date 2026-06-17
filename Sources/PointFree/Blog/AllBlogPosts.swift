@@ -229,5 +229,6 @@ extension BlogPost {
     .post0210_WWDC2026Sale,
     .post0211_WWDC2026Sale,
     .post0212_WWDC2026Sale,
+    .post0213_dependencyEntry,
   ]
 }
