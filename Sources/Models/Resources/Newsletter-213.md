@@ -23,7 +23,7 @@ expected.
 This macro is heavily inspired by SwiftUI's [`@Entry` macro] for the SwiftUI environment, which was 
 released a few years ago. Since then we have gotten a few requests to bring something similar to
 dependencies (for example [here][discussion-116] and [here][discussion-258]), but we were reluctant
-due to the differences between `@Depenedency` and `@Environment`.
+due to the differences between `@Dependency` and `@Environment`.
 
 [`@Entry` macro]: https://developer.apple.com/documentation/swiftui/entry%28%29
 [discussion-116]: https://github.com/pointfreeco/swift-dependencies/discussions/116
