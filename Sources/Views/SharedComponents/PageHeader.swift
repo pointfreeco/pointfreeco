@@ -32,9 +32,16 @@ public struct PageHeader<Title: HTML, Blurb: HTML, CallToAction: HTML>: HTML {
           Header(2) { title }
             .color(.white)
 
-          Paragraph(.big) { blurb }
-            .fontStyle(.body(.regular))
-            .color(.gray800)
+          HTMLGroup {
+            if blurb is HTMLMarkdown {
+              blurb
+            } else {
+              Paragraph(.big) { blurb }
+            }
+          }
+          .fontStyle(.body(.regular))
+          .color(.gray800)
+          .linkColor(.white)
         }
         .grow()
 

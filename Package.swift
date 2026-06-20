@@ -70,6 +70,7 @@ var package = Package(
         "FoundationPrelude",
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "DependenciesMacros", package: "swift-dependencies"),
+        .product(name: "Tagged", package: "swift-tagged"),
       ]
     ),
     .target(
