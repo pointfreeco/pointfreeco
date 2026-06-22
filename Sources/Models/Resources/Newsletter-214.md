@@ -36,12 +36,12 @@ final class SettingsModel {
 Each time `resetButtonTapped` is called it will log to the console exactly what changed:
 
 ```diff
-   resetButtonTapped():
-     #1 SettingsModel.DebugSnapshot(
-   -   displayName: "Blob",
-   +   displayName: "",
-       notificationsEnabled: false
-     )
+ resetButtonTapped():
+   #1 SettingsModel.DebugSnapshot(
+-    displayName: "Blob",
++    displayName: "",
+     notificationsEnabled: false
+   )
 ```
 
 This works great for methods, but many state changes in a SwiftUI app come from bindings instead
@@ -69,12 +69,12 @@ With DebugSnapshots 0.3.0, edits made through that `TextField` can now produce t
 diffs you get from method calls:
 
 ```diff
-   Binding:
-     #1 SettingsModel.DebugSnapshot(
-   -   displayName: "Blo",
-   +   displayName: "Blob",
-       notificationsEnabled: false
-     )
+ Binding:
+   #1 SettingsModel.DebugSnapshot(
+-    displayName: "Blo",
++    displayName: "Blob",
+     notificationsEnabled: false
+   )
 ```
 
 This can be quite helpful when working with large observable models in SwiftUI.
