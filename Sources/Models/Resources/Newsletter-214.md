@@ -8,7 +8,7 @@
 > * Proposing task-local test traits for Swift Testing<!--](/blog/posts/217-proposing-task-local-test-traits-for-swift-testing)-->
 > * Shipping Xcode 27 support<!--](/blog/posts/218-shipping-xcode-27-support)-->
 
-Earlier this year we announced [DebugSnapshots][debug-snapshots-gh], first in private preview for
+Earlier this year we announced [DebugSnapshots], first in private preview for
 Point-Free Max members and then more broadly in [public beta][debug-snapshots-beta-post]. It is a
 tool for exhaustively testing reference types and for getting focused diffs of how your models
 change over time.
@@ -81,7 +81,7 @@ This can be quite helpful when working with large observable models in SwiftUI.
 
 ## A reminder that DebugSnapshots exists!
 
-This feature is a good excuse to remind everyone what DebugSnapshots is all about. It brings two 
+This feature is a good excuse to remind everyone what [DebugSnapshots] is all about. It brings two 
 big ideas to reference types:
 
 * It can log precise diffs of how a model changes as methods are called and bindings mutated.
@@ -129,6 +129,6 @@ becomes to understand your state transitions.
 
 [beta-previews-post]: /blog/posts/204-introducing-point-free-beta-previews
 [debug-snapshots-beta-post]: /blog/posts/207-debugsnapshots-public-beta
-[debug-snapshots-gh]: https://github.com/pointfreeco/swift-debug-snapshots
+[DebugSnapshots]: https://github.com/pointfreeco/swift-debug-snapshots
 [debug-snapshots-030]: https://github.com/pointfreeco/swift-debug-snapshots/releases/tag/0.3.0
 [tca2-post]: /blog/posts/206-beta-preview-composablearchitecture-2-0
