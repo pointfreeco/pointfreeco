@@ -231,7 +231,7 @@ extension BlogPost {
     .post0212_WWDC2026Sale,
     .post0213_dependencyEntry,
     .post0214_debugSnapshotsBindings,
-//    .post0215_swiftNavigationMacros,
+    .post0215_swiftNavigationMacros,
 //    .post0216_traitification,
 //    .post0217_taskLocalProposal,
 //    .post0218_xcode27Support,
