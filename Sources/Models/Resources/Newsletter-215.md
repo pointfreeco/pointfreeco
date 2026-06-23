@@ -8,8 +8,10 @@
 > * Proposing task-local test traits for Swift Testing<!--](/blog/posts/217-proposing-task-local-test-traits-for-swift-testing)-->
 > * Shipping Xcode 27 support<!--](/blog/posts/218-shipping-xcode-27-support)-->
 
-Today we have a big release for our [SwiftNavigation] library that introduces two new macros that
+Today we have a [big release] for our [SwiftNavigation] library that introduces two new macros that
 unlock powerful techniques in all Swift applications, including SwiftUI and UIKit.
+
+[big release]: https://github.com/pointfreeco/swift-navigation/releases/tag/2.9.0
 
 ## First, what is SwiftNavigation?
 
