@@ -20,11 +20,13 @@ tools to UIKit that allow one to drive navigation from state in a manner similar
 including:
 
 * Navigation APIs that are driven by state but mimic UIKit's native navigation APIs, such as 
-[`present(item:)`](TODO), as well as the ability to bind models to any `UIControl` (e.g. text 
-fields, steppers, etc.). 
+[`present(item:)`][present-docs], as well as the ability to bind models to any `UIControl` (e.g. 
+text fields, steppers, etc.). 
 * Open source and platform independent `UIBinding` and `UITransaction` types for binding models
 to UI components and attaching animations and other contextual data to state changes.
 * An `observe` method for minimally observing changes to your models.
+
+[present-docs]: https://swiftpackageindex.com/pointfreeco/swift-navigation/main/documentation/uikitnavigation/uikit/uiviewcontroller/present(item:ondismiss:content:)-4x5io
 
 And best of all, most of these tools are back deployed all the way to iOS 13, so you can use them
 today without waiting for your users to upgrade to the newest OS. It's a powerful library that we
