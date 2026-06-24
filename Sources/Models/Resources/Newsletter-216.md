@@ -13,12 +13,12 @@ on one of our packages, a bunch of our other libraries come in transitively.
 
 We personally have never viewed this as a major problem because we only depend on our own libraries.
 We do not have a sprawling web of 3rd party dependencies, and our libraries mostly aim to fill 
-fundamental gaps in the Apple ecosystem that we think should someday be apart of Swift or SwiftUI
+fundamental gaps in the Apple ecosystem that we think should some day be a part of Swift or SwiftUI
 natively (we love being Sherlocked!). And we find that managing an ecosystem of small, reusable
 libraries is better than us repeatedly copying and pasting snippets into our various projects. 
 
 Luckily thanks to SwiftPM traits we can have our cake and eat it to. We can continue maintaining
-our ecosystem of libraries while giving our users more control of what bits of functionality they
+our ecosystem of libraries while giving our users more control over what bits of functionality they
 need from our other libraries.
 
 > Note: We recently wrote about another use of traits in the [Composable Architecture][tca-traits], 
@@ -50,7 +50,7 @@ dependencies: [
 ]
 ```
 
-That small change will prevent transitive dependencies on our [CustomDump], [IssueReporting]
+That small change will prevent transitive dependencies on our [CustomDump], [IssueReporting],
 and [Sharing] libraries.
 
 [CustomDump]: https://github.com/pointfreeco/swift-custom-dump
@@ -77,7 +77,7 @@ that is done your dependencies sidebar in Xcode will go from looking like this:
 
 The libraries of ours that have most fully gotten the “trait-ified” treatment are 
 [SwiftNavigation] and [Dependencies]. Our Dependencies library provides [traits] to omit the
-registered dependencies for dealing with Clocks and Combine schedulers, and even provides a trait
+registered dependencies for dealing with clocks and Combine schedulers, and even provides a trait
 for avoiding Foundation and FoundationNetworking, which can be important for Wasm and Android
 development so as to avoid hefty binaries on those platforms.
 
