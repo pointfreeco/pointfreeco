@@ -33,6 +33,7 @@ dependencies on our other libraries. For example, our [SwiftNavigation] library,
 improved navigation tools for SwiftUI as well as SwiftUI-inspired navigation tools for UIKit, now
 comes with [traits][swift-nav-traits] to opt out of certain behavior.
 
+[swift-nav-traits]: https://github.com/pointfreeco/swift-navigation/blob/5c16d3a4645c3f51083bd6c12821fe57a0b455c5/Package.swift#L38-L59
 [SwiftNavigation]: https://github.com/pointfreeco/swift-navigation
 
 When depending on SwiftNavigation in a SwiftPM package you can specify the traits for the 
