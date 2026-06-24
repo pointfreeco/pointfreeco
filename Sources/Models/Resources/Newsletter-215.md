@@ -5,6 +5,7 @@
 > * [“Trait-ifying” our libraries](/blog/posts/216-trait-ifying-our-libraries)
 >
 > Coming soon:
+> * Trait-ifying our libraries<!--](/blog/posts/216-trait-ifying-our-libraries)-->
 > * Proposing task-local test traits for Swift Testing<!--](/blog/posts/217-proposing-task-local-test-traits-for-swift-testing)-->
 > * Shipping Xcode 27 support<!--](/blog/posts/218-shipping-xcode-27-support)-->
 
@@ -32,11 +33,11 @@ to UI components and attaching animations and other contextual data to state cha
 
 And best of all, most of these tools are back deployed all the way to iOS 13, so you can use them
 today without waiting for your users to upgrade to the newest OS. It's a powerful library that we
-think could use more attention, and so that's why we are excited to announce two more tools…
+think could use more attention, and so that's why we are excited to announce two new tools…
 
 ## `@CaseBindable`
 
-This release brings a new macro to the library, `@CaseBindable`.
+This release brings new macros to the library, starting with `@CaseBindable`.
 
 This macro allows you transform a binding of an enum into a binding of each case of the enum, in
 an exhaustive manner. For example, a `Status` enum decorated with `@CaseBindable` like so:
@@ -72,24 +73,24 @@ case .outOfStock(let $isOnBackOrder):
 }
 ``` 
 
-> Note: The `$` syntax isn't real projection, so we do need to explicitly call to 
-`$quantity.wrappedValue` when the underlying value is needed, but this just shows a real gap in the 
-language for enums that will hopefully be addressed some day. 
+> Note: The `$` syntax isn't real projection, so we do need to explicitly call to
+> `$quantity.wrappedValue` when the underlying value is needed, but this just shows a real gap in the
+> language for enums that will hopefully be addressed some day.
 
 This makes it possible to model your domains as concisely as possible without giving up the ability
 to derive bindings for SwiftUI controls.
 
-## `@UITransactionEntry` for `UITransactionKey`s
+## `@UITransactionEntry` for `UITransaction`s
 
 There is also a smaller, but still useful, macro coming along for the ride: `@TransactionEntry`.
 
 SwiftUI ships an `@Entry` macro that cuts down on the boilerplate needed to define custom
-environment entries. We are doing the same for `UITransaction` values in the library, which is our
-open source and platform independent port of SwiftUI's `Transaction`. A new entry can be defined
-like so:
+environment and transaction entries. We are doing the same for `UITransaction` values in the library,
+which is our open source and platform independent port of SwiftUI's `Transaction`. A new entry can be
+defined like so:
 
 ```swift
-extension UITransactionKey {
+extension UITransaction {
   @UITransactionEntry var animateCount = false
 }
 ```

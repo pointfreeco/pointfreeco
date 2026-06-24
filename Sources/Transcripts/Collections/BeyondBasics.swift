@@ -34,7 +34,7 @@ extension Episode.Collection {
           .init(episode: .ep368_isolation),
           .init(episode: .ep369_isolation),
         ],
-        isFinished: false,
+        isFinished: true,
         isHidden: false,
         related: [],
         title: "Isolation",
