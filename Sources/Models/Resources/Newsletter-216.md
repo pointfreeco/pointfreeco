@@ -79,7 +79,7 @@ that is done your dependencies sidebar in Xcode will go from looking like this:
 The libraries of ours that have most fully gotten the “trait-ified” treatment are 
 [SwiftNavigation] and [Dependencies], as well as the highly anticipated 2.0 of our popular
 [ComposableArchitecture](/beta-previews) library. The Dependencies library provides 
-[swift-deps-traits] to omit the registered dependencies for dealing with clocks and Combine 
+[traits][swift-deps-traits] to omit the registered dependencies for dealing with clocks and Combine 
 schedulers, and even provides a trait for avoiding Foundation and  FoundationNetworking, which can 
 be important for Wasm and Android development so as to avoid hefty binaries on those platforms.
 
