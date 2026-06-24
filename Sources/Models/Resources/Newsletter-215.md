@@ -2,9 +2,9 @@
 > across our ecosystem.
 > * [DebugSnapshots now logs SwiftUI bindings](/blog/posts/214-debugsnapshots-now-logs-swiftui-bindings)
 > * [**New macros for SwiftNavigation**](/blog/posts/215-new-macros-for-swiftnavigation)
+> * [“Trait-ifying” our libraries to reduce transitive dependencies](/blog/posts/216-trait-ifying-our-libraries-to-reduce-transitive-dependencies)
 >
 > Coming soon:
-> * Trait-ifying our libraries<!--](/blog/posts/216-trait-ifying-our-libraries)-->
 > * Proposing task-local test traits for Swift Testing<!--](/blog/posts/217-proposing-task-local-test-traits-for-swift-testing)-->
 > * Shipping Xcode 27 support<!--](/blog/posts/218-shipping-xcode-27-support)-->
 
