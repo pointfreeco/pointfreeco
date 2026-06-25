@@ -26,7 +26,7 @@ enum FeatureFlags {
 ```
 
 In order to bind a value to this task local for a test or suite, you would need to define a type
-to conform to `TestTrati`, `SuiteTrait`, and `TestScoping`, along with a convenience static helper:
+to conform to `TestTrait`, `SuiteTrait`, and `TestScoping`, along with a convenience static helper:
 
 ```swift
 struct _IsEnabledTrait: SuiteTrait, TestScoping, TestTrait {
