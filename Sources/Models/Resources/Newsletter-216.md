@@ -3,9 +3,9 @@
 > * [DebugSnapshots now logs SwiftUI bindings](/blog/posts/214-debugsnapshots-now-logs-swiftui-bindings)
 > * [New macros for SwiftNavigation](/blog/posts/215-new-macros-for-swiftnavigation)
 > * [**“Trait-ifying” our libraries to reduce transitive dependencies**](/blog/posts/216-trait-ifying-our-libraries-to-reduce-transitive-dependencies)
+> * [Proposing task-local test traits for Swift Testing](/blog/posts/217-proposing-task-local-test-traits-for-swift-testing)
 >
 > Coming soon:
-> * Proposing task-local test traits for Swift Testing
 > * Shipping Xcode 27 support
 
 One of the recurring pieces of feedback we get on our libraries is that when you add a dependency
