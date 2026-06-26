@@ -38,7 +38,14 @@ release we had a [fix] in place.
 [fix]: https://github.com/pointfreeco/swift-issue-reporting/pull/186
 [IssueReporting]: https://github.com/pointfreeco/swift-issue-reporting/
 
-## StructuredQueries
+## Swift 6.4 regressions
+
+Swift 6.4 has brought a lot of improvements and new features to Swift, but has also brought some
+regressions in type checking. Code that compiles just fine in 6.3 no longer compiles in 6.4.
+We have opened issues on these problems, but that doesn't help our users. So in the meantime we have
+implemented workarounds so that people are not prevented from using Xcode 27 betas:
+
+### StructuredQueries
 
 [StructuredQueries] is our type-safe and schema-safe SQL building library. It employs some of the
 most advanced parts of Swift, including macros, parameter packs, static dynamic member lookup, and
@@ -50,6 +57,37 @@ In particular, Swift 6.4 seems to have introduced a small type checking regressi
 
 [simple]: https://github.com/pointfreeco/swift-structured-queries/pull/290
 [StructuredQueries]: https://github.com/pointfreeco/swift-structured-queries
+
+### Sharing
+
+[Sharing] is our library for general persistence tools in SwiftUI and UIKit applications. 
+It uses opaque types in a particular fashion that seems to no longer compile in Swift 6.4,
+and rather waiting around for a fix in Swift, we applied a [fix][sharing-pr] ourselves.
+
+[Sharing]: https://github.com/pointfreeco/swift-sharing
+[sharing-pr]: https://github.com/pointfreeco/swift-sharing/pull/216
+
+### ComposableArchitecture
+
+[ComposableArchitecture] is our popular library for building complex animations in a way
+that embraces value types of reference types, provides tools for concise domain modeling, and
+helps wrangle in asynchronous behavior in features. Due to a regression in isolation checking in
+Swift 6.4 we needed to mark something as `@MainActor` that should have been `@MainActor` isolated
+already. But it was no big deal to [tca-pr], and we got out a release right away.
+
+[ComposableArchitecture]: https://github.com/pointfreeco/swift-composable-architecture/ 
+[tca-pr]: https://github.com/pointfreeco/swift-composable-architecture/pull/3931/
+
+### ComposableArchitecture 2.0
+
+[ComposableArchitecture 2.0] is the next generation of our ComposableArchitecture library, 
+currently in beta preview. This library embraces all of the most modern tools in Swift's 
+concurrency arsenal, including [NonisolatedNonsendingByDefault], but Swift 6.4 seems to have
+started catching more problems in async code related to this setting. This surfaced an issue
+in our library that we were quick to [fix][tca26-pr] for our beta users. 
+  
+[NonisolatedNonsendingByDefault]: https://docs.swift.org/compiler/documentation/diagnostics/nonisolated-nonsending-by-default/
+[tca26-pr]: https://github.com/pointfreeco/TCA26/pull/148/
 
 ## @DependencyEntry
 
