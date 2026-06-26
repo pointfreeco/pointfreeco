@@ -4,9 +4,7 @@
 > * [New macros for SwiftNavigation](/blog/posts/215-new-macros-for-swiftnavigation)
 > * [“Trait-ifying” our libraries to reduce transitive dependencies](/blog/posts/216-trait-ifying-our-libraries-to-reduce-transitive-dependencies)
 > * [Proposing task-local test traits for Swift Testing](/blog/posts/217-proposing-task-local-test-traits-for-swift-testing)
->
-> Coming soon:
-> * Shipping Xcode 27 support<!--](/blog/posts/218-shipping-xcode-27-support)-->
+> * [Xcode 27 support in the Point-Free ecosystem](/blog/posts/218-xcode-27-support-in-the-point-free-ecosystem)
 
 Earlier this year we announced [DebugSnapshots], first in private preview for
 Point-Free Max members and then more broadly in [public beta][debug-snapshots-beta-post]. It is a
