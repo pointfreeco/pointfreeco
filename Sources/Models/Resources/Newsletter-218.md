@@ -51,7 +51,7 @@ implemented workarounds so that people are not prevented from using Xcode 27 bet
 
 [StructuredQueries] is our type-safe and schema-safe SQL building library. It employs some of the
 most advanced parts of Swift, including macros, parameter packs, static dynamic member lookup, and
-more. But, by push Swift to its limits we are more susceptible to small regressions introduced in
+more. But, by pushing Swift to its limits we are more susceptible to small regressions introduced in
 new versions of Swift.
 
 In particular, Swift 6.4 seems to have introduced a small type checking regression that prevents
