@@ -16,6 +16,10 @@ bring small incompatibilies or regresions that prevent one from building their p
 maintainers of open source libraries, we never want to be the reason that someone can't build
 their project.
 
+So, join us for a quick overview of the flurry of releases that have occupied our days since
+WWDC, and join us in thanking our [subscribers](/pricing) that make it possible to focus on
+our open source libraries full time.
+
 ## IssueReporting
 
 [IssueReporting] is a foundational library in our ecosystem that brings unobtrusive, yet visible,
