@@ -87,7 +87,8 @@ currently in beta preview. This library embraces all of the most modern tools in
 concurrency arsenal, including [NonisolatedNonsendingByDefault], but Swift 6.4 seems to have
 started catching more problems in async code related to this setting. This surfaced an issue
 in our library that we were quick to [fix][tca26-pr] for our beta users. 
-  
+
+[ComposableArchitecture 2.0]: /beta-previews   
 [NonisolatedNonsendingByDefault]: https://docs.swift.org/compiler/documentation/diagnostics/nonisolated-nonsending-by-default/
 [tca26-pr]: https://github.com/pointfreeco/TCA26/pull/148/
 
