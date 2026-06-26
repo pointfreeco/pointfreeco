@@ -29,8 +29,10 @@ code from non-test targets, which is not allowed in Swift. To work around this w
 Testing.
 
 That is powerful, however with great power comes great responsibility. Because we are loading 
-these symbols dynamically, we will not be notified if they ever change in the future. And
-we take the responsibility seriously. This year's Xcode 27 beta 1 brought some small changes to
+these symbols dynamically, we will not be notified if they ever change in the future, and that
+can cause a crash when running tests (don't worry, production code will never crash).
+
+And we take the responsibility seriously. This year's Xcode 27 beta 1 brought some small changes to
 the Swift Testing API that we needed to account for, and less than 24 hours after the best
 release we had a [fix] in place.
 
