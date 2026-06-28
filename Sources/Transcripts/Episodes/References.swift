@@ -1279,6 +1279,16 @@ extension Episode.Reference {
     title: "Identified Collections"
   )
 
+  public static let swiftNavigation = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: #"""
+      Model your domains concisely for better navigation in SwiftUI, UIKit, and more.
+      """#,
+    link: "https://github.com/pointfreeco/swift-navigation",
+    publishedAt: Date(timeIntervalSince1970: 1_631_035_536),
+    title: "SwiftNavigation"
+  )
+
   public static let swiftNonEmpty = Episode.Reference(
     author: "Brandon Williams & Stephen Celis",
     blurb: """
