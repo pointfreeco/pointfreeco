@@ -130,12 +130,15 @@ let contentTableStyles =
   <> margin(topBottom: 0, leftRight: .auto)
   <> display(.block)
 
-private let preheaderStyles =
-  color(.transparent)
-  <> display(.none)
-  <> opacity(0)
-  <> height(0)
-  <> width(0)
-  <> maxHeight(0)
-  <> maxWidth(0)
-  <> overflow(.hidden)
+private let preheaderStyles = concat(
+  [
+    color(.transparent),
+    display(.none),
+    opacity(0),
+    height(0),
+    width(0),
+    maxHeight(0),
+    maxWidth(0),
+    overflow(.hidden),
+  ]
+)
