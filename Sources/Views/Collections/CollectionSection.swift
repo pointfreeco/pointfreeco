@@ -320,7 +320,7 @@ private func sectionNavigation(
           ])
         ]),
       .gridColumn(
-        sizes: [:],
+        sizes: [.mobile: 11],
         .div(
           attributes: [
             .class([
@@ -352,7 +352,7 @@ private func sectionNavigation(
         ),
       ],
       .gridColumn(
-        sizes: [:],
+        sizes: [.mobile: 11],
         .div(
           attributes: [
             .class([
@@ -370,16 +370,17 @@ private func sectionNavigation(
           .text(section.title)
         )
       ),
-      .img(
-        base64: rightChevronSvgBase64, type: .image(.svg), alt: "",
+      .gridColumn(
+        sizes: [.mobile: 1],
         attributes: [
           .class([
-            Class.padding([
-              .mobile: [.left: 1],
-              .desktop: [.left: 2],
-            ])
+            Class.grid.center(.mobile)
           ])
-        ])
+        ],
+        .img(
+          base64: rightChevronSvgBase64, type: .image(.svg), alt: ""
+        )
+      )
     )
   }
 
