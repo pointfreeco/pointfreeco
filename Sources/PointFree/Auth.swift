@@ -26,6 +26,9 @@ func authMiddleware(
   route: SiteRoute.Auth
 ) async -> Conn<ResponseEnded, Data> {
   switch route {
+  case .emailAuth(let email, let redirect):
+    return await emailAuthResponse(email: email, redirect: redirect, conn: conn)
+
   case .failureLanding(let redirect):
     return await failureLanding(redirect: redirect, conn: conn)
 
@@ -43,6 +46,17 @@ func authMiddleware(
 
   case .updateGitHub(let redirect):
     return await updateGitHub(redirect: redirect, conn: conn)
+  }
+}
+
+private func emailAuthResponse(
+  email: EmailAddress,
+  redirect: String?,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  // TODO: Generate a one-time login token and email a verification link to `email`.
+  return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect))) {
+    $0.flash(.notice, "We've sent a login link to \(email). Check your inbox!")
   }
 }
 

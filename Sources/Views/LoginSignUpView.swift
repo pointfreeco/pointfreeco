@@ -62,8 +62,10 @@ public struct LoginSignUpView: HTML {
                 .attribute("value", "Continue with email")
             }
           }
-          // TODO: Point at the email auth route once it exists.
-          .attribute("action", "#")
+          .attribute(
+            "action",
+            siteRouter.path(for: .auth(.emailAuth(email: "", redirect: redirect)))
+          )
           .attribute("method", "post")
           .inlineStyle("margin", "1.5rem auto 0")
           .inlineStyle("width", "100%")

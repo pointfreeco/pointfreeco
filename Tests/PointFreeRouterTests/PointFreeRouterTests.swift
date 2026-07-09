@@ -18,6 +18,22 @@ class PointFreeRouterTests: TestCase {
   @Dependency(\.siteRouter) var siteRouter
 
   @MainActor
+  func testEmailAuth() async throws {
+    let route = SiteRoute.auth(
+      .emailAuth(email: "blob@pointfree.co", redirect: "/episodes")
+    )
+
+    guard let request = try? siteRouter.request(for: route) else {
+      XCTFail("")
+      return
+    }
+
+    XCTAssertEqual("POST", request.httpMethod)
+    XCTAssertEqual("/email-auth", request.url?.path)
+    XCTAssertEqual(route, try siteRouter.match(request: request))
+  }
+
+  @MainActor
   func testUpdateProfile() async throws {
     let profileData = ProfileData(
       email: "blobby@blob.co",
