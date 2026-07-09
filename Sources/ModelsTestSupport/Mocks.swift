@@ -90,6 +90,15 @@ extension TeamInvite {
   )
 }
 
+extension EmailLoginCode {
+  public static let mock = EmailLoginCode(
+    code: "ABC234",
+    createdAt: .mock,
+    email: "blob@pointfree.co",
+    id: .init(uuidString: "deadbeef-dead-beef-dead-beefdeadbeef")!
+  )
+}
+
 extension Models.User {
   public static let mock = Models.User(
     email: "hello@pointfree.co",

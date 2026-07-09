@@ -1022,6 +1022,34 @@ extension Client {
           $$
           """
         )
+        try await database.run(
+          """
+          CREATE OR REPLACE FUNCTION gen_login_code()
+          RETURNS text AS $$
+          DECLARE
+            alphabet text := 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            bytes bytea := gen_random_bytes(6);
+            code text := '';
+            i integer;
+          BEGIN
+            FOR i IN 0..5 LOOP
+              code := code || substr(alphabet, get_byte(bytes, i) % 32 + 1, 1);
+            END LOOP;
+            RETURN code;
+          END;
+          $$ LANGUAGE PLPGSQL;
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "email_login_codes" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "code" character varying DEFAULT gen_login_code() NOT NULL,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "email" citext NOT NULL UNIQUE
+          )
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(
