@@ -287,8 +287,7 @@ extension EmailTemplate {
 private let blob = User(
   email: "blob@pointfree.co",
   episodeCreditCount: 1,
-  gitHubUserId: 1,
-  gitHubAccessToken: "",
+  gitHub: User.GitHub(accessToken: "", userId: 1),
   id: User.ID(),
   isAdmin: false,
   name: "Blob",
@@ -301,8 +300,7 @@ private let blob = User(
 private let blobJr = User(
   email: "blob.jr@pointfree.co",
   episodeCreditCount: 1,
-  gitHubUserId: 1,
-  gitHubAccessToken: "",
+  gitHub: User.GitHub(accessToken: "", userId: 1),
   id: User.ID(),
   isAdmin: false,
   name: "Blob Jr.",

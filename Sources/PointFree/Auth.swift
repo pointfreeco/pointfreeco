@@ -66,13 +66,14 @@ private func updateGitHub(
     let newGitHubUser = try await gitHub.fetchUser(accessToken: accessToken)
     let email = try await gitHub.fetchEmails(accessToken).first(where: \.primary).unwrap().email
     let existingUser = try await database.fetchUser(email: email)
-    let existingAccessToken = existingUser.gitHubAccessToken
+    let existingAccessToken = existingUser.gitHub?.accessToken
     _ = try await database.updateUser(
       id: existingUser.id,
       gitHubUserID: newGitHubUser.id,
       githubAccessToken: accessToken
     )
     await fireAndForget {
+      guard let existingAccessToken else { return }
       let email =
         try await gitHub
         .fetchEmails(accessToken: existingAccessToken)
@@ -134,7 +135,7 @@ private func failureLanding(
     let newGitHubUser = try await gitHub.fetchUser(accessToken: accessToken)
     let existingUser = try await database.fetchUser(email: email)
     let existingGitHubUser = try await gitHub.fetchUser(
-      id: existingUser.gitHubUserId,
+      id: existingUser.gitHub.unwrap().userId,
       accessToken: accessToken
     )
     return

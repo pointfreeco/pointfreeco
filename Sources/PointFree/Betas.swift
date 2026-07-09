@@ -30,7 +30,9 @@ private func betasLandingMiddleware(
 
   var collaboratorStatuses: [String: Bool] = [:]
   if let currentUser, subscriberState.isMaxSubscriber {
-    if let gitHubUser = try? await gitHub.fetchUser(currentUser.gitHubAccessToken) {
+    if let accessToken = currentUser.gitHub?.accessToken,
+      let gitHubUser = try? await gitHub.fetchUser(accessToken)
+    {
       await withTaskGroup(of: (String, Bool).self) { group in
         for beta in Beta.all {
           group.addTask {
@@ -91,7 +93,7 @@ private func betasJoinMiddleware(
     }
   }
   do {
-    let gitHubUser = try await gitHub.fetchUser(currentUser.gitHubAccessToken)
+    let gitHubUser = try await gitHub.fetchUser(currentUser.gitHub.unwrap().accessToken)
     _ = try await gitHub.addRepoCollaborator(
       owner: "pointfreeco",
       repo: repo,

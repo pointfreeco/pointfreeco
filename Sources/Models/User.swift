@@ -8,8 +8,7 @@ import Tagged
 public struct User: Decodable, Equatable, Identifiable {
   public var email: EmailAddress
   public var episodeCreditCount: Int
-  public var gitHubUserId: GitHubUser.ID
-  public var gitHubAccessToken: GitHubAccessToken
+  public var gitHub: GitHub?
   public var id: Tagged<Self, UUID>
   public var isAdmin: Bool
   public var name: String?
@@ -21,8 +20,7 @@ public struct User: Decodable, Equatable, Identifiable {
   public init(
     email: EmailAddress,
     episodeCreditCount: Int,
-    gitHubUserId: GitHubUser.ID,
-    gitHubAccessToken: GitHubAccessToken,
+    gitHub: GitHub?,
     id: ID,
     isAdmin: Bool,
     name: String?,
@@ -33,8 +31,7 @@ public struct User: Decodable, Equatable, Identifiable {
   ) {
     self.email = email
     self.episodeCreditCount = episodeCreditCount
-    self.gitHubUserId = gitHubUserId
-    self.gitHubAccessToken = gitHubAccessToken
+    self.gitHub = gitHub
     self.id = id
     self.isAdmin = isAdmin
     self.name = name
@@ -42,6 +39,48 @@ public struct User: Decodable, Equatable, Identifiable {
     self.referrerId = referrerId
     self.rssSalt = rssSalt
     self.subscriptionId = subscriptionId
+  }
+
+  public init(from decoder: any Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.email = try container.decode(EmailAddress.self, forKey: .email)
+    self.episodeCreditCount = try container.decode(Int.self, forKey: .episodeCreditCount)
+    if let gitHubUserId = try container.decodeIfPresent(GitHubUser.ID.self, forKey: .gitHubUserId),
+      let gitHubAccessToken = try container.decodeIfPresent(
+        GitHubAccessToken.self, forKey: .gitHubAccessToken
+      )
+    {
+      self.gitHub = GitHub(accessToken: gitHubAccessToken, userId: gitHubUserId)
+    } else {
+      self.gitHub = nil
+    }
+    self.id = try container.decode(ID.self, forKey: .id)
+    self.isAdmin = try container.decode(Bool.self, forKey: .isAdmin)
+    self.name = try container.decodeIfPresent(String.self, forKey: .name)
+    self.referralCode = try container.decode(ReferralCode.self, forKey: .referralCode)
+    self.referrerId = try container.decodeIfPresent(ID.self, forKey: .referrerId)
+    self.rssSalt = try container.decode(RssSalt.self, forKey: .rssSalt)
+    self.subscriptionId = try container.decodeIfPresent(
+      Subscription.ID.self, forKey: .subscriptionId
+    )
+  }
+
+  public struct GitHub: Equatable {
+    public var accessToken: GitHubAccessToken
+    public var userId: GitHubUser.ID
+
+    public init(
+      accessToken: GitHubAccessToken,
+      userId: GitHubUser.ID
+    ) {
+      self.accessToken = accessToken
+      self.userId = userId
+    }
+
+    public var avatarUrl: URL {
+      return URL(
+        string: "https://avatars0.githubusercontent.com/u/\(self.userId.rawValue)?v=4")!
+    }
   }
 
   public typealias ReferralCode = Tagged<(Self, referralCode: ()), String>
@@ -68,10 +107,5 @@ public struct User: Decodable, Equatable, Identifiable {
 
   public var displayName: String {
     return name ?? email.rawValue
-  }
-
-  public var gitHubAvatarUrl: URL {
-    return URL(
-      string: "https://avatars0.githubusercontent.com/u/\(self.gitHubUserId.rawValue)?v=4")!
   }
 }

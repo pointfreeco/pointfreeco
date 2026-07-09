@@ -94,8 +94,7 @@ extension Models.User {
   public static let mock = Models.User(
     email: "hello@pointfree.co",
     episodeCreditCount: 0,
-    gitHubUserId: 1,
-    gitHubAccessToken: "deadbeef",
+    gitHub: Models.User.GitHub(accessToken: "deadbeef", userId: 1),
     id: .init(uuidString: "00000000-0000-0000-0000-000000000000")!,
     isAdmin: false,
     name: "Blob",

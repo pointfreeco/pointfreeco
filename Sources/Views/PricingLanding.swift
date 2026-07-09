@@ -1,5 +1,6 @@
 import Dependencies
 import Models
+import PointFreeRouter
 import StyleguideV2
 import Transcripts
 
@@ -87,7 +88,12 @@ public struct PricingLanding: HTML {
               .inlineStyle("background-color", "#111")
               .inlineStyle("background-color", "#fff", media: .dark)
               .inlineStyle("background-color", "transparent", pre: teamPricingCheckedSelector)
-              .inlineStyle("background-color", "transparent", media: .dark, pre: teamPricingCheckedSelector)
+              .inlineStyle(
+                "background-color",
+                "transparent",
+                media: .dark,
+                pre: teamPricingCheckedSelector
+              )
               .inlineStyle("border", "1px solid #111")
               .inlineStyle("border", "1px solid #fff", media: .dark)
               .inlineStyle("border-radius", "999px")
@@ -104,7 +110,12 @@ public struct PricingLanding: HTML {
               .inlineStyle("background-color", "transparent")
               .inlineStyle("background-color", "transparent", media: .dark)
               .inlineStyle("background-color", "#111", pre: teamPricingCheckedSelector)
-              .inlineStyle("background-color", "#fff", media: .dark, pre: teamPricingCheckedSelector)
+              .inlineStyle(
+                "background-color",
+                "#fff",
+                media: .dark,
+                pre: teamPricingCheckedSelector
+              )
               .inlineStyle("border", "1px solid #111")
               .inlineStyle("border", "1px solid #fff", media: .dark)
               .inlineStyle("border-radius", "999px")
@@ -134,7 +145,9 @@ public struct PricingLanding: HTML {
                 .attribute(
                   "href",
                   siteRouter.path(
-                    for: .auth(.authLanding(kind: .signUp, redirect: siteRouter.url(for: currentRoute)))
+                    for: .auth(
+                      .authLanding(kind: .signUp, redirect: siteRouter.url(for: currentRoute))
+                    )
                   )
                 )
               } else if subscriberState.isNonSubscriber {
