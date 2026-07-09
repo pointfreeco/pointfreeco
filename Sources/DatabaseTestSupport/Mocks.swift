@@ -9,6 +9,7 @@ import Prelude
 extension Client {
   public static let mock = Client(
     addUserIdToSubscriptionId: { _, _ in },
+    createEmailLoginCode: { _ in .mock },
     createEnterpriseEmail: { _, _ in .mock },
     createFeedRequestEvent: { _, _, _ in },
     createGift: { _, _, _, _, _, _, _, _, _ in .unfulfilled },

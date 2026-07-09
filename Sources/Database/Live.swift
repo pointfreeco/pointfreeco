@@ -19,6 +19,17 @@ extension Client {
           """
         )
       },
+      createEmailLoginCode: { email in
+        try await pool.sqlDatabase.first(
+          """
+          INSERT INTO "email_login_codes" ("email")
+          VALUES (\(bind: email))
+          ON CONFLICT ("email") DO UPDATE
+          SET "code" = gen_login_code(), "created_at" = NOW()
+          RETURNING *
+          """
+        )
+      },
       createEnterpriseEmail: { email, userId in
         try await pool.sqlDatabase.first(
           """

@@ -19,6 +19,7 @@ public struct Client {
       _ id: Models.User.ID,
       _ toSubscriptionID: Models.Subscription.ID
     ) async throws -> Void
+  public var createEmailLoginCode: (_ email: EmailAddress) async throws -> EmailLoginCode
   public var createEnterpriseEmail:
     (
       _ emailAddress: EmailAddress,

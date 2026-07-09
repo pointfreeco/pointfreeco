@@ -54,9 +54,38 @@ private func emailAuthResponse(
   redirect: String?,
   conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
-  // TODO: Generate a one-time login token and email a verification link to `email`.
-  return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect))) {
-    $0.flash(.notice, "We've sent a login link to \(email). Check your inbox!")
+  @Dependency(\.database) var database
+  @Dependency(\.fireAndForget) var fireAndForget
+
+  do {
+    let loginCode = try await database.createEmailLoginCode(email: email)
+    await fireAndForget {
+      let html = String(
+        decoding: LoginCodeEmail(loginCode: loginCode).render(),
+        as: UTF8.self
+      )
+      do {
+        _ = try await send(
+          email: Email(
+            from: "support@pointfree.co",
+            to: [loginCode.email],
+            subject: "Your Point-Free login code",
+            text: html,
+            html: html,
+            domain: mgDomain
+          )
+        )
+      } catch {
+        reportIssue(error, "Unable to send email: \"Your Point-Free login code\"")
+      }
+    }
+    return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect))) {
+      $0.flash(.notice, "We've sent a login code to \(email). Check your inbox!")
+    }
+  } catch {
+    return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect))) {
+      $0.flash(.error, "We were not able to log you in with that email. Please try again.")
+    }
   }
 }
 
@@ -364,6 +393,33 @@ func refreshStripeSubscription(for user: Models.User) async throws {
     try await stripe
     .fetchSubscription(subscription.stripeSubscriptionId)
   _ = try await database.updateStripeSubscription(stripeSubscription)
+}
+
+struct LoginCodeEmail: EmailDocument {
+  let loginCode: EmailLoginCode
+
+  var body: some HTML {
+    SimpleEmailLayout(
+      preheader: "Your Point-Free login code is \(loginCode.code)."
+    ) {
+      tr {
+        td {
+          EmailMarkdown {
+            """
+            ## Your login code
+
+            Enter this code on the Point-Free login page to finish logging in. It expires in \
+            one hour.
+
+            # \(loginCode.code)
+
+            If you did not request this code you can safely ignore this email.
+            """
+          }
+        }
+      }
+    }
+  }
 }
 
 struct GitHubAccountUpdateEmail: EmailDocument {
