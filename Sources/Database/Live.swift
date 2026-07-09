@@ -1007,6 +1007,21 @@ extension Client {
           ALTER COLUMN "github_access_token" DROP NOT NULL
           """
         )
+        try await database.run(
+          """
+          DO $$
+          BEGIN
+            IF NOT EXISTS (
+              SELECT 1 FROM "pg_constraint" WHERE "conname" = 'users_github_fields_check'
+            ) THEN
+              ALTER TABLE "users"
+              ADD CONSTRAINT "users_github_fields_check"
+              CHECK (("github_user_id" IS NULL) = ("github_access_token" IS NULL));
+            END IF;
+          END
+          $$
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(
