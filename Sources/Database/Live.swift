@@ -995,6 +995,18 @@ extension Client {
           ALTER COLUMN "plan" DROP DEFAULT
           """
         )
+        try await database.run(
+          """
+          ALTER TABLE "users"
+          ALTER COLUMN "github_user_id" DROP NOT NULL
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "users"
+          ALTER COLUMN "github_access_token" DROP NOT NULL
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(
