@@ -26,6 +26,9 @@ func authMiddleware(
   route: SiteRoute.Auth
 ) async -> Conn<ResponseEnded, Data> {
   switch route {
+  case .codeLanding(let email, let redirect):
+    return await loginCodeMiddleware(email: email, redirect: redirect, conn)
+
   case .emailAuth(let email, let redirect):
     return await emailAuthResponse(email: email, redirect: redirect, conn: conn)
 
@@ -64,7 +67,7 @@ private func emailAuthResponse(
         decoding: LoginCodeEmail(loginCode: loginCode).render(),
         as: UTF8.self
       )
-      do {
+      await fireAndForget {
         _ = try await send(
           email: Email(
             from: "support@pointfree.co",
@@ -75,13 +78,9 @@ private func emailAuthResponse(
             domain: mgDomain
           )
         )
-      } catch {
-        reportIssue(error, "Unable to send email: \"Your Point-Free login code\"")
       }
     }
-    return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect))) {
-      $0.flash(.notice, "We've sent a login code to \(email). Check your inbox!")
-    }
+    return conn.redirect(to: .auth(.codeLanding(email: email, redirect: redirect)))
   } catch {
     return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect))) {
       $0.flash(.error, "We were not able to log you in with that email. Please try again.")

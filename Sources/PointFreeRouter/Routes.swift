@@ -59,6 +59,7 @@ public indirect enum SiteRoute: Equatable {
   @CasePathable
   public enum Auth: Equatable {
     case authLanding(kind: Kind? = nil, redirect: String? = nil)
+    case codeLanding(email: EmailAddress, redirect: String? = nil)
     case emailAuth(email: EmailAddress, redirect: String? = nil)
     case failureLanding(redirect: String?)
     case gitHubAuth(redirect: String?)
@@ -808,6 +809,16 @@ struct FilterConversion<Base: Conversion>: Conversion {
 private struct AuthRouter: ParserPrinter {
   var body: some Router<SiteRoute.Auth> {
     OneOf {
+      Route(.case(SiteRoute.Auth.codeLanding)) {
+        Path { "email-auth" }
+        Query {
+          Field("email", .string.representing(EmailAddress.self))
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
       Route(.case(SiteRoute.Auth.emailAuth)) {
         Method.post
         Path { "email-auth" }
