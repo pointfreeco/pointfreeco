@@ -49,6 +49,9 @@ func authMiddleware(
 
   case .updateGitHub(let redirect):
     return await updateGitHub(redirect: redirect, conn: conn)
+
+  case .verifyLoginCode(let email, let code, let redirect):
+    return await verifyLoginCodeResponse(email: email, code: code, redirect: redirect, conn: conn)
   }
 }
 
@@ -84,6 +87,58 @@ private func emailAuthResponse(
   } catch {
     return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect))) {
       $0.flash(.error, "We were not able to log you in with that email. Please try again.")
+    }
+  }
+}
+
+private func verifyLoginCodeResponse(
+  email: EmailAddress,
+  code: EmailLoginCode.Code,
+  redirect: String?,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
+  @Dependency(\.siteRouter) var siteRouter
+
+  guard currentUser == nil
+  else {
+    return conn.redirect(to: .account()) {
+      $0.flash(.warning, "You’re already logged in.")
+    }
+  }
+
+  let code = EmailLoginCode.Code(
+    rawValue: code.rawValue.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+  )
+
+  do {
+    _ = try await database.redeemEmailLoginCode(email: email, code: code)
+  } catch {
+    await withErrorReporting("Delete email login codes") {
+      try await database.deleteEmailLoginCodes(email: email)
+    }
+    return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect))) {
+      $0.flash(.error, "That code is not valid or has expired. Please request a new one.")
+    }
+  }
+
+  do {
+    let user: Models.User
+    do {
+      user = try await database.fetchUser(email: email)
+    } catch {
+      user = try await database.registerUser(email: email)
+    }
+    await notifyError("Email Auth: Refresh stripe failed") {
+      try await refreshStripeSubscription(for: user)
+    }
+    return conn.redirect(to: sanitizeRedirect(redirect) ?? siteRouter.path(for: .home)) {
+      $0.writeSessionCookie { $0.user = .standard(user.id) }
+    }
+  } catch {
+    return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect))) {
+      $0.flash(.error, "We were not able to log you in. Please try again.")
     }
   }
 }

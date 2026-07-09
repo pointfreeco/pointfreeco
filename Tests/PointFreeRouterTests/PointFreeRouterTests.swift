@@ -34,6 +34,22 @@ class PointFreeRouterTests: TestCase {
   }
 
   @MainActor
+  func testVerifyLoginCode() async throws {
+    let route = SiteRoute.auth(
+      .verifyLoginCode(email: "blob@pointfree.co", code: "ABC234", redirect: "/episodes")
+    )
+
+    guard let request = try? siteRouter.request(for: route) else {
+      XCTFail("")
+      return
+    }
+
+    XCTAssertEqual("POST", request.httpMethod)
+    XCTAssertEqual("/email-auth/verify", request.url?.path)
+    XCTAssertEqual(route, try siteRouter.match(request: request))
+  }
+
+  @MainActor
   func testUpdateProfile() async throws {
     let profileData = ProfileData(
       email: "blobby@blob.co",

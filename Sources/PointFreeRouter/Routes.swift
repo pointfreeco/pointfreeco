@@ -66,6 +66,8 @@ public indirect enum SiteRoute: Equatable {
     case gitHubCallback(code: String?, redirect: String?)
     case logout
     case updateGitHub(redirect: String?)
+    case verifyLoginCode(
+      email: EmailAddress, code: EmailLoginCode.Code, redirect: String? = nil)
 
     public enum Kind: String, CaseIterable {
       case login
@@ -896,6 +898,25 @@ private struct AuthRouter: ParserPrinter {
       Route(.case(SiteRoute.Auth.updateGitHub)) {
         Method.post
         Path { "update-github" }
+        Query {
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
+      Route(.case(SiteRoute.Auth.verifyLoginCode)) {
+        Method.post
+        Path {
+          "email-auth"
+          "verify"
+        }
+        Body {
+          FormData {
+            Field("email", .string.representing(EmailAddress.self))
+            Field("code", .string.representing(EmailLoginCode.Code.self))
+          }
+        }
         Query {
           Optionally {
             Field("redirect")

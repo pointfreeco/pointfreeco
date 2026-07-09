@@ -23,8 +23,4 @@ public struct EmailLoginCode: Decodable, Equatable, Identifiable {
   public typealias Code = Tagged<(Self, code: ()), String>
 
   public static let lifetime: TimeInterval = 60 * 60
-
-  public func isExpired(at date: Date) -> Bool {
-    date > createdAt.addingTimeInterval(Self.lifetime)
-  }
 }

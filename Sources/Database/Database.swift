@@ -51,6 +51,8 @@ public struct Client {
       _ referrerID: Models.User.ID?,
       _ plan: Pricing.Plan
     ) async throws -> Models.Subscription
+  public var createUser: (_ email: EmailAddress) async throws -> Models.User
+  public var deleteEmailLoginCodes: (_ email: EmailAddress) async throws -> Void
   public var deleteEnterpriseEmail: (_ userID: User.ID) async throws -> Void
   public var deleteTeamInvite: (_ id: TeamInvite.ID) async throws -> Void
   public var deleteTheWayAccess: (_ machine: UUID, _ whoami: String) async throws -> Void
@@ -124,6 +126,8 @@ public struct Client {
       _ inviterUserID: Models.User.ID
     ) async throws -> TeamInvite
   public var migrate: () async throws -> Void
+  public var redeemEmailLoginCode:
+    (_ email: EmailAddress, _ code: EmailLoginCode.Code) async throws -> EmailLoginCode
   public var redeemEpisodeCredit:
     (_ sequence: Episode.Sequence, _ userID: Models.User.ID) async throws -> Void
   public var regenerateTeamInviteCode:
@@ -173,6 +177,15 @@ public struct Client {
     } catch {
       return try await self.fetchSubscription(ownerID: user.id)
     }
+  }
+
+  public func registerUser(email: EmailAddress) async throws -> User {
+    let user = try await self.createUser(email: email)
+    try await self.updateEmailSettings(
+      newsletters: EmailSetting.Newsletter.allNewsletters,
+      userID: user.id
+    )
+    return user
   }
 
   public func registerUser(

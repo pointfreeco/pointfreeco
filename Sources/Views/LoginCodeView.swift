@@ -69,8 +69,12 @@ public struct LoginCodeView: HTML {
           }
           .color(.gray850)
           codeForm
-            // TODO: Point at the code redemption route once it exists.
-            .attribute("action", "#")
+            .attribute(
+              "action",
+              siteRouter.path(
+                for: .auth(.verifyLoginCode(email: email, code: "", redirect: redirect))
+              )
+            )
             .attribute("method", "post")
             .inlineStyle("margin", "1.5rem auto 0")
             .inlineStyle("width", "100%")

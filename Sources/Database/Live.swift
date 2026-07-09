@@ -112,6 +112,23 @@ extension Client {
         }
         return subscription
       },
+      createUser: { email in
+        try await pool.sqlDatabase.first(
+          """
+          INSERT INTO "users" ("email", "episode_credit_count")
+          VALUES (\(bind: email), 0)
+          RETURNING *
+          """
+        )
+      },
+      deleteEmailLoginCodes: { email in
+        try await pool.sqlDatabase.run(
+          """
+          DELETE FROM "email_login_codes"
+          WHERE "email" = \(bind: email)
+          """
+        )
+      },
       deleteEnterpriseEmail: { userId in
         try await pool.sqlDatabase.run(
           """
@@ -1059,6 +1076,17 @@ extension Client {
             "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
             "email" citext NOT NULL UNIQUE
           )
+          """
+        )
+      },
+      redeemEmailLoginCode: { email, code in
+        try await pool.sqlDatabase.first(
+          """
+          DELETE FROM "email_login_codes"
+          WHERE "email" = \(bind: email)
+          AND "code" = \(bind: code)
+          AND "created_at" >= NOW() - make_interval(secs => \(bind: EmailLoginCode.lifetime))
+          RETURNING *
           """
         )
       },
