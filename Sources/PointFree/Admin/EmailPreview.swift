@@ -161,6 +161,17 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
       code: "pointfree.co",
       currentUser: blob
     )
+  case .loginCode:
+    return Node {
+      LoginCodeEmail(
+        loginCode: EmailLoginCode(
+          code: "ABC234",
+          createdAt: Date(),
+          email: "blob@pointfree.co",
+          id: EmailLoginCode.ID()
+        )
+      )
+    }
   case .maxWelcomeEmail:
     return Node { MaxWelcomeEmail(user: blob) }
   case .proWelcomeEmail:
@@ -260,6 +271,8 @@ extension EmailTemplate {
     switch self {
     case .joinTeamConfirmation:
       "Join team confirmation"
+    case .loginCode:
+      "Login code"
     case .maxWelcomeEmail:
       "Max Welcome Email"
     case .proWelcomeEmail:
