@@ -124,14 +124,18 @@ private func coreLesson(
   lesson: Episode.Collection.Section.Lesson
 ) -> Node {
   @Dependency(\.date.now) var now
+  @Dependency(\.envVars.emergencyMode) var emergencyMode
   @Dependency(\.siteRouter) var siteRouter
 
   let isActive = lesson.publishedAt <= now
+  let isFree: Bool
   let url: String
   switch lesson {
   case .clip(let clip):
+    isFree = false
     url = siteRouter.path(for: .clips(.clip(cloudflareVideoID: clip.cloudflareVideoID)))
   case .episode(let episode):
+    isFree = !episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode)
     url = siteRouter.path(
       for: .collections(
         .collection(collection.slug, .section(section.slug, .episode(.left(episode.slug))))
@@ -149,7 +153,8 @@ private func coreLesson(
       title: lesson.title,
       length: lesson.duration,
       url: url,
-      isActive: isActive
+      isActive: isActive,
+      isFree: isFree
     )
   )
 }
@@ -443,7 +448,8 @@ private func contentRow(
   title: String,
   length: Seconds<Int>,
   url: String,
-  isActive: Bool = true
+  isActive: Bool = true,
+  isFree: Bool = false
 ) -> Node {
 
   let coreContent: Node = [
@@ -456,6 +462,7 @@ private func contentRow(
     .div(
       attributes: [.style(flex(grow: 1))],
       .text(title),
+      isFree ? freeBadge : [],
       isActive
         ? []
         : .div(
@@ -530,6 +537,24 @@ private func contentRow(
     )
   }
 }
+
+private let freeBadge = Node.span(
+  attributes: [
+    .class([
+      Class.pf.colors.bg.green,
+      Class.type.caps,
+      Class.type.bold,
+    ]),
+    .style(
+      fontSize(.rem(0.75))
+        <> padding(topBottom: .px(2), leftRight: .px(8))
+        <> borderRadius(all: .px(999))
+        <> margin(left: .px(8))
+        <> key("white-space", "nowrap")
+    ),
+  ],
+  "Free"
+)
 
 private let moreComingSoon = Node.gridColumn(
   sizes: [.mobile: 12],
