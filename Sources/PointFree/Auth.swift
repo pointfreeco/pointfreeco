@@ -44,6 +44,9 @@ func authMiddleware(
   case .authLanding(let kind, let redirect):
     return await loginSignUpMiddleware(redirect: redirect, kind: kind, conn)
 
+  case .linkGitHubLanding(let redirect):
+    return await linkGitHubLanding(redirect: redirect, conn: conn)
+
   case .logout:
     return await logoutResponse(conn)
 
@@ -172,7 +175,7 @@ private func updateGitHub(
     await fireAndForget {
       guard let existingAccessToken else { return }
       let email =
-        try await gitHub
+      try await gitHub
         .fetchEmails(accessToken: existingAccessToken)
         .first(where: \.primary)
         .unwrap()
@@ -181,27 +184,25 @@ private func updateGitHub(
         decoding: GitHubAccountUpdateEmail(newGitHubUser: newGitHubUser).render(),
         as: UTF8.self
       )
-      do {
-        _ = try await send(
-          email: Email(
-            from: "support@pointfree.co",
-            to: [email],
-            subject: "Your GitHub account has been updated",
-            text: html,
-            html: html,
-            domain: mgDomain
-          )
+      _ = try await send(
+        email: Email(
+          from: "support@pointfree.co",
+          to: [email],
+          subject: "Your GitHub account has been updated",
+          text: html,
+          html: html,
+          domain: mgDomain
         )
-      } catch {
-        reportIssue(error, "Unable to send email: \"Your GitHub account has been updated\"")
-      }
+      )
     }
     return conn.redirect(to: sanitizeRedirect(redirect) ?? siteRouter.path(for: .home)) {
       $0
         .writeSessionCookie {
           $0.flash = Flash(
             .notice,
-            "Your GitHub account has been updated to @\(newGitHubUser.login)."
+            existingAccessToken == nil
+              ? "Your GitHub account @\(newGitHubUser.login) has been linked."
+              : "Your GitHub account has been updated to @\(newGitHubUser.login)."
           )
           $0.gitHubAccessToken = nil
           $0.user = .standard(existingUser.id)
@@ -246,6 +247,50 @@ private func failureLanding(
         GitHubFailureView(
           email: email,
           existingGitHubUser: existingGitHubUser,
+          newGitHubUser: newGitHubUser,
+          redirect: redirect
+        )
+      }
+  } catch {
+    return
+      conn
+      .redirect(to: .home) {
+        $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+      }
+  }
+}
+
+private func linkGitHubLanding(
+  redirect: String?,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+  @Dependency(\.gitHub) var gitHub
+
+  guard let accessToken = conn.request.session.gitHubAccessToken else {
+    return conn.redirect(to: .home) {
+      $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
+    }
+  }
+
+  do {
+    let email = try await gitHub.fetchEmails(accessToken).first(where: \.primary).unwrap().email
+    let newGitHubUser = try await gitHub.fetchUser(accessToken: accessToken)
+    let existingUser = try await database.fetchUser(email: email)
+    guard existingUser.gitHub == nil
+    else {
+      return conn.redirect(to: .auth(.failureLanding(redirect: redirect)))
+    }
+    return
+      conn
+      .writeStatus(.ok)
+      .respondV2(
+        layoutData: SimplePageLayoutData(
+          title: "Link your GitHub account"
+        )
+      ) {
+        LinkGitHubView(
+          email: email,
           newGitHubUser: newGitHubUser,
           redirect: redirect
         )
@@ -360,6 +405,10 @@ extension GitHubUser {
   public struct AlreadyRegistered: Error {
     let email: EmailAddress
   }
+
+  public struct AlreadyRegisteredViaEmail: Error {
+    let email: EmailAddress
+  }
 }
 
 private func registerUser(email: EmailAddress) async throws -> Models.User {
@@ -405,7 +454,12 @@ private func registerUser(
     error.serverInfo?[.constraintName] == "users_email_key"
     && error.serverInfo?[.routine] == "_bt_check_unique"
   {
-    throw GitHubUser.AlreadyRegistered(email: email)
+    let existingUser = try await database.fetchUser(email: email)
+    if existingUser.gitHub == nil {
+      throw GitHubUser.AlreadyRegisteredViaEmail(email: email)
+    } else {
+      throw GitHubUser.AlreadyRegistered(email: email)
+    }
   }
 }
 
@@ -431,6 +485,12 @@ private func gitHubAuthTokenMiddleware(
     }
   } catch is GitHubUser.AlreadyRegistered {
     return conn.redirect(to: .auth(.failureLanding(redirect: redirect))) {
+      $0.writeSessionCookie {
+        $0.gitHubAccessToken = accessToken
+      }
+    }
+  } catch is GitHubUser.AlreadyRegisteredViaEmail {
+    return conn.redirect(to: .auth(.linkGitHubLanding(redirect: redirect))) {
       $0.writeSessionCookie {
         $0.gitHubAccessToken = accessToken
       }

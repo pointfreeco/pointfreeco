@@ -64,6 +64,7 @@ public indirect enum SiteRoute: Equatable {
     case failureLanding(redirect: String?)
     case gitHubAuth(redirect: String?)
     case gitHubCallback(code: String?, redirect: String?)
+    case linkGitHubLanding(redirect: String? = nil)
     case logout
     case updateGitHub(redirect: String?)
     case verifyLoginCode(
@@ -859,6 +860,15 @@ private struct AuthRouter: ParserPrinter {
           Optionally {
             Field("code")
           }
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
+      Route(.case(SiteRoute.Auth.linkGitHubLanding)) {
+        Path { "link-github" }
+        Query {
           Optionally {
             Field("redirect")
           }

@@ -50,6 +50,20 @@ class PointFreeRouterTests: TestCase {
   }
 
   @MainActor
+  func testLinkGitHubLanding() async throws {
+    let route = SiteRoute.auth(.linkGitHubLanding(redirect: "/episodes"))
+
+    guard let request = try? siteRouter.request(for: route) else {
+      XCTFail("")
+      return
+    }
+
+    XCTAssertEqual("GET", request.httpMethod)
+    XCTAssertEqual("/link-github", request.url?.path)
+    XCTAssertEqual(route, try siteRouter.match(request: request))
+  }
+
+  @MainActor
   func testUpdateProfile() async throws {
     let profileData = ProfileData(
       email: "blobby@blob.co",
