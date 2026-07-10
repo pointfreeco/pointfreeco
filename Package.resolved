@@ -1,5 +1,5 @@
 {
-  "originHash" : "ce05fa593ff938009b758bbc1a603cdbee69fb4c91670637c1df1613c89b9424",
+  "originHash" : "0be8450f1988b629d05e4de992bfdc6581cad651e219f69ae5ac4c6d1d1684c3",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -177,8 +177,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-dependencies",
       "state" : {
-        "revision" : "706feb7858a7f6c242879d137b8ee30926aa5b26",
-        "version" : "1.12.0"
+        "branch" : "main",
+        "revision" : "b4269c89380c4e294860365096b24cba2ad052bd"
       }
     },
     {
@@ -349,7 +349,7 @@
       "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
       "state" : {
         "branch" : "async",
-        "revision" : "b736388c041fdd43c8a79cc70d003c170d686b9b"
+        "revision" : "2dcb7e9f42e123042511bfbd6036c3bc0b7bbb36"
       }
     },
     {
@@ -357,8 +357,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax",
       "state" : {
-        "revision" : "64889f0c732f210a935a0ad7cda38f77f876262d",
-        "version" : "509.1.1"
+        "revision" : "79e4b74a295b6eb74a8b585e3a39d29e70c1dbd1",
+        "version" : "603.0.2"
       }
     },
     {

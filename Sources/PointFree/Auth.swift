@@ -128,7 +128,7 @@ private func verifyLoginCodeResponse(
     do {
       user = try await database.fetchUser(email: email)
     } catch {
-      user = try await database.registerUser(email: email)
+      user = try await registerUser(email: email)
     }
     await notifyError("Email Auth: Refresh stripe failed") {
       try await refreshStripeSubscription(for: user)
@@ -362,12 +362,31 @@ extension GitHubUser {
   }
 }
 
+private func registerUser(email: EmailAddress) async throws -> Models.User {
+  @Dependency(\.database) var database
+
+  let user = try await database.registerUser(email: email)
+  await sendRegistrationEmail(to: email)
+  return user
+}
+
+private func sendRegistrationEmail(to email: EmailAddress) async {
+  @Dependency(\.fireAndForget) var fireAndForget
+
+  await fireAndForget {
+    try await sendEmail(
+      to: [email],
+      subject: "Point-Free Registration",
+      content: inj2(registrationEmailView(unit))
+    )
+  }
+}
+
 private func registerUser(
   accessToken: GitHubAccessToken,
   gitHubUser: GitHubUser
 ) async throws -> Models.User {
   @Dependency(\.database) var database
-  @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.gitHub) var gitHub
   @Dependency(\.date.now) var now
 
@@ -379,13 +398,7 @@ private func registerUser(
       email: email,
       now: { now }
     )
-    await fireAndForget {
-      try await sendEmail(
-        to: [email],
-        subject: "Point-Free Registration",
-        content: inj2(registrationEmailView(gitHubUser))
-      )
-    }
+    await sendRegistrationEmail(to: email)
     return user
   } catch let error as PSQLError
     where
