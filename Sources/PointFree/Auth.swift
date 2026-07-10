@@ -29,6 +29,12 @@ func authMiddleware(
   case .codeLanding(let email, let redirect):
     return await loginCodeMiddleware(email: email, redirect: redirect, conn)
 
+  case .connectGitHub(let redirect):
+    return await connectGitHub(redirect: redirect, conn: conn)
+
+  case .connectGitHubLanding(let redirect):
+    return await connectGitHubLanding(redirect: redirect, conn: conn)
+
   case .emailAuth(let email, let redirect):
     return await emailAuthResponse(email: email, redirect: redirect, conn: conn)
 
@@ -268,6 +274,96 @@ private func failureLanding(
   }
 }
 
+private func connectGitHubLanding(
+  redirect: String?,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
+  @Dependency(\.gitHub) var gitHub
+  @Dependency(\.siteRouter) var siteRouter
+
+  guard let currentUser else {
+    return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect)))
+  }
+  guard currentUser.gitHub == nil else {
+    return conn.redirect(to: sanitizeRedirect(redirect) ?? siteRouter.path(for: .home)) {
+      $0.flash(.notice, "Your GitHub account is already connected.")
+    }
+  }
+
+  let state: ConnectGitHubView.State
+  if let accessToken = conn.request.session.gitHubAccessToken,
+    let newGitHubUser = try? await gitHub.fetchUser(accessToken: accessToken)
+  {
+    if (try? await database.fetchUser(gitHubID: newGitHubUser.id)) != nil {
+      state = .conflict(newGitHubUser: newGitHubUser)
+    } else {
+      state = .confirm(newGitHubUser: newGitHubUser)
+    }
+  } else {
+    state = .ask
+  }
+
+  return
+    conn
+    .writeStatus(.ok)
+    .respondV2(
+      layoutData: SimplePageLayoutData(
+        title: "Connect GitHub"
+      )
+    ) {
+      ConnectGitHubView(state: state, redirect: redirect)
+    }
+}
+
+private func connectGitHub(
+  redirect: String?,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
+  @Dependency(\.gitHub) var gitHub
+  @Dependency(\.siteRouter) var siteRouter
+
+  guard let currentUser else {
+    return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect)))
+  }
+  guard currentUser.gitHub == nil else {
+    return conn.redirect(to: sanitizeRedirect(redirect) ?? siteRouter.path(for: .home)) {
+      $0.flash(.notice, "Your GitHub account is already connected.")
+    }
+  }
+  guard let accessToken = conn.request.session.gitHubAccessToken else {
+    return conn.redirect(to: .auth(.connectGitHubLanding(redirect: redirect)))
+  }
+
+  do {
+    let newGitHubUser = try await gitHub.fetchUser(accessToken: accessToken)
+    guard (try? await database.fetchUser(gitHubID: newGitHubUser.id)) == nil else {
+      return conn.redirect(to: .auth(.connectGitHubLanding(redirect: redirect)))
+    }
+    try await database.updateUser(
+      id: currentUser.id,
+      gitHubUserID: newGitHubUser.id,
+      githubAccessToken: accessToken
+    )
+    return conn.redirect(to: sanitizeRedirect(redirect) ?? siteRouter.path(for: .home)) {
+      $0.writeSessionCookie {
+        $0.flash = Flash(
+          .notice,
+          "Your GitHub account @\(newGitHubUser.login) has been connected."
+        )
+        $0.gitHubAccessToken = nil
+      }
+    }
+  } catch {
+    return conn.redirect(to: .auth(.connectGitHubLanding(redirect: redirect))) {
+      $0.flash(.error, "We were not able to connect your GitHub account. Please try again.")
+    }
+  }
+}
+
 private func linkGitHubLanding(
   redirect: String?,
   conn: Conn<StatusLineOpen, Void>
@@ -320,7 +416,7 @@ private func gitHubCallbackResponse(
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.gitHub) var gitHub
 
-  guard currentUser == nil
+  guard currentUser?.gitHub == nil
   else {
     return conn.redirect(to: .account()) {
       $0.flash(.warning, "You’re already logged in.")
@@ -334,6 +430,13 @@ private func gitHubCallbackResponse(
   }
   do {
     let accessToken = try await gitHub.fetchAuthToken(code: code).accessToken
+    if currentUser != nil {
+      return conn.redirect(to: .auth(.connectGitHubLanding(redirect: redirect))) {
+        $0.writeSessionCookie {
+          $0.gitHubAccessToken = accessToken
+        }
+      }
+    }
     return await gitHubAuthTokenMiddleware(
       code: code,
       accessToken: accessToken,
@@ -357,7 +460,7 @@ private func loginResponse(
   @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.envVars.gitHub.clientId) var gitHubClientId
 
-  guard currentUser == nil
+  guard currentUser?.gitHub == nil
   else {
     return conn.redirect(to: .account()) {
       $0.flash(.warning, "You’re already logged in.")

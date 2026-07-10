@@ -50,6 +50,34 @@ class PointFreeRouterTests: TestCase {
   }
 
   @MainActor
+  func testConnectGitHubLanding() async throws {
+    let route = SiteRoute.auth(.connectGitHubLanding(redirect: "/betas"))
+
+    guard let request = try? siteRouter.request(for: route) else {
+      XCTFail("")
+      return
+    }
+
+    XCTAssertEqual("GET", request.httpMethod)
+    XCTAssertEqual("/connect-github", request.url?.path)
+    XCTAssertEqual(route, try siteRouter.match(request: request))
+  }
+
+  @MainActor
+  func testConnectGitHub() async throws {
+    let route = SiteRoute.auth(.connectGitHub(redirect: "/betas"))
+
+    guard let request = try? siteRouter.request(for: route) else {
+      XCTFail("")
+      return
+    }
+
+    XCTAssertEqual("POST", request.httpMethod)
+    XCTAssertEqual("/connect-github", request.url?.path)
+    XCTAssertEqual(route, try siteRouter.match(request: request))
+  }
+
+  @MainActor
   func testLinkGitHubLanding() async throws {
     let route = SiteRoute.auth(.linkGitHubLanding(redirect: "/episodes"))
 
