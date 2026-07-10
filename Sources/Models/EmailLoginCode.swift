@@ -23,4 +23,5 @@ public struct EmailLoginCode: Decodable, Equatable, Identifiable {
   public typealias Code = Tagged<(Self, code: ()), String>
 
   public static let lifetime: TimeInterval = 60 * 60
+  public static let resendInterval: TimeInterval = 60
 }

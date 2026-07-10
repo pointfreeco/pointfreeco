@@ -19,16 +19,29 @@ extension Client {
           """
         )
       },
+      burnEmailLoginCode: { email in
+        try await pool.sqlDatabase.run(
+          """
+          UPDATE "email_login_codes"
+          SET "code" = gen_login_code()
+          WHERE "email" = \(bind: email)
+          """
+        )
+      },
       createEmailLoginCode: { email in
-        try await pool.sqlDatabase.first(
+        try await pool.sqlDatabase.raw(
           """
           INSERT INTO "email_login_codes" ("email")
           VALUES (\(bind: email))
           ON CONFLICT ("email") DO UPDATE
           SET "code" = gen_login_code(), "created_at" = NOW()
+          WHERE "email_login_codes"."created_at"
+            < NOW() - make_interval(secs => \(bind: EmailLoginCode.resendInterval))
           RETURNING *
           """
         )
+        .first()?
+        .decode(model: EmailLoginCode.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       createEnterpriseEmail: { email, userId in
         try await pool.sqlDatabase.first(
@@ -118,14 +131,6 @@ extension Client {
           INSERT INTO "users" ("email", "episode_credit_count")
           VALUES (\(bind: email), 0)
           RETURNING *
-          """
-        )
-      },
-      deleteEmailLoginCodes: { email in
-        try await pool.sqlDatabase.run(
-          """
-          DELETE FROM "email_login_codes"
-          WHERE "email" = \(bind: email)
           """
         )
       },

@@ -19,7 +19,8 @@ public struct Client {
       _ id: Models.User.ID,
       _ toSubscriptionID: Models.Subscription.ID
     ) async throws -> Void
-  public var createEmailLoginCode: (_ email: EmailAddress) async throws -> EmailLoginCode
+  public var burnEmailLoginCode: (_ email: EmailAddress) async throws -> Void
+  public var createEmailLoginCode: (_ email: EmailAddress) async throws -> EmailLoginCode?
   public var createEnterpriseEmail:
     (
       _ emailAddress: EmailAddress,
@@ -52,7 +53,6 @@ public struct Client {
       _ plan: Pricing.Plan
     ) async throws -> Models.Subscription
   public var createUser: (_ email: EmailAddress) async throws -> Models.User
-  public var deleteEmailLoginCodes: (_ email: EmailAddress) async throws -> Void
   public var deleteEnterpriseEmail: (_ userID: User.ID) async throws -> Void
   public var deleteTeamInvite: (_ id: TeamInvite.ID) async throws -> Void
   public var deleteTheWayAccess: (_ machine: UUID, _ whoami: String) async throws -> Void

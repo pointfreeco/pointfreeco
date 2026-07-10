@@ -67,7 +67,15 @@ private func emailAuthResponse(
   @Dependency(\.fireAndForget) var fireAndForget
 
   do {
-    let loginCode = try await database.createEmailLoginCode(email: email)
+    guard let loginCode = try await database.createEmailLoginCode(email: email)
+    else {
+      return conn.redirect(to: .auth(.codeLanding(email: email, redirect: redirect))) {
+        $0.flash(
+          .notice,
+          "A code was recently sent to this email. Please wait a minute before requesting another."
+        )
+      }
+    }
     await fireAndForget {
       let html = String(
         decoding: LoginCodeEmail(loginCode: loginCode).render(),
@@ -118,8 +126,8 @@ private func verifyLoginCodeResponse(
   do {
     _ = try await database.redeemEmailLoginCode(email: email, code: code)
   } catch {
-    await withErrorReporting("Delete email login codes") {
-      try await database.deleteEmailLoginCodes(email: email)
+    await withErrorReporting("Burn email login code") {
+      try await database.burnEmailLoginCode(email: email)
     }
     return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect))) {
       $0.flash(.error, "That code is not valid or has expired. Please request a new one.")
