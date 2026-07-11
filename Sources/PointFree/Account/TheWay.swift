@@ -1,5 +1,6 @@
 import Dependencies
 import Foundation
+import GitHub
 import HttpPipeline
 import IssueReporting
 import Models
@@ -81,7 +82,7 @@ func theWayMiddleware(
       }
     }
 
-  case .download(let token, let whoami, let machine, let lastSHA, let version):
+  case .download(let token, let whoami, let machine, let etag, let version):
     do {
       _ = version
       let access = try await database.fetchTheWayAccess(machine: machine, whoami: whoami)
@@ -133,7 +134,7 @@ func theWayMiddleware(
       #else
         let pfwBranch = "main"
       #endif
-      let sha = try await gitHub.fetchBranch(
+      let newestSHA = try await gitHub.fetchBranch(
         owner: "pointfreeco",
         repo: "the-point-free-way",
         branch: pfwBranch,
@@ -142,9 +143,9 @@ func theWayMiddleware(
       .commit.sha
 
       let planTag = subscriberState.isMaxSubscriber ? "max" : "pro"
-      let etag = "\(sha.rawValue)-\(planTag)"
+      let newestEtag = "\(newestSHA.rawValue)-\(planTag)"
 
-      guard etag != lastSHA?.rawValue
+      guard newestEtag != etag
       else {
         return
           conn
@@ -154,9 +155,9 @@ func theWayMiddleware(
           .end()
       }
 
-      let zipURL = URL.temporaryDirectory.appending(path: "\(sha).zip")
-      let unzippedURL = URL.temporaryDirectory.appending(path: "\(sha)-\(token)-\(whoami)-\(planTag)")
-      let rootURL = unzippedURL.appending(path: "pointfreeco-the-point-free-way-\(sha)")
+      let zipURL = URL.temporaryDirectory.appending(path: "\(newestSHA).zip")
+      let unzippedURL = URL.temporaryDirectory.appending(path: "\(newestSHA)-\(token)-\(whoami)-\(planTag)")
+      let rootURL = unzippedURL.appending(path: "pointfreeco-the-point-free-way-\(newestSHA)")
       let skillsURL = rootURL.appending(path: "skills")
       let licenseURL = rootURL.appending(path: "LICENSE")
 
@@ -164,7 +165,7 @@ func theWayMiddleware(
         let data = try await gitHub.fetchZipball(
           owner: "pointfreeco",
           repo: "the-point-free-way",
-          ref: sha,
+          ref: newestSHA,
           token: pfwDownloadsAccessToken
         )
         try data.write(to: zipURL)
@@ -213,17 +214,20 @@ func theWayMiddleware(
       }
 
       let commitMessagesURL = skillsURL.appending(path: "commit-messages.json")
-      if let lastSHA,
+      if let etag,
         let version,
         let semanticVersion = Version(version),
         semanticVersion > Version("0.0.5")!
       {
+        let baseSHA = Repo.Commit.SHA(
+          rawValue: String(etag.prefix(while: { $0 != "-" }))
+        )
         await withErrorReporting {
           let compareResponse = try await gitHub.fetchCommitMessages(
             owner: "pointfreeco",
             repo: "the-point-free-way",
-            base: lastSHA,
-            head: sha,
+            base: baseSHA,
+            head: newestSHA,
             token: pfwDownloadsAccessToken
           )
           try JSONEncoder()
@@ -245,7 +249,7 @@ func theWayMiddleware(
       if !subscriberState.isMaxSubscriber {
         let betaSkillNames = Beta.allSkillNames
         let filteredParent = URL.temporaryDirectory.appending(
-          path: "\(sha.rawValue)-\(token)-\(whoami)-filtered"
+          path: "\(newestSHA.rawValue)-\(token)-\(whoami)-filtered"
         )
         let filteredSkillsURL = filteredParent.appending(path: "skills")
         try? FileManager.default.removeItem(at: filteredParent)
@@ -275,7 +279,7 @@ func theWayMiddleware(
       return
         try conn
         .writeStatus(.ok)
-        .writeHeader(Response.Header("ETag", etag))
+        .writeHeader(Response.Header("ETag", newestEtag))
         .respond(data: Data(contentsOf: destinationURL))
     } catch {
       return
