@@ -21,7 +21,7 @@ class RegistrationEmailTests: TestCase {
 
   @MainActor
   func testRegistrationEmail() async throws {
-    let doc = registrationEmailView(unit)
+    let doc = registrationEmailView(())
 
     await assertSnapshot(matching: doc, as: .html)
     await assertSnapshot(matching: plainText(for: doc), as: .lines)

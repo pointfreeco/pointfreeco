@@ -7,18 +7,18 @@ import Prelude
 import Styleguide
 
 let registrationEmailView =
-  simpleEmailLayout(registrationEmailBody) <<< { (_: Prelude.Unit) in
+  simpleEmailLayout(registrationEmailBody) <<< {
     SimpleEmailLayoutData(
       user: nil,
       newsletter: nil,
       title: "Thanks for signing up!",
       preheader: "",
       template: .default(),
-      data: unit
+      data: ()
     )
   }
 
-private func registrationEmailBody(_: Prelude.Unit) -> Node {
+private func registrationEmailBody() -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   return .emailTable(

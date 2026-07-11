@@ -538,7 +538,7 @@ private func sendRegistrationEmail(to email: EmailAddress) async {
     try await sendEmail(
       to: [email],
       subject: "Point-Free Registration",
-      content: inj2(registrationEmailView(unit))
+      content: inj2(registrationEmailView(()))
     )
   }
 }
