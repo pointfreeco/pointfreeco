@@ -14,7 +14,6 @@ extension Client {
     createFeedRequestEvent: { _, _, _ in },
     createGift: { _, _, _, _, _, _, _, _, _ in .unfulfilled },
     createSubscription: { _, _, _, _, _ in .mock },
-    createUser: { _ in .mock },
     deleteEnterpriseEmail: { _ in },
     deleteTeamInvite: { _ in },
     deleteTheWayAccess: { _, _ in },

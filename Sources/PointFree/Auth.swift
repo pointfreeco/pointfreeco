@@ -523,9 +523,10 @@ extension GitHubUser {
 }
 
 private func registerUser(email: EmailAddress) async throws -> Models.User {
+  @Dependency(\.date.now) var now
   @Dependency(\.database) var database
 
-  let user = try await database.registerUser(email: email)
+  let user = try await database.registerUser(accessToken: nil, gitHubUser: nil, email: email, now: { now })
   await sendRegistrationEmail(to: email)
   return user
 }

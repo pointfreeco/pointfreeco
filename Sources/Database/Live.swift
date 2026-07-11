@@ -116,15 +116,6 @@ extension Client {
         }
         return subscription
       },
-      createUser: { email in
-        try await pool.sqlDatabase.first(
-          """
-          INSERT INTO "users" ("email", "episode_credit_count")
-          VALUES (\(bind: email), 0)
-          RETURNING *
-          """
-        )
-      },
       deleteEnterpriseEmail: { userId in
         try await pool.sqlDatabase.run(
           """
@@ -1246,10 +1237,10 @@ extension Client {
           ("email", "github_user_id", "github_access_token", "name", "episode_credit_count")
           VALUES (
             \(bind: email),
-            \(bind: gitHubUser.id),
+            \(bind: gitHubUser?.id),
             \(bind: accessToken),
-            \(bind: gitHubUser.name),
-            \(bind: now().timeIntervalSince(gitHubUser.createdAt) < 60*60*24*30 ? 0 : 1)
+            \(bind: gitHubUser?.name),
+            \(bind: now().timeIntervalSince(gitHubUser?.createdAt ?? now()) < 60*60*24*30 ? 0 : 1)
           )
           ON CONFLICT ("github_user_id") DO UPDATE
           SET "github_access_token" = $3, "name" = $4

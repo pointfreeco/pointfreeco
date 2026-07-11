@@ -51,7 +51,6 @@ public struct Client {
       _ referrerID: Models.User.ID?,
       _ plan: Pricing.Plan
     ) async throws -> Models.Subscription
-  public var createUser: (_ email: EmailAddress) async throws -> Models.User
   public var deleteEnterpriseEmail: (_ userID: User.ID) async throws -> Void
   public var deleteTeamInvite: (_ id: TeamInvite.ID) async throws -> Void
   public var deleteTheWayAccess: (_ machine: UUID, _ whoami: String) async throws -> Void
@@ -165,8 +164,8 @@ public struct Client {
   public var upsertTheWayAccess: (TheWayAccess) async throws -> TheWayAccess
   public var upsertUser:
     (
-      _ accessToken: GitHubAccessToken,
-      _ gitHubUser: GitHubUser,
+      _ accessToken: GitHubAccessToken?,
+      _ gitHubUser: GitHubUser?,
       _ emailAddress: EmailAddress,
       _ date: @escaping () -> Date
     ) async throws -> Models.User
@@ -179,18 +178,9 @@ public struct Client {
     }
   }
 
-  public func registerUser(email: EmailAddress) async throws -> User {
-    let user = try await self.createUser(email: email)
-    try await self.updateEmailSettings(
-      newsletters: EmailSetting.Newsletter.allNewsletters,
-      userID: user.id
-    )
-    return user
-  }
-
   public func registerUser(
-    accessToken: GitHubAccessToken,
-    gitHubUser: GitHubUser,
+    accessToken: GitHubAccessToken?,
+    gitHubUser: GitHubUser?,
     email: EmailAddress,
     now: @escaping () -> Date
   ) async throws -> User {
