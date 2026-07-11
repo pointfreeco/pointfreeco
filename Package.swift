@@ -279,6 +279,15 @@ var package = Package(
       ]
     ),
 
+    .testTarget(
+      name: "ModernPointFreeTests",
+      dependencies: [
+        "PointFree",
+        .product(name: "CustomDump", package: "swift-custom-dump"),
+        .product(name: "Dependencies", package: "swift-dependencies"),
+      ]
+    ),
+
     .target(
       name: "NIODependencies",
       dependencies: [
