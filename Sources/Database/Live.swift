@@ -19,15 +19,6 @@ extension Client {
           """
         )
       },
-      burnEmailLoginCode: { email in
-        try await pool.sqlDatabase.run(
-          """
-          UPDATE "email_login_codes"
-          SET "code" = gen_login_code()
-          WHERE "email" = \(bind: email)
-          """
-        )
-      },
       createEmailLoginCode: { email in
         try await pool.sqlDatabase.raw(
           """
@@ -1119,6 +1110,15 @@ extension Client {
           SET "subscription_id" = NULL
           WHERE "users"."id" = \(bind: teammateUserId)
           AND "users"."subscription_id" = \(bind: subscriptionId)
+          """
+        )
+      },
+      rotateEmailLoginCode: { email in
+        try await pool.sqlDatabase.run(
+          """
+          UPDATE "email_login_codes"
+          SET "code" = gen_login_code()
+          WHERE "email" = \(bind: email)
           """
         )
       },

@@ -132,8 +132,8 @@ private func verifyLoginCodeResponse(
   do {
     _ = try await database.redeemEmailLoginCode(email: email, code: code)
   } catch {
-    await withErrorReporting("Burn email login code") {
-      try await database.burnEmailLoginCode(email: email)
+    await withErrorReporting("Rotate email login code") {
+      try await database.rotateEmailLoginCode(email: email)
     }
     return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect))) {
       $0.flash(.error, "That code is not valid or has expired. Please request a new one.")

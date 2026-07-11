@@ -9,7 +9,6 @@ import Prelude
 extension Client {
   public static let mock = Client(
     addUserIdToSubscriptionId: { _, _ in },
-    burnEmailLoginCode: { _ in },
     createEmailLoginCode: { _ in .mock },
     createEnterpriseEmail: { _, _ in .mock },
     createFeedRequestEvent: { _, _, _ in },
@@ -70,6 +69,7 @@ extension Client {
     redeemEpisodeCredit: { _, _ in },
     regenerateTeamInviteCode: { _ in },
     removeTeammateUserIdFromSubscriptionId: { _, _ in },
+    rotateEmailLoginCode: { _ in },
     sawUser: { _ in },
     updateEmailSettings: { _, _ in },
     updateEpisodeProgress: { _, _, _, _ in },

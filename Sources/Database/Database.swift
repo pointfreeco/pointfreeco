@@ -19,7 +19,6 @@ public struct Client {
       _ id: Models.User.ID,
       _ toSubscriptionID: Models.Subscription.ID
     ) async throws -> Void
-  public var burnEmailLoginCode: (_ email: EmailAddress) async throws -> Void
   public var createEmailLoginCode: (_ email: EmailAddress) async throws -> EmailLoginCode?
   public var createEnterpriseEmail:
     (
@@ -139,6 +138,7 @@ public struct Client {
       _ userID: Models.User.ID,
       _ fromSubscriptionID: Models.Subscription.ID
     ) async throws -> Void
+  public var rotateEmailLoginCode: (_ email: EmailAddress) async throws -> Void
   public var sawUser: (_ id: Models.User.ID) async throws -> Void
   public var updateEmailSettings:
     (_ newsletters: [EmailSetting.Newsletter]?, _ userID: Models.User.ID) async throws -> Void

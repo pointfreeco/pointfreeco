@@ -51,6 +51,8 @@ var package = Package(
     .package(url: "https://github.com/vapor/sql-kit", exact: "3.28.0"),
     .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.3.0"),
+    // NB: Pinned to main to get new fireAndForget behavior.
+    // TODO: Update when dependencies is released
     .package(url: "https://github.com/pointfreeco/swift-dependencies", branch: "main"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
     .package(url: "https://github.com/pointfreeco/swift-overture", revision: "ac1cd0f"),
