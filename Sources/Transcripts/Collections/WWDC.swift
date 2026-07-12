@@ -26,6 +26,7 @@ extension Episode.Collection {
         coreLessons: [
           .init(episode: .ep370_wwdc26),
           .init(episode: .ep371_wwdc26),
+          .init(episode: .ep372_wwdc26),
         ],
         isFinished: false,
         related: [],
