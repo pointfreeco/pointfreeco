@@ -44,18 +44,27 @@ enum TestDatabase {
   /// that no amount of test parallelism can hide), whereas schema creation and migration run on
   /// the test's own connections and parallelize across cores.
   static func withTestDatabase<R: Sendable>(
-    _ body: (EventLoopGroupConnectionPool<PostgresConnectionSource>) async throws -> R
+    _ body: @Sendable (EventLoopGroupConnectionPool<PostgresConnectionSource>) async throws -> R
   ) async throws -> R {
     let sharedConfiguration = try await sharedDatabase.value
+    // Each test gets a single-event-loop pool (one connection) inside a gated permit, so total
+    // connections stay bounded below the server's `max_connections` no matter how many tests
+    // are in flight.
+    return try await gate.withGate {
+      try await provision(sharedConfiguration, body)
+    }
+  }
+
+  /// The gate shared by every `.database` test; also available to gate other
+  /// database-adjacent work.
+  static let gate = Gate(limit: 16)
+
+  private static func provision<R: Sendable>(
+    _ sharedConfiguration: SQLPostgresConfiguration,
+    _ body: (EventLoopGroupConnectionPool<PostgresConnectionSource>) async throws -> R
+  ) async throws -> R {
     let suffix = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
     let schemaName = "test_\(suffix)"
-
-    // Swift Testing starts every test case concurrently, and they are I/O-bound, so without a
-    // gate hundreds of tests hold connections at once and exhaust the server's
-    // `max_connections`. Each test also gets a single-event-loop pool (one connection) below,
-    // bounding total connections to the gate's limit.
-    await gate.acquire()
-    defer { Task { await gate.release() } }
 
     var configuration = sharedConfiguration
     // Every connection the test makes resolves unqualified table names to its own schema, and
@@ -107,22 +116,20 @@ enum TestDatabase {
 
   private static let sharedDatabaseName = "pointfreeco_test_modern"
   private static let advisoryLockKey = 0x7066_7465_7374 as Int64  // "pftest"
-  private static let gate = Gate(limit: 16)
 
   /// Prepares the shared test database exactly once per test run: recreates it from scratch
   /// (which also discards schemas leaked by crashed runs) and installs the extensions the
   /// migrations rely on into a shared "extensions" schema.
   private static let sharedDatabase = Task<SQLPostgresConfiguration, any Error> {
-    let baseConfiguration = try Self.baseConfiguration()
+    var sharedConfiguration = try Self.baseConfiguration()
 
     // A single-threaded, single-connection pool so that the session-scoped advisory lock is
     // held on one connection for the entire rebuild.
     let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: 1)
     let lockPool = EventLoopGroupConnectionPool(
-      source: PostgresConnectionSource(sqlConfiguration: baseConfiguration),
+      source: PostgresConnectionSource(sqlConfiguration: sharedConfiguration),
       on: eventLoopGroup
     )
-    var sharedConfiguration = baseConfiguration
     sharedConfiguration.coreConfiguration.database = sharedDatabaseName
     do {
       let admin = lockPool.database(logger: logger).sql()
@@ -166,33 +173,6 @@ enum TestDatabase {
       "Refusing to run tests against a non-localhost database."
     )
     return try SQLPostgresConfiguration(url: url)
-  }
-}
-
-/// A counting semaphore bounding how many tests hold database resources at once.
-private actor Gate {
-  private let limit: Int
-  private var active = 0
-  private var waiters: [CheckedContinuation<Void, Never>] = []
-
-  init(limit: Int) {
-    self.limit = limit
-  }
-
-  func acquire() async {
-    if active < limit {
-      active += 1
-      return
-    }
-    await withCheckedContinuation { waiters.append($0) }
-  }
-
-  func release() {
-    if waiters.isEmpty {
-      active -= 1
-    } else {
-      waiters.removeFirst().resume()
-    }
   }
 }
 
