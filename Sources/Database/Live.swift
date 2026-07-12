@@ -629,11 +629,12 @@ extension Client {
           BEGIN
             FOR "table" IN
               SELECT "table_name" FROM "information_schema"."columns"
-              WHERE column_name = 'updated_at'
+              WHERE column_name = 'updated_at' AND "table_schema" = current_schema()
             LOOP
               IF NOT EXISTS (
                 SELECT 1 FROM "information_schema"."triggers"
                 WHERE "trigger_name" = 'update_updated_at_' || "table"
+                AND "trigger_schema" = current_schema()
               ) THEN
                 EXECUTE format(
                   '

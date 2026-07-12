@@ -13,6 +13,8 @@ import XCTest
 @testable import GitHub
 @testable import PointFree
 
+import CustomDump
+
 class AuthIntegrationTests: LiveDatabaseTestCase {
   @Dependency(\.database) var database
 
@@ -20,6 +22,22 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
     try await super.setUp()
     //    SnapshotTesting.isRecording = true
   }
+
+
+  func testCreateAndFetchUser() async throws {
+    let user = try await database.upsertUser(
+      "deadbeef",
+      GitHubUser(createdAt: .init(timeIntervalSince1970: 0), login: "blob", id: 1, name: "Blob"),
+      "blob@pointfree.co",
+      { .init(timeIntervalSince1970: 0) }
+    )
+    expectNoDifference(user.id, User.ID(UUID(uuidString: "00000000-0000-0000-0000-000000000001")!))
+
+    let fetched = try await database.fetchUser(id: user.id)
+    expectNoDifference(fetched.email, "blob@pointfree.co")
+    expectNoDifference(fetched.name, "Blob")
+  }
+
 
   @MainActor
   func testRegister() async throws {
