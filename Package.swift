@@ -140,6 +140,7 @@ var package = Package(
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
+        .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "UrlFormEncoding", package: "swift-web"),
       ]
     ),

@@ -43,7 +43,7 @@ public enum Account: Equatable {
       token: TheWayAccess.ID,
       whoami: String,
       machine: UUID,
-      lastSHA: Repo.Commit.SHA?,
+      etag: String?,
       version: String?
     )
   }
@@ -168,7 +168,7 @@ struct AccountRouter: ParserPrinter {
               Field("machine") { UUID.parser() }
             }
             Headers {
-              Optionally { Field("If-None-Match", .string.representing(Repo.Commit.SHA.self)) }
+              Optionally { Field("If-None-Match", .string) }
             }
             Headers {
               Optionally { Field("X-PFW-Version", .string) }
