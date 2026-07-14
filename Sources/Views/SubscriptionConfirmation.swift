@@ -462,7 +462,7 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
         ]
       ),
       .img(
-        src: currentUser.gitHubAvatarUrl.absoluteString,
+        src: currentUser.gitHub?.avatarUrl.absoluteString ?? "",
         alt: "",
         attributes: [
           .class([

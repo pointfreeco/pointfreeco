@@ -59,11 +59,18 @@ public indirect enum SiteRoute: Equatable {
   @CasePathable
   public enum Auth: Equatable {
     case authLanding(kind: Kind? = nil, redirect: String? = nil)
+    case codeLanding(email: EmailAddress, redirect: String? = nil)
+    case connectGitHub(redirect: String? = nil)
+    case connectGitHubLanding(redirect: String? = nil)
+    case emailAuth(email: EmailAddress, redirect: String? = nil)
     case failureLanding(redirect: String?)
     case gitHubAuth(redirect: String?)
     case gitHubCallback(code: String?, redirect: String?)
+    case linkGitHubLanding(redirect: String? = nil)
     case logout
     case updateGitHub(redirect: String?)
+    case verifyLoginCode(
+      email: EmailAddress, code: EmailLoginCode.Code, redirect: String? = nil)
 
     public enum Kind: String, CaseIterable {
       case login
@@ -807,6 +814,50 @@ struct FilterConversion<Base: Conversion>: Conversion {
 private struct AuthRouter: ParserPrinter {
   var body: some Router<SiteRoute.Auth> {
     OneOf {
+      Route(.case(SiteRoute.Auth.codeLanding)) {
+        Path { "email-auth" }
+        Query {
+          Field("email", .string.representing(EmailAddress.self))
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
+      Route(.case(SiteRoute.Auth.connectGitHub)) {
+        Method.post
+        Path { "connect-github" }
+        Query {
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
+      Route(.case(SiteRoute.Auth.connectGitHubLanding)) {
+        Path { "connect-github" }
+        Query {
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
+      Route(.case(SiteRoute.Auth.emailAuth)) {
+        Method.post
+        Path { "email-auth" }
+        Body {
+          FormData {
+            Field("email", .string.representing(EmailAddress.self))
+          }
+        }
+        Query {
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
       Route(.case(SiteRoute.Auth.failureLanding)) {
         Path { "github-failure" }
         Query {
@@ -830,6 +881,15 @@ private struct AuthRouter: ParserPrinter {
           Optionally {
             Field("code")
           }
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
+      Route(.case(SiteRoute.Auth.linkGitHubLanding)) {
+        Path { "link-github" }
+        Query {
           Optionally {
             Field("redirect")
           }
@@ -869,6 +929,25 @@ private struct AuthRouter: ParserPrinter {
       Route(.case(SiteRoute.Auth.updateGitHub)) {
         Method.post
         Path { "update-github" }
+        Query {
+          Optionally {
+            Field("redirect")
+          }
+        }
+      }
+
+      Route(.case(SiteRoute.Auth.verifyLoginCode)) {
+        Method.post
+        Path {
+          "email-auth"
+          "verify"
+        }
+        Body {
+          FormData {
+            Field("email", .string.representing(EmailAddress.self))
+            Field("code", .string.representing(EmailLoginCode.Code.self))
+          }
+        }
         Query {
           Optionally {
             Field("redirect")

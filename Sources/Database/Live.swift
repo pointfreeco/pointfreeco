@@ -19,6 +19,21 @@ extension Client {
           """
         )
       },
+      createEmailLoginCode: { email in
+        try await pool.sqlDatabase.raw(
+          """
+          INSERT INTO "email_login_codes" ("email")
+          VALUES (\(bind: email))
+          ON CONFLICT ("email") DO UPDATE
+          SET "code" = gen_login_code(), "created_at" = NOW()
+          WHERE "email_login_codes"."created_at"
+            < NOW() - make_interval(secs => \(bind: EmailLoginCode.resendInterval))
+          RETURNING *
+          """
+        )
+        .first()?
+        .decode(model: EmailLoginCode.self, keyDecodingStrategy: .convertFromSnakeCase)
+      },
       createEnterpriseEmail: { email, userId in
         try await pool.sqlDatabase.first(
           """
@@ -995,6 +1010,72 @@ extension Client {
           ALTER COLUMN "plan" DROP DEFAULT
           """
         )
+        try await database.run(
+          """
+          ALTER TABLE "users"
+          ALTER COLUMN "github_user_id" DROP NOT NULL
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "users"
+          ALTER COLUMN "github_access_token" DROP NOT NULL
+          """
+        )
+        try await database.run(
+          """
+          DO $$
+          BEGIN
+            IF NOT EXISTS (
+              SELECT 1 FROM "pg_constraint" WHERE "conname" = 'users_github_fields_check'
+            ) THEN
+              ALTER TABLE "users"
+              ADD CONSTRAINT "users_github_fields_check"
+              CHECK (("github_user_id" IS NULL) = ("github_access_token" IS NULL));
+            END IF;
+          END
+          $$
+          """
+        )
+        try await database.run(
+          """
+          CREATE OR REPLACE FUNCTION gen_login_code()
+          RETURNS text AS $$
+          DECLARE
+            alphabet text := 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            bytes bytea := gen_random_bytes(6);
+            code text := '';
+            i integer;
+          BEGIN
+            FOR i IN 0..5 LOOP
+              code := code || substr(alphabet, get_byte(bytes, i) % 32 + 1, 1);
+            END LOOP;
+            RETURN code;
+          END;
+          $$ LANGUAGE PLPGSQL;
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "email_login_codes" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "code" character varying DEFAULT gen_login_code() NOT NULL,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "email" citext NOT NULL UNIQUE
+          )
+          """
+        )
+      },
+      redeemEmailLoginCode: { email, code in
+        try await pool.sqlDatabase.first(
+          """
+          DELETE FROM "email_login_codes"
+          WHERE "email" = \(bind: email)
+          AND "code" = \(bind: code)
+          AND "created_at" >= NOW() - make_interval(secs => \(bind: EmailLoginCode.lifetime))
+          RETURNING *
+          """
+        )
       },
       redeemEpisodeCredit: { episodeSequence, userId in
         try await pool.sqlDatabase.run(
@@ -1020,6 +1101,15 @@ extension Client {
           SET "subscription_id" = NULL
           WHERE "users"."id" = \(bind: teammateUserId)
           AND "users"."subscription_id" = \(bind: subscriptionId)
+          """
+        )
+      },
+      rotateEmailLoginCode: { email in
+        try await pool.sqlDatabase.run(
+          """
+          UPDATE "email_login_codes"
+          SET "code" = gen_login_code()
+          WHERE "email" = \(bind: email)
           """
         )
       },
@@ -1147,10 +1237,10 @@ extension Client {
           ("email", "github_user_id", "github_access_token", "name", "episode_credit_count")
           VALUES (
             \(bind: email),
-            \(bind: gitHubUser.id),
+            \(bind: gitHubUser?.id),
             \(bind: accessToken),
-            \(bind: gitHubUser.name),
-            \(bind: now().timeIntervalSince(gitHubUser.createdAt) < 60*60*24*30 ? 0 : 1)
+            \(bind: gitHubUser?.name),
+            \(bind: now().timeIntervalSince(gitHubUser?.createdAt ?? now()) < 60*60*24*30 ? 0 : 1)
           )
           ON CONFLICT ("github_user_id") DO UPDATE
           SET "github_access_token" = $3, "name" = $4

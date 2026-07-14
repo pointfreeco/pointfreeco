@@ -51,7 +51,9 @@ var package = Package(
     .package(url: "https://github.com/vapor/sql-kit", exact: "3.28.0"),
     .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.0.0"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.3.0"),
-    .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.3.1"),
+    // NB: Pinned to main to get new fireAndForget behavior.
+    // TODO: Update when dependencies is released
+    .package(url: "https://github.com/pointfreeco/swift-dependencies", branch: "main"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
     .package(url: "https://github.com/pointfreeco/swift-overture", revision: "ac1cd0f"),
     .package(url: "https://github.com/pointfreeco/swift-prelude", revision: "da5ead2"),
@@ -59,7 +61,7 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.10.0"),
     .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.6.0"),
     .package(url: "https://github.com/pointfreeco/swift-web", revision: "a1c1003"),
-    .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.2.2"),
+    .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.11.0"),
     .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.20"),
   ],
   targets: [

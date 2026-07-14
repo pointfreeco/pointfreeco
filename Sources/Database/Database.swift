@@ -19,6 +19,7 @@ public struct Client {
       _ id: Models.User.ID,
       _ toSubscriptionID: Models.Subscription.ID
     ) async throws -> Void
+  public var createEmailLoginCode: (_ email: EmailAddress) async throws -> EmailLoginCode?
   public var createEnterpriseEmail:
     (
       _ emailAddress: EmailAddress,
@@ -123,6 +124,8 @@ public struct Client {
       _ inviterUserID: Models.User.ID
     ) async throws -> TeamInvite
   public var migrate: () async throws -> Void
+  public var redeemEmailLoginCode:
+    (_ email: EmailAddress, _ code: EmailLoginCode.Code) async throws -> EmailLoginCode
   public var redeemEpisodeCredit:
     (_ sequence: Episode.Sequence, _ userID: Models.User.ID) async throws -> Void
   public var regenerateTeamInviteCode:
@@ -134,6 +137,7 @@ public struct Client {
       _ userID: Models.User.ID,
       _ fromSubscriptionID: Models.Subscription.ID
     ) async throws -> Void
+  public var rotateEmailLoginCode: (_ email: EmailAddress) async throws -> Void
   public var sawUser: (_ id: Models.User.ID) async throws -> Void
   public var updateEmailSettings:
     (_ newsletters: [EmailSetting.Newsletter]?, _ userID: Models.User.ID) async throws -> Void
@@ -160,8 +164,8 @@ public struct Client {
   public var upsertTheWayAccess: (TheWayAccess) async throws -> TheWayAccess
   public var upsertUser:
     (
-      _ accessToken: GitHubAccessToken,
-      _ gitHubUser: GitHubUser,
+      _ accessToken: GitHubAccessToken?,
+      _ gitHubUser: GitHubUser?,
       _ emailAddress: EmailAddress,
       _ date: @escaping () -> Date
     ) async throws -> Models.User
@@ -175,8 +179,8 @@ public struct Client {
   }
 
   public func registerUser(
-    accessToken: GitHubAccessToken,
-    gitHubUser: GitHubUser,
+    accessToken: GitHubAccessToken?,
+    gitHubUser: GitHubUser?,
     email: EmailAddress,
     now: @escaping () -> Date
   ) async throws -> User {

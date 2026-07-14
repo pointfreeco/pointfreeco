@@ -53,6 +53,7 @@ func removeTeammateMiddleware(
 ) async -> Conn<ResponseEnded, Data> {
   guard let currentUser else { return conn.loginAndRedirect() }
   @Dependency(\.database) var database
+  @Dependency(\.fireAndForget) var fireAndForget
 
   guard let teammate = try? await database.fetchUser(id: teammateID) else {
     return conn.redirect(to: .account()) {
@@ -78,14 +79,14 @@ func removeTeammateMiddleware(
     )
 
     if currentUser.id != teammate.id {
-      Task {
+      await fireAndForget {
         try await sendEmail(
           to: [teammate.email],
           subject: "You have been removed from \(currentUser.displayName)’s Point-Free team",
           content: inj2(youHaveBeenRemovedEmailView(.teamOwner(currentUser)))
         )
       }
-      Task {
+      await fireAndForget {
         try await sendEmail(
           to: [currentUser.email],
           subject: "Your teammate \(teammate.displayName) has been removed",

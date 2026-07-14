@@ -1,5 +1,5 @@
 {
-  "originHash" : "ce05fa593ff938009b758bbc1a603cdbee69fb4c91670637c1df1613c89b9424",
+  "originHash" : "4c66ed8d2c58241c52ce7f7424413afb8cabfc1a487ea93c2d16befacdd371dd",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -177,8 +177,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-dependencies",
       "state" : {
-        "revision" : "706feb7858a7f6c242879d137b8ee30926aa5b26",
-        "version" : "1.12.0"
+        "branch" : "main",
+        "revision" : "b4269c89380c4e294860365096b24cba2ad052bd"
       }
     },
     {
@@ -402,8 +402,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
       "state" : {
-        "revision" : "dfd70507def84cb5fb821278448a262c6ff2bbad",
-        "version" : "1.9.0"
+        "revision" : "8f6abcf4c8950e2679d5b2fee4ca284fd7c34886",
+        "version" : "1.11.0"
       }
     },
     {
