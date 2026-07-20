@@ -3,8 +3,8 @@ import Foundation
 extension Episode {
   public static let ep373_wwdc26 = Episode(
     blurb: """
-      We compare all the new things SwiftData has to offer to SQLiteData, starting with a domain \
-      modeling exercise. We will rewrite the Trips `@Model` classes into simple `@Table` structs, \
+      We compare SwiftData's new features with SQLiteData, starting with a domain modeling \
+      exercise. We will rewrite the Trips `@Model` classes into simple `@Table` structs, \
       and we will explore how the `Draft` type can power a single form for both creating and \
       updating trips.
       """,
