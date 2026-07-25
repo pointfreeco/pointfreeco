@@ -23,29 +23,49 @@ If you want to display all reminders in a list, grouped into a section for each 
 provide a `sectionBy:` argument to `@FetchAll`:
 
 ```swift
-@FetchAll(Reminder.order(by: \.title), sectionBy: \.category)
-var reminders
+struct RemindersView: View {
+  @FetchAll(Reminder.order(by: \.title), sectionBy: \.category)
+  var reminders
+  
+  …
+}
 ```
 
-In the view, the projected value of the property has a `sections` property that can be iterated over
-to display each section:
+In the body of the view, the projected value `$reminders` has a `sections` property that can be 
+iterated over to display each section:
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1.5rem;">
+
+<div style="flex: 1 1 20rem; min-width: 0;">
 
 ```swift
-List {
-  ForEach($reminders.sections) { section in
-    Section(section.name ?? "Uncategorized") {
-      ForEach(section) { reminder in
-        Text(reminder.title)
+var body: some View {
+  List {
+    ForEach($reminders.sections) { section in
+      Section(section.name ?? "Uncategorized") {
+        ForEach(section) { reminder in
+          Text(reminder.title)
+        }
       }
     }
   }
 }
 ```
 
+</div>
+
+<picture style="flex: 0 1 16rem; min-width: 0; max-width: 100%; margin: 0 auto;">
+  <source media="(prefers-color-scheme: dark)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/e9ea27b2-e667-4e32-0a1e-cd1211b80600/public">
+  <source media="(prefers-color-scheme: light)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/797a3303-4058-4273-2eea-df82fb882a00/public">
+  <img alt="A reminders list grouped into sections by category." src="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/797a3303-4058-4273-2eea-df82fb882a00/public" width="100%">
+</picture>
+
+</div>
+
 Each `section` itself can be iterated over, and has a `name` describing the section.
 
 That is all it takes, and it looks quite similar to the `sectionBy:` argument that SwiftData's
-`@Query` macro recently gained for WWDC26. But this is where the similarities end. SwiftData's
+`@Query` macro gained in appleOS 27+. But this is where the similarities end. SwiftData's
 sectioning is restricted to key paths of string properties on your model, whereas SQLiteData's
 `sectionBy:` accepts _any_ SQL expression, which unlocks a whole lot more.
 
@@ -56,6 +76,10 @@ being queried, and so you can section by any string expression you can dream up.
 you want to section reminders alphabetically by the first letter of their title, the prototypical
 example of grouping used by the Contacts app, you can invoke SQLite's `substr` function directly:
 
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1.5rem;">
+
+<div style="flex: 1 1 20rem; min-width: 0;">
+
 ```swift
 @FetchAll(
   Reminder.order(by: \.title),
@@ -64,8 +88,22 @@ example of grouping used by the Contacts app, you can invoke SQLite's `substr` f
 var reminders
 ```
 
+</div>
+
+<picture style="flex: 0 1 16rem; min-width: 0; max-width: 100%; margin: 0 auto;">
+  <source media="(prefers-color-scheme: dark)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/69e17954-682c-4c75-2934-8e5667da5a00/public">
+  <source media="(prefers-color-scheme: light)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/d27609be-324a-4d58-dd15-73a57ea7a600/public">
+  <img alt="A reminders list grouped into sections by the first letter of each title." src="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/d27609be-324a-4d58-dd15-73a57ea7a600/public" width="100%">
+</picture>
+
+</div>
+
 Or you can section by data that isn't stored in any column at all, such as whether or not a reminder
 has been scheduled:
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1.5rem;">
+
+<div style="flex: 1 1 20rem; min-width: 0;">
 
 ```swift
 @FetchAll(
@@ -79,17 +117,68 @@ has been scheduled:
 var reminders
 ```
 
-Sections are ordered by the expression you provide, and that expression can be given an explicit
-ordering. So if you want your sections to appear in reverse, or want to control where `NULL` values
-land:
+</div>
+
+<picture style="flex: 0 1 16rem; min-width: 0; max-width: 100%; margin: 0 auto;">
+  <source media="(prefers-color-scheme: dark)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/d63777bb-744f-45fa-13d9-9101acf95f00/public">
+  <source media="(prefers-color-scheme: light)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/f7703808-11e3-42ef-0955-b3fe87e82700/public">
+  <img alt="A reminders list grouped into a Scheduled section and an Unscheduled section." src="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/f7703808-11e3-42ef-0955-b3fe87e82700/public" width="100%">
+</picture>
+
+</div>
+
+You can even specify how sections are ordered by providing an ascending or descending clause. So,
+if you want to section by the first character of reminder titles in a descending fashion, simply
+do this:
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1.5rem;">
+
+<div style="flex: 1 1 20rem; min-width: 0;">
 
 ```swift
 @FetchAll(
   Reminder.order(by: \.title),
-  sectionBy: { $0.category.desc(nulls: .last) }
+  sectionBy: { $0.title.substr(1, 1).desc() }
 )
 var reminders
 ```
+
+</div>
+
+<picture style="flex: 0 1 16rem; min-width: 0; max-width: 100%; margin: 0 auto;">
+  <source media="(prefers-color-scheme: dark)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/40106c2a-cc1e-444d-a95e-f0a3d62f5b00/public">
+  <source media="(prefers-color-scheme: light)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/80f4224c-2263-4b32-5088-673b787d5600/public">
+  <img alt="A reminders list grouped into sections by the first letter of each title, in descending order." src="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/80f4224c-2263-4b32-5088-673b787d5600/public" width="100%">
+</picture>
+
+</div>
+
+When sectioning by something that is `NULL`-able, you can control where the `NULL` values are
+placed. Either first, or last:
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1.5rem;">
+
+<div style="flex: 1 1 20rem; min-width: 0;">
+
+```swift
+@FetchAll(
+  Reminder.order(by: \.title),
+  sectionBy: { $0.category.asc(nulls: .last) }
+)
+var reminders
+```
+
+</div>
+
+<picture style="flex: 0 1 16rem; min-width: 0; max-width: 100%; margin: 0 auto;">
+  <source media="(prefers-color-scheme: dark)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/2c2b0875-f98b-436e-778d-edc7f6f18300/public">
+  <source media="(prefers-color-scheme: light)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/0f76329f-095e-46bb-a921-7e000f494f00/public">
+  <img alt="A reminders list grouped into sections by category, with the Uncategorized section placed last." src="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/0f76329f-095e-46bb-a921-7e000f494f00/public" width="100%">
+</picture>
+
+</div>
+
+Note that the "Uncategorized" section is now at the bottom instead of the top.
 
 None of this is possible with SwiftData: sections are always ordered alphabetically, in an ascending
 fashion, by a stored string property.
@@ -102,6 +191,10 @@ SQL at your disposal, including joins, you can section rows by data held in _oth
 For example, if you want to display all reminders, grouped by the title of the list they belong to,
 you can join the `RemindersList` table to the query:
 
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1.5rem;">
+
+<div style="flex: 1 1 20rem; min-width: 0;">
+
 ```swift
 @FetchAll(
   Reminder
@@ -112,6 +205,16 @@ you can join the `RemindersList` table to the query:
 )
 var reminders
 ```
+
+</div>
+
+<picture style="flex: 0 1 16rem; min-width: 0; max-width: 100%; margin: 0 auto;">
+  <source media="(prefers-color-scheme: dark)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/b854cb33-4d05-49b2-3858-04dab2a2b100/public">
+  <source media="(prefers-color-scheme: light)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/8e5d3634-042c-4b0b-d693-b67bd0d73c00/public">
+  <img alt="A reminders list grouped into sections by the name of the list each reminder belongs to." src="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/8e5d3634-042c-4b0b-d693-b67bd0d73c00/public" width="100%">
+</picture>
+
+</div>
 
 The `sectionBy:` closure is handed the schema of every table in the join, and so sectioning by the
 list's title is as simple as reaching for it.
@@ -155,28 +258,29 @@ statements to decide how results should be grouped, and even return `nil` to tur
 entirely.
 
 When sectioning is turned off, the `sections` collection is populated with a single, unnamed section
-holding every row. That means the view above never needs to branch on whether or not sectioning is
-currently active, which is in stark contrast to SwiftData, which requires you to check if sections
-are empty and maintain two nearly identical view hierarchies:
+holding every row. That means you can structure your view like this:
 
 ```swift
-// SwiftData
-List {
-  if _reminders.sections.isEmpty {
-    ForEach(reminders) { reminder in
-      ReminderRow(reminder: reminder)
-    }
-  } else {
-    ForEach(_reminders.sections) { section in
-      Section(section.id) {
+var body: some View {
+  List {
+    ForEach($reminders.sections) { section in
+      Section {
         ForEach(section) { reminder in
-          ReminderRow(reminder: reminder)
+          Text(reminder.title)
+        }
+      } header: {
+        if let name = section.name {
+          Text(name)
         }
       }
     }
   }
 }
 ```
+
+…and it will work whether or not your results are sectioned. There is no need to branch your
+view hierarchy to check if sections is empty or not and maintain two nearly identical view 
+hierarchies.
 
 ## The database does the work
 
@@ -244,6 +348,10 @@ then medium, then low, and then the reminders with no priority at all.
 And now the view can switch over section names exhaustively, with no stringly-typed parsing and no
 impossible `default` case to handle:
 
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1.5rem;">
+
+<div style="flex: 1 1 20rem; min-width: 0;">
+
 ```swift
 @Fetch(RemindersRequest())
 var reminders = RemindersRequest.Value()
@@ -257,16 +365,33 @@ var body: some View {
         }
       } header: {
         switch section.name {
-        case .high: Label("High", systemImage: "exclamationmark.3")
-        case .medium: Label("Medium", systemImage: "exclamationmark.2")
-        case .low: Label("Low", systemImage: "exclamationmark")
-        case nil: Text("No priority")
+        case .high:
+          Label("High", systemImage: "exclamationmark.3")
+            .foregroundStyle(.red)
+        case .medium:
+          Label("Medium", systemImage: "exclamationmark.2")
+            .foregroundStyle(.orange)
+        case .low:
+          Label("Low", systemImage: "exclamationmark")
+            .foregroundStyle(.yellow)
+        case nil:
+          Text("No priority")
         }
       }
     }
   }
 }
 ```
+
+</div>
+
+<picture style="flex: 0 1 16rem; min-width: 0; max-width: 100%; margin: 0 auto;">
+  <source media="(prefers-color-scheme: dark)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/7e0813a9-bb0b-4f54-de57-a3b00db1f600/public">
+  <source media="(prefers-color-scheme: light)" srcset="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/17e69dd5-278d-477e-62d7-70dfb405e100/public">
+  <img alt="A reminders list grouped into sections by priority, with high priority first and reminders with no priority last." src="https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/17e69dd5-278d-477e-62d7-70dfb405e100/public" width="100%">
+</picture>
+
+</div>
 
 And this just scratches the surface. A `FetchKeyRequest` can do far more than section a query. It
 can bundle these sections together with any number of other queries in a single transaction, and it
