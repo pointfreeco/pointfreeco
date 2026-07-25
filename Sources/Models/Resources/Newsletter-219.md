@@ -74,7 +74,10 @@ sectioning is restricted to key paths of string properties on your model, wherea
 The `sectionBy:` argument is not just a key path. It's a closure handed the schema of the table
 being queried, and so you can section by any string expression you can dream up. For example, if
 you want to section reminders alphabetically by the first letter of their title, the prototypical
-example of grouping used by the Contacts app, you can invoke SQLite's `substr` function directly:
+example of grouping used by the Contacts app, you can invoke SQLite's [`substr`][substr] function 
+directly:
+
+[substr]: https://sqlite.org/lang_corefunc.html#substr
 
 <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1.5rem;">
 
