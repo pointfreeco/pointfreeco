@@ -94,7 +94,7 @@ var reminders
 None of this is possible with SwiftData: sections are always ordered alphabetically, in an ascending
 fashion, by a stored string property.
 
-## Sectioning by relationships
+## Sectioning through relationships
 
 Sectioning is not restricted to data in the table being queried. Because you have the full power of
 SQL at your disposal, including joins, you can section rows by data held in _other_ tables.
@@ -197,19 +197,84 @@ and the order you specify for the query itself is used _within_ each section.
 
 ## And if you need more
 
-The `sectionBy:` argument is tuned for the most common sectioning task: grouping rows into sections
-named by a string. But it is not the only tool at your disposal, and it never was. From its very
-first release it was possible to group query results in SQLiteData using [`FetchKeyRequest`], which
-allows you to run any number of queries in a single database transaction and transform the results
-into _any_ data structure you want.
+`@FetchAll(sectionBy:)` names sections with strings, just as SwiftData does, and that covers the
+most common dynamic task, but it is not the only tool at your disposal, and it never was. From its
+very first release it was possible to group query results in SQLiteData using [`FetchKeyRequest`],
+which allows you to run any number of queries in a single database transaction and transform the
+results into _any_ data structure you want.
 
 [`FetchKeyRequest`]: https://swiftpackageindex.com/pointfreeco/sqlite-data/~/documentation/sqlitedata/fetchkeyrequest
 
-That tool is still there when you need it, and is what you will reach for when sections must be
-keyed by something other than a string, or when the shape of your data isn't a flat list of sections
-at all. We recently used it to build an org chart that loads an entire employee hierarchy, along
-with the total number of direct and transitive reports for each employee, in a single recursive SQL
-query and decodes it directly into a tree of values that drives a hierarchical SwiftUI `List`.
+And this release brings sectioning to that tool, too. Every query now has a `fetchAll(_:sectionBy:)`
+method that returns its results grouped into sections, which means you can section results anywhere
+you have a database connection.
+
+You can reach for this tool when you need more precise control over the type that sections results.
+_Any_ hashable value can name a section, including your own enums. Suppose reminders also have a
+priority:
+
+```swift
+@Table struct Reminder {
+  …
+  var priority: Priority?
+}
+
+enum Priority: Int, QueryBindable { case low, medium, high }
+```
+
+You could of course coerce that into a string to section by it, but then you have thrown away
+everything the type gave you. Your view would have to switch over `"high"` and `"low"` string
+literals with a `default` case that should never happen, and worse, your sections would come back in
+the wrong order: sorting `"high"`, `"low"` and `"medium"` alphabetically is nothing like sorting a
+priority.
+
+Instead you can section by the priority column itself:
+
+```swift
+struct RemindersRequest: FetchKeyRequest {
+  func fetch(_ db: Database) throws -> ResultsSectionCollection<Reminder, Priority?> {
+    try Reminder.order(by: \.title).fetchAll(db, sectionBy: { $0.priority.desc() })
+  }
+}
+```
+
+Because SQLite sorts the underlying column, the sections come back in true priority order: high,
+then medium, then low, and then the reminders with no priority at all.
+
+And now the view can switch over section names exhaustively, with no stringly-typed parsing and no
+impossible `default` case to handle:
+
+```swift
+@Fetch(RemindersRequest())
+var reminders = RemindersRequest.Value()
+
+var body: some View {
+  List {
+    ForEach(reminders) { section in
+      Section {
+        ForEach(section) { reminder in
+          Text(reminder.title)
+        }
+      } header: {
+        switch section.name {
+        case .high: Label("High", systemImage: "exclamationmark.3")
+        case .medium: Label("Medium", systemImage: "exclamationmark.2")
+        case .low: Label("Low", systemImage: "exclamationmark")
+        case nil: Text("No priority")
+        }
+      }
+    }
+  }
+}
+```
+
+And this just scratches the surface. A `FetchKeyRequest` can do far more than section a query. It
+can bundle these sections together with any number of other queries in a single transaction, and it
+is what you will reach for when the shape of your data isn't a flat list of elements or sectioned
+data. We recently used it to build an org chart that loads an entire employee hierarchy, along with 
+the total number of direct and transitive reports for each employee, in a single recursive common
+table expression, and decodes it directly into a tree of values that drives a hierarchical SwiftUI
+`List`.
 
 We explore all of this, and more, in our [latest episode][episode], where we rebuild Apple's WWDC
 sample Trips app with SQLiteData.
@@ -219,4 +284,4 @@ sample Trips app with SQLiteData.
 ## Try it out today!
 
 [SQLiteData 1.8.0][1.8.0] is available today. Update your dependencies to get immediate access to
-`@FetchAll(sectionBy:)`, and let us know what you think!
+`@FetchAll(sectionBy:)` and `fetchAll(sectionBy:)`, and let us know what you think!
