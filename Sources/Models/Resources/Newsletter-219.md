@@ -332,8 +332,7 @@ enum Priority: Int, QueryBindable { case low, medium, high }
 You could of course coerce that into a string to section by it, but then you have thrown away
 everything the type gave you. Your view would have to switch over `"high"` and `"low"` string
 literals with a `default` case that should never happen, and worse, your sections would come back in
-the wrong order: sorting `"high"`, `"low"` and `"medium"` alphabetically is nothing like sorting a
-priority.
+the wrong order: sorting `"high"`, `"low"` and `"medium"` alphabetically.
 
 Instead you can section by the priority column itself:
 
