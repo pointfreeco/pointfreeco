@@ -27,7 +27,9 @@ struct RemindersView: View {
   @FetchAll(Reminder.order(by: \.title), sectionBy: \.category)
   var reminders
   
-  …
+  var body: some View {
+    …
+  }
 }
 ```
 
@@ -66,8 +68,9 @@ Each `section` itself can be iterated over, and has a `name` describing the sect
 
 That is all it takes, and it looks quite similar to the `sectionBy:` argument that SwiftData's
 `@Query` macro gained in appleOS 27+. But this is where the similarities end. SwiftData's
-sectioning is restricted to key paths of string properties on your model, whereas SQLiteData's
-`sectionBy:` accepts _any_ SQL expression, which unlocks a whole lot more.
+sectioning is restricted to modern Apple OS's and to key paths of string properties on your model, 
+whereas SQLiteData's `sectionBy:` works going back to the iOS 13 generation of Apple platforms,
+and accepts _any_ SQL expression, which unlocks a whole lot more.
 
 ## Sectioning by anything
 
@@ -231,7 +234,11 @@ means you can reload a query with brand new sectioning at any time.
 Suppose your feature holds onto some state describing how the user wants their reminders grouped:
 
 ```swift
-enum GroupOption { case none, category, titleFirstLetter }
+enum GroupOption { 
+  case none 
+  case category
+  case titleFirstLetter 
+}
 
 @State var group = GroupOption.none
 ```
@@ -240,19 +247,17 @@ Then you can load a new query whenever that state changes:
 
 ```swift
 .task(id: group) {
-  await withErrorReporting {
-    try await $reminders.load(
-      Reminder.order(by: \.title),
-      sectionBy: {
-        switch group {
-        case .none: nil
-        case .category: $0.category
-        case .titleFirstLetter: $0.title.substr(1, 1)
-        }
-      },
-      animation: .default
-    )
-  }
+  try? await $reminders.load(
+    Reminder.order(by: \.title),
+    sectionBy: {
+      switch group {
+      case .none: nil
+      case .category: $0.category
+      case .titleFirstLetter: $0.title.substr(1, 1)
+      }
+    },
+    animation: .default
+  )
 }
 ```
 
@@ -289,7 +294,8 @@ hierarchies.
 
 It's worth pointing out what is _not_ happening here: at no point are results loaded into memory and
 then grouped by your app. The expression you hand to `sectionBy:` is prepended to the query's
-`ORDER BY` clause and evaluated by SQLite, and results are grouped as they are decoded:
+`ORDER BY` clause and evaluated by SQLite, and results are grouped as they are decoded directly
+from the connection:
 
 ```sql
 SELECT
