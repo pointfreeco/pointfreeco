@@ -290,19 +290,22 @@ var body: some View {
 view hierarchy to check if sections is empty or not and maintain two nearly identical view 
 hierarchies.
 
-## The database does the work
+## Let SQLite do the work
 
-It's worth pointing out what is _not_ happening here: at no point are results loaded into memory and
-then grouped by your app. The expression you hand to `sectionBy:` is prepended to the query's
-`ORDER BY` clause and evaluated by SQLite, and results are grouped as they are decoded directly
-from the connection:
+It's worth pointing out that at no point are results loaded into memory and
+then grouped by their section. The expression you hand to `sectionBy:` is prepended to the query's
+`ORDER BY` clause and evaluated by SQLite:
 
-```sql
-SELECT
-  "reminders"."id", "reminders"."title", …, substr("reminders"."title", 1, 1)
-FROM "reminders"
-ORDER BY substr("reminders"."title", 1, 1) DESC, "reminders"."title"
+```diff
+ SELECT
+   "reminders"."id", "reminders"."title", …, substr("reminders"."title", 1, 1)
+ FROM "reminders"
+ ORDER BY 
++  substr("reminders"."title", 1, 1) DESC, 
+   "reminders"."title"
 ```
+
+…and results are grouped as they are decoded directly from the connection.
 
 Note the sectioning expression prepended to the `ORDER BY` clause. This means you do not have to
 remember to sort your query by whatever you are sectioning by. SQLiteData takes care of it for you,
