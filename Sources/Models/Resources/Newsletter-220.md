@@ -9,7 +9,7 @@ access to them.
 
 [update your dependencies]: https://github.com/pointfreeco/swift-structured-queries/releases/tag/0.35.0
 
-# Storing JSON and JSONB in your tables
+## Storing JSON and JSONB in your tables
 
 It has always been possible to store complex `Codable` data types in a single column of a SQLite
 table using the library's `JSONRepresentation` tool:
@@ -23,7 +23,7 @@ table using the library's `JSONRepresentation` tool:
 }
 ```
 
-This serializes the array of locations to JSON text and stores it in a single "TEXT" column of the
+This serializes the array of locations to JSON text and stores it in a single `TEXT` column of the
 table. It's a handy trick, but plain text is a pretty inefficient way to hold onto this data. JSON
 is a verbose format with lots of repeated labels, and every time SQLite needs to read a value out of
 the payload it must re-parse the entire document.
@@ -96,7 +96,7 @@ FROM "trips"
 
 You get to completely forget that JSONB is even involved and simply write queries like normal.
 
-# Type-safe JSON functions
+## Type-safe JSON functions
 
 Storing data as JSON does not mean giving up the ability to query it. SQLite ships a [large family
 of JSON functions](https://sqlite.org/json1.html) for reaching into a JSON payload to extract,
@@ -128,7 +128,7 @@ Swift key path:
 
 ```swift
 Trip.where {
-  $0.location.jsonExtract(\.longitude).lt(0)
+  $0.location.jsonExtract(\.longitude) < 0
 }
 ```
 
@@ -152,9 +152,8 @@ path](https://sqlite.org/json1.html#path_arguments) in SQLite. And the type of `
 understand by the query builder to help stiop you from doing something non-sensical, like comparing 
 the longitude to a string:
 
-```swift
-Trip.where { $0.location.jsonExtract(\.longitude).lt("") }
-// 🛑 Compiler error
+```swift:1:fail
+Trip.where { $0.location.jsonExtract(\.longitude) < "" }
 ```
 
 That means you get schema-safety on your table's columns, schema-safety on the fields _inside_ your
@@ -223,10 +222,10 @@ table's columns (`jsonObject`), computing the length of a JSON array (`jsonArray
 And each of these tools comes with a JSONB variant (`jsonbExtract`, `jsonbSet`, `jsonbGroupArray`,
 …) for when the result should remain in the binary format, such as when assigning to a JSONB column.
 
-# Querying JSON collections with `json_each`
+## Querying JSON collections with `json_each`
 
 SQLite provides a [table-valued function](https://sqlite.org/json1.html#jeach), `json_each`, that 
-turns a JSON array or object into a SQLite virtual   table that can be queried just like any other 
+turns a JSON array or object into a SQLite virtual table that can be queried just like any other 
 table.
 
 StructuredQueries now provides a `jsonEach()` method on JSON- and JSONB-backed columns that exposes
@@ -270,7 +269,7 @@ WHERE NOT EXISTS (
 The `jsonEach()` method gives you back a select statement whose rows have a `key` (the index in a
 JSON array, or member name in a JSON object) and a `value` (the element itself), and you are free to
 chain on `where` clauses, `select`s, and more, just like any other query. There is no need to
-load everything into memory just to process the results, you don't need to resort to stringly typed
+load everything into memory just to process the results, you don't need to resort to stringly-typed
 SQL, and the query builder has your back the whole way.
 
 This works for arrays of simple scalar values too:
@@ -306,7 +305,7 @@ WHERE EXISTS (
 
 </div>
 
-# Get started today
+## Get started today
 
 This is just a taste of what is possible with the new JSON tools. For an even deeper dive, including
 sorting trips by their live distance from the user's location computed entirely in SQL, be sure to
