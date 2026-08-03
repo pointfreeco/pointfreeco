@@ -67,6 +67,7 @@ INSERT INTO "trips"
 ("geofence")
 VALUES 
 (jsonb('[…]'))
+
 ```
 
 </div>
@@ -79,6 +80,7 @@ VALUES
 
 ```swift
 Trip.all
+
 ```
 
 </div>
@@ -128,7 +130,14 @@ Swift key path:
 
 ```swift
 Trip.where {
+<<<<<<< Updated upstream
   $0.location.jsonExtract(\.longitude) < 0
+||||||| Stash base
+  $0.location.jsonExtract(\.longitude).lt(0)
+=======
+  $0.location
+    .jsonExtract(\.longitude).lt(0)
+>>>>>>> Stashed changes
 }
 ```
 
@@ -172,6 +181,7 @@ Profile.update {
   $0.author = $0.author
     .jsonSet(\.name, "Blob")
 }
+
 ```
 
 </div>
@@ -199,6 +209,7 @@ Profile.update {
   $0.tags = $0.tags
     .jsonAppend("new")
 }
+
 ```
 
 </div>
@@ -241,7 +252,8 @@ and checking that no latitude is greater than zero, and it can be done directly 
 Trip.where {
   !$0.geofence.jsonEach()
     .where { 
-      $0.value.jsonExtract(\.latitude) > 0 
+      $0.value
+        .jsonExtract(\.latitude) > 0 
     }
     .exists()
 }
@@ -299,6 +311,7 @@ WHERE EXISTS (
   FROM json_each("reminders"."tags")
   WHERE "json_each"."value" = 'urgent'
 )
+
 ```
 
 </div>
