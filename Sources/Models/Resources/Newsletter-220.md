@@ -130,14 +130,8 @@ Swift key path:
 
 ```swift
 Trip.where {
-<<<<<<< Updated upstream
-  $0.location.jsonExtract(\.longitude) < 0
-||||||| Stash base
-  $0.location.jsonExtract(\.longitude).lt(0)
-=======
   $0.location
-    .jsonExtract(\.longitude).lt(0)
->>>>>>> Stashed changes
+    .jsonExtract(\.longitude) < 0
 }
 ```
 
