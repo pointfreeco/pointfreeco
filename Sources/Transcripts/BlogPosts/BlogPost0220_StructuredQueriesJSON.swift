@@ -8,7 +8,7 @@ extension BlogPost {
       complex data types in your tables and query for values held in JSON in a type-safe and \
       schema-safe API.
       """,
-    coverImage: "TODO",
+    coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/f98e9205-4e50-482b-9ccc-0f246a987c00/public",
     hidden: .no,
     hideFromSlackRSS: false,
     id: 220,

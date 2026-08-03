@@ -7,7 +7,7 @@ efficient binary JSONB format, a full suite of type-safe JSON functions, and eve
 Join us for a quick overview of these tools, and be sure to [update your dependencies] to get 
 access to them.
 
-[update your dependencies]: todo
+[update your dependencies]: https://github.com/pointfreeco/swift-structured-queries/releases/tag/0.35.0
 
 # Storing JSON and JSONB in your tables
 
