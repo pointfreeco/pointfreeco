@@ -152,7 +152,7 @@ WHERE json_extract(
 
 Note that the key path is translated to the equivalent [JSON
 path](https://sqlite.org/json1.html#path_arguments) in SQLite. And the type of `longitude` is
-understand by the query builder to help stiop you from doing something non-sensical, like comparing 
+understood by the query builder to help stop you from doing something non-sensical, like comparing 
 the longitude to a string:
 
 ```swift:1:fail
