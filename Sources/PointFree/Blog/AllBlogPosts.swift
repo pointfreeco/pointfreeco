@@ -235,5 +235,7 @@ extension BlogPost {
     .post0216_traitification,
     .post0217_taskLocalProposal,
     .post0218_xcode27Support,
+    .post0219_sqliteDataSectioning,
+    .post0220_structuredQueriesJSON,
   ]
 }

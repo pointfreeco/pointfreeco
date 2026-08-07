@@ -1,5 +1,5 @@
 {
-  "originHash" : "4c66ed8d2c58241c52ce7f7424413afb8cabfc1a487ea93c2d16befacdd371dd",
+  "originHash" : "4bc60b9181869fae7cad17fcaa0e1824388e30197057cf48582bef1f16383cc7",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -393,8 +393,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-web",
       "state" : {
-        "branch" : "a1c1003",
-        "revision" : "a1c10031f4d8708a2338b56b2a7935b675e2db78"
+        "branch" : "3248f47",
+        "revision" : "3248f47e1de56dfcb66700f180350c8d56451ef5"
       }
     },
     {
