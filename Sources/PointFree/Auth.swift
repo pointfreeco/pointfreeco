@@ -186,6 +186,9 @@ private func updateGitHub(
       gitHubUserID: newGitHubUser.id,
       githubAccessToken: accessToken
     )
+    if existingAccessToken == nil {
+      await grantEpisodeCredit(forConnecting: newGitHubUser, to: existingUser.id)
+    }
     await fireAndForget {
       guard let existingAccessToken else { return }
       let email =
@@ -274,6 +277,20 @@ private func failureLanding(
   }
 }
 
+private func grantEpisodeCredit(
+  forConnecting gitHubUser: GitHubUser,
+  to userID: Models.User.ID
+) async {
+  @Dependency(\.database) var database
+  @Dependency(\.date.now) var now
+
+  guard now.timeIntervalSince(gitHubUser.createdAt) >= 60 * 60 * 24 * 30
+  else { return }
+  await withErrorReporting("Grant episode credit for connected GitHub") {
+    _ = try await database.incrementEpisodeCredits(userIDs: [userID])
+  }
+}
+
 private func connectGitHubLanding(
   redirect: String?,
   conn: Conn<StatusLineOpen, Void>
@@ -348,6 +365,7 @@ private func connectGitHub(
       gitHubUserID: newGitHubUser.id,
       githubAccessToken: accessToken
     )
+    await grantEpisodeCredit(forConnecting: newGitHubUser, to: currentUser.id)
     return conn.redirect(to: sanitizeRedirect(redirect) ?? siteRouter.path(for: .home)) {
       $0.writeSessionCookie {
         $0.flash = Flash(
