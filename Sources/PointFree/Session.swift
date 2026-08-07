@@ -43,6 +43,7 @@ extension Conn where Step == HeadersOpen {
         options: [
           .expires(now.addingTimeInterval(cookieExpirationDuration)),
           .path("/"),
+          .sameSite(.lax),
         ]
       )
     else { return self }
