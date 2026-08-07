@@ -45,6 +45,22 @@ public struct LoginSignUpView: HTML {
             }
             .color(.gray850)
           }
+          Button(color: .purple) {
+            Label("Continue with GitHub", icon: .gitHubIcon)
+              .fontStyle(.body(.regular))
+          }
+          .attribute(
+            "href",
+            siteRouter.path(for: .auth(.gitHubAuth(redirect: redirect)))
+          )
+          .inlineStyle("display", "inline-block")
+          .inlineStyle("margin-top", "1.5rem")
+          div {
+            "or"
+          }
+          .color(.gray650)
+          .fontStyle(.body(.small))
+          .inlineStyle("margin", "1rem 0")
           form {
             VStack(spacing: 0.75) {
               input()
@@ -67,23 +83,9 @@ public struct LoginSignUpView: HTML {
             siteRouter.path(for: .auth(.emailAuth(email: "", redirect: redirect)))
           )
           .attribute("method", "post")
-          .inlineStyle("margin", "1.5rem auto 0")
+          .inlineStyle("margin", "0 auto")
           .inlineStyle("width", "100%")
           .inlineStyle("max-width", "22rem")
-          div {
-            "or"
-          }
-          .color(.gray650)
-          .fontStyle(.body(.small))
-          .inlineStyle("margin", "1rem 0")
-          Button(color: .purple) {
-            Label("Continue with GitHub", icon: .gitHubIcon)
-              .fontStyle(.body(.regular))
-          }
-          .attribute(
-            "href",
-            siteRouter.path(for: .auth(.gitHubAuth(redirect: redirect)))
-          )
           div {
             Paragraph {
               """
