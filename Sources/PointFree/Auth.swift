@@ -507,7 +507,7 @@ private func logoutResponse(
 
 extension Conn where Step == StatusLineOpen {
   public func loginAndRedirect() -> Conn<ResponseEnded, Data> {
-    redirect(to: .auth(.gitHubAuth(redirect: request.url?.absoluteString)))
+    redirect(to: .auth(.authLanding(kind: .login, redirect: request.url?.absoluteString)))
   }
 }
 

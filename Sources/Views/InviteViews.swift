@@ -40,13 +40,15 @@ private func showInviteLoggedOutView(invite: TeamInvite, inviter: User) -> Node 
           """
         ),
         .p(
-          "You must be logged in to accept this invitation. Would you like to log in with GitHub?"),
+          "You must be logged in to accept this invitation. Would you like to log in?"),
         .p(
           attributes: [.class([Class.padding([.mobile: [.top: 3]])])],
-          .gitHubLink(
-            text: "Login with GitHub",
-            type: .black,
-            href: siteRouter.loginPath(redirect: .invite(.invitation(invite.id)))
+          .a(
+            attributes: [
+              .href(siteRouter.loginPath(redirect: .invite(.invitation(invite.id)))),
+              .class([Class.pf.components.button(color: .black)]),
+            ],
+            "Log in"
           )
         )
       )
