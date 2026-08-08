@@ -92,7 +92,19 @@ extension URLRequest {
 public struct Session: Equatable {
   public var flash: Flash?
   public var gitHubAccessToken: GitHubAccessToken?
+  public var gitHubAuthState: GitHubAuthState?
   public var user: User?
+
+  public struct GitHubAuthState: Codable, Equatable {
+    public var createdAt: Date
+    public var value: UUID
+
+    public static let lifetime: TimeInterval = 60 * 10
+
+    public func isValid(_ state: UUID, now: Date) -> Bool {
+      value == state && now.timeIntervalSince(createdAt) < Self.lifetime
+    }
+  }
 
   public static let empty = Session()
 
@@ -166,6 +178,7 @@ extension Session: Codable {
   private enum CodingKeys: CodingKey {
     case flash
     case gitHubAccessToken
+    case gitHubAuthState
     case user
     case userId
   }
@@ -174,6 +187,7 @@ extension Session: Codable {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encodeIfPresent(self.flash, forKey: .flash)
     try container.encodeIfPresent(gitHubAccessToken, forKey: .gitHubAccessToken)
+    try container.encodeIfPresent(gitHubAuthState, forKey: .gitHubAuthState)
     switch self.user {
     case let .some(.standard(userId)):
       try container.encode(userId, forKey: .userId)
@@ -191,6 +205,10 @@ extension Session: Codable {
     self.gitHubAccessToken = try container.decodeIfPresent(
       GitHubAccessToken.self,
       forKey: .gitHubAccessToken
+    )
+    self.gitHubAuthState = try container.decodeIfPresent(
+      GitHubAuthState.self,
+      forKey: .gitHubAuthState
     )
     self.user =
       (try? container.decode(Models.User.ID.self, forKey: .userId)).map(User.standard)

@@ -44,8 +44,8 @@ func authMiddleware(
   case .gitHubAuth(let redirect):
     return await loginResponse(redirect: redirect, conn: conn)
 
-  case .gitHubCallback(let code, let redirect):
-    return await gitHubCallbackResponse(code: code, redirect: redirect, conn)
+  case .gitHubCallback(let code, let redirect, let state):
+    return await gitHubCallbackResponse(code: code, redirect: redirect, state: state, conn)
 
   case .authLanding(let kind, let redirect):
     return await loginSignUpMiddleware(redirect: redirect, kind: kind, conn)
@@ -429,15 +429,25 @@ private func linkGitHubLanding(
 private func gitHubCallbackResponse(
   code: String?,
   redirect: String?,
+  state: UUID?,
   _ conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.currentUser) var currentUser
+  @Dependency(\.date.now) var now
   @Dependency(\.gitHub) var gitHub
 
   guard currentUser?.gitHub == nil
   else {
     return conn.redirect(to: .account()) {
       $0.flash(.warning, "You’re already logged in.")
+    }
+  }
+  guard
+    let state,
+    conn.request.session.gitHubAuthState?.isValid(state, now: now) == true
+  else {
+    return conn.redirect(to: .auth(.authLanding(kind: .login, redirect: redirect))) {
+      $0.flash(.error, "We were not able to log you in with GitHub. Please try again.")
     }
   }
   guard let code
@@ -475,7 +485,9 @@ private func loginResponse(
   conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.currentUser) var currentUser
+  @Dependency(\.date.now) var now
   @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.uuid) var uuid
   @Dependency(\.envVars.gitHub.clientId) var gitHubClientId
 
   guard currentUser?.gitHub == nil
@@ -485,18 +497,22 @@ private func loginResponse(
     }
   }
 
+  let state = uuid()
   let url = GitHubRouter().url(
     for: .authorize(
       clientId: gitHubClientId,
       redirectUri: siteRouter.url(for: .auth(.gitHubCallback(code: nil, redirect: redirect))),
-      scope: "user:email"
+      scope: "user:email",
+      state: state
     )
   )
   .absoluteString
 
-  return
-    await conn
-    .redirect(to: url)
+  return conn.redirect(to: url) {
+    $0.writeSessionCookie {
+      $0.gitHubAuthState = Session.GitHubAuthState(createdAt: now, value: state)
+    }
+  }
 }
 
 private func logoutResponse(

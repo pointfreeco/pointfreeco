@@ -65,7 +65,7 @@ public indirect enum SiteRoute: Equatable {
     case emailAuth(email: EmailAddress, redirect: String? = nil)
     case failureLanding(redirect: String?)
     case gitHubAuth(redirect: String?)
-    case gitHubCallback(code: String?, redirect: String?)
+    case gitHubCallback(code: String?, redirect: String?, state: UUID? = nil)
     case linkGitHubLanding(redirect: String? = nil)
     case logout
     case updateGitHub(redirect: String?)
@@ -883,6 +883,9 @@ private struct AuthRouter: ParserPrinter {
           }
           Optionally {
             Field("redirect")
+          }
+          Optionally {
+            Field("state") { UUID.parser() }
           }
         }
       }
