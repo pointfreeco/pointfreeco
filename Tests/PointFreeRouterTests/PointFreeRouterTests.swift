@@ -56,7 +56,7 @@ class PointFreeRouterTests: TestCase {
       """
       POST http://localhost:8080/subscribe
 
-      coupon=student-discount&paymentMethodID=pm_deadbeef&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref=cafed00d&teammate=blob.jr%40pointfree.co&teammate=blob.sr%40pointfree.com&useRegionalDiscount=true
+      coupon=student-discount&paymentMethodID=pm_deadbeef&pricing%5Bplan%5D=pro&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref=cafed00d&teammate=blob.jr%40pointfree.co&teammate=blob.sr%40pointfree.com&useRegionalDiscount=true
       """
     }
 
@@ -209,7 +209,7 @@ class PointFreeRouterTests: TestCase {
 
   @MainActor
   func testGiftsPlan() async throws {
-    let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/threeMonths")!)
+    let request = URLRequest.init(url: .init(string: "http://localhost:8080/gifts/sixMonthsPro")!)
 
     let route = SiteRoute.gifts(.plan(.sixMonthsPro))
 
