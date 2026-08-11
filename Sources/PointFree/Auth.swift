@@ -87,18 +87,16 @@ private func emailAuthResponse(
         decoding: LoginCodeEmail(loginCode: loginCode).render(),
         as: UTF8.self
       )
-      await fireAndForget {
-        _ = try await send(
-          email: Email(
-            from: "support@pointfree.co",
-            to: [loginCode.email],
-            subject: "Your Point-Free login code",
-            text: html,
-            html: html,
-            domain: mgDomain
-          )
+      _ = try await send(
+        email: Email(
+          from: "support@pointfree.co",
+          to: [loginCode.email],
+          subject: "Your Point-Free login code",
+          text: html,
+          html: html,
+          domain: mgDomain
         )
-      }
+      )
     }
     return conn.redirect(to: .auth(.codeLanding(email: email, redirect: redirect)))
   } catch {
@@ -464,13 +462,14 @@ private func gitHubCallbackResponse(
           $0.gitHubAccessToken = accessToken
         }
       }
+    } else {
+      return await gitHubAuthTokenMiddleware(
+        code: code,
+        accessToken: accessToken,
+        redirect: redirect,
+        conn
+      )
     }
-    return await gitHubAuthTokenMiddleware(
-      code: code,
-      accessToken: accessToken,
-      redirect: redirect,
-      conn
-    )
   } catch let error as OAuthError where error.error == .badVerificationCode {
     return conn.redirect(to: .auth(.gitHubAuth(redirect: redirect)))
   } catch {
