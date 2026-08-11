@@ -23,6 +23,7 @@ public struct LoginCodeView: HTML {
       .attribute("autocapitalize", "characters")
       .attribute("autocomplete", "one-time-code")
       .attribute("autofocus")
+      .attribute("id", "login-code")
       .attribute("maxlength", "6")
       .attribute("name", "code")
       .attribute("placeholder", "ABC234")
@@ -49,6 +50,17 @@ public struct LoginCodeView: HTML {
         Button(tag: input, color: .purple)
           .attribute("type", "submit")
           .attribute("value", "Log in")
+      }
+      script {
+        #"""
+        const codeInput = document.getElementById("login-code");
+        codeInput.addEventListener("input", (event) => {
+          if (event.inputType === "insertText" || event.inputType === "insertCompositionText") {
+            return;
+          }
+          if (codeInput.value.trim().length === 6) codeInput.form.requestSubmit();
+        });
+        """#
       }
     }
   }
