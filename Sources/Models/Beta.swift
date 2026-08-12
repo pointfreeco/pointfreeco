@@ -28,6 +28,19 @@ public struct Beta {
       repo: "TCA26",
       skillName: "composable-architecture-2"
     ),
+    Beta(
+      title: "LazyState",
+      blurb: """
+        A @LazyState macro that picks up where WWDC's new @State macro left off, allowing state \
+        in SwiftUI views to be initialized lazily and dynamically, using data passed in from \
+        the parent view. \
+        [Read more →](/blog/posts/222-beta-preview-lazystate)
+        """,
+      imageURL:
+        "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/b1189a85-a5ed-49bc-5b6f-5a2394b7d800/public",
+      repo: "swiftui-lazy-state",
+      skillName: "lazy-state"
+    ),
   ]
 
   public static let graduated: [Beta] = [
