@@ -462,7 +462,7 @@ private func teamOwner(currentUser: User, subscribeData: SubscribeConfirmationDa
         ]
       ),
       .img(
-        src: currentUser.gitHubAvatarUrl.absoluteString,
+        src: currentUser.gitHub?.avatarUrl.absoluteString ?? "",
         alt: "",
         attributes: [
           .class([
@@ -1111,18 +1111,22 @@ private func total(
           ],
           "Become a member"
         )
-        : .gitHubLink(
-          text: "Log in to become a member",
-          type: .black,
-          href: siteRouter.loginPath(
-            redirect: coupon.map { SiteRoute.discounts(code: $0.id, nil, plan) }
-              ?? .subscribeConfirmation(
-                lane: lane,
-                plan: plan,
-                referralCode: referrer?.referralCode,
-                useRegionalDiscount: useRegionalDiscount
+        : .a(
+          attributes: [
+            .class([Class.pf.components.button(color: .black)]),
+            .href(
+              siteRouter.loginPath(
+                redirect: coupon.map { SiteRoute.discounts(code: $0.id, nil, plan) }
+                  ?? .subscribeConfirmation(
+                    lane: lane,
+                    plan: plan,
+                    referralCode: referrer?.referralCode,
+                    useRegionalDiscount: useRegionalDiscount
+                  )
               )
-          )
+            ),
+          ],
+          "Log in to become a member"
         )
     )
   )

@@ -1,5 +1,9 @@
 import Dependencies
+import Foundation
+import Models
+import PointFreeRouter
 import StyleguideV2
+import Transcripts
 
 struct GetStartedModule: HTML {
   @Dependency(\.date.now) var now

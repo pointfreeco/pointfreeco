@@ -30,7 +30,9 @@ private func betasLandingMiddleware(
 
   var collaboratorStatuses: [String: Bool] = [:]
   if let currentUser, subscriberState.isMaxSubscriber {
-    if let gitHubUser = try? await gitHub.fetchUser(currentUser.gitHubAccessToken) {
+    if let accessToken = currentUser.gitHub?.accessToken,
+      let gitHubUser = try? await gitHub.fetchUser(accessToken)
+    {
       await withTaskGroup(of: (String, Bool).self) { group in
         for beta in Beta.all {
           group.addTask {
@@ -75,6 +77,7 @@ private func betasJoinMiddleware(
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.envVars.gitHub.betaPreviewsAccessToken) var betaPreviewsAccessToken
   @Dependency(\.gitHub) var gitHub
+  @Dependency(\.siteRouter) var siteRouter
   @Dependency(\.subscriberState) var subscriberState
 
   guard let currentUser else {
@@ -90,8 +93,15 @@ private func betasJoinMiddleware(
       $0.flash(.error, "Unknown beta.")
     }
   }
+  guard let userGitHub = currentUser.gitHub else {
+    return conn.redirect(
+      to: .auth(
+        .connectGitHubLanding(redirect: siteRouter.path(for: .betas(.landing)))
+      )
+    )
+  }
   do {
-    let gitHubUser = try await gitHub.fetchUser(currentUser.gitHubAccessToken)
+    let gitHubUser = try await gitHub.fetchUser(userGitHub.accessToken)
     _ = try await gitHub.addRepoCollaborator(
       owner: "pointfreeco",
       repo: repo,
