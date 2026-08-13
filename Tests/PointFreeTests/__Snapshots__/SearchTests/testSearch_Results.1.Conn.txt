@@ -2,7 +2,7 @@ GET http://localhost:8080/search?q=increment%20function
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 56611
+Content-Length: 56623
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -465,7 +465,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 <div class="background-kmwhZ1 background-f3Vux3">
   <div>
     <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-5nonC3 padding-zneMT1 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-      <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-Wr637">
+      <pf-vstack class="width-C8uWv align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-Wr637">
         <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
           <h2 class="background-I4CQj3 -webkit-background-clip-inoYC3 background-clip-inoYC3 color-JyKaz4 width-efcee4 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">Search
           </h2>

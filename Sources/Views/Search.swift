@@ -104,6 +104,7 @@ public struct SearchPage: HTML {
             .attribute("id", "search-results")
           }
         }
+        .inlineStyle("width", "100%")
       }
     }
     .searchHeroBackground()
