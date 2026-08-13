@@ -15,6 +15,7 @@ extension Client {
     createGift: { _, _, _, _, _, _, _, _, _ in .unfulfilled },
     createSubscription: { _, _, _, _, _ in .mock },
     deleteEnterpriseEmail: { _ in },
+    deleteOfficeHourQuestion: { _, _ in },
     deleteTeamInvite: { _ in },
     deleteTheWayAccess: { _, _ in },
     execute: { _ in throw unit },
@@ -36,6 +37,7 @@ extension Client {
     },
     fetchLivestreams: { [] },
     fetchOfficeHourByCloudflareVideoID: { _ in throw unit },
+    fetchOfficeHourQuestions: { _, _ in [] },
     fetchOfficeHours: { [] },
     fetchSubscriptionById: { id in update(.mock) { $0.id = id } },
     fetchSubscriptionByOwnerId: { userId in update(.mock) { $0.userId = userId } },
@@ -72,6 +74,7 @@ extension Client {
     removeTeammateUserIdFromSubscriptionId: { _, _ in },
     rotateEmailLoginCode: { _ in },
     sawUser: { _ in },
+    submitOfficeHourQuestion: { _, _ in throw unit },
     updateEmailSettings: { _, _ in },
     updateEpisodeProgress: { _, _, _, _ in },
     updateGift: { _, _ in .fulfilled },
@@ -80,6 +83,7 @@ extension Client {
     updateSubscriptionPlan: { _, _ in },
     updateUser: { _, _, _, _, _, _, _ in },
     upsertTheWayAccess: { $0 },
-    upsertUser: { _, _, _, _ in .mock }
+    upsertUser: { _, _, _, _ in .mock },
+    voteOfficeHourQuestion: { _, _ in }
   )
 }

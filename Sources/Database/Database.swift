@@ -52,6 +52,8 @@ public struct Client {
       _ plan: Pricing.Plan
     ) async throws -> Models.Subscription
   public var deleteEnterpriseEmail: (_ userID: User.ID) async throws -> Void
+  public var deleteOfficeHourQuestion:
+    (_ id: OfficeHourQuestion.ID, _ userID: Models.User.ID) async throws -> Void
   public var deleteTeamInvite: (_ id: TeamInvite.ID) async throws -> Void
   public var deleteTheWayAccess: (_ machine: UUID, _ whoami: String) async throws -> Void
   public var execute: (_ sql: SQLQueryString) async throws -> [SQLRow]
@@ -87,6 +89,8 @@ public struct Client {
   @DependencyEndpoint(method: "fetchOfficeHour")
   public var fetchOfficeHourByCloudflareVideoID:
     (_ cloudflareVideoID: Cloudflare.Video.ID) async throws -> OfficeHour
+  public var fetchOfficeHourQuestions:
+    (_ answered: Bool, _ userID: Models.User.ID?) async throws -> [OfficeHourQuestion]
   public var fetchOfficeHours: () async throws -> [OfficeHour]
   @DependencyEndpoint(method: "fetchSubscription")
   public var fetchSubscriptionById:
@@ -143,6 +147,8 @@ public struct Client {
     ) async throws -> Void
   public var rotateEmailLoginCode: (_ email: EmailAddress) async throws -> Void
   public var sawUser: (_ id: Models.User.ID) async throws -> Void
+  public var submitOfficeHourQuestion:
+    (_ question: String, _ userID: Models.User.ID) async throws -> OfficeHourQuestion
   public var updateEmailSettings:
     (_ newsletters: [EmailSetting.Newsletter]?, _ userID: Models.User.ID) async throws -> Void
   public var updateEpisodeProgress:
@@ -173,6 +179,8 @@ public struct Client {
       _ emailAddress: EmailAddress,
       _ date: @escaping () -> Date
     ) async throws -> Models.User
+  public var voteOfficeHourQuestion:
+    (_ questionID: OfficeHourQuestion.ID, _ userID: Models.User.ID) async throws -> Void
 
   public func fetchSubscription(user: Models.User) async throws -> Models.Subscription {
     do {

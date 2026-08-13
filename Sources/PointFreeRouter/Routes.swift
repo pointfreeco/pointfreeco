@@ -36,7 +36,7 @@ public indirect enum SiteRoute: Equatable {
   case home
   case invite(Invite)
   case live(Live)
-  case officeHours(OfficeHoursRoute = .index)
+  case officeHours(OfficeHoursRoute = .index())
   case pricingLanding
   case privacy
   case resume

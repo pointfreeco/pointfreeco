@@ -124,6 +124,25 @@ extension Client {
           """
         )
       },
+      deleteOfficeHourQuestion: { id, userID in
+        try await pool.sqlDatabase.run(
+          """
+          WITH "deleted_votes" AS (
+            DELETE FROM "office_hour_question_votes"
+            WHERE "office_hour_question_id" IN (
+              SELECT "id" FROM "office_hour_questions"
+              WHERE "id" = \(bind: id)
+              AND "user_id" = \(bind: userID)
+              AND "answered_office_hour_id" IS NULL
+            )
+          )
+          DELETE FROM "office_hour_questions"
+          WHERE "id" = \(bind: id)
+          AND "user_id" = \(bind: userID)
+          AND "answered_office_hour_id" IS NULL
+          """
+        )
+      },
       deleteTeamInvite: { id in
         try await pool.sqlDatabase.run(
           """
@@ -296,6 +315,28 @@ extension Client {
           SELECT * FROM "office_hours"
           WHERE "cloudflare_video_id" = \(bind: cloudflareVideoID)
           LIMIT 1
+          """
+        )
+      },
+      fetchOfficeHourQuestions: { answered, userID in
+        try await pool.sqlDatabase.all(
+          """
+          SELECT
+            "office_hour_questions".*,
+            (
+              SELECT COUNT(*) FROM "office_hour_question_votes"
+              WHERE "office_hour_question_votes"."office_hour_question_id"
+                = "office_hour_questions"."id"
+            ) AS "vote_count",
+            EXISTS(
+              SELECT 1 FROM "office_hour_question_votes"
+              WHERE "office_hour_question_votes"."office_hour_question_id"
+                = "office_hour_questions"."id"
+              AND "office_hour_question_votes"."user_id" = \(bind: userID)
+            ) AS "has_voted"
+          FROM "office_hour_questions"
+          WHERE \(bind: answered) = ("office_hour_questions"."answered_office_hour_id" IS NOT NULL)
+          ORDER BY "vote_count" DESC, "created_at" ASC
           """
         )
       },
@@ -1106,6 +1147,36 @@ extension Client {
           )
           """
         )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "office_hour_questions" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "answered_at_seconds" integer,
+            "answered_office_hour_id" uuid REFERENCES "office_hours"("id"),
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "question" character varying NOT NULL,
+            "user_id" uuid REFERENCES "users"("id") NOT NULL
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "office_hour_question_votes" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "office_hour_question_id" uuid
+              REFERENCES "office_hour_questions"("id") NOT NULL,
+            "user_id" uuid REFERENCES "users"("id") NOT NULL
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS
+          "index_office_hour_question_votes_on_question_id_user_id"
+          ON "office_hour_question_votes" ("office_hour_question_id", "user_id")
+          """
+        )
       },
       redeemEmailLoginCode: { email, code in
         try await pool.sqlDatabase.first(
@@ -1160,6 +1231,15 @@ extension Client {
           UPDATE "users"
           SET "updated_at" = NOW()
           WHERE "id" = \(bind: userId)
+          """
+        )
+      },
+      submitOfficeHourQuestion: { question, userID in
+        try await pool.sqlDatabase.first(
+          """
+          INSERT INTO "office_hour_questions" ("question", "user_id")
+          VALUES (\(bind: question), \(bind: userID))
+          RETURNING *, 0 AS "vote_count", FALSE AS "has_voted"
           """
         )
       },
@@ -1286,6 +1366,18 @@ extension Client {
           ON CONFLICT ("github_user_id") DO UPDATE
           SET "github_access_token" = $3, "name" = $4
           RETURNING *
+          """
+        )
+      },
+      voteOfficeHourQuestion: { questionID, userID in
+        try await pool.sqlDatabase.run(
+          """
+          INSERT INTO "office_hour_question_votes" ("office_hour_question_id", "user_id")
+          SELECT "id", \(bind: userID)
+          FROM "office_hour_questions"
+          WHERE "id" = \(bind: questionID)
+          AND "user_id" != \(bind: userID)
+          ON CONFLICT DO NOTHING
           """
         )
       }

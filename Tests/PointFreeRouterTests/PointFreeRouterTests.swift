@@ -341,6 +341,66 @@ class PointFreeRouterTests: TestCase {
   }
 
   @MainActor
+  func testOfficeHoursQATab() async throws {
+    let request = URLRequest(url: .init(string: "http://localhost:8080/office-hours/qa")!)
+    let route = SiteRoute.officeHours(.index(tab: .qa))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursSubmitQuestion() async throws {
+    var request = URLRequest(
+      url: .init(string: "http://localhost:8080/office-hours/questions")!
+    )
+    request.httpMethod = "POST"
+    request.httpBody = Data("question=How%20do%20I%20test%20async%20code%3F".utf8)
+
+    let route = SiteRoute.officeHours(.submitQuestion(question: "How do I test async code?"))
+
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursDeleteQuestion() async throws {
+    var request = URLRequest(
+      url: .init(
+        string:
+          "http://localhost:8080/office-hours/questions/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF/delete"
+      )!
+    )
+    request.httpMethod = "POST"
+
+    let route = SiteRoute.officeHours(
+      .deleteQuestion(
+        id: .init(rawValue: UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!)
+      )
+    )
+
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursVoteQuestion() async throws {
+    var request = URLRequest(
+      url: .init(
+        string:
+          "http://localhost:8080/office-hours/questions/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF/vote"
+      )!
+    )
+    request.httpMethod = "POST"
+
+    let route = SiteRoute.officeHours(
+      .voteQuestion(id: .init(rawValue: UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
+    )
+
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
   func testCollectionEpisodeProgress() async throws {
     var request = URLRequest(
       url: URL(string: "http://localhost:8080/collections/tca/basics/1/progress?percent=50")!
