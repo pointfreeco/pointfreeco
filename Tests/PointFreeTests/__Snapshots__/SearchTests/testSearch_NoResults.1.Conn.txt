@@ -2,7 +2,7 @@ GET http://localhost:8080/search?q=uikot
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 53093
+Content-Length: 53632
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -557,6 +557,19 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   for (const select of form.querySelectorAll("select")) {
     select.addEventListener("change", updateIcons);
   }
+  results.addEventListener("click", (event) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = event.target.closest('a[href^="/search"]');
+    if (!link || !results.contains(link)) return;
+    event.preventDefault();
+    const params = new URL(link.href, location.origin).searchParams;
+    input.value = params.get("q") || "";
+    for (const select of form.querySelectorAll("select")) {
+      select.value = params.get(select.name) || "";
+    }
+    updateIcons();
+    load(true);
+  });
   window.addEventListener("popstate", () => {
     const params = new URLSearchParams(location.search);
     input.value = params.get("q") || "";

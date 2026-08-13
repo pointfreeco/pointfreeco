@@ -212,6 +212,19 @@ private struct SearchScript: HTML {
         for (const select of form.querySelectorAll("select")) {
           select.addEventListener("change", updateIcons);
         }
+        results.addEventListener("click", (event) => {
+          if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          const link = event.target.closest('a[href^="/search"]');
+          if (!link || !results.contains(link)) return;
+          event.preventDefault();
+          const params = new URL(link.href, location.origin).searchParams;
+          input.value = params.get("q") || "";
+          for (const select of form.querySelectorAll("select")) {
+            select.value = params.get(select.name) || "";
+          }
+          updateIcons();
+          load(true);
+        });
         window.addEventListener("popstate", () => {
           const params = new URLSearchParams(location.search);
           input.value = params.get("q") || "";
