@@ -126,39 +126,16 @@ private struct Sidebar: HTML {
   let query: String
   let access: SiteRoute.SearchAccess?
   let sort: SiteRoute.SearchSort?
-  @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    VStack(spacing: 1.5) {
+    VStack(spacing: 1) {
+      div {
+        HTMLText("Refine your results")
+      }
+      .color(.black.dark(.white))
+      .inlineStyle("font-weight", "700")
+
       SearchForm(query: query, access: access, sort: sort)
-
-      FilterGroup(
-        title: "Sort by",
-        options: [SiteRoute.SearchSort?.none, .newest].map { option in
-          (
-            label: option == nil ? "Relevance" : "Newest",
-            href: siteRouter.path(
-              for: .search(query: query.isEmpty ? nil : query, access: access, sort: option)
-            ),
-            isActive: sort == option
-          )
-        }
-      )
-
-      FilterGroup(
-        title: "Access",
-        options: [SiteRoute.SearchAccess?.none, .free, .subscriberOnly].map { option in
-          (
-            label: option == nil
-              ? "All videos"
-              : option == .free ? "Free" : "Members only",
-            href: siteRouter.path(
-              for: .search(query: query.isEmpty ? nil : query, access: option, sort: sort)
-            ),
-            isActive: access == option
-          )
-        }
-      )
     }
   }
 }
@@ -263,56 +240,109 @@ private struct SearchForm: HTML {
 
   var body: some HTML {
     form {
-      HStack(alignment: .center, spacing: 0.5) {
+      input()
+        .attribute("type", "search")
+        .attribute("name", "q")
+        .attribute("value", query.isEmpty ? nil : query)
+        .attribute("placeholder", "Search for topics")
+        .attribute("autofocus")
+        .fontStyle(.body(.regular))
+        .color(.black.dark(.white))
+        .backgroundColor(.white.dark(.black))
+        .inlineStyle("background-image", "url(\"\(magnifyingGlassDataURI)\")")
+        .inlineStyle("background-position", "0.75rem center")
+        .inlineStyle("background-repeat", "no-repeat")
+        .inlineStyle("background-size", "1rem")
+        .inlineStyle("border", "1px solid #d8d8d8")
+        .inlineStyle("border", "1px solid #454545", media: .dark)
+        .inlineStyle("border-radius", "0.5rem")
+        .inlineStyle("outline-color", "#974dff")
+        .inlineStyle("padding", "0.75rem 1rem 0.75rem 2.5rem")
+        .inlineStyle("width", "100%")
+      VStack(spacing: 0.5) {
+        FilterRow(
+          iconDataURI: sort == .newest ? clockGlyphDataURI : relevanceGlyphDataURI,
+          label: "Sort by",
+          name: "sort",
+          options: [
+            (value: nil, label: "Relevance"),
+            (value: SiteRoute.SearchSort.newest.rawValue, label: "Newest"),
+          ],
+          selectedValue: sort?.rawValue
+        )
+        FilterRow(
+          iconDataURI: access == nil
+            ? videoGlyphDataURI
+            : access == .free ? unlockedGlyphDataURI : lockGlyphDataURI,
+          label: "Access",
+          name: "access",
+          options: [
+            (value: nil, label: "All videos"),
+            (value: SiteRoute.SearchAccess.free.rawValue, label: "Free"),
+            (value: SiteRoute.SearchAccess.subscriberOnly.rawValue, label: "Members only"),
+          ],
+          selectedValue: access?.rawValue
+        )
+
         input()
-          .attribute("type", "search")
-          .attribute("name", "q")
-          .attribute("value", query.isEmpty ? nil : query)
-          .attribute("placeholder", "Search for topics")
-          .attribute("autofocus")
+          .attribute("type", "submit")
+          .attribute("value", "Search")
           .fontStyle(.body(.regular))
-          .color(.black.dark(.white))
-          .backgroundColor(.white.dark(.black))
-          .inlineStyle("background-image", "url(\"\(magnifyingGlassDataURI)\")")
-          .inlineStyle("background-position", "0.75rem center")
-          .inlineStyle("background-repeat", "no-repeat")
-          .inlineStyle("background-size", "1rem")
-          .inlineStyle("border", "1px solid #d8d8d8")
-          .inlineStyle("border", "1px solid #454545", media: .dark)
+          .color(.white)
+          .backgroundColor(.purple)
+          .inlineStyle("border", "none")
           .inlineStyle("border-radius", "0.5rem")
-          .inlineStyle("min-width", "0")
-          .inlineStyle("outline-color", "#974dff")
-          .inlineStyle("padding", "0.75rem 1rem 0.75rem 2.5rem")
-          .flexItem(grow: "1", shrink: "1", basis: "auto")
-        button {
-          "→"
-        }
-        .attribute("type", "submit")
-        .attribute("aria-label", "Search")
-        .color(.purple)
-        .inlineStyle("background", "transparent")
-        .inlineStyle("border", "none")
-        .inlineStyle("cursor", "pointer")
-        .inlineStyle("font-size", "1.5rem")
-        .inlineStyle("line-height", "1")
-        .inlineStyle("padding", "0.25rem")
-        .inlineStyle("transform", "translateX(0.25rem)", pseudo: .hover)
-        .inlineStyle("transition", "transform 0.15s")
+          .inlineStyle("box-shadow", "inset 0 0 0 20rem rgba(0,0,0,0.1)", pseudo: .hover)
+          .inlineStyle("cursor", "pointer")
+          .inlineStyle("font-weight", "500")
+          .inlineStyle("padding", "0.75rem 1rem")
+          .inlineStyle("width", "100%")
       }
-      if let access {
-        input()
-          .attribute("type", "hidden")
-          .attribute("name", "access")
-          .attribute("value", access.rawValue)
-      }
-      if let sort {
-        input()
-          .attribute("type", "hidden")
-          .attribute("name", "sort")
-          .attribute("value", sort.rawValue)
-      }
+      .inlineStyle("margin-top", "0.5rem")
     }
     .attribute("action", siteRouter.path(for: .search()))
+  }
+}
+
+private struct FilterRow: HTML {
+  let iconDataURI: String
+  let label: String
+  let name: String
+  let options: [(value: String?, label: String)]
+  let selectedValue: String?
+
+  private var optionsList: some HTML {
+    HTMLForEach(options) { option in
+      tag("option") {
+        HTMLText(option.label)
+      }
+      .attribute("value", option.value ?? "")
+      .attribute("selected", option.value == selectedValue ? "" : nil)
+    }
+  }
+
+  var body: some HTML {
+    select {
+      optionsList
+    }
+    .attribute("name", name)
+    .attribute("aria-label", label)
+    .attribute("onchange", "this.form.requestSubmit()")
+    .fontStyle(.body(.regular))
+    .color(.black.dark(.white))
+    .backgroundColor(.white.dark(.black))
+    .inlineStyle("appearance", "none")
+    .inlineStyle("-webkit-appearance", "none")
+    .inlineStyle("background-image", "url(\"\(iconDataURI)\"), url(\"\(chevronGlyphDataURI)\")")
+    .inlineStyle("background-position", "0.75rem center, right 0.75rem center")
+    .inlineStyle("background-repeat", "no-repeat")
+    .inlineStyle("background-size", "1rem")
+    .inlineStyle("border", "1px solid #d8d8d8")
+    .inlineStyle("border", "1px solid #454545", media: .dark)
+    .inlineStyle("border-radius", "0.5rem")
+    .inlineStyle("cursor", "pointer")
+    .inlineStyle("padding", "0.75rem 2.5rem")
+    .inlineStyle("width", "100%")
   }
 }
 
@@ -322,34 +352,45 @@ private let magnifyingGlassDataURI =
   + " stroke='%23888888' stroke-width='2' stroke-linecap='round'%3E"
   + "%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E"
 
-private struct FilterGroup: HTML {
-  let title: String
-  let options: [(label: String, href: String, isActive: Bool)]
+private let relevanceGlyphDataURI =
+  "data:image/svg+xml,"
+  + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'"
+  + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+  + "%3Ccircle cx='12' cy='12' r='9'/%3E%3Ccircle cx='12' cy='12' r='4.5'/%3E"
+  + "%3Ccircle cx='12' cy='12' r='0.5'/%3E%3C/svg%3E"
 
-  var body: some HTML {
-    VStack(spacing: 0.5) {
-      div {
-        HTMLText(title)
-      }
-      .color(.black.dark(.white))
-      .fontStyle(.body(.small))
-      .inlineStyle("font-weight", "600")
-      .inlineStyle("letter-spacing", "0.05em")
-      .inlineStyle("text-transform", "uppercase")
+private let clockGlyphDataURI =
+  "data:image/svg+xml,"
+  + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'"
+  + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+  + "%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E"
 
-      VStack(spacing: 0.25) {
-        HTMLForEach(options) { option in
-          Link(href: option.href) {
-            HTMLText(option.label)
-          }
-          .linkColor(option.isActive ? .purple : .black.dark(.white))
-          .fontStyle(.body(.small))
-          .inlineStyle("font-weight", option.isActive ? "600" : nil)
-        }
-      }
-    }
-  }
-}
+private let videoGlyphDataURI =
+  "data:image/svg+xml,"
+  + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'"
+  + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+  + "%3Cpath d='m22 8-6 4 6 4V8Z'/%3E"
+  + "%3Crect x='2' y='6' width='14' height='12' rx='2'/%3E%3C/svg%3E"
+
+private let unlockedGlyphDataURI =
+  "data:image/svg+xml,"
+  + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'"
+  + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+  + "%3Crect x='3' y='11' width='18' height='11' rx='2'/%3E"
+  + "%3Cpath d='M7 11V7a5 5 0 0 1 9.9-1'/%3E%3C/svg%3E"
+
+private let lockGlyphDataURI =
+  "data:image/svg+xml,"
+  + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'"
+  + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+  + "%3Crect x='3' y='11' width='18' height='11' rx='2'/%3E"
+  + "%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E"
+
+private let chevronGlyphDataURI =
+  "data:image/svg+xml,"
+  + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'"
+  + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+  + "%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"
 
 private struct ResultView: HTML {
   let result: SearchPage.Result

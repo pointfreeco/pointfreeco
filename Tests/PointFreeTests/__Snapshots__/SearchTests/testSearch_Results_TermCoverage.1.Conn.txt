@@ -1,8 +1,8 @@
-GET http://localhost:8080/search?q=uikot
+GET http://localhost:8080/search?q=SQL%20glitch
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 49233
+Content-Length: 48782
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -14,7 +14,7 @@ X-XSS-Protection: 1; mode=block
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Search: uikot
+    <title>Search: SQL glitch
     </title>
     <meta charset="UTF-8">
     <meta name="theme-color" content="#121212">
@@ -89,9 +89,9 @@ body, html {
     <link rel="mask-icon" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/safari-pinned-tab.svg">
     <link href="http://localhost:8080/feed/episodes.xml" rel="alternate" title="Point-Free Videos" type="application/atom+xml">
     <link href="http://localhost:8080/blog/feed/atom.xml" rel="alternate" title="Point-Free Blog" type="application/atom+xml">
-    <meta name="title" content="Search: uikot">
-    <meta property="og:title" content="Search: uikot">
-    <meta name="twitter:title" content="Search: uikot">
+    <meta name="title" content="Search: SQL glitch">
+    <meta property="og:title" content="Search: SQL glitch">
+    <meta name="twitter:title" content="Search: SQL glitch">
     <meta name="description" content="Point-Free is a hub for advanced Swift programming.">
     <meta property="og:description" content="Point-Free is a hub for advanced Swift programming.">
     <meta name="twitter:description" content="Point-Free is a hub for advanced Swift programming.">
@@ -100,8 +100,8 @@ body, html {
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@pointfreeco">
-    <meta property="og:url" content="http://localhost:8080/search?q=uikot">
-    <meta name="twitter:url" content="http://localhost:8080/search?q=uikot"><script src="https://plausible.io/js/script.js" defer data-domain="pointfree.co"></script>
+    <meta property="og:url" content="http://localhost:8080/search?q=SQL%20glitch">
+    <meta name="twitter:url" content="http://localhost:8080/search?q=SQL%20glitch"><script src="https://plausible.io/js/script.js" defer data-domain="pointfree.co"></script>
     <style>
 .width-C8uWv{width:100%}
 .z-index-yn1UK1{z-index:9999}
@@ -267,16 +267,19 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .background-image-itpFC3{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m22 8-6 4 6 4V8Z'/%3E%3Crect x='2' y='6' width='14' height='12' rx='2'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")}
 .padding-sHJvF1{padding:0.75rem 1rem}
 .row-gap-QgYLk2{row-gap:2.0rem}
+.font-size-Xin5E2{font-size:1.5rem}
+.color-T7UxR2:link{color:#121212}
+.color-IVYQy2:visited{color:#121212}
+.margin-left-NKv2f3{margin-left:0.5rem}
+.row-gap-FxsCt1{row-gap:0.25rem}
 .color-OpZD03{color:#666666}
 .line-height-Xin5E2{line-height:1.5rem}
-.font-weight-uXksW1{font-weight:600}
-.letter-spacing-A5R421{letter-spacing:0.05em}
-.text-transform-RqT8X1{text-transform:uppercase}
-.column-gap-NKv2f3{column-gap:0.5rem}
+.background-EXtgH3{background:color-mix(in oklab, #974dff 20%, transparent)}
+.border-radius-FxsCt1{border-radius:0.25rem}
+.color-trEDH1{color:inherit}
 .background-color-K2J0r1{background-color:#121212}
 .font-size-yLOVS3{font-size:1.25rem}
 .line-height-B6FIc2{line-height:1.45}
-.font-size-Xin5E2{font-size:1.5rem}
 .color-H59Xg3:link{color:#79f2b0}
 .color-tgLLb3:visited{color:#79f2b0}
 .color-ov8tN1{color:#79f2b0}
@@ -285,6 +288,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .font-size-xlo1p4{font-size:0.75rem}
 .letter-spacing-fGWfX2{letter-spacing:0.54pt}
 .line-height-9Xzre{line-height:1.25}
+.text-transform-RqT8X1{text-transform:uppercase}
 @media only screen and (max-width: 831px){
   .position-0RTpx2{position:sticky}
   .top-dcqqP{top:0}
@@ -332,6 +336,9 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   .color-GOHNR{color:#fafafa}
   .color-wVkSF3{color:#fff}
   .border-YpuU43{border:1px solid #454545}
+  .color-Cn4Oi1{color:#666666}
+  .color-3tgnX1:link{color:#fff}
+  .color-fIiIX2:visited{color:#fff}
   .color-5uscm3{color:#a8a8a8}
 }
 @media only screen and (max-width: 940px){
@@ -386,9 +393,9 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
       </li>
     </ul>
     <ul class="display-mScdO2 padding-left-E4tBw4 list-style-type-Wl0y44">
-      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/auth?kind=login&redirect=/search?q%3Duikot" class="font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Login</a>
+      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/auth?kind=login&redirect=/search?q%3DSQL%2520glitch" class="font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Login</a>
       </li>
-      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/auth?kind=signUp&redirect=/search?q%3Duikot" class="font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Sign up</a>
+      <li class="display-mFpu24 padding-left-IOMPq3"><a href="/auth?kind=signUp&redirect=/search?q%3DSQL%2520glitch" class="font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg">Sign up</a>
       </li>
     </ul><input class="display-Wl0y44" id="menu-checkbox" type="checkbox"><label class="cursor-xmR5l display-Nvbu41 cursor-xmR5l user-select-Wl0y44" id="menu-icon" for="menu-checkbox"><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-SUDJi1 top-xEdC7 transform-0hcgW2"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 transform-kZtH24 background-WytRx3"></span><span class="display-ix08W2 border-radius-Oi9xr3 transition-BVnrT position-Pjz1G2 background-4kuW21 height-BOHcc4 width-t6pNK3 top-YwIIn top-i3LWY2 transform-BHskb"></span></label>
     <ul class="margin-FBkWQ3 display-Wl0y44 display-sAbis3 flex-grow-tzL8I2 flex-shrink-tzL8I2 flex-basis-C8uWv padding-left-E4tBw4 list-style-type-Wl0y44 color-nbn0i3">
@@ -432,9 +439,9 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
         <pf-hstack class="align-items-Dq4Oc4 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-FxsCt1">Gifts
         </pf-hstack></a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/auth?kind=login&redirect=/search?q%3Duikot">Login</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-C4SO14 color-d8fIz1 color-cemJK2 border-8Hnfa1 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/auth?kind=login&redirect=/search?q%3DSQL%2520glitch">Login</a>
       </li>
-      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/auth?kind=signUp&redirect=/search?q%3Duikot">Sign up</a>
+      <li class="padding-top-Xin5E2"><a class="display-ix08W2 text-align-CdPBO2 font-size-RTPM71 color-QZ6Yg3 color-rNSFg1 color-nbn0i3 background-color-cemJK2 border-i8QWz2 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 text-decoration-Wl0y44 text-decoration-Q5Er64 white-space-RLKFg3 padding-inc4S2 transition-DjHPg" href="/auth?kind=signUp&redirect=/search?q%3DSQL%2520glitch">Sign up</a>
       </li>
     </ul>
   </div>
@@ -457,7 +464,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
       <pf-vstack class="position-rSYDC top-t5q1l4 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
         <div class="font-weight-SywJI1 color-K2J0r1 color-wVkSF3">Refine your results
         </div>
-        <form action="/search"><input class="background-image-OsXMz3 background-position-EXrME1 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 outline-color-cemJK2 padding-0HTUZ2 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" type="search" name="q" value="uikot" placeholder="Search for topics" autofocus>
+        <form action="/search"><input class="background-image-OsXMz3 background-position-EXrME1 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 outline-color-cemJK2 padding-0HTUZ2 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" type="search" name="q" value="SQL glitch" placeholder="Search for topics" autofocus>
           <pf-vstack class="margin-top-NKv2f3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><select class="appearance-Wl0y44 -webkit-appearance-Wl0y44 background-image-Rd6GH3 background-position-s9o6M2 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 cursor-xmR5l padding-IpiAj3 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" name="sort" aria-label="Sort by" onchange="this.form.requestSubmit()">
             <option value selected>Relevance
             </option>
@@ -473,19 +480,33 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
         </form>
       </pf-vstack>
       <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-QgYLk2">
-        <p class="color-OpZD03 color-5uscm3 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2">We didn’t find anything matching “uikot”. Try another search.
-        </p>
-        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-          <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Related topics
+        <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">1 video matches “SQL glitch”
+        </div>
+        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+          <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Video 1 • Jun 20, 2017
           </div>
-          <div class="display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 row-gap-NKv2f3 column-gap-NKv2f3"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Modern%20UIKit">Modern UIKit</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=UIKit%20navigation">UIKit navigation</a>
-          </div>
-        </pf-vstack>
-        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-          <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Try one of these
-          </div>
-          <div class="display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 row-gap-NKv2f3 column-gap-NKv2f3"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=algebraic%20data%20types">algebraic data types</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=shared%20state">shared state</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=SwiftUI">SwiftUI</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Android">Android</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Combine">Combine</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=dependencies">dependencies</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=CloudKit">CloudKit</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=case%20paths">case paths</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=side%20effects">side effects</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=animations">animations</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Codable">Codable</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=performance">performance</a>
-          </div>
+          <h4 class="font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B margin-FBkWQ3"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/episodes/ep1-type-safe-html-in-swift">Type-Safe HTML in Swift</a>
+          </h4>
+          <pf-vstack class="margin-left-NKv2f3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FxsCt1"><a class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/ep1-type-safe-html-in-swift#t60">SQL section 1 (1:00)</a>
+            <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2"><mark class="background-EXtgH3 border-radius-FxsCt1 color-trEDH1">SQL</mark> statement number 1
+            </p>
+          </pf-vstack>
+          <pf-vstack class="margin-left-NKv2f3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FxsCt1"><a class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/ep1-type-safe-html-in-swift#t120">SQL section 2 (2:00)</a>
+            <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2"><mark class="background-EXtgH3 border-radius-FxsCt1 color-trEDH1">SQL</mark> statement number 2
+            </p>
+          </pf-vstack>
+          <pf-vstack class="margin-left-NKv2f3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FxsCt1"><a class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/ep1-type-safe-html-in-swift#t180">SQL section 3 (3:00)</a>
+            <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2"><mark class="background-EXtgH3 border-radius-FxsCt1 color-trEDH1">SQL</mark> statement number 3
+            </p>
+          </pf-vstack>
+          <pf-vstack class="margin-left-NKv2f3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FxsCt1"><a class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/ep1-type-safe-html-in-swift#t240">SQL section 4 (4:00)</a>
+            <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2"><mark class="background-EXtgH3 border-radius-FxsCt1 color-trEDH1">SQL</mark> statement number 4
+            </p>
+          </pf-vstack>
+          <pf-vstack class="margin-left-NKv2f3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FxsCt1"><a class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/ep1-type-safe-html-in-swift#t1200">Fixing the glitch (20:00)</a>
+            <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2">And that fixes the <mark class="background-EXtgH3 border-radius-FxsCt1 color-trEDH1">glitch</mark> in the demo.
+            </p>
+          </pf-vstack>
         </pf-vstack>
       </pf-vstack>
     </pf-vgrid>

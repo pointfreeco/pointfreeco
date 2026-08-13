@@ -2,7 +2,7 @@ GET http://localhost:8080/search?q=increment%20function
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 51013
+Content-Length: 51096
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -251,34 +251,30 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .justify-content-n56cj2{justify-content:flex-start}
 .align-items-0Zubr3{align-items:baseline}
 .align-items-cQlZY2{align-items:start}
-.row-gap-Xin5E2{row-gap:1.5rem}
-.column-gap-NKv2f3{column-gap:0.5rem}
-.flex-basis-u7yQf2{flex-basis:auto}
 .background-image-OsXMz3{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E")}
 .background-position-EXrME1{background-position:0.75rem center}
 .background-repeat-1dIl11{background-repeat:no-repeat}
 .background-size-dnNPN1{background-size:1rem}
 .border-jpHFG3{border:1px solid #d8d8d8}
-.min-width-FBkWQ3{min-width:0}
 .outline-color-cemJK2{outline-color:#974dff}
 .padding-0HTUZ2{padding:0.75rem 1rem 0.75rem 2.5rem}
-.font-size-Xin5E2{font-size:1.5rem}
-.line-height-tzL8I2{line-height:1}
-.padding-FxsCt1{padding:0.25rem}
-.transform-8v2sn3:hover{transform:translateX(0.25rem)}
-.transition-UR30V3{transition:transform 0.15s}
+.margin-top-NKv2f3{margin-top:0.5rem}
 .row-gap-NKv2f3{row-gap:0.5rem}
-.font-weight-uXksW1{font-weight:600}
-.letter-spacing-A5R421{letter-spacing:0.05em}
-.text-transform-RqT8X1{text-transform:uppercase}
-.row-gap-FxsCt1{row-gap:0.25rem}
+.-webkit-appearance-Wl0y44{-webkit-appearance:none}
+.background-image-Rd6GH3{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Ccircle cx='12' cy='12' r='4.5'/%3E%3Ccircle cx='12' cy='12' r='0.5'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")}
+.background-position-s9o6M2{background-position:0.75rem center, right 0.75rem center}
+.padding-IpiAj3{padding:0.75rem 2.5rem}
+.background-image-itpFC3{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m22 8-6 4 6 4V8Z'/%3E%3Crect x='2' y='6' width='14' height='12' rx='2'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")}
+.padding-sHJvF1{padding:0.75rem 1rem}
+.row-gap-QgYLk2{row-gap:2.0rem}
+.font-size-Xin5E2{font-size:1.5rem}
 .color-T7UxR2:link{color:#121212}
 .color-IVYQy2:visited{color:#121212}
-.row-gap-QgYLk2{row-gap:2.0rem}
 .background-EXtgH3{background:color-mix(in oklab, #974dff 20%, transparent)}
 .border-radius-FxsCt1{border-radius:0.25rem}
 .color-trEDH1{color:inherit}
 .margin-left-NKv2f3{margin-left:0.5rem}
+.row-gap-FxsCt1{row-gap:0.25rem}
 .color-OpZD03{color:#666666}
 .line-height-Xin5E2{line-height:1.5rem}
 .background-LsVpq4{background:color-mix(in oklab, currentColor 6%, transparent)}
@@ -300,6 +296,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .font-size-xlo1p4{font-size:0.75rem}
 .letter-spacing-fGWfX2{letter-spacing:0.54pt}
 .line-height-9Xzre{line-height:1.25}
+.text-transform-RqT8X1{text-transform:uppercase}
 @media only screen and (max-width: 831px){
   .position-0RTpx2{position:sticky}
   .top-dcqqP{top:0}
@@ -345,11 +342,11 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   .border-top-MR1dZ1{border-top:1px solid #555555}
   .background-color-dMv2U1{background-color:#121212}
   .color-GOHNR{color:#fafafa}
-  .border-YpuU43{border:1px solid #454545}
   .color-wVkSF3{color:#fff}
+  .border-YpuU43{border:1px solid #454545}
+  .color-Cn4Oi1{color:#666666}
   .color-3tgnX1:link{color:#fff}
   .color-fIiIX2:visited{color:#fff}
-  .color-Cn4Oi1{color:#666666}
   .color-5uscm3{color:#a8a8a8}
 }
 @media only screen and (max-width: 940px){
@@ -472,23 +469,23 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 <div class="background-color-nbn0i3 background-color-dMv2U1">
   <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
     <pf-vgrid class="align-items-cQlZY2 width-C8uWv column-gap-1k9GW3 display-Vv9EA3 grid-template-columns-RehC04 row-gap-bS1Ay3 column-gap-23FXG2 display-jdJkm4 grid-template-columns-Pyba93 row-gap-6BZZO1">
-      <pf-vstack class="position-rSYDC top-t5q1l4 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-Xin5E2">
-        <form action="/search">
-          <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-NKv2f3"><input class="flex-grow-tzL8I2 flex-shrink-tzL8I2 flex-basis-u7yQf2 background-image-OsXMz3 background-position-EXrME1 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 min-width-FBkWQ3 outline-color-cemJK2 padding-0HTUZ2 background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" type="search" name="q" value="increment function" placeholder="Search for topics" autofocus><button class="background-JyKaz4 border-Wl0y44 cursor-xmR5l font-size-Xin5E2 line-height-tzL8I2 padding-FxsCt1 transform-8v2sn3 transition-UR30V3 color-cemJK2" type="submit" aria-label="Search">→</button>
-          </pf-hstack>
+      <pf-vstack class="position-rSYDC top-t5q1l4 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+        <div class="font-weight-SywJI1 color-K2J0r1 color-wVkSF3">Refine your results
+        </div>
+        <form action="/search"><input class="background-image-OsXMz3 background-position-EXrME1 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 outline-color-cemJK2 padding-0HTUZ2 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" type="search" name="q" value="increment function" placeholder="Search for topics" autofocus>
+          <pf-vstack class="margin-top-NKv2f3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><select class="appearance-Wl0y44 -webkit-appearance-Wl0y44 background-image-Rd6GH3 background-position-s9o6M2 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 cursor-xmR5l padding-IpiAj3 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" name="sort" aria-label="Sort by" onchange="this.form.requestSubmit()">
+            <option value selected>Relevance
+            </option>
+            <option value="newest">Newest
+            </option></select><select class="appearance-Wl0y44 -webkit-appearance-Wl0y44 background-image-itpFC3 background-position-s9o6M2 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 cursor-xmR5l padding-IpiAj3 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" name="access" aria-label="Access" onchange="this.form.requestSubmit()">
+            <option value selected>All videos
+            </option>
+            <option value="free">Free
+            </option>
+            <option value="subscriber-only">Members only
+            </option></select><input class="border-Wl0y44 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 padding-sHJvF1 width-C8uWv background-color-cemJK2 color-nbn0i3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" type="submit" value="Search">
+          </pf-vstack>
         </form>
-        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-          <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Sort by
-          </div>
-          <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FxsCt1"><a class="font-weight-uXksW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=increment%20function">Relevance</a><a class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/search?q=increment%20function&sort=newest">Newest</a>
-          </pf-vstack>
-        </pf-vstack>
-        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
-          <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Access
-          </div>
-          <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FxsCt1"><a class="font-weight-uXksW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=increment%20function">All videos</a><a class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/search?q=increment%20function&access=free">Free</a><a class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/search?q=increment%20function&access=subscriber-only">Members only</a>
-          </pf-vstack>
-        </pf-vstack>
       </pf-vstack>
       <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-QgYLk2">
         <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">2 videos match “increment function”

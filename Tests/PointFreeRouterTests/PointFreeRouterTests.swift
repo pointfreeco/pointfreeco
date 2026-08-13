@@ -73,6 +73,13 @@ class PointFreeRouterTests: TestCase {
       try siteRouter.match(request: URLRequest(url: URL(string: "/search?q=get+set+binding")!))
     )
 
+    XCTAssertEqual(
+      SiteRoute.search(query: "generics"),
+      try siteRouter.match(
+        request: URLRequest(url: URL(string: "/search?q=generics&access=&sort=")!)
+      )
+    )
+
     let filteredRoute = SiteRoute.search(query: "generics", access: .free, sort: .newest)
     let filteredRequest = try siteRouter.request(for: filteredRoute)
     XCTAssertEqual("q=generics&access=free&sort=newest", filteredRequest.url?.query)

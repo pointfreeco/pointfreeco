@@ -36,6 +36,38 @@ class SearchTests: TestCase {
   }
 
   @MainActor
+  func testSearch_Results_TermCoverage() async throws {
+    try await withDependencies {
+      $0.database.searchEpisodes = { _ in
+        (1...6).map { index in
+          EpisodeSearchResult(
+            episodeSequence: 1,
+            headline: "⟪SQL⟫ statement number \(index)",
+            kind: .prose,
+            matchedTerms: ["'sql'"],
+            sectionTitle: "SQL section \(index)",
+            timestamp: index * 60
+          )
+        } + [
+          EpisodeSearchResult(
+            episodeSequence: 1,
+            headline: "And that fixes the ⟪glitch⟫ in the demo.",
+            kind: .prose,
+            matchedTerms: ["'glitch'"],
+            sectionTitle: "Fixing the glitch",
+            timestamp: 1_200
+          )
+        ]
+      }
+      $0.episodes = { [.free, .subscriberOnly] }
+    } operation: {
+      let conn = connection(from: request(to: .search(query: "SQL glitch")))
+
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
+  @MainActor
   func testSearch_Results_FreeFilter() async throws {
     try await withDependencies {
       $0.database.searchEpisodes = { _ in
