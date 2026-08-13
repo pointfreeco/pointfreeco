@@ -12,7 +12,7 @@ func refreshEpisodeSearchIndex() async {
 
   await withErrorReporting {
     try await database.refreshEpisodeSearchIndex(
-      Episode.all.flatMap { $0.searchDocuments }
+      Episode.all.flatMap(\.searchDocuments)
     )
   }
 }
