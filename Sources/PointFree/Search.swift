@@ -34,14 +34,9 @@ func searchMiddleware(
     struct SectionKey: Hashable {
       let episodeSequence: Episode.Sequence
       let sectionTitle: String?
-      let timestamp: Int?
     }
     func key(_ row: EpisodeSearchResult) -> SectionKey {
-      SectionKey(
-        episodeSequence: row.episodeSequence,
-        sectionTitle: row.sectionTitle,
-        timestamp: row.timestamp
-      )
+      SectionKey(episodeSequence: row.episodeSequence, sectionTitle: row.sectionTitle)
     }
     var titleHeadlines: [SectionKey: String] = [:]
     var sectionsWithBodyMatches: Set<SectionKey> = []
@@ -59,7 +54,15 @@ func searchMiddleware(
       }
     }
 
+    struct WindowKey: Hashable {
+      let episodeSequence: Episode.Sequence
+      let sectionTitle: String?
+      let timestamp: Int?
+      let plainHeadline: String
+    }
     var resultIndexBySequence: [Episode.Sequence: Int] = [:]
+    var matchesBySequence: [Episode.Sequence: [(match: SearchPage.Match, terms: [String])]] = [:]
+    var matchIndexByWindow: [WindowKey: Int] = [:]
     for row in rows {
       guard let episode = episodeBySequence[row.episodeSequence] else { continue }
       switch access {
@@ -72,34 +75,50 @@ func searchMiddleware(
       case nil:
         break
       }
-      let index =
-        resultIndexBySequence[row.episodeSequence]
-        ?? {
-          resultIndexBySequence[row.episodeSequence] = results.count
-          results.append(
-            SearchPage.Result(
-              episode: episode,
-              episodeTitleHeadline: episodeTitleHeadlines[row.episodeSequence],
-              matches: []
-            )
+      if resultIndexBySequence[row.episodeSequence] == nil {
+        resultIndexBySequence[row.episodeSequence] = results.count
+        results.append(
+          SearchPage.Result(
+            episode: episode,
+            episodeTitleHeadline: episodeTitleHeadlines[row.episodeSequence],
+            matches: []
           )
-          return results.count - 1
-        }()
+        )
+      }
       if row.kind == .episodeTitle { continue }
       if row.kind == .title, sectionsWithBodyMatches.contains(key(row)) { continue }
-      guard results[index].matches.count < 5 else { continue }
-      results[index].matches.append(
-        SearchPage.Match(
-          headline: row.headline,
-          headlineIsTruncatedAtEnd: row.headlineIsTruncatedAtEnd,
-          headlineIsTruncatedAtStart: row.headlineIsTruncatedAtStart,
-          headlineStartsInsideCodeSpan: row.headlineStartsInsideCodeSpan,
-          kind: row.kind,
-          sectionTitle: row.sectionTitle,
-          sectionTitleHeadline: titleHeadlines[key(row)],
-          timestamp: row.timestamp
+      let windowKey = WindowKey(
+        episodeSequence: row.episodeSequence,
+        sectionTitle: row.sectionTitle,
+        timestamp: row.timestamp,
+        plainHeadline: row.headline
+          .replacingOccurrences(of: "⟪", with: "")
+          .replacingOccurrences(of: "⟫", with: "")
+      )
+      if let matchIndex = matchIndexByWindow[windowKey] {
+        matchesBySequence[row.episodeSequence]?[matchIndex].terms
+          .append(contentsOf: row.matchedTerms)
+        continue
+      }
+      matchIndexByWindow[windowKey] = matchesBySequence[row.episodeSequence, default: []].count
+      matchesBySequence[row.episodeSequence, default: []].append(
+        (
+          match: SearchPage.Match(
+            headline: row.headline,
+            headlineIsTruncatedAtEnd: row.headlineIsTruncatedAtEnd,
+            headlineIsTruncatedAtStart: row.headlineIsTruncatedAtStart,
+            headlineStartsInsideCodeSpan: row.headlineStartsInsideCodeSpan,
+            kind: row.kind,
+            sectionTitle: row.sectionTitle,
+            sectionTitleHeadline: titleHeadlines[key(row)],
+            timestamp: row.timestamp
+          ),
+          terms: row.matchedTerms
         )
       )
+    }
+    for (sequence, index) in resultIndexBySequence {
+      results[index].matches = termCoveringMatches(matchesBySequence[sequence] ?? [])
     }
 
     if sort == .newest {
@@ -127,4 +146,26 @@ func searchMiddleware(
         relatedSearches: relatedSearches
       )
     }
+}
+
+private func termCoveringMatches(
+  _ rows: [(match: SearchPage.Match, terms: [String])],
+  limit: Int = 5
+) -> [SearchPage.Match] {
+  var selectedIndices: [Int] = []
+  var coveredTerms: Set<String> = []
+  for (index, row) in rows.enumerated() {
+    guard selectedIndices.count < limit else { break }
+    if !row.terms.allSatisfy(coveredTerms.contains) {
+      selectedIndices.append(index)
+      coveredTerms.formUnion(row.terms)
+    }
+  }
+  for index in rows.indices {
+    guard selectedIndices.count < limit else { break }
+    if !selectedIndices.contains(index) {
+      selectedIndices.append(index)
+    }
+  }
+  return selectedIndices.sorted().map { rows[$0].match }
 }

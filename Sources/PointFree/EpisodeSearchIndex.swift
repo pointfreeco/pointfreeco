@@ -69,17 +69,17 @@ private struct SearchDocumentVisitor: MarkupVisitor {
   var documents: [EpisodeSearchDocument] = []
   private var sectionTitle: String?
   private var sectionTimestamp: Int?
-  private var proseLines: [String] = []
-  private var codeLines: [String] = []
+  private var currentTimestamp: Int?
+  private var proseContent = ""
+  private var proseMarkers: [[Int]] = []
+  private var codeContent = ""
+  private var codeMarkers: [[Int]] = []
 
   mutating func flush() {
-    let title = sectionTitle ?? ""
-    let prose = proseLines.joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
-    let code = codeLines.joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
-    proseLines = []
-    codeLines = []
-    for (content, kind) in [
-      (title, EpisodeSearchDocument.Kind.title), (prose, .prose), (code, .code),
+    for (content, kind, markers) in [
+      (sectionTitle ?? "", EpisodeSearchDocument.Kind.title, [[Int]]()),
+      (proseContent, .prose, proseMarkers),
+      (codeContent, .code, codeMarkers),
     ]
     where !content.isEmpty {
       documents.append(
@@ -88,10 +88,15 @@ private struct SearchDocumentVisitor: MarkupVisitor {
           episodeSequence: episodeSequence,
           kind: kind,
           sectionTitle: sectionTitle,
-          timestamp: sectionTimestamp
+          timestamp: sectionTimestamp,
+          timestampMarkers: markers
         )
       )
     }
+    proseContent = ""
+    proseMarkers = []
+    codeContent = ""
+    codeMarkers = []
   }
 
   mutating func defaultVisit(_ markup: any Markup) {
@@ -104,21 +109,40 @@ private struct SearchDocumentVisitor: MarkupVisitor {
     flush()
     sectionTitle = heading.plainText
     sectionTimestamp = nil
+    currentTimestamp = nil
   }
 
   mutating func visitBlockDirective(_ blockDirective: BlockDirective) {
-    guard blockDirective.name == "T", sectionTimestamp == nil else { return }
+    guard blockDirective.name == "T" else { return }
     let arguments = blockDirective.argumentText.segments.map(\.trimmedText).joined()
-    guard let time = arguments.split(separator: ",").first else { return }
-    sectionTimestamp = seconds(fromTimestamp: time)
+    guard
+      let time = arguments.split(separator: ",").first,
+      let timestamp = seconds(fromTimestamp: time)
+    else { return }
+    if sectionTimestamp == nil {
+      sectionTimestamp = timestamp
+    }
+    currentTimestamp = timestamp
   }
 
   mutating func visitCodeBlock(_ codeBlock: CodeBlock) {
-    codeLines.append(codeBlock.code.trimmingCharacters(in: .whitespacesAndNewlines))
+    if !codeContent.isEmpty {
+      codeContent += "\n"
+    }
+    if let currentTimestamp, codeMarkers.last?.last != currentTimestamp {
+      codeMarkers.append([codeContent.unicodeScalars.count, currentTimestamp])
+    }
+    codeContent += codeBlock.code.trimmingCharacters(in: .whitespacesAndNewlines)
   }
 
   mutating func visitParagraph(_ paragraph: Paragraph) {
-    proseLines.append(paragraph.plainText)
+    if !proseContent.isEmpty {
+      proseContent += "\n"
+    }
+    if let currentTimestamp, proseMarkers.last?.last != currentTimestamp {
+      proseMarkers.append([proseContent.unicodeScalars.count, currentTimestamp])
+    }
+    proseContent += paragraph.plainText
   }
 }
 

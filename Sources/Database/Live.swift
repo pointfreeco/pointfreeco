@@ -1,3 +1,4 @@
+import Foundation
 import Models
 import PointFreePrelude
 import PostgresKit
@@ -1091,6 +1092,13 @@ extension Client {
           "kind" character varying NOT NULL DEFAULT 'prose'
           """
         )
+        try await database.run(
+          """
+          ALTER TABLE "episode_search"
+          ADD COLUMN IF NOT EXISTS
+          "timestamp_markers" jsonb NOT NULL DEFAULT '[]'
+          """
+        )
       },
       redeemEmailLoginCode: { email, code in
         try await pool.sqlDatabase.first(
@@ -1117,14 +1125,20 @@ extension Client {
           DELETE FROM "episode_search"
           """)
         for document in documents {
+          let timestampMarkers = String(
+            decoding: try JSONEncoder().encode(document.timestampMarkers),
+            as: UTF8.self
+          )
           try await database.run(
             """
             INSERT INTO "episode_search"
-            ("episode_sequence", "section_title", "timestamp", "content", "kind", "search_vector")
+            ("episode_sequence", "section_title", "timestamp", "timestamp_markers", "content",
+              "kind", "search_vector")
             VALUES (
               \(bind: document.episodeSequence),
               \(bind: document.sectionTitle),
               \(bind: document.timestamp),
+              \(bind: timestampMarkers)::jsonb,
               \(bind: document.content),
               \(bind: document.kind),
               setweight(
@@ -1181,14 +1195,79 @@ extension Client {
           capitalizedTerms.isEmpty
           ? nil
           : #"\m("# + capitalizedTerms.joined(separator: "|") + #")\M"#
+
+        var tokens: [String] = []
+        var currentToken = ""
+        var isInQuotes = false
+        for character in query {
+          if character == "\"" {
+            isInQuotes.toggle()
+            currentToken.append(character)
+          } else if character.isWhitespace && !isInQuotes {
+            if !currentToken.isEmpty {
+              tokens.append(currentToken)
+              currentToken = ""
+            }
+          } else {
+            currentToken.append(character)
+          }
+        }
+        if !currentToken.isEmpty {
+          tokens.append(currentToken)
+        }
+        let positiveTerms = tokens.filter { !$0.hasPrefix("-") }
+        let negatedQuery = tokens.filter { $0.hasPrefix("-") }.joined(separator: " ")
+
         return try await pool.sqlDatabase.all(
           """
+          WITH "terms" AS (
+            SELECT DISTINCT websearch_to_tsquery('english', "term") AS "q"
+            FROM unnest(\(bind: positiveTerms)::text[]) AS "term"
+            WHERE websearch_to_tsquery('english', "term") <> ''
+          ),
+          "search_query" AS (
+            SELECT CASE
+              WHEN \(bind: negatedQuery) = ''
+              THEN string_agg("q"::text, ' | ')::tsquery
+              ELSE string_agg("q"::text, ' | ')::tsquery
+                && websearch_to_tsquery('english', \(bind: negatedQuery))
+            END AS "query"
+            FROM "terms"
+          ),
+          "episodes" AS (
+            SELECT "episode_sequence"
+            FROM "episode_search" CROSS JOIN "terms"
+            WHERE "search_vector" @@ "q"
+            GROUP BY "episode_sequence"
+            HAVING count(DISTINCT "q"::text) = (SELECT count(*) FROM "terms")
+          ),
+          "ranked" AS (
+            SELECT "episode_search".*,
+              ts_rank("search_vector", "query")
+                * CASE WHEN "content" ~ \(bind: capitalizedPattern) THEN 4.0 ELSE 1.0 END
+                AS "rank"
+            FROM "episode_search" CROSS JOIN "search_query"
+            WHERE "episode_sequence" IN (SELECT "episode_sequence" FROM "episodes")
+            AND "search_vector" @@ "query"
+            ORDER BY "rank" DESC
+            LIMIT 100
+          )
           SELECT
             "episode_sequence",
             "section_title",
-            "timestamp",
+            COALESCE(
+              (
+                SELECT ("marker"->>1)::int
+                FROM jsonb_array_elements("timestamp_markers") AS "marker"
+                WHERE ("marker"->>0)::int < "headline_position"
+                ORDER BY ("marker"->>0)::int DESC
+                LIMIT 1
+              ),
+              "timestamp"
+            ) AS "timestamp",
             "kind",
             "headline",
+            ARRAY["q"::text] AS "matched_terms",
             "headline_position" = 0
               OR "headline_position" + length("plain_headline") < length("content") + 1
               AS "headline_is_truncated_at_end",
@@ -1198,35 +1277,13 @@ extension Client {
                 regexp_replace(left("content", "headline_position" - 1), '[^`]', '', 'g')
               ) % 2 = 1
               AS "headline_starts_inside_code_span"
-          FROM (
-            SELECT *, position("plain_headline" in "content") AS "headline_position"
-            FROM (
-              SELECT *, regexp_replace("headline", '[⟪⟫]', '', 'g') AS "plain_headline"
-              FROM (
-                SELECT *,
-                  ts_headline(
-                    'english',
-                    "content",
-                    "query",
-                    'StartSel=⟪, StopSel=⟫, MaxWords=32, MinWords=16'
-                  ) AS "headline"
-                FROM (
-                  SELECT "episode_search".*, "query",
-                    ts_rank("search_vector", "query")
-                      * CASE
-                        WHEN "content" ~ \(bind: capitalizedPattern) THEN 4.0
-                        ELSE 1.0
-                      END
-                      AS "rank"
-                  FROM "episode_search",
-                    websearch_to_tsquery('english', \(bind: query)) AS "query"
-                  WHERE "search_vector" @@ "query"
-                  ORDER BY "rank" DESC
-                  LIMIT 100
-                ) AS "ranked"
-              ) AS "headlined"
-            ) AS "measured"
-          ) AS "matches"
+          FROM "ranked"
+          JOIN "terms" ON "search_vector" @@ "q",
+            ts_headline(
+              'english', "content", "q", 'StartSel=⟪, StopSel=⟫, MaxWords=32, MinWords=16'
+            ) AS "headline",
+            regexp_replace("headline", '[⟪⟫]', '', 'g') AS "plain_headline",
+            strpos("content", "plain_headline") AS "headline_position"
           ORDER BY "rank" DESC
           """
         )

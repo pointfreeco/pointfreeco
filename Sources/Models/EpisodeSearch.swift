@@ -4,6 +4,7 @@ public struct EpisodeSearchDocument: Codable, Equatable {
   public var kind: Kind
   public var sectionTitle: String?
   public var timestamp: Int?
+  public var timestampMarkers: [[Int]]
 
   public enum Kind: String, Codable, Equatable {
     case blurb
@@ -18,13 +19,15 @@ public struct EpisodeSearchDocument: Codable, Equatable {
     episodeSequence: Episode.Sequence,
     kind: Kind,
     sectionTitle: String?,
-    timestamp: Int?
+    timestamp: Int?,
+    timestampMarkers: [[Int]] = []
   ) {
     self.content = content
     self.episodeSequence = episodeSequence
     self.kind = kind
     self.sectionTitle = sectionTitle
     self.timestamp = timestamp
+    self.timestampMarkers = timestampMarkers
   }
 }
 
@@ -35,6 +38,7 @@ public struct EpisodeSearchResult: Codable, Equatable {
   public var headlineIsTruncatedAtStart: Bool
   public var headlineStartsInsideCodeSpan: Bool
   public var kind: EpisodeSearchDocument.Kind
+  public var matchedTerms: [String]
   public var sectionTitle: String?
   public var timestamp: Int?
 
@@ -45,6 +49,7 @@ public struct EpisodeSearchResult: Codable, Equatable {
     headlineIsTruncatedAtStart: Bool = false,
     headlineStartsInsideCodeSpan: Bool = false,
     kind: EpisodeSearchDocument.Kind,
+    matchedTerms: [String] = [],
     sectionTitle: String?,
     timestamp: Int?
   ) {
@@ -54,6 +59,7 @@ public struct EpisodeSearchResult: Codable, Equatable {
     self.headlineIsTruncatedAtStart = headlineIsTruncatedAtStart
     self.headlineStartsInsideCodeSpan = headlineStartsInsideCodeSpan
     self.kind = kind
+    self.matchedTerms = matchedTerms
     self.sectionTitle = sectionTitle
     self.timestamp = timestamp
   }
