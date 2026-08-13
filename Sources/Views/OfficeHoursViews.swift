@@ -216,6 +216,7 @@ private struct PastOfficeHourRow: HTML {
 
 private struct MaxSubscriberCallout: HTML {
   @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
 
   var body: some HTML {
     CalloutModule(
@@ -224,8 +225,10 @@ private struct MaxSubscriberCallout: HTML {
         Join our live office hours and watch the full archive of past sessions by upgrading \
         to Point-Free Max.
         """,
-      ctaTitle: "See plans and pricing",
-      ctaURL: siteRouter.path(for: .pricingLanding)
+      ctaTitle: subscriberState.isActiveSubscriber
+        ? "Upgrade to Point-Free Max"
+        : "Subscribe to Point-Free Max",
+      ctaURL: siteRouter.path(for: subscriberState.subscribeToMaxRoute)
     )
   }
 }

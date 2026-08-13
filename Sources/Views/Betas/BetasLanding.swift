@@ -61,8 +61,6 @@ private struct MaxSubscriberHeader: HTML {
 }
 
 private struct NonSubscriberHeader: HTML {
-  @Dependency(\.siteRouter) var siteRouter
-
   var body: some HTML {
     LazyVGrid(columns: [.desktop: [1, 1]], alignItems: .start, verticalSpacing: 2) {
       VStack(spacing: 1) {
@@ -86,10 +84,7 @@ private struct NonSubscriberHeader: HTML {
         }
         .color(.gray300.dark(.gray800))
         CTAGroup {
-          PFWButton(type: .primary) {
-            HTMLText("Subscribe to Max")
-          }
-          .href(siteRouter.path(for: .pricingLanding))
+          SubscribeOrUpgradeToMaxButton()
         }
         .inlineStyle("padding-top", "0.5rem")
       }
@@ -240,7 +235,6 @@ private struct BetasList: HTML {
 
 private struct BetaCard: HTML {
   @Dependency(\.subscriberState) var subscriberState
-  @Dependency(\.siteRouter) var siteRouter
 
   let beta: Beta
   var isCollaborator = false
@@ -300,11 +294,8 @@ private struct BetaCard: HTML {
           BetaJoinButton(beta: beta, isCollaborator: isCollaborator)
             .inlineStyle("margin-top", "1rem")
         } else {
-          PFWButton(type: .secondary) {
-            HTMLText("Subscribe to Point-Free Max")
-          }
-          .href(siteRouter.path(for: .pricingLanding))
-          .inlineStyle("margin-top", "1rem")
+          SubscribeOrUpgradeToMaxButton(type: .secondary)
+            .inlineStyle("margin-top", "1rem")
         }
       }
       .inlineStyle("padding", "1.5rem")
@@ -315,6 +306,24 @@ private struct BetaCard: HTML {
     .inlineStyle("background", "#fcfcfc")
     .inlineStyle("background", "#0f1220", media: .dark)
     .inlineStyle("overflow", "hidden")
+  }
+}
+
+private struct SubscribeOrUpgradeToMaxButton: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
+
+  var type: PFWButton<HTMLText>.ButtonType = .primary
+
+  var body: some HTML {
+    PFWButton(type: type) {
+      HTMLText(
+        subscriberState.isActiveSubscriber
+          ? "Upgrade to Point-Free Max"
+          : "Subscribe to Point-Free Max"
+      )
+    }
+    .href(siteRouter.path(for: subscriberState.subscribeToMaxRoute))
   }
 }
 
@@ -350,8 +359,6 @@ private struct BetaJoinButton: HTML {
 }
 
 private struct BetasCTA: HTML {
-  @Dependency(\.siteRouter) var siteRouter
-
   var body: some HTML {
     PageModule(theme: .content) {
       HStack(alignment: .center, spacing: 2) {
@@ -370,11 +377,8 @@ private struct BetasCTA: HTML {
         }
         Spacer()
         VStack {
-          PFWButton(type: .primary) {
-            HTMLText("Subscribe to Max")
-          }
-          .href(siteRouter.path(for: .pricingLanding))
-          .inlineStyle("margin-right", "auto")
+          SubscribeOrUpgradeToMaxButton()
+            .inlineStyle("margin-right", "auto")
         }
       }
     }
@@ -428,7 +432,9 @@ extension HTML {
 }
 
 extension SubscriberState {
-  public var isMaxSubscriber: Bool {
-    isActiveSubscriber && plan == .max
+  public var subscribeToMaxRoute: SiteRoute {
+    isActiveSubscriber
+    ? .pricingLanding
+    : .subscribeConfirmation(lane: .personal, billing: .yearly, plan: .max)
   }
 }
