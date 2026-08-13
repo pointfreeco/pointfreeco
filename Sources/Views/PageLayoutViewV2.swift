@@ -277,10 +277,10 @@ struct MobileNavItems: HTML {
             "Become a member"
           }
         }
-        NavListItem(isNew: true, route: .theWay) {
+        NavListItem(badge: .pro, route: .theWay) {
           "The Point-Free Way"
         }
-        NavListItem(isNew: true, route: .betas()) {
+        NavListItem(badge: .max, route: .betas()) {
           "Beta previews"
         }
         NavListItem(route: .episodes(.list(.all))) {
@@ -291,6 +291,9 @@ struct MobileNavItems: HTML {
         }
         NavListItem(route: .clips(.clips)) {
           "Free clips"
+        }
+        NavListItem(badge: .max, route: .officeHours()) {
+          "Office hours"
         }
         NavListItem(route: .blog()) {
           "Blog"
@@ -342,21 +345,21 @@ struct MobileNavItems: HTML {
     .inlineStyle("display", "block", media: .mobile, pre: "input:checked ~")
   }
 
-  struct NavListItem<Title: HTML>: HTML {
+  fileprivate struct NavListItem<Title: HTML>: HTML {
     @Dependency(\.siteRouter) var siteRouter
     let title: Title
     var highlight: Bool
-    var isNew: Bool
+    var badge: NavBadge?
     let route: SiteRoute
     init(
       highlight: Bool = false,
-      isNew: Bool = false,
+      badge: NavBadge? = nil,
       route: SiteRoute,
       @HTMLBuilder title: () -> Title
     ) {
       self.title = title()
       self.highlight = highlight
-      self.isNew = isNew
+      self.badge = badge
       self.route = route
     }
     var body: some HTML {
@@ -364,8 +367,8 @@ struct MobileNavItems: HTML {
         Link(destination: route) {
           HStack(alignment: .firstTextBaseline, spacing: 0.25) {
             title
-            if isNew {
-              NewBadge()
+            if let badge {
+              badge
             }
           }
         }
@@ -505,25 +508,25 @@ struct MoreMenu<Content: HTML>: HTML {
 }
 
 private struct MenuItem: HTML {
+  let badge: NavBadge?
   let iconBase64: String?
   let href: String
-  let isNew: Bool
   let opensInNewWindow: Bool
   let title: String
 
   init(
     title: String,
     destination: SiteRoute,
+    badge: NavBadge? = nil,
     iconBase64: String? = nil,
-    isNew: Bool = false,
     opensInNewWindow: Bool = false
   ) {
     @Dependency(\.siteRouter) var siteRouter
     self.init(
       title: title,
       href: siteRouter.path(for: destination),
+      badge: badge,
       iconBase64: iconBase64,
-      isNew: isNew,
       opensInNewWindow: opensInNewWindow
     )
   }
@@ -531,14 +534,14 @@ private struct MenuItem: HTML {
   init(
     title: String,
     href: String,
+    badge: NavBadge? = nil,
     iconBase64: String? = nil,
-    isNew: Bool = false,
     opensInNewWindow: Bool = false
   ) {
     self.title = title
     self.href = href
+    self.badge = badge
     self.iconBase64 = iconBase64
-    self.isNew = isNew
     self.opensInNewWindow = opensInNewWindow
   }
 
@@ -554,8 +557,8 @@ private struct MenuItem: HTML {
             .inlineStyle("width", "1rem")
         }
         span { HTMLText(title) }
-        if isNew {
-          NewBadge()
+        if let badge {
+          badge
         }
       }
       .attribute("rel", opensInNewWindow ? "noopener noreferrer" : nil)
@@ -592,15 +595,16 @@ struct CenteredNavItems: HTML {
             "Become a member"
           }
         }
-        NavListItem(isNew: true, route: .theWay) {
+        NavListItem(badge: .pro, route: .theWay) {
           AdaptablePointFreeWayLabel()
         }
         MoreMenu {
           if currentUser == nil {
             MenuItem(title: "Videos", destination: .episodes(.list(.all)))
           }
-          MenuItem(title: "Beta previews", destination: .betas(), isNew: true)
+          MenuItem(title: "Beta previews", destination: .betas(), badge: .max)
           MenuItem(title: "Free clips", destination: .clips(.clips))
+          MenuItem(title: "Office hours", destination: .officeHours(), badge: .max)
           MenuItem(title: "Blog", destination: .blog(.index))
           MenuItem(title: "Gifts", destination: .gifts())
           Divider(size: 100, color: .gray300)
@@ -626,28 +630,28 @@ struct CenteredNavItems: HTML {
     .inlineStyle("align-items", "first baseline")
   }
 
-  struct NavListItem<Title: HTML>: HTML {
+  fileprivate struct NavListItem<Title: HTML>: HTML {
     let title: Title
     let highlight: Bool
-    let isNew: Bool
+    let badge: NavBadge?
     let route: SiteRoute
     init(
       highlight: Bool = false,
-      isNew: Bool = false,
+      badge: NavBadge? = nil,
       route: SiteRoute,
       @HTMLBuilder title: () -> Title
     ) {
       self.title = title()
       self.highlight = highlight
-      self.isNew = isNew
+      self.badge = badge
       self.route = route
     }
     var body: some HTML {
       li {
         Link(destination: route) {
           title
-          if isNew {
-            NewBadge()
+          if let badge {
+            badge
               .inlineStyle("margin-left", "0.25rem")
           }
         }
@@ -670,18 +674,46 @@ struct CenteredNavItems: HTML {
   }
 }
 
-private struct NewBadge: HTML {
+fileprivate enum NavBadge: HTML {
+  case max
+  case new
+  case pro
+
+  var label: String {
+    switch self {
+    case .max: "MAX"
+    case .new: "NEW"
+    case .pro: "PRO"
+    }
+  }
+
+  var borderColor: String {
+    switch self {
+    case .max: "rgba(151, 77, 255, 0.7)"
+    case .new: "rgba(255, 208, 77, 0.7)"
+    case .pro: "rgba(76, 204, 255, 0.7)"
+    }
+  }
+
+  var backgroundColor: String {
+    switch self {
+    case .max: "rgba(151, 77, 255, 0.4)"
+    case .new: "rgba(255, 214, 102, 0.5)"
+    case .pro: "rgba(76, 204, 255, 0.4)"
+    }
+  }
+
   var body: some HTML {
-    tag("is-new") {
-      "NEW"
+    tag("nav-badge") {
+      HTMLText(label)
     }
     .inlineStyle("font-size", "0.65rem")
     .inlineStyle("font-weight", "700")
     .inlineStyle("letter-spacing", "0.08em")
     .inlineStyle("padding", "2px 4px")
     .inlineStyle("border-radius", "999px")
-    .inlineStyle("border", "1px solid rgba(255, 208, 77, 0.7)")
-    .inlineStyle("background", "rgba(255, 214, 102, 0.5)")
+    .inlineStyle("border", "1px solid \(borderColor)")
+    .inlineStyle("background", backgroundColor)
     .inlineStyle("color", "rgba(255, 255, 255, 0.75)")
   }
 }

@@ -70,6 +70,7 @@ private struct ContentColumn: HTML {
       FooterLink("Become a member", destination: .pricingLanding)
       FooterLink("The Point-Free Way", destination: .theWay)
       FooterLink("Beta previews", destination: .betas())
+      FooterLink("Office hours", destination: .officeHours())
       FooterLink("Gifts", destination: .gifts())
       FooterLink("Videos", destination: .episodes(.list(.all)))
       FooterLink("Collections", destination: .collections())
