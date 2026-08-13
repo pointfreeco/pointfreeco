@@ -322,7 +322,7 @@ struct UnlockEpisodeCallout: HTML {
         """
       } callToAction: {
         Button(color: .purple) {
-          Label("Sign in with GitHub", icon: .gitHubIcon)
+          span { "Sign up" }
             .fontStyle(.body(.regular))
         }
         .attribute(

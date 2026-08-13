@@ -8,7 +8,7 @@ extension Episode {
       using the forthcoming "Point-Free Way" skills documents. Finally, we will achieve the \
       seemingly impossible by writing a test against iCloud sharing!
       """,
-    codeSampleDirectory: "0353-sqlite-data-tour-pt6",
+    codeSampleDirectory: "0353-sqlite-data-tour-pt7",
     exercises: _exercises,
     id: 353,
     length: 20 * 60 + 52,

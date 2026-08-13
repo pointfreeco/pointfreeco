@@ -1,6 +1,8 @@
 import Dependencies
+import Foundation
 import Models
 import StyleguideV2
+import Tagged
 
 public struct EpisodeCard: HTML {
   @Dependency(\.date.now) var now

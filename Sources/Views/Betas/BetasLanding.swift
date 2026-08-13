@@ -2,6 +2,7 @@ import Dependencies
 import Html
 import Models
 import PointFreeDependencies
+import PointFreeRouter
 import StyleguideV2
 
 public struct BetasLanding: HTML {

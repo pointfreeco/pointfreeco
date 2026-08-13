@@ -65,8 +65,8 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
       let registeredUser = try await self.database
         .fetchUserByGitHub(gitHubUser.id)
 
-      XCTAssertEqual(accessToken, registeredUser.gitHubAccessToken)
-      XCTAssertEqual(gitHubUser.id, registeredUser.gitHubUserId)
+      XCTAssertEqual(accessToken, registeredUser.gitHub?.accessToken)
+      XCTAssertEqual(gitHubUser.id, registeredUser.gitHub?.userId)
       XCTAssertEqual(gitHubUser.name, registeredUser.name)
       XCTAssertEqual(1, registeredUser.episodeCreditCount)
     }
@@ -98,8 +98,8 @@ class AuthIntegrationTests: LiveDatabaseTestCase {
       let registeredUser = try await self.database
         .fetchUserByGitHub(gitHubUser.id)
 
-      XCTAssertEqual(accessToken, registeredUser.gitHubAccessToken)
-      XCTAssertEqual(gitHubUser.id, registeredUser.gitHubUserId)
+      XCTAssertEqual(accessToken, registeredUser.gitHub?.accessToken)
+      XCTAssertEqual(gitHubUser.id, registeredUser.gitHub?.userId)
       XCTAssertEqual(gitHubUser.name, registeredUser.name)
       XCTAssertEqual(0, registeredUser.episodeCreditCount)
     }
