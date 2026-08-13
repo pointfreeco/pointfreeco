@@ -166,45 +166,51 @@ private struct Sidebar: HTML {
 private struct SearchTips: HTML {
   @Dependency(\.withRandomNumberGenerator) var withRandomNumberGenerator
 
-  static let suggestions = [
-    "animations",
-    "benchmarking",
-    "CloudKit",
-    "Codable",
-    "Composable Architecture",
-    "concurrency",
-    "dependencies",
-    "domain modeling",
-    "enums",
-    "generics",
-    "macros",
-    "modularization",
-    "navigation",
-    "noncopyable",
-    "nonescapable",
-    "observation",
-    "parsing",
-    "performance",
-    "persistence",
-    "sendable",
-    "shared state",
-    "snapshot testing",
-    "SQLite",
-    "state management",
-    "SwiftData",
-    "SwiftUI",
-    "testing",
-    "UIKit",
-    "value types",
-    "WebAssembly",
+  static let suggestions: [[String]] = [
+    ["algebraic data types"],
+    ["animations"],
+    ["CloudKit"],
+    ["Codable"],
+    ["Combine"],
+    ["Composable Architecture", "TCA"],
+    ["concurrency", "isolation", "sendable", "nonsendable types"],
+    ["cross platform", "Android", "Windows"],
+    ["dependencies"],
+    ["domain modeling", "value types", "enums"],
+    ["evolution", "Swift Evolution"],
+    ["generics"],
+    ["key paths", "case paths"],
+    ["macros", "macro testing"],
+    ["modularization", "packages", "SPM"],
+    ["navigation"],
+    ["noncopyable", "nonescapable"],
+    ["observation"],
+    ["parsing", "pretty printing"],
+    ["performance", "benchmarking"],
+    ["persistence"],
+    ["protocol witnesses"],
+    ["shared state", "state management"],
+    ["side effects"],
+    ["SQL", "SQLite"],
+    ["SwiftData"],
+    ["SwiftUI"],
+    ["task locals"],
+    ["testing", "snapshot testing"],
+    ["UIKit"],
+    ["WebAssembly", "Wasm", "SwiftWasm"],
   ]
 
   var body: some HTML {
     VStack(spacing: 1) {
       CapsHeading(title: "Try one of these")
       SuggestionPills(
-        suggestions: withRandomNumberGenerator {
-          Array(Self.suggestions.shuffled(using: &$0).prefix(12))
+        suggestions: withRandomNumberGenerator { rng in
+          Array(
+            Self.suggestions
+              .compactMap { $0.randomElement(using: &rng) }
+              .shuffled(using: &rng)
+              .prefix(12)
+          )
         }
       )
     }
