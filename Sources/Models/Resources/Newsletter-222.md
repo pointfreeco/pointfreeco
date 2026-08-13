@@ -1,9 +1,9 @@
 We are excited to announce the newest addition to [Beta Previews](/beta-previews): **LazyState**, a
-micro-library that picks up where SwiftUI's `@State` macro left off. It provides a `@LazyState`
-macro that allows state in your SwiftUI views to be initialized dynamically, using data passed in
-from the parent view, while still being initialized lazily and only once per view lifetime.
+micro-library that closes a gap `@State` left open. It provides a `@LazyState` macro that allows
+state in your SwiftUI views to be initialized dynamically, using data passed in from the parent view,
+while still being initialized lazily and only once per view lifetime.
 
-This is a problem that Apple has explicitly decided not to solve, and their recommended workaround
+This is a problem that Apple explicitly decided not to solve, and their recommended workaround
 leaks complexity into every view that needs it. We think the problem deserves a solution, and it 
 turns out the tools to build it have been hiding in plain sight for a few years.
 
