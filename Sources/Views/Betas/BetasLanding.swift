@@ -154,29 +154,50 @@ private struct BetaProjectsList: HTML {
       }
       .color(.black.dark(.white))
       .inlineStyle("margin-top", "0.5rem")
-      ul {
-        for beta in Beta.all {
-          li {
-            span {}
-              .inlineStyle("width", "6px")
-              .inlineStyle("height", "6px")
-              .inlineStyle("border-radius", "50%")
-              .inlineStyle("background", "#974dff")
-              .inlineStyle("flex-shrink", "0")
+      projectList(Beta.all, bulletColor: "#974dff")
+
+      if !Beta.graduated.isEmpty {
+        Header(5) {
+          HTMLText("Graduated betas")
+        }
+        .color(.black.dark(.white))
+        .inlineStyle("margin-top", "0.5rem")
+        projectList(Beta.graduated, bulletColor: "#79f2b0")
+      }
+    }
+  }
+
+  func projectList(_ betas: [Beta], bulletColor: String) -> some HTML {
+    ul {
+      for beta in betas {
+        li {
+          span {}
+            .inlineStyle("width", "6px")
+            .inlineStyle("height", "6px")
+            .inlineStyle("border-radius", "50%")
+            .inlineStyle("background", bulletColor)
+            .inlineStyle("flex-shrink", "0")
+          if let publicURL = beta.publicURL {
+            a { HTMLText(beta.title) }
+              .href(publicURL)
+              .inlineStyle("color", "inherit")
+              .inlineStyle("text-decoration", "none")
+              .inlineStyle("text-decoration", "underline", pseudo: .hover)
+          } else {
             HTMLText(beta.title)
           }
-          .inlineStyle("display", "flex")
-          .inlineStyle("align-items", "center")
-          .inlineStyle("gap", "8px")
         }
+        .inlineStyle("display", "flex")
+        .inlineStyle("align-items", "center")
+        .inlineStyle("gap", "8px")
       }
-      .inlineStyle("margin", "0")
-      .inlineStyle("padding", "0")
-      .inlineStyle("list-style", "none")
-      .inlineStyle("display", "grid")
-      .inlineStyle("gap", "0.4rem")
-      .color(.gray300.dark(.gray800))
     }
+    .inlineStyle("margin", "0")
+    .inlineStyle("padding", "0")
+    .inlineStyle("list-style", "none")
+    .inlineStyle("display", "grid")
+    .inlineStyle("gap", "0.4rem")
+    .color(.gray300.dark(.gray800))
   }
 }
 
