@@ -21,6 +21,30 @@ class SearchTests: TestCase {
   }
 
   @MainActor
+  func testSearch_Fragment() async throws {
+    try await withDependencies {
+      $0.database.searchEpisodes = { _ in
+        [
+          EpisodeSearchResult(
+            episodeSequence: 1,
+            headline: "We can define an ⟪increment⟫ ⟪function⟫ by extending `Int`.",
+            kind: .prose,
+            sectionTitle: "Functions that increment",
+            timestamp: 68
+          )
+        ]
+      }
+      $0.episodes = { [.free, .subscriberOnly] }
+    } operation: {
+      var request = request(to: .search(query: "increment function"))
+      request.setValue("results", forHTTPHeaderField: "X-Fragment")
+      let conn = connection(from: request)
+
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
+  @MainActor
   func testSearch_NoResults() async throws {
     try await withDependencies {
       $0.database.searchEpisodes = { _ in [] }

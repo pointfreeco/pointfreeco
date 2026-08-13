@@ -84,40 +84,145 @@ public struct SearchPage: HTML {
           .inlineStyle("position", "sticky", media: .desktop)
           .inlineStyle("top", "2rem", media: .desktop)
 
-        VStack(spacing: 2) {
-          if query.isEmpty {
-            SearchTips()
-          } else {
-            if results.isEmpty {
-              Paragraph {
-                "We didn’t find anything matching “\(query)”. Try another search."
-              }
-              .color(.gray400.dark(.gray650))
+        div {
+          SearchResults(query: query, results: results, relatedSearches: relatedSearches)
+        }
+        .attribute("id", "search-results")
+      }
+    }
 
-              if !relatedSearches.isEmpty {
-                VStack(spacing: 1) {
-                  CapsHeading(title: "Related topics")
-                  SuggestionPills(suggestions: relatedSearches)
-                }
-              }
+    SearchScript()
+  }
+}
 
-              SearchTips()
-            } else {
-              div {
-                results.count == 1
-                  ? "1 video matches “\(query)”"
-                  : "\(results.count) videos match “\(query)”"
-              }
-              .color(.gray650.dark(.gray400))
-              .fontStyle(.body(.small))
+public struct SearchResults: HTML {
+  let query: String
+  let results: [SearchPage.Result]
+  let relatedSearches: [String]
 
-              for result in results {
-                ResultView(result: result)
-              }
+  public init(query: String, results: [SearchPage.Result], relatedSearches: [String] = []) {
+    self.query = query
+    self.results = results
+    self.relatedSearches = relatedSearches
+  }
+
+  public var body: some HTML {
+    VStack(spacing: 2) {
+      if query.isEmpty {
+        SearchTips()
+      } else {
+        if results.isEmpty {
+          Paragraph {
+            "We didn’t find anything matching “\(query)”. Try another search."
+          }
+          .color(.gray400.dark(.gray650))
+
+          if !relatedSearches.isEmpty {
+            VStack(spacing: 1) {
+              CapsHeading(title: "Related topics")
+              SuggestionPills(suggestions: relatedSearches)
             }
+          }
+
+          SearchTips()
+        } else {
+          div {
+            results.count == 1
+              ? "1 video matches “\(query)”"
+              : "\(results.count) videos match “\(query)”"
+          }
+          .color(.gray650.dark(.gray400))
+          .fontStyle(.body(.small))
+
+          for result in results {
+            ResultView(result: result)
           }
         }
       }
+    }
+  }
+}
+
+private struct SearchScript: HTML {
+  var body: some HTML {
+    script {
+      #"""
+      (() => {
+        const form = document.getElementById("search-form");
+        const results = document.getElementById("search-results");
+        if (!form || !results) return;
+        const input = form.querySelector("input[name=q]");
+        const icons = {
+          sort: {
+            "": "\#(relevanceGlyphDataURI)",
+            "newest": "\#(clockGlyphDataURI)"
+          },
+          access: {
+            "": "\#(videoGlyphDataURI)",
+            "free": "\#(unlockedGlyphDataURI)",
+            "subscriber-only": "\#(lockGlyphDataURI)"
+          }
+        };
+        function updateIcons() {
+          for (const select of form.querySelectorAll("select")) {
+            const icon = (icons[select.name] || {})[select.value];
+            if (icon) {
+              select.style.backgroundImage =
+                `url("${icon}"), url("\#(chevronGlyphDataURI)")`;
+            }
+          }
+        }
+        let controller;
+        async function load(push) {
+          if (controller) controller.abort();
+          controller = new AbortController();
+          const url = new URL(form.action, location.origin);
+          for (const [name, value] of new FormData(form)) {
+            if (value) url.searchParams.set(name, value);
+          }
+          try {
+            const response = await fetch(url, {
+              headers: { "X-Fragment": "results" },
+              signal: controller.signal
+            });
+            if (!response.ok) {
+              location.href = url;
+              return;
+            }
+            results.innerHTML = await response.text();
+            const query = (new FormData(form).get("q") || "").trim();
+            document.title = query ? "Search: " + query : "Search";
+            if (push) history.pushState(null, "", url);
+          } catch (error) {}
+        }
+        let debounce;
+        input.addEventListener("input", () => {
+          clearTimeout(debounce);
+          if (input.value.trim() === "") {
+            load(true);
+          } else {
+            debounce = setTimeout(() => load(true), 300);
+          }
+        });
+        form.addEventListener("submit", (event) => {
+          event.preventDefault();
+          clearTimeout(debounce);
+          load(true);
+        });
+        for (const select of form.querySelectorAll("select")) {
+          select.addEventListener("change", updateIcons);
+        }
+        window.addEventListener("popstate", () => {
+          const params = new URLSearchParams(location.search);
+          input.value = params.get("q") || "";
+          for (const select of form.querySelectorAll("select")) {
+            select.value = params.get(select.name) || "";
+          }
+          updateIcons();
+          load(false);
+        });
+      })();
+      """#
     }
   }
 }
@@ -245,7 +350,7 @@ private struct SearchForm: HTML {
         .attribute("name", "q")
         .attribute("value", query.isEmpty ? nil : query)
         .attribute("placeholder", "Search for topics")
-        .attribute("autofocus")
+        .attribute("autofocus", query.isEmpty ? "" : nil)
         .fontStyle(.body(.regular))
         .color(.black.dark(.white))
         .backgroundColor(.white.dark(.black))
@@ -301,6 +406,7 @@ private struct SearchForm: HTML {
       .inlineStyle("margin-top", "0.5rem")
     }
     .attribute("action", siteRouter.path(for: .search()))
+    .attribute("id", "search-form")
   }
 }
 

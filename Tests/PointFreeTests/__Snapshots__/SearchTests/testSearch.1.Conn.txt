@@ -2,7 +2,7 @@ GET http://localhost:8080/search
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 47703
+Content-Length: 51557
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -455,7 +455,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
       <pf-vstack class="position-rSYDC top-t5q1l4 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
         <div class="font-weight-SywJI1 color-K2J0r1 color-wVkSF3">Refine your results
         </div>
-        <form action="/search"><input class="background-image-OsXMz3 background-position-EXrME1 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 outline-color-cemJK2 padding-0HTUZ2 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" type="search" name="q" placeholder="Search for topics" autofocus>
+        <form action="/search" id="search-form"><input class="background-image-OsXMz3 background-position-EXrME1 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 outline-color-cemJK2 padding-0HTUZ2 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" type="search" name="q" placeholder="Search for topics" autofocus>
           <pf-vstack class="margin-top-NKv2f3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><select class="appearance-Wl0y44 -webkit-appearance-Wl0y44 background-image-Rd6GH3 background-position-s9o6M2 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 cursor-xmR5l padding-IpiAj3 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" name="sort" aria-label="Sort by" onchange="this.form.requestSubmit()">
             <option value selected>Relevance
             </option>
@@ -470,17 +470,93 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
           </pf-vstack>
         </form>
       </pf-vstack>
-      <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-QgYLk2">
-        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-          <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Try one of these
-          </div>
-          <div class="display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 row-gap-NKv2f3 column-gap-NKv2f3"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=algebraic%20data%20types">algebraic data types</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=shared%20state">shared state</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=SwiftUI">SwiftUI</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Android">Android</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Combine">Combine</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=dependencies">dependencies</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=CloudKit">CloudKit</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=case%20paths">case paths</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=side%20effects">side effects</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=animations">animations</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Codable">Codable</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=performance">performance</a>
-          </div>
+      <div id="search-results">
+        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-QgYLk2">
+          <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+            <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Try one of these
+            </div>
+            <div class="display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 row-gap-NKv2f3 column-gap-NKv2f3"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=algebraic%20data%20types">algebraic data types</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=shared%20state">shared state</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=SwiftUI">SwiftUI</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Android">Android</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Combine">Combine</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=dependencies">dependencies</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=CloudKit">CloudKit</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=case%20paths">case paths</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=side%20effects">side effects</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=animations">animations</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Codable">Codable</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=performance">performance</a>
+            </div>
+          </pf-vstack>
         </pf-vstack>
-      </pf-vstack>
+      </div>
     </pf-vgrid>
   </div>
-</div>
+</div><script>(() => {
+  const form = document.getElementById("search-form");
+  const results = document.getElementById("search-results");
+  if (!form || !results) return;
+  const input = form.querySelector("input[name=q]");
+  const icons = {
+    sort: {
+      "": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Ccircle cx='12' cy='12' r='4.5'/%3E%3Ccircle cx='12' cy='12' r='0.5'/%3E%3C/svg%3E",
+      "newest": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E"
+    },
+    access: {
+      "": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m22 8-6 4 6 4V8Z'/%3E%3Crect x='2' y='6' width='14' height='12' rx='2'/%3E%3C/svg%3E",
+      "free": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='11' width='18' height='11' rx='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 9.9-1'/%3E%3C/svg%3E",
+      "subscriber-only": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='11' width='18' height='11' rx='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E"
+    }
+  };
+  function updateIcons() {
+    for (const select of form.querySelectorAll("select")) {
+      const icon = (icons[select.name] || {})[select.value];
+      if (icon) {
+        select.style.backgroundImage =
+          `url("${icon}"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`;
+      }
+    }
+  }
+  let controller;
+  async function load(push) {
+    if (controller) controller.abort();
+    controller = new AbortController();
+    const url = new URL(form.action, location.origin);
+    for (const [name, value] of new FormData(form)) {
+      if (value) url.searchParams.set(name, value);
+    }
+    try {
+      const response = await fetch(url, {
+        headers: { "X-Fragment": "results" },
+        signal: controller.signal
+      });
+      if (!response.ok) {
+        location.href = url;
+        return;
+      }
+      results.innerHTML = await response.text();
+      const query = (new FormData(form).get("q") || "").trim();
+      document.title = query ? "Search: " + query : "Search";
+      if (push) history.pushState(null, "", url);
+    } catch (error) {}
+  }
+  let debounce;
+  input.addEventListener("input", () => {
+    clearTimeout(debounce);
+    if (input.value.trim() === "") {
+      load(true);
+    } else {
+      debounce = setTimeout(() => load(true), 300);
+    }
+  });
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    clearTimeout(debounce);
+    load(true);
+  });
+  for (const select of form.querySelectorAll("select")) {
+    select.addEventListener("change", updateIcons);
+  }
+  window.addEventListener("popstate", () => {
+    const params = new URLSearchParams(location.search);
+    input.value = params.get("q") || "";
+    for (const select of form.querySelectorAll("select")) {
+      select.value = params.get(select.name) || "";
+    }
+    updateIcons();
+    load(false);
+  });
+})();</script>
 <footer class="padding-top-ujLNr4 padding-left-ujLNr4 padding-bottom-ujLNr4 padding-right-ujLNr4 padding-top-bS1Ay3 padding-left-bS1Ay3 padding-bottom-bS1Ay3 padding-right-bS1Ay3 background-color-K2J0r1">
   <pf-vgrid class="align-items-Dq4Oc4 width-C8uWv column-gap-ZNGkd1 display-jdJkm4 grid-template-columns-AWWfa row-gap-ZNGkd1">
     <div class="padding-bottom-GuM2x3 padding-right-ujLNr4">
