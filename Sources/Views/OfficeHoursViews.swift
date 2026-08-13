@@ -348,9 +348,15 @@ private struct AnsweredQuestionsList: HTML {
               HTMLText(question.question)
             }
             .href(detailPath(question: question))
+            .attribute("title", question.question)
             .inlineStyle("color", "inherit")
+            .inlineStyle("display", "block")
+            .inlineStyle("max-width", "100%")
+            .inlineStyle("overflow", "hidden")
             .inlineStyle("text-decoration", "none")
             .inlineStyle("text-decoration", "underline", pseudo: .hover)
+            .inlineStyle("text-overflow", "ellipsis")
+            .inlineStyle("white-space", "nowrap")
           }
         }
       }

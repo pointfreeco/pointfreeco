@@ -283,6 +283,9 @@ struct MobileNavItems: HTML {
         NavListItem(badge: .max, route: .betas()) {
           "Beta previews"
         }
+        NavListItem(badge: .max, route: .officeHours()) {
+          "Office hours"
+        }
         NavListItem(route: .episodes(.list(.all))) {
           "Videos"
         }
@@ -291,9 +294,6 @@ struct MobileNavItems: HTML {
         }
         NavListItem(route: .clips(.clips)) {
           "Free clips"
-        }
-        NavListItem(badge: .max, route: .officeHours()) {
-          "Office hours"
         }
         NavListItem(route: .blog()) {
           "Blog"
@@ -603,8 +603,8 @@ struct CenteredNavItems: HTML {
             MenuItem(title: "Videos", destination: .episodes(.list(.all)))
           }
           MenuItem(title: "Beta previews", destination: .betas(), badge: .max)
-          MenuItem(title: "Free clips", destination: .clips(.clips))
           MenuItem(title: "Office hours", destination: .officeHours(), badge: .max)
+          MenuItem(title: "Free clips", destination: .clips(.clips))
           MenuItem(title: "Blog", destination: .blog(.index))
           MenuItem(title: "Gifts", destination: .gifts())
           Divider(size: 100, color: .gray300)
