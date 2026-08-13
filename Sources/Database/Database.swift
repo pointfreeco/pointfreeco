@@ -128,6 +128,8 @@ public struct Client {
     (_ email: EmailAddress, _ code: EmailLoginCode.Code) async throws -> EmailLoginCode
   public var redeemEpisodeCredit:
     (_ sequence: Episode.Sequence, _ userID: Models.User.ID) async throws -> Void
+  public var refreshEpisodeSearchIndex:
+    (_ documents: [EpisodeSearchDocument]) async throws -> Void
   public var regenerateTeamInviteCode:
     (_ subscriptionID: Models.Subscription.ID) async throws -> Void
 
@@ -139,6 +141,8 @@ public struct Client {
     ) async throws -> Void
   public var rotateEmailLoginCode: (_ email: EmailAddress) async throws -> Void
   public var sawUser: (_ id: Models.User.ID) async throws -> Void
+  public var searchEpisodes: (_ query: String) async throws -> [EpisodeSearchResult]
+  public var suggestEpisodeSearchTerms: (_ query: String) async throws -> [String]
   public var updateEmailSettings:
     (_ newsletters: [EmailSetting.Newsletter]?, _ userID: Models.User.ID) async throws -> Void
   public var updateEpisodeProgress:

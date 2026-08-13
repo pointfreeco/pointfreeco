@@ -319,6 +319,7 @@ var package = Package(
         .product(name: "HttpPipeline", package: "swift-web"),
         .product(name: "HttpPipelineHtmlSupport", package: "swift-web"),
         .product(name: "IssueReporting", package: "xctest-dynamic-overlay"),
+        .product(name: "Markdown", package: "swift-markdown"),
         .product(name: "Overture", package: "swift-overture"),
         .product(name: "PostgresKit", package: "postgres-kit"),
         .product(name: "Tagged", package: "swift-tagged"),

@@ -289,11 +289,15 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
         text: """
           User-Agent: *
           Disallow: /account
+          Disallow: /search
 
           #User-Agent: GPTBot
           #Disallow: /
           """
       )
+
+  case .search(let query, let access, let sort):
+    return await searchMiddleware(conn, query: query, access: access, sort: sort)
 
   case .slackInvite:
     @Dependency(\.envVars) var envVars

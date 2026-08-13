@@ -480,7 +480,7 @@ extension Client {
       },
       migrate: {
         let database = pool.sqlDatabase
-        for `extension` in ["pgcrypto", "uuid-ossp", "citext"] {
+        for `extension` in ["pgcrypto", "uuid-ossp", "citext", "pg_trgm"] {
           do {
             try await database.run(
               """
@@ -1065,6 +1065,32 @@ extension Client {
           )
           """
         )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "episode_search" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "episode_sequence" integer NOT NULL,
+            "section_title" character varying,
+            "timestamp" integer,
+            "content" text NOT NULL,
+            "search_vector" tsvector NOT NULL
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE INDEX IF NOT EXISTS "index_episode_search_on_search_vector"
+          ON "episode_search"
+          USING GIN ("search_vector")
+          """
+        )
+        try await database.run(
+          """
+          ALTER TABLE "episode_search"
+          ADD COLUMN IF NOT EXISTS
+          "kind" character varying NOT NULL DEFAULT 'prose'
+          """
+        )
       },
       redeemEmailLoginCode: { email, code in
         try await pool.sqlDatabase.first(
@@ -1084,6 +1110,31 @@ extension Client {
           VALUES (\(bind: episodeSequence), \(bind: userId))
           """
         )
+      },
+      refreshEpisodeSearchIndex: { documents in
+        let database = pool.sqlDatabase
+        try await database.run("""
+          DELETE FROM "episode_search"
+          """)
+        for document in documents {
+          try await database.run(
+            """
+            INSERT INTO "episode_search"
+            ("episode_sequence", "section_title", "timestamp", "content", "kind", "search_vector")
+            VALUES (
+              \(bind: document.episodeSequence),
+              \(bind: document.sectionTitle),
+              \(bind: document.timestamp),
+              \(bind: document.content),
+              \(bind: document.kind),
+              setweight(
+                to_tsvector('english', \(bind: document.content)),
+                \(bind: document.kind.weight)::"char"
+              )
+            )
+            """
+          )
+        }
       },
       regenerateTeamInviteCode: { subscriptionID in
         try await pool.sqlDatabase.run(
@@ -1121,6 +1172,83 @@ extension Client {
           WHERE "id" = \(bind: userId)
           """
         )
+      },
+      searchEpisodes: { query in
+        let capitalizedTerms = query
+          .split(whereSeparator: { !$0.isLetter && !$0.isNumber })
+          .filter { $0.contains(where: \.isUppercase) }
+        let capitalizedPattern =
+          capitalizedTerms.isEmpty
+          ? nil
+          : #"\m("# + capitalizedTerms.joined(separator: "|") + #")\M"#
+        return try await pool.sqlDatabase.all(
+          """
+          SELECT
+            "episode_sequence",
+            "section_title",
+            "timestamp",
+            "kind",
+            "headline",
+            "headline_position" = 0
+              OR "headline_position" + length("plain_headline") < length("content") + 1
+              AS "headline_is_truncated_at_end",
+            "headline_position" <> 1 AS "headline_is_truncated_at_start",
+            "headline_position" >= 1
+              AND length(
+                regexp_replace(left("content", "headline_position" - 1), '[^`]', '', 'g')
+              ) % 2 = 1
+              AS "headline_starts_inside_code_span"
+          FROM (
+            SELECT *, position("plain_headline" in "content") AS "headline_position"
+            FROM (
+              SELECT *, regexp_replace("headline", '[⟪⟫]', '', 'g') AS "plain_headline"
+              FROM (
+                SELECT *,
+                  ts_headline(
+                    'english',
+                    "content",
+                    "query",
+                    'StartSel=⟪, StopSel=⟫, MaxWords=32, MinWords=16'
+                  ) AS "headline"
+                FROM (
+                  SELECT "episode_search".*, "query",
+                    ts_rank("search_vector", "query")
+                      * CASE
+                        WHEN "content" ~ \(bind: capitalizedPattern) THEN 4.0
+                        ELSE 1.0
+                      END
+                      AS "rank"
+                  FROM "episode_search",
+                    websearch_to_tsquery('english', \(bind: query)) AS "query"
+                  WHERE "search_vector" @@ "query"
+                  ORDER BY "rank" DESC
+                  LIMIT 100
+                ) AS "ranked"
+              ) AS "headlined"
+            ) AS "measured"
+          ) AS "matches"
+          ORDER BY "rank" DESC
+          """
+        )
+      },
+      suggestEpisodeSearchTerms: { query in
+        struct Row: Decodable {
+          let content: String
+        }
+        return try await pool.sqlDatabase
+          .all(
+            """
+            SELECT "content"
+            FROM "episode_search"
+            WHERE "kind" IN ('title', 'episodeTitle')
+            AND strict_word_similarity(\(bind: query), "content") >= 0.4
+            GROUP BY "content"
+            ORDER BY strict_word_similarity(\(bind: query), "content") DESC, "content"
+            LIMIT 5
+            """,
+            decoding: Row.self
+          )
+          .map { $0.content.replacingOccurrences(of: "`", with: "") }
       },
       updateEmailSettings: { settings, userId in
         guard let settings else { return }
@@ -1249,5 +1377,17 @@ extension Client {
         )
       }
     )
+  }
+}
+
+extension EpisodeSearchDocument.Kind {
+  fileprivate var weight: String {
+    switch self {
+    case .blurb: "B"
+    case .code: "D"
+    case .episodeTitle: "A"
+    case .prose: "C"
+    case .title: "B"
+    }
   }
 }

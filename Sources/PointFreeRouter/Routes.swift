@@ -40,6 +40,7 @@ public indirect enum SiteRoute: Equatable {
   case privacy
   case resume
   case robots
+  case search(query: String? = nil, access: SearchAccess? = nil, sort: SearchSort? = nil)
   case slackInvite
   case subscribe(SubscribeData? = nil)
   case subscribeConfirmation(
@@ -119,6 +120,15 @@ public indirect enum SiteRoute: Equatable {
     case requestInvite(EnterpriseRequestFormData)
   }
 
+  public enum SearchAccess: String, CaseIterable, Equatable {
+    case free
+    case subscriberOnly = "subscriber-only"
+  }
+
+  public enum SearchSort: String, CaseIterable, Equatable {
+    case newest
+  }
+
   public enum EpisodesRoute: Equatable {
     case list(ListType)
     case episode(param: Either<String, Episode.ID>, EpisodeRoute)
@@ -184,6 +194,15 @@ public indirect enum SiteRoute: Equatable {
   public enum WellKnown {
     case appleDeveloperMerchantIdDomainAssociation
     case atProto
+  }
+}
+
+struct FormEncodedSpaces: Conversion {
+  func apply(_ input: String) -> String {
+    input.replacingOccurrences(of: "+", with: " ")
+  }
+  func unapply(_ output: String) -> String {
+    output
   }
 }
 
@@ -557,6 +576,21 @@ struct SiteRouter: ParserPrinter {
 
       Route(.case(SiteRoute.robots)) {
         Path { "robots.txt" }
+      }
+
+      Route(.case(SiteRoute.search)) {
+        Path { "search" }
+        Query {
+          Optionally {
+            Field("q", .string.map(FormEncodedSpaces()))
+          }
+          Optionally {
+            Field("access") { SiteRoute.SearchAccess.parser() }
+          }
+          Optionally {
+            Field("sort") { SiteRoute.SearchSort.parser() }
+          }
+        }
       }
 
       Route(.case(SiteRoute.slackInvite)) {
