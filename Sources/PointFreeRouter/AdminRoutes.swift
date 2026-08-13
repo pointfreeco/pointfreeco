@@ -175,6 +175,11 @@ struct AdminRouter: ParserPrinter {
                   Optionally {
                     Parse(.memberwise(NewBlogPostFormData.init)) {
                       Field(
+                        NewBlogPostFormData.CodingKeys.maxSubscriberDeliver.rawValue, default: false
+                      ) {
+                        Bool.parser()
+                      }
+                      Field(
                         NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue,
                         default: ""
                       )

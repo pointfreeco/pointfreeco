@@ -422,6 +422,12 @@ extension Client {
         switch nonsubscriberOrSubscriber {
         case nil:
           condition = ""
+        case .maxSubscriber:
+          condition = #"""
+             AND "users"."subscription_id" IN (
+              SELECT "id" FROM "subscriptions" WHERE "plan" = \#(bind: Pricing.Plan.max)
+            )
+            """#
         case .nonSubscriber:
           condition = #" AND "users"."subscription_id" IS NULL"#
         case .subscriber:
