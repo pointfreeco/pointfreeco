@@ -31,10 +31,9 @@ public struct Beta {
     Beta(
       title: "LazyState",
       blurb: """
-        A @LazyState macro that picks up where WWDC's new @State macro left off, allowing state \
-        in SwiftUI views to be initialized lazily and dynamically, using data passed in from \
-        the parent view. \
-        [Read more →](/blog/posts/222-beta-preview-lazystate)
+        A macro for dynamically and lazily creating SwiftUI state based on parameters passed from \
+        the outside, a much needed tool still not provided by Apple. \
+        [Read more →](/blog/posts/222-beta-preview-lazystate)      
         """,
       imageURL:
         "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/b1189a85-a5ed-49bc-5b6f-5a2394b7d800/public",
