@@ -84,6 +84,10 @@ public struct Client {
     (_ paymentIntentID: PaymentIntent.ID) async throws -> Gift
   public var fetchGiftsToDeliver: () async throws -> [Gift]
   public var fetchLivestreams: () async throws -> [Livestream]
+  @DependencyEndpoint(method: "fetchOfficeHour")
+  public var fetchOfficeHourByCloudflareVideoID:
+    (_ cloudflareVideoID: Cloudflare.Video.ID) async throws -> OfficeHour
+  public var fetchOfficeHours: () async throws -> [OfficeHour]
   @DependencyEndpoint(method: "fetchSubscription")
   public var fetchSubscriptionById:
     (_ id: Models.Subscription.ID) async throws -> Models.Subscription

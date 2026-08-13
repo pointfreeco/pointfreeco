@@ -36,6 +36,7 @@ public indirect enum SiteRoute: Equatable {
   case home
   case invite(Invite)
   case live(Live)
+  case officeHours(OfficeHoursRoute = .index)
   case pricingLanding
   case privacy
   case resume
@@ -650,6 +651,11 @@ struct SiteRouter: ParserPrinter {
       Route(.case(SiteRoute.live)) {
         Path { "live" }
         LiveRouter()
+      }
+
+      Route(.case(SiteRoute.officeHours)) {
+        Path { "office-hours" }
+        OfficeHoursRouter()
       }
 
       Route(.case(SiteRoute.pricingLanding)) {

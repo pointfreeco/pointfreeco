@@ -35,6 +35,8 @@ extension Client {
       [update(.unfulfilled) { $0.deliverAt = .init(timeIntervalSince1970: 1_234_567_890) }]
     },
     fetchLivestreams: { [] },
+    fetchOfficeHourByCloudflareVideoID: { _ in throw unit },
+    fetchOfficeHours: { [] },
     fetchSubscriptionById: { id in update(.mock) { $0.id = id } },
     fetchSubscriptionByOwnerId: { userId in update(.mock) { $0.userId = userId } },
     fetchSubscriptionByTeamInviteCode: { teamInviteCode in

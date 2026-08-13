@@ -290,6 +290,23 @@ extension Client {
           """
         )
       },
+      fetchOfficeHourByCloudflareVideoID: { cloudflareVideoID in
+        try await pool.sqlDatabase.first(
+          """
+          SELECT * FROM "office_hours"
+          WHERE "cloudflare_video_id" = \(bind: cloudflareVideoID)
+          LIMIT 1
+          """
+        )
+      },
+      fetchOfficeHours: {
+        try await pool.sqlDatabase.all(
+          """
+          SELECT * FROM "office_hours"
+          ORDER BY "scheduled_at" DESC NULLS LAST, "created_at" DESC
+          """
+        )
+      },
       fetchSubscriptionById: { id in
         try await pool.sqlDatabase.first(
           """
@@ -1068,6 +1085,24 @@ extension Client {
             "code" character varying DEFAULT gen_login_code() NOT NULL,
             "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
             "email" citext NOT NULL UNIQUE
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "office_hours" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "blurb" character varying NOT NULL DEFAULT '',
+            "cloudflare_video_id" character varying UNIQUE,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "description" character varying NOT NULL DEFAULT '',
+            "duration" integer,
+            "is_live" boolean NOT NULL DEFAULT FALSE,
+            "poster_url" character varying NOT NULL DEFAULT '',
+            "scheduled_at" timestamp with time zone,
+            "title" character varying NOT NULL DEFAULT '',
+            "updated_at" timestamp without time zone,
+            "video_id" character varying NOT NULL DEFAULT ''
           )
           """
         )

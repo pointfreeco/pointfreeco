@@ -325,6 +325,22 @@ class PointFreeRouterTests: TestCase {
   }
 
   @MainActor
+  func testOfficeHoursIndex() async throws {
+    let request = URLRequest(url: .init(string: "http://localhost:8080/office-hours")!)
+    let route = SiteRoute.officeHours()
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursDetail() async throws {
+    let request = URLRequest(url: .init(string: "http://localhost:8080/office-hours/deadbeef")!)
+    let route = SiteRoute.officeHours(.officeHour(cloudflareVideoID: "deadbeef"))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
   func testCollectionEpisodeProgress() async throws {
     var request = URLRequest(
       url: URL(string: "http://localhost:8080/collections/tca/basics/1/progress?percent=50")!
