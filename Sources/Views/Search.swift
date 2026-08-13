@@ -69,29 +69,80 @@ public struct SearchPage: HTML {
   }
 
   public var body: some HTML {
-    PageHeader(title: "Search") {
-      "Find any topic covered in our catalogue of videos."
-    }
+    div {
+      PageModule(theme: .search) {
+        VStack(spacing: 2.5) {
+          VStack(spacing: 0.5) {
+            Header(2) {
+              "Search"
+            }
+            .inlineStyle("background", "linear-gradient(135deg, #4cccff, #974dff)")
+            .inlineStyle("-webkit-background-clip", "text")
+            .inlineStyle("background-clip", "text")
+            .inlineStyle("color", "transparent")
+            .inlineStyle("width", "fit-content")
 
-    PageModule(theme: .content) {
-      LazyVGrid(
-        columns: [.mobile: [1], .desktop: [1, 3]],
-        alignItems: .start,
-        horizontalSpacing: 3,
-        verticalSpacing: 2
-      ) {
-        Sidebar(query: query, access: access, sort: sort)
-          .inlineStyle("position", "sticky", media: .desktop)
-          .inlineStyle("top", "2rem", media: .desktop)
+            Paragraph(.big) {
+              "Find any topic covered in our catalog of videos."
+            }
+            .color(.gray300.dark(.gray800))
+          }
 
-        div {
-          SearchResults(query: query, results: results, relatedSearches: relatedSearches)
+          LazyVGrid(
+            columns: [.mobile: [1], .desktop: [1, 3]],
+            alignItems: .start,
+            horizontalSpacing: 3,
+            verticalSpacing: 2
+          ) {
+            Sidebar(query: query, access: access, sort: sort)
+              .inlineStyle("position", "sticky", media: .desktop)
+              .inlineStyle("top", "2rem", media: .desktop)
+
+            div {
+              SearchResults(query: query, results: results, relatedSearches: relatedSearches)
+            }
+            .attribute("id", "search-results")
+          }
         }
-        .attribute("id", "search-results")
       }
     }
+    .searchHeroBackground()
 
     SearchScript()
+  }
+}
+
+extension PageModuleTheme {
+  fileprivate static let search = Self(
+    backgroundColor: nil,
+    color: .black.dark(.offWhite),
+    topMargin: 3,
+    bottomMargin: 4,
+    leftRightMargin: 2,
+    leftRightMarginDesktop: 3,
+    titleMarginBottom: 2
+  )
+}
+
+extension HTML {
+  fileprivate func searchHeroBackground() -> some HTML {
+    inlineStyle(
+      "background",
+      """
+      radial-gradient(600px 220px at 15% 0%, rgba(76, 204, 255, 0.18), transparent 70%), \
+      radial-gradient(600px 220px at 85% 0%, rgba(151, 77, 255, 0.16), transparent 70%), \
+      #ffffff
+      """
+    )
+    .inlineStyle(
+      "background",
+      """
+      radial-gradient(600px 220px at 15% 0%, rgba(76, 204, 255, 0.10), transparent 70%), \
+      radial-gradient(600px 220px at 85% 0%, rgba(151, 77, 255, 0.12), transparent 70%), \
+      #121212
+      """,
+      media: .dark
+    )
   }
 }
 
@@ -110,10 +161,14 @@ public struct SearchResults: HTML {
     VStack(spacing: 2) {
       if query.isEmpty {
         SearchTips()
+        LatestAdditions()
+        BrowseLinks()
       } else {
         if results.isEmpty {
           Paragraph {
-            "We didn’t find anything matching “\(query)”. Try another search."
+            "We didn’t find anything matching "
+            QueryPill(query: query)
+            ". Try another search."
           }
           .color(.gray400.dark(.gray650))
 
@@ -125,17 +180,67 @@ public struct SearchResults: HTML {
           }
 
           SearchTips()
+          BrowseLinks()
         } else {
           div {
             results.count == 1
-              ? "1 video matches “\(query)”"
-              : "\(results.count) videos match “\(query)”"
+              ? "1 video matches "
+              : "\(results.count) videos match "
+            QueryPill(query: query)
           }
           .color(.gray650.dark(.gray400))
           .fontStyle(.body(.small))
 
           for result in results {
             ResultView(result: result)
+          }
+        }
+      }
+    }
+  }
+}
+
+private struct QueryPill: HTML {
+  let query: String
+
+  var body: some HTML {
+    span {
+      HTMLText(query)
+    }
+    .color(.purple)
+    .fontStyle(.body(.small))
+    .inlineStyle("background", "color-mix(in oklab, #974dff 10%, transparent)")
+    .inlineStyle("background", "color-mix(in oklab, #974dff 15%, transparent)", media: .dark)
+    .inlineStyle("border-radius", "999px")
+    .inlineStyle("display", "inline-block")
+    .inlineStyle("padding", "0.1rem 0.6rem")
+  }
+}
+
+private struct LatestAdditions: HTML {
+  @Dependency(\.episodes) var episodes
+
+  var latest: [Episode] {
+    Array(episodes().sorted { $0.sequence > $1.sequence }.prefix(3))
+  }
+
+  var body: some HTML {
+    VStack(spacing: 1) {
+      CapsHeading(title: "Latest additions")
+      VStack(spacing: 1) {
+        HTMLForEach(latest) { episode in
+          VStack(spacing: 0.25) {
+            div {
+              "Video \(episode.sequence.rawValue) • \(episode.publishedAt.monthDayYear())"
+            }
+            .color(.gray650.dark(.gray400))
+            .fontStyle(.body(.small))
+
+            Link(destination: .episodes(.show(episode))) {
+              HTMLText(episode.fullTitle)
+            }
+            .linkColor(.black.dark(.white))
+            .inlineStyle("font-weight", "600")
           }
         }
       }
@@ -151,6 +256,7 @@ private struct SearchScript: HTML {
         const form = document.getElementById("search-form");
         const results = document.getElementById("search-results");
         if (!form || !results) return;
+        document.documentElement.style.scrollbarGutter = "stable";
         const input = form.querySelector("input[name=q]");
         const icons = {
           sort: {
@@ -272,6 +378,7 @@ private struct SearchTips: HTML {
     ["cross platform", "Android", "Windows"],
     ["dependencies"],
     ["domain modeling", "value types", "enums"],
+    ["embedded"],
     ["evolution", "Swift Evolution"],
     ["generics"],
     ["key paths", "case paths"],
@@ -296,18 +403,84 @@ private struct SearchTips: HTML {
   ]
 
   var body: some HTML {
-    VStack(spacing: 1) {
-      CapsHeading(title: "Try one of these")
-      SuggestionPills(
-        suggestions: withRandomNumberGenerator { rng in
-          Array(
-            Self.suggestions
-              .compactMap { $0.randomElement(using: &rng) }
-              .shuffled(using: &rng)
-              .prefix(12)
+    VStack(spacing: 2.5) {
+      VStack(spacing: 1) {
+        CapsHeading(title: "Try one of these")
+        SuggestionPills(
+          suggestions: withRandomNumberGenerator { rng in
+            Array(
+              Self.suggestions
+                .compactMap { $0.randomElement(using: &rng) }
+                .shuffled(using: &rng)
+                .prefix(12)
+            )
+          }
+        )
+      }
+
+      VStack(spacing: 1) {
+        CapsHeading(title: "Search tips")
+        VStack(spacing: 0.75) {
+          TipRow(
+            example: "\"macro testing\"",
+            text: "Wrap words in quotes to match a phrase exactly."
+          )
+          TipRow(
+            example: "uikit -swiftui",
+            text: "Use a minus to leave a term out of results."
+          )
+          TipRow(
+            example: "Never",
+            text: "Use uppercase to prioritize case-sensitive matches."
           )
         }
-      )
+      }
+
+    }
+  }
+}
+
+private struct BrowseLinks: HTML {
+  var body: some HTML {
+    VStack(spacing: 1) {
+      CapsHeading(title: "Or browse")
+      div {
+        Link("All videos →", destination: .episodes(.list(.all)))
+        Link("Collections →", destination: .collections())
+        Link("Free clips →", destination: .clips(.clips))
+      }
+      .linkColor(.purple)
+      .fontStyle(.body(.small))
+      .flexContainer(direction: "row", wrap: "wrap", rowGap: "0.5rem", columnGap: "1.5rem")
+    }
+  }
+}
+
+private struct TipRow: HTML {
+  let example: String
+  let text: String
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    HStack(alignment: .center, spacing: 0.75) {
+      Link(href: siteRouter.path(for: .search(query: example))) {
+        HTMLText(example)
+      }
+      .linkColor(.purple)
+      .fontStyle(.body(.small))
+      .inlineStyle("background", "color-mix(in oklab, #974dff 10%, transparent)")
+      .inlineStyle("background", "color-mix(in oklab, #974dff 15%, transparent)", media: .dark)
+      .inlineStyle("border-radius", "999px")
+      .inlineStyle("display", "inline-block")
+      .inlineStyle("flex-shrink", "0")
+      .inlineStyle("padding", "0.35rem 0.75rem")
+      .inlineStyle("white-space", "nowrap")
+
+      span {
+        HTMLText(text)
+      }
+      .color(.gray400.dark(.gray650))
+      .fontStyle(.body(.small))
     }
   }
 }
@@ -714,7 +887,31 @@ private func snippetSegments(
     }
   }
   flush()
-  return segments
+
+  var merged: [SnippetSegment] = []
+  var index = 0
+  while index < segments.count {
+    let segment = segments[index]
+    if let previous = merged.last,
+      previous.isMatch,
+      !segment.isMatch,
+      segment.text.allSatisfy(\.isWhitespace),
+      index + 1 < segments.count,
+      segments[index + 1].isMatch,
+      segments[index + 1].isCode == previous.isCode
+    {
+      merged[merged.count - 1] = SnippetSegment(
+        text: previous.text + segment.text + segments[index + 1].text,
+        isMatch: true,
+        isCode: previous.isCode
+      )
+      index += 2
+    } else {
+      merged.append(segment)
+      index += 1
+    }
+  }
+  return merged
 }
 
 private struct TruncationEllipsis: HTML {
@@ -764,6 +961,8 @@ private struct SnippetText: HTML {
       .inlineStyle("background", "color-mix(in oklab, #974dff 20%, transparent)")
       .inlineStyle("border-radius", "0.25rem")
       .inlineStyle("color", "inherit")
+      .inlineStyle("margin", "-1px -2px")
+      .inlineStyle("padding", "1px 2px")
     } else {
       HTMLText(text)
     }

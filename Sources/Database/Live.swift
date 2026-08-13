@@ -1099,6 +1099,13 @@ extension Client {
           "timestamp_markers" jsonb NOT NULL DEFAULT '[]'
           """
         )
+        try await database.run(
+          """
+          CREATE INDEX IF NOT EXISTS "index_episode_search_on_content_trigrams"
+          ON "episode_search"
+          USING GIN ("content" gin_trgm_ops)
+          """
+        )
       },
       redeemEmailLoginCode: { email, code in
         try await pool.sqlDatabase.first(
@@ -1215,8 +1222,33 @@ extension Client {
         if !currentToken.isEmpty {
           tokens.append(currentToken)
         }
-        let positiveTerms = tokens.filter { !$0.hasPrefix("-") }
-        let negatedQuery = tokens.filter { $0.hasPrefix("-") }.joined(separator: " ")
+        var positiveTerms: [String] = []
+        var literalTerms: [String] = []
+        var negatedTokens: [String] = []
+        for token in tokens {
+          if token.hasPrefix("-") {
+            negatedTokens.append(token)
+          } else if token.hasPrefix("\"") {
+            let literal = token.trimmingCharacters(in: CharacterSet(charactersIn: "\""))
+            if !literal.isEmpty {
+              literalTerms.append(literal)
+            }
+          } else {
+            let term = token.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+            if !term.isEmpty {
+              positiveTerms.append(term)
+            }
+          }
+        }
+        let negatedQuery = negatedTokens.joined(separator: " ")
+        let literalPatterns = literalTerms.map {
+          "%"
+            + $0
+            .replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "%", with: "\\%")
+            .replacingOccurrences(of: "_", with: "\\_")
+            + "%"
+        }
 
         return try await pool.sqlDatabase.all(
           """
@@ -1224,6 +1256,12 @@ extension Client {
             SELECT DISTINCT websearch_to_tsquery('english', "term") AS "q"
             FROM unnest(\(bind: positiveTerms)::text[]) AS "term"
             WHERE websearch_to_tsquery('english', "term") <> ''
+          ),
+          "literals" AS (
+            SELECT DISTINCT "literal", "pattern"
+            FROM unnest(
+              \(bind: literalTerms)::text[], \(bind: literalPatterns)::text[]
+            ) AS "l"("literal", "pattern")
           ),
           "search_query" AS (
             SELECT CASE
@@ -1236,19 +1274,43 @@ extension Client {
           ),
           "episodes" AS (
             SELECT "episode_sequence"
-            FROM "episode_search" CROSS JOIN "terms"
-            WHERE "search_vector" @@ "q"
+            FROM (
+              SELECT "episode_sequence", "q"::text AS "matched"
+              FROM "episode_search" CROSS JOIN "terms"
+              WHERE "search_vector" @@ "q"
+              UNION
+              SELECT "episode_sequence", "literal"
+              FROM "episode_search" CROSS JOIN "literals"
+              WHERE "content" ILIKE "pattern"
+            ) AS "term_matches"
             GROUP BY "episode_sequence"
-            HAVING count(DISTINCT "q"::text) = (SELECT count(*) FROM "terms")
+            HAVING count(DISTINCT "matched")
+              = (SELECT count(*) FROM "terms") + (SELECT count(*) FROM "literals")
           ),
           "ranked" AS (
             SELECT "episode_search".*,
-              ts_rank("search_vector", "query")
-                * CASE WHEN "content" ~ \(bind: capitalizedPattern) THEN 4.0 ELSE 1.0 END
+              coalesce(
+                ts_rank("search_vector", "query")
+                  * CASE WHEN "content" ~ \(bind: capitalizedPattern) THEN 4.0 ELSE 1.0 END,
+                0
+              )
+                + CASE
+                  WHEN EXISTS (
+                    SELECT 1 FROM "literals"
+                    WHERE "episode_search"."content" ILIKE "pattern"
+                  )
+                  THEN 1.0
+                  ELSE 0.0
+                END
                 AS "rank"
             FROM "episode_search" CROSS JOIN "search_query"
             WHERE "episode_sequence" IN (SELECT "episode_sequence" FROM "episodes")
-            AND "search_vector" @@ "query"
+            AND (
+              "search_vector" @@ "query"
+              OR EXISTS (
+                SELECT 1 FROM "literals" WHERE "episode_search"."content" ILIKE "pattern"
+              )
+            )
             ORDER BY "rank" DESC
             LIMIT 100
           )
@@ -1267,7 +1329,7 @@ extension Client {
             ) AS "timestamp",
             "kind",
             "headline",
-            ARRAY["q"::text] AS "matched_terms",
+            "matched_terms",
             "headline_position" = 0
               OR "headline_position" + length("plain_headline") < length("content") + 1
               AS "headline_is_truncated_at_end",
@@ -1277,11 +1339,40 @@ extension Client {
                 regexp_replace(left("content", "headline_position" - 1), '[^`]', '', 'g')
               ) % 2 = 1
               AS "headline_starts_inside_code_span"
-          FROM "ranked"
-          JOIN "terms" ON "search_vector" @@ "q",
-            ts_headline(
-              'english', "content", "q", 'StartSel=⟪, StopSel=⟫, MaxWords=32, MinWords=16'
-            ) AS "headline",
+          FROM (
+            SELECT "ranked".*,
+              ts_headline(
+                'english', "content", "q", 'StartSel=⟪, StopSel=⟫, MaxWords=32, MinWords=16'
+              ) AS "headline",
+              ARRAY["q"::text] AS "matched_terms"
+            FROM "ranked"
+            JOIN "terms" ON "search_vector" @@ "q"
+            WHERE "kind" NOT IN ('title', 'episodeTitle')
+            UNION ALL
+            SELECT "ranked".*,
+              ts_headline(
+                'english', "content", "query", 'StartSel=⟪, StopSel=⟫, MaxWords=32, MinWords=16'
+              ) AS "headline",
+              ARRAY(
+                SELECT "q"::text FROM "terms" WHERE "ranked"."search_vector" @@ "q"
+              ) AS "matched_terms"
+            FROM "ranked" CROSS JOIN "search_query"
+            WHERE "kind" IN ('title', 'episodeTitle')
+            AND "search_vector" @@ "query"
+            UNION ALL
+            SELECT "ranked".*,
+              substring("content" FROM "window_start" FOR "literal_position" - "window_start")
+                || '⟪'
+                || substring("content" FROM "literal_position" FOR length("literal"))
+                || '⟫'
+                || substring("content" FROM "literal_position" + length("literal") FOR 100)
+                AS "headline",
+              ARRAY['"' || "literal" || '"'] AS "matched_terms"
+            FROM "ranked"
+            JOIN "literals" ON "content" ILIKE "pattern",
+              strpos(lower("content"), lower("literal")) AS "literal_position",
+              GREATEST(1, "literal_position" - 100) AS "window_start"
+          ) AS "fragments",
             regexp_replace("headline", '[⟪⟫]', '', 'g') AS "plain_headline",
             strpos("content", "plain_headline") AS "headline_position"
           ORDER BY "rank" DESC

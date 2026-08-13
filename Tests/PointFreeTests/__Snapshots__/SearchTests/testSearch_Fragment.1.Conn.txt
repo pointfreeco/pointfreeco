@@ -3,7 +3,7 @@ Cookie: pf_session={}
 X-Fragment: results
 
 200 OK
-Content-Length: 3302
+Content-Length: 3766
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -22,6 +22,11 @@ X-XSS-Protection: 1; mode=block
 .line-height-9Qkso4{line-height:1.5}
 .font-size-RTPM71{font-size:0.875rem}
 .color-Vt0a43{color:#a8a8a8}
+.background-HKChQ2{background:color-mix(in oklab, #974dff 10%, transparent)}
+.border-radius-btBsa3{border-radius:999px}
+.display-qrAHi{display:inline-block}
+.padding-5iWWD3{padding:0.1rem 0.6rem}
+.color-cemJK2{color:#974dff}
 .row-gap-NKv2f3{row-gap:0.5rem}
 .font-size-Xin5E2{font-size:1.5rem}
 .font-weight-SywJI1{font-weight:700}
@@ -37,7 +42,6 @@ X-XSS-Protection: 1; mode=block
 .row-gap-FxsCt1{row-gap:0.25rem}
 .color-d8fIz1:link{color:#974dff}
 .color-C4SO14:visited{color:#974dff}
-.color-cemJK2{color:#974dff}
 .color-OpZD03{color:#666666}
 .padding-bottom-XWkc24:not(pf-vstack > *):has(+hr){padding-bottom:0.5rem}
 .padding-top-FBkWQ3{padding-top:0}
@@ -48,8 +52,11 @@ X-XSS-Protection: 1; mode=block
 .background-EXtgH3{background:color-mix(in oklab, #974dff 20%, transparent)}
 .border-radius-FxsCt1{border-radius:0.25rem}
 .color-trEDH1{color:inherit}
+.margin-8gnFD{margin:-1px -2px}
+.padding-SR8ev4{padding:1px 2px}
 @media (prefers-color-scheme: dark){
   .color-Cn4Oi1{color:#666666}
+  .background-1ZqEU3{background:color-mix(in oklab, #974dff 15%, transparent)}
   .color-3tgnX1:link{color:#fff}
   .color-fIiIX2:visited{color:#fff}
   .color-wVkSF3{color:#fff}
@@ -57,7 +64,7 @@ X-XSS-Protection: 1; mode=block
 }
 </style>
 <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-QgYLk2">
-  <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">1 video matches “increment function”
+  <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">1 video matches <span class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-5iWWD3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-cemJK2">increment function</span>
   </div>
   <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
     <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">Video 1 • Jun 20, 2017
@@ -65,7 +72,7 @@ X-XSS-Protection: 1; mode=block
     <h4 class="font-size-Xin5E2 font-weight-SywJI1 line-height-auF6B margin-FBkWQ3"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-T7UxR2 color-3tgnX1 color-IVYQy2 color-fIiIX2 color-K2J0r1 color-wVkSF3" href="/episodes/ep1-type-safe-html-in-swift">Type-Safe HTML in Swift</a>
     </h4>
     <pf-vstack class="margin-left-NKv2f3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-FxsCt1"><a class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes/ep1-type-safe-html-in-swift#t68">Functions that increment (1:08)</a>
-      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2">We can define an <mark class="background-EXtgH3 border-radius-FxsCt1 color-trEDH1">increment</mark> <mark class="background-EXtgH3 border-radius-FxsCt1 color-trEDH1">function</mark> by extending <code>Int</code>.
+      <p class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2">We can define an <mark class="background-EXtgH3 border-radius-FxsCt1 color-trEDH1 margin-8gnFD padding-SR8ev4">increment function</mark> by extending <code>Int</code>.
       </p>
     </pf-vstack>
   </pf-vstack>

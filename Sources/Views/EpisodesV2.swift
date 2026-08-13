@@ -180,7 +180,7 @@ private struct EpisodesHeader: HTML {
       switch listType {
       case .all:
         if subscriberState.isActiveSubscriber {
-          "Watch our entire catalogue of videos, all \(episodeCount) of them."
+          "Watch our entire catalog of videos, all \(episodeCount) of them."
         } else {
           "Watch some for "
           Link("free", destination: .episodes(.list(.free)))

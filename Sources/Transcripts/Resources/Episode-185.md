@@ -19,7 +19,7 @@ Until now. swift-parsing makes it possible for you to build your own unified par
 It’s honestly pretty amazing to see as it is not uncommon for one to build a parser for some domain, often in an ad-hoc manner by just splitting or manipulating strings, and then in a completely different ad-hoc manner write a printer to convert that domain back to a string. It’s then our responsibility to make sure that the logic scattered among parser and printer remain in sync so that any changes or bug fixes to one are made in the other. But unified parser-printers solve these problems and more.
 
 @T(00:01:45)
-In this next series of episodes we would like to give a tour of the library by showing how to build three parser-printers from scratch. But if you’re interested in the underlying design of the library we have [a back catalogue of episodes](/collections/parsing) that build the library from first principles that you may want to check out.
+In this next series of episodes we would like to give a tour of the library by showing how to build three parser-printers from scratch. But if you’re interested in the underlying design of the library we have [a back catalog of episodes](/collections/parsing) that build the library from first principles that you may want to check out.
 
 @T(00:02:03)
 In this series we’ll start with a little demo inspired by one of last year’s [Advent of Code](https://adventofcode.com) challenges, then we’ll move onto a bank transaction parser-printer inspired by some of the new regex string processing that Apple is working on, and finally we will create a URL router that can be used to simultaneously power a web server and an iOS application’s API client.

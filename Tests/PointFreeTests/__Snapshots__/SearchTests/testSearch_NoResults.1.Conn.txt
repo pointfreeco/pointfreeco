@@ -2,7 +2,7 @@ GET http://localhost:8080/search?q=uikot
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 53632
+Content-Length: 58279
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -223,34 +223,35 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .max-height-C8uWv{max-height:100%}
 .column-gap-FxsCt1{column-gap:0.25rem}
 .text-align-CdPBO2{text-align:center}
-.box-sizing-otfSh{box-sizing:border-box}
-.background-RMpfJ3{background:linear-gradient(#121212, #242424)}
+.background-kmwhZ1{background:radial-gradient(600px 220px at 15% 0%, rgba(76, 204, 255, 0.18), transparent 70%), radial-gradient(600px 220px at 85% 0%, rgba(151, 77, 255, 0.16), transparent 70%), #ffffff}
+.color-K2J0r1{color:#121212}
+.padding-5nonC3{padding:3.0rem 2.0rem 4.0rem}
+.justify-content-n56cj2{justify-content:flex-start}
+.align-items-0Zubr3{align-items:baseline}
 .align-items-msN8p3{align-items:stretch}
 .flex-direction-7gclL{flex-direction:column}
 .max-width-C8uWv{max-width:100%}
-.row-gap-83zzS1{row-gap:1.0rem}
-.padding-jNK411{padding:6rem 2rem}
-.column-gap-83zzS1{column-gap:1.0rem}
+.row-gap-Wr637{row-gap:2.5rem}
+.row-gap-NKv2f3{row-gap:0.5rem}
+.background-I4CQj3{background:linear-gradient(135deg, #4cccff, #974dff)}
+.-webkit-background-clip-inoYC3{-webkit-background-clip:text}
+.background-clip-inoYC3{background-clip:text}
+.color-JyKaz4{color:transparent}
+.width-efcee4{width:fit-content}
 .margin-top-rmfs01:not(:first-child){margin-top:1.75rem}
 .margin-bottom-1rcXs4:not(:last-child){margin-bottom:0.75rem}
 .font-size-NBsge3{font-size:3.0rem}
 .line-height-auF6B{line-height:1.2}
-.font-weight-evfWi1{font-weight:normal}
-.line-height-9Qkso4{line-height:1.5}
-.font-size-83zzS1{font-size:1.0rem}
+.color-GPfER1{color:#555555}
 .padding-bottom-XWkc24:not(pf-vstack > *):has(+hr){padding-bottom:0.5rem}
 .padding-top-FBkWQ3{padding-top:0}
 .padding-left-FBkWQ3{padding-left:0}
 .padding-right-FBkWQ3{padding-right:0}
+.line-height-9Qkso4{line-height:1.5}
 .font-size-6nw8i1{font-size:1.1875rem}
 .line-height-vsvaN2{line-height:1.75rem}
-.color-c5ixr2{color:#fafafa}
-.background-color-nbn0i3{background-color:#fff}
-.color-K2J0r1{color:#121212}
-.padding-bFon03{padding:4.0rem 2.0rem 4.0rem}
-.justify-content-n56cj2{justify-content:flex-start}
-.align-items-0Zubr3{align-items:baseline}
 .align-items-cQlZY2{align-items:start}
+.row-gap-83zzS1{row-gap:1.0rem}
 .background-image-OsXMz3{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E")}
 .background-position-EXrME1{background-position:0.75rem center}
 .background-repeat-1dIl11{background-repeat:no-repeat}
@@ -258,8 +259,10 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .border-jpHFG3{border:1px solid #d8d8d8}
 .outline-color-cemJK2{outline-color:#974dff}
 .padding-0HTUZ2{padding:0.75rem 1rem 0.75rem 2.5rem}
+.background-color-nbn0i3{background-color:#fff}
+.font-weight-evfWi1{font-weight:normal}
+.font-size-83zzS1{font-size:1.0rem}
 .margin-top-NKv2f3{margin-top:0.5rem}
-.row-gap-NKv2f3{row-gap:0.5rem}
 .-webkit-appearance-Wl0y44{-webkit-appearance:none}
 .background-image-Rd6GH3{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Ccircle cx='12' cy='12' r='4.5'/%3E%3Ccircle cx='12' cy='12' r='0.5'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")}
 .background-position-s9o6M2{background-position:0.75rem center, right 0.75rem center}
@@ -269,10 +272,15 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .row-gap-QgYLk2{row-gap:2.0rem}
 .color-OpZD03{color:#666666}
 .line-height-Xin5E2{line-height:1.5rem}
+.padding-5iWWD3{padding:0.1rem 0.6rem}
 .font-weight-uXksW1{font-weight:600}
 .letter-spacing-A5R421{letter-spacing:0.05em}
 .text-transform-RqT8X1{text-transform:uppercase}
 .column-gap-NKv2f3{column-gap:0.5rem}
+.row-gap-xlo1p4{row-gap:0.75rem}
+.column-gap-xlo1p4{column-gap:0.75rem}
+.flex-shrink-FBkWQ3{flex-shrink:0}
+.column-gap-Xin5E2{column-gap:1.5rem}
 .background-color-K2J0r1{background-color:#121212}
 .font-size-yLOVS3{font-size:1.25rem}
 .line-height-B6FIc2{line-height:1.45}
@@ -280,6 +288,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .color-H59Xg3:link{color:#79f2b0}
 .color-tgLLb3:visited{color:#79f2b0}
 .color-ov8tN1{color:#79f2b0}
+.column-gap-83zzS1{column-gap:1.0rem}
 .display-mqllb2{display:grid}
 .grid-template-columns-hE9y01{grid-template-columns:minmax(0, 1fr) minmax(0, 2fr)}
 .font-size-xlo1p4{font-size:0.75rem}
@@ -306,9 +315,8 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   .padding-dR5Tt4{padding:1.5rem}
   .padding-left-dR5Tt4{padding-left:1.5rem}
   .display-Nvbu41{display:none}
-  .padding-jFt024{padding:8rem 3rem}
   .margin-mBI0f2{margin:0 auto}
-  .padding-EmXfB2{padding:4.0rem 3.0rem 4.0rem}
+  .padding-zneMT1{padding:3.0rem 3.0rem 4.0rem}
   .column-gap-23FXG2{column-gap:3.0rem}
   .display-jdJkm4{display:grid}
   .grid-template-columns-Pyba93{grid-template-columns:minmax(0, 1fr) minmax(0, 3fr)}
@@ -328,10 +336,12 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 @media (prefers-color-scheme: dark){
   .background-1ZqEU3{background:color-mix(in oklab, #974dff 15%, transparent)}
   .border-top-MR1dZ1{border-top:1px solid #555555}
-  .background-color-dMv2U1{background-color:#121212}
+  .background-f3Vux3{background:radial-gradient(600px 220px at 15% 0%, rgba(76, 204, 255, 0.10), transparent 70%), radial-gradient(600px 220px at 85% 0%, rgba(151, 77, 255, 0.12), transparent 70%), #121212}
   .color-GOHNR{color:#fafafa}
+  .color-VoDZ9{color:#ccc}
   .color-wVkSF3{color:#fff}
   .border-YpuU43{border:1px solid #454545}
+  .background-color-dMv2U1{background-color:#121212}
   .color-5uscm3{color:#a8a8a8}
 }
 @media only screen and (max-width: 940px){
@@ -439,63 +449,82 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
     </ul>
   </div>
 </nav>
-<pf-vstack class="box-sizing-otfSh background-RMpfJ3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-  <pf-hstack class="box-sizing-otfSh flex-basis-C8uWv max-width-P6HnV width-C8uWv margin-gEzmi padding-jNK411 padding-jFt024 align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-83zzS1">
-    <div class="flex-grow-tzL8I2">
-      <h2 class="color-nbn0i3 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">Search
-      </h2>
-      <p class="color-KmPrN font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2">Find any topic covered in our catalogue of videos.
-      </p>
-    </div>
-    <div class="color-c5ixr2">
-    </div>
-  </pf-hstack>
-</pf-vstack>
-<div class="background-color-nbn0i3 background-color-dMv2U1">
-  <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-bFon03 padding-EmXfB2 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
-    <pf-vgrid class="align-items-cQlZY2 width-C8uWv column-gap-1k9GW3 display-Vv9EA3 grid-template-columns-RehC04 row-gap-bS1Ay3 column-gap-23FXG2 display-jdJkm4 grid-template-columns-Pyba93 row-gap-6BZZO1">
-      <pf-vstack class="position-rSYDC top-t5q1l4 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-        <div class="font-weight-SywJI1 color-K2J0r1 color-wVkSF3">Refine your results
-        </div>
-        <form action="/search" id="search-form"><input class="background-image-OsXMz3 background-position-EXrME1 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 outline-color-cemJK2 padding-0HTUZ2 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" type="search" name="q" value="uikot" placeholder="Search for topics">
-          <pf-vstack class="margin-top-NKv2f3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><select class="appearance-Wl0y44 -webkit-appearance-Wl0y44 background-image-Rd6GH3 background-position-s9o6M2 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 cursor-xmR5l padding-IpiAj3 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" name="sort" aria-label="Sort by" onchange="this.form.requestSubmit()">
-            <option value selected>Relevance
-            </option>
-            <option value="newest">Newest
-            </option></select><select class="appearance-Wl0y44 -webkit-appearance-Wl0y44 background-image-itpFC3 background-position-s9o6M2 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 cursor-xmR5l padding-IpiAj3 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" name="access" aria-label="Access" onchange="this.form.requestSubmit()">
-            <option value selected>All videos
-            </option>
-            <option value="free">Free
-            </option>
-            <option value="subscriber-only">Members only
-            </option></select><input class="border-Wl0y44 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 padding-sHJvF1 width-C8uWv background-color-cemJK2 color-nbn0i3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" type="submit" value="Search">
-          </pf-vstack>
-        </form>
-      </pf-vstack>
-      <div id="search-results">
-        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-QgYLk2">
-          <p class="color-OpZD03 color-5uscm3 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2">We didn’t find anything matching “uikot”. Try another search.
+<div class="background-kmwhZ1 background-f3Vux3">
+  <div>
+    <div class="color-K2J0r1 color-GOHNR max-width-P6HnV margin-mBI0f2 padding-5nonC3 padding-zneMT1 display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 justify-content-n56cj2 align-items-0Zubr3">
+      <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-Wr637">
+        <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
+          <h2 class="background-I4CQj3 -webkit-background-clip-inoYC3 background-clip-inoYC3 color-JyKaz4 width-efcee4 margin-FBkWQ3 margin-top-rmfs01 margin-bottom-1rcXs4 font-size-NBsge3 font-weight-SywJI1 line-height-auF6B">Search
+          </h2>
+          <p class="color-GPfER1 color-VoDZ9 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-6nw8i1 line-height-vsvaN2">Find any topic covered in our catalog of videos.
           </p>
-          <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-            <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Related topics
-            </div>
-            <div class="display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 row-gap-NKv2f3 column-gap-NKv2f3"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Modern%20UIKit">Modern UIKit</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=UIKit%20navigation">UIKit navigation</a>
-            </div>
-          </pf-vstack>
-          <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-            <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Try one of these
-            </div>
-            <div class="display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 row-gap-NKv2f3 column-gap-NKv2f3"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=algebraic%20data%20types">algebraic data types</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=shared%20state">shared state</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=SwiftUI">SwiftUI</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Android">Android</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Combine">Combine</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=dependencies">dependencies</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=CloudKit">CloudKit</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=case%20paths">case paths</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=side%20effects">side effects</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=animations">animations</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Codable">Codable</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=performance">performance</a>
-            </div>
-          </pf-vstack>
         </pf-vstack>
-      </div>
-    </pf-vgrid>
+        <pf-vgrid class="align-items-cQlZY2 width-C8uWv column-gap-1k9GW3 display-Vv9EA3 grid-template-columns-RehC04 row-gap-bS1Ay3 column-gap-23FXG2 display-jdJkm4 grid-template-columns-Pyba93 row-gap-6BZZO1">
+          <pf-vstack class="position-rSYDC top-t5q1l4 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+            <div class="font-weight-SywJI1 color-K2J0r1 color-wVkSF3">Refine your results
+            </div>
+            <form action="/search" id="search-form"><input class="background-image-OsXMz3 background-position-EXrME1 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 outline-color-cemJK2 padding-0HTUZ2 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" type="search" name="q" value="uikot" placeholder="Search for topics">
+              <pf-vstack class="margin-top-NKv2f3 align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3"><select class="appearance-Wl0y44 -webkit-appearance-Wl0y44 background-image-Rd6GH3 background-position-s9o6M2 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 cursor-xmR5l padding-IpiAj3 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" name="sort" aria-label="Sort by" onchange="this.form.requestSubmit()">
+                <option value selected>Relevance
+                </option>
+                <option value="newest">Newest
+                </option></select><select class="appearance-Wl0y44 -webkit-appearance-Wl0y44 background-image-itpFC3 background-position-s9o6M2 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 cursor-xmR5l padding-IpiAj3 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" name="access" aria-label="Access" onchange="this.form.requestSubmit()">
+                <option value selected>All videos
+                </option>
+                <option value="free">Free
+                </option>
+                <option value="subscriber-only">Members only
+                </option></select><input class="border-Wl0y44 border-radius-NKv2f3 box-shadow-dyray cursor-xmR5l font-weight-aG4U6 padding-sHJvF1 width-C8uWv background-color-cemJK2 color-nbn0i3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" type="submit" value="Search">
+              </pf-vstack>
+            </form>
+          </pf-vstack>
+          <div id="search-results">
+            <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-QgYLk2">
+              <p class="color-OpZD03 color-5uscm3 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2">We didn’t find anything matching <span class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-5iWWD3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-cemJK2">uikot</span>. Try another search.
+              </p>
+              <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+                <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Related topics
+                </div>
+                <div class="display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 row-gap-NKv2f3 column-gap-NKv2f3"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Modern%20UIKit">Modern UIKit</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=UIKit%20navigation">UIKit navigation</a>
+                </div>
+              </pf-vstack>
+              <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-Wr637">
+                <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+                  <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Try one of these
+                  </div>
+                  <div class="display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 row-gap-NKv2f3 column-gap-NKv2f3"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=protocol%20witnesses">protocol witnesses</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=SwiftData">SwiftData</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=sendable">sendable</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Codable">Codable</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=dependencies">dependencies</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=SwiftUI">SwiftUI</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=generics">generics</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=state%20management">state management</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=algebraic%20data%20types">algebraic data types</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Swift%20Evolution">Swift Evolution</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=parsing">parsing</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=observation">observation</a>
+                  </div>
+                </pf-vstack>
+                <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+                  <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Search tips
+                  </div>
+                  <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-xlo1p4">
+                    <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-xlo1p4"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi flex-shrink-FBkWQ3 padding-Xv1rW1 white-space-RLKFg3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=%22macro%20testing%22">"macro testing"</a><span class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3">Wrap words in quotes to match a phrase exactly.</span>
+                    </pf-hstack>
+                    <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-xlo1p4"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi flex-shrink-FBkWQ3 padding-Xv1rW1 white-space-RLKFg3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=uikit%20-swiftui">uikit -swiftui</a><span class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3">Use a minus to leave a term out of results.</span>
+                    </pf-hstack>
+                    <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-xlo1p4"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi flex-shrink-FBkWQ3 padding-Xv1rW1 white-space-RLKFg3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Never">Never</a><span class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3">Use uppercase to prioritize case-sensitive matches.</span>
+                    </pf-hstack>
+                  </pf-vstack>
+                </pf-vstack>
+              </pf-vstack>
+              <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
+                <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Or browse
+                </div>
+                <div class="display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 row-gap-NKv2f3 column-gap-Xin5E2 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71"><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">All videos →</a><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">Collections →</a><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/clips">Free clips →</a>
+                </div>
+              </pf-vstack>
+            </pf-vstack>
+          </div>
+        </pf-vgrid>
+      </pf-vstack>
+    </div>
   </div>
 </div><script>(() => {
   const form = document.getElementById("search-form");
   const results = document.getElementById("search-results");
   if (!form || !results) return;
+  document.documentElement.style.scrollbarGutter = "stable";
   const input = form.querySelector("input[name=q]");
   const icons = {
     sort: {
