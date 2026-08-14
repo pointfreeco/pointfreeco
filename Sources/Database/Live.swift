@@ -1256,7 +1256,11 @@ extension Client {
         let termGroupIDs = termGroups.enumerated().flatMap { index, group in
           group.map { _ in index }
         }
-        let negatedQuery = negatedTokens.joined(separator: " ")
+        let negatedTerms = negatedTokens
+          .map { String($0.dropFirst()) }
+          .filter { !$0.trimmingCharacters(in: CharacterSet(charactersIn: "\"")).isEmpty }
+        let negatedQuery: String? =
+          negatedTerms.isEmpty ? nil : negatedTerms.joined(separator: " or ")
         let literalPatterns = literalTerms.map {
           "%"
             + $0
@@ -1292,13 +1296,13 @@ extension Client {
             ) AS "l"("literal", "pattern")
           ),
           "search_query" AS (
-            SELECT CASE
-              WHEN \(bind: negatedQuery) = ''
-              THEN string_agg(DISTINCT "q"::text, ' | ')::tsquery
-              ELSE string_agg(DISTINCT "q"::text, ' | ')::tsquery
-                && websearch_to_tsquery('english', \(bind: negatedQuery))
-            END AS "query"
+            SELECT string_agg(DISTINCT "q"::text, ' | ')::tsquery AS "query"
             FROM "terms"
+          ),
+          "excluded" AS (
+            SELECT DISTINCT "episode_sequence"
+            FROM "docs"
+            WHERE "search_vector" @@ websearch_to_tsquery('english', \(bind: negatedQuery))
           ),
           "episodes" AS (
             SELECT "episode_sequence"
@@ -1311,6 +1315,7 @@ extension Client {
               FROM "docs" CROSS JOIN "literals"
               WHERE "content" ILIKE "pattern"
             ) AS "term_matches"
+            WHERE "episode_sequence" NOT IN (SELECT "episode_sequence" FROM "excluded")
             GROUP BY "episode_sequence"
             HAVING count(DISTINCT "matched")
               = (SELECT count(DISTINCT "group") FROM "terms")
