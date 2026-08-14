@@ -278,7 +278,9 @@ private struct SearchScript: HTML {
       (() => {
         const form = document.getElementById("search-form");
         const results = document.getElementById("search-results");
-        if (!form || !results) return;
+        if (!form || !results) {
+          return;
+        }
         document.documentElement.style.scrollbarGutter = "stable";
         const input = form.querySelector("input[name=q]");
         const icons = {
@@ -297,7 +299,9 @@ private struct SearchScript: HTML {
         }
         let controller;
         async function load(push) {
-          if (controller) controller.abort();
+          if (controller) {
+            controller.abort();
+          }
           controller = new AbortController();
           const url = new URL(form.action, location.origin);
           for (const [name, value] of new FormData(form)) {
@@ -315,14 +319,22 @@ private struct SearchScript: HTML {
             results.innerHTML = await response.text();
             const query = (new FormData(form).get("q") || "").trim();
             document.title = query ? "Search: " + query : "Search";
-            if (push) history.pushState(null, "", url);
+            if (push) {
+              history.pushState(null, "", url);
+            }
           } catch (error) {
-            if (error.name === "AbortError") return;
+            if (error.name === "AbortError") {
+              return;
+            }
             const template = document.getElementById("search-error");
-            if (!template) return;
+            if (!template) {
+              return;
+            }
             results.innerHTML = template.innerHTML;
             const retry = results.querySelector("[data-retry]");
-            if (retry) retry.setAttribute("href", url.pathname + url.search);
+            if (retry) {
+              retry.setAttribute("href", url.pathname + url.search);
+            }
           }
         }
         let debounce;
@@ -350,9 +362,13 @@ private struct SearchScript: HTML {
           updateIcons();
         }
         results.addEventListener("click", (event) => {
-          if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+            return;
+          }
           const link = event.target.closest('a[href^="/search"]');
-          if (!link || !results.contains(link)) return;
+          if (!link || !results.contains(link)) {
+            return;
+          }
           event.preventDefault();
           syncForm(new URL(link.href, location.origin).searchParams);
           load(true);
