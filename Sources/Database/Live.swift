@@ -1068,7 +1068,12 @@ extension Client {
         )
         try await database.run(
           """
-          CREATE TABLE IF NOT EXISTS "episode_search" (
+          DROP TABLE IF EXISTS "episode_search"
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNLOGGED TABLE "episode_search" (
             "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
             "episode_sequence" integer NOT NULL,
             "section_title" character varying,
@@ -1082,14 +1087,14 @@ extension Client {
         )
         try await database.run(
           """
-          CREATE INDEX IF NOT EXISTS "index_episode_search_on_search_vector"
+          CREATE INDEX "index_episode_search_on_search_vector"
           ON "episode_search"
           USING GIN ("search_vector")
           """
         )
         try await database.run(
           """
-          CREATE INDEX IF NOT EXISTS "index_episode_search_on_content_trigrams"
+          CREATE INDEX "index_episode_search_on_content_trigrams"
           ON "episode_search"
           USING GIN ("content" gin_trgm_ops)
           """
