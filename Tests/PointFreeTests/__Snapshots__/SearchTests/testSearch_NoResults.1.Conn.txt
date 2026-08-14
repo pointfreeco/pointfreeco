@@ -2,7 +2,7 @@ GET http://localhost:8080/search?q=uikot
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 62792
+Content-Length: 63274
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -510,15 +510,15 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
                   <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Search tips
                   </div>
                   <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-xlo1p4">
-                    <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-xlo1p4"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi flex-shrink-FBkWQ3 padding-Xv1rW1 white-space-RLKFg3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=%22macro%20testing%22">"macro testing"</a><span class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3">Quote to match a phrase or code exactly.</span>
+                    <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-xlo1p4"><a class="flex-shrink-FBkWQ3 white-space-RLKFg3 background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=%22macro%20testing%22">"macro testing"</a><span class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3">Quote to match a phrase or code exactly.</span>
                     </pf-hstack>
-                    <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-xlo1p4"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi flex-shrink-FBkWQ3 padding-Xv1rW1 white-space-RLKFg3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=%22%5Bweak%20self%5D%22%20closures">"[weak self]" closures</a><span class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3">Multiple terms find videos covering all of them, even minutes apart.</span>
+                    <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-xlo1p4"><a class="flex-shrink-FBkWQ3 white-space-RLKFg3 background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=SQLite%20CloudKit">SQLite CloudKit</a><span class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3">Multiple terms find videos covering all of them, even minutes apart.</span>
                     </pf-hstack>
-                    <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-xlo1p4"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi flex-shrink-FBkWQ3 padding-Xv1rW1 white-space-RLKFg3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=sqlite%20OR%20swiftdata">sqlite OR swiftdata</a><span class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3">OR matches either term.</span>
+                    <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-xlo1p4"><a class="flex-shrink-FBkWQ3 white-space-RLKFg3 background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=swiftui%20OR%20uikit">swiftui OR uikit</a><span class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3">OR matches either term.</span>
                     </pf-hstack>
-                    <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-xlo1p4"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi flex-shrink-FBkWQ3 padding-Xv1rW1 white-space-RLKFg3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=persistence%20-swiftdata">persistence -swiftdata</a><span class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3">Prefix with a minus to leave a term out of results.</span>
+                    <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-xlo1p4"><a class="flex-shrink-FBkWQ3 white-space-RLKFg3 background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=testing%20-xctest">testing -xctest</a><span class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3">Prefix with a minus to leave a term out of results.</span>
                     </pf-hstack>
-                    <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-xlo1p4"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi flex-shrink-FBkWQ3 padding-Xv1rW1 white-space-RLKFg3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Sendable">Sendable</a><span class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3">Uppercase to prioritize case-sensitive matches.</span>
+                    <pf-hstack class="align-items-CdPBO2 display-BvS8W3 flex-direction-jlten2 max-height-C8uWv column-gap-xlo1p4"><a class="flex-shrink-FBkWQ3 white-space-RLKFg3 background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Task">Task</a><span class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-OpZD03 color-5uscm3">Uppercase to prioritize case-sensitive matches.</span>
                     </pf-hstack>
                   </pf-vstack>
                 </pf-vstack>
@@ -535,29 +535,20 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
       </pf-vstack>
     </div>
   </div>
-</div><script>(() => {
+</div>
+<template id="search-error">
+  <p class="color-OpZD03 color-5uscm3 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2">We couldn’t load results — check your connection and <a data-retry class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href>try again</a>.
+  </p>
+</template><script>(() => {
   const form = document.getElementById("search-form");
   const results = document.getElementById("search-results");
   if (!form || !results) return;
   document.documentElement.style.scrollbarGutter = "stable";
   const input = form.querySelector("input[name=q]");
   const icons = {
-    sort: {
-      "": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Ccircle cx='12' cy='12' r='4.5'/%3E%3Ccircle cx='12' cy='12' r='0.5'/%3E%3C/svg%3E",
-      "newest": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E",
-      "oldest": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 22h14'/%3E%3Cpath d='M5 2h14'/%3E%3Cpath d='M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22'/%3E%3Cpath d='M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2'/%3E%3C/svg%3E"
-    },
-    scope: {
-      "": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 6v12'/%3E%3Cpath d='M17.196 9 6.804 15'/%3E%3Cpath d='M6.804 9l10.392 6'/%3E%3C/svg%3E",
-      "code": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m16 18 6-6-6-6'/%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3C/svg%3E",
-      "dialogue": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E",
-      "titles": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12'/%3E%3Cpath d='M6 20V4'/%3E%3Cpath d='M18 20V4'/%3E%3C/svg%3E"
-    },
-    access: {
-      "": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m22 8-6 4 6 4V8Z'/%3E%3Crect x='2' y='6' width='14' height='12' rx='2'/%3E%3C/svg%3E",
-      "free": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='11' width='18' height='11' rx='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 9.9-1'/%3E%3C/svg%3E",
-      "subscriber-only": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='11' width='18' height='11' rx='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E"
-    }
+    sort: {"": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Ccircle cx='12' cy='12' r='4.5'/%3E%3Ccircle cx='12' cy='12' r='0.5'/%3E%3C/svg%3E", "newest": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E", "oldest": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 22h14'/%3E%3Cpath d='M5 2h14'/%3E%3Cpath d='M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22'/%3E%3Cpath d='M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2'/%3E%3C/svg%3E"},
+    scope: {"": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 6v12'/%3E%3Cpath d='M17.196 9 6.804 15'/%3E%3Cpath d='M6.804 9l10.392 6'/%3E%3C/svg%3E", "code": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m16 18 6-6-6-6'/%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3C/svg%3E", "dialogue": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E", "titles": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12'/%3E%3Cpath d='M6 20V4'/%3E%3Cpath d='M18 20V4'/%3E%3C/svg%3E"},
+    access: {"": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m22 8-6 4 6 4V8Z'/%3E%3Crect x='2' y='6' width='14' height='12' rx='2'/%3E%3C/svg%3E", "free": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='11' width='18' height='11' rx='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 9.9-1'/%3E%3C/svg%3E", "subscriber-only": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='11' width='18' height='11' rx='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E"}
   };
   function updateIcons() {
     for (const select of form.querySelectorAll("select")) {
@@ -589,7 +580,14 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
       const query = (new FormData(form).get("q") || "").trim();
       document.title = query ? "Search: " + query : "Search";
       if (push) history.pushState(null, "", url);
-    } catch (error) {}
+    } catch (error) {
+      if (error.name === "AbortError") return;
+      const template = document.getElementById("search-error");
+      if (!template) return;
+      results.innerHTML = template.innerHTML;
+      const retry = results.querySelector("[data-retry]");
+      if (retry) retry.setAttribute("href", url.pathname + url.search);
+    }
   }
   let debounce;
   input.addEventListener("input", () => {
@@ -608,26 +606,23 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   for (const select of form.querySelectorAll("select")) {
     select.addEventListener("change", updateIcons);
   }
+  function syncForm(params) {
+    input.value = params.get("q") || "";
+    for (const select of form.querySelectorAll("select")) {
+      select.value = params.get(select.name) || "";
+    }
+    updateIcons();
+  }
   results.addEventListener("click", (event) => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const link = event.target.closest('a[href^="/search"]');
     if (!link || !results.contains(link)) return;
     event.preventDefault();
-    const params = new URL(link.href, location.origin).searchParams;
-    input.value = params.get("q") || "";
-    for (const select of form.querySelectorAll("select")) {
-      select.value = params.get(select.name) || "";
-    }
-    updateIcons();
+    syncForm(new URL(link.href, location.origin).searchParams);
     load(true);
   });
   window.addEventListener("popstate", () => {
-    const params = new URLSearchParams(location.search);
-    input.value = params.get("q") || "";
-    for (const select of form.querySelectorAll("select")) {
-      select.value = params.get(select.name) || "";
-    }
-    updateIcons();
+    syncForm(new URLSearchParams(location.search));
     load(false);
   });
 })();</script>
