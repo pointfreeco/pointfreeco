@@ -1,4 +1,5 @@
 import Dependencies
+import Foundation
 import IssueReporting
 import Markdown
 import Models
@@ -28,6 +29,7 @@ extension Episode {
         content: fullTitle,
         episodeSequence: sequence,
         kind: .episodeTitle,
+        publishedAt: publishedAt,
         sectionTitle: nil,
         timestamp: nil
       ),
@@ -35,13 +37,18 @@ extension Episode {
         content: blurb.isEmpty ? self.blurb : blurb,
         episodeSequence: sequence,
         kind: .blurb,
+        publishedAt: publishedAt,
         sectionTitle: nil,
         timestamp: nil
       ),
     ]
     if hasTranscript, let transcript {
       documents.append(
-        contentsOf: transcriptSearchDocuments(episodeSequence: sequence, transcript: transcript)
+        contentsOf: transcriptSearchDocuments(
+          episodeSequence: sequence,
+          publishedAt: publishedAt,
+          transcript: transcript
+        )
       )
     }
     return documents
@@ -50,9 +57,10 @@ extension Episode {
 
 func transcriptSearchDocuments(
   episodeSequence: Episode.Sequence,
+  publishedAt: Date,
   transcript: String
 ) -> [EpisodeSearchDocument] {
-  var visitor = SearchDocumentVisitor(episodeSequence: episodeSequence)
+  var visitor = SearchDocumentVisitor(episodeSequence: episodeSequence, publishedAt: publishedAt)
   visitor.visit(Document(parsing: transcript, options: .parseBlockDirectives))
   visitor.flush()
   return visitor.documents
@@ -62,18 +70,19 @@ private struct SearchDocumentVisitor: MarkupVisitor {
   typealias Result = Void
 
   let episodeSequence: Episode.Sequence
+  let publishedAt: Date
   var documents: [EpisodeSearchDocument] = []
   private var sectionTitle: String?
   private var sectionTimestamp: Int?
   private var currentTimestamp: Int?
   private var proseContent = ""
-  private var proseMarkers: [[Int]] = []
+  private var proseMarkers: [EpisodeSearchDocument.TimestampMarker] = []
   private var codeContent = ""
-  private var codeMarkers: [[Int]] = []
+  private var codeMarkers: [EpisodeSearchDocument.TimestampMarker] = []
 
   mutating func flush() {
     for (content, kind, markers) in [
-      (sectionTitle ?? "", EpisodeSearchDocument.Kind.title, [[Int]]()),
+      (sectionTitle ?? "", EpisodeSearchDocument.Kind.title, []),
       (proseContent, .prose, proseMarkers),
       (codeContent, .code, codeMarkers),
     ]
@@ -83,6 +92,7 @@ private struct SearchDocumentVisitor: MarkupVisitor {
           content: content,
           episodeSequence: episodeSequence,
           kind: kind,
+          publishedAt: publishedAt,
           sectionTitle: sectionTitle,
           timestamp: sectionTimestamp,
           timestampMarkers: markers
@@ -125,8 +135,13 @@ private struct SearchDocumentVisitor: MarkupVisitor {
     if !codeContent.isEmpty {
       codeContent += "\n"
     }
-    if let currentTimestamp, codeMarkers.last?.last != currentTimestamp {
-      codeMarkers.append([codeContent.unicodeScalars.count, currentTimestamp])
+    if let currentTimestamp, codeMarkers.last?.seconds != currentTimestamp {
+      codeMarkers.append(
+        EpisodeSearchDocument.TimestampMarker(
+          offset: codeContent.unicodeScalars.count,
+          seconds: currentTimestamp
+        )
+      )
     }
     codeContent += codeBlock.code.trimmingCharacters(in: .whitespacesAndNewlines)
   }
@@ -135,8 +150,13 @@ private struct SearchDocumentVisitor: MarkupVisitor {
     if !proseContent.isEmpty {
       proseContent += "\n"
     }
-    if let currentTimestamp, proseMarkers.last?.last != currentTimestamp {
-      proseMarkers.append([proseContent.unicodeScalars.count, currentTimestamp])
+    if let currentTimestamp, proseMarkers.last?.seconds != currentTimestamp {
+      proseMarkers.append(
+        EpisodeSearchDocument.TimestampMarker(
+          offset: proseContent.unicodeScalars.count,
+          seconds: currentTimestamp
+        )
+      )
     }
     proseContent += paragraph.plainText
   }

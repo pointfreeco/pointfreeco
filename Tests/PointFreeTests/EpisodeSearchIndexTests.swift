@@ -8,6 +8,7 @@ class EpisodeSearchIndexTests: TestCase {
   func testSearchDocuments() {
     let documents = transcriptSearchDocuments(
       episodeSequence: 1,
+      publishedAt: Date(timeIntervalSince1970: 1_234_567_890),
       transcript: """
         ## Introduction
 
@@ -44,7 +45,13 @@ class EpisodeSearchIndexTests: TestCase {
     XCTAssertEqual(documents[1].kind, .prose)
     XCTAssertEqual(documents[1].sectionTitle, "Introduction")
     XCTAssertEqual(documents[1].timestamp, 5)
-    XCTAssertEqual(documents[1].timestampMarkers, [[0, 5], [23, 68]])
+    XCTAssertEqual(
+      documents[1].timestampMarkers,
+      [
+        EpisodeSearchDocument.TimestampMarker(offset: 0, seconds: 5),
+        EpisodeSearchDocument.TimestampMarker(offset: 23, seconds: 68),
+      ]
+    )
     XCTAssertTrue(documents[1].content.contains("Welcome to Point-Free."))
     XCTAssertTrue(documents[1].content.contains("We can call `incr` directly."))
     XCTAssertTrue(documents[1].content.contains("See our GitHub for more info."))
@@ -57,7 +64,10 @@ class EpisodeSearchIndexTests: TestCase {
     XCTAssertEqual(documents[2].kind, .code)
     XCTAssertEqual(documents[2].sectionTitle, "Introduction")
     XCTAssertEqual(documents[2].timestamp, 5)
-    XCTAssertEqual(documents[2].timestampMarkers, [[0, 5]])
+    XCTAssertEqual(
+      documents[2].timestampMarkers,
+      [EpisodeSearchDocument.TimestampMarker(offset: 0, seconds: 5)]
+    )
     XCTAssertEqual(
       documents[2].content,
       """
@@ -75,6 +85,9 @@ class EpisodeSearchIndexTests: TestCase {
     XCTAssertEqual(documents[4].sectionTitle, "Composition")
     XCTAssertEqual(documents[4].timestamp, 3723)
     XCTAssertEqual(documents[4].content, "Function composition is the essence of this episode.")
-    XCTAssertEqual(documents[4].timestampMarkers, [[0, 3723]])
+    XCTAssertEqual(
+      documents[4].timestampMarkers,
+      [EpisodeSearchDocument.TimestampMarker(offset: 0, seconds: 3723)]
+    )
   }
 }

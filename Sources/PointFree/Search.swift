@@ -28,16 +28,6 @@ func searchMiddleware(
       episodes().map { ($0.sequence, $0) },
       uniquingKeysWith: { episode, _ in episode }
     )
-    func isIncluded(_ episode: Episode) -> Bool {
-      switch access {
-      case .free:
-        !episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode)
-      case .subscriberOnly:
-        episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode)
-      case nil:
-        true
-      }
-    }
     let kinds: [EpisodeSearchDocument.Kind]? =
       switch scope {
       case .code: [.code]
@@ -45,14 +35,25 @@ func searchMiddleware(
       case .titles: [.title, .episodeTitle]
       case nil: nil
       }
+    let sequences: [Episode.Sequence]? =
+      switch access {
+      case .free:
+        episodes()
+          .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
+          .map(\.sequence)
+      case .subscriberOnly:
+        episodes()
+          .filter { $0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
+          .map(\.sequence)
+      case nil:
+        nil
+      }
     let searchResults =
       await withErrorReporting {
-        try await database.searchEpisodes(query: query, kinds: kinds)
+        try await database.searchEpisodes(query: query, kinds: kinds, sequences: sequences)
       } ?? EpisodeSearchResults()
     let rows = searchResults.results
-    matchCount = searchResults.matchingSequences
-      .compactMap { episodeBySequence[$0] }
-      .count(where: isIncluded)
+    matchCount = searchResults.matchCount
 
     struct SectionKey: Hashable {
       let episodeSequence: Episode.Sequence
@@ -77,17 +78,10 @@ func searchMiddleware(
       }
     }
 
-    struct WindowKey: Hashable {
-      let episodeSequence: Episode.Sequence
-      let sectionTitle: String?
-      let timestamp: Int?
-      let plainSnippet: String
-    }
     var resultIndexBySequence: [Episode.Sequence: Int] = [:]
-    var matchesBySequence: [Episode.Sequence: [(match: SearchPage.Match, terms: [String])]] = [:]
-    var matchIndexByWindow: [WindowKey: Int] = [:]
+    var matchesBySequence: [Episode.Sequence: [SearchPage.Match]] = [:]
     for row in rows {
-      guard let episode = episodeBySequence[row.episodeSequence], isIncluded(episode)
+      guard let episode = episodeBySequence[row.episodeSequence]
       else { continue }
       if resultIndexBySequence[row.episodeSequence] == nil {
         resultIndexBySequence[row.episodeSequence] = results.count
@@ -101,34 +95,8 @@ func searchMiddleware(
       }
       if row.kind == .episodeTitle { continue }
       if row.kind == .title, sectionsWithBodyMatches.contains(key(row)) { continue }
-      let windowKey = WindowKey(
-        episodeSequence: row.episodeSequence,
-        sectionTitle: row.sectionTitle,
-        timestamp: row.timestamp,
-        plainSnippet: row.snippet
-          .replacingOccurrences(of: "⟪", with: "")
-          .replacingOccurrences(of: "⟫", with: "")
-      )
-      if let matchIndex = matchIndexByWindow[windowKey] {
-        matchesBySequence[row.episodeSequence]?[matchIndex].terms
-          .append(contentsOf: row.matchedTerms)
-        continue
-      }
-      matchIndexByWindow[windowKey] = matchesBySequence[row.episodeSequence, default: []].count
       matchesBySequence[row.episodeSequence, default: []].append(
-        (
-          match: SearchPage.Match(
-            snippet: row.snippet,
-            snippetIsTruncatedAtEnd: row.snippetIsTruncatedAtEnd,
-            snippetIsTruncatedAtStart: row.snippetIsTruncatedAtStart,
-            snippetStartsInsideCodeSpan: row.snippetStartsInsideCodeSpan,
-            kind: row.kind,
-            sectionTitle: row.sectionTitle,
-            sectionTitleSnippet: titleSnippets[key(row)],
-            timestamp: row.timestamp
-          ),
-          terms: row.matchedTerms
-        )
+        SearchPage.Match(result: row, sectionTitleSnippet: titleSnippets[key(row)])
       )
     }
     for (sequence, index) in resultIndexBySequence {
@@ -183,23 +151,21 @@ func searchMiddleware(
 }
 
 private func termCoveringMatches(
-  _ rows: [(match: SearchPage.Match, terms: [String])],
+  _ matches: [SearchPage.Match],
   limit: Int = 5
 ) -> [SearchPage.Match] {
-  var selectedIndices: [Int] = []
+  var selectedIndices: Set<Int> = []
   var coveredTerms: Set<String> = []
-  for (index, row) in rows.enumerated() {
+  for (index, match) in matches.enumerated() {
     guard selectedIndices.count < limit else { break }
-    if !row.terms.allSatisfy(coveredTerms.contains) {
-      selectedIndices.append(index)
-      coveredTerms.formUnion(row.terms)
+    if !match.result.matchedTerms.allSatisfy(coveredTerms.contains) {
+      selectedIndices.insert(index)
+      coveredTerms.formUnion(match.result.matchedTerms)
     }
   }
-  for index in rows.indices {
+  for index in matches.indices {
     guard selectedIndices.count < limit else { break }
-    if !selectedIndices.contains(index) {
-      selectedIndices.append(index)
-    }
+    selectedIndices.insert(index)
   }
-  return selectedIndices.sorted().map { rows[$0].match }
+  return selectedIndices.sorted().map { matches[$0] }
 }

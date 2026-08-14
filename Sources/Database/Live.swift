@@ -1076,6 +1076,7 @@ extension Client {
           CREATE UNLOGGED TABLE "episode_search" (
             "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
             "episode_sequence" integer NOT NULL,
+            "published_at" timestamp with time zone NOT NULL,
             "section_title" character varying,
             "timestamp" integer,
             "timestamp_markers" jsonb NOT NULL,
@@ -1120,35 +1121,40 @@ extension Client {
         )
       },
       refreshEpisodeSearchIndex: { documents in
-        let database = pool.sqlDatabase
-        try await database.run("""
-          DELETE FROM "episode_search"
-          """)
-        for document in documents {
-          let timestampMarkers = String(
-            decoding: try JSONEncoder().encode(document.timestampMarkers),
-            as: UTF8.self
-          )
-          try await database.run(
-            """
-            INSERT INTO "episode_search"
-            ("episode_sequence", "section_title", "timestamp", "timestamp_markers", "content",
-              "kind", "search_vector")
-            VALUES (
-              \(bind: document.episodeSequence),
-              \(bind: document.sectionTitle),
-              \(bind: document.timestamp),
-              \(bind: timestampMarkers)::jsonb,
-              \(bind: document.content),
-              \(bind: document.kind),
-              setweight(
-                to_tsvector('english', \(bind: document.content)),
-                \(bind: document.kind.weight)::"char"
-              )
-            )
-            """
-          )
+        let encoder = JSONEncoder()
+        let timestampMarkers = try documents.map {
+          String(decoding: try encoder.encode($0.timestampMarkers), as: UTF8.self)
         }
+        try await pool.sqlDatabase.run(
+          """
+          WITH "deleted" AS (DELETE FROM "episode_search")
+          INSERT INTO "episode_search"
+          ("episode_sequence", "published_at", "section_title", "timestamp", "timestamp_markers",
+            "content", "kind", "search_vector")
+          SELECT
+            "episode_sequence",
+            to_timestamp("published_at"),
+            NULLIF("section_title", ''),
+            NULLIF("timestamp", -1),
+            "timestamp_markers"::jsonb,
+            "content",
+            "kind",
+            setweight(to_tsvector('english', "content"), "weight"::"char")
+          FROM unnest(
+            \(bind: documents.map(\.episodeSequence.rawValue))::int[],
+            \(bind: documents.map(\.publishedAt.timeIntervalSince1970))::double precision[],
+            \(bind: documents.map { $0.sectionTitle ?? "" })::text[],
+            \(bind: documents.map { $0.timestamp ?? -1 })::int[],
+            \(bind: timestampMarkers)::text[],
+            \(bind: documents.map(\.content))::text[],
+            \(bind: documents.map(\.kind.rawValue))::text[],
+            \(bind: documents.map(\.kind.weight))::text[]
+          ) AS "d"(
+            "episode_sequence", "published_at", "section_title", "timestamp",
+            "timestamp_markers", "content", "kind", "weight"
+          )
+          """
+        )
       },
       regenerateTeamInviteCode: { subscriptionID in
         try await pool.sqlDatabase.run(
@@ -1187,8 +1193,9 @@ extension Client {
           """
         )
       },
-      searchEpisodes: { query, kinds in
+      searchEpisodes: { query, kinds, sequences in
         let kindFilter = kinds.map { kinds in kinds.map(\.rawValue) }
+        let sequenceFilter = sequences.map { sequences in sequences.map(\.rawValue) }
         let capitalizedTerms = query
           .split(whereSeparator: { !$0.isLetter && !$0.isNumber })
           .filter { $0.contains(where: \.isUppercase) }
@@ -1261,8 +1268,18 @@ extension Client {
 
         let rows = try await pool.sqlDatabase.raw(
           """
-          WITH "terms" AS (
-            SELECT DISTINCT "group", websearch_to_tsquery('english', "term") AS "q"
+          WITH "docs" AS (
+            SELECT *
+            FROM "episode_search"
+            WHERE ("kind" = ANY(\(bind: kindFilter)) OR \(bind: kindFilter) IS NULL)
+            AND (
+              "episode_sequence" = ANY(\(bind: sequenceFilter))
+              OR \(bind: sequenceFilter) IS NULL
+            )
+            AND "published_at" <= NOW()
+          ),
+          "terms" AS (
+            SELECT DISTINCT "group", "term", websearch_to_tsquery('english', "term") AS "q"
             FROM unnest(
               \(bind: termGroupIDs)::int[], \(bind: positiveTerms)::text[]
             ) AS "t"("group", "term")
@@ -1287,14 +1304,12 @@ extension Client {
             SELECT "episode_sequence"
             FROM (
               SELECT "episode_sequence", 'group-' || "group" AS "matched"
-              FROM "episode_search" CROSS JOIN "terms"
+              FROM "docs" CROSS JOIN "terms"
               WHERE "search_vector" @@ "q"
-              AND ("kind" = ANY(\(bind: kindFilter)) OR \(bind: kindFilter) IS NULL)
               UNION
               SELECT "episode_sequence", "literal"
-              FROM "episode_search" CROSS JOIN "literals"
+              FROM "docs" CROSS JOIN "literals"
               WHERE "content" ILIKE "pattern"
-              AND ("kind" = ANY(\(bind: kindFilter)) OR \(bind: kindFilter) IS NULL)
             ) AS "term_matches"
             GROUP BY "episode_sequence"
             HAVING count(DISTINCT "matched")
@@ -1302,7 +1317,7 @@ extension Client {
                 + (SELECT count(*) FROM "literals")
           ),
           "ranked" AS (
-            SELECT "episode_search".*,
+            SELECT "docs".*,
               coalesce(
                 ts_rank("search_vector", "query")
                   * CASE WHEN "content" ~ \(bind: capitalizedPattern) THEN 4.0 ELSE 1.0 END,
@@ -1311,99 +1326,134 @@ extension Client {
                 + CASE
                   WHEN EXISTS (
                     SELECT 1 FROM "literals"
-                    WHERE "episode_search"."content" ILIKE "pattern"
+                    WHERE "docs"."content" ILIKE "pattern"
                   )
                   THEN 1.0
                   ELSE 0.0
                 END
                 AS "rank"
-            FROM "episode_search" CROSS JOIN "search_query"
+            FROM "docs" CROSS JOIN "search_query"
             WHERE "episode_sequence" IN (SELECT "episode_sequence" FROM "episodes")
-            AND ("kind" = ANY(\(bind: kindFilter)) OR \(bind: kindFilter) IS NULL)
             AND (
               "search_vector" @@ "query"
               OR EXISTS (
-                SELECT 1 FROM "literals" WHERE "episode_search"."content" ILIKE "pattern"
+                SELECT 1 FROM "literals" WHERE "docs"."content" ILIKE "pattern"
               )
             )
             ORDER BY "rank" DESC
             LIMIT 100
           )
           SELECT
-            (
-              SELECT array_agg("episode_sequence" ORDER BY "episode_sequence")
-              FROM "episodes"
-            ) AS "matching_sequences",
+            (SELECT count(*) FROM "episodes") AS "match_count",
             "episode_sequence",
             "section_title",
-            COALESCE(
-              (
-                SELECT ("marker"->>1)::int
-                FROM jsonb_array_elements("timestamp_markers") AS "marker"
-                WHERE ("marker"->>0)::int < "snippet_position"
-                ORDER BY ("marker"->>0)::int DESC
-                LIMIT 1
-              ),
-              "timestamp"
-            ) AS "timestamp",
+            "timestamp",
             "kind",
-            "snippet",
-            "matched_terms",
-            "snippet_position" = 0
-              OR "snippet_position" + length("plain_snippet") < length("content") + 1
-              AS "snippet_is_truncated_at_end",
-            "snippet_position" <> 1 AS "snippet_is_truncated_at_start",
-            "snippet_position" >= 1
-              AND length(
-                regexp_replace(left("content", "snippet_position" - 1), '[^`]', '', 'g')
-              ) % 2 = 1
-              AS "snippet_starts_inside_code_span"
+            array_agg(DISTINCT "snippet") AS "snippets",
+            array_agg(DISTINCT "matched_term") AS "matched_terms",
+            "snippet_is_truncated_at_end",
+            "snippet_is_truncated_at_start",
+            "snippet_starts_inside_code_span"
           FROM (
-            SELECT "ranked".*,
-              ts_headline(
-                'english', "content", "q", 'StartSel=⟪, StopSel=⟫, MaxWords=32, MinWords=16'
-              ) AS "snippet",
-              ARRAY["q"::text] AS "matched_terms"
-            FROM "ranked"
-            JOIN (SELECT DISTINCT "q" FROM "terms") AS "matched_term" ON "search_vector" @@ "q"
-            WHERE "kind" NOT IN ('title', 'episodeTitle')
-            UNION ALL
-            SELECT "ranked".*,
-              ts_headline(
-                'english', "content", "query", 'StartSel=⟪, StopSel=⟫, MaxWords=32, MinWords=16'
-              ) AS "snippet",
-              ARRAY(
-                SELECT DISTINCT "q"::text FROM "terms" WHERE "ranked"."search_vector" @@ "q"
-              ) AS "matched_terms"
-            FROM "ranked" CROSS JOIN "search_query"
-            WHERE "kind" IN ('title', 'episodeTitle')
-            AND "search_vector" @@ "query"
-            UNION ALL
-            SELECT "ranked".*,
-              substring("content" FROM "window_start" FOR "literal_position" - "window_start")
-                || '⟪'
-                || substring("content" FROM "literal_position" FOR length("literal"))
-                || '⟫'
-                || substring("content" FROM "literal_position" + length("literal") FOR 100)
-                AS "snippet",
-              ARRAY['"' || "literal" || '"'] AS "matched_terms"
-            FROM "ranked"
-            JOIN "literals" ON "content" ILIKE "pattern",
-              strpos(lower("content"), lower("literal")) AS "literal_position",
-              GREATEST(1, "literal_position" - 100) AS "window_start"
-          ) AS "fragments",
-            regexp_replace("snippet", '[⟪⟫]', '', 'g') AS "plain_snippet",
-            strpos("content", "plain_snippet") AS "snippet_position"
-          ORDER BY "rank" DESC
+            SELECT
+              "episode_sequence",
+              "section_title",
+              COALESCE(
+                (
+                  SELECT ("marker"->>1)::int
+                  FROM jsonb_array_elements("timestamp_markers") AS "marker"
+                  WHERE ("marker"->>0)::int < "snippet_position"
+                  ORDER BY ("marker"->>0)::int DESC
+                  LIMIT 1
+                ),
+                "timestamp"
+              ) AS "timestamp",
+              "kind",
+              "snippet",
+              "matched_term",
+              "rank",
+              "plain_snippet",
+              "snippet_position" = 0
+                OR "snippet_position" + length("plain_snippet") < length("content") + 1
+                AS "snippet_is_truncated_at_end",
+              "snippet_position" <> 1 AS "snippet_is_truncated_at_start",
+              "snippet_position" >= 1
+                AND length(
+                  regexp_replace(left("content", "snippet_position" - 1), '[^`]', '', 'g')
+                ) % 2 = 1
+                AS "snippet_starts_inside_code_span"
+            FROM (
+              SELECT "ranked".*,
+                ts_headline(
+                  'english', "content", "q", 'StartSel=⟪, StopSel=⟫, MaxWords=32, MinWords=16'
+                ) AS "snippet",
+                "term" AS "matched_term"
+              FROM "ranked"
+              JOIN "terms" ON "search_vector" @@ "q"
+              WHERE "kind" NOT IN ('title', 'episodeTitle')
+              UNION ALL
+              SELECT "ranked".*,
+                ts_headline(
+                  'english', "content", "query", 'StartSel=⟪, StopSel=⟫, MaxWords=32, MinWords=16'
+                ) AS "snippet",
+                "term" AS "matched_term"
+              FROM "ranked" CROSS JOIN "search_query"
+              JOIN "terms" ON "ranked"."search_vector" @@ "q"
+              WHERE "kind" IN ('title', 'episodeTitle')
+              AND "search_vector" @@ "query"
+              UNION ALL
+              SELECT "ranked".*,
+                substring("content" FROM "window_start" FOR "literal_position" - "window_start")
+                  || '⟪'
+                  || substring("content" FROM "literal_position" FOR length("literal"))
+                  || '⟫'
+                  || substring("content" FROM "literal_position" + length("literal") FOR 100)
+                  AS "snippet",
+                '"' || "literal" || '"' AS "matched_term"
+              FROM "ranked"
+              JOIN "literals" ON "content" ILIKE "pattern",
+                strpos(lower("content"), lower("literal")) AS "literal_position",
+                GREATEST(1, "literal_position" - 100) AS "window_start"
+            ) AS "fragments",
+              regexp_replace("snippet", '[⟪⟫]', '', 'g') AS "plain_snippet",
+              strpos("content", "plain_snippet") AS "snippet_position"
+          ) AS "windows"
+          GROUP BY
+            "episode_sequence", "section_title", "timestamp", "kind", "plain_snippet",
+            "snippet_is_truncated_at_end", "snippet_is_truncated_at_start",
+            "snippet_starts_inside_code_span"
+          ORDER BY max("rank") DESC
           """
         )
         .all()
+        struct Row: Decodable {
+          let episodeSequence: Episode.Sequence
+          let sectionTitle: String?
+          let timestamp: Int?
+          let kind: EpisodeSearchDocument.Kind
+          let snippets: [String]
+          let matchedTerms: [String]
+          let snippetIsTruncatedAtEnd: Bool
+          let snippetIsTruncatedAtStart: Bool
+          let snippetStartsInsideCodeSpan: Bool
+        }
         return EpisodeSearchResults(
-          matchingSequences: rows.isEmpty
-            ? []
-            : try rows[0].decode(column: "matching_sequences", as: [Episode.Sequence].self),
+          matchCount: rows.isEmpty
+            ? 0
+            : try rows[0].decode(column: "match_count", as: Int.self),
           results: try rows.map {
-            try $0.decode(model: EpisodeSearchResult.self, keyDecodingStrategy: .convertFromSnakeCase)
+            let row = try $0.decode(model: Row.self, keyDecodingStrategy: .convertFromSnakeCase)
+            return EpisodeSearchResult(
+              episodeSequence: row.episodeSequence,
+              snippet: mergedSnippet(row.snippets),
+              snippetIsTruncatedAtEnd: row.snippetIsTruncatedAtEnd,
+              snippetIsTruncatedAtStart: row.snippetIsTruncatedAtStart,
+              snippetStartsInsideCodeSpan: row.snippetStartsInsideCodeSpan,
+              kind: row.kind,
+              matchedTerms: row.matchedTerms,
+              sectionTitle: row.sectionTitle,
+              timestamp: row.timestamp
+            )
           }
         )
       },
@@ -1414,17 +1464,20 @@ extension Client {
         return try await pool.sqlDatabase
           .all(
             """
-            SELECT "content"
+            SELECT replace("content", '`', '') AS "content"
             FROM "episode_search"
             WHERE "kind" IN ('title', 'episodeTitle')
+            AND "published_at" <= NOW()
             AND strict_word_similarity(\(bind: query), "content") >= 0.4
-            GROUP BY "content"
-            ORDER BY strict_word_similarity(\(bind: query), "content") DESC, "content"
+            GROUP BY "episode_search"."content"
+            ORDER BY
+              strict_word_similarity(\(bind: query), "episode_search"."content") DESC,
+              "episode_search"."content"
             LIMIT 5
             """,
             decoding: Row.self
           )
-          .map { $0.content.replacingOccurrences(of: "`", with: "") }
+          .map(\.content)
       },
       updateEmailSettings: { settings, userId in
         guard let settings else { return }
@@ -1554,6 +1607,54 @@ extension Client {
       }
     )
   }
+}
+
+private func mergedSnippet(_ variants: [String]) -> String {
+  guard let first = variants.first else { return "" }
+  guard variants.count > 1 else { return first }
+  var plain: [Character] = []
+  var ranges: [(start: Int, end: Int)] = []
+  for (offset, variant) in variants.enumerated() {
+    var start: Int?
+    var index = 0
+    for character in variant {
+      switch character {
+      case "⟪":
+        start = index
+      case "⟫":
+        if let start {
+          ranges.append((start, index))
+        }
+        start = nil
+      default:
+        if offset == 0 {
+          plain.append(character)
+        }
+        index += 1
+      }
+    }
+  }
+  var merged: [(start: Int, end: Int)] = []
+  for range in ranges.sorted(by: { ($0.start, $0.end) < ($1.start, $1.end) }) {
+    if let last = merged.last, range.start <= last.end {
+      merged[merged.count - 1].end = max(last.end, range.end)
+    } else {
+      merged.append(range)
+    }
+  }
+  let starts = Set(merged.map(\.start))
+  let ends = Set(merged.map(\.end))
+  var snippet = ""
+  for (index, character) in plain.enumerated() {
+    if starts.contains(index) {
+      snippet.append("⟪")
+    }
+    snippet.append(character)
+    if ends.contains(index + 1) {
+      snippet.append("⟫")
+    }
+  }
+  return snippet
 }
 
 extension EpisodeSearchDocument.Kind {

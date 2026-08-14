@@ -18,33 +18,12 @@ public struct SearchPage: HTML {
   }
 
   public struct Match {
-    public let snippet: String
-    public let snippetIsTruncatedAtEnd: Bool
-    public let snippetIsTruncatedAtStart: Bool
-    public let snippetStartsInsideCodeSpan: Bool
-    public let kind: EpisodeSearchDocument.Kind
-    public let sectionTitle: String?
+    public let result: EpisodeSearchResult
     public let sectionTitleSnippet: String?
-    public let timestamp: Int?
 
-    public init(
-      snippet: String,
-      snippetIsTruncatedAtEnd: Bool = false,
-      snippetIsTruncatedAtStart: Bool = false,
-      snippetStartsInsideCodeSpan: Bool = false,
-      kind: EpisodeSearchDocument.Kind,
-      sectionTitle: String?,
-      sectionTitleSnippet: String? = nil,
-      timestamp: Int?
-    ) {
-      self.snippet = snippet
-      self.snippetIsTruncatedAtEnd = snippetIsTruncatedAtEnd
-      self.snippetIsTruncatedAtStart = snippetIsTruncatedAtStart
-      self.snippetStartsInsideCodeSpan = snippetStartsInsideCodeSpan
-      self.kind = kind
-      self.sectionTitle = sectionTitle
+    public init(result: EpisodeSearchResult, sectionTitleSnippet: String? = nil) {
+      self.result = result
       self.sectionTitleSnippet = sectionTitleSnippet
-      self.timestamp = timestamp
     }
   }
 
@@ -120,7 +99,27 @@ public struct SearchPage: HTML {
     }
     .searchHeroBackground()
 
+    tag("template") {
+      SearchError()
+    }
+    .attribute("id", "search-error")
+
     SearchScript()
+  }
+}
+
+private struct SearchError: HTML {
+  var body: some HTML {
+    Paragraph {
+      "We couldn’t load results — check your connection and "
+      Link(href: "") {
+        "try again"
+      }
+      .attribute("data-retry", "")
+      .linkColor(.purple)
+      "."
+    }
+    .color(.gray400.dark(.gray650))
   }
 }
 
@@ -137,6 +136,15 @@ extension PageModuleTheme {
 }
 
 extension HTML {
+  fileprivate func searchPill(padding: String = "0.35rem 0.75rem") -> some HTML {
+    self
+      .inlineStyle("background", "color-mix(in oklab, #974dff 10%, transparent)")
+      .inlineStyle("background", "color-mix(in oklab, #974dff 15%, transparent)", media: .dark)
+      .inlineStyle("border-radius", "999px")
+      .inlineStyle("display", "inline-block")
+      .inlineStyle("padding", padding)
+  }
+
   fileprivate func searchHeroBackground() -> some HTML {
     inlineStyle(
       "background",
@@ -242,11 +250,7 @@ private struct QueryPill: HTML {
     }
     .color(.purple)
     .fontStyle(.body(.small))
-    .inlineStyle("background", "color-mix(in oklab, #974dff 10%, transparent)")
-    .inlineStyle("background", "color-mix(in oklab, #974dff 15%, transparent)", media: .dark)
-    .inlineStyle("border-radius", "999px")
-    .inlineStyle("display", "inline-block")
-    .inlineStyle("padding", "0.1rem 0.6rem")
+    .searchPill(padding: "0.1rem 0.6rem")
   }
 }
 
@@ -292,22 +296,9 @@ private struct SearchScript: HTML {
         document.documentElement.style.scrollbarGutter = "stable";
         const input = form.querySelector("input[name=q]");
         const icons = {
-          sort: {
-            "": "\#(relevanceGlyphDataURI)",
-            "newest": "\#(clockGlyphDataURI)",
-            "oldest": "\#(hourglassGlyphDataURI)"
-          },
-          scope: {
-            "": "\#(asteriskGlyphDataURI)",
-            "code": "\#(codeGlyphDataURI)",
-            "dialogue": "\#(speechGlyphDataURI)",
-            "titles": "\#(headingGlyphDataURI)"
-          },
-          access: {
-            "": "\#(videoGlyphDataURI)",
-            "free": "\#(unlockedGlyphDataURI)",
-            "subscriber-only": "\#(lockGlyphDataURI)"
-          }
+          sort: \#(glyphMapJS(SiteRoute.SearchSort.self)),
+          scope: \#(glyphMapJS(SiteRoute.SearchScope.self)),
+          access: \#(glyphMapJS(SiteRoute.SearchAccess.self))
         };
         function updateIcons() {
           for (const select of form.querySelectorAll("select")) {
@@ -339,7 +330,14 @@ private struct SearchScript: HTML {
             const query = (new FormData(form).get("q") || "").trim();
             document.title = query ? "Search: " + query : "Search";
             if (push) history.pushState(null, "", url);
-          } catch (error) {}
+          } catch (error) {
+            if (error.name === "AbortError") return;
+            const template = document.getElementById("search-error");
+            if (!template) return;
+            results.innerHTML = template.innerHTML;
+            const retry = results.querySelector("[data-retry]");
+            if (retry) retry.setAttribute("href", url.pathname + url.search);
+          }
         }
         let debounce;
         input.addEventListener("input", () => {
@@ -358,26 +356,23 @@ private struct SearchScript: HTML {
         for (const select of form.querySelectorAll("select")) {
           select.addEventListener("change", updateIcons);
         }
+        function syncForm(params) {
+          input.value = params.get("q") || "";
+          for (const select of form.querySelectorAll("select")) {
+            select.value = params.get(select.name) || "";
+          }
+          updateIcons();
+        }
         results.addEventListener("click", (event) => {
           if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
           const link = event.target.closest('a[href^="/search"]');
           if (!link || !results.contains(link)) return;
           event.preventDefault();
-          const params = new URL(link.href, location.origin).searchParams;
-          input.value = params.get("q") || "";
-          for (const select of form.querySelectorAll("select")) {
-            select.value = params.get(select.name) || "";
-          }
-          updateIcons();
+          syncForm(new URL(link.href, location.origin).searchParams);
           load(true);
         });
         window.addEventListener("popstate", () => {
-          const params = new URLSearchParams(location.search);
-          input.value = params.get("q") || "";
-          for (const select of form.querySelectorAll("select")) {
-            select.value = params.get(select.name) || "";
-          }
-          updateIcons();
+          syncForm(new URLSearchParams(location.search));
           load(false);
         });
       })();
@@ -459,91 +454,80 @@ private struct SearchTips: HTML {
         )
       }
 
-      SearchTipRows(examples: tipExamples)
-    }
-  }
-
-  static let phraseExamples = [
-    #""macro testing""#,
-    #""~Copyable""#,
-    #""$0 + 1""#,
-    #""$0.id == id""#,
-    #""@autoclosure""#,
-    #""[weak self]""#,
-    #""some View""#,
-    #""async throws""#,
-  ]
-
-  static let exclusionExamples = [
-    "uikit -swiftui",
-    "testing -xctest",
-    "persistence -swiftdata",
-    "concurrency -combine",
-  ]
-
-  static let caseExamples = [
-    "Never",
-    "Result",
-    "Sendable",
-    "Task",
-    "Error",
-  ]
-
-  static let combinationExamples = [
-    "parsing performance",
-    #""[weak self]" closures"#,
-    "SQLite CloudKit",
-    "generics protocols",
-  ]
-
-  static let orExamples = [
-    "wasm OR webassembly",
-    "swiftui OR uikit",
-    "sqlite OR swiftdata",
-    "bindable OR binding",
-  ]
-
-  var tipExamples: (phrase: String, exclusion: String, cased: String, combined: String, or: String)
-  {
-    withRandomNumberGenerator { rng in
-      (
-        Self.phraseExamples.randomElement(using: &rng) ?? #""macro testing""#,
-        Self.exclusionExamples.randomElement(using: &rng) ?? "uikit -swiftui",
-        Self.caseExamples.randomElement(using: &rng) ?? "Never",
-        Self.combinationExamples.randomElement(using: &rng) ?? "parsing performance",
-        Self.orExamples.randomElement(using: &rng) ?? "wasm or webassembly"
+      SearchTipRows(
+        tips: withRandomNumberGenerator { rng in
+          Self.tips.map { tip in
+            (example: tip.examples.randomElement(using: &rng) ?? "", text: tip.text)
+          }
+        }
       )
     }
   }
+
+  static let tips: [(examples: [String], text: String)] = [
+    (
+      examples: [
+        #""macro testing""#,
+        #""~Copyable""#,
+        #""$0 + 1""#,
+        #""$0.id == id""#,
+        #""@autoclosure""#,
+        #""[weak self]""#,
+        #""some View""#,
+        #""async throws""#,
+      ],
+      text: "Quote to match a phrase or code exactly."
+    ),
+    (
+      examples: [
+        "parsing performance",
+        #""[weak self]" closures"#,
+        "SQLite CloudKit",
+        "generics protocols",
+      ],
+      text: "Multiple terms find videos covering all of them, even minutes apart."
+    ),
+    (
+      examples: [
+        "wasm OR webassembly",
+        "swiftui OR uikit",
+        "sqlite OR swiftdata",
+        "bindable OR binding",
+      ],
+      text: "OR matches either term."
+    ),
+    (
+      examples: [
+        "uikit -swiftui",
+        "testing -xctest",
+        "persistence -swiftdata",
+        "concurrency -combine",
+      ],
+      text: "Prefix with a minus to leave a term out of results."
+    ),
+    (
+      examples: [
+        "Never",
+        "Result",
+        "Sendable",
+        "Task",
+        "Error",
+      ],
+      text: "Uppercase to prioritize case-sensitive matches."
+    ),
+  ]
 }
 
 private struct SearchTipRows: HTML {
-  let examples: (phrase: String, exclusion: String, cased: String, combined: String, or: String)
+  let tips: [(example: String, text: String)]
 
   var body: some HTML {
     VStack(spacing: 1) {
       CapsHeading(title: "Search tips")
       VStack(spacing: 0.75) {
-        TipRow(
-          example: examples.phrase,
-          text: "Quote to match a phrase or code exactly."
-        )
-        TipRow(
-          example: examples.combined,
-          text: "Multiple terms find videos covering all of them, even minutes apart."
-        )
-        TipRow(
-          example: examples.or,
-          text: "OR matches either term."
-        )
-        TipRow(
-          example: examples.exclusion,
-          text: "Prefix with a minus to leave a term out of results."
-        )
-        TipRow(
-          example: examples.cased,
-          text: "Uppercase to prioritize case-sensitive matches."
-        )
+        for tip in tips {
+          TipRow(example: tip.example, text: tip.text)
+        }
       }
     }
   }
@@ -577,12 +561,8 @@ private struct TipRow: HTML {
       }
       .linkColor(.purple)
       .fontStyle(.body(.small))
-      .inlineStyle("background", "color-mix(in oklab, #974dff 10%, transparent)")
-      .inlineStyle("background", "color-mix(in oklab, #974dff 15%, transparent)", media: .dark)
-      .inlineStyle("border-radius", "999px")
-      .inlineStyle("display", "inline-block")
+      .searchPill()
       .inlineStyle("flex-shrink", "0")
-      .inlineStyle("padding", "0.35rem 0.75rem")
       .inlineStyle("white-space", "nowrap")
 
       span {
@@ -621,11 +601,7 @@ private struct SuggestionPills: HTML {
         }
         .linkColor(.purple)
         .fontStyle(.body(.small))
-        .inlineStyle("background", "color-mix(in oklab, #974dff 10%, transparent)")
-        .inlineStyle("background", "color-mix(in oklab, #974dff 15%, transparent)", media: .dark)
-        .inlineStyle("border-radius", "999px")
-        .inlineStyle("display", "inline-block")
-        .inlineStyle("padding", "0.35rem 0.75rem")
+        .searchPill()
       }
     }
     .flexContainer(direction: "row", wrap: "wrap", rowGap: "0.5rem", columnGap: "0.5rem")
@@ -662,9 +638,7 @@ private struct SearchForm: HTML {
         .inlineStyle("width", "100%")
       VStack(spacing: 0.5) {
         FilterRow(
-          iconDataURI: sort == nil
-            ? relevanceGlyphDataURI
-            : sort == .newest ? clockGlyphDataURI : hourglassGlyphDataURI,
+          iconDataURI: sort.glyphDataURI,
           label: "Sort by",
           name: "sort",
           options: [
@@ -675,14 +649,7 @@ private struct SearchForm: HTML {
           selectedValue: sort?.rawValue
         )
         FilterRow(
-          iconDataURI: {
-            switch scope {
-            case nil: asteriskGlyphDataURI
-            case .code: codeGlyphDataURI
-            case .dialogue: speechGlyphDataURI
-            case .titles: headingGlyphDataURI
-            }
-          }(),
+          iconDataURI: scope.glyphDataURI,
           label: "Match in",
           name: "scope",
           options: [
@@ -694,9 +661,7 @@ private struct SearchForm: HTML {
           selectedValue: scope?.rawValue
         )
         FilterRow(
-          iconDataURI: access == nil
-            ? videoGlyphDataURI
-            : access == .free ? unlockedGlyphDataURI : lockGlyphDataURI,
+          iconDataURI: access.glyphDataURI,
           label: "Access",
           name: "access",
           options: [
@@ -850,6 +815,55 @@ private let chevronGlyphDataURI =
   + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
   + "%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"
 
+private protocol SearchFilterOption: CaseIterable, RawRepresentable where RawValue == String {
+  var glyphDataURI: String { get }
+  static var defaultGlyphDataURI: String { get }
+}
+
+extension SiteRoute.SearchSort: SearchFilterOption {
+  fileprivate var glyphDataURI: String {
+    switch self {
+    case .newest: clockGlyphDataURI
+    case .oldest: hourglassGlyphDataURI
+    }
+  }
+  fileprivate static var defaultGlyphDataURI: String { relevanceGlyphDataURI }
+}
+
+extension SiteRoute.SearchScope: SearchFilterOption {
+  fileprivate var glyphDataURI: String {
+    switch self {
+    case .code: codeGlyphDataURI
+    case .dialogue: speechGlyphDataURI
+    case .titles: headingGlyphDataURI
+    }
+  }
+  fileprivate static var defaultGlyphDataURI: String { asteriskGlyphDataURI }
+}
+
+extension SiteRoute.SearchAccess: SearchFilterOption {
+  fileprivate var glyphDataURI: String {
+    switch self {
+    case .free: unlockedGlyphDataURI
+    case .subscriberOnly: lockGlyphDataURI
+    }
+  }
+  fileprivate static var defaultGlyphDataURI: String { videoGlyphDataURI }
+}
+
+extension Optional where Wrapped: SearchFilterOption {
+  fileprivate var glyphDataURI: String {
+    self?.glyphDataURI ?? Wrapped.defaultGlyphDataURI
+  }
+}
+
+private func glyphMapJS<T: SearchFilterOption>(_: T.Type) -> String {
+  let entries =
+    [("", T.defaultGlyphDataURI)]
+    + T.allCases.map { ($0.rawValue, $0.glyphDataURI) }
+  return "{" + entries.map { "\"\($0.0)\": \"\($0.1)\"" }.joined(separator: ", ") + "}"
+}
+
 private struct ResultView: HTML {
   let result: SearchPage.Result
 
@@ -920,7 +934,7 @@ private struct ResultView: HTML {
     var groups: [SectionGroup] = []
     var indexByKey: [Key: Int] = [:]
     for match in result.matches {
-      let key = Key(sectionTitle: match.sectionTitle, timestamp: match.timestamp)
+      let key = Key(sectionTitle: match.result.sectionTitle, timestamp: match.result.timestamp)
       if let index = indexByKey[key] {
         groups[index].matches.append(match)
       } else {
@@ -928,9 +942,9 @@ private struct ResultView: HTML {
         groups.append(
           SectionGroup(
             matches: [match],
-            sectionTitle: match.sectionTitle,
+            sectionTitle: match.result.sectionTitle,
             sectionTitleSnippet: match.sectionTitleSnippet,
-            timestamp: match.timestamp
+            timestamp: match.result.timestamp
           )
         )
       }
@@ -978,15 +992,15 @@ private struct MatchSnippet: HTML {
 
   var body: some HTML {
     HTMLGroup {
-      if !isLocked || match.kind == .blurb {
-        switch match.kind {
+      if !isLocked || match.result.kind == .blurb {
+        switch match.result.kind {
         case .code:
           tag("code") {
-            if match.snippetIsTruncatedAtStart {
+            if match.result.snippetIsTruncatedAtStart {
               TruncationEllipsis(trailing: " ")
             }
-            SnippetSegments(segments: snippetSegments(match.snippet, parseCodeSpans: false))
-            if match.snippetIsTruncatedAtEnd {
+            SnippetSegments(segments: snippetSegments(match.result.snippet, parseCodeSpans: false))
+            if match.result.snippetIsTruncatedAtEnd {
               TruncationEllipsis(leading: " ")
             }
           }
@@ -1001,17 +1015,17 @@ private struct MatchSnippet: HTML {
 
         case .blurb, .prose:
           Paragraph {
-            if match.snippetIsTruncatedAtStart {
+            if match.result.snippetIsTruncatedAtStart {
               TruncationEllipsis(trailing: " ")
             }
             SnippetSegments(
               segments: snippetSegments(
-                match.snippet,
+                match.result.snippet,
                 parseCodeSpans: true,
-                startsInsideCodeSpan: match.snippetStartsInsideCodeSpan
+                startsInsideCodeSpan: match.result.snippetStartsInsideCodeSpan
               )
             )
-            if match.snippetIsTruncatedAtEnd {
+            if match.result.snippetIsTruncatedAtEnd {
               TruncationEllipsis(leading: " ")
             }
           }
