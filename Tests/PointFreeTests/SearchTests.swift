@@ -79,9 +79,6 @@ class SearchTests: TestCase {
   func testSearch_NoResults() async throws {
     try await withDependencies {
       $0.database.searchEpisodes = { _, _, _ in EpisodeSearchResults() }
-      $0.database.suggestEpisodeSearchTerms = { _ in
-        ["Modern UIKit", "UIKit navigation"]
-      }
       $0.episodes = { [.free, .subscriberOnly] }
     } operation: {
       let conn = connection(from: request(to: .search(query: "uikot")))

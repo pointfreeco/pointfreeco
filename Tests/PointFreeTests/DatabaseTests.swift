@@ -125,9 +125,6 @@ final class DatabaseTests: LiveDatabaseTestCase {
     XCTAssertTrue(codeSpanResults[0].headlineIsTruncatedAtStart)
     XCTAssertTrue(codeSpanResults[0].headlineStartsInsideCodeSpan)
 
-    let suggestions = try await self.database.suggestEpisodeSearchTerms(query: "function")
-    XCTAssertEqual(["Functions"], suggestions)
-
     let capitalizedResults = try await self.database.searchEpisodes(query: "Flibbertigibbet")
     XCTAssertEqual(["Rare types", "Chatter"], capitalizedResults.map(\.sectionTitle))
 

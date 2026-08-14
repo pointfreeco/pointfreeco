@@ -33,7 +33,6 @@ public struct SearchPage: HTML {
   let sort: SiteRoute.SearchSort?
   let matchCount: Int
   let results: [Result]
-  let relatedSearches: [String]
 
   public init(
     query: String,
@@ -41,8 +40,7 @@ public struct SearchPage: HTML {
     scope: SiteRoute.SearchScope? = nil,
     sort: SiteRoute.SearchSort? = nil,
     matchCount: Int? = nil,
-    results: [Result],
-    relatedSearches: [String] = []
+    results: [Result]
   ) {
     self.query = query
     self.access = access
@@ -50,7 +48,6 @@ public struct SearchPage: HTML {
     self.sort = sort
     self.matchCount = matchCount ?? results.count
     self.results = results
-    self.relatedSearches = relatedSearches
   }
 
   public var body: some HTML {
@@ -87,8 +84,7 @@ public struct SearchPage: HTML {
               SearchResults(
                 query: query,
                 matchCount: matchCount,
-                results: results,
-                relatedSearches: relatedSearches
+                results: results
               )
             }
             .attribute("id", "search-results")
@@ -170,18 +166,15 @@ public struct SearchResults: HTML {
   let query: String
   let matchCount: Int
   let results: [SearchPage.Result]
-  let relatedSearches: [String]
 
   public init(
     query: String,
     matchCount: Int? = nil,
-    results: [SearchPage.Result],
-    relatedSearches: [String] = []
+    results: [SearchPage.Result]
   ) {
     self.query = query
     self.matchCount = matchCount ?? results.count
     self.results = results
-    self.relatedSearches = relatedSearches
   }
 
   var omittedCount: Int {
@@ -202,13 +195,6 @@ public struct SearchResults: HTML {
             ". Try another search."
           }
           .color(.gray400.dark(.gray650))
-
-          if !relatedSearches.isEmpty {
-            VStack(spacing: 1) {
-              CapsHeading(title: "Related topics")
-              SuggestionPills(suggestions: relatedSearches)
-            }
-          }
 
           SearchTips()
           BrowseLinks()

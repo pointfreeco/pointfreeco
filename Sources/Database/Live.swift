@@ -481,7 +481,7 @@ extension Client {
       },
       migrate: {
         let database = pool.sqlDatabase
-        for `extension` in ["pgcrypto", "uuid-ossp", "citext", "pg_trgm"] {
+        for `extension` in ["pgcrypto", "uuid-ossp", "citext"] {
           do {
             try await database.run(
               """
@@ -1461,28 +1461,6 @@ extension Client {
             )
           }
         )
-      },
-      suggestEpisodeSearchTerms: { query in
-        struct Row: Decodable {
-          let content: String
-        }
-        return try await pool.sqlDatabase
-          .all(
-            """
-            SELECT replace("content", '`', '') AS "content"
-            FROM "episode_search"
-            WHERE "kind" IN ('title', 'episodeTitle')
-            AND "published_at" <= NOW()
-            AND strict_word_similarity(\(bind: query), "content") >= 0.4
-            GROUP BY "episode_search"."content"
-            ORDER BY
-              strict_word_similarity(\(bind: query), "episode_search"."content") DESC,
-              "episode_search"."content"
-            LIMIT 5
-            """,
-            decoding: Row.self
-          )
-          .map(\.content)
       },
       updateEmailSettings: { settings, userId in
         guard let settings else { return }

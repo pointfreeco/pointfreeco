@@ -2,7 +2,7 @@ GET http://localhost:8080/search?q=uikot
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 63274
+Content-Length: 62154
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -493,12 +493,6 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
             <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-QgYLk2">
               <p class="color-OpZD03 color-5uscm3 padding-bottom-XWkc24 padding-top-FBkWQ3 padding-left-FBkWQ3 padding-right-FBkWQ3 margin-FBkWQ3 line-height-9Qkso4 font-size-83zzS1 line-height-Xin5E2">We didn’t find anything matching <span class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-5iWWD3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-cemJK2">uikot</span>. Try another search.
               </p>
-              <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
-                <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Related topics
-                </div>
-                <div class="display-BvS8W3 flex-direction-jlten2 flex-wrap-6YEaQ3 row-gap-NKv2f3 column-gap-NKv2f3"><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=Modern%20UIKit">Modern UIKit</a><a class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-Xv1rW1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search?q=UIKit%20navigation">UIKit navigation</a>
-                </div>
-              </pf-vstack>
               <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-Wr637">
                 <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-83zzS1">
                   <div class="font-weight-uXksW1 letter-spacing-A5R421 text-transform-RqT8X1 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-K2J0r1 color-wVkSF3">Try one of these

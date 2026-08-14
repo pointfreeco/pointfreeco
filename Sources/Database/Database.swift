@@ -147,7 +147,6 @@ public struct Client {
       _ kinds: [EpisodeSearchDocument.Kind]?,
       _ sequences: [Episode.Sequence]?
     ) async throws -> EpisodeSearchResults
-  public var suggestEpisodeSearchTerms: (_ query: String) async throws -> [String]
   public var updateEmailSettings:
     (_ newsletters: [EmailSetting.Newsletter]?, _ userID: Models.User.ID) async throws -> Void
   public var updateEpisodeProgress:

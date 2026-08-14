@@ -22,7 +22,6 @@ func searchMiddleware(
   let query = (query ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
   var results: [SearchPage.Result] = []
   var matchCount = 0
-  var relatedSearches: [String] = []
   if !query.isEmpty {
     let episodeBySequence = Dictionary(
       episodes().map { ($0.sequence, $0) },
@@ -111,13 +110,6 @@ func searchMiddleware(
     case nil:
       break
     }
-
-    if results.isEmpty {
-      relatedSearches =
-        await withErrorReporting {
-          try await database.suggestEpisodeSearchTerms(query: query)
-        } ?? []
-    }
   }
 
   if conn.request.value(forHTTPHeaderField: "X-Fragment") == "results" {
@@ -127,8 +119,7 @@ func searchMiddleware(
         SearchResults(
           query: query,
           matchCount: matchCount,
-          results: results,
-          relatedSearches: relatedSearches
+          results: results
         )
       }
   }
@@ -144,8 +135,7 @@ func searchMiddleware(
         scope: scope,
         sort: sort,
         matchCount: matchCount,
-        results: results,
-        relatedSearches: relatedSearches
+        results: results
       )
     }
 }

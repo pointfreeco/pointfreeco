@@ -72,7 +72,6 @@ extension Client {
     rotateEmailLoginCode: { _ in },
     sawUser: { _ in },
     searchEpisodes: { _, _, _ in EpisodeSearchResults() },
-    suggestEpisodeSearchTerms: { _ in [] },
     updateEmailSettings: { _, _ in },
     updateEpisodeProgress: { _, _, _, _ in },
     updateGift: { _, _ in .fulfilled },
