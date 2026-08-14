@@ -72,6 +72,11 @@ private struct SearchDocumentVisitor: MarkupVisitor {
   let episodeSequence: Episode.Sequence
   let publishedAt: Date
   var documents: [EpisodeSearchDocument] = []
+
+  init(episodeSequence: Episode.Sequence, publishedAt: Date) {
+    self.episodeSequence = episodeSequence
+    self.publishedAt = publishedAt
+  }
   private var sectionTitle: String?
   private var sectionTimestamp: Int?
   private var currentTimestamp: Int?
