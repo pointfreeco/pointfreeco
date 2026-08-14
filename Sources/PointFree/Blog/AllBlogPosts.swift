@@ -238,5 +238,6 @@ extension BlogPost {
     .post0219_sqliteDataSectioning,
     .post0220_structuredQueriesJSON,
     .post0221_emailLogin,
+    .post0223_firstOfficeHours,
   ]
 }

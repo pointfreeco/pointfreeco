@@ -127,15 +127,6 @@ extension Client {
       deleteOfficeHourQuestion: { id, userID in
         try await pool.sqlDatabase.run(
           """
-          WITH "deleted_votes" AS (
-            DELETE FROM "office_hour_question_votes"
-            WHERE "office_hour_question_id" IN (
-              SELECT "id" FROM "office_hour_questions"
-              WHERE "id" = \(bind: id)
-              AND "user_id" = \(bind: userID)
-              AND "answered_office_hour_id" IS NULL
-            )
-          )
           DELETE FROM "office_hour_questions"
           WHERE "id" = \(bind: id)
           AND "user_id" = \(bind: userID)
@@ -1143,7 +1134,7 @@ extension Client {
             "scheduled_at" timestamp with time zone,
             "title" character varying NOT NULL DEFAULT '',
             "updated_at" timestamp without time zone,
-            "video_id" character varying NOT NULL DEFAULT ''
+            "youtube_video_id" character varying NOT NULL DEFAULT ''
           )
           """
         )
@@ -1155,7 +1146,7 @@ extension Client {
             "answered_office_hour_id" uuid REFERENCES "office_hours"("id"),
             "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
             "question" character varying NOT NULL,
-            "user_id" uuid REFERENCES "users"("id") NOT NULL
+            "user_id" uuid REFERENCES "users"("id") ON DELETE SET NULL
           )
           """
         )
@@ -1165,8 +1156,8 @@ extension Client {
             "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
             "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
             "office_hour_question_id" uuid
-              REFERENCES "office_hour_questions"("id") NOT NULL,
-            "user_id" uuid REFERENCES "users"("id") NOT NULL
+              REFERENCES "office_hour_questions"("id") ON DELETE CASCADE NOT NULL,
+            "user_id" uuid REFERENCES "users"("id") ON DELETE CASCADE NOT NULL
           )
           """
         )
@@ -1376,7 +1367,7 @@ extension Client {
           SELECT "id", \(bind: userID)
           FROM "office_hour_questions"
           WHERE "id" = \(bind: questionID)
-          AND "user_id" != \(bind: userID)
+          AND "user_id" IS DISTINCT FROM \(bind: userID)
           ON CONFLICT DO NOTHING
           """
         )

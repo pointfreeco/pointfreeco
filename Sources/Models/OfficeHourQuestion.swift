@@ -9,7 +9,7 @@ public struct OfficeHourQuestion: Codable, Identifiable {
   public let createdAt: Date
   public let hasVoted: Bool
   public let question: String
-  public let userID: User.ID
+  public let userID: User.ID?
   public let voteCount: Int
 
   public init(
@@ -19,7 +19,7 @@ public struct OfficeHourQuestion: Codable, Identifiable {
     createdAt: Date = Date(timeIntervalSince1970: 0),
     hasVoted: Bool = false,
     question: String,
-    userID: User.ID,
+    userID: User.ID?,
     voteCount: Int = 0
   ) {
     self.id = id

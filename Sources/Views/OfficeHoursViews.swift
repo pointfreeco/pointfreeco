@@ -429,7 +429,7 @@ private struct SubmitQuestionForm: HTML {
           .attribute("rows", "3")
           .attribute(
             "placeholder",
-            "What would you like us to cover in the next office hours?"
+            "What would you like us to cover in the next office hours? Markdown is supported."
           )
           .inlineStyle("background-color", "#fff")
           .inlineStyle("background-color", "#1a1a1a", media: .dark)
@@ -476,62 +476,89 @@ private struct QuestionRow: HTML {
   @Dependency(\.subscriberState) var subscriberState
 
   var isOwnQuestion: Bool {
-    currentUser?.id == question.userID
+    guard let currentUser, let userID = question.userID else { return false }
+    return currentUser.id == userID
   }
 
   var body: some HTML {
     HStack(alignment: .center, spacing: 1) {
       VoteControl(question: question, isOwnQuestion: isOwnQuestion)
-
-      VStack(spacing: 0.25) {
-        HTMLMarkdown(question.question)
-          .color(.black.dark(.white))
-          .linkColor(.purple)
-
-        span {
-          HTMLText("Asked \(headerDateFormatter.string(from: question.createdAt))")
-          if isOwnQuestion {
-            " • Your question"
-          } else if question.hasVoted {
-            " • You voted for this"
-          }
-        }
-        .fontStyle(.body(.small))
-        .color(.gray400.dark(.gray650))
-      }
-      .grow()
-
+      questionContent
       if isOwnQuestion {
-        form {
-          button {
-            "Delete"
-          }
-          .attribute("type", "submit")
-          .attribute("title", "Delete this question")
-          .color(.gray400.dark(.gray650))
-          .inlineStyle("background", "none")
-          .inlineStyle("border", "none")
-          .inlineStyle("color", PointFreeColor.red.rawValue, pseudo: .hover)
-          .inlineStyle("cursor", "pointer")
-          .inlineStyle("font-family", "inherit")
-          .inlineStyle("font-size", "0.875rem")
-          .inlineStyle("padding", "0")
-          .inlineStyle("text-decoration", "underline", pseudo: .hover)
-        }
-        .attribute(
-          "action",
-          siteRouter.path(for: .officeHours(.deleteQuestion(id: question.id)))
-        )
-        .attribute("method", "post")
-        .attribute("onsubmit", "return confirm(\"Delete this question?\")")
+        DeleteQuestionButton(questionID: question.id)
       }
     }
-    .inlineStyle("border", "1px solid rgba(15, 18, 32, 0.12)")
-    .inlineStyle("border-color", "rgba(255, 255, 255, 0.12)", media: .dark)
-    .inlineStyle("border-radius", "0.75rem")
-    .inlineStyle("padding", "1rem")
-    .inlineStyle("width", "100%")
-    .inlineStyle("box-sizing", "border-box")
+    .questionCard(isOwnQuestion: isOwnQuestion)
+  }
+
+  var questionContent: some HTML {
+    VStack(spacing: 0.25) {
+      HTMLMarkdown(question.question)
+        .color(.black.dark(.white))
+        .linkColor(.purple)
+
+      span {
+        HTMLText("Asked \(headerDateFormatter.string(from: question.createdAt))")
+        if isOwnQuestion {
+          " • "
+          strong { "Your question" }
+        } else if question.hasVoted {
+          " • You voted for this"
+        }
+      }
+      .fontStyle(.body(.small))
+      .color(.gray400.dark(.gray650))
+    }
+    .grow()
+  }
+}
+
+private struct DeleteQuestionButton: HTML {
+  let questionID: Models.OfficeHourQuestion.ID
+
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    form {
+      button {
+        "Delete"
+      }
+      .attribute("type", "submit")
+      .attribute("title", "Delete this question")
+      .color(.gray400.dark(.gray650))
+      .inlineStyle("background", "none")
+      .inlineStyle("border", "none")
+      .inlineStyle("color", PointFreeColor.red.rawValue, pseudo: .hover)
+      .inlineStyle("cursor", "pointer")
+      .inlineStyle("font-family", "inherit")
+      .inlineStyle("font-size", "0.875rem")
+      .inlineStyle("padding", "0")
+      .inlineStyle("text-decoration", "underline", pseudo: .hover)
+    }
+    .attribute(
+      "action",
+      siteRouter.path(for: .officeHours(.deleteQuestion(id: questionID)))
+    )
+    .attribute("method", "post")
+    .attribute("onsubmit", "return confirm(\"Delete this question?\")")
+  }
+}
+
+extension HTML {
+  fileprivate func questionCard(isOwnQuestion: Bool) -> some HTML {
+    self
+      .inlineStyle("background-color", isOwnQuestion ? "rgba(15, 18, 32, 0.04)" : nil)
+      .inlineStyle(
+        "background-color",
+        isOwnQuestion ? "rgba(255, 255, 255, 0.06)" : nil,
+        media: .dark
+      )
+      .inlineStyle("border", "1px solid rgba(15, 18, 32, 0.12)")
+      .inlineStyle("border-color", "rgba(255, 255, 255, 0.12)", media: .dark)
+      .inlineStyle("border-radius", "0.75rem")
+      .inlineStyle("padding", "1rem")
+      .inlineStyle("width", "100%")
+      .inlineStyle("box-sizing", "border-box")
   }
 }
 
@@ -553,28 +580,77 @@ private struct VoteControl: HTML {
   var body: some HTML {
     if canVote {
       form {
-        Button(tag: button, color: .purple, size: .small, style: .outline) {
-          HTMLText("▲ \(question.voteCount)")
+        button {
+          VotePillContent(voteCount: question.voteCount)
         }
         .attribute("type", "submit")
+        .attribute("title", "Vote for this question")
+        .votePill()
+        .inlineStyle("color", "inherit")
+        .inlineStyle("cursor", "pointer")
+        .inlineStyle("background-color", "transparent")
+        .inlineStyle("border-color", "#974dff", pseudo: .hover)
+        .inlineStyle("color", "#974dff", pseudo: .hover)
+        .inlineStyle(
+          "background-color",
+          "color-mix(in oklab, #974dff 8%, transparent)",
+          pseudo: .hover
+        )
       }
+      .color(.gray400.dark(.gray650))
       .attribute(
         "action",
         siteRouter.path(for: .officeHours(.voteQuestion(id: question.id)))
       )
       .attribute("method", "post")
+    } else if question.hasVoted {
+      span {
+        VotePillContent(voteCount: question.voteCount)
+      }
+      .attribute("title", "You voted for this question")
+      .votePill()
+      .color(.purple)
+      .inlineStyle("border-color", "color-mix(in oklab, #974dff 40%, transparent)")
+      .inlineStyle("background-color", "color-mix(in oklab, #974dff 10%, transparent)")
     } else {
       span {
-        HTMLText("▲ \(question.voteCount)")
+        VotePillContent(voteCount: question.voteCount)
       }
-      .fontStyle(.body(.small))
-      .color(question.hasVoted ? .purple : .gray400.dark(.gray650))
-      .inlineStyle("border", "1px solid rgba(15, 18, 32, 0.12)")
-      .inlineStyle("border-color", "rgba(255, 255, 255, 0.12)", media: .dark)
-      .inlineStyle("border-radius", "999px")
-      .inlineStyle("padding", "0.25rem 0.75rem")
-      .inlineStyle("white-space", "nowrap")
+      .votePill()
+      .color(.gray400.dark(.gray650))
+      .inlineStyle("background-color", "transparent")
     }
+  }
+}
+
+private struct VotePillContent: HTML {
+  let voteCount: Int
+
+  var body: some HTML {
+    span { "▲" }
+      .inlineStyle("font-size", "0.7rem")
+      .inlineStyle("line-height", "1")
+    span { HTMLText("\(voteCount)") }
+      .inlineStyle("font-size", "0.875rem")
+      .inlineStyle("font-weight", "600")
+      .inlineStyle("line-height", "1.2")
+  }
+}
+
+extension HTML {
+  fileprivate func votePill() -> some HTML {
+    self
+      .inlineStyle("align-items", "center")
+      .inlineStyle("border", "1px solid rgba(15, 18, 32, 0.15)")
+      .inlineStyle("border-color", "rgba(255, 255, 255, 0.15)", media: .dark)
+      .inlineStyle("border-radius", "0.5rem")
+      .inlineStyle("display", "flex")
+      .inlineStyle("flex-direction", "column")
+      .inlineStyle("font-family", "inherit")
+      .inlineStyle("gap", "0.2rem")
+      .inlineStyle("min-width", "2.25rem")
+      .inlineStyle("padding", "0.5rem 0.5rem")
+      .inlineStyle("transition", "color 150ms ease, border-color 150ms ease")
   }
 }
 
@@ -663,10 +739,13 @@ private struct OfficeHoursLiveEmbeds: HTML {
         horizontalSpacing: 0,
         verticalSpacing: 0
       ) {
-        OfficeHoursVideoEmbed(youtubeChannelID: youtubeChannelID)
-        if !officeHour.videoID.isEmpty {
+        OfficeHoursVideoEmbed(
+          youtubeChannelID: youtubeChannelID,
+          youtubeVideoID: officeHour.youtubeVideoID
+        )
+        if !officeHour.youtubeVideoID.isEmpty {
           OfficeHoursChatEmbed(
-            videoID: officeHour.videoID,
+            youtubeVideoID: officeHour.youtubeVideoID,
             host: baseURL.host() ?? "localhost"
           )
         }
@@ -680,13 +759,14 @@ private struct OfficeHoursLiveEmbeds: HTML {
 
 private struct OfficeHoursVideoEmbed: HTML {
   let youtubeChannelID: String
+  let youtubeVideoID: String
 
   var body: some HTML {
     div {
       iframe()
         .attribute(
           "src",
-          "https://www.youtube.com/embed/live_stream?channel=\(youtubeChannelID)"
+          "https://www.youtube.com/embed/\(youtubeVideoID)"
         )
         .attribute("allow", "autoplay; fullscreen; picture-in-picture")
         .attribute("allowfullscreen")
@@ -707,13 +787,16 @@ private struct OfficeHoursVideoEmbed: HTML {
 }
 
 private struct OfficeHoursChatEmbed: HTML {
-  let videoID: String
+  let youtubeVideoID: String
   let host: String
 
   var body: some HTML {
     div {
       iframe()
-        .attribute("src", "https://www.youtube.com/live_chat?v=\(videoID)&embed_domain=\(host)")
+        .attribute(
+          "src",
+          "https://www.youtube.com/live_chat?v=\(youtubeVideoID)&embed_domain=\(host)"
+        )
         .attribute("loading", "lazy")
         .attribute("frameborder", "0")
         .inlineStyle("border", "none")
@@ -724,6 +807,7 @@ private struct OfficeHoursChatEmbed: HTML {
     .inlineStyle("background", "#000")
     .inlineStyle("min-height", "40rem")
     .inlineStyle("overflow", "hidden")
+    .inlineStyle("display", "none", media: .mobile)
   }
 }
 

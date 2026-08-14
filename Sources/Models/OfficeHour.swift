@@ -14,7 +14,7 @@ public struct OfficeHour: Codable, Identifiable {
   public let posterURL: String
   public let scheduledAt: Date?
   public let title: String
-  public let videoID: String
+  public let youtubeVideoID: String
 
   public init(
     id: ID,
@@ -27,7 +27,7 @@ public struct OfficeHour: Codable, Identifiable {
     posterURL: String = "",
     scheduledAt: Date? = nil,
     title: String = "",
-    videoID: String = ""
+    youtubeVideoID: String = ""
   ) {
     self.id = id
     self.blurb = blurb
@@ -39,7 +39,7 @@ public struct OfficeHour: Codable, Identifiable {
     self.posterURL = posterURL
     self.scheduledAt = scheduledAt
     self.title = title
-    self.videoID = videoID
+    self.youtubeVideoID = youtubeVideoID
   }
 
   public var isArchived: Bool {
@@ -57,6 +57,6 @@ public struct OfficeHour: Codable, Identifiable {
     case posterURL = "poster_url"
     case scheduledAt = "scheduled_at"
     case title
-    case videoID = "video_id"
+    case youtubeVideoID = "youtube_video_id"
   }
 }
