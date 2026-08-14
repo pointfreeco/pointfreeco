@@ -143,7 +143,6 @@ private struct SearchDocumentVisitor: MarkupVisitor {
 }
 
 private func seconds(fromTimestamp timestamp: Substring) -> Int? {
-  let components = timestamp.split(separator: ":").map { Int($0.trimmingCharacters(in: .whitespaces)) }
-  guard !components.isEmpty, components.allSatisfy({ $0 != nil }) else { return nil }
-  return components.compactMap { $0 }.reduce(0) { $0 * 60 + $1 }
+  let components = timestamp.split(separator: ":").compactMap { Int($0) }
+  return components.isEmpty ? nil : components.reduce(0) { $0 * 60 + $1 }
 }
