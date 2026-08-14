@@ -4,9 +4,8 @@ extension BlogPost {
   public static let post0222_search = Self(
     author: .pointfree,
     blurb: """
-      Point-Free now has full-text search! Every word of every one of our 377 episodes is \
-      indexed—prose, section titles, and even the code we write on screen—with results that \
-      deep-link to the exact moment in the video.
+      Point-Free now has episode search! Every word of every one of our 377 episodes is \
+      indexed—dialogue _and_ code—so you can easily revisit our lessons with a quick query.
       """,
     coverImage: nil,
     hidden: .no,
