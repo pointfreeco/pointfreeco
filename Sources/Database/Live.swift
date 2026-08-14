@@ -1266,7 +1266,7 @@ extension Client {
             + "%"
         }
 
-        return try await pool.sqlDatabase.all(
+        let rows = try await pool.sqlDatabase.raw(
           """
           WITH "terms" AS (
             SELECT DISTINCT "group", websearch_to_tsquery('english', "term") AS "q"
@@ -1337,6 +1337,10 @@ extension Client {
             LIMIT 100
           )
           SELECT
+            (
+              SELECT array_agg("episode_sequence" ORDER BY "episode_sequence")
+              FROM "episodes"
+            ) AS "matching_sequences",
             "episode_sequence",
             "section_title",
             COALESCE(
@@ -1399,6 +1403,15 @@ extension Client {
             strpos("content", "plain_headline") AS "headline_position"
           ORDER BY "rank" DESC
           """
+        )
+        .all()
+        return EpisodeSearchResults(
+          matchingSequences: rows.isEmpty
+            ? []
+            : try rows[0].decode(column: "matching_sequences", as: [Episode.Sequence].self),
+          results: try rows.map {
+            try $0.decode(model: EpisodeSearchResult.self, keyDecodingStrategy: .convertFromSnakeCase)
+          }
         )
       },
       suggestEpisodeSearchTerms: { query in

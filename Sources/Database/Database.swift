@@ -145,7 +145,7 @@ public struct Client {
     (
       _ query: String,
       _ kinds: [EpisodeSearchDocument.Kind]?
-    ) async throws -> [EpisodeSearchResult]
+    ) async throws -> EpisodeSearchResults
   public var suggestEpisodeSearchTerms: (_ query: String) async throws -> [String]
   public var updateEmailSettings:
     (_ newsletters: [EmailSetting.Newsletter]?, _ userID: Models.User.ID) async throws -> Void
@@ -178,7 +178,7 @@ public struct Client {
       _ date: @escaping () -> Date
     ) async throws -> Models.User
 
-  public func searchEpisodes(query: String) async throws -> [EpisodeSearchResult] {
+  public func searchEpisodes(query: String) async throws -> EpisodeSearchResults {
     try await self.searchEpisodes(query: query, kinds: nil)
   }
 

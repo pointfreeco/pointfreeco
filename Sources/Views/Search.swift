@@ -52,6 +52,7 @@ public struct SearchPage: HTML {
   let access: SiteRoute.SearchAccess?
   let scope: SiteRoute.SearchScope?
   let sort: SiteRoute.SearchSort?
+  let matchCount: Int
   let results: [Result]
   let relatedSearches: [String]
 
@@ -60,6 +61,7 @@ public struct SearchPage: HTML {
     access: SiteRoute.SearchAccess? = nil,
     scope: SiteRoute.SearchScope? = nil,
     sort: SiteRoute.SearchSort? = nil,
+    matchCount: Int? = nil,
     results: [Result],
     relatedSearches: [String] = []
   ) {
@@ -67,6 +69,7 @@ public struct SearchPage: HTML {
     self.access = access
     self.scope = scope
     self.sort = sort
+    self.matchCount = matchCount ?? results.count
     self.results = results
     self.relatedSearches = relatedSearches
   }
@@ -102,7 +105,12 @@ public struct SearchPage: HTML {
               .inlineStyle("top", "2rem", media: .desktop)
 
             div {
-              SearchResults(query: query, results: results, relatedSearches: relatedSearches)
+              SearchResults(
+                query: query,
+                matchCount: matchCount,
+                results: results,
+                relatedSearches: relatedSearches
+              )
             }
             .attribute("id", "search-results")
           }
@@ -152,13 +160,24 @@ extension HTML {
 
 public struct SearchResults: HTML {
   let query: String
+  let matchCount: Int
   let results: [SearchPage.Result]
   let relatedSearches: [String]
 
-  public init(query: String, results: [SearchPage.Result], relatedSearches: [String] = []) {
+  public init(
+    query: String,
+    matchCount: Int? = nil,
+    results: [SearchPage.Result],
+    relatedSearches: [String] = []
+  ) {
     self.query = query
+    self.matchCount = matchCount ?? results.count
     self.results = results
     self.relatedSearches = relatedSearches
+  }
+
+  var omittedCount: Int {
+    matchCount - results.count
   }
 
   public var body: some HTML {
@@ -187,9 +206,9 @@ public struct SearchResults: HTML {
           BrowseLinks()
         } else {
           div {
-            results.count == 1
+            matchCount == 1
               ? "1 video matches "
-              : "\(results.count) videos match "
+              : "\(matchCount) videos match "
             QueryPill(query: query)
           }
           .color(.gray650.dark(.gray400))
@@ -197,6 +216,16 @@ public struct SearchResults: HTML {
 
           for result in results {
             ResultView(result: result)
+          }
+
+          if omittedCount > 0 {
+            div {
+              omittedCount == 1
+                ? "1 less relevant video was omitted. Narrow your search to surface it."
+                : "\(omittedCount) less relevant videos were omitted. Narrow your search to surface them."
+            }
+            .color(.gray650.dark(.gray400))
+            .fontStyle(.body(.small))
           }
         }
       }

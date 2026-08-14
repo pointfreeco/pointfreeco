@@ -21,12 +21,23 @@ func searchMiddleware(
 
   let query = (query ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
   var results: [SearchPage.Result] = []
+  var matchCount = 0
   var relatedSearches: [String] = []
   if !query.isEmpty {
     let episodeBySequence = Dictionary(
       episodes().map { ($0.sequence, $0) },
       uniquingKeysWith: { episode, _ in episode }
     )
+    func isIncluded(_ episode: Episode) -> Bool {
+      switch access {
+      case .free:
+        !episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode)
+      case .subscriberOnly:
+        episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode)
+      case nil:
+        true
+      }
+    }
     let kinds: [EpisodeSearchDocument.Kind]? =
       switch scope {
       case .code: [.code]
@@ -34,10 +45,14 @@ func searchMiddleware(
       case .titles: [.title, .episodeTitle]
       case nil: nil
       }
-    let rows =
+    let searchResults =
       await withErrorReporting {
         try await database.searchEpisodes(query: query, kinds: kinds)
-      } ?? []
+      } ?? EpisodeSearchResults()
+    let rows = searchResults.results
+    matchCount = searchResults.matchingSequences
+      .compactMap { episodeBySequence[$0] }
+      .count(where: isIncluded)
 
     struct SectionKey: Hashable {
       let episodeSequence: Episode.Sequence
@@ -72,17 +87,8 @@ func searchMiddleware(
     var matchesBySequence: [Episode.Sequence: [(match: SearchPage.Match, terms: [String])]] = [:]
     var matchIndexByWindow: [WindowKey: Int] = [:]
     for row in rows {
-      guard let episode = episodeBySequence[row.episodeSequence] else { continue }
-      switch access {
-      case .free:
-        guard !episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode)
-        else { continue }
-      case .subscriberOnly:
-        guard episode.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode)
-        else { continue }
-      case nil:
-        break
-      }
+      guard let episode = episodeBySequence[row.episodeSequence], isIncluded(episode)
+      else { continue }
       if resultIndexBySequence[row.episodeSequence] == nil {
         resultIndexBySequence[row.episodeSequence] = results.count
         results.append(
@@ -150,7 +156,12 @@ func searchMiddleware(
     return conn
       .writeStatus(.ok)
       .respondFragment {
-        SearchResults(query: query, results: results, relatedSearches: relatedSearches)
+        SearchResults(
+          query: query,
+          matchCount: matchCount,
+          results: results,
+          relatedSearches: relatedSearches
+        )
       }
   }
 
@@ -164,6 +175,7 @@ func searchMiddleware(
         access: access,
         scope: scope,
         sort: sort,
+        matchCount: matchCount,
         results: results,
         relatedSearches: relatedSearches
       )

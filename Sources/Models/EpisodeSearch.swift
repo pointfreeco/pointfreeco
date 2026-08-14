@@ -31,6 +31,19 @@ public struct EpisodeSearchDocument: Codable, Equatable {
   }
 }
 
+public struct EpisodeSearchResults: Codable, Equatable {
+  public var matchingSequences: [Episode.Sequence]
+  public var results: [EpisodeSearchResult]
+
+  public init(
+    matchingSequences: [Episode.Sequence] = [],
+    results: [EpisodeSearchResult] = []
+  ) {
+    self.matchingSequences = matchingSequences
+    self.results = results
+  }
+}
+
 public struct EpisodeSearchResult: Codable, Equatable {
   public var episodeSequence: Episode.Sequence
   public var headline: String
