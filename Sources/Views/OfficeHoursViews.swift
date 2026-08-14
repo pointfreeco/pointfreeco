@@ -60,8 +60,14 @@ public struct OfficeHoursIndex: HTML {
     }
 
     if let liveOfficeHour {
-      if subscriberState.isMaxSubscriber {
+      if subscriberState.isMaxSubscriber, !liveOfficeHour.youtubeVideoID.isEmpty {
         OfficeHoursLiveEmbeds(officeHour: liveOfficeHour)
+      } else if subscriberState.isMaxSubscriber {
+        OfficeHourVideoNotice(
+          notice: "🔴 We are live right now!",
+          title: liveOfficeHour.title,
+          description: liveOfficeHour.description
+        )
       } else {
         OfficeHourVideoNotice(
           notice: "🔴 We are live right now!",
@@ -71,7 +77,9 @@ public struct OfficeHoursIndex: HTML {
       }
     } else if let nextOfficeHour, let scheduledAt = nextOfficeHour.scheduledAt {
       OfficeHourVideoNotice(
-        notice: "Scheduled for \(officeHoursScheduledAtFormatter.string(from: scheduledAt))",
+        notice: """
+          Scheduled for \(officeHoursScheduledAtFormatter.string(from: scheduledAt)) GMT
+          """,
         title: nextOfficeHour.title,
         description: nextOfficeHour.description
       )
@@ -101,25 +109,165 @@ public struct OfficeHoursIndex: HTML {
 
 public struct OfficeHourDetail: HTML {
   let officeHour: Models.OfficeHour
+  let questions: [Models.OfficeHourQuestion]
 
-  public init(officeHour: Models.OfficeHour) {
+  @Dependency(\.subscriberState) var subscriberState
+
+  public init(officeHour: Models.OfficeHour, questions: [Models.OfficeHourQuestion] = []) {
     self.officeHour = officeHour
+    self.questions = questions
+  }
+
+  var subtitle: String {
+    """
+    Office Hours • \
+    \(headerDateFormatter.string(from: officeHour.scheduledAt ?? officeHour.createdAt))
+    """
   }
 
   public var body: some HTML {
     if let cloudflareVideoID = officeHour.cloudflareVideoID {
-      VideoHeader(
-        title: officeHour.title,
-        subtitle: """
-          Office Hours • \
-          \(headerDateFormatter.string(from: officeHour.scheduledAt ?? officeHour.createdAt))
-          """,
-        blurb: officeHour.description,
-        videoID: cloudflareVideoID,
-        poster: officeHour.posterURL,
-        progress: nil,
-        trackProgress: false
-      )
+      if subscriberState.isMaxSubscriber {
+        VideoHeader(
+          title: officeHour.title,
+          subtitle: subtitle,
+          blurb: officeHour.description,
+          videoID: cloudflareVideoID,
+          poster: officeHour.posterURL,
+          progress: nil,
+          trackProgress: false
+        )
+      } else {
+        LockedOfficeHourHeader(officeHour: officeHour, subtitle: subtitle)
+        MaxSubscriberCallout()
+      }
+
+      if !questions.isEmpty {
+        AnsweredQuestionsModule(
+          questions: questions,
+          isViewable: subscriberState.isMaxSubscriber
+        )
+      }
+    }
+  }
+}
+
+private struct LockedOfficeHourHeader: HTML {
+  let officeHour: Models.OfficeHour
+  let subtitle: String
+
+  var body: some HTML {
+    CenterColumn {
+      VStack(alignment: .center, spacing: 0) {
+        Header(3) {
+          HTMLText(officeHour.title)
+        }
+        .color(.offWhite)
+        .inlineStyle("text-align", "center")
+        .inlineStyle("text-wrap", "balance")
+
+        span {
+          HTMLText(subtitle)
+        }
+        .color(.gray800)
+
+        HTMLMarkdown(officeHour.description)
+          .color(.gray900)
+          .linkStyle(.init(color: .offWhite, underline: true))
+          .inlineStyle("max-width", "768px")
+          .inlineStyle("margin-top", "2rem")
+          .inlineStyle("text-align", "justify")
+      }
+      .inlineStyle("padding", "3rem 2rem 6rem")
+      .inlineStyle("padding", "4rem 3rem 6rem", media: .desktop)
+    }
+    .inlineStyle("background", "linear-gradient(#121212, #242424)")
+    .inlineStyle("padding-bottom", "2rem")
+
+    CenterColumn {
+      div {
+        div {
+          Image(source: officeHour.posterURL, description: "")
+            .inlineStyle("display", "block")
+            .inlineStyle("filter", "brightness(0.35)")
+            .inlineStyle("height", "100%")
+            .inlineStyle("object-fit", "cover")
+            .inlineStyle("position", "absolute")
+            .inlineStyle("width", "100%")
+
+          div {
+            VStack(alignment: .center, spacing: 1) {
+              span { "🔒" }
+                .inlineStyle("font-size", "2rem")
+
+              Header(4) {
+                "This video is for Max subscribers"
+              }
+              .color(.white)
+              .inlineStyle("text-align", "center")
+            }
+          }
+          .inlineStyle("align-items", "center")
+          .inlineStyle("display", "flex")
+          .inlineStyle("inset", "0")
+          .inlineStyle("justify-content", "center")
+          .inlineStyle("padding", "2rem")
+          .inlineStyle("position", "absolute")
+        }
+        .inlineStyle("aspect-ratio", "16 / 9")
+        .inlineStyle("background", "#000")
+        .inlineStyle("box-shadow", "0rem 1rem 20px rgba(0,0,0,0.2)")
+        .inlineStyle("overflow", "hidden")
+        .inlineStyle("position", "relative")
+      }
+      .inlineStyle("box-sizing", "border-box")
+      .inlineStyle("padding", "0 4rem", media: .desktop)
+    }
+    .inlineStyle("margin-top", "-4rem")
+    .inlineStyle("padding-bottom", "4rem")
+  }
+}
+
+private struct AnsweredQuestionsModule: HTML {
+  let questions: [Models.OfficeHourQuestion]
+  let isViewable: Bool
+
+  var body: some HTML {
+    PageModule(title: "Questions answered in this session", theme: .content) {
+      VStack(spacing: 1) {
+        HTMLForEach(questions) { question in
+          HStack(alignment: .firstTextBaseline, spacing: 1) {
+            if let seconds = question.answeredAtSeconds {
+              if isViewable {
+                a {
+                  HTMLText(timestampLabel(seconds: seconds))
+                }
+                .attribute("href", "#t\(seconds.rawValue)")
+                .attribute("data-timestamp", "\(seconds.rawValue)")
+                .inlineStyle("color", "#974dff")
+                .inlineStyle("font-variant-numeric", "tabular-nums")
+                .inlineStyle("text-decoration", "none")
+                .inlineStyle("text-decoration", "underline", pseudo: .hover)
+              } else {
+                span {
+                  HTMLText(timestampLabel(seconds: seconds))
+                }
+                .color(.gray400.dark(.gray650))
+                .inlineStyle("font-variant-numeric", "tabular-nums")
+              }
+            }
+
+            HTMLMarkdown(question.question)
+              .color(.gray150.dark(.gray850))
+              .linkColor(.purple)
+              .grow()
+          }
+          .inlineStyle("width", "100%")
+        }
+      }
+      .inlineStyle("margin", "0 auto")
+      .inlineStyle("max-width", "768px")
+      .inlineStyle("width", "100%")
     }
   }
 }
@@ -493,9 +641,7 @@ private struct QuestionRow: HTML {
 
   var questionContent: some HTML {
     VStack(spacing: 0.25) {
-      HTMLMarkdown(question.question)
-        .color(.black.dark(.white))
-        .linkColor(.purple)
+      ExpandableQuestionMarkdown(question: question)
 
       span {
         HTMLText("Asked \(headerDateFormatter.string(from: question.createdAt))")
@@ -510,6 +656,56 @@ private struct QuestionRow: HTML {
       .color(.gray400.dark(.gray650))
     }
     .grow()
+  }
+}
+
+private struct ExpandableQuestionMarkdown: HTML {
+  let question: Models.OfficeHourQuestion
+
+  var isLong: Bool {
+    question.question.count > 800
+      || question.question.count(where: { $0 == "\n" }) >= 10
+  }
+
+  var expandID: String {
+    "expand-question-\(question.id.rawValue.uuidString.lowercased())"
+  }
+
+  var body: some HTML {
+    if isLong {
+      input()
+        .attribute("id", expandID)
+        .attribute("type", "checkbox")
+        .inlineStyle("display", "none")
+
+      HTMLMarkdown(question.question)
+        .color(.black.dark(.white))
+        .linkColor(.purple)
+        .inlineStyle("max-height", "15em")
+        .inlineStyle(
+          "mask-image",
+          "linear-gradient(to bottom, black 66%, transparent 100%)"
+        )
+        .inlineStyle("overflow", "hidden")
+        .inlineStyle("mask-image", "none", pre: "input:checked ~")
+        .inlineStyle("max-height", "none", pre: "input:checked ~")
+        .inlineStyle("overflow", "visible", pre: "input:checked ~")
+
+      label {
+        "Show more"
+      }
+      .attribute("for", expandID)
+      .fontStyle(.body(.small))
+      .inlineStyle("color", "#974dff")
+      .inlineStyle("cursor", "pointer")
+      .inlineStyle("display", "inline-block")
+      .inlineStyle("display", "none", pre: "input:checked ~")
+      .inlineStyle("text-decoration", "underline", pseudo: .hover)
+    } else {
+      HTMLMarkdown(question.question)
+        .color(.black.dark(.white))
+        .linkColor(.purple)
+    }
   }
 }
 
@@ -729,7 +925,6 @@ private struct OfficeHoursLiveEmbeds: HTML {
   let officeHour: Models.OfficeHour
 
   @Dependency(\.envVars.baseUrl) var baseURL
-  @Dependency(\.envVars.youtubeChannelID) var youtubeChannelID
 
   var body: some HTML {
     div {
@@ -739,16 +934,11 @@ private struct OfficeHoursLiveEmbeds: HTML {
         horizontalSpacing: 0,
         verticalSpacing: 0
       ) {
-        OfficeHoursVideoEmbed(
-          youtubeChannelID: youtubeChannelID,
-          youtubeVideoID: officeHour.youtubeVideoID
+        OfficeHoursVideoEmbed(youtubeVideoID: officeHour.youtubeVideoID)
+        OfficeHoursChatEmbed(
+          youtubeVideoID: officeHour.youtubeVideoID,
+          host: baseURL.host() ?? "localhost"
         )
-        if !officeHour.youtubeVideoID.isEmpty {
-          OfficeHoursChatEmbed(
-            youtubeVideoID: officeHour.youtubeVideoID,
-            host: baseURL.host() ?? "localhost"
-          )
-        }
       }
       .inlineStyle("width", "100%")
     }
@@ -758,7 +948,6 @@ private struct OfficeHoursLiveEmbeds: HTML {
 }
 
 private struct OfficeHoursVideoEmbed: HTML {
-  let youtubeChannelID: String
   let youtubeVideoID: String
 
   var body: some HTML {
@@ -825,5 +1014,6 @@ private let officeHoursScheduledAtFormatter: DateFormatter = {
   let df = DateFormatter()
   df.dateStyle = .medium
   df.timeStyle = .short
+  df.timeZone = TimeZone(identifier: "GMT")
   return df
 }()

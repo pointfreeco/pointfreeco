@@ -38,13 +38,15 @@ private func officeHourMiddleware(
   officeHour: OfficeHour,
   conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
-  @Dependency(\.subscriberState) var subscriberState
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
 
-  guard subscriberState.isMaxSubscriber else {
-    return conn.redirect(to: .officeHours()) {
-      $0.flash(.error, "You must be a Point-Free Max subscriber to watch office hours.")
-    }
-  }
+  let questions = ((try? await database.fetchOfficeHourQuestions(
+    answered: true,
+    userID: currentUser?.id
+  )) ?? [])
+    .filter { $0.answeredOfficeHourID == officeHour.id }
+    .sorted { ($0.answeredAtSeconds ?? 0) < ($1.answeredAtSeconds ?? 0) }
 
   return conn
     .writeStatus(.ok)
@@ -56,7 +58,7 @@ private func officeHourMiddleware(
         usePrismJs: true
       )
     ) {
-      OfficeHourDetail(officeHour: officeHour)
+      OfficeHourDetail(officeHour: officeHour, questions: questions)
     }
 }
 
