@@ -419,24 +419,79 @@ private struct SearchTips: HTML {
         )
       }
 
-      VStack(spacing: 1) {
-        CapsHeading(title: "Search tips")
-        VStack(spacing: 0.75) {
-          TipRow(
-            example: "\"macro testing\"",
-            text: "Wrap words in quotes to match a phrase exactly."
-          )
-          TipRow(
-            example: "uikit -swiftui",
-            text: "Use a minus to leave a term out of results."
-          )
-          TipRow(
-            example: "Never",
-            text: "Use uppercase to prioritize case-sensitive matches."
-          )
-        }
-      }
+      SearchTipRows(examples: tipExamples)
+    }
+  }
 
+  static let phraseExamples = [
+    #""macro testing""#,
+    #""~Copyable""#,
+    #""$0 + 1""#,
+    #""$0.id == id""#,
+    #""@autoclosure""#,
+    #""[weak self]""#,
+    #""some View""#,
+    #""async throws""#,
+  ]
+
+  static let exclusionExamples = [
+    "uikit -swiftui",
+    "testing -xctest",
+    "persistence -swiftdata",
+    "concurrency -combine",
+  ]
+
+  static let caseExamples = [
+    "Never",
+    "Result",
+    "Sendable",
+    "Task",
+    "Error",
+  ]
+
+  static let combinationExamples = [
+    "parsing performance",
+    #""[weak self]" closures"#,
+    "SQLite CloudKit",
+    "generics protocols",
+  ]
+
+  var tipExamples: (phrase: String, exclusion: String, cased: String, combined: String) {
+    withRandomNumberGenerator { rng in
+      (
+        Self.phraseExamples.randomElement(using: &rng) ?? #""macro testing""#,
+        Self.exclusionExamples.randomElement(using: &rng) ?? "uikit -swiftui",
+        Self.caseExamples.randomElement(using: &rng) ?? "Never",
+        Self.combinationExamples.randomElement(using: &rng) ?? "parsing performance"
+      )
+    }
+  }
+}
+
+private struct SearchTipRows: HTML {
+  let examples: (phrase: String, exclusion: String, cased: String, combined: String)
+
+  var body: some HTML {
+    VStack(spacing: 1) {
+      CapsHeading(title: "Search tips")
+      VStack(spacing: 0.75) {
+        TipRow(
+          example: examples.phrase,
+          text: "Quote to match a phrase or code exactly."
+        )
+        TipRow(
+          example: examples.combined,
+          text: "Multiple terms find videos covering all of them, even minutes apart."
+        )
+        TipRow(
+          example: examples.exclusion,
+          text: "Prefix with a minus to leave a term out of results."
+        )
+        TipRow(
+          example: examples.cased,
+          text: "Uppercase to prioritize case-sensitive matches."
+        )
+      }
     }
   }
 }
