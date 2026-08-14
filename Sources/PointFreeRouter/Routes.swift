@@ -209,15 +209,6 @@ public indirect enum SiteRoute: Equatable {
   }
 }
 
-struct FormEncodedSpaces: Conversion {
-  func apply(_ input: String) -> String {
-    input.replacingOccurrences(of: "+", with: " ")
-  }
-  func unapply(_ output: String) -> String {
-    output
-  }
-}
-
 struct SlugOrID<ID: RawRepresentable>: ParserPrinter where ID.RawValue == Int {
   var body: some ParserPrinter<Substring, Either<String, ID>> {
     OneOf {
@@ -594,7 +585,7 @@ struct SiteRouter: ParserPrinter {
         Path { "search" }
         Query {
           Optionally {
-            Field("q", .string.map(FormEncodedSpaces()))
+            Field("q", .string)
           }
           Optionally {
             Field("access") { SiteRoute.SearchAccess.parser() }

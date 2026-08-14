@@ -1,6 +1,7 @@
 Our catalog has grown to 377 episodes and hundreds of hours of video, and till today the only way 
-to find something in it was to remember which episode covered it. No longer: Point-Free now has 
-[full-text search][search] across everything we have ever produced.
+to find something in it was to remember which episode covered it. No longer: one of our most 
+requested features is finally here. Point-Free now has [full-text search][search] across 
+everything we have ever produced.
 
 Every word of every transcript is indexed, from our dialogue to every line of code we write on
 screen. Results show highlighted snippets of exactly where your search terms appear, and each

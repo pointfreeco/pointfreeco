@@ -2,7 +2,7 @@ GET http://localhost:8080/search
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 62707
+Content-Length: 62716
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -480,7 +480,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
                 </option>
                 <option value="code">Code
                 </option>
-                <option value="prose">Prose
+                <option value="dialogue">Dialogue
                 </option>
                 <option value="titles">Titles
                 </option></select><select class="appearance-Wl0y44 -webkit-appearance-Wl0y44 background-image-itpFC3 background-position-s9o6M2 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 cursor-xmR5l padding-IpiAj3 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" name="access" aria-label="Access" onchange="this.form.requestSubmit()">
@@ -560,7 +560,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
     scope: {
       "": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 6v12'/%3E%3Cpath d='M17.196 9 6.804 15'/%3E%3Cpath d='M6.804 9l10.392 6'/%3E%3C/svg%3E",
       "code": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m16 18 6-6-6-6'/%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3C/svg%3E",
-      "prose": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 6.1H3'/%3E%3Cpath d='M21 12.1H3'/%3E%3Cpath d='M15.1 18H3'/%3E%3C/svg%3E",
+      "dialogue": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E",
       "titles": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12'/%3E%3Cpath d='M6 20V4'/%3E%3Cpath d='M18 20V4'/%3E%3C/svg%3E"
     },
     access: {

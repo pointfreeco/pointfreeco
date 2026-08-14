@@ -45,6 +45,31 @@ class SearchTests: TestCase {
   }
 
   @MainActor
+  func testSearch_LiteralPlusQuery() async throws {
+    try await withDependencies {
+      $0.database.searchEpisodes = { query, _ in
+        XCTAssertEqual(#""$0 + 1""#, query)
+        return [
+          EpisodeSearchResult(
+            episodeSequence: 1,
+            headline: "map { ⟪$0 + 1⟫ }",
+            kind: .code,
+            sectionTitle: "Introduction",
+            timestamp: 68
+          )
+        ]
+      }
+      $0.episodes = { [.free, .subscriberOnly] }
+    } operation: {
+      let conn = connection(
+        from: URLRequest(url: URL(string: "http://localhost:8080/search?q=%22%240%20%2B%201%22")!)
+      )
+
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
+  @MainActor
   func testSearch_NoResults() async throws {
     try await withDependencies {
       $0.database.searchEpisodes = { _, _ in [] }
