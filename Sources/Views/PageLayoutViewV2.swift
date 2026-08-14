@@ -277,7 +277,7 @@ struct MobileNavItems: HTML {
             "Become a member"
           }
         }
-        NavListItem(badge: .pro, route: .theWay) {
+        NavListItem(route: .theWay) {
           "The Point-Free Way"
         }
         NavListItem(badge: .max, route: .betas()) {
@@ -300,7 +300,7 @@ struct MobileNavItems: HTML {
         NavListItem(route: .blog()) {
           "Blog"
         }
-        NavListItem(isNew: true, route: .search()) {
+        NavListItem(badge: .new, route: .search()) {
           "Search"
         }
         NavListItem(route: .gifts(.index)) {
@@ -600,10 +600,10 @@ struct CenteredNavItems: HTML {
             "Become a member"
           }
         }
-        NavListItem(badge: .pro, route: .theWay) {
+        NavListItem(route: .theWay) {
           AdaptablePointFreeWayLabel()
         }
-        NavListItem(isNew: true, route: .search()) {
+        NavListItem(badge: .new, route: .search()) {
           span { SVG.search }
             .inlineStyle("display", "inline-block")
             .inlineStyle("vertical-align", "-0.15em")
