@@ -38,12 +38,18 @@ func searchMiddleware(
       switch access {
       case .free:
         episodes()
-          .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
-          .map(\.sequence)
+          .compactMap {
+            !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode)
+              ? $0.sequence
+              : nil
+          }
       case .subscriberOnly:
         episodes()
-          .filter { $0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
-          .map(\.sequence)
+          .compactMap {
+            $0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode)
+              ? $0.sequence
+              : nil
+          }
       case nil:
         nil
       }
@@ -113,7 +119,8 @@ func searchMiddleware(
   }
 
   if conn.request.value(forHTTPHeaderField: "X-Fragment") == "results" {
-    return conn
+    return
+      conn
       .writeStatus(.ok)
       .respondFragment {
         SearchResults(
@@ -124,7 +131,8 @@ func searchMiddleware(
       }
   }
 
-  return conn
+  return
+    conn
     .writeStatus(.ok)
     .respondV2(
       layoutData: SimplePageLayoutData(title: query.isEmpty ? "Search" : "Search: \(query)")
