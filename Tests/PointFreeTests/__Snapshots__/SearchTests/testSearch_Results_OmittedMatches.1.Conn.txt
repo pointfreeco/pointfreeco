@@ -2,7 +2,7 @@ GET http://localhost:8080/search?q=functions
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 54121
+Content-Length: 54295
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -636,6 +636,8 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/episodes">Videos</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/collections">Collections</a>
+          </li>
+          <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/search">Search</a>
           </li>
           <li><a class="text-decoration-Mif7n4 text-decoration-Q5Er64 text-decoration-Zf0gY color-d8fIz1 color-C4SO14 color-cemJK2" href="/clips">Free clips</a>
           </li>
