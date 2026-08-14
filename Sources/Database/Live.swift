@@ -321,8 +321,8 @@ extension Client {
             ) AS "has_voted"
           FROM "office_hour_questions"
           LEFT JOIN "office_hour_question_votes"
-          ON "office_hour_question_votes"."office_hour_question_id"
-            = "office_hour_questions"."id"
+            ON "office_hour_question_votes"."office_hour_question_id"
+              = "office_hour_questions"."id"
           WHERE \(bind: answered) = ("office_hour_questions"."answered_office_hour_id" IS NOT NULL)
           GROUP BY "office_hour_questions"."id"
           ORDER BY "vote_count" DESC, "office_hour_questions"."created_at" ASC
@@ -471,20 +471,25 @@ extension Client {
           condition = ""
         case .maxSubscriber:
           condition = #"""
-             AND "users"."subscription_id" IN (
-              SELECT "id" FROM "subscriptions" WHERE "plan" = \#(bind: Pricing.Plan.max)
+            AND "users"."subscription_id" IN (
+              SELECT "id" 
+              FROM "subscriptions" 
+              WHERE "plan" = \#(bind: Pricing.Plan.max)
+              AND "stripe_subscription_status" = \#(bind: Stripe.Subscription.Status.active)
             )
             """#
         case .nonSubscriber:
-          condition = #" AND "users"."subscription_id" IS NULL"#
+          condition = #"AND "users"."subscription_id" IS NULL"#
         case .subscriber:
-          condition = #" AND "users"."subscription_id" IS NOT NULL"#
+          condition = #"AND "users"."subscription_id" IS NOT NULL"#
         }
         return try await pool.sqlDatabase.all(
           """
           SELECT "users".*
           FROM "email_settings" LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
-          WHERE "email_settings"."newsletter" = \(bind: newsletter)\(condition)
+          WHERE 
+            "email_settings"."newsletter" = \(bind: newsletter)
+            \(condition)
           """
         )
       },
