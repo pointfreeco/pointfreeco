@@ -132,7 +132,7 @@ public indirect enum SiteRoute: Equatable {
 
   public enum SearchScope: String, CaseIterable, Equatable {
     case code
-    case prose
+    case dialogue
     case titles
   }
 

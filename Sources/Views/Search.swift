@@ -271,7 +271,7 @@ private struct SearchScript: HTML {
           scope: {
             "": "\#(asteriskGlyphDataURI)",
             "code": "\#(codeGlyphDataURI)",
-            "prose": "\#(textGlyphDataURI)",
+            "dialogue": "\#(speechGlyphDataURI)",
             "titles": "\#(headingGlyphDataURI)"
           },
           access: {
@@ -650,7 +650,7 @@ private struct SearchForm: HTML {
             switch scope {
             case nil: asteriskGlyphDataURI
             case .code: codeGlyphDataURI
-            case .prose: textGlyphDataURI
+            case .dialogue: speechGlyphDataURI
             case .titles: headingGlyphDataURI
             }
           }(),
@@ -659,7 +659,7 @@ private struct SearchForm: HTML {
           options: [
             (value: nil, label: "All text"),
             (value: SiteRoute.SearchScope.code.rawValue, label: "Code"),
-            (value: SiteRoute.SearchScope.prose.rawValue, label: "Prose"),
+            (value: SiteRoute.SearchScope.dialogue.rawValue, label: "Dialogue"),
             (value: SiteRoute.SearchScope.titles.rawValue, label: "Titles"),
           ],
           selectedValue: scope?.rawValue
@@ -797,11 +797,11 @@ private let asteriskGlyphDataURI =
   + "%3Cpath d='M12 6v12'/%3E%3Cpath d='M17.196 9 6.804 15'/%3E"
   + "%3Cpath d='M6.804 9l10.392 6'/%3E%3C/svg%3E"
 
-private let textGlyphDataURI =
+private let speechGlyphDataURI =
   "data:image/svg+xml,"
   + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'"
   + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
-  + "%3Cpath d='M17 6.1H3'/%3E%3Cpath d='M21 12.1H3'/%3E%3Cpath d='M15.1 18H3'/%3E%3C/svg%3E"
+  + "%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E"
 
 private let codeGlyphDataURI =
   "data:image/svg+xml,"

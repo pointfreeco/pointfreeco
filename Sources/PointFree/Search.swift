@@ -30,7 +30,7 @@ func searchMiddleware(
     let kinds: [EpisodeSearchDocument.Kind]? =
       switch scope {
       case .code: [.code]
-      case .prose: [.prose, .blurb]
+      case .dialogue: [.prose, .blurb]
       case .titles: [.title, .episodeTitle]
       case nil: nil
       }
