@@ -7,43 +7,43 @@ import StyleguideV2
 public struct SearchPage: HTML {
   public struct Result {
     public let episode: Episode
-    public let episodeTitleHeadline: String?
+    public let episodeTitleSnippet: String?
     public var matches: [Match]
 
-    public init(episode: Episode, episodeTitleHeadline: String? = nil, matches: [Match]) {
+    public init(episode: Episode, episodeTitleSnippet: String? = nil, matches: [Match]) {
       self.episode = episode
-      self.episodeTitleHeadline = episodeTitleHeadline
+      self.episodeTitleSnippet = episodeTitleSnippet
       self.matches = matches
     }
   }
 
   public struct Match {
-    public let headline: String
-    public let headlineIsTruncatedAtEnd: Bool
-    public let headlineIsTruncatedAtStart: Bool
-    public let headlineStartsInsideCodeSpan: Bool
+    public let snippet: String
+    public let snippetIsTruncatedAtEnd: Bool
+    public let snippetIsTruncatedAtStart: Bool
+    public let snippetStartsInsideCodeSpan: Bool
     public let kind: EpisodeSearchDocument.Kind
     public let sectionTitle: String?
-    public let sectionTitleHeadline: String?
+    public let sectionTitleSnippet: String?
     public let timestamp: Int?
 
     public init(
-      headline: String,
-      headlineIsTruncatedAtEnd: Bool = false,
-      headlineIsTruncatedAtStart: Bool = false,
-      headlineStartsInsideCodeSpan: Bool = false,
+      snippet: String,
+      snippetIsTruncatedAtEnd: Bool = false,
+      snippetIsTruncatedAtStart: Bool = false,
+      snippetStartsInsideCodeSpan: Bool = false,
       kind: EpisodeSearchDocument.Kind,
       sectionTitle: String?,
-      sectionTitleHeadline: String? = nil,
+      sectionTitleSnippet: String? = nil,
       timestamp: Int?
     ) {
-      self.headline = headline
-      self.headlineIsTruncatedAtEnd = headlineIsTruncatedAtEnd
-      self.headlineIsTruncatedAtStart = headlineIsTruncatedAtStart
-      self.headlineStartsInsideCodeSpan = headlineStartsInsideCodeSpan
+      self.snippet = snippet
+      self.snippetIsTruncatedAtEnd = snippetIsTruncatedAtEnd
+      self.snippetIsTruncatedAtStart = snippetIsTruncatedAtStart
+      self.snippetStartsInsideCodeSpan = snippetStartsInsideCodeSpan
       self.kind = kind
       self.sectionTitle = sectionTitle
-      self.sectionTitleHeadline = sectionTitleHeadline
+      self.sectionTitleSnippet = sectionTitleSnippet
       self.timestamp = timestamp
     }
   }
@@ -887,9 +887,9 @@ private struct ResultView: HTML {
 
       tag("h4") {
         Link(destination: .episodes(.show(result.episode))) {
-          if let episodeTitleHeadline = result.episodeTitleHeadline {
+          if let episodeTitleSnippet = result.episodeTitleSnippet {
             SnippetSegments(
-              segments: snippetSegments(episodeTitleHeadline, parseCodeSpans: true)
+              segments: snippetSegments(episodeTitleSnippet, parseCodeSpans: true)
             )
           } else {
             HTMLText(result.episode.fullTitle)
@@ -929,7 +929,7 @@ private struct ResultView: HTML {
           SectionGroup(
             matches: [match],
             sectionTitle: match.sectionTitle,
-            sectionTitleHeadline: match.sectionTitleHeadline,
+            sectionTitleSnippet: match.sectionTitleSnippet,
             timestamp: match.timestamp
           )
         )
@@ -942,7 +942,7 @@ private struct ResultView: HTML {
 private struct SectionGroup {
   var matches: [SearchPage.Match]
   let sectionTitle: String?
-  let sectionTitleHeadline: String?
+  let sectionTitleSnippet: String?
   let timestamp: Int?
 }
 
@@ -953,7 +953,7 @@ private struct SectionGroupView: HTML {
 
   var body: some HTML {
     VStack(spacing: 0.25) {
-      if let sectionTitle = group.sectionTitleHeadline ?? group.sectionTitle {
+      if let sectionTitle = group.sectionTitleSnippet ?? group.sectionTitle {
         Link(href: group.timestamp.map { "\(episodePath)#t\($0)" } ?? episodePath) {
           SnippetSegments(segments: snippetSegments(sectionTitle, parseCodeSpans: true))
           if let timestamp = group.timestamp {
@@ -982,11 +982,11 @@ private struct MatchSnippet: HTML {
         switch match.kind {
         case .code:
           tag("code") {
-            if match.headlineIsTruncatedAtStart {
+            if match.snippetIsTruncatedAtStart {
               TruncationEllipsis(trailing: " ")
             }
-            SnippetSegments(segments: snippetSegments(match.headline, parseCodeSpans: false))
-            if match.headlineIsTruncatedAtEnd {
+            SnippetSegments(segments: snippetSegments(match.snippet, parseCodeSpans: false))
+            if match.snippetIsTruncatedAtEnd {
               TruncationEllipsis(leading: " ")
             }
           }
@@ -1001,17 +1001,17 @@ private struct MatchSnippet: HTML {
 
         case .blurb, .prose:
           Paragraph {
-            if match.headlineIsTruncatedAtStart {
+            if match.snippetIsTruncatedAtStart {
               TruncationEllipsis(trailing: " ")
             }
             SnippetSegments(
               segments: snippetSegments(
-                match.headline,
+                match.snippet,
                 parseCodeSpans: true,
-                startsInsideCodeSpan: match.headlineStartsInsideCodeSpan
+                startsInsideCodeSpan: match.snippetStartsInsideCodeSpan
               )
             )
-            if match.headlineIsTruncatedAtEnd {
+            if match.snippetIsTruncatedAtEnd {
               TruncationEllipsis(leading: " ")
             }
           }
@@ -1027,7 +1027,7 @@ private struct MatchSnippet: HTML {
 }
 
 private func snippetSegments(
-  _ headline: String,
+  _ snippet: String,
   parseCodeSpans: Bool,
   startsInsideCodeSpan: Bool = false
 ) -> [SnippetSegment] {
@@ -1040,7 +1040,7 @@ private func snippetSegments(
     segments.append(SnippetSegment(text: current, isMatch: isMatch, isCode: isCode))
     current = ""
   }
-  for character in headline {
+  for character in snippet {
     switch character {
     case "⟪", "⟫":
       flush()

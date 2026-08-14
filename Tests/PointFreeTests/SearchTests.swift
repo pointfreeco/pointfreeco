@@ -29,7 +29,7 @@ class SearchTests: TestCase {
           results: [
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "We can define an ⟪increment⟫ ⟪function⟫ by extending `Int`.",
+              snippet: "We can define an ⟪increment⟫ ⟪function⟫ by extending `Int`.",
               kind: .prose,
               sectionTitle: "Functions that increment",
               timestamp: 68
@@ -57,7 +57,7 @@ class SearchTests: TestCase {
           results: [
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "map { ⟪$0 + 1⟫ }",
+              snippet: "map { ⟪$0 + 1⟫ }",
               kind: .code,
               sectionTitle: "Introduction",
               timestamp: 68
@@ -99,7 +99,7 @@ class SearchTests: TestCase {
           results: (1...6).map { index in
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "⟪SQL⟫ statement number \(index)",
+              snippet: "⟪SQL⟫ statement number \(index)",
               kind: .prose,
               matchedTerms: ["'sql'"],
               sectionTitle: "SQL section \(index)",
@@ -108,7 +108,7 @@ class SearchTests: TestCase {
           } + [
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "And that fixes the ⟪glitch⟫ in the demo.",
+              snippet: "And that fixes the ⟪glitch⟫ in the demo.",
               kind: .prose,
               matchedTerms: ["'glitch'"],
               sectionTitle: "Fixing the glitch",
@@ -134,14 +134,14 @@ class SearchTests: TestCase {
           results: [
             EpisodeSearchResult(
               episodeSequence: 2,
-              headline: "⟪Functions⟫ with compiler proofs",
+              snippet: "⟪Functions⟫ with compiler proofs",
               kind: .prose,
               sectionTitle: "Proofs",
               timestamp: 10
             ),
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "We can define ⟪functions⟫ by extending `Int`.",
+              snippet: "We can define ⟪functions⟫ by extending `Int`.",
               kind: .prose,
               sectionTitle: "Introduction",
               timestamp: 68
@@ -168,78 +168,78 @@ class SearchTests: TestCase {
           results: [
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "⟪Incrementing⟫ and ⟪functions⟫",
+              snippet: "⟪Incrementing⟫ and ⟪functions⟫",
               kind: .episodeTitle,
               sectionTitle: nil,
               timestamp: nil
             ),
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "⟪Incrementing⟫ numbers",
+              snippet: "⟪Incrementing⟫ numbers",
               kind: .title,
               sectionTitle: "Incrementing numbers",
               timestamp: 120
             ),
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "Functions that ⟪increment⟫",
+              snippet: "Functions that ⟪increment⟫",
               kind: .title,
               sectionTitle: "Functions that increment",
               timestamp: 68
             ),
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "We can define an ⟪increment⟫ ⟪function⟫ by extending `Int`",
-              headlineIsTruncatedAtEnd: true,
-              headlineIsTruncatedAtStart: true,
+              snippet: "We can define an ⟪increment⟫ ⟪function⟫ by extending `Int`",
+              snippetIsTruncatedAtEnd: true,
+              snippetIsTruncatedAtStart: true,
               kind: .prose,
               sectionTitle: "Functions that increment",
               timestamp: 68
             ),
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "func ⟪increment⟫(_ x: Int) -> Int {\n  x + 1\n}",
+              snippet: "func ⟪increment⟫(_ x: Int) -> Int {\n  x + 1\n}",
               kind: .code,
               sectionTitle: "Functions that increment",
               timestamp: 68
             ),
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "Never>` effect because it doesn’t ⟪increment⟫ anything",
-              headlineIsTruncatedAtEnd: true,
-              headlineIsTruncatedAtStart: true,
-              headlineStartsInsideCodeSpan: true,
+              snippet: "Never>` effect because it doesn’t ⟪increment⟫ anything",
+              snippetIsTruncatedAtEnd: true,
+              snippetIsTruncatedAtStart: true,
+              snippetStartsInsideCodeSpan: true,
               kind: .prose,
               sectionTitle: "Functions that increment",
               timestamp: 68
             ),
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "pretty` was ⟪increment⟫ed by `Goodnight",
-              headlineIsTruncatedAtEnd: true,
-              headlineIsTruncatedAtStart: true,
-              headlineStartsInsideCodeSpan: true,
+              snippet: "pretty` was ⟪increment⟫ed by `Goodnight",
+              snippetIsTruncatedAtEnd: true,
+              snippetIsTruncatedAtStart: true,
+              snippetStartsInsideCodeSpan: true,
               kind: .prose,
               sectionTitle: "Functions that increment",
               timestamp: 68
             ),
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "We discuss what makes ⟪functions⟫ great.",
+              snippet: "We discuss what makes ⟪functions⟫ great.",
               kind: .blurb,
               sectionTitle: nil,
               timestamp: nil
             ),
             EpisodeSearchResult(
               episodeSequence: 2,
-              headline: "⟪Functions⟫ and proofs go hand in hand.",
+              snippet: "⟪Functions⟫ and proofs go hand in hand.",
               kind: .prose,
               sectionTitle: "Proofs as programs",
               timestamp: 300
             ),
             EpisodeSearchResult(
               episodeSequence: 2,
-              headline: "⟪Functions⟫ can be bound to controls.",
+              snippet: "⟪Functions⟫ can be bound to controls.",
               kind: .prose,
               sectionTitle: "`UIControl` bindings",
               timestamp: 400
@@ -264,7 +264,7 @@ class SearchTests: TestCase {
           results: [
             EpisodeSearchResult(
               episodeSequence: 1,
-              headline: "We can define ⟪functions⟫ by extending `Int`.",
+              snippet: "We can define ⟪functions⟫ by extending `Int`.",
               kind: .prose,
               sectionTitle: "Introduction",
               timestamp: 68

@@ -61,15 +61,15 @@ func searchMiddleware(
     func key(_ row: EpisodeSearchResult) -> SectionKey {
       SectionKey(episodeSequence: row.episodeSequence, sectionTitle: row.sectionTitle)
     }
-    var titleHeadlines: [SectionKey: String] = [:]
+    var titleSnippets: [SectionKey: String] = [:]
     var sectionsWithBodyMatches: Set<SectionKey> = []
-    var episodeTitleHeadlines: [Episode.Sequence: String] = [:]
+    var episodeTitleSnippets: [Episode.Sequence: String] = [:]
     for row in rows {
       switch row.kind {
       case .episodeTitle:
-        episodeTitleHeadlines[row.episodeSequence] = row.headline
+        episodeTitleSnippets[row.episodeSequence] = row.snippet
       case .title:
-        titleHeadlines[key(row)] = row.headline
+        titleSnippets[key(row)] = row.snippet
       case .blurb, .code, .prose:
         if row.sectionTitle != nil {
           sectionsWithBodyMatches.insert(key(row))
@@ -81,7 +81,7 @@ func searchMiddleware(
       let episodeSequence: Episode.Sequence
       let sectionTitle: String?
       let timestamp: Int?
-      let plainHeadline: String
+      let plainSnippet: String
     }
     var resultIndexBySequence: [Episode.Sequence: Int] = [:]
     var matchesBySequence: [Episode.Sequence: [(match: SearchPage.Match, terms: [String])]] = [:]
@@ -94,7 +94,7 @@ func searchMiddleware(
         results.append(
           SearchPage.Result(
             episode: episode,
-            episodeTitleHeadline: episodeTitleHeadlines[row.episodeSequence],
+            episodeTitleSnippet: episodeTitleSnippets[row.episodeSequence],
             matches: []
           )
         )
@@ -105,7 +105,7 @@ func searchMiddleware(
         episodeSequence: row.episodeSequence,
         sectionTitle: row.sectionTitle,
         timestamp: row.timestamp,
-        plainHeadline: row.headline
+        plainSnippet: row.snippet
           .replacingOccurrences(of: "⟪", with: "")
           .replacingOccurrences(of: "⟫", with: "")
       )
@@ -118,13 +118,13 @@ func searchMiddleware(
       matchesBySequence[row.episodeSequence, default: []].append(
         (
           match: SearchPage.Match(
-            headline: row.headline,
-            headlineIsTruncatedAtEnd: row.headlineIsTruncatedAtEnd,
-            headlineIsTruncatedAtStart: row.headlineIsTruncatedAtStart,
-            headlineStartsInsideCodeSpan: row.headlineStartsInsideCodeSpan,
+            snippet: row.snippet,
+            snippetIsTruncatedAtEnd: row.snippetIsTruncatedAtEnd,
+            snippetIsTruncatedAtStart: row.snippetIsTruncatedAtStart,
+            snippetStartsInsideCodeSpan: row.snippetStartsInsideCodeSpan,
             kind: row.kind,
             sectionTitle: row.sectionTitle,
-            sectionTitleHeadline: titleHeadlines[key(row)],
+            sectionTitleSnippet: titleSnippets[key(row)],
             timestamp: row.timestamp
           ),
           terms: row.matchedTerms

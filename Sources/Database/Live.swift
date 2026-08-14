@@ -1335,29 +1335,29 @@ extension Client {
               (
                 SELECT ("marker"->>1)::int
                 FROM jsonb_array_elements("timestamp_markers") AS "marker"
-                WHERE ("marker"->>0)::int < "headline_position"
+                WHERE ("marker"->>0)::int < "snippet_position"
                 ORDER BY ("marker"->>0)::int DESC
                 LIMIT 1
               ),
               "timestamp"
             ) AS "timestamp",
             "kind",
-            "headline",
+            "snippet",
             "matched_terms",
-            "headline_position" = 0
-              OR "headline_position" + length("plain_headline") < length("content") + 1
-              AS "headline_is_truncated_at_end",
-            "headline_position" <> 1 AS "headline_is_truncated_at_start",
-            "headline_position" >= 1
+            "snippet_position" = 0
+              OR "snippet_position" + length("plain_snippet") < length("content") + 1
+              AS "snippet_is_truncated_at_end",
+            "snippet_position" <> 1 AS "snippet_is_truncated_at_start",
+            "snippet_position" >= 1
               AND length(
-                regexp_replace(left("content", "headline_position" - 1), '[^`]', '', 'g')
+                regexp_replace(left("content", "snippet_position" - 1), '[^`]', '', 'g')
               ) % 2 = 1
-              AS "headline_starts_inside_code_span"
+              AS "snippet_starts_inside_code_span"
           FROM (
             SELECT "ranked".*,
               ts_headline(
                 'english', "content", "q", 'StartSel=⟪, StopSel=⟫, MaxWords=32, MinWords=16'
-              ) AS "headline",
+              ) AS "snippet",
               ARRAY["q"::text] AS "matched_terms"
             FROM "ranked"
             JOIN (SELECT DISTINCT "q" FROM "terms") AS "matched_term" ON "search_vector" @@ "q"
@@ -1366,7 +1366,7 @@ extension Client {
             SELECT "ranked".*,
               ts_headline(
                 'english', "content", "query", 'StartSel=⟪, StopSel=⟫, MaxWords=32, MinWords=16'
-              ) AS "headline",
+              ) AS "snippet",
               ARRAY(
                 SELECT DISTINCT "q"::text FROM "terms" WHERE "ranked"."search_vector" @@ "q"
               ) AS "matched_terms"
@@ -1380,15 +1380,15 @@ extension Client {
                 || substring("content" FROM "literal_position" FOR length("literal"))
                 || '⟫'
                 || substring("content" FROM "literal_position" + length("literal") FOR 100)
-                AS "headline",
+                AS "snippet",
               ARRAY['"' || "literal" || '"'] AS "matched_terms"
             FROM "ranked"
             JOIN "literals" ON "content" ILIKE "pattern",
               strpos(lower("content"), lower("literal")) AS "literal_position",
               GREATEST(1, "literal_position" - 100) AS "window_start"
           ) AS "fragments",
-            regexp_replace("headline", '[⟪⟫]', '', 'g') AS "plain_headline",
-            strpos("content", "plain_headline") AS "headline_position"
+            regexp_replace("snippet", '[⟪⟫]', '', 'g') AS "plain_snippet",
+            strpos("content", "plain_snippet") AS "snippet_position"
           ORDER BY "rank" DESC
           """
         )
