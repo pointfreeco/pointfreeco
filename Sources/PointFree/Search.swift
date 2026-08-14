@@ -118,7 +118,8 @@ func searchMiddleware(
     }
   }
 
-  if conn.request.value(forHTTPHeaderField: "X-Fragment") == "results" {
+  guard conn.request.value(forHTTPHeaderField: "X-Fragment") != "results"
+  else {
     return
       conn
       .writeStatus(.ok)
