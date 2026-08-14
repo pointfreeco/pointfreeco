@@ -1222,23 +1222,38 @@ extension Client {
         if !currentToken.isEmpty {
           tokens.append(currentToken)
         }
-        var positiveTerms: [String] = []
+        var termGroups: [[String]] = []
         var literalTerms: [String] = []
         var negatedTokens: [String] = []
+        var joinsPreviousGroup = false
         for token in tokens {
           if token.hasPrefix("-") {
             negatedTokens.append(token)
+            joinsPreviousGroup = false
           } else if token.hasPrefix("\"") {
             let literal = token.trimmingCharacters(in: CharacterSet(charactersIn: "\""))
             if !literal.isEmpty {
               literalTerms.append(literal)
             }
+            joinsPreviousGroup = false
           } else {
             let term = token.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-            if !term.isEmpty {
-              positiveTerms.append(term)
+            if term.isEmpty { continue }
+            if term.lowercased() == "or" {
+              joinsPreviousGroup = !termGroups.isEmpty
+              continue
             }
+            if joinsPreviousGroup {
+              termGroups[termGroups.count - 1].append(term)
+            } else {
+              termGroups.append([term])
+            }
+            joinsPreviousGroup = false
           }
+        }
+        let positiveTerms = termGroups.flatMap { $0 }
+        let termGroupIDs = termGroups.enumerated().flatMap { index, group in
+          group.map { _ in index }
         }
         let negatedQuery = negatedTokens.joined(separator: " ")
         let literalPatterns = literalTerms.map {
@@ -1253,8 +1268,10 @@ extension Client {
         return try await pool.sqlDatabase.all(
           """
           WITH "terms" AS (
-            SELECT DISTINCT websearch_to_tsquery('english', "term") AS "q"
-            FROM unnest(\(bind: positiveTerms)::text[]) AS "term"
+            SELECT DISTINCT "group", websearch_to_tsquery('english', "term") AS "q"
+            FROM unnest(
+              \(bind: termGroupIDs)::int[], \(bind: positiveTerms)::text[]
+            ) AS "t"("group", "term")
             WHERE websearch_to_tsquery('english', "term") <> ''
           ),
           "literals" AS (
@@ -1266,8 +1283,8 @@ extension Client {
           "search_query" AS (
             SELECT CASE
               WHEN \(bind: negatedQuery) = ''
-              THEN string_agg("q"::text, ' | ')::tsquery
-              ELSE string_agg("q"::text, ' | ')::tsquery
+              THEN string_agg(DISTINCT "q"::text, ' | ')::tsquery
+              ELSE string_agg(DISTINCT "q"::text, ' | ')::tsquery
                 && websearch_to_tsquery('english', \(bind: negatedQuery))
             END AS "query"
             FROM "terms"
@@ -1275,7 +1292,7 @@ extension Client {
           "episodes" AS (
             SELECT "episode_sequence"
             FROM (
-              SELECT "episode_sequence", "q"::text AS "matched"
+              SELECT "episode_sequence", 'group-' || "group" AS "matched"
               FROM "episode_search" CROSS JOIN "terms"
               WHERE "search_vector" @@ "q"
               UNION
@@ -1285,7 +1302,8 @@ extension Client {
             ) AS "term_matches"
             GROUP BY "episode_sequence"
             HAVING count(DISTINCT "matched")
-              = (SELECT count(*) FROM "terms") + (SELECT count(*) FROM "literals")
+              = (SELECT count(DISTINCT "group") FROM "terms")
+                + (SELECT count(*) FROM "literals")
           ),
           "ranked" AS (
             SELECT "episode_search".*,
@@ -1346,7 +1364,7 @@ extension Client {
               ) AS "headline",
               ARRAY["q"::text] AS "matched_terms"
             FROM "ranked"
-            JOIN "terms" ON "search_vector" @@ "q"
+            JOIN (SELECT DISTINCT "q" FROM "terms") AS "matched_term" ON "search_vector" @@ "q"
             WHERE "kind" NOT IN ('title', 'episodeTitle')
             UNION ALL
             SELECT "ranked".*,
@@ -1354,7 +1372,7 @@ extension Client {
                 'english', "content", "query", 'StartSel=⟪, StopSel=⟫, MaxWords=32, MinWords=16'
               ) AS "headline",
               ARRAY(
-                SELECT "q"::text FROM "terms" WHERE "ranked"."search_vector" @@ "q"
+                SELECT DISTINCT "q"::text FROM "terms" WHERE "ranked"."search_vector" @@ "q"
               ) AS "matched_terms"
             FROM "ranked" CROSS JOIN "search_query"
             WHERE "kind" IN ('title', 'episodeTitle')

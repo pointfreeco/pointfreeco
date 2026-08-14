@@ -456,20 +456,29 @@ private struct SearchTips: HTML {
     "generics protocols",
   ]
 
-  var tipExamples: (phrase: String, exclusion: String, cased: String, combined: String) {
+  static let orExamples = [
+    "wasm OR webassembly",
+    "swiftui OR uikit",
+    "sqlite OR swiftdata",
+    "bindable OR binding",
+  ]
+
+  var tipExamples: (phrase: String, exclusion: String, cased: String, combined: String, or: String)
+  {
     withRandomNumberGenerator { rng in
       (
         Self.phraseExamples.randomElement(using: &rng) ?? #""macro testing""#,
         Self.exclusionExamples.randomElement(using: &rng) ?? "uikit -swiftui",
         Self.caseExamples.randomElement(using: &rng) ?? "Never",
-        Self.combinationExamples.randomElement(using: &rng) ?? "parsing performance"
+        Self.combinationExamples.randomElement(using: &rng) ?? "parsing performance",
+        Self.orExamples.randomElement(using: &rng) ?? "wasm or webassembly"
       )
     }
   }
 }
 
 private struct SearchTipRows: HTML {
-  let examples: (phrase: String, exclusion: String, cased: String, combined: String)
+  let examples: (phrase: String, exclusion: String, cased: String, combined: String, or: String)
 
   var body: some HTML {
     VStack(spacing: 1) {
@@ -482,6 +491,10 @@ private struct SearchTipRows: HTML {
         TipRow(
           example: examples.combined,
           text: "Multiple terms find videos covering all of them, even minutes apart."
+        )
+        TipRow(
+          example: examples.or,
+          text: "OR matches either term."
         )
         TipRow(
           example: examples.exclusion,
