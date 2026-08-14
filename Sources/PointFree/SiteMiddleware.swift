@@ -296,8 +296,8 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
           """
       )
 
-  case .search(let query, let access, let sort):
-    return await searchMiddleware(conn, query: query, access: access, sort: sort)
+  case .search(let query, let access, let scope, let sort):
+    return await searchMiddleware(conn, query: query, access: access, scope: scope, sort: sort)
 
   case .slackInvite:
     @Dependency(\.envVars) var envVars

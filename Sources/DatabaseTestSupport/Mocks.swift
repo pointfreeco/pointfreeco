@@ -71,7 +71,7 @@ extension Client {
     removeTeammateUserIdFromSubscriptionId: { _, _ in },
     rotateEmailLoginCode: { _ in },
     sawUser: { _ in },
-    searchEpisodes: { _ in [] },
+    searchEpisodes: { _, _ in [] },
     suggestEpisodeSearchTerms: { _ in [] },
     updateEmailSettings: { _, _ in },
     updateEpisodeProgress: { _, _, _, _ in },

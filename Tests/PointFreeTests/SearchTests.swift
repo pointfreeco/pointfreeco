@@ -23,7 +23,7 @@ class SearchTests: TestCase {
   @MainActor
   func testSearch_Fragment() async throws {
     try await withDependencies {
-      $0.database.searchEpisodes = { _ in
+      $0.database.searchEpisodes = { _, _ in
         [
           EpisodeSearchResult(
             episodeSequence: 1,
@@ -47,7 +47,7 @@ class SearchTests: TestCase {
   @MainActor
   func testSearch_NoResults() async throws {
     try await withDependencies {
-      $0.database.searchEpisodes = { _ in [] }
+      $0.database.searchEpisodes = { _, _ in [] }
       $0.database.suggestEpisodeSearchTerms = { _ in
         ["Modern UIKit", "UIKit navigation"]
       }
@@ -62,7 +62,7 @@ class SearchTests: TestCase {
   @MainActor
   func testSearch_Results_TermCoverage() async throws {
     try await withDependencies {
-      $0.database.searchEpisodes = { _ in
+      $0.database.searchEpisodes = { _, _ in
         (1...6).map { index in
           EpisodeSearchResult(
             episodeSequence: 1,
@@ -94,7 +94,7 @@ class SearchTests: TestCase {
   @MainActor
   func testSearch_Results_FreeFilter() async throws {
     try await withDependencies {
-      $0.database.searchEpisodes = { _ in
+      $0.database.searchEpisodes = { _, _ in
         [
           EpisodeSearchResult(
             episodeSequence: 2,
@@ -125,7 +125,7 @@ class SearchTests: TestCase {
   @MainActor
   func testSearch_Results() async throws {
     try await withDependencies {
-      $0.database.searchEpisodes = { _ in
+      $0.database.searchEpisodes = { _, _ in
         [
           EpisodeSearchResult(
             episodeSequence: 1,

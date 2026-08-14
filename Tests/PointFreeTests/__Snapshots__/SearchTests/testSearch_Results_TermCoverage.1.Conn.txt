@@ -2,7 +2,7 @@ GET http://localhost:8080/search?q=SQL%20glitch
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 54298
+Content-Length: 57238
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -267,6 +267,7 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 .background-image-Rd6GH3{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Ccircle cx='12' cy='12' r='4.5'/%3E%3Ccircle cx='12' cy='12' r='0.5'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")}
 .background-position-s9o6M2{background-position:0.75rem center, right 0.75rem center}
 .padding-IpiAj3{padding:0.75rem 2.5rem}
+.background-image-iiESY3{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 6v12'/%3E%3Cpath d='M17.196 9 6.804 15'/%3E%3Cpath d='M6.804 9l10.392 6'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")}
 .background-image-itpFC3{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m22 8-6 4 6 4V8Z'/%3E%3Crect x='2' y='6' width='14' height='12' rx='2'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")}
 .padding-sHJvF1{padding:0.75rem 1rem}
 .row-gap-QgYLk2{row-gap:2.0rem}
@@ -473,6 +474,16 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
                 <option value selected>Relevance
                 </option>
                 <option value="newest">Newest
+                </option>
+                <option value="oldest">Oldest
+                </option></select><select class="appearance-Wl0y44 -webkit-appearance-Wl0y44 background-image-iiESY3 background-position-s9o6M2 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 cursor-xmR5l padding-IpiAj3 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" name="scope" aria-label="Match in" onchange="this.form.requestSubmit()">
+                <option value selected>All text
+                </option>
+                <option value="code">Code
+                </option>
+                <option value="prose">Prose
+                </option>
+                <option value="titles">Titles
                 </option></select><select class="appearance-Wl0y44 -webkit-appearance-Wl0y44 background-image-itpFC3 background-position-s9o6M2 background-repeat-1dIl11 background-size-dnNPN1 border-jpHFG3 border-YpuU43 border-radius-NKv2f3 cursor-xmR5l padding-IpiAj3 width-C8uWv background-color-nbn0i3 background-color-dMv2U1 color-K2J0r1 color-wVkSF3 font-weight-evfWi1 line-height-9Qkso4 font-size-83zzS1" name="access" aria-label="Access" onchange="this.form.requestSubmit()">
                 <option value selected>All videos
                 </option>
@@ -528,7 +539,14 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   const icons = {
     sort: {
       "": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Ccircle cx='12' cy='12' r='4.5'/%3E%3Ccircle cx='12' cy='12' r='0.5'/%3E%3C/svg%3E",
-      "newest": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E"
+      "newest": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E",
+      "oldest": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 22h14'/%3E%3Cpath d='M5 2h14'/%3E%3Cpath d='M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22'/%3E%3Cpath d='M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2'/%3E%3C/svg%3E"
+    },
+    scope: {
+      "": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 6v12'/%3E%3Cpath d='M17.196 9 6.804 15'/%3E%3Cpath d='M6.804 9l10.392 6'/%3E%3C/svg%3E",
+      "code": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m16 18 6-6-6-6'/%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3C/svg%3E",
+      "prose": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 6.1H3'/%3E%3Cpath d='M21 12.1H3'/%3E%3Cpath d='M15.1 18H3'/%3E%3C/svg%3E",
+      "titles": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12'/%3E%3Cpath d='M6 20V4'/%3E%3Cpath d='M18 20V4'/%3E%3C/svg%3E"
     },
     access: {
       "": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m22 8-6 4 6 4V8Z'/%3E%3Crect x='2' y='6' width='14' height='12' rx='2'/%3E%3C/svg%3E",

@@ -11,6 +11,7 @@ func searchMiddleware(
   _ conn: Conn<StatusLineOpen, Void>,
   query: String?,
   access: SiteRoute.SearchAccess?,
+  scope: SiteRoute.SearchScope?,
   sort: SiteRoute.SearchSort?
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
@@ -26,9 +27,16 @@ func searchMiddleware(
       episodes().map { ($0.sequence, $0) },
       uniquingKeysWith: { episode, _ in episode }
     )
+    let kinds: [EpisodeSearchDocument.Kind]? =
+      switch scope {
+      case .code: [.code]
+      case .prose: [.prose, .blurb]
+      case .titles: [.title, .episodeTitle]
+      case nil: nil
+      }
     let rows =
       await withErrorReporting {
-        try await database.searchEpisodes(query: query)
+        try await database.searchEpisodes(query: query, kinds: kinds)
       } ?? []
 
     struct SectionKey: Hashable {
@@ -121,8 +129,13 @@ func searchMiddleware(
       results[index].matches = termCoveringMatches(matchesBySequence[sequence] ?? [])
     }
 
-    if sort == .newest {
+    switch sort {
+    case .newest:
       results.sort { $0.episode.sequence > $1.episode.sequence }
+    case .oldest:
+      results.sort { $0.episode.sequence < $1.episode.sequence }
+    case nil:
+      break
     }
 
     if results.isEmpty {
@@ -149,6 +162,7 @@ func searchMiddleware(
       SearchPage(
         query: query,
         access: access,
+        scope: scope,
         sort: sort,
         results: results,
         relatedSearches: relatedSearches

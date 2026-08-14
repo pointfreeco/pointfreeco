@@ -141,7 +141,11 @@ public struct Client {
     ) async throws -> Void
   public var rotateEmailLoginCode: (_ email: EmailAddress) async throws -> Void
   public var sawUser: (_ id: Models.User.ID) async throws -> Void
-  public var searchEpisodes: (_ query: String) async throws -> [EpisodeSearchResult]
+  public var searchEpisodes:
+    (
+      _ query: String,
+      _ kinds: [EpisodeSearchDocument.Kind]?
+    ) async throws -> [EpisodeSearchResult]
   public var suggestEpisodeSearchTerms: (_ query: String) async throws -> [String]
   public var updateEmailSettings:
     (_ newsletters: [EmailSetting.Newsletter]?, _ userID: Models.User.ID) async throws -> Void
@@ -173,6 +177,10 @@ public struct Client {
       _ emailAddress: EmailAddress,
       _ date: @escaping () -> Date
     ) async throws -> Models.User
+
+  public func searchEpisodes(query: String) async throws -> [EpisodeSearchResult] {
+    try await self.searchEpisodes(query: query, kinds: nil)
+  }
 
   public func fetchSubscription(user: Models.User) async throws -> Models.Subscription {
     do {

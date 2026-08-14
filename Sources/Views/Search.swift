@@ -50,6 +50,7 @@ public struct SearchPage: HTML {
 
   let query: String
   let access: SiteRoute.SearchAccess?
+  let scope: SiteRoute.SearchScope?
   let sort: SiteRoute.SearchSort?
   let results: [Result]
   let relatedSearches: [String]
@@ -57,12 +58,14 @@ public struct SearchPage: HTML {
   public init(
     query: String,
     access: SiteRoute.SearchAccess? = nil,
+    scope: SiteRoute.SearchScope? = nil,
     sort: SiteRoute.SearchSort? = nil,
     results: [Result],
     relatedSearches: [String] = []
   ) {
     self.query = query
     self.access = access
+    self.scope = scope
     self.sort = sort
     self.results = results
     self.relatedSearches = relatedSearches
@@ -94,7 +97,7 @@ public struct SearchPage: HTML {
             horizontalSpacing: 3,
             verticalSpacing: 2
           ) {
-            Sidebar(query: query, access: access, sort: sort)
+            Sidebar(query: query, access: access, scope: scope, sort: sort)
               .inlineStyle("position", "sticky", media: .desktop)
               .inlineStyle("top", "2rem", media: .desktop)
 
@@ -262,7 +265,14 @@ private struct SearchScript: HTML {
         const icons = {
           sort: {
             "": "\#(relevanceGlyphDataURI)",
-            "newest": "\#(clockGlyphDataURI)"
+            "newest": "\#(clockGlyphDataURI)",
+            "oldest": "\#(hourglassGlyphDataURI)"
+          },
+          scope: {
+            "": "\#(asteriskGlyphDataURI)",
+            "code": "\#(codeGlyphDataURI)",
+            "prose": "\#(textGlyphDataURI)",
+            "titles": "\#(headingGlyphDataURI)"
           },
           access: {
             "": "\#(videoGlyphDataURI)",
@@ -350,6 +360,7 @@ private struct SearchScript: HTML {
 private struct Sidebar: HTML {
   let query: String
   let access: SiteRoute.SearchAccess?
+  let scope: SiteRoute.SearchScope?
   let sort: SiteRoute.SearchSort?
 
   var body: some HTML {
@@ -360,7 +371,7 @@ private struct Sidebar: HTML {
       .color(.black.dark(.white))
       .inlineStyle("font-weight", "700")
 
-      SearchForm(query: query, access: access, sort: sort)
+      SearchForm(query: query, access: access, scope: scope, sort: sort)
     }
   }
 }
@@ -595,6 +606,7 @@ private struct SuggestionPills: HTML {
 private struct SearchForm: HTML {
   let query: String
   let access: SiteRoute.SearchAccess?
+  let scope: SiteRoute.SearchScope?
   let sort: SiteRoute.SearchSort?
   @Dependency(\.siteRouter) var siteRouter
 
@@ -621,14 +633,36 @@ private struct SearchForm: HTML {
         .inlineStyle("width", "100%")
       VStack(spacing: 0.5) {
         FilterRow(
-          iconDataURI: sort == .newest ? clockGlyphDataURI : relevanceGlyphDataURI,
+          iconDataURI: sort == nil
+            ? relevanceGlyphDataURI
+            : sort == .newest ? clockGlyphDataURI : hourglassGlyphDataURI,
           label: "Sort by",
           name: "sort",
           options: [
             (value: nil, label: "Relevance"),
             (value: SiteRoute.SearchSort.newest.rawValue, label: "Newest"),
+            (value: SiteRoute.SearchSort.oldest.rawValue, label: "Oldest"),
           ],
           selectedValue: sort?.rawValue
+        )
+        FilterRow(
+          iconDataURI: {
+            switch scope {
+            case nil: asteriskGlyphDataURI
+            case .code: codeGlyphDataURI
+            case .prose: textGlyphDataURI
+            case .titles: headingGlyphDataURI
+            }
+          }(),
+          label: "Match in",
+          name: "scope",
+          options: [
+            (value: nil, label: "All text"),
+            (value: SiteRoute.SearchScope.code.rawValue, label: "Code"),
+            (value: SiteRoute.SearchScope.prose.rawValue, label: "Prose"),
+            (value: SiteRoute.SearchScope.titles.rawValue, label: "Titles"),
+          ],
+          selectedValue: scope?.rawValue
         )
         FilterRow(
           iconDataURI: access == nil
@@ -746,6 +780,40 @@ private let lockGlyphDataURI =
   + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
   + "%3Crect x='3' y='11' width='18' height='11' rx='2'/%3E"
   + "%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E"
+
+private let hourglassGlyphDataURI =
+  "data:image/svg+xml,"
+  + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'"
+  + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+  + "%3Cpath d='M5 22h14'/%3E%3Cpath d='M5 2h14'/%3E"
+  + "%3Cpath d='M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22'/%3E"
+  + "%3Cpath d='M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2'/%3E"
+  + "%3C/svg%3E"
+
+private let asteriskGlyphDataURI =
+  "data:image/svg+xml,"
+  + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'"
+  + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+  + "%3Cpath d='M12 6v12'/%3E%3Cpath d='M17.196 9 6.804 15'/%3E"
+  + "%3Cpath d='M6.804 9l10.392 6'/%3E%3C/svg%3E"
+
+private let textGlyphDataURI =
+  "data:image/svg+xml,"
+  + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'"
+  + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+  + "%3Cpath d='M17 6.1H3'/%3E%3Cpath d='M21 12.1H3'/%3E%3Cpath d='M15.1 18H3'/%3E%3C/svg%3E"
+
+private let codeGlyphDataURI =
+  "data:image/svg+xml,"
+  + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'"
+  + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+  + "%3Cpath d='m16 18 6-6-6-6'/%3E%3Cpath d='m8 6-6 6 6 6'/%3E%3C/svg%3E"
+
+private let headingGlyphDataURI =
+  "data:image/svg+xml,"
+  + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'"
+  + " stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E"
+  + "%3Cpath d='M6 12h12'/%3E%3Cpath d='M6 20V4'/%3E%3Cpath d='M18 20V4'/%3E%3C/svg%3E"
 
 private let chevronGlyphDataURI =
   "data:image/svg+xml,"

@@ -1194,7 +1194,8 @@ extension Client {
           """
         )
       },
-      searchEpisodes: { query in
+      searchEpisodes: { query, kinds in
+        let kindFilter = kinds.map { kinds in kinds.map(\.rawValue) }
         let capitalizedTerms = query
           .split(whereSeparator: { !$0.isLetter && !$0.isNumber })
           .filter { $0.contains(where: \.isUppercase) }
@@ -1295,10 +1296,12 @@ extension Client {
               SELECT "episode_sequence", 'group-' || "group" AS "matched"
               FROM "episode_search" CROSS JOIN "terms"
               WHERE "search_vector" @@ "q"
+              AND ("kind" = ANY(\(bind: kindFilter)) OR \(bind: kindFilter) IS NULL)
               UNION
               SELECT "episode_sequence", "literal"
               FROM "episode_search" CROSS JOIN "literals"
               WHERE "content" ILIKE "pattern"
+              AND ("kind" = ANY(\(bind: kindFilter)) OR \(bind: kindFilter) IS NULL)
             ) AS "term_matches"
             GROUP BY "episode_sequence"
             HAVING count(DISTINCT "matched")
@@ -1323,6 +1326,7 @@ extension Client {
                 AS "rank"
             FROM "episode_search" CROSS JOIN "search_query"
             WHERE "episode_sequence" IN (SELECT "episode_sequence" FROM "episodes")
+            AND ("kind" = ANY(\(bind: kindFilter)) OR \(bind: kindFilter) IS NULL)
             AND (
               "search_vector" @@ "query"
               OR EXISTS (
