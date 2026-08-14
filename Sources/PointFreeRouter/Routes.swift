@@ -41,6 +41,12 @@ public indirect enum SiteRoute: Equatable {
   case privacy
   case resume
   case robots
+  case search(
+    query: String? = nil,
+    access: SearchAccess? = nil,
+    scope: SearchScope? = nil,
+    sort: SearchSort? = nil
+  )
   case slackInvite
   case subscribe(SubscribeData? = nil)
   case subscribeConfirmation(
@@ -118,6 +124,22 @@ public indirect enum SiteRoute: Equatable {
     case acceptInvite(email: Encrypted<String>, userId: Encrypted<String>)
     case landing
     case requestInvite(EnterpriseRequestFormData)
+  }
+
+  public enum SearchAccess: String, CaseIterable, Equatable {
+    case free
+    case subscriberOnly = "subscriber-only"
+  }
+
+  public enum SearchScope: String, CaseIterable, Equatable {
+    case code
+    case dialogue
+    case titles
+  }
+
+  public enum SearchSort: String, CaseIterable, Equatable {
+    case newest
+    case oldest
   }
 
   public enum EpisodesRoute: Equatable {
@@ -558,6 +580,24 @@ struct SiteRouter: ParserPrinter {
 
       Route(.case(SiteRoute.robots)) {
         Path { "robots.txt" }
+      }
+
+      Route(.case(SiteRoute.search)) {
+        Path { "search" }
+        Query {
+          Optionally {
+            Field("q", .string)
+          }
+          Optionally {
+            Field("access") { SiteRoute.SearchAccess.parser() }
+          }
+          Optionally {
+            Field("scope") { SiteRoute.SearchScope.parser() }
+          }
+          Optionally {
+            Field("sort") { SiteRoute.SearchSort.parser() }
+          }
+        }
       }
 
       Route(.case(SiteRoute.slackInvite)) {

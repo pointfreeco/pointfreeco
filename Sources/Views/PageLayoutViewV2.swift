@@ -300,6 +300,9 @@ struct MobileNavItems: HTML {
         NavListItem(route: .blog()) {
           "Blog"
         }
+        NavListItem(isNew: true, route: .search()) {
+          "Search"
+        }
         NavListItem(route: .gifts(.index)) {
           "Gifts"
         }
@@ -599,6 +602,11 @@ struct CenteredNavItems: HTML {
         }
         NavListItem(badge: .pro, route: .theWay) {
           AdaptablePointFreeWayLabel()
+        }
+        NavListItem(isNew: true, route: .search()) {
+          span { SVG.search }
+            .inlineStyle("display", "inline-block")
+            .inlineStyle("vertical-align", "-0.15em")
         }
         MoreMenu {
           if currentUser == nil {

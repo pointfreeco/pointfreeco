@@ -136,6 +136,8 @@ public struct Client {
     (_ email: EmailAddress, _ code: EmailLoginCode.Code) async throws -> EmailLoginCode
   public var redeemEpisodeCredit:
     (_ sequence: Episode.Sequence, _ userID: Models.User.ID) async throws -> Void
+  public var refreshEpisodeSearchIndex:
+    (_ documents: [EpisodeSearchDocument]) async throws -> Void
   public var regenerateTeamInviteCode:
     (_ subscriptionID: Models.Subscription.ID) async throws -> Void
 
@@ -147,6 +149,12 @@ public struct Client {
     ) async throws -> Void
   public var rotateEmailLoginCode: (_ email: EmailAddress) async throws -> Void
   public var sawUser: (_ id: Models.User.ID) async throws -> Void
+  public var searchEpisodes:
+    (
+      _ query: String,
+      _ kinds: [EpisodeSearchDocument.Kind]?,
+      _ sequences: [Episode.Sequence]?
+    ) async throws -> EpisodeSearchResults
   public var submitOfficeHourQuestion:
     (_ question: String, _ userID: Models.User.ID) async throws -> OfficeHourQuestion
   public var updateEmailSettings:
@@ -181,6 +189,10 @@ public struct Client {
     ) async throws -> Models.User
   public var voteOfficeHourQuestion:
     (_ questionID: OfficeHourQuestion.ID, _ userID: Models.User.ID) async throws -> Void
+
+  public func searchEpisodes(query: String) async throws -> EpisodeSearchResults {
+    try await self.searchEpisodes(query, nil, nil)
+  }
 
   public func fetchSubscription(user: Models.User) async throws -> Models.Subscription {
     do {

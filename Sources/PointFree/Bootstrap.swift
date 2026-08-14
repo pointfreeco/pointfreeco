@@ -28,6 +28,9 @@ public func bootstrap() async {
 
   await connectToPostgres()
   await fireAndForget {
+    await refreshEpisodeSearchIndex()
+  }
+  await fireAndForget {
     await updateCollectionClips()
   }
   await fireAndForget {

@@ -23,6 +23,138 @@ final class DatabaseTests: LiveDatabaseTestCase {
     XCTAssertEqual("hello@pointfree.co", userB.email.rawValue)
   }
 
+  func testEpisodeSearch() async throws {
+    try await self.database.refreshEpisodeSearchIndex([
+      EpisodeSearchDocument(
+        content: "Functions",
+        episodeSequence: 1,
+        kind: .episodeTitle,
+        sectionTitle: nil,
+        timestamp: nil
+      ),
+      EpisodeSearchDocument(
+        content: "We discuss what makes functions great.",
+        episodeSequence: 1,
+        kind: .blurb,
+        sectionTitle: nil,
+        timestamp: nil
+      ),
+      EpisodeSearchDocument(
+        content: "Introduction",
+        episodeSequence: 1,
+        kind: .title,
+        sectionTitle: "Introduction",
+        timestamp: 68
+      ),
+      EpisodeSearchDocument(
+        content: "We can define an increment function that takes an Int and returns an Int.",
+        episodeSequence: 1,
+        kind: .prose,
+        sectionTitle: "Introduction",
+        timestamp: 68
+      ),
+      EpisodeSearchDocument(
+        content: "func increment(_ x: Int) -> Int { x + 1 }",
+        episodeSequence: 1,
+        kind: .code,
+        sectionTitle: "Introduction",
+        timestamp: 68
+      ),
+      EpisodeSearchDocument(
+        content: {
+          let filler = Array(
+            repeating: "The quick brown fox jumps over the lazy dog.", count: 5
+          ).joined(separator: " ")
+          return "\(filler) A borborygmus interrupted the silence. \(filler)"
+        }(),
+        episodeSequence: 2,
+        kind: .prose,
+        sectionTitle: "Digressions",
+        timestamp: 500
+      ),
+      EpisodeSearchDocument(
+        content: {
+          let code = Array(
+            repeating: "let value = compute(from: input)", count: 8
+          ).joined(separator: "; ")
+          return "A code example: `\(code); let susurration = whisper(); \(code)` and that is all."
+        }(),
+        episodeSequence: 2,
+        kind: .prose,
+        sectionTitle: "Whispers",
+        timestamp: 600
+      ),
+      EpisodeSearchDocument(
+        content: "You should flibbertigibbet often, and flibbertigibbet loudly.",
+        episodeSequence: 1,
+        kind: .prose,
+        sectionTitle: "Chatter",
+        timestamp: 700
+      ),
+      EpisodeSearchDocument(
+        content: "The `Flibbertigibbet` type is quite rare.",
+        episodeSequence: 2,
+        kind: .prose,
+        sectionTitle: "Rare types",
+        timestamp: 800
+      ),
+    ])
+
+    let results = try await self.database.searchEpisodes(query: "increment function")
+
+    XCTAssertEqual(1, results.count)
+    XCTAssertEqual(1, results[0].episodeSequence)
+    XCTAssertEqual(.prose, results[0].kind)
+    XCTAssertEqual("Introduction", results[0].sectionTitle)
+    XCTAssertEqual(68, results[0].timestamp)
+    XCTAssertTrue(results[0].headline.contains("⟪increment⟫"))
+    XCTAssertTrue(results[0].headline.contains("⟪function⟫"))
+    XCTAssertFalse(results[0].headlineIsTruncatedAtStart)
+    XCTAssertFalse(results[0].headlineIsTruncatedAtEnd)
+
+    let truncatedResults = try await self.database.searchEpisodes(query: "borborygmus")
+    XCTAssertEqual(1, truncatedResults.count)
+    XCTAssertTrue(truncatedResults[0].headline.contains("⟪borborygmus⟫"))
+    XCTAssertTrue(truncatedResults[0].headlineIsTruncatedAtStart)
+    XCTAssertTrue(truncatedResults[0].headlineIsTruncatedAtEnd)
+    XCTAssertFalse(truncatedResults[0].headlineStartsInsideCodeSpan)
+
+    let codeSpanResults = try await self.database.searchEpisodes(query: "susurration")
+    XCTAssertEqual(1, codeSpanResults.count)
+    XCTAssertTrue(codeSpanResults[0].headline.contains("⟪susurration⟫"))
+    XCTAssertTrue(codeSpanResults[0].headlineIsTruncatedAtStart)
+    XCTAssertTrue(codeSpanResults[0].headlineStartsInsideCodeSpan)
+
+    let capitalizedResults = try await self.database.searchEpisodes(query: "Flibbertigibbet")
+    XCTAssertEqual(["Rare types", "Chatter"], capitalizedResults.map(\.sectionTitle))
+
+    let lowercasedResults = try await self.database.searchEpisodes(query: "flibbertigibbet")
+    XCTAssertEqual(["Chatter", "Rare types"], lowercasedResults.map(\.sectionTitle))
+
+    let codeResults = try await self.database.searchEpisodes(query: "increment")
+    XCTAssertEqual([.prose, .code], codeResults.map(\.kind))
+
+    let titleResults = try await self.database.searchEpisodes(query: "introduction")
+    XCTAssertEqual([.title], titleResults.map(\.kind))
+    XCTAssertEqual("⟪Introduction⟫", titleResults[0].headline)
+
+    let episodeTitleResults = try await self.database.searchEpisodes(query: "functions")
+    XCTAssertEqual([.episodeTitle, .blurb, .prose], episodeTitleResults.map(\.kind))
+    XCTAssertEqual("⟪Functions⟫", episodeTitleResults[0].headline)
+
+    let blurbResults = try await self.database.searchEpisodes(query: "great functions")
+    XCTAssertEqual(1, blurbResults.count)
+    XCTAssertEqual(.blurb, blurbResults[0].kind)
+    XCTAssertEqual(nil, blurbResults[0].sectionTitle)
+
+    let emptyResults = try await self.database.searchEpisodes(query: "quantum chromodynamics")
+    XCTAssertEqual([], emptyResults)
+
+    try await self.database.refreshEpisodeSearchIndex([])
+    let clearedResults = try await self.database.searchEpisodes(query: "increment function")
+    XCTAssertEqual([], clearedResults)
+  }
+
   func testFetchEnterpriseAccount() async throws {
     let user = try await self.database.registerUser(
       accessToken: .mock, gitHubUser: .mock, email: "blob@pointfree.co", now: { .mock }
