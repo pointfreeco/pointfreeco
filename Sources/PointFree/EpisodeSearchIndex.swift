@@ -19,7 +19,10 @@ func refreshEpisodeSearchIndex() async {
 
 extension Episode {
   var searchDocuments: [EpisodeSearchDocument] {
-    let blurb = proseText(markdown: blurb)
+    let blurb = Document(parsing: blurb)
+      .children
+      .compactMap { ($0 as? Paragraph)?.plainText }
+      .joined(separator: "\n")
     var documents = [
       EpisodeSearchDocument(
         content: fullTitle,
@@ -53,13 +56,6 @@ func transcriptSearchDocuments(
   visitor.visit(Document(parsing: transcript, options: .parseBlockDirectives))
   visitor.flush()
   return visitor.documents
-}
-
-private func proseText(markdown: String) -> String {
-  Document(parsing: markdown)
-    .children
-    .compactMap { ($0 as? Paragraph)?.plainText }
-    .joined(separator: "\n")
 }
 
 private struct SearchDocumentVisitor: MarkupVisitor {
