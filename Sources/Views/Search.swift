@@ -502,6 +502,7 @@ private struct SearchTips: HTML {
         "testing -xctest",
         "persistence -swiftdata",
         "concurrency -combine",
+        "SwiftData crash",
       ],
       text: "Prefix with a minus to leave a term out of results."
     ),
