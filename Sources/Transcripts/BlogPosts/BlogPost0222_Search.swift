@@ -11,7 +11,7 @@ extension BlogPost {
     hidden: .no,
     hideFromSlackRSS: false,
     id: 222,
-    publishedAt: yearMonthDayFormatter.date(from: "2026-08-14")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2026-08-18")!,
     title: "Announcing: Episode Search"
   )
 }
