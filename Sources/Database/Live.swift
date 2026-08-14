@@ -314,20 +314,18 @@ extension Client {
           """
           SELECT
             "office_hour_questions".*,
-            (
-              SELECT COUNT(*) FROM "office_hour_question_votes"
-              WHERE "office_hour_question_votes"."office_hour_question_id"
-                = "office_hour_questions"."id"
-            ) AS "vote_count",
-            EXISTS(
-              SELECT 1 FROM "office_hour_question_votes"
-              WHERE "office_hour_question_votes"."office_hour_question_id"
-                = "office_hour_questions"."id"
-              AND "office_hour_question_votes"."user_id" = \(bind: userID)
+            COUNT("office_hour_question_votes"."id") AS "vote_count",
+            COALESCE(
+              BOOL_OR("office_hour_question_votes"."user_id" = \(bind: userID)),
+              FALSE
             ) AS "has_voted"
           FROM "office_hour_questions"
+          LEFT JOIN "office_hour_question_votes"
+          ON "office_hour_question_votes"."office_hour_question_id"
+            = "office_hour_questions"."id"
           WHERE \(bind: answered) = ("office_hour_questions"."answered_office_hour_id" IS NOT NULL)
-          ORDER BY "vote_count" DESC, "created_at" ASC
+          GROUP BY "office_hour_questions"."id"
+          ORDER BY "vote_count" DESC, "office_hour_questions"."created_at" ASC
           """
         )
       },
