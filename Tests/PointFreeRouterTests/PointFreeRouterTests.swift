@@ -80,9 +80,16 @@ class PointFreeRouterTests: TestCase {
       )
     )
 
-    let filteredRoute = SiteRoute.search(query: "generics", access: .free, sort: .newest)
+    let literalRoute = SiteRoute.search(query: #""$0 + 1""#)
+    let literalRequest = try siteRouter.request(for: literalRoute)
+    XCTAssertEqual("q=%22$0%20%2B%201%22", literalRequest.url?.query)
+    XCTAssertEqual(literalRoute, try siteRouter.match(request: literalRequest))
+
+    let filteredRoute = SiteRoute.search(
+      query: "generics", access: .free, scope: .code, sort: .oldest
+    )
     let filteredRequest = try siteRouter.request(for: filteredRoute)
-    XCTAssertEqual("q=generics&access=free&sort=newest", filteredRequest.url?.query)
+    XCTAssertEqual("q=generics&access=free&scope=code&sort=oldest", filteredRequest.url?.query)
     XCTAssertEqual(filteredRoute, try siteRouter.match(request: filteredRequest))
   }
 

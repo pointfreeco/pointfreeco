@@ -1073,7 +1073,9 @@ extension Client {
             "episode_sequence" integer NOT NULL,
             "section_title" character varying,
             "timestamp" integer,
+            "timestamp_markers" jsonb NOT NULL,
             "content" text NOT NULL,
+            "kind" character varying NOT NULL,
             "search_vector" tsvector NOT NULL
           )
           """
@@ -1083,20 +1085,6 @@ extension Client {
           CREATE INDEX IF NOT EXISTS "index_episode_search_on_search_vector"
           ON "episode_search"
           USING GIN ("search_vector")
-          """
-        )
-        try await database.run(
-          """
-          ALTER TABLE "episode_search"
-          ADD COLUMN IF NOT EXISTS
-          "kind" character varying NOT NULL DEFAULT 'prose'
-          """
-        )
-        try await database.run(
-          """
-          ALTER TABLE "episode_search"
-          ADD COLUMN IF NOT EXISTS
-          "timestamp_markers" jsonb NOT NULL DEFAULT '[]'
           """
         )
         try await database.run(

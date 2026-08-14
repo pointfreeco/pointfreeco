@@ -57,7 +57,8 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-prelude", revision: "da5ead2"),
     .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", branch: "async"),
     .package(url: "https://github.com/pointfreeco/swift-tagged", from: "0.10.0"),
-    .package(url: "https://github.com/pointfreeco/swift-url-routing", from: "0.6.0"),
+    .package(
+      url: "https://github.com/pointfreeco/swift-url-routing", branch: "form-encoded-query"),
     .package(url: "https://github.com/pointfreeco/swift-web", revision: "3248f47"),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.11.0"),
     .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.20"),
