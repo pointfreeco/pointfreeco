@@ -539,7 +539,7 @@ extension Client {
       },
       migrate: {
         let database = pool.sqlDatabase
-        for `extension` in ["pgcrypto", "uuid-ossp", "citext"] {
+        for `extension` in ["pgcrypto", "uuid-ossp", "citext", "pg_trgm"] {
           do {
             try await database.run(
               """
@@ -1126,40 +1126,6 @@ extension Client {
         )
         try await database.run(
           """
-          DROP TABLE IF EXISTS "episode_search"
-          """
-        )
-        try await database.run(
-          """
-          CREATE UNLOGGED TABLE "episode_search" (
-            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
-            "episode_sequence" integer NOT NULL,
-            "published_at" timestamp with time zone NOT NULL,
-            "section_title" character varying,
-            "timestamp" integer,
-            "timestamp_markers" jsonb NOT NULL,
-            "content" text NOT NULL,
-            "kind" character varying NOT NULL,
-            "search_vector" tsvector NOT NULL
-          )
-          """
-        )
-        try await database.run(
-          """
-          CREATE INDEX "index_episode_search_on_search_vector"
-          ON "episode_search"
-          USING GIN ("search_vector")
-          """
-        )
-        try await database.run(
-          """
-          CREATE INDEX "index_episode_search_on_content_trigrams"
-          ON "episode_search"
-          USING GIN ("content" gin_trgm_ops)
-          """
-        )
-        try await database.run(
-          """
           CREATE TABLE IF NOT EXISTS "office_hours" (
             "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
             "blurb" character varying NOT NULL DEFAULT '',
@@ -1233,6 +1199,26 @@ extension Client {
         }
         try await pool.sqlDatabase.run(
           """
+          DROP TABLE IF EXISTS "episode_search"
+          """
+        )
+        try await pool.sqlDatabase.run(
+          """
+          CREATE UNLOGGED TABLE "episode_search" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "episode_sequence" integer NOT NULL,
+            "published_at" timestamp with time zone NOT NULL,
+            "section_title" character varying,
+            "timestamp" integer,
+            "timestamp_markers" jsonb NOT NULL,
+            "content" text NOT NULL,
+            "kind" character varying NOT NULL,
+            "search_vector" tsvector NOT NULL
+          )
+          """
+        )
+        try await pool.sqlDatabase.run(
+          """
           WITH "deleted" AS (DELETE FROM "episode_search")
           INSERT INTO "episode_search"
           ("episode_sequence", "published_at", "section_title", "timestamp", "timestamp_markers",
@@ -1259,6 +1245,20 @@ extension Client {
             "episode_sequence", "published_at", "section_title", "timestamp",
             "timestamp_markers", "content", "kind", "weight"
           )
+          """
+        )
+        try await pool.sqlDatabase.run(
+          """
+          CREATE INDEX "index_episode_search_on_search_vector"
+          ON "episode_search"
+          USING GIN ("search_vector")
+          """
+        )
+        try await pool.sqlDatabase.run(
+          """
+          CREATE INDEX "index_episode_search_on_content_trigrams"
+          ON "episode_search"
+          USING GIN ("content" gin_trgm_ops)
           """
         )
       },
@@ -1393,7 +1393,7 @@ extension Client {
             FROM unnest(
               \(bind: termGroupIDs)::int[], \(bind: positiveTerms)::text[]
             ) AS "t"("group", "term")
-            WHERE websearch_to_tsquery('english', "term") <> ''
+            WHERE numnode(websearch_to_tsquery('english', "term")) > 0
           ),
           "literals" AS (
             SELECT DISTINCT "literal", "pattern"

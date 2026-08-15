@@ -2,7 +2,7 @@ GET http://localhost:8080/search
 Cookie: pf_session={}
 
 200 OK
-Content-Length: 63412
+Content-Length: 63560
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -50,11 +50,6 @@ body {
 body, html {
   background: #fff;
 }
-@media (prefers-color-scheme: dark) {
-  body, html {
-    background: #121212;
-  }
-}
 .markdown *:link, .markdown *:visited { color: inherit; }
 .diagnostic * {
   font: inherit;
@@ -80,6 +75,12 @@ body, html {
   from { opacity: 1; }
   50% { opacity: 0; }
   to { opacity: 1; }
+}
+    </style>
+    <style>@media (prefers-color-scheme: dark) {
+  body, html {
+    background: #121212;
+  }
 }
     </style>
     <link rel="apple-touch-icon" sizes="180x180" href="https://d3rccdn33rt8ze.cloudfront.net/favicons/apple-touch-icon.png">
@@ -553,7 +554,9 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
 </template><script>(() => {
   const form = document.getElementById("search-form");
   const results = document.getElementById("search-results");
-  if (!form || !results) return;
+  if (!form || !results) {
+    return;
+  }
   document.documentElement.style.scrollbarGutter = "stable";
   const input = form.querySelector("input[name=q]");
   const icons = {
@@ -572,7 +575,9 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
   }
   let controller;
   async function load(push) {
-    if (controller) controller.abort();
+    if (controller) {
+      controller.abort();
+    }
     controller = new AbortController();
     const url = new URL(form.action, location.origin);
     for (const [name, value] of new FormData(form)) {
@@ -590,14 +595,22 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
       results.innerHTML = await response.text();
       const query = (new FormData(form).get("q") || "").trim();
       document.title = query ? "Search: " + query : "Search";
-      if (push) history.pushState(null, "", url);
+      if (push) {
+        history.pushState(null, "", url);
+      }
     } catch (error) {
-      if (error.name === "AbortError") return;
+      if (error.name === "AbortError") {
+        return;
+      }
       const template = document.getElementById("search-error");
-      if (!template) return;
+      if (!template) {
+        return;
+      }
       results.innerHTML = template.innerHTML;
       const retry = results.querySelector("[data-retry]");
-      if (retry) retry.setAttribute("href", url.pathname + url.search);
+      if (retry) {
+        retry.setAttribute("href", url.pathname + url.search);
+      }
     }
   }
   let debounce;
@@ -625,9 +638,13 @@ input:checked ~ #menu-icon .transform-BHskb{transform:rotate(45deg)}
     updateIcons();
   }
   results.addEventListener("click", (event) => {
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
     const link = event.target.closest('a[href^="/search"]');
-    if (!link || !results.contains(link)) return;
+    if (!link || !results.contains(link)) {
+      return;
+    }
     event.preventDefault();
     syncForm(new URL(link.href, location.origin).searchParams);
     load(true);
