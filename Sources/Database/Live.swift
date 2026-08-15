@@ -481,7 +481,7 @@ extension Client {
       },
       migrate: {
         let database = pool.sqlDatabase
-        for `extension` in ["pgcrypto", "uuid-ossp", "citext"] {
+        for `extension` in ["pgcrypto", "uuid-ossp", "citext", "pg_trgm"] {
           do {
             try await database.run(
               """
