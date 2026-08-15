@@ -55,7 +55,7 @@ private func connectToPostgres() async {
       #if DEBUG
         print("  ❌ Error! \(String(reflecting: error))")
       #else
-        print("  ❌ Error! \(error)")
+        reportIssue("  ❌ Error! \(error)")
       #endif
       print("     Make sure you are running postgres: pg_ctl -D /usr/local/var/postgres start")
       try? await Task.sleep(for: .seconds(1))
