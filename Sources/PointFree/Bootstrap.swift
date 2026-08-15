@@ -7,7 +7,7 @@ import Models
 import PointFreePrelude
 import Views
 
-public func bootstrap() async {
+public func bootstrap(indexEpisodeSearch: Bool = true) async {
   prepareDependencies {
     $0[CloudflareClient.self] =
       .live(
@@ -27,8 +27,10 @@ public func bootstrap() async {
   print("  ✅ \(Episode.all.count) transcripts loaded")
 
   await connectToPostgres()
-  await fireAndForget {
-    await refreshEpisodeSearchIndex()
+  if indexEpisodeSearch {
+    await fireAndForget {
+      await refreshEpisodeSearchIndex()
+    }
   }
   await fireAndForget {
     await updateCollectionClips()

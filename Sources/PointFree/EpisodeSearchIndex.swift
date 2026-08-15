@@ -3,18 +3,21 @@ import Foundation
 import IssueReporting
 import Markdown
 import Models
+import PointFreePrelude
 import Transcripts
 
 func refreshEpisodeSearchIndex() async {
   print("  ⏳ Refreshing episode search index")
-  defer { print("  ✅ Episode search index refreshed") }
 
   @Dependency(\.database) var database
 
   await withErrorReporting {
-    try await database.refreshEpisodeSearchIndex(
-      Episode.all.flatMap(\.searchDocuments)
-    )
+    try await retry(maxRetries: 4, backoff: { _ in .seconds(5) }) {
+      try await database.refreshEpisodeSearchIndex(
+        Episode.all.flatMap(\.searchDocuments)
+      )
+    }
+    print("  ✅ Episode search index refreshed")
   }
 }
 
