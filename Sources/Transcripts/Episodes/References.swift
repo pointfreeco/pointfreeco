@@ -193,6 +193,13 @@ extension Episode.Reference {
     title: "Data Essentials in SwiftUI"
   )
 
+  public static let debugSnapshots = Episode.Reference(
+    author: "Brandon Williams & Stephen Celis",
+    blurb: "Better debugging and testing for your data model.",
+    link: "https://github.com/pointfreeco/swift-debug-snapshots",
+    title: "DebugSnapshots"
+  )
+
   public static let deferredPublishers = Episode.Reference(
     author: "@_lksz_",
     blurb: #"""
