@@ -154,20 +154,11 @@ private struct BetaProjectsList: HTML {
       }
       .color(.black.dark(.white))
       .inlineStyle("margin-top", "0.5rem")
-      projectList(Beta.all, bulletColor: "#974dff")
-
-      if !Beta.graduated.isEmpty {
-        Header(5) {
-          HTMLText("Graduated betas")
-        }
-        .color(.black.dark(.white))
-        .inlineStyle("margin-top", "0.5rem")
-        projectList(Beta.graduated, bulletColor: "#79f2b0")
-      }
+      projectList(Beta.all)
     }
   }
 
-  func projectList(_ betas: [Beta], bulletColor: String) -> some HTML {
+  func projectList(_ betas: [Beta]) -> some HTML {
     ul {
       for beta in betas {
         li {
@@ -175,7 +166,7 @@ private struct BetaProjectsList: HTML {
             .inlineStyle("width", "6px")
             .inlineStyle("height", "6px")
             .inlineStyle("border-radius", "50%")
-            .inlineStyle("background", bulletColor)
+            .inlineStyle("background", "#974dff")
             .inlineStyle("flex-shrink", "0")
           if let publicURL = beta.publicURL {
             a { HTMLText(beta.title) }
