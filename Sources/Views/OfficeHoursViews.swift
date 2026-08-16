@@ -257,7 +257,7 @@ private struct AnsweredQuestionsModule: HTML {
               }
             }
 
-            HTMLMarkdown(question.question)
+            HTMLMarkdown(question.question, isBasic: true)
               .color(.gray150.dark(.gray850))
               .linkColor(.purple)
               .grow()
@@ -615,6 +615,7 @@ private struct SubmitQuestionForm: HTML {
       VStack(spacing: 0.75) {
         textarea { "" }
           .attribute("name", "question")
+          .attribute("maxlength", "5000")
           .attribute("rows", "3")
           .attribute(
             "placeholder",
@@ -670,7 +671,7 @@ private struct QuestionRow: HTML {
   }
 
   var body: some HTML {
-    HStack(alignment: .center, spacing: 1) {
+    HStack(alignment: .top, spacing: 1) {
       VoteControl(question: question, isOwnQuestion: isOwnQuestion)
       questionContent
       if isOwnQuestion {
@@ -719,7 +720,7 @@ private struct ExpandableQuestionMarkdown: HTML {
         .attribute("type", "checkbox")
         .inlineStyle("display", "none")
 
-      HTMLMarkdown(question.question)
+      HTMLMarkdown(question.question, isBasic: true)
         .color(.black.dark(.white))
         .linkColor(.purple)
         .inlineStyle("max-height", "15em")
@@ -743,7 +744,7 @@ private struct ExpandableQuestionMarkdown: HTML {
       .inlineStyle("display", "none", pre: "input:checked ~")
       .inlineStyle("text-decoration", "underline", pseudo: .hover)
     } else {
-      HTMLMarkdown(question.question)
+      HTMLMarkdown(question.question, isBasic: true)
         .color(.black.dark(.white))
         .linkColor(.purple)
     }

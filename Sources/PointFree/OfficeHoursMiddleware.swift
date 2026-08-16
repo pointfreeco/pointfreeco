@@ -135,6 +135,11 @@ private func submitQuestionMiddleware(
       $0.flash(.error, "Please enter a question.")
     }
   }
+  guard question.count <= 5000 else {
+    return conn.redirect(to: .officeHours(.index(tab: .qa))) {
+      $0.flash(.error, "Questions must be 5,000 characters or fewer.")
+    }
+  }
 
   do {
     _ = try await database.submitOfficeHourQuestion(

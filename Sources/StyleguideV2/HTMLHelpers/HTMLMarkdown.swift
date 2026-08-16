@@ -24,10 +24,10 @@ public struct HTMLMarkdown: HTML {
   public let tableOfContents: [Section]
   public let content: AnyHTML
 
-  public init(_ markdown: String, previewOnly: Bool = false) {
+  public init(_ markdown: String, previewOnly: Bool = false, isBasic: Bool = false) {
     self.markdown = markdown
     self.previewOnly = previewOnly
-    var converter = HTMLConverter(previewOnly: previewOnly)
+    var converter = HTMLConverter(previewOnly: previewOnly, isBasic: isBasic)
     self.content = converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
     self.tableOfContents = converter.tableOfContents
   }
@@ -66,9 +66,11 @@ private struct HTMLConverter: MarkupVisitor {
   typealias Result = AnyHTML
 
   let previewOnly: Bool
+  let isBasic: Bool
 
-  init(previewOnly: Bool) {
+  init(previewOnly: Bool, isBasic: Bool = false) {
     self.previewOnly = previewOnly
+    self.isBasic = isBasic
   }
 
   private var currentTimestamp: Timestamp?
@@ -272,12 +274,16 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitHTMLBlock(_ html: Markdown.HTMLBlock) -> AnyHTML {
-    HTMLRaw(html.rawHTML)
+    if isBasic {
+      HTMLText(html.rawHTML)
+    } else {
+      HTMLRaw(html.rawHTML)
+    }
   }
 
   @HTMLBuilder
   mutating func visitImage(_ image: Markdown.Image) -> AnyHTML {
-    if let source = image.source {
+    if let source = image.source, !isBasic {
       VStack(alignment: .center) {
         Link(href: source) {
           Image(source: source, description: image.title ?? "")
@@ -285,6 +291,8 @@ private struct HTMLConverter: MarkupVisitor {
             .inlineStyle("border-radius", "6px")
         }
       }
+    } else if isBasic {
+      HTMLText(image.plainText)
     }
   }
 
@@ -297,7 +305,11 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitInlineHTML(_ inlineHTML: Markdown.InlineHTML) -> AnyHTML {
-    HTMLRaw(inlineHTML.rawHTML)
+    if isBasic {
+      HTMLText(inlineHTML.rawHTML)
+    } else {
+      HTMLRaw(inlineHTML.rawHTML)
+    }
   }
 
   @HTMLBuilder
@@ -307,12 +319,18 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitLink(_ link: Markdown.Link) -> AnyHTML {
-    Link(href: link.destination ?? "#") {
+    if isBasic {
       for child in link.children {
         visit(child)
       }
+    } else {
+      Link(href: link.destination ?? "#") {
+        for child in link.children {
+          visit(child)
+        }
+      }
+      .attribute("title", link.title)
     }
-    .attribute("title", link.title)
   }
 
   @HTMLBuilder
