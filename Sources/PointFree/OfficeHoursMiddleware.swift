@@ -159,18 +159,14 @@ private func deleteQuestionMiddleware(
   @Dependency(\.database) var database
 
   guard let currentUser else {
-    return conn.loginAndRedirect()
+    return conn.writeStatus(.unauthorized).respondFragment { HTMLEmpty() }
   }
 
   do {
     try await database.deleteOfficeHourQuestion(id: questionID, userID: currentUser.id)
-    return conn.redirect(to: .officeHours(.index(tab: .qa))) {
-      $0.flash(.notice, "Your question has been deleted.")
-    }
+    return try await questionsFragmentResponse(conn, userID: currentUser.id)
   } catch {
-    return conn.redirect(to: .officeHours(.index(tab: .qa))) {
-      $0.flash(.error, "Something went wrong. Please try again.")
-    }
+    return conn.writeStatus(.internalServerError).respondFragment { HTMLEmpty() }
   }
 }
 
@@ -182,42 +178,34 @@ private func voteQuestionMiddleware(
   @Dependency(\.database) var database
   @Dependency(\.subscriberState) var subscriberState
 
-  let isFragmentRequest = conn.request.value(forHTTPHeaderField: "X-Fragment") == "vote"
-
-  guard let currentUser else {
-    return isFragmentRequest
-      ? conn.writeStatus(.unauthorized).respondFragment { HTMLEmpty() }
-      : conn.loginAndRedirect()
-  }
-  guard subscriberState.isMaxSubscriber else {
-    return isFragmentRequest
-      ? conn.writeStatus(.unauthorized).respondFragment { HTMLEmpty() }
-      : conn.redirect(to: .officeHours(.index(tab: .qa))) {
-        $0.flash(.error, "You must be a Point-Free Max subscriber to vote on questions.")
-      }
+  guard
+    let currentUser,
+    subscriberState.isMaxSubscriber
+  else {
+    return conn.writeStatus(.unauthorized).respondFragment { HTMLEmpty() }
   }
 
   do {
     try await database.voteOfficeHourQuestion(questionID: questionID, userID: currentUser.id)
-
-    guard isFragmentRequest else {
-      return conn.redirect(to: .officeHours(.index(tab: .qa)))
-    }
-
-    let questions = try await database.fetchOfficeHourQuestions(
-      answered: false,
-      userID: currentUser.id
-    )
-    return conn.writeStatus(.ok).respondFragment(
-      scope: "#\(OfficeHourQuestionsList.elementID)"
-    ) {
-      OfficeHourQuestionsList(questions: questions)
-    }
+    return try await questionsFragmentResponse(conn, userID: currentUser.id)
   } catch {
-    return isFragmentRequest
-      ? conn.writeStatus(.internalServerError).respondFragment { HTMLEmpty() }
-      : conn.redirect(to: .officeHours(.index(tab: .qa))) {
-        $0.flash(.error, "Something went wrong. Please try again.")
-      }
+    return conn.writeStatus(.internalServerError).respondFragment { HTMLEmpty() }
+  }
+}
+
+private func questionsFragmentResponse(
+  _ conn: Conn<StatusLineOpen, Void>,
+  userID: Models.User.ID
+) async throws -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+
+  let questions = try await database.fetchOfficeHourQuestions(
+    answered: false,
+    userID: userID
+  )
+  return conn.writeStatus(.ok).respondFragment(
+    scope: "#\(OfficeHourQuestionsList.elementID)"
+  ) {
+    OfficeHourQuestionsList(questions: questions)
   }
 }

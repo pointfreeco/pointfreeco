@@ -545,15 +545,7 @@ private struct QuestionsSection: HTML {
         .inlineStyle("text-align", "center")
       }
 
-      if questions.isEmpty {
-        Paragraph {
-          "No questions have been submitted yet. Be the first to ask one!"
-        }
-        .color(.gray400.dark(.gray650))
-        .inlineStyle("text-align", "center")
-      } else {
-        OfficeHourQuestionsList(questions: questions)
-      }
+      OfficeHourQuestionsList(questions: questions)
     }
     .inlineStyle("margin", "0 auto")
     .inlineStyle("max-width", "768px")
@@ -572,8 +564,16 @@ public struct OfficeHourQuestionsList: HTML {
 
   public var body: some HTML {
     VStack(spacing: 1) {
-      HTMLForEach(questions) { question in
-        QuestionRow(question: question)
+      if questions.isEmpty {
+        Paragraph {
+          "No questions have been submitted yet. Be the first to ask one!"
+        }
+        .color(.gray400.dark(.gray650))
+        .inlineStyle("text-align", "center")
+      } else {
+        HTMLForEach(questions) { question in
+          QuestionRow(question: question)
+        }
       }
     }
     .attribute("id", Self.elementID)
@@ -583,13 +583,11 @@ public struct OfficeHourQuestionsList: HTML {
       #"""
       document.addEventListener("submit", async (event) => {
         const form = event.target;
-        if (!form.hasAttribute("data-vote-form")) { return; }
+        if (!form.hasAttribute("data-questions-form")) { return; }
+        if (event.defaultPrevented) { return; }
         event.preventDefault();
         try {
-          const response = await fetch(form.action, {
-            method: "POST",
-            headers: { "X-Fragment": "vote" }
-          });
+          const response = await fetch(form.action, { method: "POST" });
           if (!response.ok) { throw new Error(response.status); }
           const list = document.getElementById("\#(OfficeHourQuestionsList.elementID)");
           if (!list) { throw new Error("missing questions list"); }
@@ -601,7 +599,7 @@ public struct OfficeHourQuestionsList: HTML {
             Prism.highlightAllUnder(newList);
           }
         } catch (error) {
-          form.submit();
+          location.reload();
         }
       });
       """#
@@ -779,6 +777,7 @@ private struct DeleteQuestionButton: HTML {
       siteRouter.path(for: .officeHours(.deleteQuestion(id: questionID)))
     )
     .attribute("method", "post")
+    .attribute("data-questions-form", "")
     .attribute("onsubmit", "return confirm(\"Delete this question?\")")
   }
 }
@@ -842,7 +841,7 @@ private struct VoteControl: HTML {
         siteRouter.path(for: .officeHours(.voteQuestion(id: question.id)))
       )
       .attribute("method", "post")
-      .attribute("data-vote-form", "")
+      .attribute("data-questions-form", "")
     } else if question.hasVoted {
       span {
         VotePillContent(voteCount: question.voteCount)
