@@ -80,14 +80,11 @@ public struct SearchPage: HTML {
               .inlineStyle("position", "sticky", media: .desktop)
               .inlineStyle("top", "2rem", media: .desktop)
 
-            div {
-              SearchResults(
-                query: query,
-                matchCount: matchCount,
-                results: results
-              )
-            }
-            .attribute("id", "search-results")
+            SearchResults(
+              query: query,
+              matchCount: matchCount,
+              results: results
+            )
           }
         }
         .inlineStyle("width", "100%")
@@ -163,6 +160,7 @@ extension HTML {
 }
 
 public struct SearchResults: HTML {
+  public static let id = "search-results"
   let query: String
   let matchCount: Int
   let results: [SearchPage.Result]
@@ -224,6 +222,7 @@ public struct SearchResults: HTML {
         }
       }
     }
+    .attribute("id", Self.id)
   }
 }
 

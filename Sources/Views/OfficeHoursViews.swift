@@ -537,9 +537,9 @@ private struct QuestionsSection: HTML {
         SubmitQuestionForm()
       } else {
         Paragraph(.small) {
-          """
-          Submitting and voting on questions is exclusive to Point-Free Max subscribers.
-          """
+            """
+            Submitting and voting on questions is exclusive to Point-Free Max subscribers.
+            """
         }
         .color(.gray400.dark(.gray650))
         .inlineStyle("text-align", "center")
@@ -552,17 +552,60 @@ private struct QuestionsSection: HTML {
         .color(.gray400.dark(.gray650))
         .inlineStyle("text-align", "center")
       } else {
-        VStack(spacing: 1) {
-          HTMLForEach(questions) { question in
-            QuestionRow(question: question)
-          }
-        }
-        .inlineStyle("width", "100%")
+        OfficeHourQuestionsList(questions: questions)
       }
     }
     .inlineStyle("margin", "0 auto")
     .inlineStyle("max-width", "768px")
     .inlineStyle("width", "100%")
+  }
+}
+
+public struct OfficeHourQuestionsList: HTML {
+  public static let elementID = "office-hours-questions"
+
+  let questions: [Models.OfficeHourQuestion]
+
+  public init(questions: [Models.OfficeHourQuestion]) {
+    self.questions = questions
+  }
+
+  public var body: some HTML {
+    VStack(spacing: 1) {
+      HTMLForEach(questions) { question in
+        QuestionRow(question: question)
+      }
+    }
+    .attribute("id", Self.elementID)
+    .inlineStyle("width", "100%")
+
+    script {
+      #"""
+      document.addEventListener("submit", async (event) => {
+        const form = event.target;
+        if (!form.hasAttribute("data-vote-form")) { return; }
+        event.preventDefault();
+        try {
+          const response = await fetch(form.action, {
+            method: "POST",
+            headers: { "X-Fragment": "vote" }
+          });
+          if (!response.ok) { throw new Error(response.status); }
+          const list = document.getElementById("\#(OfficeHourQuestionsList.elementID)");
+          if (!list) { throw new Error("missing questions list"); }
+          const template = document.createElement("template");
+          template.innerHTML = await response.text();
+          list.replaceWith(template.content);
+          const newList = document.getElementById("\#(OfficeHourQuestionsList.elementID)");
+          if (newList && window.Prism) {
+            Prism.highlightAllUnder(newList);
+          }
+        } catch (error) {
+          form.submit();
+        }
+      });
+      """#
+    }
   }
 }
 
@@ -799,6 +842,7 @@ private struct VoteControl: HTML {
         siteRouter.path(for: .officeHours(.voteQuestion(id: question.id)))
       )
       .attribute("method", "post")
+      .attribute("data-vote-form", "")
     } else if question.hasVoted {
       span {
         VotePillContent(voteCount: question.voteCount)

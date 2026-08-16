@@ -5,6 +5,7 @@ import Models
 import PointFreeDependencies
 import PointFreeRouter
 import Prelude
+import StyleguideV2
 import Views
 
 func officeHoursMiddleware(
@@ -181,21 +182,42 @@ private func voteQuestionMiddleware(
   @Dependency(\.database) var database
   @Dependency(\.subscriberState) var subscriberState
 
+  let isFragmentRequest = conn.request.value(forHTTPHeaderField: "X-Fragment") == "vote"
+
   guard let currentUser else {
-    return conn.loginAndRedirect()
+    return isFragmentRequest
+      ? conn.writeStatus(.unauthorized).respondFragment { HTMLEmpty() }
+      : conn.loginAndRedirect()
   }
   guard subscriberState.isMaxSubscriber else {
-    return conn.redirect(to: .officeHours(.index(tab: .qa))) {
-      $0.flash(.error, "You must be a Point-Free Max subscriber to vote on questions.")
-    }
+    return isFragmentRequest
+      ? conn.writeStatus(.unauthorized).respondFragment { HTMLEmpty() }
+      : conn.redirect(to: .officeHours(.index(tab: .qa))) {
+        $0.flash(.error, "You must be a Point-Free Max subscriber to vote on questions.")
+      }
   }
 
   do {
     try await database.voteOfficeHourQuestion(questionID: questionID, userID: currentUser.id)
-    return conn.redirect(to: .officeHours(.index(tab: .qa)))
-  } catch {
-    return conn.redirect(to: .officeHours(.index(tab: .qa))) {
-      $0.flash(.error, "Something went wrong. Please try again.")
+
+    guard isFragmentRequest else {
+      return conn.redirect(to: .officeHours(.index(tab: .qa)))
     }
+
+    let questions = try await database.fetchOfficeHourQuestions(
+      answered: false,
+      userID: currentUser.id
+    )
+    return conn.writeStatus(.ok).respondFragment(
+      scope: "#\(OfficeHourQuestionsList.elementID)"
+    ) {
+      OfficeHourQuestionsList(questions: questions)
+    }
+  } catch {
+    return isFragmentRequest
+      ? conn.writeStatus(.internalServerError).respondFragment { HTMLEmpty() }
+      : conn.redirect(to: .officeHours(.index(tab: .qa))) {
+        $0.flash(.error, "Something went wrong. Please try again.")
+      }
   }
 }
