@@ -142,7 +142,7 @@ private func submitQuestionMiddleware(
   }
 
   do {
-    _ = try await database.submitOfficeHourQuestion(
+    _ = try await database.createOfficeHourQuestion(
       question: question,
       userID: currentUser.id
     )

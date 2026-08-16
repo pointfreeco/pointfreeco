@@ -97,6 +97,15 @@ extension Client {
           """
         )
       },
+      createOfficeHourQuestion: { question, userID in
+        try await pool.sqlDatabase.first(
+          """
+          INSERT INTO "office_hour_questions" ("question", "user_id")
+          VALUES (\(bind: question), \(bind: userID))
+          RETURNING *, 0 AS "vote_count", FALSE AS "has_voted"
+          """
+        )
+      },
       createSubscription: { stripeSubscription, userId, isOwnerTakingSeat, referrerId, plan in
         let subscription = try await pool.sqlDatabase.first(
           """
@@ -1566,15 +1575,6 @@ extension Client {
               timestamp: row.timestamp
             )
           }
-        )
-      },
-      submitOfficeHourQuestion: { question, userID in
-        try await pool.sqlDatabase.first(
-          """
-          INSERT INTO "office_hour_questions" ("question", "user_id")
-          VALUES (\(bind: question), \(bind: userID))
-          RETURNING *, 0 AS "vote_count", FALSE AS "has_voted"
-          """
         )
       },
       updateEmailSettings: { settings, userId in

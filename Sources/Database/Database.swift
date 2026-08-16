@@ -43,6 +43,8 @@ public struct Client {
       _ toEmail: EmailAddress,
       _ toName: String
     ) async throws -> Gift
+  public var createOfficeHourQuestion:
+    (_ question: String, _ userID: Models.User.ID) async throws -> OfficeHourQuestion
   public var createSubscription:
     (
       _ subscription: Stripe.Subscription,
@@ -155,8 +157,6 @@ public struct Client {
       _ kinds: [EpisodeSearchDocument.Kind]?,
       _ sequences: [Episode.Sequence]?
     ) async throws -> EpisodeSearchResults
-  public var submitOfficeHourQuestion:
-    (_ question: String, _ userID: Models.User.ID) async throws -> OfficeHourQuestion
   public var updateEmailSettings:
     (_ newsletters: [EmailSetting.Newsletter]?, _ userID: Models.User.ID) async throws -> Void
   public var updateEpisodeProgress:
