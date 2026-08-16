@@ -96,7 +96,7 @@ public struct EpisodeDetail: HTML {
   public init(episodePageData: EpisodePageData) {
     self.episodePageData = episodePageData
     self.transcript = episodePageData.episode.transcript.map {
-      HTMLMarkdown($0, previewOnly: !episodePageData.permission.isViewable)
+      HTMLMarkdown(trusted: $0, previewOnly: !episodePageData.permission.isViewable)
     }
   }
 
@@ -176,7 +176,7 @@ public struct EpisodeDetail: HTML {
                       .fontStyle(.body(.small))
                       .color(.gray500)
                       if let blurb = reference.blurb {
-                        HTMLMarkdown(blurb)
+                        HTMLMarkdown(trusted: blurb)
                           .color(.gray400.dark(.gray650))
                           .inlineStyle("margin", "0")
                       }
@@ -564,7 +564,7 @@ struct TableOfContentsSection: HTML {
               li {
                 HStack(alignment: .center, spacing: 0.25) {
                   Link(href: section.anchor) {
-                    HTMLMarkdown(section.title)
+                    HTMLMarkdown(trusted: section.title)
                   }
                   .linkColor(.offBlack.dark(.offWhite))
                   .inlineStyle("line-height", "1.35")

@@ -8,7 +8,7 @@
     @Test
     func tableAlignment() {
       let html = HTMLMarkdown(
-        """
+        trusted: """
         | User         | Is Admin |    ID |
         | :----------- | :------: | ----: |
         | Blob         |   true   |     1 |
@@ -77,7 +77,7 @@
     @Test
     func tableSpan() {
       let html = HTMLMarkdown(
-        """
+        trusted: """
         | User         | Is Admin |    ID |
         | ------------ | -------- | ----- |
         | Blob                   ||     1 |

@@ -24,16 +24,24 @@ public struct HTMLMarkdown: HTML {
   public let tableOfContents: [Section]
   public let content: AnyHTML
 
-  public init(_ markdown: String, previewOnly: Bool = false, isBasic: Bool = false) {
+  public init(trusted markdown: String, previewOnly: Bool = false) {
+    self.init(markdown, previewOnly: previewOnly, isTrusted: true)
+  }
+
+  public init(untrusted markdown: String, previewOnly: Bool = false) {
+    self.init(markdown, previewOnly: previewOnly, isTrusted: false)
+  }
+
+  private init(_ markdown: String, previewOnly: Bool, isTrusted: Bool) {
     self.markdown = markdown
     self.previewOnly = previewOnly
-    var converter = HTMLConverter(previewOnly: previewOnly, isBasic: isBasic)
+    var converter = HTMLConverter(previewOnly: previewOnly, isTrusted: isTrusted)
     self.content = converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
     self.tableOfContents = converter.tableOfContents
   }
 
   public init(previewOnly: Bool = false, @StringBuilder _ markdown: () -> String) {
-    self.init(markdown(), previewOnly: previewOnly)
+    self.init(trusted: markdown(), previewOnly: previewOnly)
   }
 
   public var body: some HTML {
@@ -66,11 +74,11 @@ private struct HTMLConverter: MarkupVisitor {
   typealias Result = AnyHTML
 
   let previewOnly: Bool
-  let isBasic: Bool
+  let isTrusted: Bool
 
-  init(previewOnly: Bool, isBasic: Bool = false) {
+  init(previewOnly: Bool, isTrusted: Bool = false) {
     self.previewOnly = previewOnly
-    self.isBasic = isBasic
+    self.isTrusted = isTrusted
   }
 
   private var currentTimestamp: Timestamp?
@@ -274,16 +282,16 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitHTMLBlock(_ html: Markdown.HTMLBlock) -> AnyHTML {
-    if isBasic {
-      HTMLText(html.rawHTML)
-    } else {
+    if isTrusted {
       HTMLRaw(html.rawHTML)
+    } else {
+      HTMLText(html.rawHTML)
     }
   }
 
   @HTMLBuilder
   mutating func visitImage(_ image: Markdown.Image) -> AnyHTML {
-    if let source = image.source, !isBasic {
+    if let source = image.source, isTrusted {
       VStack(alignment: .center) {
         Link(href: source) {
           Image(source: source, description: image.title ?? "")
@@ -291,7 +299,7 @@ private struct HTMLConverter: MarkupVisitor {
             .inlineStyle("border-radius", "6px")
         }
       }
-    } else if isBasic {
+    } else if !isTrusted {
       HTMLText(image.plainText)
     }
   }
@@ -305,10 +313,10 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitInlineHTML(_ inlineHTML: Markdown.InlineHTML) -> AnyHTML {
-    if isBasic {
-      HTMLText(inlineHTML.rawHTML)
-    } else {
+    if isTrusted {
       HTMLRaw(inlineHTML.rawHTML)
+    } else {
+      HTMLText(inlineHTML.rawHTML)
     }
   }
 
@@ -319,17 +327,17 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitLink(_ link: Markdown.Link) -> AnyHTML {
-    if isBasic {
-      for child in link.children {
-        visit(child)
-      }
-    } else {
+    if isTrusted {
       Link(href: link.destination ?? "#") {
         for child in link.children {
           visit(child)
         }
       }
       .attribute("title", link.title)
+    } else {
+      for child in link.children {
+        visit(child)
+      }
     }
   }
 

@@ -56,14 +56,14 @@ struct BlogPostEntry: HTML {
     div {
       Header(4) {
         Link(href: siteRouter.path(for: .blog(.show(.left(post.slug))))) {
-          HTMLMarkdown(post.title)
+          HTMLMarkdown(trusted: post.title)
         }
         .color(.offBlack.dark(.offWhite))
       }
     }
     .inlineStyle("margin-top", "0.5rem")
     div {
-      HTMLMarkdown(post.blurb)
+      HTMLMarkdown(trusted: post.blurb)
     }
     .color(.gray400.dark(.gray650))
   }

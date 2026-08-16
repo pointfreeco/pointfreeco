@@ -895,7 +895,7 @@ struct TopBanner<Content: HTML>: HTML {
     case .warning:
       self.style = .warning
     }
-    self.content = HTMLMarkdown(flash.message)
+    self.content = HTMLMarkdown(trusted: flash.message)
   }
 
   var body: some HTML {

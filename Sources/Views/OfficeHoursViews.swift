@@ -171,7 +171,7 @@ private struct LockedOfficeHourHeader: HTML {
         }
         .color(.gray800)
 
-        HTMLMarkdown(officeHour.description)
+        HTMLMarkdown(trusted: officeHour.description)
           .color(.gray900)
           .linkStyle(.init(color: .offWhite, underline: true))
           .inlineStyle("max-width", "768px")
@@ -257,7 +257,7 @@ private struct AnsweredQuestionsModule: HTML {
               }
             }
 
-            HTMLMarkdown(question.question, isBasic: true)
+            HTMLMarkdown(untrusted: question.question)
               .color(.gray150.dark(.gray850))
               .linkColor(.purple)
               .grow()
@@ -453,7 +453,7 @@ private struct PastOfficeHourRow: HTML {
           .color(.gray400.dark(.gray650))
 
           if !officeHour.blurb.isEmpty {
-            HTMLMarkdown(officeHour.blurb)
+            HTMLMarkdown(trusted: officeHour.blurb)
               .color(.gray400.dark(.gray650))
               .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
           }
@@ -720,7 +720,7 @@ private struct ExpandableQuestionMarkdown: HTML {
         .attribute("type", "checkbox")
         .inlineStyle("display", "none")
 
-      HTMLMarkdown(question.question, isBasic: true)
+      HTMLMarkdown(untrusted: question.question)
         .color(.black.dark(.white))
         .linkColor(.purple)
         .inlineStyle("max-height", "15em")
@@ -744,7 +744,7 @@ private struct ExpandableQuestionMarkdown: HTML {
       .inlineStyle("display", "none", pre: "input:checked ~")
       .inlineStyle("text-decoration", "underline", pseudo: .hover)
     } else {
-      HTMLMarkdown(question.question, isBasic: true)
+      HTMLMarkdown(untrusted: question.question)
         .color(.black.dark(.white))
         .linkColor(.purple)
     }
@@ -919,7 +919,7 @@ private struct OfficeHourVideoNotice: HTML {
           .inlineStyle("text-wrap", "balance")
 
           if let description, !description.isEmpty {
-            HTMLMarkdown(description)
+            HTMLMarkdown(trusted: description)
               .color(.gray800)
               .linkStyle(.init(color: .offWhite, underline: true))
               .inlineStyle("max-width", "36rem")

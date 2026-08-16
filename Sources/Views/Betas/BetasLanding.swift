@@ -301,7 +301,7 @@ private struct BetaCard: HTML {
         }
         .color(.black.dark(.white))
 
-        HTMLMarkdown(beta.blurb)
+        HTMLMarkdown(trusted: beta.blurb)
           .color(.gray300.dark(.gray800))
           .linkColor(.purple)
 

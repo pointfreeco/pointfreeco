@@ -15,7 +15,7 @@ public struct PrivacyAndTerms: HTML {
 
     PageModule(theme: .content) {
       HTMLMarkdown(
-        """
+        trusted: """
         ## Personal identification information
         We collect email addresses of registered Users and any other information voluntarily entered into forms on the Site. None of this information is sold or provided to third parties, except to provide the products and services you've requested, with your permission, or as required by law.
 
