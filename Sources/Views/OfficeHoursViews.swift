@@ -343,7 +343,7 @@ private struct OfficeHoursTabs: HTML {
               isActiveWhenQAUnchecked: true
             )
             TabLabel(
-              title: "Q&A",
+              title: "Upcoming Questions",
               inputID: officeHoursQATabInputID,
               isActiveWhenQAUnchecked: false
             )
