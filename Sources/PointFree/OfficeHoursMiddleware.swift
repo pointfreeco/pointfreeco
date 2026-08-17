@@ -126,7 +126,7 @@ private func submitQuestionMiddleware(
   }
   guard subscriberState.isMaxSubscriber else {
     return conn.redirect(to: .officeHours(.index(tab: .qa))) {
-      $0.flash(.error, "You must be a Point-Free Max subscriber to submit questions.")
+      $0.flash(.error, "You must be a Point-Free Max member to submit questions.")
     }
   }
   let question = question.trimmingCharacters(in: .whitespacesAndNewlines)
