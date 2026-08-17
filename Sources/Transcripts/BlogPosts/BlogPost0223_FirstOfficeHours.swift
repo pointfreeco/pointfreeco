@@ -12,7 +12,7 @@ extension BlogPost {
     hidden: .no,
     hideFromSlackRSS: false,
     id: 223,
-    publishedAt: yearMonthDayFormatter.date(from: "2026-08-19")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2026-08-25")!,
     title: "Office Hours: live Q&A for Max subscribers"
   )
 }
