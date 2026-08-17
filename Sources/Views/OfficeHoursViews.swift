@@ -524,15 +524,16 @@ private struct AnsweredQuestionsList: HTML {
 
       ul {
         HTMLForEach(questions) { question in
+          let questionText = HTMLMarkdown.plainText(question.question, limit: 280)
           li {
             a {
               if let seconds = question.answeredAtSeconds {
                 HTMLText("\(timestampLabel(seconds: seconds)) — ")
               }
-              HTMLText(question.question)
+              HTMLText(questionText)
             }
             .href(detailPath(question: question))
-            .attribute("title", question.question)
+            .attribute("title", questionText)
             .inlineStyle("color", "inherit")
             .inlineStyle("display", "block")
             .inlineStyle("max-width", "100%")

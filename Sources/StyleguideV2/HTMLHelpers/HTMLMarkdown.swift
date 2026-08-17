@@ -44,6 +44,16 @@ public struct HTMLMarkdown: HTML {
     self.init(trusted: markdown(), previewOnly: previewOnly)
   }
 
+  public static func plainText(_ markdown: String, limit: Int? = nil) -> String {
+    var renderer = PlainTextRenderer(limit: limit)
+    renderer.visit(Document(parsing: markdown))
+    var text = renderer.text.trimmingCharacters(in: .whitespacesAndNewlines)
+    if let limit, text.count > limit {
+      text = String(text.prefix(limit))
+    }
+    return text
+  }
+
   public var body: some HTML {
     tag("pf-markdown") {
       VStack(spacing: 0.5) {
@@ -67,6 +77,88 @@ public struct HTMLMarkdown: HTML {
       )
     }
     .inlineStyle("display", "block")
+  }
+}
+
+private struct PlainTextRenderer: MarkupWalker {
+  let limit: Int?
+  var text = ""
+
+  private var isFull: Bool {
+    limit.map { text.count >= $0 } ?? false
+  }
+
+  private mutating func append(_ string: String) {
+    guard !isFull else { return }
+    text += string
+  }
+
+  private mutating func separate() {
+    if let last = text.last, last != " " {
+      append(" ")
+    }
+  }
+
+  mutating func visitText(_ node: Markdown.Text) {
+    append(node.string)
+  }
+
+  mutating func visitInlineCode(_ node: Markdown.InlineCode) {
+    append(node.code)
+  }
+
+  mutating func visitSoftBreak(_ node: Markdown.SoftBreak) {
+    append(" ")
+  }
+
+  mutating func visitLineBreak(_ node: Markdown.LineBreak) {
+    append(" ")
+  }
+
+  mutating func visitInlineHTML(_ node: Markdown.InlineHTML) {
+    append(node.rawHTML)
+  }
+
+  mutating func visitHTMLBlock(_ node: Markdown.HTMLBlock) {
+    guard !isFull else { return }
+    separate()
+    append(flattened(node.rawHTML))
+    separate()
+  }
+
+  mutating func visitCodeBlock(_ node: Markdown.CodeBlock) {
+    guard !isFull else { return }
+    separate()
+    append(flattened(node.code))
+    separate()
+  }
+
+  private func flattened(_ block: String) -> String {
+    block
+      .split(separator: "\n")
+      .map { $0.trimmingCharacters(in: .whitespaces) }
+      .joined(separator: " ")
+  }
+
+  mutating func visitParagraph(_ node: Markdown.Paragraph) {
+    guard !isFull else { return }
+    separate()
+    descendInto(node)
+    separate()
+  }
+
+  mutating func visitHeading(_ node: Markdown.Heading) {
+    guard !isFull else { return }
+    separate()
+    descendInto(node)
+    separate()
+  }
+
+  mutating func visitListItem(_ node: Markdown.ListItem) {
+    guard !isFull else { return }
+    separate()
+    descendInto(node)
+    separate()
   }
 }
 

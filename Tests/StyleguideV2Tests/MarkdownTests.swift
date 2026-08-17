@@ -136,5 +136,34 @@
         """
       #expect(String(decoding: html, as: UTF8.self) == expected)
     }
+
+    @Test
+    func plainText() {
+      let markdown = """
+        What is the deal with **this** and `@Feature`?
+
+        ```swift
+        struct Login {
+          var email: String
+        }
+        ```
+
+        And [what about](https://example.com) *links*?
+        """
+      #expect(
+        HTMLMarkdown.plainText(markdown) == """
+          What is the deal with this and @Feature? struct Login { var email: String } \
+          And what about links?
+          """
+      )
+    }
+
+    @Test
+    func plainTextLimit() {
+      let markdown = String(repeating: "A paragraph of text.\n\n", count: 1_000)
+      let text = HTMLMarkdown.plainText(markdown, limit: 50)
+      #expect(text.count == 50)
+      #expect(text.hasPrefix("A paragraph of text. A paragraph of text."))
+    }
   }
 #endif
