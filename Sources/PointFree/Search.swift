@@ -123,7 +123,7 @@ func searchMiddleware(
     return
       conn
       .writeStatus(.ok)
-      .respondFragment(scope: SearchResults.id) {
+      .respondFragment {
         SearchResults(
           query: query,
           matchCount: matchCount,

@@ -3,7 +3,7 @@ Cookie: pf_session={}
 X-Fragment: results
 
 200 OK
-Content-Length: 3792
+Content-Length: 3805
 Content-Type: text/html; charset=utf-8
 Referrer-Policy: strict-origin-when-cross-origin
 X-Content-Type-Options: nosniff
@@ -12,7 +12,7 @@ X-Frame-Options: SAMEORIGIN
 X-Permitted-Cross-Domain-Policies: none
 X-XSS-Protection: 1; mode=block
 
-<style>@scope (#search-results){
+<div><style>@scope{
 .align-items-msN8p3{align-items:stretch}
 .display-BvS8W3{display:flex}
 .flex-direction-7gclL{flex-direction:column}
@@ -63,7 +63,7 @@ X-XSS-Protection: 1; mode=block
   .color-5uscm3{color:#a8a8a8}
 }
 }</style>
-<pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-QgYLk2">
+<pf-vstack id="search-results" class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-QgYLk2">
   <div class="font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-Vt0a43 color-Cn4Oi1">1 video matches <span class="background-HKChQ2 background-1ZqEU3 border-radius-btBsa3 display-qrAHi padding-5iWWD3 font-weight-evfWi1 line-height-9Qkso4 font-size-RTPM71 color-cemJK2">increment function</span>
   </div>
   <pf-vstack class="align-items-msN8p3 display-BvS8W3 flex-direction-7gclL max-width-C8uWv row-gap-NKv2f3">
@@ -76,4 +76,4 @@ X-XSS-Protection: 1; mode=block
       </p>
     </pf-vstack>
   </pf-vstack>
-</pf-vstack>
+</pf-vstack></div>

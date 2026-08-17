@@ -208,9 +208,7 @@ private func questionsFragmentResponse(
     answered: false,
     userID: userID
   )
-  return conn.writeStatus(.ok).respondFragment(
-    scope: "#\(OfficeHourQuestionsList.elementID)"
-  ) {
+  return conn.writeStatus(.ok).respondFragment {
     OfficeHourQuestionsList(questions: questions)
   }
 }

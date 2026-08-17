@@ -582,6 +582,7 @@ private struct QuestionsSection: HTML {
       }
 
       OfficeHourQuestionsList(questions: questions)
+      QuestionsScript()
     }
     .inlineStyle("margin", "0 auto")
     .inlineStyle("max-width", "768px")
@@ -590,7 +591,7 @@ private struct QuestionsSection: HTML {
 }
 
 public struct OfficeHourQuestionsList: HTML {
-  public static let elementID = "office-hours-questions"
+  fileprivate static let elementID = "office-hours-questions"
 
   let questions: [Models.OfficeHourQuestion]
 
@@ -614,25 +615,34 @@ public struct OfficeHourQuestionsList: HTML {
     }
     .attribute("id", Self.elementID)
     .inlineStyle("width", "100%")
+  }
+}
 
+private struct QuestionsScript: HTML {
+  var body: some HTML {
     script {
       #"""
       document.addEventListener("submit", async (event) => {
         const form = event.target;
-        if (!form.hasAttribute("data-questions-form")) { return; }
-        if (event.defaultPrevented) { return; }
+        if (!form.hasAttribute("data-questions-form")) { 
+          return; 
+        }
+        if (event.defaultPrevented) { 
+          return; 
+        }
         event.preventDefault();
         try {
           const response = await fetch(form.action, { method: "POST" });
-          if (!response.ok) { throw new Error(response.status); }
+          if (!response.ok) { 
+            throw new Error(response.status); 
+          }
           const list = document.getElementById("\#(OfficeHourQuestionsList.elementID)");
-          if (!list) { throw new Error("missing questions list"); }
-          const template = document.createElement("template");
-          template.innerHTML = await response.text();
-          list.replaceWith(template.content);
-          const newList = document.getElementById("\#(OfficeHourQuestionsList.elementID)");
-          if (newList && window.Prism) {
-            Prism.highlightAllUnder(newList);
+          if (!list) { 
+            throw new Error("missing questions element"); 
+          }
+          list.innerHTML = await response.text();
+          if (window.Prism) {
+            Prism.highlightAllUnder(list);
           }
         } catch (error) {
           location.reload();

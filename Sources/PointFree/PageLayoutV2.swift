@@ -38,18 +38,13 @@ extension Conn where Step == HeadersOpen {
 }
 
 extension Conn where Step == HeadersOpen {
-  func respondFragment<V: HTML>(
-    scope: String? = nil,
-    @HTMLBuilder view: () -> V
-  ) -> Conn<ResponseEnded, Data> {
+  func respondFragment<V: HTML>(@HTMLBuilder view: () -> V) -> Conn<ResponseEnded, Data> {
     @Dependency(\.htmlPrinter) var htmlPrinter
     var printer = htmlPrinter
     V._render(view(), into: &printer)
-    let stylesheet =
-      scope.map { "@scope (\($0)){\(printer.stylesheet)}" }
-      ?? printer.stylesheet
-    var body = Data("<style>\(stylesheet)</style>".utf8)
+    var body = Data("<div><style>@scope{\(printer.stylesheet)}</style>".utf8)
     body.append(contentsOf: printer.bytes)
+    body.append(contentsOf: Data("</div>".utf8))
     return respond(body: body, contentType: .html)
   }
 }
