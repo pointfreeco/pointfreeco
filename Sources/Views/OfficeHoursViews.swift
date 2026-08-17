@@ -60,14 +60,8 @@ public struct OfficeHoursIndex: HTML {
     }
 
     if let liveOfficeHour {
-      if subscriberState.isMaxSubscriber, !liveOfficeHour.youtubeVideoID.isEmpty {
+      if subscriberState.canWatch(liveOfficeHour), !liveOfficeHour.youtubeVideoID.isEmpty {
         OfficeHoursLiveEmbeds(officeHour: liveOfficeHour)
-      } else if subscriberState.isMaxSubscriber {
-        OfficeHourVideoNotice(
-          notice: "🔴 We are live right now!",
-          title: liveOfficeHour.title,
-          description: liveOfficeHour.description
-        )
       } else {
         OfficeHourVideoNotice(
           notice: "🔴 We are live right now!",
@@ -119,15 +113,26 @@ public struct OfficeHourDetail: HTML {
   }
 
   var subtitle: String {
-    """
-    Office Hours • \
-    \(headerDateFormatter.string(from: officeHour.scheduledAt ?? officeHour.createdAt))
-    """
+    let access =
+      switch officeHour.access {
+      case .free: "Free for everyone"
+      case .pro: "Free for subscribers"
+      case .max: "Max subscribers only"
+      }
+    return """
+      Office Hours • \
+      \(headerDateFormatter.string(from: officeHour.scheduledAt ?? officeHour.createdAt)) • \
+      \(access)
+      """
+  }
+
+  var canWatch: Bool {
+    subscriberState.canWatch(officeHour)
   }
 
   public var body: some HTML {
     if let cloudflareVideoID = officeHour.cloudflareVideoID {
-      if subscriberState.isMaxSubscriber {
+      if canWatch {
         VideoHeader(
           title: officeHour.title,
           subtitle: subtitle,
@@ -137,15 +142,23 @@ public struct OfficeHourDetail: HTML {
           progress: nil,
           trackProgress: false
         )
+        if officeHour.access != .max, !subscriberState.isMaxSubscriber {
+          SneakPeekCallout(access: officeHour.access)
+        }
       } else {
         LockedOfficeHourHeader(officeHour: officeHour, subtitle: subtitle)
-        MaxSubscriberCallout()
+        switch officeHour.access {
+        case .free, .pro:
+          ProSubscriberCallout()
+        case .max:
+          MaxSubscriberCallout()
+        }
       }
 
       if !questions.isEmpty {
         AnsweredQuestionsModule(
           questions: questions,
-          isViewable: subscriberState.isMaxSubscriber
+          isViewable: canWatch
         )
       }
 
@@ -153,7 +166,7 @@ public struct OfficeHourDetail: HTML {
         OfficeHourTranscriptModule(
           transcript: transcript,
           questions: questions,
-          isViewable: subscriberState.isMaxSubscriber
+          isViewable: canWatch
         )
       }
     }
@@ -209,7 +222,14 @@ private struct LockedOfficeHourHeader: HTML {
                 .inlineStyle("font-size", "2rem")
 
               Header(4) {
-                "This video is for Max subscribers"
+                switch officeHour.access {
+                case .free:
+                  "This video is free for everyone"
+                case .pro:
+                  "This video is for Point-Free subscribers"
+                case .max:
+                  "This video is for Max subscribers"
+                }
               }
               .color(.white)
               .inlineStyle("text-align", "center")
@@ -455,6 +475,14 @@ private struct PastOfficeHourRow: HTML {
             )
             if let duration = officeHour.duration {
               " • \(duration.formatted())"
+            }
+            switch officeHour.access {
+            case .free:
+              " • Free for everyone"
+            case .pro:
+              " • Free for subscribers"
+            case .max:
+              HTMLEmpty()
             }
           }
           .fontStyle(.body(.small))
@@ -951,6 +979,98 @@ private struct OfficeHourVideoNotice: HTML {
     .backgroundColor(.black)
     .inlineStyle("padding", "2rem 2rem 4rem")
     .inlineStyle("padding", "2rem 3rem 4rem", media: .desktop)
+  }
+}
+
+private struct SneakPeekCallout: HTML {
+  let access: Models.OfficeHour.Access
+
+  @Dependency(\.currentRoute) var currentRoute
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    CenterColumn {
+      VStack {
+        div {
+          HStack(spacing: 0.5) {
+            SVG(base64: unlockSvgBase64, description: "Free")
+            switch access {
+            case .free:
+              "This session is free for everyone."
+            case .pro:
+              "This session is free for all Point-Free subscribers."
+            case .max:
+              HTMLEmpty()
+            }
+          }
+          .inlineStyle("justify-content", "center")
+        }
+        .backgroundColor(.gray900.dark(.gray150))
+        .fontStyle(.body(.small))
+        .inlineStyle("border-bottom", "1px solid #ccc")
+        .inlineStyle("border-bottom", "1px solid #555", media: .dark)
+        .inlineStyle("font-weight", "600")
+        .inlineStyle("line-height", "3")
+
+        VStack(spacing: 0.5) {
+          Header(4) {
+            "Get Point-Free Max"
+          }
+          .color(.offBlack.dark(.offWhite))
+
+          Paragraph {
+            """
+            Catch every office hours session live, watch the full archive, and submit and \
+            vote on the questions we answer, when you become a Max subscriber.
+            """
+          }
+          .inlineStyle("margin-bottom", "1rem")
+          .inlineStyle("text-wrap", "balance")
+
+          VStack(alignment: .center, spacing: 0.5) {
+            Button(color: .purple) {
+              "See plans and pricing"
+            }
+            .attribute("href", siteRouter.path(for: .pricingLanding))
+
+            if currentUser == nil {
+              span {
+                "Already a member? "
+                Link("Log in", href: siteRouter.loginPath(redirect: currentRoute))
+              }
+            }
+          }
+          .fontStyle(.body(.small))
+        }
+        .inlineStyle("padding", "1rem 2rem 2rem")
+      }
+      .linkColor(.purple)
+      .color(.gray650.dark(.gray500))
+      .inlineStyle("border", "1px solid #ccc")
+      .inlineStyle("border", "1px solid #555", media: .dark)
+      .inlineStyle("border-radius", "6px")
+      .inlineStyle("margin", "0 auto 3rem")
+      .inlineStyle("max-width", "768px")
+      .inlineStyle("overflow", "hidden")
+      .inlineStyle("text-align", "center")
+    }
+  }
+}
+
+private struct ProSubscriberCallout: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    CalloutModule(
+      title: "Free for Point-Free subscribers",
+      subtitle: """
+        This office hours session is available to all Point-Free subscribers. Join today to \
+        watch it, plus get access to all of our videos.
+        """,
+      ctaTitle: "See plans and pricing",
+      ctaURL: siteRouter.path(for: .pricingLanding)
+    )
   }
 }
 

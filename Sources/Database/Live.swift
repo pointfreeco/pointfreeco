@@ -1137,6 +1137,8 @@ extension Client {
           """
           CREATE TABLE IF NOT EXISTS "office_hours" (
             "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "access" character varying NOT NULL DEFAULT 'max'
+              CHECK ("access" IN ('free', 'pro', 'max')),
             "blurb" character varying NOT NULL DEFAULT '',
             "cloudflare_video_id" character varying UNIQUE,
             "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,

@@ -5,6 +5,7 @@ import TaggedTime
 
 public struct OfficeHour: Codable, Identifiable {
   public let id: Tagged<Self, UUID>
+  public let access: Access
   public let blurb: String
   public let cloudflareVideoID: Cloudflare.Video.ID?
   public let createdAt: Date
@@ -19,6 +20,7 @@ public struct OfficeHour: Codable, Identifiable {
 
   public init(
     id: ID,
+    access: Access = .max,
     blurb: String = "",
     cloudflareVideoID: Cloudflare.Video.ID? = nil,
     createdAt: Date = Date(timeIntervalSince1970: 0),
@@ -32,6 +34,7 @@ public struct OfficeHour: Codable, Identifiable {
     youtubeVideoID: String = ""
   ) {
     self.id = id
+    self.access = access
     self.blurb = blurb
     self.cloudflareVideoID = cloudflareVideoID
     self.createdAt = createdAt
@@ -49,8 +52,15 @@ public struct OfficeHour: Codable, Identifiable {
     cloudflareVideoID != nil
   }
 
+  public enum Access: String, Codable {
+    case free
+    case pro
+    case max
+  }
+
   public enum CodingKeys: String, CodingKey {
     case id
+    case access
     case blurb
     case cloudflareVideoID = "cloudflare_video_id"
     case createdAt = "created_at"
@@ -62,5 +72,15 @@ public struct OfficeHour: Codable, Identifiable {
     case title
     case transcript
     case youtubeVideoID = "youtube_video_id"
+  }
+}
+
+extension SubscriberState {
+  public func canWatch(_ officeHour: OfficeHour) -> Bool {
+    switch officeHour.access {
+    case .free: true
+    case .pro: isActiveSubscriber
+    case .max: isMaxSubscriber
+    }
   }
 }
