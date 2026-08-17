@@ -8,7 +8,7 @@ extension BlogPost {
       where we answer your questions in a smaller, more casual setting. Submit questions ahead \
       of time, vote on what we should cover, and join us for our first session.
       """,
-    coverImage: nil,
+    coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/201401ab-857a-4425-60cf-165480d8db00/public",
     hidden: .no,
     hideFromSlackRSS: false,
     id: 223,
