@@ -1231,7 +1231,6 @@ extension Client {
         )
         try await pool.sqlDatabase.run(
           """
-          WITH "deleted" AS (DELETE FROM "episode_search")
           INSERT INTO "episode_search"
           ("episode_sequence", "published_at", "section_title", "timestamp", "timestamp_markers",
             "content", "kind", "search_vector")
