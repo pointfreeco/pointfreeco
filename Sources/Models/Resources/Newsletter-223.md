@@ -1,5 +1,6 @@
-We are excited to announce [Office Hours][office-hours], a new benefit exclusively for 
-[Point-Free Max][pricing] subscribers, and our very first session is coming up soon!
+We are excited to announce [Office Hours][office-hours], a new feature exclusive to 
+[Point-Free Max][pricing] members giving them more direct access to us, and our very first
+session is coming up soon!
 
 ## What are office hours?
 
@@ -26,10 +27,10 @@ we discussed it.
 
 ## Join us
 
-If you're already a Max subscriber, there's nothing more to do: [submit a 
+If you're already a Max member, there's nothing more to do: [submit a 
 question][office-hours-qa] and we'll see you at the first session!
 
-And if you're not yet a Max subscriber, [upgrade today][pricing] to join office hours, get 
+And if you're not yet a Max member, [become one today][pricing] to join office hours, get 
 early access to our [private betas][beta-preview], and more.
 
 [office-hours]: /office-hours
