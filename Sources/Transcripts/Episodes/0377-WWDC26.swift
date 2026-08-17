@@ -11,7 +11,7 @@ extension Episode {
     codeSampleDirectory: "0377-wwdc26-pt8",
     exercises: _exercises,
     id: 377,
-    length: 56 * 60 + 45,
+    length: 56 * 60 + 55,
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2026-08-17")!,
     references: [
@@ -38,7 +38,7 @@ extension Episode {
         hd720: "0377-trailer-1080p-9487f35c961d45fc9f473e2d3d06d265",
         sd540: "0377-trailer-1080p-9487f35c961d45fc9f473e2d3d06d265"
       ),
-      id: "6f1e032226a60f7831dc997050eadd1e"
+      id: "0e06a8038c7b33eb603936cc42be3172"
     )
   )
 }
