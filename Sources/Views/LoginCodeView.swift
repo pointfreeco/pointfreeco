@@ -58,7 +58,10 @@ public struct LoginCodeView: HTML {
           if (event.inputType === "insertText" || event.inputType === "insertCompositionText") {
             return;
           }
-          if (codeInput.value.trim().length === 6) codeInput.form.requestSubmit();
+          if (codeInput.value.trim().length === 6) {
+            codeInput.form.requestSubmit();
+            codeInput.form.querySelector('*[type="submit"]').disabled = true
+          }
         });
         """#
       }
