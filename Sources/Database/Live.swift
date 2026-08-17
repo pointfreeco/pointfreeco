@@ -1146,6 +1146,7 @@ extension Client {
             "poster_url" character varying NOT NULL DEFAULT '',
             "scheduled_at" timestamp with time zone,
             "title" character varying NOT NULL DEFAULT '',
+            "transcript" character varying,
             "updated_at" timestamp without time zone,
             "youtube_video_id" character varying NOT NULL DEFAULT ''
           )

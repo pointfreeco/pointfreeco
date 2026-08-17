@@ -148,6 +148,14 @@ public struct OfficeHourDetail: HTML {
           isViewable: subscriberState.isMaxSubscriber
         )
       }
+
+      if let transcript = officeHour.transcript, !transcript.isEmpty {
+        OfficeHourTranscriptModule(
+          transcript: transcript,
+          questions: questions,
+          isViewable: subscriberState.isMaxSubscriber
+        )
+      }
     }
   }
 }
@@ -1044,7 +1052,7 @@ private struct OfficeHoursChatEmbed: HTML {
   }
 }
 
-private func timestampLabel(seconds: Seconds<Int>) -> String {
+func timestampLabel(seconds: Seconds<Int>) -> String {
   let total = seconds.rawValue
   let hours = total / 3600
   let minutes = (total % 3600) / 60
