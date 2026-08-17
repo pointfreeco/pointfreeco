@@ -78,7 +78,7 @@ private struct NonSubscriberHeader: HTML {
         .inlineStyle("padding", "0")
         Paragraph(.small) {
           """
-          Point-Free Max subscribers can join private betas for projects we're actively \
+          Point-Free Max members can join private betas for projects we're actively \
           developing and help shape them before public release.
           """
         }

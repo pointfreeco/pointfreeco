@@ -54,7 +54,7 @@ public struct OfficeHoursIndex: HTML {
   public var body: some HTML {
     PageHeader(title: "Office Hours") {
       """
-      Periodic livestreams exclusively for Point-Free Max subscribers. Bring us your \
+      Periodic livestreams exclusively for Point-Free Max members. Bring us your \
       questions about our episodes and libraries and we will discuss them live on the air.
       """
     }
@@ -116,8 +116,8 @@ public struct OfficeHourDetail: HTML {
     let access =
       switch officeHour.access {
       case .free: "Free for everyone"
-      case .pro: "Free for subscribers"
-      case .max: "Max subscribers only"
+      case .pro: "Members only"
+      case .max: "Max members only"
       }
     return """
       Office Hours • \
@@ -226,9 +226,9 @@ private struct LockedOfficeHourHeader: HTML {
                 case .free:
                   "This video is free for everyone"
                 case .pro:
-                  "This video is for Point-Free subscribers"
+                  "This video is for Point-Free members"
                 case .max:
-                  "This video is for Max subscribers"
+                  "This video is for Max members"
                 }
               }
               .color(.white)
@@ -480,7 +480,7 @@ private struct PastOfficeHourRow: HTML {
             case .free:
               " • Free for everyone"
             case .pro:
-              " • Free for subscribers"
+              " • Free for members"
             case .max:
               HTMLEmpty()
             }
@@ -574,7 +574,7 @@ private struct QuestionsSection: HTML {
       } else {
         Paragraph(.small) {
             """
-            Submitting and voting on questions is exclusive to Point-Free Max subscribers.
+            Submitting and voting on questions is exclusive to Point-Free Max members.
             """
         }
         .color(.gray400.dark(.gray650))
@@ -1009,7 +1009,7 @@ private struct SneakPeekCallout: HTML {
             case .free:
               "This session is free for everyone."
             case .pro:
-              "This session is free for all Point-Free subscribers."
+              "This session is free for all Point-Free members."
             case .max:
               HTMLEmpty()
             }
@@ -1032,7 +1032,7 @@ private struct SneakPeekCallout: HTML {
           Paragraph {
             """
             Catch every office hours session live, watch the full archive, and submit and \
-            vote on the questions we answer, when you become a Max subscriber.
+            vote on the questions we answer, when you become a Max member.
             """
           }
           .inlineStyle("margin-bottom", "1rem")
@@ -1073,9 +1073,9 @@ private struct ProSubscriberCallout: HTML {
 
   var body: some HTML {
     CalloutModule(
-      title: "Free for Point-Free subscribers",
+      title: "Free for Point-Free members",
       subtitle: """
-        This office hours session is available to all Point-Free subscribers. Join today to \
+        This office hours session is available to all Point-Free members. Join today to \
         watch it, plus get access to all of our videos.
         """,
       ctaTitle: "See plans and pricing",
@@ -1090,14 +1090,12 @@ private struct MaxSubscriberCallout: HTML {
 
   var body: some HTML {
     CalloutModule(
-      title: "Exclusively for Max subscribers",
+      title: "Exclusively for Max members",
       subtitle: """
-        Join our live office hours and watch the full archive of past sessions by upgrading \
-        to Point-Free Max.
+        Join our live office hours and watch the full archive of past sessions by becoming a \
+        Point-Free Max member.
         """,
-      ctaTitle: subscriberState.isActiveSubscriber
-        ? "Upgrade to Point-Free Max"
-        : "Subscribe to Point-Free Max",
+      ctaTitle: "Become a Max member",
       ctaURL: siteRouter.path(for: subscriberState.subscribeToMaxRoute)
     )
   }

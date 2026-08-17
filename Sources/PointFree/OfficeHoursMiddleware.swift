@@ -92,7 +92,7 @@ private func officeHoursIndexMiddleware(
       .respondV2(
         layoutData: SimplePageLayoutData(
           description: """
-            Periodic livestreams exclusively for Point-Free Max subscribers.
+            Periodic livestreams exclusively for Point-Free Max members.
             """,
           title: "Point-Free Office Hours",
           usePrismJs: true
