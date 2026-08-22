@@ -27,8 +27,12 @@ func officeHoursMiddleware(
       let officeHour = try await database.fetchOfficeHour(cloudflareVideoID: cloudflareVideoID)
       return await officeHourMiddleware(officeHour: officeHour, conn: conn.map(const(())))
 
-    case let .index(tab):
-      return await officeHoursIndexMiddleware(tab: tab, conn: conn.map(const(())))
+    case let .index(tab, questionsSort):
+      return await officeHoursIndexMiddleware(
+        tab: tab,
+        questionsSort: questionsSort ?? .mostVotes,
+        conn: conn.map(const(()))
+      )
 
     case let .submitQuestion(question):
       return await submitQuestionMiddleware(question: question, conn: conn.map(const(())))
@@ -71,6 +75,7 @@ private func officeHourMiddleware(
 
 private func officeHoursIndexMiddleware(
   tab: OfficeHoursRoute.Tab,
+  questionsSort: OfficeHoursRoute.QuestionsSort,
   conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.currentUser) var currentUser
@@ -81,10 +86,25 @@ private func officeHoursIndexMiddleware(
       answered: false,
       userID: currentUser?.id
     )
-    let answeredQuestions = try await database.fetchOfficeHourQuestions(
-      answered: true,
-      userID: currentUser?.id
+    let answeredQuestions = Dictionary(
+      grouping: try await database.fetchOfficeHourQuestions(
+        answered: true,
+        userID: currentUser?.id
+      )
+      .filter { $0.answeredOfficeHourID != nil },
+      by: { $0.answeredOfficeHourID! }
     )
+
+    guard conn.request.value(forHTTPHeaderField: "X-Fragment") != "past-questions"
+    else {
+      return conn.writeStatus(.ok).respondFragment {
+        OfficeHourPastQuestionsList(
+          officeHours: officeHours,
+          answeredQuestions: answeredQuestions,
+          sort: questionsSort
+        )
+      }
+    }
 
     return
       conn
@@ -101,11 +121,9 @@ private func officeHoursIndexMiddleware(
         OfficeHoursIndex(
           officeHours: officeHours,
           selectedTab: tab,
+          questionsSort: questionsSort,
           unansweredQuestions: unansweredQuestions,
-          answeredQuestions: Dictionary(
-            grouping: answeredQuestions.filter { $0.answeredOfficeHourID != nil },
-            by: { $0.answeredOfficeHourID! }
-          )
+          answeredQuestions: answeredQuestions
         )
       }
   } catch {

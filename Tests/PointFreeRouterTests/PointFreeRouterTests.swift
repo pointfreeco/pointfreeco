@@ -393,6 +393,26 @@ class PointFreeRouterTests: TestCase {
   }
 
   @MainActor
+  func testOfficeHoursPastQuestionsTab() async throws {
+    let request = URLRequest(
+      url: .init(string: "http://localhost:8080/office-hours/past-questions")!
+    )
+    let route = SiteRoute.officeHours(.index(tab: .pastQuestions))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursPastQuestionsSort() async throws {
+    let request = URLRequest(
+      url: .init(string: "http://localhost:8080/office-hours/past-questions?sort=most-recent")!
+    )
+    let route = SiteRoute.officeHours(.index(tab: .pastQuestions, questionsSort: .mostRecent))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
   func testOfficeHoursSubmitQuestion() async throws {
     var request = URLRequest(
       url: .init(string: "http://localhost:8080/office-hours/questions")!

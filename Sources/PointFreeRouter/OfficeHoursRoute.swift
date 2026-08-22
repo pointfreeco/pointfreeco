@@ -5,14 +5,20 @@ import URLRouting
 
 public enum OfficeHoursRoute: Equatable {
   case deleteQuestion(id: OfficeHourQuestion.ID)
-  case index(tab: Tab = .pastOfficeHours)
+  case index(tab: Tab = .pastOfficeHours, questionsSort: QuestionsSort? = nil)
   case officeHour(cloudflareVideoID: Cloudflare.Video.ID)
   case submitQuestion(question: String)
   case voteQuestion(id: OfficeHourQuestion.ID)
 
-  public enum Tab: Equatable {
+  public enum Tab: CaseIterable, Equatable {
     case pastOfficeHours
     case qa
+    case pastQuestions
+  }
+
+  public enum QuestionsSort: String, CaseIterable, Equatable {
+    case mostVotes = "most-votes"
+    case mostRecent = "most-recent"
   }
 }
 
@@ -44,11 +50,19 @@ struct OfficeHoursRouter: ParserPrinter {
           "delete"
         }
       }
-      Route(.case(OfficeHoursRoute.index(tab:))) {
+      Route(.case(OfficeHoursRoute.index(tab:questionsSort:))) {
         OneOf {
           Route(.case(OfficeHoursRoute.Tab.pastOfficeHours))
           Route(.case(OfficeHoursRoute.Tab.qa)) {
             Path { "qa" }
+          }
+          Route(.case(OfficeHoursRoute.Tab.pastQuestions)) {
+            Path { "past-questions" }
+          }
+        }
+        Query {
+          Optionally {
+            Field("sort") { OfficeHoursRoute.QuestionsSort.parser() }
           }
         }
       }

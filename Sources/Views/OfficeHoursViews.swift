@@ -12,6 +12,7 @@ import TaggedTime
 public struct OfficeHoursIndex: HTML {
   let officeHours: [Models.OfficeHour]
   let selectedTab: OfficeHoursRoute.Tab
+  let questionsSort: OfficeHoursRoute.QuestionsSort
   let unansweredQuestions: [Models.OfficeHourQuestion]
   let answeredQuestions: [Models.OfficeHour.ID: [Models.OfficeHourQuestion]]
 
@@ -21,11 +22,13 @@ public struct OfficeHoursIndex: HTML {
   public init(
     officeHours: [Models.OfficeHour],
     selectedTab: OfficeHoursRoute.Tab = .pastOfficeHours,
+    questionsSort: OfficeHoursRoute.QuestionsSort = .mostVotes,
     unansweredQuestions: [Models.OfficeHourQuestion] = [],
     answeredQuestions: [Models.OfficeHour.ID: [Models.OfficeHourQuestion]] = [:]
   ) {
     self.officeHours = officeHours
     self.selectedTab = selectedTab
+    self.questionsSort = questionsSort
     self.unansweredQuestions = unansweredQuestions
     self.answeredQuestions = answeredQuestions
   }
@@ -94,6 +97,8 @@ public struct OfficeHoursIndex: HTML {
 
     OfficeHoursTabs(
       selectedTab: selectedTab,
+      questionsSort: questionsSort,
+      officeHours: officeHours,
       pastOfficeHours: pastOfficeHours,
       unansweredQuestions: unansweredQuestions,
       answeredQuestions: answeredQuestions
@@ -300,70 +305,102 @@ private struct AnsweredQuestionsModule: HTML {
   }
 }
 
-// MARK: - Tabs
-
-private let officeHoursPastTabInputID = "office-hours-tab-past"
-private let officeHoursQATabInputID = "office-hours-tab-qa"
 private let officeHoursTabsContentClass = "office-hours-tabs-content"
-private let qaTabCheckedSelector =
-  "#\(officeHoursQATabInputID):checked ~ .\(officeHoursTabsContentClass)"
+
+extension OfficeHoursRoute.Tab {
+  fileprivate var title: String {
+    switch self {
+    case .pastOfficeHours: "Past office hours"
+    case .qa: "Upcoming Questions"
+    case .pastQuestions: "Past Questions"
+    }
+  }
+
+  fileprivate var inputID: String {
+    switch self {
+    case .pastOfficeHours: "office-hours-tab-past"
+    case .qa: "office-hours-tab-qa"
+    case .pastQuestions: "office-hours-tab-past-questions"
+    }
+  }
+
+  fileprivate var checkedSelector: String {
+    "#\(inputID):checked ~ .\(officeHoursTabsContentClass)"
+  }
+}
 
 private struct OfficeHoursTabs: HTML {
   let selectedTab: OfficeHoursRoute.Tab
+  let questionsSort: OfficeHoursRoute.QuestionsSort
+  let officeHours: [Models.OfficeHour]
   let pastOfficeHours: [Models.OfficeHour]
   let unansweredQuestions: [Models.OfficeHourQuestion]
   let answeredQuestions: [Models.OfficeHour.ID: [Models.OfficeHourQuestion]]
 
+  var visibleTabs: [OfficeHoursRoute.Tab] {
+    OfficeHoursRoute.Tab.allCases.filter { tab in
+      switch tab {
+      case .pastOfficeHours: !pastOfficeHours.isEmpty
+      case .qa: true
+      case .pastQuestions: answeredQuestions.values.contains { !$0.isEmpty }
+      }
+    }
+  }
+
+  var checkedTab: OfficeHoursRoute.Tab {
+    visibleTabs.contains(selectedTab) ? selectedTab : (visibleTabs.first ?? .qa)
+  }
+
   var body: some HTML {
     PageModule(theme: .content) {
       div {
-        input()
-          .attribute("id", officeHoursPastTabInputID)
-          .attribute("type", "radio")
-          .attribute("name", "office-hours-tab")
-          .attribute("checked", selectedTab == .pastOfficeHours ? "" : nil)
-          .inlineStyle("opacity", "0")
-          .inlineStyle("pointer-events", "none")
-          .inlineStyle("position", "absolute")
-
-        input()
-          .attribute("id", officeHoursQATabInputID)
-          .attribute("type", "radio")
-          .attribute("name", "office-hours-tab")
-          .attribute("checked", selectedTab == .qa ? "" : nil)
-          .inlineStyle("opacity", "0")
-          .inlineStyle("pointer-events", "none")
-          .inlineStyle("position", "absolute")
+        for tab in visibleTabs {
+          input()
+            .attribute("id", tab.inputID)
+            .attribute("type", "radio")
+            .attribute("name", "office-hours-tab")
+            .attribute("checked", checkedTab == tab ? "" : nil)
+            .inlineStyle("opacity", "0")
+            .inlineStyle("pointer-events", "none")
+            .inlineStyle("position", "absolute")
+        }
 
         div {
-          HStack(alignment: .center, spacing: 0.25) {
-            TabLabel(
-              title: "Past office hours",
-              inputID: officeHoursPastTabInputID,
-              isActiveWhenQAUnchecked: true
-            )
-            TabLabel(
-              title: "Upcoming Questions",
-              inputID: officeHoursQATabInputID,
-              isActiveWhenQAUnchecked: false
-            )
+          if visibleTabs.count > 1 {
+            HStack(alignment: .center, spacing: 0.25) {
+              for tab in visibleTabs {
+                TabLabel(tab: tab)
+              }
+            }
+            .inlineStyle("justify-content", "center")
+            .inlineStyle("margin-bottom", "3rem")
           }
-          .inlineStyle("justify-content", "center")
-          .inlineStyle("margin-bottom", "3rem")
 
-          div {
-            PastOfficeHoursList(
-              pastOfficeHours: pastOfficeHours,
-              answeredQuestions: answeredQuestions
-            )
+          if visibleTabs.contains(.pastOfficeHours) {
+            div {
+              PastOfficeHoursList(
+                pastOfficeHours: pastOfficeHours,
+                answeredQuestions: answeredQuestions
+              )
+            }
+            .tabContent(.pastOfficeHours)
           }
-          .inlineStyle("display", "none", pre: qaTabCheckedSelector)
 
           div {
             QuestionsSection(questions: unansweredQuestions)
           }
-          .inlineStyle("display", "none")
-          .inlineStyle("display", "block", pre: qaTabCheckedSelector)
+          .tabContent(.qa)
+
+          if visibleTabs.contains(.pastQuestions) {
+            div {
+              PastQuestionsSection(
+                officeHours: officeHours,
+                answeredQuestions: answeredQuestions,
+                sort: questionsSort
+              )
+            }
+            .tabContent(.pastQuestions)
+          }
         }
         .attribute("class", officeHoursTabsContentClass)
       }
@@ -372,40 +409,30 @@ private struct OfficeHoursTabs: HTML {
   }
 }
 
+extension HTML {
+  fileprivate func tabContent(_ tab: OfficeHoursRoute.Tab) -> some HTML {
+    self
+      .inlineStyle("display", "none")
+      .inlineStyle("display", "block", pre: tab.checkedSelector)
+  }
+}
+
 private struct TabLabel: HTML {
-  let title: String
-  let inputID: String
-  let isActiveWhenQAUnchecked: Bool
+  let tab: OfficeHoursRoute.Tab
 
   var body: some HTML {
-    let active = isActiveWhenQAUnchecked
-    label { HTMLText(title) }
-      .attribute("for", inputID)
-      .inlineStyle("background-color", active ? "#111" : "transparent")
-      .inlineStyle("background-color", active ? "#fff" : "transparent", media: .dark)
-      .inlineStyle(
-        "background-color",
-        active ? "transparent" : "#111",
-        pre: qaTabCheckedSelector
-      )
-      .inlineStyle(
-        "background-color",
-        active ? "transparent" : "#fff",
-        media: .dark,
-        pre: qaTabCheckedSelector
-      )
+    label { HTMLText(tab.title) }
+      .attribute("for", tab.inputID)
+      .inlineStyle("background-color", "transparent")
+      .inlineStyle("background-color", "#111", pre: tab.checkedSelector)
+      .inlineStyle("background-color", "#fff", media: .dark, pre: tab.checkedSelector)
       .inlineStyle("border", "1px solid #111")
       .inlineStyle("border", "1px solid #fff", media: .dark)
       .inlineStyle("border-radius", "999px")
-      .inlineStyle("color", active ? "#fff" : "#111")
-      .inlineStyle("color", active ? "#111" : "#fff", media: .dark)
-      .inlineStyle("color", active ? "#111" : "#fff", pre: qaTabCheckedSelector)
-      .inlineStyle(
-        "color",
-        active ? "#fff" : "#111",
-        media: .dark,
-        pre: qaTabCheckedSelector
-      )
+      .inlineStyle("color", "#111")
+      .inlineStyle("color", "#fff", media: .dark)
+      .inlineStyle("color", "#fff", pre: tab.checkedSelector)
+      .inlineStyle("color", "#111", media: .dark, pre: tab.checkedSelector)
       .inlineStyle("cursor", "pointer")
       .inlineStyle("font-size", "0.875rem")
       .inlineStyle("font-weight", "500")
@@ -413,7 +440,219 @@ private struct TabLabel: HTML {
   }
 }
 
-// MARK: - Past office hours
+private struct PastQuestionsSection: HTML {
+  let officeHours: [Models.OfficeHour]
+  let answeredQuestions: [Models.OfficeHour.ID: [Models.OfficeHourQuestion]]
+  let sort: OfficeHoursRoute.QuestionsSort
+
+  var body: some HTML {
+    VStack(spacing: 1) {
+      PastQuestionsSortForm(sort: sort)
+      OfficeHourPastQuestionsList(
+        officeHours: officeHours,
+        answeredQuestions: answeredQuestions,
+        sort: sort
+      )
+    }
+    .inlineStyle("margin", "0 auto")
+    .inlineStyle("max-width", "768px")
+    .inlineStyle("width", "100%")
+
+    PastQuestionsScript()
+  }
+}
+
+public struct OfficeHourPastQuestionsList: HTML {
+  fileprivate static let elementID = "office-hours-past-questions"
+
+  let officeHours: [Models.OfficeHour]
+  let answeredQuestions: [Models.OfficeHour.ID: [Models.OfficeHourQuestion]]
+  let sort: OfficeHoursRoute.QuestionsSort
+
+  public init(
+    officeHours: [Models.OfficeHour],
+    answeredQuestions: [Models.OfficeHour.ID: [Models.OfficeHourQuestion]],
+    sort: OfficeHoursRoute.QuestionsSort
+  ) {
+    self.officeHours = officeHours
+    self.answeredQuestions = answeredQuestions
+    self.sort = sort
+  }
+
+  var rows: [(question: Models.OfficeHourQuestion, officeHour: Models.OfficeHour)] {
+    let mostRecent = officeHours.flatMap { officeHour in
+      (answeredQuestions[officeHour.id] ?? [])
+        .sorted { ($0.answeredAtSeconds ?? 0) > ($1.answeredAtSeconds ?? 0) }
+        .map { (question: $0, officeHour: officeHour) }
+    }
+    switch sort {
+    case .mostRecent:
+      return mostRecent
+    case .mostVotes:
+      return mostRecent.sorted { $0.question.voteCount > $1.question.voteCount }
+    }
+  }
+
+  public var body: some HTML {
+    VStack(spacing: 1) {
+      if rows.isEmpty {
+        Paragraph {
+          "No questions have been answered yet. Check back after our next session!"
+        }
+        .color(.gray400.dark(.gray650))
+        .inlineStyle("text-align", "center")
+      } else {
+        for row in rows {
+          PastQuestionRow(question: row.question, officeHour: row.officeHour)
+        }
+      }
+    }
+    .attribute("id", Self.elementID)
+    .inlineStyle("width", "100%")
+  }
+}
+
+private struct PastQuestionsScript: HTML {
+  var body: some HTML {
+    script {
+      #"""
+      document.addEventListener("change", async (event) => {
+        const form = event.target.form;
+        if (!form || !form.hasAttribute("data-past-questions-form")) { return; }
+        const url = new URL(form.action, location.origin);
+        for (const [name, value] of new FormData(form)) {
+          if (value) url.searchParams.set(name, value);
+        }
+        try {
+          const response = await fetch(url, { headers: { "X-Fragment": "past-questions" } });
+          if (!response.ok) { throw new Error(response.status); }
+          const mount = document.getElementById("\#(OfficeHourPastQuestionsList.elementID)");
+          if (!mount) { throw new Error("missing past questions mount"); }
+          mount.innerHTML = await response.text();
+          if (window.Prism) {
+            Prism.highlightAllUnder(mount);
+          }
+          history.replaceState(null, "", url);
+        } catch (error) {
+          form.submit();
+        }
+      });
+      """#
+    }
+  }
+}
+
+private struct PastQuestionsSortForm: HTML {
+  let sort: OfficeHoursRoute.QuestionsSort
+
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    form {
+      label {
+        "Sort by "
+        PastQuestionsSortSelect(sort: sort)
+      }
+      .fontStyle(.body(.small))
+      .color(.gray400.dark(.gray650))
+    }
+    .attribute("action", siteRouter.path(for: .officeHours(.index(tab: .pastQuestions))))
+    .attribute("method", "get")
+    .attribute("data-past-questions-form", "")
+    .inlineStyle("align-self", "flex-end")
+  }
+}
+
+private struct PastQuestionsSortSelect: HTML {
+  let sort: OfficeHoursRoute.QuestionsSort
+
+  var body: some HTML {
+    select {
+      for option in OfficeHoursRoute.QuestionsSort.allCases {
+        PastQuestionsSortOption(option: option, isSelected: option == sort)
+      }
+    }
+    .attribute("name", "sort")
+    .attribute("aria-label", "Sort questions")
+    .fontStyle(.body(.small))
+    .color(.black.dark(.white))
+    .backgroundColor(.white.dark(.black))
+    .inlineStyle("appearance", "none")
+    .inlineStyle("-webkit-appearance", "none")
+    .inlineStyle("background-image", "url(\"\(chevronGlyphDataURI)\")")
+    .inlineStyle("background-position", "right 0.6rem center")
+    .inlineStyle("background-repeat", "no-repeat")
+    .inlineStyle("background-size", "1rem")
+    .inlineStyle("border", "1px solid #d8d8d8")
+    .inlineStyle("border", "1px solid #454545", media: .dark)
+    .inlineStyle("border-radius", "0.5rem")
+    .inlineStyle("cursor", "pointer")
+    .inlineStyle("font-weight", "500")
+    .inlineStyle("margin-left", "0.25rem")
+    .inlineStyle("padding", "0.5rem 2.25rem 0.5rem 0.875rem")
+  }
+}
+
+private struct PastQuestionsSortOption: HTML {
+  let option: OfficeHoursRoute.QuestionsSort
+  let isSelected: Bool
+
+  var body: some HTML {
+    tag("option") {
+      HTMLText(option.title)
+    }
+    .attribute("value", option.rawValue)
+    .attribute("selected", isSelected ? "" : nil)
+  }
+}
+
+extension OfficeHoursRoute.QuestionsSort {
+  fileprivate var title: String {
+    switch self {
+    case .mostVotes: "Most votes"
+    case .mostRecent: "Most recent"
+    }
+  }
+}
+
+private struct PastQuestionRow: HTML {
+  let question: Models.OfficeHourQuestion
+  let officeHour: Models.OfficeHour
+
+  @Dependency(\.siteRouter) var siteRouter
+
+  var body: some HTML {
+    VStack(spacing: 0.5) {
+      span {
+        "Answered in "
+        if let cloudflareVideoID = officeHour.cloudflareVideoID {
+          Link(href: detailPath(cloudflareVideoID: cloudflareVideoID)) {
+            HTMLText(officeHour.title)
+          }
+          .linkColor(.purple)
+        } else {
+          HTMLText(officeHour.title)
+        }
+        if let seconds = question.answeredAtSeconds {
+          " at \(timestampLabel(seconds: seconds))"
+        }
+      }
+      .fontStyle(.body(.small))
+      .color(.gray400.dark(.gray650))
+
+      ExpandableQuestionMarkdown(question: question)
+    }
+    .questionCard(isOwnQuestion: false)
+  }
+
+  func detailPath(cloudflareVideoID: Cloudflare.Video.ID) -> String {
+    let path = siteRouter.path(
+      for: .officeHours(.officeHour(cloudflareVideoID: cloudflareVideoID))
+    )
+    guard let seconds = question.answeredAtSeconds else { return path }
+    return "\(path)#t\(seconds.rawValue)"
+  }
+}
 
 private struct PastOfficeHoursList: HTML {
   let pastOfficeHours: [Models.OfficeHour]
@@ -560,8 +799,6 @@ private struct AnsweredQuestionsList: HTML {
     return "\(path)#t\(seconds.rawValue)"
   }
 }
-
-// MARK: - Q&A
 
 private struct QuestionsSection: HTML {
   let questions: [Models.OfficeHourQuestion]
@@ -940,8 +1177,6 @@ extension HTML {
       .inlineStyle("transition", "color 150ms ease, border-color 150ms ease")
   }
 }
-
-// MARK: - Shared components
 
 private struct OfficeHourVideoNotice: HTML {
   let notice: String
