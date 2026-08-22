@@ -369,6 +369,133 @@ class PointFreeRouterTests: TestCase {
   }
 
   @MainActor
+  func testOfficeHoursIndex() async throws {
+    let request = URLRequest(url: .init(string: "http://localhost:8080/office-hours")!)
+    let route = SiteRoute.officeHours()
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursDetail() async throws {
+    let request = URLRequest(url: .init(string: "http://localhost:8080/office-hours/deadbeef")!)
+    let route = SiteRoute.officeHours(.officeHour(cloudflareVideoID: "deadbeef"))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursOpenQuestionsTab() async throws {
+    let request = URLRequest(url: .init(string: "http://localhost:8080/office-hours/open-questions")!)
+    let route = SiteRoute.officeHours(.index(tab: .openQuestions))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursAnsweredQuestionsTab() async throws {
+    let request = URLRequest(
+      url: .init(string: "http://localhost:8080/office-hours/answered-questions")!
+    )
+    let route = SiteRoute.officeHours(.index(tab: .answeredQuestions))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursAnsweredQuestionsSort() async throws {
+    let request = URLRequest(
+      url: .init(string: "http://localhost:8080/office-hours/answered-questions?sort=most-recent")!
+    )
+    let route = SiteRoute.officeHours(.index(tab: .answeredQuestions, questionsSort: .mostRecent))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursOpenQuestionsSort() async throws {
+    let request = URLRequest(
+      url: .init(string: "http://localhost:8080/office-hours/open-questions?sort=most-recent")!
+    )
+    let route = SiteRoute.officeHours(.index(tab: .openQuestions, questionsSort: .mostRecent))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursVoteQuestionSort() async throws {
+    var request = URLRequest(
+      url: .init(
+        string:
+          "http://localhost:8080/office-hours/questions/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF/vote?sort=most-recent"
+      )!
+    )
+    request.httpMethod = "POST"
+
+    let route = SiteRoute.officeHours(
+      .voteQuestion(
+        id: .init(rawValue: UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!),
+        questionsSort: .mostRecent
+      )
+    )
+
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursSubmitQuestion() async throws {
+    var request = URLRequest(
+      url: .init(string: "http://localhost:8080/office-hours/questions")!
+    )
+    request.httpMethod = "POST"
+    request.httpBody = Data("question=How%20do%20I%20test%20async%20code%3F".utf8)
+
+    let route = SiteRoute.officeHours(.submitQuestion(question: "How do I test async code?"))
+
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursDeleteQuestion() async throws {
+    var request = URLRequest(
+      url: .init(
+        string:
+          "http://localhost:8080/office-hours/questions/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF/delete"
+      )!
+    )
+    request.httpMethod = "POST"
+
+    let route = SiteRoute.officeHours(
+      .deleteQuestion(
+        id: .init(rawValue: UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!)
+      )
+    )
+
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursVoteQuestion() async throws {
+    var request = URLRequest(
+      url: .init(
+        string:
+          "http://localhost:8080/office-hours/questions/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF/vote"
+      )!
+    )
+    request.httpMethod = "POST"
+
+    let route = SiteRoute.officeHours(
+      .voteQuestion(id: .init(rawValue: UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
+    )
+
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
   func testCollectionEpisodeProgress() async throws {
     var request = URLRequest(
       url: URL(string: "http://localhost:8080/collections/tca/basics/1/progress?percent=50")!

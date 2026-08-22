@@ -85,7 +85,7 @@ private func betasJoinMiddleware(
   }
   guard subscriberState.isMaxSubscriber else {
     return conn.redirect(to: .betas()) {
-      $0.flash(.error, "You must be a Point-Free Max subscriber to join betas.")
+      $0.flash(.error, "You must be a Point-Free Max member to join betas.")
     }
   }
   guard let beta = Beta.all.first(where: { $0.repo == repo }) else {

@@ -13,8 +13,10 @@ extension Client {
     createEnterpriseEmail: { _, _ in .mock },
     createFeedRequestEvent: { _, _, _ in },
     createGift: { _, _, _, _, _, _, _, _, _ in .unfulfilled },
+    createOfficeHourQuestion: { _, _ in throw unit },
     createSubscription: { _, _, _, _, _ in .mock },
     deleteEnterpriseEmail: { _ in },
+    deleteOfficeHourQuestion: { _, _ in },
     deleteTeamInvite: { _ in },
     deleteTheWayAccess: { _, _ in },
     execute: { _ in throw unit },
@@ -35,6 +37,9 @@ extension Client {
       [update(.unfulfilled) { $0.deliverAt = .init(timeIntervalSince1970: 1_234_567_890) }]
     },
     fetchLivestreams: { [] },
+    fetchOfficeHourByCloudflareVideoID: { _ in throw unit },
+    fetchOfficeHourQuestions: { _, _ in [] },
+    fetchOfficeHours: { [] },
     fetchSubscriptionById: { id in update(.mock) { $0.id = id } },
     fetchSubscriptionByOwnerId: { userId in update(.mock) { $0.userId = userId } },
     fetchSubscriptionByTeamInviteCode: { teamInviteCode in
@@ -80,6 +85,7 @@ extension Client {
     updateSubscriptionPlan: { _, _ in },
     updateUser: { _, _, _, _, _, _, _ in },
     upsertTheWayAccess: { $0 },
-    upsertUser: { _, _, _, _ in .mock }
+    upsertUser: { _, _, _, _ in .mock },
+    voteOfficeHourQuestion: { _, _ in }
   )
 }

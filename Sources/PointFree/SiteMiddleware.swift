@@ -272,6 +272,9 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
   case .live(let liveRoute):
     return await liveMiddleware(conn, route: liveRoute)
 
+  case .officeHours(let officeHoursRoute):
+    return await officeHoursMiddleware(conn.map(const(officeHoursRoute)))
+
   case .pricingLanding:
     return pricingMiddleware(conn)
 

@@ -43,6 +43,8 @@ public struct Client {
       _ toEmail: EmailAddress,
       _ toName: String
     ) async throws -> Gift
+  public var createOfficeHourQuestion:
+    (_ question: String, _ userID: Models.User.ID) async throws -> OfficeHourQuestion
   public var createSubscription:
     (
       _ subscription: Stripe.Subscription,
@@ -52,6 +54,8 @@ public struct Client {
       _ plan: Pricing.Plan
     ) async throws -> Models.Subscription
   public var deleteEnterpriseEmail: (_ userID: User.ID) async throws -> Void
+  public var deleteOfficeHourQuestion:
+    (_ id: OfficeHourQuestion.ID, _ userID: Models.User.ID) async throws -> Void
   public var deleteTeamInvite: (_ id: TeamInvite.ID) async throws -> Void
   public var deleteTheWayAccess: (_ machine: UUID, _ whoami: String) async throws -> Void
   public var execute: (_ sql: SQLQueryString) async throws -> [SQLRow]
@@ -84,6 +88,12 @@ public struct Client {
     (_ paymentIntentID: PaymentIntent.ID) async throws -> Gift
   public var fetchGiftsToDeliver: () async throws -> [Gift]
   public var fetchLivestreams: () async throws -> [Livestream]
+  @DependencyEndpoint(method: "fetchOfficeHour")
+  public var fetchOfficeHourByCloudflareVideoID:
+    (_ cloudflareVideoID: Cloudflare.Video.ID) async throws -> OfficeHour
+  public var fetchOfficeHourQuestions:
+    (_ answered: Bool, _ userID: Models.User.ID?) async throws -> [OfficeHourQuestion]
+  public var fetchOfficeHours: () async throws -> [OfficeHour]
   @DependencyEndpoint(method: "fetchSubscription")
   public var fetchSubscriptionById:
     (_ id: Models.Subscription.ID) async throws -> Models.Subscription
@@ -177,6 +187,8 @@ public struct Client {
       _ emailAddress: EmailAddress,
       _ date: @escaping () -> Date
     ) async throws -> Models.User
+  public var voteOfficeHourQuestion:
+    (_ questionID: OfficeHourQuestion.ID, _ userID: Models.User.ID) async throws -> Void
 
   public func searchEpisodes(query: String) async throws -> EpisodeSearchResults {
     try await self.searchEpisodes(query, nil, nil)

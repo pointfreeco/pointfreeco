@@ -41,7 +41,7 @@ public struct EpisodeCard: HTML {
           }
         }
 
-        HTMLMarkdown(episode.blurb)
+        HTMLMarkdown(trusted: episode.blurb)
           .color(.gray400.dark(.gray650))
           .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
       }
@@ -131,7 +131,7 @@ public struct ClipCard: HTML {
         .linkColor(.black.dark(.white))
       }
 
-      HTMLMarkdown(clip.blurb)
+      HTMLMarkdown(trusted: clip.blurb)
         .color(.gray400.dark(.gray650))
         .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
         .inlineStyle("margin-top", "1rem")
@@ -170,7 +170,7 @@ public struct CollectionCard: HTML {
   public var body: some HTML {
     Card {
       div {
-        HTMLMarkdown(collection.blurb)
+        HTMLMarkdown(trusted: collection.blurb)
       }
       .color(.gray400.dark(.gray650))
       .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
