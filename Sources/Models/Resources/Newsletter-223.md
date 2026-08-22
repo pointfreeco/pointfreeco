@@ -16,7 +16,7 @@ Every session is recorded, and the full archive of past sessions is available on
 ## Submitting and voting on questions
 
 We have also built a dedicated Q&A system to support office hours. Head over to the 
-[Q&A tab][office-hours-qa] on the office hours page, where Max members can:
+[Open questions tab][office-hours-open-questions] on the office hours page, where Max members can:
 
   * **Submit a question** for us to answer in an upcoming session. Markdown is fully supported and 
     questions are anonymous.
@@ -28,12 +28,12 @@ we discussed it.
 ## Join us
 
 If you're already a Max member, there's nothing more to do: [submit a 
-question][office-hours-qa] and we'll see you at the first session!
+question][office-hours-open-questions] and we'll see you at the first session!
 
 And if you're not yet a Max member, [become one today][pricing] to join office hours, get 
 early access to our [private betas][beta-preview], and more.
 
 [office-hours]: /office-hours
-[office-hours-qa]: /office-hours/qa
+[office-hours-open-questions]: /office-hours/open-questions
 [pricing]: /pricing
 [beta-preview]: /beta-previews

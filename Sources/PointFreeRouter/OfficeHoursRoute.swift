@@ -4,16 +4,16 @@ import Models
 import URLRouting
 
 public enum OfficeHoursRoute: Equatable {
-  case deleteQuestion(id: OfficeHourQuestion.ID)
-  case index(tab: Tab = .pastOfficeHours, questionsSort: QuestionsSort? = nil)
+  case deleteQuestion(id: OfficeHourQuestion.ID, questionsSort: QuestionsSort? = nil)
+  case index(tab: Tab = .recordings, questionsSort: QuestionsSort? = nil)
   case officeHour(cloudflareVideoID: Cloudflare.Video.ID)
   case submitQuestion(question: String)
-  case voteQuestion(id: OfficeHourQuestion.ID)
+  case voteQuestion(id: OfficeHourQuestion.ID, questionsSort: QuestionsSort? = nil)
 
   public enum Tab: CaseIterable, Equatable {
-    case pastOfficeHours
-    case qa
-    case pastQuestions
+    case recordings
+    case openQuestions
+    case answeredQuestions
   }
 
   public enum QuestionsSort: String, CaseIterable, Equatable {
@@ -23,6 +23,14 @@ public enum OfficeHoursRoute: Equatable {
 }
 
 struct OfficeHoursRouter: ParserPrinter {
+  private var questionsSortQuery: some ParserPrinter<URLRequestData, OfficeHoursRoute.QuestionsSort?> {
+    Query {
+      Optionally {
+        Field("sort") { OfficeHoursRoute.QuestionsSort.parser() }
+      }
+    }
+  }
+
   var body: some Router<OfficeHoursRoute> {
     OneOf {
       Route(.case(OfficeHoursRoute.submitQuestion(question:))) {
@@ -34,37 +42,35 @@ struct OfficeHoursRouter: ParserPrinter {
           }
         }
       }
-      Route(.case(OfficeHoursRoute.voteQuestion(id:))) {
+      Route(.case(OfficeHoursRoute.voteQuestion(id:questionsSort:))) {
         Method.post
         Path {
           "questions"
           UUID.parser().map(.representing(OfficeHourQuestion.ID.self))
           "vote"
         }
+        questionsSortQuery
       }
-      Route(.case(OfficeHoursRoute.deleteQuestion(id:))) {
+      Route(.case(OfficeHoursRoute.deleteQuestion(id:questionsSort:))) {
         Method.post
         Path {
           "questions"
           UUID.parser().map(.representing(OfficeHourQuestion.ID.self))
           "delete"
         }
+        questionsSortQuery
       }
       Route(.case(OfficeHoursRoute.index(tab:questionsSort:))) {
         OneOf {
-          Route(.case(OfficeHoursRoute.Tab.pastOfficeHours))
-          Route(.case(OfficeHoursRoute.Tab.qa)) {
-            Path { "qa" }
+          Route(.case(OfficeHoursRoute.Tab.recordings))
+          Route(.case(OfficeHoursRoute.Tab.openQuestions)) {
+            Path { "open-questions" }
           }
-          Route(.case(OfficeHoursRoute.Tab.pastQuestions)) {
-            Path { "past-questions" }
-          }
-        }
-        Query {
-          Optionally {
-            Field("sort") { OfficeHoursRoute.QuestionsSort.parser() }
+          Route(.case(OfficeHoursRoute.Tab.answeredQuestions)) {
+            Path { "answered-questions" }
           }
         }
+        questionsSortQuery
       }
       Route(.case(OfficeHoursRoute.officeHour(cloudflareVideoID:))) {
         Path {

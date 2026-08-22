@@ -385,29 +385,60 @@ class PointFreeRouterTests: TestCase {
   }
 
   @MainActor
-  func testOfficeHoursQATab() async throws {
-    let request = URLRequest(url: .init(string: "http://localhost:8080/office-hours/qa")!)
-    let route = SiteRoute.officeHours(.index(tab: .qa))
+  func testOfficeHoursOpenQuestionsTab() async throws {
+    let request = URLRequest(url: .init(string: "http://localhost:8080/office-hours/open-questions")!)
+    let route = SiteRoute.officeHours(.index(tab: .openQuestions))
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
   @MainActor
-  func testOfficeHoursPastQuestionsTab() async throws {
+  func testOfficeHoursAnsweredQuestionsTab() async throws {
     let request = URLRequest(
-      url: .init(string: "http://localhost:8080/office-hours/past-questions")!
+      url: .init(string: "http://localhost:8080/office-hours/answered-questions")!
     )
-    let route = SiteRoute.officeHours(.index(tab: .pastQuestions))
+    let route = SiteRoute.officeHours(.index(tab: .answeredQuestions))
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }
 
   @MainActor
-  func testOfficeHoursPastQuestionsSort() async throws {
+  func testOfficeHoursAnsweredQuestionsSort() async throws {
     let request = URLRequest(
-      url: .init(string: "http://localhost:8080/office-hours/past-questions?sort=most-recent")!
+      url: .init(string: "http://localhost:8080/office-hours/answered-questions?sort=most-recent")!
     )
-    let route = SiteRoute.officeHours(.index(tab: .pastQuestions, questionsSort: .mostRecent))
+    let route = SiteRoute.officeHours(.index(tab: .answeredQuestions, questionsSort: .mostRecent))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursOpenQuestionsSort() async throws {
+    let request = URLRequest(
+      url: .init(string: "http://localhost:8080/office-hours/open-questions?sort=most-recent")!
+    )
+    let route = SiteRoute.officeHours(.index(tab: .openQuestions, questionsSort: .mostRecent))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursVoteQuestionSort() async throws {
+    var request = URLRequest(
+      url: .init(
+        string:
+          "http://localhost:8080/office-hours/questions/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF/vote?sort=most-recent"
+      )!
+    )
+    request.httpMethod = "POST"
+
+    let route = SiteRoute.officeHours(
+      .voteQuestion(
+        id: .init(rawValue: UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!),
+        questionsSort: .mostRecent
+      )
+    )
+
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }

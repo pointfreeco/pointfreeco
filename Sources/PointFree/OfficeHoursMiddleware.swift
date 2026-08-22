@@ -20,8 +20,12 @@ func officeHoursMiddleware(
 
   do {
     switch conn.data {
-    case let .deleteQuestion(id):
-      return await deleteQuestionMiddleware(questionID: id, conn: conn.map(const(())))
+    case let .deleteQuestion(id, questionsSort):
+      return await deleteQuestionMiddleware(
+        questionID: id,
+        questionsSort: questionsSort ?? .mostVotes,
+        conn: conn.map(const(()))
+      )
 
     case let .officeHour(cloudflareVideoID: cloudflareVideoID):
       let officeHour = try await database.fetchOfficeHour(cloudflareVideoID: cloudflareVideoID)
@@ -37,8 +41,12 @@ func officeHoursMiddleware(
     case let .submitQuestion(question):
       return await submitQuestionMiddleware(question: question, conn: conn.map(const(())))
 
-    case let .voteQuestion(id):
-      return await voteQuestionMiddleware(questionID: id, conn: conn.map(const(())))
+    case let .voteQuestion(id, questionsSort):
+      return await voteQuestionMiddleware(
+        questionID: id,
+        questionsSort: questionsSort ?? .mostVotes,
+        conn: conn.map(const(()))
+      )
     }
   } catch {
     return routeNotFoundMiddleware(conn)
@@ -95,15 +103,21 @@ private func officeHoursIndexMiddleware(
       by: { $0.answeredOfficeHourID! }
     )
 
-    guard conn.request.value(forHTTPHeaderField: "X-Fragment") != "past-questions"
-    else {
+    switch conn.request.value(forHTTPHeaderField: "X-Fragment") {
+    case "open-questions":
       return conn.writeStatus(.ok).respondFragment {
-        OfficeHourPastQuestionsList(
+        OfficeHourOpenQuestionsList(questions: unansweredQuestions, sort: questionsSort)
+      }
+    case "answered-questions":
+      return conn.writeStatus(.ok).respondFragment {
+        OfficeHourAnsweredQuestionsList(
           officeHours: officeHours,
           answeredQuestions: answeredQuestions,
           sort: questionsSort
         )
       }
+    default:
+      break
     }
 
     return
@@ -143,18 +157,18 @@ private func submitQuestionMiddleware(
     return conn.loginAndRedirect()
   }
   guard subscriberState.isMaxSubscriber else {
-    return conn.redirect(to: .officeHours(.index(tab: .qa))) {
+    return conn.redirect(to: .officeHours(.index(tab: .openQuestions))) {
       $0.flash(.error, "You must be a Point-Free Max member to submit questions.")
     }
   }
   let question = question.trimmingCharacters(in: .whitespacesAndNewlines)
   guard !question.isEmpty else {
-    return conn.redirect(to: .officeHours(.index(tab: .qa))) {
+    return conn.redirect(to: .officeHours(.index(tab: .openQuestions))) {
       $0.flash(.error, "Please enter a question.")
     }
   }
   guard question.count <= 5000 else {
-    return conn.redirect(to: .officeHours(.index(tab: .qa))) {
+    return conn.redirect(to: .officeHours(.index(tab: .openQuestions))) {
       $0.flash(.error, "Questions must be 5,000 characters or fewer.")
     }
   }
@@ -164,11 +178,11 @@ private func submitQuestionMiddleware(
       question: question,
       userID: currentUser.id
     )
-    return conn.redirect(to: .officeHours(.index(tab: .qa))) {
+    return conn.redirect(to: .officeHours(.index(tab: .openQuestions))) {
       $0.flash(.notice, "Your question has been submitted!")
     }
   } catch {
-    return conn.redirect(to: .officeHours(.index(tab: .qa))) {
+    return conn.redirect(to: .officeHours(.index(tab: .openQuestions))) {
       $0.flash(.error, "Something went wrong. Please try again.")
     }
   }
@@ -176,6 +190,7 @@ private func submitQuestionMiddleware(
 
 private func deleteQuestionMiddleware(
   questionID: OfficeHourQuestion.ID,
+  questionsSort: OfficeHoursRoute.QuestionsSort,
   conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.currentUser) var currentUser
@@ -187,7 +202,7 @@ private func deleteQuestionMiddleware(
 
   do {
     try await database.deleteOfficeHourQuestion(id: questionID, userID: currentUser.id)
-    return try await questionsFragmentResponse(conn, userID: currentUser.id)
+    return try await questionsFragmentResponse(conn, userID: currentUser.id, sort: questionsSort)
   } catch {
     return conn.writeStatus(.internalServerError).respondFragment { HTMLEmpty() }
   }
@@ -195,6 +210,7 @@ private func deleteQuestionMiddleware(
 
 private func voteQuestionMiddleware(
   questionID: OfficeHourQuestion.ID,
+  questionsSort: OfficeHoursRoute.QuestionsSort,
   conn: Conn<StatusLineOpen, Void>
 ) async -> Conn<ResponseEnded, Data> {
   @Dependency(\.currentUser) var currentUser
@@ -210,7 +226,7 @@ private func voteQuestionMiddleware(
 
   do {
     try await database.voteOfficeHourQuestion(questionID: questionID, userID: currentUser.id)
-    return try await questionsFragmentResponse(conn, userID: currentUser.id)
+    return try await questionsFragmentResponse(conn, userID: currentUser.id, sort: questionsSort)
   } catch {
     return conn.writeStatus(.internalServerError).respondFragment { HTMLEmpty() }
   }
@@ -218,7 +234,8 @@ private func voteQuestionMiddleware(
 
 private func questionsFragmentResponse(
   _ conn: Conn<StatusLineOpen, Void>,
-  userID: Models.User.ID
+  userID: Models.User.ID,
+  sort: OfficeHoursRoute.QuestionsSort
 ) async throws -> Conn<ResponseEnded, Data> {
   @Dependency(\.database) var database
 
@@ -227,6 +244,6 @@ private func questionsFragmentResponse(
     userID: userID
   )
   return conn.writeStatus(.ok).respondFragment {
-    OfficeHourQuestionsList(questions: questions)
+    OfficeHourOpenQuestionsList(questions: questions, sort: sort)
   }
 }

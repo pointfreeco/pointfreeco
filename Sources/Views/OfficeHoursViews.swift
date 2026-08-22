@@ -21,7 +21,7 @@ public struct OfficeHoursIndex: HTML {
 
   public init(
     officeHours: [Models.OfficeHour],
-    selectedTab: OfficeHoursRoute.Tab = .pastOfficeHours,
+    selectedTab: OfficeHoursRoute.Tab = .recordings,
     questionsSort: OfficeHoursRoute.QuestionsSort = .mostVotes,
     unansweredQuestions: [Models.OfficeHourQuestion] = [],
     answeredQuestions: [Models.OfficeHour.ID: [Models.OfficeHourQuestion]] = [:]
@@ -50,8 +50,17 @@ public struct OfficeHoursIndex: HTML {
       .min { ($0.scheduledAt ?? .distantFuture) < ($1.scheduledAt ?? .distantFuture) }
   }
 
-  var pastOfficeHours: [Models.OfficeHour] {
+  var recordings: [Models.OfficeHour] {
     officeHours.filter(\.isArchived)
+  }
+
+  // The 'sort' query parameter applies to the tab in the path; the other tab keeps its default.
+  var openQuestionsSort: OfficeHoursRoute.QuestionsSort {
+    selectedTab == .openQuestions ? questionsSort : .mostVotes
+  }
+
+  var answeredQuestionsSort: OfficeHoursRoute.QuestionsSort {
+    selectedTab == .answeredQuestions ? questionsSort : .mostVotes
   }
 
   public var body: some HTML {
@@ -97,9 +106,10 @@ public struct OfficeHoursIndex: HTML {
 
     OfficeHoursTabs(
       selectedTab: selectedTab,
-      questionsSort: questionsSort,
+      openQuestionsSort: openQuestionsSort,
+      answeredQuestionsSort: answeredQuestionsSort,
       officeHours: officeHours,
-      pastOfficeHours: pastOfficeHours,
+      recordings: recordings,
       unansweredQuestions: unansweredQuestions,
       answeredQuestions: answeredQuestions
     )
@@ -310,18 +320,23 @@ private let officeHoursTabsContentClass = "office-hours-tabs-content"
 extension OfficeHoursRoute.Tab {
   fileprivate var title: String {
     switch self {
-    case .pastOfficeHours: "Past office hours"
-    case .qa: "Upcoming Questions"
-    case .pastQuestions: "Past Questions"
+    case .recordings: "Recordings"
+    case .openQuestions: "Open questions"
+    case .answeredQuestions: "Answered questions"
+    }
+  }
+
+  /// The tab's path segment, also used to name its fragment and mounting element.
+  fileprivate var slug: String {
+    switch self {
+    case .recordings: "recordings"
+    case .openQuestions: "open-questions"
+    case .answeredQuestions: "answered-questions"
     }
   }
 
   fileprivate var inputID: String {
-    switch self {
-    case .pastOfficeHours: "office-hours-tab-past"
-    case .qa: "office-hours-tab-qa"
-    case .pastQuestions: "office-hours-tab-past-questions"
-    }
+    "office-hours-tab-\(slug)"
   }
 
   fileprivate var checkedSelector: String {
@@ -331,24 +346,25 @@ extension OfficeHoursRoute.Tab {
 
 private struct OfficeHoursTabs: HTML {
   let selectedTab: OfficeHoursRoute.Tab
-  let questionsSort: OfficeHoursRoute.QuestionsSort
+  let openQuestionsSort: OfficeHoursRoute.QuestionsSort
+  let answeredQuestionsSort: OfficeHoursRoute.QuestionsSort
   let officeHours: [Models.OfficeHour]
-  let pastOfficeHours: [Models.OfficeHour]
+  let recordings: [Models.OfficeHour]
   let unansweredQuestions: [Models.OfficeHourQuestion]
   let answeredQuestions: [Models.OfficeHour.ID: [Models.OfficeHourQuestion]]
 
   var visibleTabs: [OfficeHoursRoute.Tab] {
     OfficeHoursRoute.Tab.allCases.filter { tab in
       switch tab {
-      case .pastOfficeHours: !pastOfficeHours.isEmpty
-      case .qa: true
-      case .pastQuestions: answeredQuestions.values.contains { !$0.isEmpty }
+      case .recordings: !recordings.isEmpty
+      case .openQuestions: true
+      case .answeredQuestions: answeredQuestions.values.contains { !$0.isEmpty }
       }
     }
   }
 
   var checkedTab: OfficeHoursRoute.Tab {
-    visibleTabs.contains(selectedTab) ? selectedTab : (visibleTabs.first ?? .qa)
+    visibleTabs.contains(selectedTab) ? selectedTab : (visibleTabs.first ?? .openQuestions)
   }
 
   var body: some HTML {
@@ -376,35 +392,37 @@ private struct OfficeHoursTabs: HTML {
             .inlineStyle("margin-bottom", "3rem")
           }
 
-          if visibleTabs.contains(.pastOfficeHours) {
+          if visibleTabs.contains(.recordings) {
             div {
-              PastOfficeHoursList(
-                pastOfficeHours: pastOfficeHours,
+              RecordingsList(
+                recordings: recordings,
                 answeredQuestions: answeredQuestions
               )
             }
-            .tabContent(.pastOfficeHours)
+            .tabContent(.recordings)
           }
 
           div {
-            QuestionsSection(questions: unansweredQuestions)
+            OpenQuestionsSection(questions: unansweredQuestions, sort: openQuestionsSort)
           }
-          .tabContent(.qa)
+          .tabContent(.openQuestions)
 
-          if visibleTabs.contains(.pastQuestions) {
+          if visibleTabs.contains(.answeredQuestions) {
             div {
-              PastQuestionsSection(
+              AnsweredQuestionsSection(
                 officeHours: officeHours,
                 answeredQuestions: answeredQuestions,
-                sort: questionsSort
+                sort: answeredQuestionsSort
               )
             }
-            .tabContent(.pastQuestions)
+            .tabContent(.answeredQuestions)
           }
         }
         .attribute("class", officeHoursTabsContentClass)
       }
       .inlineStyle("width", "100%")
+
+      QuestionsSortScript()
     }
   }
 }
@@ -440,15 +458,15 @@ private struct TabLabel: HTML {
   }
 }
 
-private struct PastQuestionsSection: HTML {
+private struct AnsweredQuestionsSection: HTML {
   let officeHours: [Models.OfficeHour]
   let answeredQuestions: [Models.OfficeHour.ID: [Models.OfficeHourQuestion]]
   let sort: OfficeHoursRoute.QuestionsSort
 
   var body: some HTML {
     VStack(spacing: 1) {
-      PastQuestionsSortForm(sort: sort)
-      OfficeHourPastQuestionsList(
+      QuestionsSortForm(tab: .answeredQuestions, sort: sort)
+      OfficeHourAnsweredQuestionsList(
         officeHours: officeHours,
         answeredQuestions: answeredQuestions,
         sort: sort
@@ -457,13 +475,11 @@ private struct PastQuestionsSection: HTML {
     .inlineStyle("margin", "0 auto")
     .inlineStyle("max-width", "768px")
     .inlineStyle("width", "100%")
-
-    PastQuestionsScript()
   }
 }
 
-public struct OfficeHourPastQuestionsList: HTML {
-  fileprivate static let elementID = "office-hours-past-questions"
+public struct OfficeHourAnsweredQuestionsList: HTML {
+  fileprivate static let elementID = "office-hours-answered-questions"
 
   let officeHours: [Models.OfficeHour]
   let answeredQuestions: [Models.OfficeHour.ID: [Models.OfficeHourQuestion]]
@@ -503,7 +519,7 @@ public struct OfficeHourPastQuestionsList: HTML {
         .inlineStyle("text-align", "center")
       } else {
         for row in rows {
-          PastQuestionRow(question: row.question, officeHour: row.officeHour)
+          AnsweredQuestionRow(question: row.question, officeHour: row.officeHour)
         }
       }
     }
@@ -512,22 +528,23 @@ public struct OfficeHourPastQuestionsList: HTML {
   }
 }
 
-private struct PastQuestionsScript: HTML {
+private struct QuestionsSortScript: HTML {
   var body: some HTML {
     script {
       #"""
       document.addEventListener("change", async (event) => {
         const form = event.target.form;
-        if (!form || !form.hasAttribute("data-past-questions-form")) { return; }
+        if (!form || !form.hasAttribute("data-questions-sort-form")) { return; }
+        const fragment = form.getAttribute("data-questions-sort-form");
         const url = new URL(form.action, location.origin);
         for (const [name, value] of new FormData(form)) {
           if (value) url.searchParams.set(name, value);
         }
         try {
-          const response = await fetch(url, { headers: { "X-Fragment": "past-questions" } });
+          const response = await fetch(url, { headers: { "X-Fragment": fragment } });
           if (!response.ok) { throw new Error(response.status); }
-          const mount = document.getElementById("\#(OfficeHourPastQuestionsList.elementID)");
-          if (!mount) { throw new Error("missing past questions mount"); }
+          const mount = document.getElementById("office-hours-" + fragment);
+          if (!mount) { throw new Error("missing questions mount"); }
           mount.innerHTML = await response.text();
           if (window.Prism) {
             Prism.highlightAllUnder(mount);
@@ -542,7 +559,8 @@ private struct PastQuestionsScript: HTML {
   }
 }
 
-private struct PastQuestionsSortForm: HTML {
+private struct QuestionsSortForm: HTML {
+  let tab: OfficeHoursRoute.Tab
   let sort: OfficeHoursRoute.QuestionsSort
 
   @Dependency(\.siteRouter) var siteRouter
@@ -551,25 +569,25 @@ private struct PastQuestionsSortForm: HTML {
     form {
       label {
         "Sort by "
-        PastQuestionsSortSelect(sort: sort)
+        QuestionsSortSelect(sort: sort)
       }
       .fontStyle(.body(.small))
       .color(.gray400.dark(.gray650))
     }
-    .attribute("action", siteRouter.path(for: .officeHours(.index(tab: .pastQuestions))))
+    .attribute("action", siteRouter.path(for: .officeHours(.index(tab: tab))))
     .attribute("method", "get")
-    .attribute("data-past-questions-form", "")
+    .attribute("data-questions-sort-form", tab.slug)
     .inlineStyle("align-self", "flex-end")
   }
 }
 
-private struct PastQuestionsSortSelect: HTML {
+private struct QuestionsSortSelect: HTML {
   let sort: OfficeHoursRoute.QuestionsSort
 
   var body: some HTML {
     select {
       for option in OfficeHoursRoute.QuestionsSort.allCases {
-        PastQuestionsSortOption(option: option, isSelected: option == sort)
+        QuestionsSortOption(option: option, isSelected: option == sort)
       }
     }
     .attribute("name", "sort")
@@ -593,7 +611,7 @@ private struct PastQuestionsSortSelect: HTML {
   }
 }
 
-private struct PastQuestionsSortOption: HTML {
+private struct QuestionsSortOption: HTML {
   let option: OfficeHoursRoute.QuestionsSort
   let isSelected: Bool
 
@@ -615,7 +633,7 @@ extension OfficeHoursRoute.QuestionsSort {
   }
 }
 
-private struct PastQuestionRow: HTML {
+private struct AnsweredQuestionRow: HTML {
   let question: Models.OfficeHourQuestion
   let officeHour: Models.OfficeHour
 
@@ -654,21 +672,21 @@ private struct PastQuestionRow: HTML {
   }
 }
 
-private struct PastOfficeHoursList: HTML {
-  let pastOfficeHours: [Models.OfficeHour]
+private struct RecordingsList: HTML {
+  let recordings: [Models.OfficeHour]
   let answeredQuestions: [Models.OfficeHour.ID: [Models.OfficeHourQuestion]]
 
   var body: some HTML {
-    if pastOfficeHours.isEmpty {
+    if recordings.isEmpty {
       Paragraph {
-        "No past office hours yet. The archive will grow after our first session!"
+        "No recordings yet. The archive will grow after our first session!"
       }
       .color(.gray400.dark(.gray650))
       .inlineStyle("text-align", "center")
     } else {
       VStack(spacing: 3) {
-        HTMLForEach(pastOfficeHours) { officeHour in
-          PastOfficeHourRow(
+        HTMLForEach(recordings) { officeHour in
+          RecordingRow(
             officeHour: officeHour,
             questions: answeredQuestions[officeHour.id] ?? []
           )
@@ -679,7 +697,7 @@ private struct PastOfficeHoursList: HTML {
   }
 }
 
-private struct PastOfficeHourRow: HTML {
+private struct RecordingRow: HTML {
   let officeHour: Models.OfficeHour
   let questions: [Models.OfficeHourQuestion]
 
@@ -800,8 +818,9 @@ private struct AnsweredQuestionsList: HTML {
   }
 }
 
-private struct QuestionsSection: HTML {
+private struct OpenQuestionsSection: HTML {
   let questions: [Models.OfficeHourQuestion]
+  let sort: OfficeHoursRoute.QuestionsSort
 
   @Dependency(\.subscriberState) var subscriberState
 
@@ -819,8 +838,11 @@ private struct QuestionsSection: HTML {
         .inlineStyle("text-align", "center")
       }
 
-      OfficeHourQuestionsList(questions: questions)
-      QuestionsScript()
+      if !questions.isEmpty {
+        QuestionsSortForm(tab: .openQuestions, sort: sort)
+      }
+      OfficeHourOpenQuestionsList(questions: questions, sort: sort)
+      OpenQuestionsScript()
     }
     .inlineStyle("margin", "0 auto")
     .inlineStyle("max-width", "768px")
@@ -828,13 +850,26 @@ private struct QuestionsSection: HTML {
   }
 }
 
-public struct OfficeHourQuestionsList: HTML {
-  fileprivate static let elementID = "office-hours-questions"
+public struct OfficeHourOpenQuestionsList: HTML {
+  fileprivate static let elementID = "office-hours-open-questions"
 
   let questions: [Models.OfficeHourQuestion]
+  let sort: OfficeHoursRoute.QuestionsSort
 
-  public init(questions: [Models.OfficeHourQuestion]) {
+  public init(questions: [Models.OfficeHourQuestion], sort: OfficeHoursRoute.QuestionsSort) {
     self.questions = questions
+    self.sort = sort
+  }
+
+  var sortedQuestions: [Models.OfficeHourQuestion] {
+    let mostRecent = questions.sorted { $0.createdAt > $1.createdAt }
+    switch sort {
+    case .mostRecent:
+      return mostRecent
+    case .mostVotes:
+      // A stable sort, so ties fall back to most recent.
+      return mostRecent.sorted { $0.voteCount > $1.voteCount }
+    }
   }
 
   public var body: some HTML {
@@ -846,7 +881,7 @@ public struct OfficeHourQuestionsList: HTML {
         .color(.gray400.dark(.gray650))
         .inlineStyle("text-align", "center")
       } else {
-        HTMLForEach(questions) { question in
+        HTMLForEach(sortedQuestions) { question in
           QuestionRow(question: question)
         }
       }
@@ -856,25 +891,31 @@ public struct OfficeHourQuestionsList: HTML {
   }
 }
 
-private struct QuestionsScript: HTML {
+private struct OpenQuestionsScript: HTML {
   var body: some HTML {
     script {
       #"""
       document.addEventListener("submit", async (event) => {
         const form = event.target;
-        if (!form.hasAttribute("data-questions-form")) { 
+        if (!form.hasAttribute("data-open-questions-form")) { 
           return; 
         }
         if (event.defaultPrevented) { 
           return; 
         }
         event.preventDefault();
+        // Carry the list's current sort so the re-rendered list keeps it.
+        const url = new URL(form.action, location.origin);
+        const sortSelect = document.querySelector(
+          '[data-questions-sort-form="open-questions"] select[name="sort"]'
+        );
+        if (sortSelect) { url.searchParams.set("sort", sortSelect.value); }
         try {
-          const response = await fetch(form.action, { method: "POST" });
+          const response = await fetch(url, { method: "POST" });
           if (!response.ok) { 
             throw new Error(response.status); 
           }
-          const list = document.getElementById("\#(OfficeHourQuestionsList.elementID)");
+          const list = document.getElementById("\#(OfficeHourOpenQuestionsList.elementID)");
           if (!list) { 
             throw new Error("missing questions element"); 
           }
@@ -1062,7 +1103,7 @@ private struct DeleteQuestionButton: HTML {
       siteRouter.path(for: .officeHours(.deleteQuestion(id: questionID)))
     )
     .attribute("method", "post")
-    .attribute("data-questions-form", "")
+    .attribute("data-open-questions-form", "")
     .attribute("onsubmit", "return confirm(\"Delete this question?\")")
   }
 }
@@ -1126,7 +1167,7 @@ private struct VoteControl: HTML {
         siteRouter.path(for: .officeHours(.voteQuestion(id: question.id)))
       )
       .attribute("method", "post")
-      .attribute("data-questions-form", "")
+      .attribute("data-open-questions-form", "")
     } else if question.hasVoted {
       span {
         VotePillContent(voteCount: question.voteCount)
