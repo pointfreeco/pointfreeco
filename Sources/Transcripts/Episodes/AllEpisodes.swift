@@ -380,5 +380,6 @@ extension Episode {
     .ep375_wwdc26,
     .ep376_wwdc26,
     .ep377_wwdc26,
+    .ep378_wwdc26,
   ]
 }
