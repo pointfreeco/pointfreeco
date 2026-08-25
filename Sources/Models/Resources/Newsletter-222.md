@@ -7,9 +7,10 @@ This is a problem that Apple explicitly decided not to solve, and their recommen
 leaks complexity into every view that needs it. We think the problem deserves a solution, and it 
 turns out the tools to build it have been hiding in plain sight for a few years.
 
-We are covering all of the details in [this week's episode][ep378], but here's the gist.
+We covered all of the details in our [last] [two] episodes, but here's the gist.
 
-[ep378]: TODO
+[last]: /episodes/ep378-wwdc26-the-state-macro
+[two]: /episodes/ep379-wwdc26-the-lazystate-macro
 
 ## What is fixed by the @State macro
 
@@ -90,11 +91,11 @@ This "fixes" the laziness problem, but introduces all new problems:
 
 That is a lot of complexity leaked into a view just to create some dynamic state.
 
-## Introducing @LazyState
+## Introducing `@LazyState`
 
 It turns out that the `@State` macro's laziness is powered by a type called `LazyState` that has
-been a public (though hidden and undocumented) type in SwiftUI since iOS 17 (that is why the new 
-`@State` macro back-deploys to iOS 17). And unlike `@State`, it is perfectly fine to create a 
+been public (though hidden and undocumented) in SwiftUI since iOS 17, which is how the new 
+`@State` macro back-deploys to older platforms. And unlike `@State`, it is perfectly fine to create a 
 `LazyState` in a view's initializer. In fact, this is exactly what the `@State` macro itself does 
 under the hood if you expand the macro code and remove the superfluous details.
 
@@ -113,7 +114,7 @@ struct LocationSearchSheet: View {
 
 The model is created lazily, exactly once per view lifetime, using data handed to the view from
 the outside. No optionals, no `onAppear`, no stashed-away `region` property, and no unstructured
-`Binding(get:set:)`. You can even derive bindings the normal way, via `$completer`, just as you
+`Binding(get:set:)`. You can even derive bindings the normal way, _via_ `$completer`, just as you
 would with `@State`.
 
 ## Cleaning up Apple's WWDC demo
@@ -186,7 +187,7 @@ ad hoc bindings with `Binding.init(get:set:)`.
 This code is simpler, easier to read, and minimizes the number of choices we have to make for
 handling optional data.
 
-## @LazyState is vanilla SwiftUI
+## `@LazyState` is vanilla SwiftUI
 
 We want to stress that our library does not employ any shenanigans, private APIs, or fragile
 trickery to accomplish this. The `@LazyState` macro works exactly like the `@State` macro, except
@@ -216,7 +217,11 @@ lifecycles work, and this behavior is the same with the `onAppear` pattern that 
 `@LazyState` is available _today_ as a [Beta Preview](/beta-previews), exclusively for
 [Point-Free Max](/pricing) members. Join the beta with a single click and you will receive a GitHub
 invitation to the private repo, where you can pull the library into your projects, open issues,
-and help shape the API before it goes public.
+and help shape its APIs before it goes public.
 
 And if you want to see the full story of how we discovered `LazyState` by dissecting the guts of
-the new `@State` macro, be sure to watch [this week's episode][ep378].
+the new `@State` macro, be sure to watch our [last] [two] episodes.
+
+[last]: /episodes/ep378-wwdc26-the-state-macro
+[two]: /episodes/ep379-wwdc26-the-lazystate-macro
+
