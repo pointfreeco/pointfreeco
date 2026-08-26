@@ -1,7 +1,7 @@
 import Foundation
 
 extension BlogPost {
-  public static let post0223_firstOfficeHours = Self(
+  public static let post0224_firstOfficeHours = Self(
     author: .pointfree,
     blurb: """
       Introducing Office Hours: periodic livestreams exclusively for Point-Free Max members \
@@ -11,7 +11,7 @@ extension BlogPost {
     coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/201401ab-857a-4425-60cf-165480d8db00/public",
     hidden: .no,
     hideFromSlackRSS: false,
-    id: 223,
+    id: 224,
     publishedAt: yearMonthDayFormatter.date(from: "2026-09-02")!,
     title: "Office Hours: live Q&A for Max members"
   )

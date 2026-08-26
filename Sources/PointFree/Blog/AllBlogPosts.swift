@@ -239,6 +239,6 @@ extension BlogPost {
     .post0220_structuredQueriesJSON,
     .post0221_emailLogin,
     .post0222_search,
-    .post0223_firstOfficeHours,
+    .post0224_firstOfficeHours,
   ]
 }

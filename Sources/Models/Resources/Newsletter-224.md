@@ -28,10 +28,9 @@ we discussed it.
 ## Join us
 
 If you're already a Max member, there's nothing more to do: [submit a 
-question][office-hours-open-questions] and we'll see you at the first session!
-
-And if you're not yet a Max member, [become one today][pricing] to join office hours, get 
-early access to our [private betas][beta-preview], and more.
+question][office-hours-open-questions] and we'll see you at the first session! And if you're not 
+yet a Max member, [become one today][pricing] to join office hours, get early access to our 
+[private betas][beta-preview], and more.
 
 [office-hours]: /office-hours
 [office-hours-open-questions]: /office-hours/open-questions
