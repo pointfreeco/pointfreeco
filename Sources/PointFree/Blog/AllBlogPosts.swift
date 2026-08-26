@@ -237,6 +237,6 @@ extension BlogPost {
     .post0218_xcode27Support,
     .post0219_sqliteDataSectioning,
     .post0220_structuredQueriesJSON,
-    .post0222_lazyState,
+    .post0223_lazyState,
   ]
 }
