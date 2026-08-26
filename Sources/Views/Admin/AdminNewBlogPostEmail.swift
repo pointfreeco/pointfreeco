@@ -13,6 +13,14 @@ public struct AdminNewBlogPostEmailView: HTML {
   }
 
   public var body: some HTML {
+    style {
+      """
+      form:has(input[name="\(NewBlogPostFormData.CodingKeys.subscriberDeliver.rawValue)"]:checked) \
+      label:has(input[name="\(NewBlogPostFormData.CodingKeys.maxSubscriberDeliver.rawValue)"]) {
+        display: none;
+      }
+      """
+    }
     PageModule(title: "Send new blog post email", theme: .content) {
       VStack(alignment: .leading, spacing: 2) {
         HTMLForEach(posts) { post in
@@ -28,6 +36,17 @@ public struct AdminNewBlogPostEmailView: HTML {
                     .attribute("checked", "")
                   " Send to members"
                 }
+
+                label {
+                  input()
+                    .attribute("type", "checkbox")
+                    .attribute(
+                      "name", NewBlogPostFormData.CodingKeys.maxSubscriberDeliver.rawValue
+                    )
+                    .attribute("value", "true")
+                  " Send to Max members only"
+                }
+                .inlineStyle("margin-left", "1.5rem")
 
                 textarea { "" }
                   .attribute("name", NewBlogPostFormData.CodingKeys.subscriberAnnouncement.rawValue)

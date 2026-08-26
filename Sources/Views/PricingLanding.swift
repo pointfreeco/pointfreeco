@@ -169,7 +169,7 @@ public struct PricingLanding: HTML {
               SavingsBadge(Pricing.proTeamSavingsFeature)
             } features: {
               for feature in proFeatures {
-                li { HTMLMarkdown(feature) }
+                li { HTMLMarkdown(trusted: feature) }
               }
             } callToAction: {
               if subscriberState.isNonSubscriber {
@@ -217,7 +217,7 @@ public struct PricingLanding: HTML {
               SavingsBadge(Pricing.maxTeamSavingsFeature)
             } features: {
               for feature in maxFeatures {
-                li { HTMLMarkdown(feature) }
+                li { HTMLMarkdown(trusted: feature) }
               }
             } callToAction: {
               if subscriberState.isNonSubscriber {
@@ -365,7 +365,7 @@ private struct SavingsBadge: HTML {
     self.text = text
   }
   var body: some HTML {
-    span { HTMLMarkdown(text) }
+    span { HTMLMarkdown(trusted: text) }
       .inlineStyle("background-color", "rgba(121, 80, 242, 0.1)")
       .inlineStyle("background-color", "rgba(161, 128, 255, 0.15)", media: .dark)
       .inlineStyle("border-radius", "999px")

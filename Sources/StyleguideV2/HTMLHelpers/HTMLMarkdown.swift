@@ -24,16 +24,34 @@ public struct HTMLMarkdown: HTML {
   public let tableOfContents: [Section]
   public let content: AnyHTML
 
-  public init(_ markdown: String, previewOnly: Bool = false) {
+  public init(trusted markdown: String, previewOnly: Bool = false) {
+    self.init(markdown, previewOnly: previewOnly, isTrusted: true)
+  }
+
+  public init(untrusted markdown: String, previewOnly: Bool = false) {
+    self.init(markdown, previewOnly: previewOnly, isTrusted: false)
+  }
+
+  private init(_ markdown: String, previewOnly: Bool, isTrusted: Bool) {
     self.markdown = markdown
     self.previewOnly = previewOnly
-    var converter = HTMLConverter(previewOnly: previewOnly)
+    var converter = HTMLConverter(previewOnly: previewOnly, isTrusted: isTrusted)
     self.content = converter.visit(Document(parsing: markdown, options: .parseBlockDirectives))
     self.tableOfContents = converter.tableOfContents
   }
 
   public init(previewOnly: Bool = false, @StringBuilder _ markdown: () -> String) {
-    self.init(markdown(), previewOnly: previewOnly)
+    self.init(trusted: markdown(), previewOnly: previewOnly)
+  }
+
+  public static func plainText(_ markdown: String, limit: Int? = nil) -> String {
+    var renderer = PlainTextRenderer(limit: limit)
+    renderer.visit(Document(parsing: markdown))
+    var text = renderer.text.trimmingCharacters(in: .whitespacesAndNewlines)
+    if let limit, text.count > limit {
+      text = String(text.prefix(limit))
+    }
+    return text
   }
 
   public var body: some HTML {
@@ -62,13 +80,97 @@ public struct HTMLMarkdown: HTML {
   }
 }
 
+private struct PlainTextRenderer: MarkupWalker {
+  let limit: Int?
+  var text = ""
+
+  private var isFull: Bool {
+    limit.map { text.count >= $0 } ?? false
+  }
+
+  private mutating func append(_ string: String) {
+    guard !isFull else { return }
+    text += string
+  }
+
+  private mutating func separate() {
+    if let last = text.last, last != " " {
+      append(" ")
+    }
+  }
+
+  mutating func visitText(_ node: Markdown.Text) {
+    append(node.string)
+  }
+
+  mutating func visitInlineCode(_ node: Markdown.InlineCode) {
+    append(node.code)
+  }
+
+  mutating func visitSoftBreak(_ node: Markdown.SoftBreak) {
+    append(" ")
+  }
+
+  mutating func visitLineBreak(_ node: Markdown.LineBreak) {
+    append(" ")
+  }
+
+  mutating func visitInlineHTML(_ node: Markdown.InlineHTML) {
+    append(node.rawHTML)
+  }
+
+  mutating func visitHTMLBlock(_ node: Markdown.HTMLBlock) {
+    guard !isFull else { return }
+    separate()
+    append(flattened(node.rawHTML))
+    separate()
+  }
+
+  mutating func visitCodeBlock(_ node: Markdown.CodeBlock) {
+    guard !isFull else { return }
+    separate()
+    append(flattened(node.code))
+    separate()
+  }
+
+  private func flattened(_ block: String) -> String {
+    block
+      .split(separator: "\n")
+      .map { $0.trimmingCharacters(in: .whitespaces) }
+      .joined(separator: " ")
+  }
+
+  mutating func visitParagraph(_ node: Markdown.Paragraph) {
+    guard !isFull else { return }
+    separate()
+    descendInto(node)
+    separate()
+  }
+
+  mutating func visitHeading(_ node: Markdown.Heading) {
+    guard !isFull else { return }
+    separate()
+    descendInto(node)
+    separate()
+  }
+
+  mutating func visitListItem(_ node: Markdown.ListItem) {
+    guard !isFull else { return }
+    separate()
+    descendInto(node)
+    separate()
+  }
+}
+
 private struct HTMLConverter: MarkupVisitor {
   typealias Result = AnyHTML
 
   let previewOnly: Bool
+  let isTrusted: Bool
 
-  init(previewOnly: Bool) {
+  init(previewOnly: Bool, isTrusted: Bool = false) {
     self.previewOnly = previewOnly
+    self.isTrusted = isTrusted
   }
 
   private var currentTimestamp: Timestamp?
@@ -272,12 +374,16 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitHTMLBlock(_ html: Markdown.HTMLBlock) -> AnyHTML {
-    HTMLRaw(html.rawHTML)
+    if isTrusted {
+      HTMLRaw(html.rawHTML)
+    } else {
+      HTMLText(html.rawHTML)
+    }
   }
 
   @HTMLBuilder
   mutating func visitImage(_ image: Markdown.Image) -> AnyHTML {
-    if let source = image.source {
+    if let source = image.source, isTrusted {
       VStack(alignment: .center) {
         Link(href: source) {
           Image(source: source, description: image.title ?? "")
@@ -285,6 +391,8 @@ private struct HTMLConverter: MarkupVisitor {
             .inlineStyle("border-radius", "6px")
         }
       }
+    } else if !isTrusted {
+      HTMLText(image.plainText)
     }
   }
 
@@ -297,7 +405,11 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitInlineHTML(_ inlineHTML: Markdown.InlineHTML) -> AnyHTML {
-    HTMLRaw(inlineHTML.rawHTML)
+    if isTrusted {
+      HTMLRaw(inlineHTML.rawHTML)
+    } else {
+      HTMLText(inlineHTML.rawHTML)
+    }
   }
 
   @HTMLBuilder
@@ -307,12 +419,18 @@ private struct HTMLConverter: MarkupVisitor {
 
   @HTMLBuilder
   mutating func visitLink(_ link: Markdown.Link) -> AnyHTML {
-    Link(href: link.destination ?? "#") {
+    if isTrusted {
+      Link(href: link.destination ?? "#") {
+        for child in link.children {
+          visit(child)
+        }
+      }
+      .attribute("title", link.title)
+    } else {
       for child in link.children {
         visit(child)
       }
     }
-    .attribute("title", link.title)
   }
 
   @HTMLBuilder

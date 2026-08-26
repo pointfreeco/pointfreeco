@@ -42,8 +42,9 @@ extension Conn where Step == HeadersOpen {
     @Dependency(\.htmlPrinter) var htmlPrinter
     var printer = htmlPrinter
     V._render(view(), into: &printer)
-    var body = Data("<style>\(printer.stylesheet)</style>".utf8)
+    var body = Data("<div><style>@scope{\(printer.stylesheet)}</style>".utf8)
     body.append(contentsOf: printer.bytes)
+    body.append(contentsOf: Data("</div>".utf8))
     return respond(body: body, contentType: .html)
   }
 }

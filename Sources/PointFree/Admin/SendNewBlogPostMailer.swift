@@ -46,21 +46,36 @@ private func sendNewBlogPostEmails(
 
   guard let formData else { return }
 
-  let nonsubscriberOrSubscribersOnly: Models.User.SubscriberState?
-  switch (formData.nonsubscriberDeliver, formData.subscriberDeliver) {
-  case (true, true):
-    nonsubscriberOrSubscribersOnly = nil
-  case (true, _):
-    nonsubscriberOrSubscribersOnly = .nonSubscriber
-  case (_, true):
-    nonsubscriberOrSubscribersOnly = .subscriber
-  case (_, _):
+  let audiences: [Models.User.SubscriberState?]
+  switch (
+    formData.nonsubscriberDeliver, formData.subscriberDeliver, formData.maxSubscriberDeliver
+  ) {
+  case (true, true, _):
+    audiences = [nil]
+  case (true, false, true):
+    audiences = [.nonSubscriber, .maxSubscriber]
+  case (true, false, false):
+    audiences = [.nonSubscriber]
+  case (false, true, _):
+    audiences = [.subscriber]
+  case (false, false, true):
+    audiences = [.maxSubscriber]
+  case (false, false, false):
     return
   }
 
-  let users = try await isTest
-    ? database.fetchAdmins()
-    : database.fetchUsersSubscribedToNewsletter(.newBlogPost, nonsubscriberOrSubscribersOnly)
+  let users: [User]
+  if isTest {
+    users = try await database.fetchAdmins()
+  } else {
+    var audienceUsers: [User] = []
+    for audience in audiences {
+      audienceUsers += try await database.fetchUsersSubscribedToNewsletter(
+        .newBlogPost, audience
+      )
+    }
+    users = audienceUsers
+  }
 
   let subjectPrefix = isTest ? "[TEST] " : ""
   var failedUsers: [User] = []

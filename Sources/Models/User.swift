@@ -101,6 +101,7 @@ public struct User: Decodable, Equatable, Identifiable {
   }
 
   public enum SubscriberState {
+    case maxSubscriber
     case nonSubscriber
     case subscriber
   }

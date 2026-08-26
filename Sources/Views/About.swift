@@ -13,7 +13,7 @@ public struct AboutView: HTML {
     HTMLGroup {
       PageHeader(title: "About") {
         HTMLMarkdown(
-          """
+          trusted: """
           Point-Free is a hub for advanced Swift programming. It includes advice from industry \
           experts, a collection of battle-tested \
           [open-source tools](https://github.com/pointfreeco), advanced [AI skills](/the-way), \
@@ -24,7 +24,7 @@ public struct AboutView: HTML {
 
       PageModule(theme: .content) {
         HTMLMarkdown(
-          """
+          trusted: """
           # Your hosts
 
           Brandon and Stephen are industry experts living in Texas and California. They
@@ -65,7 +65,7 @@ public struct AboutView: HTML {
       PageModule(theme: .informational) {
         VStack {
           HTMLMarkdown(
-            """
+            trusted: """
             # What we'll cover
 
             We’ve got so much we want to talk about, but just a quick overview of the things we have planned:
@@ -97,7 +97,7 @@ public struct AboutView: HTML {
       PageModule(theme: .content) {
         VStack {
           HTMLMarkdown(
-            """
+            trusted: """
             # Open source
 
             When we open-sourced the entire iOS and Android codebases at Kickstarter, we saw that it was one of the best resources to show people how to build a large application in the functional style. It transcended any talks about the theoretical benefits or proposed simplifications. We could just show directly how embracing pure functions allowed us to write code that was understandable in isolation, and enabled us to write tests for every subtle edge case.
@@ -129,7 +129,7 @@ struct HostCard: HTML {
   var body: some HTML {
     Card {
       div {
-        HTMLMarkdown(blurb)
+        HTMLMarkdown(trusted: blurb)
       }
       .color(.gray400.dark(.gray650))
       .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))

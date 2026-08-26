@@ -97,6 +97,15 @@ extension Client {
           """
         )
       },
+      createOfficeHourQuestion: { question, userID in
+        try await pool.sqlDatabase.first(
+          """
+          INSERT INTO "office_hour_questions" ("question", "user_id")
+          VALUES (\(bind: question), \(bind: userID))
+          RETURNING *, 0 AS "vote_count", FALSE AS "has_voted"
+          """
+        )
+      },
       createSubscription: { stripeSubscription, userId, isOwnerTakingSeat, referrerId, plan in
         let subscription = try await pool.sqlDatabase.first(
           """
@@ -122,6 +131,16 @@ extension Client {
           """
           DELETE FROM "enterprise_emails"
           WHERE "user_id" = \(bind: userId)
+          """
+        )
+      },
+      deleteOfficeHourQuestion: { id, userID in
+        try await pool.sqlDatabase.run(
+          """
+          DELETE FROM "office_hour_questions"
+          WHERE "id" = \(bind: id)
+          AND "user_id" = \(bind: userID)
+          AND "answered_office_hour_id" IS NULL
           """
         )
       },
@@ -291,6 +310,43 @@ extension Client {
           """
         )
       },
+      fetchOfficeHourByCloudflareVideoID: { cloudflareVideoID in
+        try await pool.sqlDatabase.first(
+          """
+          SELECT * FROM "office_hours"
+          WHERE "cloudflare_video_id" = \(bind: cloudflareVideoID)
+          LIMIT 1
+          """
+        )
+      },
+      fetchOfficeHourQuestions: { answered, userID in
+        try await pool.sqlDatabase.all(
+          """
+          SELECT
+            "office_hour_questions".*,
+            COUNT("office_hour_question_votes"."id") AS "vote_count",
+            COALESCE(
+              BOOL_OR("office_hour_question_votes"."user_id" = \(bind: userID)),
+              FALSE
+            ) AS "has_voted"
+          FROM "office_hour_questions"
+          LEFT JOIN "office_hour_question_votes"
+            ON "office_hour_question_votes"."office_hour_question_id"
+              = "office_hour_questions"."id"
+          WHERE \(bind: answered) = ("office_hour_questions"."answered_office_hour_id" IS NOT NULL)
+          GROUP BY "office_hour_questions"."id"
+          ORDER BY "vote_count" DESC, "office_hour_questions"."created_at" ASC
+          """
+        )
+      },
+      fetchOfficeHours: {
+        try await pool.sqlDatabase.all(
+          """
+          SELECT * FROM "office_hours"
+          ORDER BY "scheduled_at" DESC NULLS LAST, "created_at" DESC
+          """
+        )
+      },
       fetchSubscriptionById: { id in
         try await pool.sqlDatabase.first(
           """
@@ -423,16 +479,27 @@ extension Client {
         switch nonsubscriberOrSubscriber {
         case nil:
           condition = ""
+        case .maxSubscriber:
+          condition = #"""
+            AND "users"."subscription_id" IN (
+              SELECT "id" 
+              FROM "subscriptions" 
+              WHERE "plan" = \#(bind: Pricing.Plan.max)
+              AND "stripe_subscription_status" = \#(bind: Stripe.Subscription.Status.active)
+            )
+            """#
         case .nonSubscriber:
-          condition = #" AND "users"."subscription_id" IS NULL"#
+          condition = #"AND "users"."subscription_id" IS NULL"#
         case .subscriber:
-          condition = #" AND "users"."subscription_id" IS NOT NULL"#
+          condition = #"AND "users"."subscription_id" IS NOT NULL"#
         }
         return try await pool.sqlDatabase.all(
           """
           SELECT "users".*
           FROM "email_settings" LEFT JOIN "users" ON "email_settings"."user_id" = "users"."id"
-          WHERE "email_settings"."newsletter" = \(bind: newsletter)\(condition)
+          WHERE 
+            "email_settings"."newsletter" = \(bind: newsletter)
+            \(condition)
           """
         )
       },
@@ -1066,6 +1133,57 @@ extension Client {
           )
           """
         )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "office_hours" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "access" character varying NOT NULL DEFAULT 'max'
+              CHECK ("access" IN ('free', 'pro', 'max')),
+            "blurb" character varying NOT NULL DEFAULT '',
+            "cloudflare_video_id" character varying UNIQUE,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "description" character varying NOT NULL DEFAULT '',
+            "duration" integer,
+            "is_live" boolean NOT NULL DEFAULT FALSE,
+            "poster_url" character varying NOT NULL DEFAULT '',
+            "scheduled_at" timestamp with time zone,
+            "title" character varying NOT NULL DEFAULT '',
+            "transcript" character varying,
+            "updated_at" timestamp without time zone,
+            "youtube_video_id" character varying NOT NULL DEFAULT ''
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "office_hour_questions" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "answered_at_seconds" integer,
+            "answered_office_hour_id" uuid REFERENCES "office_hours"("id"),
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "question" character varying NOT NULL,
+            "user_id" uuid REFERENCES "users"("id") ON DELETE SET NULL
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE TABLE IF NOT EXISTS "office_hour_question_votes" (
+            "id" uuid DEFAULT uuid_generate_v1mc() PRIMARY KEY NOT NULL,
+            "created_at" timestamp without time zone DEFAULT NOW() NOT NULL,
+            "office_hour_question_id" uuid
+              REFERENCES "office_hour_questions"("id") ON DELETE CASCADE NOT NULL,
+            "user_id" uuid REFERENCES "users"("id") ON DELETE CASCADE NOT NULL
+          )
+          """
+        )
+        try await database.run(
+          """
+          CREATE UNIQUE INDEX IF NOT EXISTS
+          "index_office_hour_question_votes_on_question_id_user_id"
+          ON "office_hour_question_votes" ("office_hour_question_id", "user_id")
+          """
+        )
       },
       redeemEmailLoginCode: { email, code in
         try await pool.sqlDatabase.first(
@@ -1584,6 +1702,18 @@ extension Client {
           ON CONFLICT ("github_user_id") DO UPDATE
           SET "github_access_token" = $3, "name" = $4
           RETURNING *
+          """
+        )
+      },
+      voteOfficeHourQuestion: { questionID, userID in
+        try await pool.sqlDatabase.run(
+          """
+          INSERT INTO "office_hour_question_votes" ("office_hour_question_id", "user_id")
+          SELECT "id", \(bind: userID)
+          FROM "office_hour_questions"
+          WHERE "id" = \(bind: questionID)
+          AND "user_id" IS DISTINCT FROM \(bind: userID)
+          ON CONFLICT DO NOTHING
           """
         )
       }
