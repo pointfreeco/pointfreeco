@@ -1,9 +1,10 @@
+import Foundation
 import GitHub
 import Tagged
 import URLRouting
 
 public enum GitHubRoute {
-  case authorize(clientId: GitHub.Client.ID, redirectUri: String?, scope: String)
+  case authorize(clientId: GitHub.Client.ID, redirectUri: String?, scope: String, state: UUID? = nil)
   case episodeCodeSample(directory: String)
   case license
   case organization
@@ -45,6 +46,9 @@ public struct GitHubRouter: ParserPrinter {
             Field("redirect_uri")
           }
           Field("scope")
+          Optionally {
+            Field("state") { UUID.parser() }
+          }
         }
       }
 

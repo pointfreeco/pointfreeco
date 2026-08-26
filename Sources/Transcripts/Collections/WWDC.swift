@@ -31,6 +31,8 @@ extension Episode.Collection {
           .init(episode: .ep374_wwdc26),
           .init(episode: .ep375_wwdc26),
           .init(episode: .ep376_wwdc26),
+          .init(episode: .ep377_wwdc26),
+          .init(episode: .ep378_wwdc26),
         ],
         isFinished: false,
         related: [],

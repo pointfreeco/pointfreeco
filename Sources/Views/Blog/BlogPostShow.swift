@@ -1,5 +1,6 @@
 import Dependencies
 import Models
+import PointFreeRouter
 import StyleguideV2
 
 public struct NewsletterDetail: HTML {
@@ -63,7 +64,7 @@ struct NewsletterDetailModule: HTML {
         }
         if let content = blogPost.content {
           article {
-            HTMLMarkdown(content)
+            HTMLMarkdown(trusted: content)
               .color(.gray150.dark(.gray800))
               .linkColor(.black.dark(.white))
               .linkUnderline(true)
@@ -76,7 +77,7 @@ struct NewsletterDetailModule: HTML {
       VStack {
         Link(destination: .blog(.show(.left(blogPost.slug)))) {
           Header(3) {
-            HTMLMarkdown(blogPost.title)
+            HTMLMarkdown(trusted: blogPost.title)
           }
         }
         .linkColor(.offBlack.dark(.offWhite))

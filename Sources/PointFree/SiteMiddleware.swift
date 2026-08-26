@@ -272,6 +272,9 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
   case .live(let liveRoute):
     return await liveMiddleware(conn, route: liveRoute)
 
+  case .officeHours(let officeHoursRoute):
+    return await officeHoursMiddleware(conn.map(const(officeHoursRoute)))
+
   case .pricingLanding:
     return pricingMiddleware(conn)
 
@@ -289,11 +292,15 @@ private func render(conn: Conn<StatusLineOpen, Void>) async -> Conn<ResponseEnde
         text: """
           User-Agent: *
           Disallow: /account
+          Disallow: /search
 
           #User-Agent: GPTBot
           #Disallow: /
           """
       )
+
+  case .search(let query, let access, let scope, let sort):
+    return await searchMiddleware(conn, query: query, access: access, scope: scope, sort: sort)
 
   case .slackInvite:
     @Dependency(\.envVars) var envVars

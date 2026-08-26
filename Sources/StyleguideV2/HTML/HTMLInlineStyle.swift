@@ -101,35 +101,18 @@ public struct HTMLInlineStyle<Content: HTML>: HTML {
 private struct ClassNameGenerator: DependencyKey {
   var generate: @Sendable (Style) -> String
 
-  static var liveValue: ClassNameGenerator {
-    let seenStyles = LockIsolated<OrderedSet<Style>>([])
-    return Self { style in
-      seenStyles.withValue { seenStyles in
-        let index =
-          seenStyles.firstIndex(of: style)
-          ?? {
-            seenStyles.append(style)
-            return seenStyles.count - 1
-          }()
-        #if DEBUG
-          return "\(style.property)-\(index)"
-        #else
-          return "c\(index)"
-        #endif
-      }
-    }
-  }
+  static var liveValue: ClassNameGenerator { .hashed }
 
-  static var testValue: ClassNameGenerator {
-    Self { style in
-      let hash = classID(
-        style.value
-          + (style.media?.rawValue ?? "")
-          + (style.preSelector ?? "")
-          + (style.pseudo?.rawValue ?? "")
-      )
-      return "\(style.property)-\(hash)"
-    }
+  static var testValue: ClassNameGenerator { .hashed }
+
+  private static let hashed = Self { style in
+    let hash = classID(
+      style.value
+        + (style.media?.rawValue ?? "")
+        + (style.preSelector ?? "")
+        + (style.pseudo?.rawValue ?? "")
+    )
+    return "\(style.property)-\(hash)"
   }
 }
 

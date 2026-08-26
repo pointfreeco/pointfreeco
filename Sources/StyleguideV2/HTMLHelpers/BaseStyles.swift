@@ -3,7 +3,10 @@ public let renderedNormalizeCss: StaticString = """
   """
 
 public struct BaseStyles: HTML {
-  public init() {}
+  let supportsDarkMode: Bool
+  public init(supportsDarkMode: Bool = true) {
+    self.supportsDarkMode = supportsDarkMode
+  }
 
   public var body: some HTML {
     style { "\(renderedNormalizeCss)" }
@@ -38,11 +41,6 @@ public struct BaseStyles: HTML {
       body, html {
         background: #fff;
       }
-      @media (prefers-color-scheme: dark) {
-        body, html {
-          background: #121212;
-        }
-      }
       .markdown *:link, .markdown *:visited { color: inherit; }
       .diagnostic * {
         font: inherit;
@@ -70,6 +68,17 @@ public struct BaseStyles: HTML {
         to { opacity: 1; }
       }
       """
+    }
+    if supportsDarkMode {
+      style {
+        """
+        @media (prefers-color-scheme: dark) {
+          body, html {
+            background: #121212;
+          }
+        }
+        """
+      }
     }
   }
 }

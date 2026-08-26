@@ -63,6 +63,7 @@ private struct TaglineColumn: HTML {
 }
 
 private struct ContentColumn: HTML {
+  @Dependency(\.currentUser) var currentUser
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
@@ -70,9 +71,13 @@ private struct ContentColumn: HTML {
       FooterLink("Become a member", destination: .pricingLanding)
       FooterLink("The Point-Free Way", destination: .theWay)
       FooterLink("Beta previews", destination: .betas())
+      if currentUser.hasAccess(to: .officeHours) {
+        FooterLink("Office hours", destination: .officeHours())
+      }
       FooterLink("Gifts", destination: .gifts())
       FooterLink("Videos", destination: .episodes(.list(.all)))
       FooterLink("Collections", destination: .collections())
+      FooterLink("Search", destination: .search())
       FooterLink("Free clips", destination: .clips(.clips))
       FooterLink("Blog", destination: .blog())
     }

@@ -45,7 +45,7 @@ private struct LiveHeader: HTML {
           LiveDate(livestream: livestream)
         }
 
-        HTMLMarkdown(description)
+        HTMLMarkdown(trusted: description)
           .color(.gray900)
           .inlineStyle("max-width", "768px")
           .inlineStyle("margin", "0 auto")

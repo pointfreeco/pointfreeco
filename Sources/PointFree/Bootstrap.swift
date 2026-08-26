@@ -7,7 +7,7 @@ import Models
 import PointFreePrelude
 import Views
 
-public func bootstrap() async {
+public func bootstrap(indexEpisodeSearch: Bool = true) async {
   prepareDependencies {
     $0[CloudflareClient.self] =
       .live(
@@ -27,6 +27,11 @@ public func bootstrap() async {
   print("  ✅ \(Episode.all.count) transcripts loaded")
 
   await connectToPostgres()
+  if indexEpisodeSearch {
+    await fireAndForget {
+      await refreshEpisodeSearchIndex()
+    }
+  }
   await fireAndForget {
     await updateCollectionClips()
   }
@@ -52,7 +57,7 @@ private func connectToPostgres() async {
       #if DEBUG
         print("  ❌ Error! \(String(reflecting: error))")
       #else
-        print("  ❌ Error! \(error)")
+        reportIssue("  ❌ Error! \(error)")
       #endif
       print("     Make sure you are running postgres: pg_ctl -D /usr/local/var/postgres start")
       try? await Task.sleep(for: .seconds(1))

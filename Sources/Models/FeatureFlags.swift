@@ -8,7 +8,14 @@ public struct Feature: Equatable {
   public var allowedUserIDs: Set<User.ID> = []
   public var name: String
 
+  public static let officeHours = Self(
+    isAdminEnabled: true,
+    isEnabled: inDebug,
+    name: "office-hours"
+  )
+
   public static let allFeatures: [Self] = [
+    .officeHours
   ]
 }
 

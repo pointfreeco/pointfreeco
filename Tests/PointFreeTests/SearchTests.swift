@@ -1,0 +1,273 @@
+import Dependencies
+import HttpPipeline
+import Models
+import PointFreeTestSupport
+import SnapshotTesting
+import XCTest
+
+@testable import PointFree
+
+class SearchTests: TestCase {
+  override func setUp() {
+    super.setUp()
+    //SnapshotTesting.isRecording=true
+  }
+
+  @MainActor
+  func testSearch() async throws {
+    let conn = connection(from: request(to: .search()))
+
+    await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+  }
+
+  @MainActor
+  func testSearch_Fragment() async throws {
+    try await withDependencies {
+      $0.database.searchEpisodes = { _, _, _ in
+        EpisodeSearchResults(
+          matchCount: 1,
+          results: [
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "We can define an ⟪increment⟫ ⟪function⟫ by extending `Int`.",
+              kind: .prose,
+              sectionTitle: "Functions that increment",
+              timestamp: 68
+            )
+          ]
+        )
+      }
+      $0.episodes = { [.free, .subscriberOnly] }
+    } operation: {
+      var request = request(to: .search(query: "increment function"))
+      request.setValue("results", forHTTPHeaderField: "X-Fragment")
+      let conn = connection(from: request)
+
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
+  @MainActor
+  func testSearch_LiteralPlusQuery() async throws {
+    try await withDependencies {
+      $0.database.searchEpisodes = { query, _, _ in
+        XCTAssertEqual(#""$0 + 1""#, query)
+        return EpisodeSearchResults(
+          matchCount: 1,
+          results: [
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "map { ⟪$0 + 1⟫ }",
+              kind: .code,
+              sectionTitle: "Introduction",
+              timestamp: 68
+            )
+          ]
+        )
+      }
+      $0.episodes = { [.free, .subscriberOnly] }
+    } operation: {
+      let conn = connection(
+        from: URLRequest(url: URL(string: "http://localhost:8080/search?q=%22%240%20%2B%201%22")!)
+      )
+
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
+  @MainActor
+  func testSearch_NoResults() async throws {
+    try await withDependencies {
+      $0.database.searchEpisodes = { _, _, _ in EpisodeSearchResults() }
+      $0.episodes = { [.free, .subscriberOnly] }
+    } operation: {
+      let conn = connection(from: request(to: .search(query: "uikot")))
+
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
+  @MainActor
+  func testSearch_Results_TermCoverage() async throws {
+    try await withDependencies {
+      $0.database.searchEpisodes = { _, _, _ in
+        EpisodeSearchResults(
+          matchCount: 1,
+          results: (1...6).map { index in
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "⟪SQL⟫ statement number \(index)",
+              kind: .prose,
+              matchedTerms: ["'sql'"],
+              sectionTitle: "SQL section \(index)",
+              timestamp: index * 60
+            )
+          } + [
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "And that fixes the ⟪glitch⟫ in the demo.",
+              kind: .prose,
+              matchedTerms: ["'glitch'"],
+              sectionTitle: "Fixing the glitch",
+              timestamp: 1_200
+            )
+          ]
+        )
+      }
+      $0.episodes = { [.free, .subscriberOnly] }
+    } operation: {
+      let conn = connection(from: request(to: .search(query: "SQL glitch")))
+
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
+  @MainActor
+  func testSearch_Results_FreeFilter() async throws {
+    try await withDependencies {
+      $0.database.searchEpisodes = { _, _, sequences in
+        XCTAssertEqual([1], sequences)
+        return EpisodeSearchResults(
+          matchCount: 1,
+          results: [
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "We can define ⟪functions⟫ by extending `Int`.",
+              kind: .prose,
+              sectionTitle: "Introduction",
+              timestamp: 68
+            )
+          ]
+        )
+      }
+      $0.episodes = { [.free, .subscriberOnly] }
+    } operation: {
+      let conn = connection(
+        from: request(to: .search(query: "functions", access: .free, sort: .newest))
+      )
+
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
+  @MainActor
+  func testSearch_Results() async throws {
+    try await withDependencies {
+      $0.database.searchEpisodes = { _, _, _ in
+        EpisodeSearchResults(
+          matchCount: 2,
+          results: [
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "⟪Incrementing⟫ and ⟪functions⟫",
+              kind: .episodeTitle,
+              sectionTitle: nil,
+              timestamp: nil
+            ),
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "⟪Incrementing⟫ numbers",
+              kind: .title,
+              sectionTitle: "Incrementing numbers",
+              timestamp: 120
+            ),
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "Functions that ⟪increment⟫",
+              kind: .title,
+              sectionTitle: "Functions that increment",
+              timestamp: 68
+            ),
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "We can define an ⟪increment⟫ ⟪function⟫ by extending `Int`",
+              snippetIsTruncatedAtEnd: true,
+              snippetIsTruncatedAtStart: true,
+              kind: .prose,
+              sectionTitle: "Functions that increment",
+              timestamp: 68
+            ),
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "func ⟪increment⟫(_ x: Int) -> Int {\n  x + 1\n}",
+              kind: .code,
+              sectionTitle: "Functions that increment",
+              timestamp: 68
+            ),
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "Never>` effect because it doesn’t ⟪increment⟫ anything",
+              snippetIsTruncatedAtEnd: true,
+              snippetIsTruncatedAtStart: true,
+              snippetStartsInsideCodeSpan: true,
+              kind: .prose,
+              sectionTitle: "Functions that increment",
+              timestamp: 68
+            ),
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "pretty` was ⟪increment⟫ed by `Goodnight",
+              snippetIsTruncatedAtEnd: true,
+              snippetIsTruncatedAtStart: true,
+              snippetStartsInsideCodeSpan: true,
+              kind: .prose,
+              sectionTitle: "Functions that increment",
+              timestamp: 68
+            ),
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "We discuss what makes ⟪functions⟫ great.",
+              kind: .blurb,
+              sectionTitle: nil,
+              timestamp: nil
+            ),
+            EpisodeSearchResult(
+              episodeSequence: 2,
+              snippet: "⟪Functions⟫ and proofs go hand in hand.",
+              kind: .prose,
+              sectionTitle: "Proofs as programs",
+              timestamp: 300
+            ),
+            EpisodeSearchResult(
+              episodeSequence: 2,
+              snippet: "⟪Functions⟫ can be bound to controls.",
+              kind: .prose,
+              sectionTitle: "`UIControl` bindings",
+              timestamp: 400
+            ),
+          ]
+        )
+      }
+      $0.episodes = { [.free, .subscriberOnly] }
+    } operation: {
+      let conn = connection(from: request(to: .search(query: "increment function")))
+
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+
+  @MainActor
+  func testSearch_Results_OmittedMatches() async throws {
+    try await withDependencies {
+      $0.database.searchEpisodes = { _, _, _ in
+        EpisodeSearchResults(
+          matchCount: 2,
+          results: [
+            EpisodeSearchResult(
+              episodeSequence: 1,
+              snippet: "We can define ⟪functions⟫ by extending `Int`.",
+              kind: .prose,
+              sectionTitle: "Introduction",
+              timestamp: 68
+            )
+          ]
+        )
+      }
+      $0.episodes = { [.free, .subscriberOnly] }
+    } operation: {
+      let conn = connection(from: request(to: .search(query: "functions")))
+
+      await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
+    }
+  }
+}

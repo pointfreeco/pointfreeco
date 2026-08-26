@@ -1,0 +1,249 @@
+import Dependencies
+import Foundation
+import HttpPipeline
+import Models
+import PointFreeDependencies
+import PointFreeRouter
+import Prelude
+import StyleguideV2
+import Views
+
+func officeHoursMiddleware(
+  _ conn: Conn<StatusLineOpen, OfficeHoursRoute>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
+
+  guard currentUser.hasAccess(to: .officeHours) else {
+    return routeNotFoundMiddleware(conn)
+  }
+
+  do {
+    switch conn.data {
+    case let .deleteQuestion(id, questionsSort):
+      return await deleteQuestionMiddleware(
+        questionID: id,
+        questionsSort: questionsSort ?? .mostVotes,
+        conn: conn.map(const(()))
+      )
+
+    case let .officeHour(cloudflareVideoID: cloudflareVideoID):
+      let officeHour = try await database.fetchOfficeHour(cloudflareVideoID: cloudflareVideoID)
+      return await officeHourMiddleware(officeHour: officeHour, conn: conn.map(const(())))
+
+    case let .index(tab, questionsSort):
+      return await officeHoursIndexMiddleware(
+        tab: tab,
+        questionsSort: questionsSort ?? .mostVotes,
+        conn: conn.map(const(()))
+      )
+
+    case let .submitQuestion(question):
+      return await submitQuestionMiddleware(question: question, conn: conn.map(const(())))
+
+    case let .voteQuestion(id, questionsSort):
+      return await voteQuestionMiddleware(
+        questionID: id,
+        questionsSort: questionsSort ?? .mostVotes,
+        conn: conn.map(const(()))
+      )
+    }
+  } catch {
+    return routeNotFoundMiddleware(conn)
+  }
+}
+
+private func officeHourMiddleware(
+  officeHour: OfficeHour,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
+
+  let questions = ((try? await database.fetchOfficeHourQuestions(
+    answered: true,
+    userID: currentUser?.id
+  )) ?? [])
+    .filter { $0.answeredOfficeHourID == officeHour.id }
+    .sorted { ($0.answeredAtSeconds ?? 0) < ($1.answeredAtSeconds ?? 0) }
+
+  return conn
+    .writeStatus(.ok)
+    .respondV2(
+      layoutData: SimplePageLayoutData(
+        description: officeHour.blurb,
+        image: officeHour.posterURL,
+        title: officeHour.title,
+        usePrismJs: true
+      )
+    ) {
+      OfficeHourDetail(officeHour: officeHour, questions: questions)
+    }
+}
+
+private func officeHoursIndexMiddleware(
+  tab: OfficeHoursRoute.Tab,
+  questionsSort: OfficeHoursRoute.QuestionsSort,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
+  do {
+    let officeHours = try await database.fetchOfficeHours()
+    let unansweredQuestions = try await database.fetchOfficeHourQuestions(
+      answered: false,
+      userID: currentUser?.id
+    )
+    let answeredQuestions = Dictionary(
+      grouping: try await database.fetchOfficeHourQuestions(
+        answered: true,
+        userID: currentUser?.id
+      )
+      .filter { $0.answeredOfficeHourID != nil },
+      by: { $0.answeredOfficeHourID! }
+    )
+
+    switch conn.request.value(forHTTPHeaderField: "X-Fragment") {
+    case "open-questions":
+      return conn.writeStatus(.ok).respondFragment {
+        OfficeHourOpenQuestionsList(questions: unansweredQuestions, sort: questionsSort)
+      }
+    case "answered-questions":
+      return conn.writeStatus(.ok).respondFragment {
+        OfficeHourAnsweredQuestionsList(
+          officeHours: officeHours,
+          answeredQuestions: answeredQuestions,
+          sort: questionsSort
+        )
+      }
+    default:
+      break
+    }
+
+    return
+      conn
+      .writeStatus(.ok)
+      .respondV2(
+        layoutData: SimplePageLayoutData(
+          description: """
+            Periodic livestreams exclusively for Point-Free Max members.
+            """,
+          title: "Point-Free Office Hours",
+          usePrismJs: true
+        )
+      ) {
+        OfficeHoursIndex(
+          officeHours: officeHours,
+          selectedTab: tab,
+          questionsSort: questionsSort,
+          unansweredQuestions: unansweredQuestions,
+          answeredQuestions: answeredQuestions
+        )
+      }
+  } catch {
+    return routeNotFoundMiddleware(conn)
+  }
+}
+
+private func submitQuestionMiddleware(
+  question: String,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
+  @Dependency(\.subscriberState) var subscriberState
+
+  guard let currentUser else {
+    return conn.loginAndRedirect()
+  }
+  guard subscriberState.isMaxSubscriber else {
+    return conn.redirect(to: .officeHours(.index(tab: .openQuestions))) {
+      $0.flash(.error, "You must be a Point-Free Max member to submit questions.")
+    }
+  }
+  let question = question.trimmingCharacters(in: .whitespacesAndNewlines)
+  guard !question.isEmpty else {
+    return conn.redirect(to: .officeHours(.index(tab: .openQuestions))) {
+      $0.flash(.error, "Please enter a question.")
+    }
+  }
+  guard question.count <= 5000 else {
+    return conn.redirect(to: .officeHours(.index(tab: .openQuestions))) {
+      $0.flash(.error, "Questions must be 5,000 characters or fewer.")
+    }
+  }
+
+  do {
+    _ = try await database.createOfficeHourQuestion(
+      question: question,
+      userID: currentUser.id
+    )
+    return conn.redirect(to: .officeHours(.index(tab: .openQuestions))) {
+      $0.flash(.notice, "Your question has been submitted!")
+    }
+  } catch {
+    return conn.redirect(to: .officeHours(.index(tab: .openQuestions))) {
+      $0.flash(.error, "Something went wrong. Please try again.")
+    }
+  }
+}
+
+private func deleteQuestionMiddleware(
+  questionID: OfficeHourQuestion.ID,
+  questionsSort: OfficeHoursRoute.QuestionsSort,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
+
+  guard let currentUser else {
+    return conn.writeStatus(.unauthorized).respondFragment { HTMLEmpty() }
+  }
+
+  do {
+    try await database.deleteOfficeHourQuestion(id: questionID, userID: currentUser.id)
+    return try await questionsFragmentResponse(conn, userID: currentUser.id, sort: questionsSort)
+  } catch {
+    return conn.writeStatus(.internalServerError).respondFragment { HTMLEmpty() }
+  }
+}
+
+private func voteQuestionMiddleware(
+  questionID: OfficeHourQuestion.ID,
+  questionsSort: OfficeHoursRoute.QuestionsSort,
+  conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+  @Dependency(\.database) var database
+  @Dependency(\.subscriberState) var subscriberState
+
+  guard
+    let currentUser,
+    subscriberState.isMaxSubscriber
+  else {
+    return conn.writeStatus(.unauthorized).respondFragment { HTMLEmpty() }
+  }
+
+  do {
+    try await database.voteOfficeHourQuestion(questionID: questionID, userID: currentUser.id)
+    return try await questionsFragmentResponse(conn, userID: currentUser.id, sort: questionsSort)
+  } catch {
+    return conn.writeStatus(.internalServerError).respondFragment { HTMLEmpty() }
+  }
+}
+
+private func questionsFragmentResponse(
+  _ conn: Conn<StatusLineOpen, Void>,
+  userID: Models.User.ID,
+  sort: OfficeHoursRoute.QuestionsSort
+) async throws -> Conn<ResponseEnded, Data> {
+  @Dependency(\.database) var database
+
+  let questions = try await database.fetchOfficeHourQuestions(
+    answered: false,
+    userID: userID
+  )
+  return conn.writeStatus(.ok).respondFragment {
+    OfficeHourOpenQuestionsList(questions: questions, sort: sort)
+  }
+}

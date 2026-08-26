@@ -18,6 +18,124 @@ class PointFreeRouterTests: TestCase {
   @Dependency(\.siteRouter) var siteRouter
 
   @MainActor
+  func testEmailAuth() async throws {
+    let route = SiteRoute.auth(
+      .emailAuth(email: "blob@pointfree.co", redirect: "/episodes")
+    )
+
+    guard let request = try? siteRouter.request(for: route) else {
+      XCTFail("")
+      return
+    }
+
+    XCTAssertEqual("POST", request.httpMethod)
+    XCTAssertEqual("/email-auth", request.url?.path)
+    XCTAssertEqual(route, try siteRouter.match(request: request))
+  }
+
+  @MainActor
+  func testVerifyLoginCode() async throws {
+    let route = SiteRoute.auth(
+      .verifyLoginCode(email: "blob@pointfree.co", code: "ABC234", redirect: "/episodes")
+    )
+
+    guard let request = try? siteRouter.request(for: route) else {
+      XCTFail("")
+      return
+    }
+
+    XCTAssertEqual("POST", request.httpMethod)
+    XCTAssertEqual("/email-auth/verify", request.url?.path)
+    XCTAssertEqual(route, try siteRouter.match(request: request))
+  }
+
+  @MainActor
+  func testSearch() async throws {
+    let route = SiteRoute.search(query: "composable architecture")
+
+    guard let request = try? siteRouter.request(for: route) else {
+      XCTFail("")
+      return
+    }
+
+    XCTAssertEqual("GET", request.httpMethod)
+    XCTAssertEqual("/search", request.url?.path)
+    XCTAssertEqual("q=composable%20architecture", request.url?.query)
+    XCTAssertEqual(route, try siteRouter.match(request: request))
+
+    XCTAssertEqual(
+      SiteRoute.search(),
+      try siteRouter.match(request: URLRequest(url: URL(string: "/search")!))
+    )
+
+    XCTAssertEqual(
+      SiteRoute.search(query: "get set binding"),
+      try siteRouter.match(request: URLRequest(url: URL(string: "/search?q=get+set+binding")!))
+    )
+
+    XCTAssertEqual(
+      SiteRoute.search(query: "generics"),
+      try siteRouter.match(
+        request: URLRequest(url: URL(string: "/search?q=generics&access=&sort=")!)
+      )
+    )
+
+    let literalRoute = SiteRoute.search(query: #""$0 + 1""#)
+    let literalRequest = try siteRouter.request(for: literalRoute)
+    XCTAssertEqual("q=%22$0%20%2B%201%22", literalRequest.url?.query)
+    XCTAssertEqual(literalRoute, try siteRouter.match(request: literalRequest))
+
+    let filteredRoute = SiteRoute.search(
+      query: "generics", access: .free, scope: .code, sort: .oldest
+    )
+    let filteredRequest = try siteRouter.request(for: filteredRoute)
+    XCTAssertEqual("q=generics&access=free&scope=code&sort=oldest", filteredRequest.url?.query)
+    XCTAssertEqual(filteredRoute, try siteRouter.match(request: filteredRequest))
+  }
+
+  @MainActor
+  func testConnectGitHubLanding() async throws {
+    let route = SiteRoute.auth(.connectGitHubLanding(redirect: "/betas"))
+
+    guard let request = try? siteRouter.request(for: route) else {
+      XCTFail("")
+      return
+    }
+
+    XCTAssertEqual("GET", request.httpMethod)
+    XCTAssertEqual("/connect-github", request.url?.path)
+    XCTAssertEqual(route, try siteRouter.match(request: request))
+  }
+
+  @MainActor
+  func testConnectGitHub() async throws {
+    let route = SiteRoute.auth(.connectGitHub(redirect: "/betas"))
+
+    guard let request = try? siteRouter.request(for: route) else {
+      XCTFail("")
+      return
+    }
+
+    XCTAssertEqual("POST", request.httpMethod)
+    XCTAssertEqual("/connect-github", request.url?.path)
+    XCTAssertEqual(route, try siteRouter.match(request: request))
+  }
+
+  @MainActor
+  func testLinkGitHubLanding() async throws {
+    let route = SiteRoute.auth(.linkGitHubLanding(redirect: "/episodes"))
+
+    guard let request = try? siteRouter.request(for: route) else {
+      XCTFail("")
+      return
+    }
+
+    XCTAssertEqual("GET", request.httpMethod)
+    XCTAssertEqual("/link-github", request.url?.path)
+    XCTAssertEqual(route, try siteRouter.match(request: request))
+  }
+
+  @MainActor
   func testUpdateProfile() async throws {
     let profileData = ProfileData(
       email: "blobby@blob.co",
@@ -43,7 +161,7 @@ class PointFreeRouterTests: TestCase {
       coupon: "student-discount",
       isOwnerTakingSeat: false,
       paymentMethodID: "pm_deadbeef",
-      pricing: .init(plan: .pro, billing: .monthly, quantity: 4),
+      pricing: .init(plan: .pro, billing: .yearly, quantity: 4),
       referralCode: "cafed00d",
       subscriptionID: nil,
       teammates: ["blob.jr@pointfree.co", "blob.sr@pointfree.com"],
@@ -56,11 +174,11 @@ class PointFreeRouterTests: TestCase {
       """
       POST http://localhost:8080/subscribe
 
-      coupon=student-discount&paymentMethodID=pm_deadbeef&pricing%5Bplan%5D=pro&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=4&ref=cafed00d&teammate=blob.jr%40pointfree.co&teammate=blob.sr%40pointfree.com&useRegionalDiscount=true
+      coupon=student-discount&paymentMethodID=pm_deadbeef&pricing%5Bplan%5D=pro&pricing%5Bbilling%5D=yearly&pricing%5Bquantity%5D=4&ref=cafed00d&teammate=blob.jr%40pointfree.co&teammate=blob.sr%40pointfree.com&useRegionalDiscount=true
       """
     }
 
-    XCTAssertEqual(try siteRouter.match(request: request), route)
+    expectNoDifference(try siteRouter.match(request: request), route)
   }
 
   @MainActor
@@ -86,7 +204,7 @@ class PointFreeRouterTests: TestCase {
       """
     }
 
-    XCTAssertEqual(try siteRouter.match(request: request), route)
+    expectNoDifference(try siteRouter.match(request: request), route)
   }
 
   @MainActor
@@ -246,6 +364,133 @@ class PointFreeRouterTests: TestCase {
   func testLive() async throws {
     let request = URLRequest(url: .init(string: "http://localhost:8080/live")!)
     let route = SiteRoute.live(.current)
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursIndex() async throws {
+    let request = URLRequest(url: .init(string: "http://localhost:8080/office-hours")!)
+    let route = SiteRoute.officeHours()
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursDetail() async throws {
+    let request = URLRequest(url: .init(string: "http://localhost:8080/office-hours/deadbeef")!)
+    let route = SiteRoute.officeHours(.officeHour(cloudflareVideoID: "deadbeef"))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursOpenQuestionsTab() async throws {
+    let request = URLRequest(url: .init(string: "http://localhost:8080/office-hours/open-questions")!)
+    let route = SiteRoute.officeHours(.index(tab: .openQuestions))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursAnsweredQuestionsTab() async throws {
+    let request = URLRequest(
+      url: .init(string: "http://localhost:8080/office-hours/answered-questions")!
+    )
+    let route = SiteRoute.officeHours(.index(tab: .answeredQuestions))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursAnsweredQuestionsSort() async throws {
+    let request = URLRequest(
+      url: .init(string: "http://localhost:8080/office-hours/answered-questions?sort=most-recent")!
+    )
+    let route = SiteRoute.officeHours(.index(tab: .answeredQuestions, questionsSort: .mostRecent))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursOpenQuestionsSort() async throws {
+    let request = URLRequest(
+      url: .init(string: "http://localhost:8080/office-hours/open-questions?sort=most-recent")!
+    )
+    let route = SiteRoute.officeHours(.index(tab: .openQuestions, questionsSort: .mostRecent))
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursVoteQuestionSort() async throws {
+    var request = URLRequest(
+      url: .init(
+        string:
+          "http://localhost:8080/office-hours/questions/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF/vote?sort=most-recent"
+      )!
+    )
+    request.httpMethod = "POST"
+
+    let route = SiteRoute.officeHours(
+      .voteQuestion(
+        id: .init(rawValue: UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!),
+        questionsSort: .mostRecent
+      )
+    )
+
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursSubmitQuestion() async throws {
+    var request = URLRequest(
+      url: .init(string: "http://localhost:8080/office-hours/questions")!
+    )
+    request.httpMethod = "POST"
+    request.httpBody = Data("question=How%20do%20I%20test%20async%20code%3F".utf8)
+
+    let route = SiteRoute.officeHours(.submitQuestion(question: "How do I test async code?"))
+
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursDeleteQuestion() async throws {
+    var request = URLRequest(
+      url: .init(
+        string:
+          "http://localhost:8080/office-hours/questions/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF/delete"
+      )!
+    )
+    request.httpMethod = "POST"
+
+    let route = SiteRoute.officeHours(
+      .deleteQuestion(
+        id: .init(rawValue: UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!)
+      )
+    )
+
+    XCTAssertEqual(try siteRouter.match(request: request), route)
+    XCTAssertEqual(try siteRouter.request(for: route), request)
+  }
+
+  @MainActor
+  func testOfficeHoursVoteQuestion() async throws {
+    var request = URLRequest(
+      url: .init(
+        string:
+          "http://localhost:8080/office-hours/questions/DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF/vote"
+      )!
+    )
+    request.httpMethod = "POST"
+
+    let route = SiteRoute.officeHours(
+      .voteQuestion(id: .init(rawValue: UUID(uuidString: "DEADBEEF-DEAD-BEEF-DEAD-BEEFDEADBEEF")!))
+    )
+
     XCTAssertEqual(try siteRouter.match(request: request), route)
     XCTAssertEqual(try siteRouter.request(for: route), request)
   }

@@ -61,6 +61,7 @@ private func cancelResponse(
 private func reactivateResponse(
   _ conn: Conn<StatusLineOpen, (User, Stripe.Subscription)>
 ) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.fireAndForget) var fireAndForget
   @Dependency(\.stripe) var stripe
 
   do {
@@ -80,7 +81,9 @@ private func reactivateResponse(
       planID: item.plan.id,
       quantity: item.quantity
     )
-    Task { try await sendReactivateEmail(to: user, for: stripeSubscription) }
+    await fireAndForget {
+      try await sendReactivateEmail(to: user, for: stripeSubscription)
+    }
     return conn.redirect(to: .account()) {
       $0.flash(.notice, "We’ve reactivated your membership.")
     }

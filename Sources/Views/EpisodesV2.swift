@@ -1,4 +1,5 @@
 import Dependencies
+import Foundation
 import Models
 import PointFreeRouter
 import StyleguideV2
@@ -28,7 +29,8 @@ public struct Episodes: HTML {
       freeEpisodes = Array(
         mainEpisodes
           .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
-          .prefix(3))
+          .prefix(3)
+      )
     case .free:
       mainEpisodes = episodes()
         .filter { !$0.isSubscriberOnly(currentDate: now, emergencyMode: emergencyMode) }
@@ -178,7 +180,7 @@ private struct EpisodesHeader: HTML {
       switch listType {
       case .all:
         if subscriberState.isActiveSubscriber {
-          "Watch our entire catalogue of videos, all \(episodeCount) of them."
+          "Watch our entire catalog of videos, all \(episodeCount) of them."
         } else {
           "Watch some for "
           Link("free", destination: .episodes(.list(.free)))

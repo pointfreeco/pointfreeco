@@ -1,5 +1,5 @@
 {
-  "originHash" : "b0ea77e671c63b1b50e627eb41e6f166902ab4b4d6563d60f0a7c6e51251f871",
+  "originHash" : "fe128821ddd99bb55e38b1998fd26ff6d01ab66ea70c131de66a472457b165db",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -384,8 +384,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-url-routing",
       "state" : {
-        "revision" : "1cfd564259ecb1d324bb718a8f03e513dab738d2",
-        "version" : "0.6.2"
+        "branch" : "form-encoded-query",
+        "revision" : "2e7e164be251d078fdc1f215cbefcb51d28a572f"
       }
     },
     {

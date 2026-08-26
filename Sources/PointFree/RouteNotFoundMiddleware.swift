@@ -22,7 +22,7 @@ private struct NotFound: HTML {
   var body: some HTML {
     PageModule(title: "Page not found :(", theme: .content) {
       HTMLMarkdown(
-        """
+        trusted: """
         ```swift
         func load(_ page: Page) -> Never
         ```

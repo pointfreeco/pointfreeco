@@ -2,6 +2,7 @@ import Dependencies
 import Html
 import Models
 import PointFreeDependencies
+import PointFreeRouter
 import StyleguideV2
 
 public struct BetasLanding: HTML {
@@ -60,8 +61,6 @@ private struct MaxSubscriberHeader: HTML {
 }
 
 private struct NonSubscriberHeader: HTML {
-  @Dependency(\.siteRouter) var siteRouter
-
   var body: some HTML {
     LazyVGrid(columns: [.desktop: [1, 1]], alignItems: .start, verticalSpacing: 2) {
       VStack(spacing: 1) {
@@ -79,16 +78,13 @@ private struct NonSubscriberHeader: HTML {
         .inlineStyle("padding", "0")
         Paragraph(.small) {
           """
-          Point-Free Max subscribers can join private betas for projects we're actively \
+          Point-Free Max members can join private betas for projects we're actively \
           developing and help shape them before public release.
           """
         }
         .color(.gray300.dark(.gray800))
         CTAGroup {
-          PFWButton(type: .primary) {
-            HTMLText("Subscribe to Max")
-          }
-          .href(siteRouter.path(for: .pricingLanding))
+          SubscribeOrUpgradeToMaxButton()
         }
         .inlineStyle("padding-top", "0.5rem")
       }
@@ -158,29 +154,41 @@ private struct BetaProjectsList: HTML {
       }
       .color(.black.dark(.white))
       .inlineStyle("margin-top", "0.5rem")
-      ul {
-        for beta in Beta.all {
-          li {
-            span {}
-              .inlineStyle("width", "6px")
-              .inlineStyle("height", "6px")
-              .inlineStyle("border-radius", "50%")
-              .inlineStyle("background", "#974dff")
-              .inlineStyle("flex-shrink", "0")
+      projectList(Beta.all)
+    }
+  }
+
+  func projectList(_ betas: [Beta]) -> some HTML {
+    ul {
+      for beta in betas {
+        li {
+          span {}
+            .inlineStyle("width", "6px")
+            .inlineStyle("height", "6px")
+            .inlineStyle("border-radius", "50%")
+            .inlineStyle("background", "#974dff")
+            .inlineStyle("flex-shrink", "0")
+          if let publicURL = beta.publicURL {
+            a { HTMLText(beta.title) }
+              .href(publicURL)
+              .inlineStyle("color", "inherit")
+              .inlineStyle("text-decoration", "none")
+              .inlineStyle("text-decoration", "underline", pseudo: .hover)
+          } else {
             HTMLText(beta.title)
           }
-          .inlineStyle("display", "flex")
-          .inlineStyle("align-items", "center")
-          .inlineStyle("gap", "8px")
         }
+        .inlineStyle("display", "flex")
+        .inlineStyle("align-items", "center")
+        .inlineStyle("gap", "8px")
       }
-      .inlineStyle("margin", "0")
-      .inlineStyle("padding", "0")
-      .inlineStyle("list-style", "none")
-      .inlineStyle("display", "grid")
-      .inlineStyle("gap", "0.4rem")
-      .color(.gray300.dark(.gray800))
     }
+    .inlineStyle("margin", "0")
+    .inlineStyle("padding", "0")
+    .inlineStyle("list-style", "none")
+    .inlineStyle("display", "grid")
+    .inlineStyle("gap", "0.4rem")
+    .color(.gray300.dark(.gray800))
   }
 }
 
@@ -239,7 +247,6 @@ private struct BetasList: HTML {
 
 private struct BetaCard: HTML {
   @Dependency(\.subscriberState) var subscriberState
-  @Dependency(\.siteRouter) var siteRouter
 
   let beta: Beta
   var isCollaborator = false
@@ -285,7 +292,7 @@ private struct BetaCard: HTML {
         }
         .color(.black.dark(.white))
 
-        HTMLMarkdown(beta.blurb)
+        HTMLMarkdown(trusted: beta.blurb)
           .color(.gray300.dark(.gray800))
           .linkColor(.purple)
 
@@ -299,11 +306,8 @@ private struct BetaCard: HTML {
           BetaJoinButton(beta: beta, isCollaborator: isCollaborator)
             .inlineStyle("margin-top", "1rem")
         } else {
-          PFWButton(type: .secondary) {
-            HTMLText("Subscribe to Point-Free Max")
-          }
-          .href(siteRouter.path(for: .pricingLanding))
-          .inlineStyle("margin-top", "1rem")
+          SubscribeOrUpgradeToMaxButton(type: .secondary)
+            .inlineStyle("margin-top", "1rem")
         }
       }
       .inlineStyle("padding", "1.5rem")
@@ -314,6 +318,24 @@ private struct BetaCard: HTML {
     .inlineStyle("background", "#fcfcfc")
     .inlineStyle("background", "#0f1220", media: .dark)
     .inlineStyle("overflow", "hidden")
+  }
+}
+
+private struct SubscribeOrUpgradeToMaxButton: HTML {
+  @Dependency(\.siteRouter) var siteRouter
+  @Dependency(\.subscriberState) var subscriberState
+
+  var type: PFWButton<HTMLText>.ButtonType = .primary
+
+  var body: some HTML {
+    PFWButton(type: type) {
+      HTMLText(
+        subscriberState.isActiveSubscriber
+          ? "Upgrade to Point-Free Max"
+          : "Subscribe to Point-Free Max"
+      )
+    }
+    .href(siteRouter.path(for: subscriberState.subscribeToMaxRoute))
   }
 }
 
@@ -349,8 +371,6 @@ private struct BetaJoinButton: HTML {
 }
 
 private struct BetasCTA: HTML {
-  @Dependency(\.siteRouter) var siteRouter
-
   var body: some HTML {
     PageModule(theme: .content) {
       HStack(alignment: .center, spacing: 2) {
@@ -369,11 +389,8 @@ private struct BetasCTA: HTML {
         }
         Spacer()
         VStack {
-          PFWButton(type: .primary) {
-            HTMLText("Subscribe to Max")
-          }
-          .href(siteRouter.path(for: .pricingLanding))
-          .inlineStyle("margin-right", "auto")
+          SubscribeOrUpgradeToMaxButton()
+            .inlineStyle("margin-right", "auto")
         }
       }
     }
@@ -427,7 +444,9 @@ extension HTML {
 }
 
 extension SubscriberState {
-  public var isMaxSubscriber: Bool {
-    isActiveSubscriber && plan == .max
+  public var subscribeToMaxRoute: SiteRoute {
+    isActiveSubscriber
+    ? .pricingLanding
+    : .subscribeConfirmation(lane: .personal, billing: .yearly, plan: .max)
   }
 }

@@ -4,6 +4,7 @@ import URLRouting
 
 public enum EmailTemplate: String, CaseIterable {
   case joinTeamConfirmation
+  case loginCode
   case maxWelcomeEmail
   case proWelcomeEmail
   case newBlogPost
@@ -173,6 +174,11 @@ struct AdminRouter: ParserPrinter {
                 FormData {
                   Optionally {
                     Parse(.memberwise(NewBlogPostFormData.init)) {
+                      Field(
+                        NewBlogPostFormData.CodingKeys.maxSubscriberDeliver.rawValue, default: false
+                      ) {
+                        Bool.parser()
+                      }
                       Field(
                         NewBlogPostFormData.CodingKeys.nonsubscriberAnnouncement.rawValue,
                         default: ""
