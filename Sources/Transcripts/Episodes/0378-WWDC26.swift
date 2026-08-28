@@ -15,6 +15,15 @@ extension Episode {
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2026-08-24")!,
     references: [
+      Episode.Reference(
+        blurb: """
+          A technote that covers SwiftUI's backwards compatible migration from `@State` property \
+          wrapper to macro.
+          """,
+        link: "https://developer.apple.com/documentation/technotes/tn3211-resolving-swiftui-source-incompatibilities-for-state-and-contentbuilder",
+        publishedAt: yearMonthDayFormatter.date(from: "2026-06-08"),
+        title: "TN3211: Resolving SwiftUI source incompatibilities for State and ContentBuilder"
+      )
     ],
     sequence: 378,
     socialImage: nil,
