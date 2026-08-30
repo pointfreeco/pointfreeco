@@ -33,8 +33,9 @@ extension Episode.Collection {
           .init(episode: .ep376_wwdc26),
           .init(episode: .ep377_wwdc26),
           .init(episode: .ep378_wwdc26),
+          .init(episode: .ep379_wwdc26),
         ],
-        isFinished: false,
+        isFinished: true,
         related: [],
         title: "WWDC: 2026",
         whereToGoFromHere: nil
