@@ -14,10 +14,6 @@ func officeHoursMiddleware(
   @Dependency(\.currentUser) var currentUser
   @Dependency(\.database) var database
 
-  guard currentUser.hasAccess(to: .officeHours) else {
-    return routeNotFoundMiddleware(conn)
-  }
-
   do {
     switch conn.data {
     case let .deleteQuestion(id, questionsSort):

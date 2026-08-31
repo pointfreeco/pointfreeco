@@ -283,10 +283,8 @@ struct MobileNavItems: HTML {
         NavListItem(badge: .max, route: .betas()) {
           "Beta previews"
         }
-        if currentUser.hasAccess(to: .officeHours) {
-          NavListItem(badge: .max, route: .officeHours()) {
-            "Office hours"
-          }
+        NavListItem(badge: .max, route: .officeHours()) {
+          "Office hours"
         }
         NavListItem(route: .episodes(.list(.all))) {
           "Videos"
@@ -613,9 +611,7 @@ struct CenteredNavItems: HTML {
             MenuItem(title: "Videos", destination: .episodes(.list(.all)))
           }
           MenuItem(title: "Beta previews", destination: .betas(), badge: .max)
-          if currentUser.hasAccess(to: .officeHours) {
-            MenuItem(title: "Office hours", destination: .officeHours(), badge: .max)
-          }
+          MenuItem(title: "Office hours", destination: .officeHours(), badge: .max)
           MenuItem(title: "Free clips", destination: .clips(.clips))
           MenuItem(title: "Blog", destination: .blog(.index))
           MenuItem(title: "Gifts", destination: .gifts())
