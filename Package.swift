@@ -61,6 +61,9 @@ var package = Package(
     .package(url: "https://github.com/pointfreeco/swift-web", revision: "3248f47"),
     .package(url: "https://github.com/pointfreeco/xctest-dynamic-overlay", from: "1.11.0"),
     .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.20"),
+
+    // NB: Remove after releases
+    .package(url: "https://github.com/pointfreeco/combine-schedulers", branch: "fix-linux"),
   ],
   targets: [
     .target(

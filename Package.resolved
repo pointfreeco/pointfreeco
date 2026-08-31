@@ -1,13 +1,13 @@
 {
-  "originHash" : "abd8f2567fb168d7cfc888d10dd5c76e01bbd05bb2b55e983889a1aa45bbf1be",
+  "originHash" : "02c9c987860428ceae9009cd89335ac89023764be8b5d089471912fc00dc7f96",
   "pins" : [
     {
       "identity" : "async-http-client",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swift-server/async-http-client",
       "state" : {
-        "revision" : "4603a8036d921ea999fadb742931546c341f4bd7",
-        "version" : "1.35.0"
+        "revision" : "9544287b9416c0bc71e58b9f3aead8dd14b16103",
+        "version" : "1.36.0"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/combine-schedulers",
       "state" : {
-        "revision" : "c96fdbf1223e22fa4566ac5f40513506dcf5dd41",
-        "version" : "1.2.1"
+        "branch" : "fix-linux",
+        "revision" : "2fb31322b94963941ef756026c5cb7f85bd62dd3"
       }
     },
     {
@@ -96,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-case-paths",
       "state" : {
-        "revision" : "b0ba915b110f09bf39baafe75b59dfdb1846bbff",
-        "version" : "1.9.3"
+        "revision" : "1866d1046fd4e54d590af6be5b23de6ca3af2bf9",
+        "version" : "1.9.2"
       }
     },
     {
@@ -231,8 +231,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log",
       "state" : {
-        "revision" : "a878e7f8f46cfc0e1125e565b5c08e7d5272dc9a",
-        "version" : "1.14.0"
+        "revision" : "3ffafb9722d5d918c614feb496c8789a3b59d222",
+        "version" : "1.15.0"
       }
     },
     {
