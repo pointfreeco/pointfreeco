@@ -58,7 +58,7 @@ But doing so causes the macro to fall back to the old, eager behavior. A new
 Apple actively discourages this pattern, and instead sanctions a different one, which can be seen
 in their WWDC sample code: hold the state as an optional, and initialize it in `onAppear`:
 
-```swift
+```swift:2,6,10-12
 struct LocationSearchSheet: View {
   @State private var completer: LocationSearchCompleter?
   var region: MKCoordinateRegion?
