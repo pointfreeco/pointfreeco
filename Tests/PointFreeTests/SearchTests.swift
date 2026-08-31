@@ -5,6 +5,10 @@ import PointFreeTestSupport
 import SnapshotTesting
 import XCTest
 
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
+
 @testable import PointFree
 
 class SearchTests: TestCase {
