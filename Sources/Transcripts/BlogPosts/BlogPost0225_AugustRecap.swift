@@ -14,6 +14,6 @@ extension BlogPost {
     hideFromSlackRSS: false,
     id: 225,
     publishedAt: yearMonthDayFormatter.date(from: "2026-09-04")!,
-    title: "A month of open source: August recap"
+    title: "Last Month In Point-Free: August"
   )
 }
