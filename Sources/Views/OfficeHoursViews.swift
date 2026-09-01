@@ -383,13 +383,23 @@ private struct OfficeHoursTabs: HTML {
 
         div {
           if visibleTabs.count > 1 {
-            HStack(alignment: .center, spacing: 0.25) {
-              for tab in visibleTabs {
-                TabLabel(tab: tab)
+            div {
+              HStack(alignment: .center, spacing: 0.25) {
+                for tab in visibleTabs {
+                  TabLabel(tab: tab)
+                }
               }
+              .inlineStyle("margin", "0 auto")
+              .inlineStyle("padding", "0 2rem")
+              .inlineStyle("padding", "0", media: .desktop)
+              .inlineStyle("width", "max-content")
             }
-            .inlineStyle("justify-content", "center")
-            .inlineStyle("margin-bottom", "3rem")
+            .inlineStyle("-webkit-overflow-scrolling", "touch")
+            .inlineStyle("display", "none", pseudo: "::-webkit-scrollbar")
+            .inlineStyle("margin", "0 -2rem 3rem")
+            .inlineStyle("margin", "0 0 3rem", media: .desktop)
+            .inlineStyle("overflow-x", "auto")
+            .inlineStyle("scrollbar-width", "none")
           }
 
           if visibleTabs.contains(.recordings) {
@@ -455,6 +465,7 @@ private struct TabLabel: HTML {
       .inlineStyle("font-size", "0.875rem")
       .inlineStyle("font-weight", "500")
       .inlineStyle("padding", "0.5rem 0.875rem")
+      .inlineStyle("white-space", "nowrap")
   }
 }
 
@@ -1226,46 +1237,52 @@ private struct OfficeHourVideoNotice: HTML {
 
   var body: some HTML {
     div {
-      div {
-        VStack(alignment: .center, spacing: 1) {
-          span {
-            HTMLText(notice)
-          }
-          .fontStyle(.body(.small))
-          .color(.gray650)
-
-          Header(3) {
-            HTMLText(title)
-          }
-          .color(.white)
-          .inlineStyle("text-align", "center")
-          .inlineStyle("text-wrap", "balance")
-
-          if let description, !description.isEmpty {
-            HTMLMarkdown(trusted: description)
-              .color(.gray800)
-              .linkStyle(.init(color: .offWhite, underline: true))
-              .inlineStyle("max-width", "36rem")
-              .inlineStyle("text-align", "center")
-          }
-        }
-      }
-      .inlineStyle("align-items", "center")
-      .inlineStyle("aspect-ratio", "16 / 9")
-      .inlineStyle("background", "linear-gradient(#1a1a1a, #0a0a0a)")
-      .inlineStyle("border", "1px solid #333")
-      .inlineStyle("border-radius", "8px")
-      .inlineStyle("box-sizing", "border-box")
-      .inlineStyle("display", "flex")
-      .inlineStyle("justify-content", "center")
-      .inlineStyle("margin", "0 auto")
-      .inlineStyle("max-width", "960px")
-      .inlineStyle("overflow", "hidden")
-      .inlineStyle("padding", "2rem")
+      card
+        .inlineStyle("align-items", "center")
+        .inlineStyle("aspect-ratio", "16 / 9", media: .desktop)
+        .inlineStyle("background", "linear-gradient(#1a1a1a, #0a0a0a)")
+        .inlineStyle("border", "1px solid #333")
+        .inlineStyle("border-radius", "8px")
+        .inlineStyle("box-sizing", "border-box")
+        .inlineStyle("display", "flex")
+        .inlineStyle("justify-content", "center")
+        .inlineStyle("margin", "0 auto")
+        .inlineStyle("max-width", "960px")
+        .inlineStyle("min-height", "fit-content")
+        .inlineStyle("overflow", "hidden")
+        .inlineStyle("padding", "3rem 1.5rem")
+        .inlineStyle("padding", "2rem", media: .desktop)
     }
     .backgroundColor(.black)
     .inlineStyle("padding", "2rem 2rem 4rem")
     .inlineStyle("padding", "2rem 3rem 4rem", media: .desktop)
+  }
+
+  var card: some HTML {
+    div {
+      VStack(alignment: .center, spacing: 1) {
+        span {
+          HTMLText(notice)
+        }
+        .fontStyle(.body(.small))
+        .color(.gray650)
+
+        Header(3) {
+          HTMLText(title)
+        }
+        .color(.white)
+        .inlineStyle("text-align", "center")
+        .inlineStyle("text-wrap", "balance")
+
+        if let description, !description.isEmpty {
+          HTMLMarkdown(trusted: description)
+            .color(.gray800)
+            .linkStyle(.init(color: .offWhite, underline: true))
+            .inlineStyle("max-width", "36rem")
+            .inlineStyle("text-align", "center")
+        }
+      }
+    }
   }
 }
 
