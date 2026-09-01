@@ -1,10 +1,10 @@
-Thanks to the support from our [subscribers] we are able to spend _a lot_ of time maintaining our open source libraries. We often blog about some of our biggest releases, but there are a lot of smaller improvements that fly under the radar, and we don't want to inundate people with daily emails. So, we are going to start recapping our contributions in a monthly, digestible format.
+Thanks to the support from our [members] we are able to spend _a lot_ of time maintaining our open source libraries. We often blog about some of our biggest releases, but there are a lot of smaller improvements that fly under the radar, and we don't want to inundate people with daily emails. So, we are going to start recapping our contributions in a monthly, digestible format.
 
-[subscribers]: /pricing
+[members]: /pricing
 
-Last month we shipped 40 releases across 16 of our libraries, including major new JSON and collation tools for our modern persistence libraries, the return of preview traits in Dependencies, a new protocol in CasePaths that paves the way for big performance improvements and 2.0, and had contributions from 17 community members, 13 of them first-timers. Here's a recap of everything that happened, and be sure to update your dependencies to take advantage of it all!
+Last month we shipped 40 releases across 16 of our libraries, including major new JSON and collation tools for our modern persistence libraries, the return of preview traits in Dependencies, a new protocol in CasePaths that paves the way for big performance improvements and 2.0, and had contributions from 17 community members, 13 of them first-timers. Here's a recap of everything that happened, and be sure to update your package dependencies to take advantage of it all!
 
-* [StructuredQueries: JSON, collations, and VALUES](#structuredqueries-json-collations-and-values)
+* [StructuredQueries: JSON, collations, and `VALUES`](#structuredqueries-json-collations-and-values)
 * [SQLiteData: automatic observation and strictness](#sqlitedata-automatic-observation-and-strictness)
 * [Dependencies: preview traits are back, and locales](#dependencies-preview-traits-are-back-and-locales)
 * [CasePaths: paving the way for 2.0](#casepaths-paving-the-way-for-2-0)
@@ -13,7 +13,7 @@ Last month we shipped 40 releases across 16 of our libraries, including major ne
 * [And the rest](#and-the-rest)
 * [Thank you, contributors](#thank-you-contributors)
 
-## StructuredQueries: JSON, collations, and VALUES
+## StructuredQueries: JSON, collations, and `VALUES`
 
 [Structured Queries](https://github.com/pointfreeco/swift-structured-queries) saw seven releases this month (0.35.0 through 0.39.1), primarily focused on bringing full support for JSON and JSONB in SQLite databases:
 
@@ -127,7 +127,7 @@ The month's other Dependencies improvements include:
 +KeyPath<Root.AllCasePaths, some CasePath<Root, Value>>
 ```
 
-We have already adopted the protocol across [Swift Navigation](https://github.com/pointfreeco/swift-navigation) 2.11.2, [Sharing](https://github.com/pointfreeco/swift-sharing) 2.10.1, [Structured Queries](https://github.com/pointfreeco/swift-structured-queries) 0.39.0, and [Parsing](https://github.com/pointfreeco/swift-parsing) 0.15.1.
+We have already adopted the protocol across [SwiftNavigation](https://github.com/pointfreeco/swift-navigation) 2.11.2, [Sharing](https://github.com/pointfreeco/swift-sharing) 2.10.1, [StructuredQueries](https://github.com/pointfreeco/swift-structured-queries) 0.39.0, and [Parsing](https://github.com/pointfreeco/swift-parsing) 0.15.1.
 
 ## Sharing: slimmer builds with package traits
 
