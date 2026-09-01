@@ -241,5 +241,6 @@ extension BlogPost {
     .post0222_search,
     .post0223_lazyState,
     .post0224_firstOfficeHours,
+    .post0225_augustRecap,
   ]
 }
