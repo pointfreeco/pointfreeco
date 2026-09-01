@@ -1,14 +1,16 @@
 We are excited to announce [Office Hours][office-hours], a new feature exclusive to 
 [Point-Free Max][pricing] members giving them more direct access to us, and our very first
-session is coming up soon!
+session is coming up [soon][office-hours]!
 
 ## What are office hours?
 
 Office hours are periodic livestreams where we hang out with our Max members in a smaller, 
-more casual setting than our public [livestreams](/live). These sessions will be mostly focused
+more casual setting than our public [livestreams]. These sessions will be mostly focused
 on just answering question from our subscribers, and we will be holding them regularly. We aren't
 committing to a strict schedule because sometimes recording episodes (and life!) gets in the way,
 but the [offices hours page][office-hours] will always show the next scheduled session.
+
+[livestreams]: /collections/livestreams
 
 Every session is recorded, and the full archive of past sessions is available on the 
 [office hours page][office-hours] for Max members to watch anytime.
