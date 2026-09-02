@@ -77,8 +77,16 @@ We covered these tools in depth in a [dedicated blog post](/blog/posts/220-type-
   }
   ```
 
-  Now `@FetchOne` automatically observes primary-keyed records, so your views stay in sync with individual records with no extra work, and an entire class of bugs disappears.
+  Now `@FetchOne` automatically observes primary-keyed records, so the above can be shortened to:
 
+  ```swift
+  init(profile: Profile) {
+    _profile = FetchOne(wrappedValue: profile)
+  }
+  ```
+  
+  This will still query for the newest profile and observe changes to the profile in the database.
+  
 * **`StrictDecoding`**: a new trait that throws an error when a decoded field's type doesn't match its SQL affinity, rather than silently coercing. This has already helped us catch a few bugs, and we highly recommend you enable this trait.
 
 Beyond that, the month brought user-defined collating sequences powered by the new `@DatabaseCollation` macro, a `ColumnCoding` passthrough trait, and some serious performance work: `@FetchAll` and `@FetchOne` statements are now cached, and `String`, `Date`, and `UUID` encoding/decoding got faster. There were also fixes for CloudKit record sharing, in-memory metadatabase creation, and a subtle SwiftUI glitch where `@Fetch*` state could break animations.
