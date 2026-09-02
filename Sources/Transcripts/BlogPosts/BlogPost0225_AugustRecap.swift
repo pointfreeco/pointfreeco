@@ -9,7 +9,7 @@ extension BlogPost {
       traits in Dependencies, and the completion of a years-long package rename. Here's a recap \
       of everything that happened.
       """,
-    coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/ff8506c9-5cff-4693-3f45-baf1688c0e00/public",
+    coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/79d19fc8-76ee-4944-5b71-61a96a05e000/public",
     hidden: .no,
     hideFromSlackRSS: false,
     id: 225,
