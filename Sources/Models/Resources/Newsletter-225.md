@@ -36,7 +36,8 @@ We covered these tools in depth in a [dedicated blog post](/blog/posts/220-type-
   db.add(collation: $canonical)
 
   Reminder.order { $0.title.collate($canonical) }
-  // SELECT … FROM "reminders"
+  // SELECT … 
+  // FROM "reminders"
   // ORDER BY "reminders"."title" COLLATE "canonical"
   ```
 
@@ -77,7 +78,7 @@ We covered these tools in depth in a [dedicated blog post](/blog/posts/220-type-
   }
   ```
 
-  Now `@FetchOne` automatically observes primary-keyed records, so the above can be shortened to:
+  Now `@FetchOne` automatically observes primary-keyed records, which means SwiftUI views typically can omit the initializer entirely and rely on the synthesized initializer, and non-views can shorten their initializers to: 
 
   ```swift
   init(profile: Profile) {
