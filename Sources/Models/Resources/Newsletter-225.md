@@ -29,40 +29,119 @@ We covered these tools in depth in a [dedicated blog post](/blog/posts/220-type-
   ```swift
   @DatabaseCollation
   func canonical(_ lhs: UTF8Span, _ rhs: UTF8Span) -> CollationOrder {
-    if lhs.isCanonicallyLessThan(rhs) { return .ascending }
-    if rhs.isCanonicallyLessThan(lhs) { return .descending }
+    if lhs.isCanonicallyLessThan(rhs) { 
+      return .ascending 
+    }
+    if rhs.isCanonicallyLessThan(lhs) { 
+      return .descending
+    }
     return .same
   }
 
   db.add(collation: $canonical)
+  ```
+  
+  Once your collation is defined and added to the database connection you can use in any query:
 
-  Reminder.order { $0.title.collate($canonical) }
-  // SELECT … 
-  // FROM "reminders"
-  // ORDER BY "reminders"."title" COLLATE "canonical"
+  <table>
+  <tr>
+  <th>Swift</th>
+  <th>SQL</th>
+  </tr>
+  <tr valign=top>
+  <td width=50%>
+
+  ```swift
+  Reminder.order { 
+    $0.title.collate($canonical) 
+  }
+  
   ```
 
+  </td>
+  <td width=50%>
+
+  ```sql
+  SELECT …
+  FROM "reminders"
+  ORDER BY 
+    "reminders"."title"  COLLATE "canonical"  
+  ```
+
+  </td>
+  </tr>
+  </table>
+
 * **Multi-row `VALUES` statements**: SQLite's true `VALUES` statement is now supported, usable in unions and common table expressions, along with improvements to the insert values builder, including inserting grouped column types ([#359](https://github.com/pointfreeco/swift-structured-queries/pull/359)):
+
+  <table>
+  <tr>
+  <th>Swift</th>
+  <th>SQL</th>
+  </tr>
+  <tr valign=top>
+  <td width=50%>
 
   ```swift
   Values {
     (1, "Hello", true)
     (2, "Goodbye", false)
   }
-  // VALUES (1, 'Hello', 1), (2, 'Goodbye', 0)
   ```
+
+  </td>
+  <td width=50%>
+
+  ```sql
+  VALUES 
+    (1, 'Hello', 1), 
+    (2, 'Goodbye', 0)
+    
+  ```
+
+  </td>
+  </tr>
+  </table>
 
 * **Type-safe date and time helpers**: SQLite's `date`, `time`, `datetime`, and friends, now available directly from the query builder with type safety, including `strftime` formatting ([#358](https://github.com/pointfreeco/swift-structured-queries/pull/358)):
 
-  ```swift
-  Reminder.where { $0.createdAt > .now(.days(-7)) }
-  // SELECT … FROM "reminders"
-  // WHERE (("reminders"."createdAt") > (datetime('now', '-7 days', 'subsec')))
+  <table>
+  <tr>
+  <th>Swift</th>
+  <th>SQL</th>
+  </tr>
+  <tr valign=top>
+  <td width=50%>
 
-  Reminder.select { $0.createdAt.strftime("%Y-%m") }
-  // SELECT strftime('%Y-%m', "reminders"."createdAt")
-  // FROM "reminders"
+  ```swift
+  Reminder.where { 
+    $0.createdAt > .now(.days(-7)) 
+  }
+
+
+  Reminder.select { 
+    $0.createdAt.strftime("%Y-%m") 
+  }
   ```
+
+  </td>
+  <td width=50%>
+
+  ```sql
+  SELECT … 
+  FROM "reminders"
+  WHERE 
+    "reminders"."createdAt" > datetime('now', '-7 days', 'subsec')
+
+  SELECT 
+    strftime('%Y-%m', "reminders"."createdAt")
+  FROM "reminders"
+  ```
+
+  </td>
+  </tr>
+  </table>
+
 * **Throwing query decoding**: decoding can now throw on type mismatch rather than silently coercing ([#310](https://github.com/pointfreeco/swift-structured-queries/pull/310)), and it uses typed throws for better performance ([#339](https://github.com/pointfreeco/swift-structured-queries/pull/339)).
 * **Performance**: query building improvements ([#351](https://github.com/pointfreeco/swift-structured-queries/pull/351)), leaner `TableColumns` definitions ([#352](https://github.com/pointfreeco/swift-structured-queries/pull/352)), and `@DatabaseFunction` macro output that minimizes allocations ([#360](https://github.com/pointfreeco/swift-structured-queries/pull/360)).
 * **Better diagnostics**: new macro diagnostics for `RawRepresentation` ([#340](https://github.com/pointfreeco/swift-structured-queries/pull/340)), `@Table` enums ([#331](https://github.com/pointfreeco/swift-structured-queries/pull/331)), and default-`MainActor` modules ([#344](https://github.com/pointfreeco/swift-structured-queries/pull/344)).
