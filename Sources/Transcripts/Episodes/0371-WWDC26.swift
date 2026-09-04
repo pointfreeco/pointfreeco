@@ -25,6 +25,7 @@ extension Episode {
         publishedAt: yearMonthDayFormatter.date(from: "2026-06-09")!,
         title: "WWDC26: Modernize your UIKit app"
       ),
+      .wwdc26WhatsNewInSwiftData,
       .swiftNavigation,
       .swiftCasePaths,
     ],
