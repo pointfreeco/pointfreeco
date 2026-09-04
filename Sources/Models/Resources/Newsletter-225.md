@@ -10,6 +10,7 @@ Last month we shipped 40 releases across 16 of our libraries, including major ne
 * [CasePaths: paving the way for 2.0](#casepaths-paving-the-way-for-2-0)
 * [Sharing: slimmer builds with package traits](#sharing-slimmer-builds-with-package-traits)
 * [IssueReporting 2.0, everywhere](#issuereporting-2-0-everywhere)
+* [Beta Preview: LazyState](#beta-preview-lazystate)
 * [And the rest](#and-the-rest)
 * [Thank you, contributors](#thank-you-contributors)
 
@@ -162,6 +163,55 @@ We have already adopted the protocol across [SwiftNavigation](https://github.com
 Luckily, we found a fix for this situation recently. We now maintain `xctest-dynamic-overlay` as a fork of `swift-issue-reporting`, and made it possible to depend on both at the same time. When building with Xcode <27, the legacy `xctest-dynamic-overlay` library is used, and when building with Xcode 27+, the new `swift-issue-reporting` library is used. And this works thanks to some fixes in swift-build made available to Xcode 27.
 
 This allows people to migrate their libraries to `swift-issue-reporting` whenever they have time (there's no rush!), and we have already updated all of our libraries. Most importantly, we were able to do this update with nearly no one noticing, which is impressive considering `swift-issue-reporting` gets about a million clones a week!
+
+## Beta Preview: LazyState
+
+We also announced the newest addition to [Beta Previews](/beta-previews): **LazyState**, a micro-library that brings the new laziness of SwiftUI's `@State` macro to state that must be initialized dynamically with data from a parent view. The `@LazyState` macro lets you create state once per view lifetime without forcing your model to become optional, stashing initialization inputs in extra properties, or moving setup into `onAppear`.
+
+Here is an example of the clean up we can perform in Apple's [SampleTrips] demo app thanks to `@LazyState`:
+
+[SampleTrips]: https://developer.apple.com/videos/play/wwdc2026/278
+
+```diff
+struct LocationSearchSheet: View {
+-  @State private var completer: LocationSearchCompleter?
++  @LazyState private var completer: LocationSearchCompleter
+
+-  var region: MKCoordinateRegion?
++  init(region: MKCoordinateRegion?) {
++    _completer = LazyState {
++      LocationSearchCompleter(region: region)
++    }
++  }
+
+  var body: some View {
+    VStack {
+-      TextField("Search", text: query)
++      TextField("Search", text: $completer.query)
+
+      List {
+-        ForEach(completer?.results ?? []) {
++        ForEach(completer.results) {
+          …
+        }
+      }
+    }
+-    .onAppear {
+-      completer = LocationSearchCompleter(region: region)
+-    }
+  }
+-
+-  private var query: Binding<String> {
+-    Binding(
+-      get: { completer?.query ?? "" },
+-      set: { completer?.query = $0 }
+-    )
+-  }
+-
+}
+```
+
+`@LazyState` works like `@State`, including normal binding derivation through `$completer`, but closes the gap Apple left for dynamically initialized state. It is available today as a [Beta Preview](/beta-previews) for [Point-Free Max](/pricing) members, and you can read the full announcement in [Beta Preview: LazyState](/blog/posts/223-beta-preview-lazystate).
 
 ## And the rest
 

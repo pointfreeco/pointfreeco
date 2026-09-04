@@ -15,6 +15,7 @@ extension Episode {
     permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2026-08-17")!,
     references: [
+      .wwdc26WhatsNewInSwiftData,
       .sqliteData,
       .debugSnapshots,
       Episode.Reference(
