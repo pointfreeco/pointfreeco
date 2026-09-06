@@ -2,8 +2,8 @@ import Stripe
 import TaggedMoney
 
 public struct Pricing: Equatable {
-  public var billing: Billing
   public var plan: Plan
+  public var billing: Billing
   public var quantity: Int
 
   public init(plan: Plan, billing: Billing, quantity: Int) {

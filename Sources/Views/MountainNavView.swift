@@ -165,10 +165,12 @@ private func headerLinks(
     .a(attributes: [.href(siteRouter.path(for: .betas())), .class([navLinkClasses])], "Beta previews"),
 
     currentUser == nil
-      ? .gitHubLink(
-        text: "Login",
-        type: .black,
-        href: siteRouter.loginPath(redirect: currentRoute)
+      ? .a(
+        attributes: [
+          .class([Class.pf.components.button(color: .black)]),
+          .href(siteRouter.loginPath(redirect: currentRoute)),
+        ],
+        "Login"
       )
       : .a(
         attributes: [

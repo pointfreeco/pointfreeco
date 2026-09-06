@@ -1,5 +1,6 @@
 import Dependencies
 import StyleguideV2
+import Transcripts
 
 public struct Collections: HTML {
   @Dependency(\.collections) var collections

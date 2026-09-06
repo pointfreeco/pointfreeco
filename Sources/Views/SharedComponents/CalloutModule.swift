@@ -17,7 +17,7 @@ struct CalloutModule: HTML {
         }
 
         div {
-          HTMLMarkdown(subtitle)
+          HTMLMarkdown(trusted: subtitle)
             .color(.gray150.dark(.gray800))
             .inlineStyle("max-width", "40rem", media: .desktop)
         }

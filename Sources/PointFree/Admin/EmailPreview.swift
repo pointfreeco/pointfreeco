@@ -161,6 +161,17 @@ private func email(selectedTemplate: EmailTemplate) -> Node {
       code: "pointfree.co",
       currentUser: blob
     )
+  case .loginCode:
+    return Node {
+      LoginCodeEmail(
+        loginCode: EmailLoginCode(
+          code: "ABC234",
+          createdAt: Date(),
+          email: "blob@pointfree.co",
+          id: EmailLoginCode.ID()
+        )
+      )
+    }
   case .maxWelcomeEmail:
     return Node { MaxWelcomeEmail(user: blob) }
   case .proWelcomeEmail:
@@ -260,6 +271,8 @@ extension EmailTemplate {
     switch self {
     case .joinTeamConfirmation:
       "Join team confirmation"
+    case .loginCode:
+      "Login code"
     case .maxWelcomeEmail:
       "Max Welcome Email"
     case .proWelcomeEmail:
@@ -287,8 +300,7 @@ extension EmailTemplate {
 private let blob = User(
   email: "blob@pointfree.co",
   episodeCreditCount: 1,
-  gitHubUserId: 1,
-  gitHubAccessToken: "",
+  gitHub: User.GitHub(accessToken: "", userId: 1),
   id: User.ID(),
   isAdmin: false,
   name: "Blob",
@@ -301,8 +313,7 @@ private let blob = User(
 private let blobJr = User(
   email: "blob.jr@pointfree.co",
   episodeCreditCount: 1,
-  gitHubUserId: 1,
-  gitHubAccessToken: "",
+  gitHub: User.GitHub(accessToken: "", userId: 1),
   id: User.ID(),
   isAdmin: false,
   name: "Blob Jr.",

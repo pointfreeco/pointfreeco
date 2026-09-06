@@ -38,6 +38,18 @@ extension Conn where Step == HeadersOpen {
 }
 
 extension Conn where Step == HeadersOpen {
+  func respondFragment<V: HTML>(@HTMLBuilder view: () -> V) -> Conn<ResponseEnded, Data> {
+    @Dependency(\.htmlPrinter) var htmlPrinter
+    var printer = htmlPrinter
+    V._render(view(), into: &printer)
+    var body = Data("<div><style>@scope{\(printer.stylesheet)}</style>".utf8)
+    body.append(contentsOf: printer.bytes)
+    body.append(contentsOf: Data("</div>".utf8))
+    return respond(body: body, contentType: .html)
+  }
+}
+
+extension Conn where Step == HeadersOpen {
   fileprivate func respond(body: Data, contentType: MediaType) -> Conn<ResponseEnded, Data> {
     return self.map { _ in body }
       .writeHeader(.contentType(contentType))

@@ -118,7 +118,7 @@ class SubscriptionConfirmationTests: TestCase {
   @MainActor
   func testTeam_LoggedIn() async throws {
     var user = User.mock
-    user.gitHubUserId = -1
+    user.gitHub?.userId = -1
 
     await withDependencies {
       $0.database.fetchUserById = { _ in user }
@@ -152,7 +152,7 @@ class SubscriptionConfirmationTests: TestCase {
   @MainActor
   func testTeam_LoggedIn_WithDefaults() async throws {
     var user = User.mock
-    user.gitHubUserId = -1
+    user.gitHub?.userId = -1
 
     await withDependencies {
       $0.database.fetchUserById = { _ in user }
@@ -192,7 +192,7 @@ class SubscriptionConfirmationTests: TestCase {
   @MainActor
   func testTeam_LoggedIn_WithDefaults_OwnerIsNotTakingSeat() async throws {
     var user = User.mock
-    user.gitHubUserId = -1
+    user.gitHub?.userId = -1
 
     await withDependencies {
       $0.database.fetchUserById = { _ in user }
@@ -232,7 +232,7 @@ class SubscriptionConfirmationTests: TestCase {
   @MainActor
   func testTeam_LoggedIn_SwitchToMonthly() async throws {
     var user = User.mock
-    user.gitHubUserId = -1
+    user.gitHub?.userId = -1
 
     await withDependencies {
       $0.database.fetchUserById = { _ in user }
@@ -266,7 +266,7 @@ class SubscriptionConfirmationTests: TestCase {
   @MainActor
   func testTeam_LoggedIn_AddTeamMember() async throws {
     var user = User.mock
-    user.gitHubUserId = 1
+    user.gitHub?.userId = 1
 
     await withDependencies {
       $0.database.fetchUserById = { _ in user }
@@ -388,7 +388,7 @@ class SubscriptionConfirmationTests: TestCase {
   @MainActor
   func testTeam_LoggedIn_RemoveOwnerFromTeam() async throws {
     var user = User.mock
-    user.gitHubUserId = 1
+    user.gitHub?.userId = 1
 
     await withDependencies {
       $0.database.fetchUserById = { _ in user }

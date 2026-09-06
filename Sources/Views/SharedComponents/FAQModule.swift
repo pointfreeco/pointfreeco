@@ -12,7 +12,7 @@ struct FAQModule: HTML {
             }
             .color(.black.dark(.offWhite))
 
-            HTMLMarkdown(faq.answer)
+            HTMLMarkdown(trusted: faq.answer)
           }
         }
       }

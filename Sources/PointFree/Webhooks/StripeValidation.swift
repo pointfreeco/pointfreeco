@@ -38,7 +38,7 @@ func stripeHookFailure(
 ) -> Conn<ResponseEnded, Data> {
   @Dependency(\.date.now) var now
 
-  Task {
+  _ = Task {
     var requestDump = body + "\n\n"
     print("Current timestamp: \(now.timeIntervalSince1970)", to: &requestDump)
     print(

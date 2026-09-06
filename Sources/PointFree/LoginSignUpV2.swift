@@ -1,4 +1,5 @@
 import Dependencies
+import EmailAddress
 import Foundation
 import Html
 import HttpPipeline
@@ -44,6 +45,38 @@ func loginSignUpMiddleware(
       LoginSignUpView(
         redirect: redirect,
         kind: kind
+      )
+    }
+}
+
+func loginCodeMiddleware(
+  email: EmailAddress,
+  redirect: String?,
+  _ conn: Conn<StatusLineOpen, Void>
+) async -> Conn<ResponseEnded, Data> {
+  @Dependency(\.currentUser) var currentUser
+
+  guard currentUser == nil
+  else {
+    return
+      conn
+      .redirect(to: .home) {
+        $0.flash(.notice, "You’re already logged in.")
+      }
+  }
+
+  return
+    conn
+    .writeStatus(.ok)
+    .respondV2(
+      layoutData: SimplePageLayoutData(
+        description: "Point-Free: A hub for advanced programming in Swift.",
+        title: "Log into Point-Free"
+      )
+    ) {
+      LoginCodeView(
+        email: email,
+        redirect: redirect
       )
     }
 }

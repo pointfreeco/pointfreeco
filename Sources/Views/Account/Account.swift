@@ -3,6 +3,7 @@ import Dependencies
 import Either
 import Foundation
 import FunctionalCss
+import GitHub
 import Html
 import Models
 import PointFreePrelude
@@ -166,6 +167,63 @@ private func profileRowView(_ data: AccountData) -> Node {
     ),
   ]
 
+  let gitHubFields: Node = [
+    .label(attributes: [.class([labelClass])], "GitHub"),
+    data.currentUser.gitHub == nil
+      ? .p(
+        attributes: [
+          .class([
+            Class.pf.colors.fg.gray400,
+            Class.pf.type.body.small,
+          ])
+        ],
+        "No GitHub account is connected. ",
+        .a(
+          attributes: [
+            .class([Class.pf.type.underlineLink]),
+            .href(
+              siteRouter.path(
+                for: .auth(
+                  .connectGitHubLanding(redirect: siteRouter.path(for: .account()))
+                )
+              )
+            ),
+          ],
+          "Connect GitHub"
+        ),
+        "."
+      )
+      : .div(
+        attributes: [.style(safe: "position: relative")],
+        .input(
+          attributes: [
+            .class([blockInputClass]),
+            .disabled(true),
+            .type(.text),
+            .value(data.gitHubUser.map { "@\($0.login)" } ?? "Connected"),
+          ]
+        ),
+        data.gitHubUser.map { gitHubUser in
+          .a(
+            attributes: [
+              .class([Class.pf.colors.fg.gray400]),
+              .href("https://github.com/\(gitHubUser.login)"),
+              .rel(.init(rawValue: "noopener noreferrer")),
+              .target(.blank),
+              .title("View GitHub profile"),
+              .style(
+                safe: """
+                  position: absolute; right: 0.75rem; top: 50%; \
+                  transform: translateY(-50%); line-height: 0;
+                  """
+              ),
+            ],
+            .raw(gitHubIconSvg)
+          )
+        } ?? []
+      ),
+  ]
+
   let showExtraInvoiceInfo =
     data.isSubscriptionOwner && !data.subscriberState.isEnterpriseSubscriber
   let extraInvoiceInfoFields: Node =
@@ -218,6 +276,7 @@ private func profileRowView(_ data: AccountData) -> Node {
   let formContent: Node = [
     nameFields,
     emailFields,
+    gitHubFields,
     extraInvoiceInfoFields,
     emailSettingCheckboxes(data.emailSettings, data.subscriberState),
     submit,
@@ -248,8 +307,8 @@ private func emailSettingCheckboxes(
     : EmailSetting.Newsletter.subscriberNewsletters
 
   return [
+    .label(attributes: [.class([labelClass])], "Communication"),
     // TODO: hide `welcomeEmails` for subscribers?
-    .p("Receive email for:"),
     .p(
       attributes: [.class([Class.padding([.mobile: [.left: 1]])])],
       .fragment(
@@ -1796,6 +1855,7 @@ public struct AccountData {
   public let currentUser: User
   public let emailSettings: [EmailSetting]
   public let episodeCredits: [EpisodeCredit]
+  public let gitHubUser: GitHubUser?
   public let paymentMethod: Either<any CardProtocol, PaymentMethod>?
   public let stripeSubscription: Stripe.Subscription?
   public let subscriberState: SubscriberState
@@ -1809,6 +1869,7 @@ public struct AccountData {
     currentUser: User,
     emailSettings: [EmailSetting],
     episodeCredits: [EpisodeCredit],
+    gitHubUser: GitHubUser?,
     paymentMethod: Either<any CardProtocol, PaymentMethod>?,
     stripeSubscription: Stripe.Subscription?,
     subscriberState: SubscriberState,
@@ -1821,6 +1882,7 @@ public struct AccountData {
     self.currentUser = currentUser
     self.emailSettings = emailSettings
     self.episodeCredits = episodeCredits
+    self.gitHubUser = gitHubUser
     self.paymentMethod = paymentMethod
     self.stripeSubscription = stripeSubscription
     self.subscriberState = subscriberState
@@ -1839,6 +1901,12 @@ public struct AccountData {
     return (self.stripeSubscription?.quantity ?? 0) > 1
   }
 }
+
+private let gitHubIconSvg = """
+  <svg width="18" height="17" viewBox="0 0 21 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M10.4991 0C4.97773 0 0.5 4.3609 0.5 9.74072C0.5 14.0442 3.36504 17.6947 7.33876 18.9827C7.83908 19.0724 8.02141 18.7717 8.02141 18.5133C8.02141 18.2819 8.01281 17.6696 8.0079 16.857C5.22636 17.4454 4.63948 15.5511 4.63948 15.5511C4.18458 14.4257 3.52894 14.1261 3.52894 14.1261C2.621 13.5222 3.5977 13.5342 3.5977 13.5342C4.60142 13.6029 5.12936 14.5381 5.12936 14.5381C6.02135 16.0264 7.47013 15.5965 8.03983 15.3472C8.13068 14.7181 8.38913 14.2888 8.67459 14.0454C6.45414 13.7996 4.11951 12.9637 4.11951 9.23126C4.11951 8.16809 4.50933 7.29806 5.14901 6.61759C5.04587 6.37123 4.70271 5.38042 5.24723 4.0398C5.24723 4.0398 6.08642 3.77789 7.99685 5.03838C8.7943 4.82192 9.65007 4.71429 10.5003 4.71011C11.3499 4.71429 12.2051 4.82192 13.0038 5.03838C14.913 3.77789 15.7509 4.0398 15.7509 4.0398C16.2967 5.38042 15.9535 6.37123 15.851 6.61759C16.4919 7.29806 16.8786 8.16809 16.8786 9.23126C16.8786 12.9733 14.5403 13.7967 12.3131 14.0376C12.6716 14.3384 12.9915 14.9328 12.9915 15.8411C12.9915 17.1434 12.9792 18.194 12.9792 18.5133C12.9792 18.7741 13.1597 19.0772 13.6668 18.9821C17.6374 17.6912 20.5 14.043 20.5 9.74072C20.5 4.3609 16.0223 0 10.4991 0Z" fill="currentColor"/>
+  </svg>
+  """
 
 private let dateFormatter: DateFormatter = {
   let df = DateFormatter()

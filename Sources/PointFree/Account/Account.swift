@@ -1,6 +1,7 @@
 import Dependencies
 import Either
 import Foundation
+import GitHub
 import HttpPipeline
 import Models
 import PointFreePrelude
@@ -31,6 +32,7 @@ private func fetchAccountData<I>(
   _ conn: Conn<I, Tuple2<User, SubscriberState>>
 ) -> IO<Conn<I, AccountData>> {
   @Dependency(\.database) var database
+  @Dependency(\.gitHub) var gitHub
   @Dependency(\.stripe) var stripe
   @Dependency(\.fireAndForget) var fireAndForget
 
@@ -74,6 +76,13 @@ private func fetchAccountData<I>(
         Invoice?.none
       }
     }()
+    async let gitHubUser = {
+      if let accessToken = user.gitHub?.accessToken {
+        try? await gitHub.fetchUser(accessToken: accessToken)
+      } else {
+        GitHubUser?.none
+      }
+    }()
     async let emailSettings = {
       (try? await database.fetchEmailSettings(userID: user.id)) ?? []
     }()
@@ -91,6 +100,7 @@ private func fetchAccountData<I>(
       currentUser: user,
       emailSettings: emailSettings,
       episodeCredits: episodeCredits,
+      gitHubUser: gitHubUser,
       paymentMethod: paymentMethod,
       stripeSubscription: stripeSubscription,
       subscriberState: subscriberState,

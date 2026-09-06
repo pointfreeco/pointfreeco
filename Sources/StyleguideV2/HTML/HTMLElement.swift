@@ -83,6 +83,7 @@ private let inlineTags: Set<String> = [
   "kbd",
   "label",
   "map",
+  "mark",
   "object",
   "output",
   "q",

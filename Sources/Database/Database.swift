@@ -19,6 +19,7 @@ public struct Client {
       _ id: Models.User.ID,
       _ toSubscriptionID: Models.Subscription.ID
     ) async throws -> Void
+  public var createEmailLoginCode: (_ email: EmailAddress) async throws -> EmailLoginCode?
   public var createEnterpriseEmail:
     (
       _ emailAddress: EmailAddress,
@@ -42,6 +43,8 @@ public struct Client {
       _ toEmail: EmailAddress,
       _ toName: String
     ) async throws -> Gift
+  public var createOfficeHourQuestion:
+    (_ question: String, _ userID: Models.User.ID) async throws -> OfficeHourQuestion
   public var createSubscription:
     (
       _ subscription: Stripe.Subscription,
@@ -51,6 +54,8 @@ public struct Client {
       _ plan: Pricing.Plan
     ) async throws -> Models.Subscription
   public var deleteEnterpriseEmail: (_ userID: User.ID) async throws -> Void
+  public var deleteOfficeHourQuestion:
+    (_ id: OfficeHourQuestion.ID, _ userID: Models.User.ID) async throws -> Void
   public var deleteTeamInvite: (_ id: TeamInvite.ID) async throws -> Void
   public var deleteTheWayAccess: (_ machine: UUID, _ whoami: String) async throws -> Void
   public var execute: (_ sql: SQLQueryString) async throws -> [SQLRow]
@@ -83,6 +88,12 @@ public struct Client {
     (_ paymentIntentID: PaymentIntent.ID) async throws -> Gift
   public var fetchGiftsToDeliver: () async throws -> [Gift]
   public var fetchLivestreams: () async throws -> [Livestream]
+  @DependencyEndpoint(method: "fetchOfficeHour")
+  public var fetchOfficeHourByCloudflareVideoID:
+    (_ cloudflareVideoID: Cloudflare.Video.ID) async throws -> OfficeHour
+  public var fetchOfficeHourQuestions:
+    (_ answered: Bool, _ userID: Models.User.ID?) async throws -> [OfficeHourQuestion]
+  public var fetchOfficeHours: () async throws -> [OfficeHour]
   @DependencyEndpoint(method: "fetchSubscription")
   public var fetchSubscriptionById:
     (_ id: Models.Subscription.ID) async throws -> Models.Subscription
@@ -123,8 +134,12 @@ public struct Client {
       _ inviterUserID: Models.User.ID
     ) async throws -> TeamInvite
   public var migrate: () async throws -> Void
+  public var redeemEmailLoginCode:
+    (_ email: EmailAddress, _ code: EmailLoginCode.Code) async throws -> EmailLoginCode
   public var redeemEpisodeCredit:
     (_ sequence: Episode.Sequence, _ userID: Models.User.ID) async throws -> Void
+  public var refreshEpisodeSearchIndex:
+    (_ documents: [EpisodeSearchDocument]) async throws -> Void
   public var regenerateTeamInviteCode:
     (_ subscriptionID: Models.Subscription.ID) async throws -> Void
 
@@ -134,7 +149,14 @@ public struct Client {
       _ userID: Models.User.ID,
       _ fromSubscriptionID: Models.Subscription.ID
     ) async throws -> Void
+  public var rotateEmailLoginCode: (_ email: EmailAddress) async throws -> Void
   public var sawUser: (_ id: Models.User.ID) async throws -> Void
+  public var searchEpisodes:
+    (
+      _ query: String,
+      _ kinds: [EpisodeSearchDocument.Kind]?,
+      _ sequences: [Episode.Sequence]?
+    ) async throws -> EpisodeSearchResults
   public var updateEmailSettings:
     (_ newsletters: [EmailSetting.Newsletter]?, _ userID: Models.User.ID) async throws -> Void
   public var updateEpisodeProgress:
@@ -160,11 +182,17 @@ public struct Client {
   public var upsertTheWayAccess: (TheWayAccess) async throws -> TheWayAccess
   public var upsertUser:
     (
-      _ accessToken: GitHubAccessToken,
-      _ gitHubUser: GitHubUser,
+      _ accessToken: GitHubAccessToken?,
+      _ gitHubUser: GitHubUser?,
       _ emailAddress: EmailAddress,
       _ date: @escaping () -> Date
     ) async throws -> Models.User
+  public var voteOfficeHourQuestion:
+    (_ questionID: OfficeHourQuestion.ID, _ userID: Models.User.ID) async throws -> Void
+
+  public func searchEpisodes(query: String) async throws -> EpisodeSearchResults {
+    try await self.searchEpisodes(query, nil, nil)
+  }
 
   public func fetchSubscription(user: Models.User) async throws -> Models.Subscription {
     do {
@@ -175,8 +203,8 @@ public struct Client {
   }
 
   public func registerUser(
-    accessToken: GitHubAccessToken,
-    gitHubUser: GitHubUser,
+    accessToken: GitHubAccessToken?,
+    gitHubUser: GitHubUser?,
     email: EmailAddress,
     now: @escaping () -> Date
   ) async throws -> User {

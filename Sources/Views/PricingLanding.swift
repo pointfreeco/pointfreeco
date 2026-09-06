@@ -1,5 +1,6 @@
 import Dependencies
 import Models
+import PointFreeRouter
 import StyleguideV2
 import Transcripts
 
@@ -87,7 +88,12 @@ public struct PricingLanding: HTML {
               .inlineStyle("background-color", "#111")
               .inlineStyle("background-color", "#fff", media: .dark)
               .inlineStyle("background-color", "transparent", pre: teamPricingCheckedSelector)
-              .inlineStyle("background-color", "transparent", media: .dark, pre: teamPricingCheckedSelector)
+              .inlineStyle(
+                "background-color",
+                "transparent",
+                media: .dark,
+                pre: teamPricingCheckedSelector
+              )
               .inlineStyle("border", "1px solid #111")
               .inlineStyle("border", "1px solid #fff", media: .dark)
               .inlineStyle("border-radius", "999px")
@@ -104,7 +110,12 @@ public struct PricingLanding: HTML {
               .inlineStyle("background-color", "transparent")
               .inlineStyle("background-color", "transparent", media: .dark)
               .inlineStyle("background-color", "#111", pre: teamPricingCheckedSelector)
-              .inlineStyle("background-color", "#fff", media: .dark, pre: teamPricingCheckedSelector)
+              .inlineStyle(
+                "background-color",
+                "#fff",
+                media: .dark,
+                pre: teamPricingCheckedSelector
+              )
               .inlineStyle("border", "1px solid #111")
               .inlineStyle("border", "1px solid #fff", media: .dark)
               .inlineStyle("border-radius", "999px")
@@ -134,7 +145,9 @@ public struct PricingLanding: HTML {
                 .attribute(
                   "href",
                   siteRouter.path(
-                    for: .auth(.authLanding(kind: .signUp, redirect: siteRouter.url(for: currentRoute)))
+                    for: .auth(
+                      .authLanding(kind: .signUp, redirect: siteRouter.url(for: currentRoute))
+                    )
                   )
                 )
               } else if subscriberState.isNonSubscriber {
@@ -156,7 +169,7 @@ public struct PricingLanding: HTML {
               SavingsBadge(Pricing.proTeamSavingsFeature)
             } features: {
               for feature in proFeatures {
-                li { HTMLMarkdown(feature) }
+                li { HTMLMarkdown(trusted: feature) }
               }
             } callToAction: {
               if subscriberState.isNonSubscriber {
@@ -204,7 +217,7 @@ public struct PricingLanding: HTML {
               SavingsBadge(Pricing.maxTeamSavingsFeature)
             } features: {
               for feature in maxFeatures {
-                li { HTMLMarkdown(feature) }
+                li { HTMLMarkdown(trusted: feature) }
               }
             } callToAction: {
               if subscriberState.isNonSubscriber {
@@ -352,7 +365,7 @@ private struct SavingsBadge: HTML {
     self.text = text
   }
   var body: some HTML {
-    span { HTMLMarkdown(text) }
+    span { HTMLMarkdown(trusted: text) }
       .inlineStyle("background-color", "rgba(121, 80, 242, 0.1)")
       .inlineStyle("background-color", "rgba(161, 128, 255, 0.15)", media: .dark)
       .inlineStyle("border-radius", "999px")

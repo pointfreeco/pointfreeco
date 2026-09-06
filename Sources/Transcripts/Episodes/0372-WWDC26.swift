@@ -16,15 +16,7 @@ extension Episode {
     permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2026-07-13")!,
     references: [
-      Episode.Reference(
-        author: "Thomas Bartelmess",
-        blurb: """
-          > Discover the latest enhancements to SwiftData. We’ll show you how to persist custom and third-party types using `Codable`, and group fetched data into sections in your SwiftUI app. We’ll also explore how to observe data store changes anywhere else using `ResultsObserver` and `HistoryObserver`, giving you the flexibility to drive powerful state objects and react precisely to model updates.
-          """,
-        link: "https://developer.apple.com/videos/play/wwdc2026/278/",
-        publishedAt: yearMonthDayFormatter.date(from: "2026-06-09")!,
-        title: "WWDC26: What's new in SwiftData"
-      )
+      .wwdc26WhatsNewInSwiftData,
     ],
     sequence: 372,
     socialImage: nil,

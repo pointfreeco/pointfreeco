@@ -1,5 +1,6 @@
 extension Episode.Collection {
   public static let all: [Self] = [
+    .wwdc,
     .modernPersistence,
     .beyondBasics,
     .swiftUI,
@@ -14,7 +15,6 @@ extension Episode.Collection {
     .livestreams,
     .parsing,
     .caseStudies,
-    .wwdc,
     .tours,
     .combine,
     .protocolWitnesses,

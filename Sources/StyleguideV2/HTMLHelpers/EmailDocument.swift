@@ -26,7 +26,7 @@ private struct Email: HTML {
   var body: some HTML {
     html {
       tag("head") {
-        BaseStyles()
+        BaseStyles(supportsDarkMode: false)
         style {
           stylesheet
         }

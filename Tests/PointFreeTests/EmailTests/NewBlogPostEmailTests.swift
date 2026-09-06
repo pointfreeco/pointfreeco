@@ -130,6 +130,7 @@ class NewBlogPostEmailTests: TestCase {
     )
     req.httpBody = Data(formData.utf8)
     let formDataData = NewBlogPostFormData(
+      maxSubscriberDeliver: false,
       nonsubscriberAnnouncement: "",
       nonsubscriberDeliver: true,
       subscriberAnnouncement: "Hello!",

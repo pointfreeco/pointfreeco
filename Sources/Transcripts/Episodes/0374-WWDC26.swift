@@ -12,9 +12,10 @@ extension Episode {
     exercises: _exercises,
     id: 374,
     length: 42 * 60 + 45,
-    permission: .subscriberOnly,
+    permission: .free,
     publishedAt: yearMonthDayFormatter.date(from: "2026-07-27")!,
     references: [
+      .wwdc26WhatsNewInSwiftData,
       .sqliteData,
     ],
     sequence: 374,

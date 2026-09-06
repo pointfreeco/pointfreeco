@@ -24,6 +24,7 @@ extension Episode {
         publishedAt: yearMonthDayFormatter.date(from: "2026-06-09")!,
         title: "WWDC26: What's new in SwiftUI"
       ),
+      .wwdc26WhatsNewInSwiftData,
       .swiftNavigation,
       .swiftCasePaths,
     ],

@@ -487,7 +487,25 @@ final class SubscribeIntegrationTests: LiveDatabaseTestCase {
       )
 
       #if !os(Linux)
-        await assertInlineSnapshot(of: conn, as: .conn)
+        await assertInlineSnapshot(of: conn, as: .conn) {
+          """
+          POST http://localhost:8080/subscribe
+          CF-IPCountry: GB
+          Cookie: pf_session={"userId":"00000000-0000-0000-0000-000000000001"}
+
+          isOwnerTakingSeat=true&paymentMethodID=pm_stripe-deadbeef&pricing%5Bplan%5D=pro&pricing%5Bbilling%5D=monthly&pricing%5Bquantity%5D=1&useRegionalDiscount=true
+
+          302 Found
+          Location: /account
+          Referrer-Policy: strict-origin-when-cross-origin
+          Set-Cookie: pf_session={"flash":{"message":"You are now a member of Point-Free!","priority":"notice"},"userId":"00000000-0000-0000-0000-000000000001"}; Expires=Wed, 7 Feb 2018 00:00:00 GMT; Path=/; SameSite=Lax
+          X-Content-Type-Options: nosniff
+          X-Download-Options: noopen
+          X-Frame-Options: SAMEORIGIN
+          X-Permitted-Cross-Domain-Policies: none
+          X-XSS-Protection: 1; mode=block
+          """
+        }
       #endif
 
       XCTAssertEqual(subscriptionCoupon, nil)

@@ -1,6 +1,8 @@
 import Dependencies
+import Foundation
 import Models
 import StyleguideV2
+import Tagged
 
 public struct EpisodeCard: HTML {
   @Dependency(\.date.now) var now
@@ -39,7 +41,7 @@ public struct EpisodeCard: HTML {
           }
         }
 
-        HTMLMarkdown(episode.blurb)
+        HTMLMarkdown(trusted: episode.blurb)
           .color(.gray400.dark(.gray650))
           .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
       }
@@ -129,7 +131,7 @@ public struct ClipCard: HTML {
         .linkColor(.black.dark(.white))
       }
 
-      HTMLMarkdown(clip.blurb)
+      HTMLMarkdown(trusted: clip.blurb)
         .color(.gray400.dark(.gray650))
         .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
         .inlineStyle("margin-top", "1rem")
@@ -168,7 +170,7 @@ public struct CollectionCard: HTML {
   public var body: some HTML {
     Card {
       div {
-        HTMLMarkdown(collection.blurb)
+        HTMLMarkdown(trusted: collection.blurb)
       }
       .color(.gray400.dark(.gray650))
       .linkStyle(LinkStyle(color: .gray400.dark(.gray650), underline: true))
@@ -238,6 +240,16 @@ extension SVG {
       </svg>
       """
     }
+  }
+
+  static let search = Self("Search") {
+    """
+    <svg width="16" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" xmlns="http://www.w3.org/2000/svg">
+    <title>Search</title>
+    <circle cx="11" cy="11" r="7"/>
+    <path d="m21 21-4.35-4.35"/>
+    </svg>
+    """
   }
 
   static let locked = Self("Members only") {

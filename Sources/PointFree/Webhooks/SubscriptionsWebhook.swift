@@ -127,10 +127,11 @@ func removeBetaAccess(for subscription: Models.Subscription) async {
     }
     for user in users {
       guard
-        let gitHubUser = try? await gitHub.fetchUserByUserID(user.gitHubUserId, betaPreviewsAccessToken)
+        let gitHubUserId = user.gitHub?.userId,
+        let gitHubUser = try? await gitHub.fetchUserByUserID(gitHubUserId, betaPreviewsAccessToken)
       else { continue }
       for beta in Beta.all {
-        await withErrorReporting("Could not remove '\(user.gitHubUserId)' from '\(beta.repo)'") {
+        await withErrorReporting("Could not remove '\(gitHubUserId)' from '\(beta.repo)'") {
           try await gitHub.removeRepoCollaborator(
             owner: "pointfreeco",
             repo: beta.repo,

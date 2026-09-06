@@ -28,7 +28,7 @@ public struct EmailReporter: IssueReporter {
     line: UInt,
     column: UInt
   ) {
-    Task { [message = message()] in
+    _ = Task { [message = message()] in
       try await send(
         message: message,
         fileID: fileID,

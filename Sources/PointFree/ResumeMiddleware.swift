@@ -18,7 +18,9 @@ func resumeMiddleware(
 
   guard currentUser != nil
   else {
-    return conn.redirect(to: .auth(.gitHubAuth(redirect: siteRouter.path(for: currentRoute))))
+    return conn.redirect(
+      to: .auth(.authLanding(kind: .login, redirect: siteRouter.path(for: currentRoute)))
+    )
   }
 
   guard

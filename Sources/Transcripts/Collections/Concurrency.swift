@@ -76,6 +76,7 @@ extension Episode.Collection {
         title: "Testing async code",
         whereToGoFromHere: nil
       ),
+      .isolation,
     ],
     title: "Concurrency"
   )

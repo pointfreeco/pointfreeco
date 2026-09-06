@@ -236,6 +236,11 @@ extension BlogPost {
     .post0217_taskLocalProposal,
     .post0218_xcode27Support,
     .post0219_sqliteDataSectioning,
-    .post0221_MacroTypes,
+    .post0220_structuredQueriesJSON,
+    .post0221_emailLogin,
+    .post0222_search,
+    .post0223_lazyState,
+    .post0224_firstOfficeHours,
+    .post0225_augustRecap,
   ]
 }

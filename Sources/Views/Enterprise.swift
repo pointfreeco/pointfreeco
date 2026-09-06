@@ -16,10 +16,12 @@ public func enterpriseView(_ account: EnterpriseAccount) -> Node {
       attributes: [.class([Class.pf.colors.fg.green, Class.padding([.mobile: [.bottom: 3]])])],
       "Log in to gain access to ", pointFreeRaw, "."
     ),
-    .gitHubLink(
-      text: "Sign in with GitHub",
-      type: .white,
-      href: siteRouter.loginPath(redirect: .enterprise(account.domain))
+    .a(
+      attributes: [
+        .href(siteRouter.loginPath(redirect: .enterprise(account.domain))),
+        .class([Class.pf.components.button(color: .white)]),
+      ],
+      "Log in"
     ),
   ]
 

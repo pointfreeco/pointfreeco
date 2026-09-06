@@ -37,13 +37,15 @@ private func joinTeamLandingLoggedOut(
         .h3(attributes: [.class([Class.pf.type.responsiveTitle3])], "Join a team on Point-Free!"),
         .p(.text(joinDescription)),
         .p(
-          "You must be logged in to accept this invitation. Would you like to log in with GitHub?"),
+          "You must be logged in to accept this invitation. Would you like to log in?"),
         .p(
           attributes: [.class([Class.padding([.mobile: [.top: 3]])])],
-          .gitHubLink(
-            text: "Login with GitHub",
-            type: .black,
-            href: siteRouter.loginPath(redirect: .teamInviteCode(.landing(code: code)))
+          .a(
+            attributes: [
+              .href(siteRouter.loginPath(redirect: .teamInviteCode(.landing(code: code)))),
+              .class([Class.pf.components.button(color: .black)]),
+            ],
+            "Log in"
           )
         )
       )

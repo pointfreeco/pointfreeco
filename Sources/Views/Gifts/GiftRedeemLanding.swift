@@ -170,15 +170,17 @@ private func loginOrRedeem(gift: Gift) -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   if currentUser == nil {
-    return .gitHubLink(
-      text: "Log in to redeem",
-      type: .black,
-      href: siteRouter.loginPath(redirect: .gifts(.redeem(gift.id))),
-      size: .regular,
-      extraClasses:
-        Class.display.block
-        | Class.size.width100pct
-        | Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]])
+    return .a(
+      attributes: [
+        .class([
+          Class.pf.components.button(color: .black),
+          Class.display.block
+            | Class.size.width100pct
+            | Class.margin([.mobile: [.top: 2], .desktop: [.top: 3]]),
+        ]),
+        .href(siteRouter.loginPath(redirect: .gifts(.redeem(gift.id)))),
+      ],
+      "Log in to redeem"
     )
   } else {
     return .form(

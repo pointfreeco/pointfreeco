@@ -22,7 +22,7 @@ as they are released. We ask that you please do not share this URL with anyone, 
 tied directly to your account.
 
 > Correction: Since the time we launched this feature we have changed this slightly. Only yearly
-> members get access to the entire catalogue of episodes in their podcast RSS feed, and monthly
+> members get access to the entire catalog of episodes in their podcast RSS feed, and monthly
 > members get access to the last 4 episodes.
 
 ## Functional Programming Everywhere

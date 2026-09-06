@@ -35,7 +35,7 @@ struct VideoHeader: HTML {
         }
         .color(.gray800)
 
-        HTMLMarkdown(blurb)
+        HTMLMarkdown(trusted: blurb)
           .color(.gray900)
           .inlineStyle("max-width", "768px")
           .linkStyle(.init(color: .offWhite, underline: true))

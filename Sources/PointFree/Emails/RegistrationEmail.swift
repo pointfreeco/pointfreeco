@@ -1,6 +1,5 @@
 import Dependencies
 import FunctionalCss
-import GitHub
 import Html
 import HtmlCssSupport
 import PointFreeRouter
@@ -8,18 +7,18 @@ import Prelude
 import Styleguide
 
 let registrationEmailView =
-  simpleEmailLayout(registrationEmailBody) <<< { user in
+  simpleEmailLayout(registrationEmailBody) <<< {
     SimpleEmailLayoutData(
       user: nil,
       newsletter: nil,
       title: "Thanks for signing up!",
       preheader: "",
       template: .default(),
-      data: user
+      data: ()
     )
   }
 
-private func registrationEmailBody(user: GitHubUser) -> Node {
+private func registrationEmailBody() -> Node {
   @Dependency(\.siteRouter) var siteRouter
 
   return .emailTable(

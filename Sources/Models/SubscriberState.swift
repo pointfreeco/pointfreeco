@@ -120,4 +120,8 @@ public enum SubscriberState {
       return false
     }
   }
+
+  public var isMaxSubscriber: Bool {
+    isActiveSubscriber && plan == .max
+  }
 }

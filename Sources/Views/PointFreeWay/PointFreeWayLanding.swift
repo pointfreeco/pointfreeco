@@ -5,6 +5,7 @@ import Html
 import HtmlCssSupport
 import Models
 import PointFreeDependencies
+import PointFreeRouter
 import Prelude
 import Styleguide
 import StyleguideV2

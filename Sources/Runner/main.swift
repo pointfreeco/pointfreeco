@@ -6,7 +6,7 @@ import Prelude
 
 // Bootstrap
 
-await PointFree.bootstrap()
+await PointFree.bootstrap(indexEpisodeSearch: false)
 
 print("📧 Sending welcome emails...")
 try await sendWelcomeEmails()

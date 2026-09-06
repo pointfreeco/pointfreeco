@@ -53,11 +53,44 @@ public struct LoginSignUpView: HTML {
             "href",
             siteRouter.path(for: .auth(.gitHubAuth(redirect: redirect)))
           )
+          .inlineStyle("display", "inline-block")
+          .inlineStyle("margin-top", "1.5rem")
+          div {
+            "or"
+          }
+          .color(.gray650)
+          .fontStyle(.body(.small))
+          .inlineStyle("margin", "1rem 0")
+          form {
+            VStack(spacing: 0.75) {
+              input()
+                .attribute("name", "email")
+                .attribute("placeholder", "blob@pointfree.co")
+                .attribute("required")
+                .attribute("type", "email")
+                .fontStyle(.body(.regular))
+                .inlineStyle("border", "none")
+                .inlineStyle("border-radius", "0.5rem")
+                .inlineStyle("outline", "none")
+                .inlineStyle("padding", "1rem 1.25rem")
+              Button(tag: input, color: .purple)
+                .attribute("type", "submit")
+                .attribute("value", "Continue with email")
+            }
+          }
+          .attribute(
+            "action",
+            siteRouter.path(for: .auth(.emailAuth(email: "", redirect: redirect)))
+          )
+          .attribute("method", "post")
+          .inlineStyle("margin", "0 auto")
+          .inlineStyle("width", "100%")
+          .inlineStyle("max-width", "22rem")
           div {
             Paragraph {
               """
-              By clicking “Continue with GitHub” above, you acknowledge that you have read, \
-              understood, and agree to Point-Free’s
+              By continuing above, you acknowledge that you have read, understood, and agree \
+              to Point-Free’s
               """
               " "
               Link("Terms & Privacy Policy", href: siteRouter.path(for: .privacy))
