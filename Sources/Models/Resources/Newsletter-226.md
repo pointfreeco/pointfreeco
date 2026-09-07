@@ -248,90 +248,180 @@ trip (and vice-versa).
 
 ### [Episode 374: WWDC26: SQLiteData Sectioning](/episodes/ep374-wwdc26-sqlitedata-sectioning)
 
-<!--
-SwiftData's new `sectionBy` API is convenient, but SQLiteData has always been able to express the
-underlying query directly. We show how far plain SQL composition gets us before introducing an API
-that matches SwiftData's ergonomics.
+SwiftData released all new tools for sectioning results into groups, such as grouping trips by 
+destination, but it's quite limited. It does not allow sectioning by computed values, controlling
+the order of the sections, or grouping by data held in related models.
 
-```swift
-@FetchAll(
-  Trip
-    .order { $0.startsAt }
-    .sectioned(by: { $0.destination })
+SQLiteData also supports sectioning results, but gives you the full power of SQL to unlock powerful
+functionality. You can section results by a column like so:
+
+```swift:3
+try await $trips.load(
+  Trip.order(by: \.destination),
+  sectionBy: \.destination,
+  animation: .default
 )
-var tripsByDestination
 ```
--->
+
+You can also section results by a computed value, such as the first letter of the trip's name:
+
+```swift:3
+try await $trips.load(
+  Trip.order(by: \.name),
+  sectionBy: { trip in trip.name.substr(1, 1) }
+)
+```
+
+You can also order the sectioned results like so:
+
+```swift:3
+try await $trips.load(
+  Trip.order(by: \.name),
+  sectionBy: { trip in trip.destination.desc() }
+)
+```
+
+And you can even section results using data from joined tables:
+
+```swift:6
+@FetchAll(
+  BucketListItem
+    .order(by: \.title)
+    .join(Trip.all) { item, trip in item.tripID.eq(trip.id) }
+    .select { item, _ in item },
+  sectionBy: { _, trip in trip.name }
+)
+var items
+```
 
 ### [Episode 375: WWDC26: SQLiteData Codability](/episodes/ep375-wwdc26-sqlitedata-codability)
 
-<!--
-SwiftData's new `Codable` support is useful, but SQLite does not force JSON to be opaque. With
-StructuredQueries we can store a value as JSON and still filter, sort, and section on fields inside
-the payload with type safety.
+SwiftData allows storing custom data types in models via `Codable`, which can be handy, but also
+it's a bit magical. Sometimes the custom type's fields will be stored as individual columns in the
+corresponding SQLite table, and other times the type will be serialized to `Data` and stored in a 
+single column. And if the type is serialized to data then one is not allowed to query against.
+
+SQLiteData allows one to store complex data types as JSON in a single column, but thanks to the
+power of SQLite, one can still query against the data in the type:
 
 ```swift
 Trip
   .where {
     $0.location.jsonExtract(\.longitude) < 0
   }
-  .order {
-    $0.location.jsonExtract(\.name)
-  }
 ```
--->
 
-### [Episode 376: WWDC26: SQLiteData Advanced Domain Modeling](/episodes/ep376-wwdc26-sqlitedata-advanced-domain-modeling)
-
-<!--
-We add geofences to Trips and reach for SQLite's JSONB and `json_each` support. The result is a
-compact schema that can still ask rich questions of structured data stored inside a single column.
+You can construct some seriously complex queries with these tools, such as ordering trips by
+the spherical distance from a particular location:
 
 ```swift
 Trip
-  .join(Trip.columns.geofence.jsonEach()) { trip, vertex in
-    vertex.value.jsonExtract(\.latitude) > trip.location.jsonExtract(\.latitude)
+  .where {
+    #sql(
+      """
+      3958.8 * acos(
+        sin(radians(\(location.latitude)))
+          * sin(radians(\($0.jsonExtract(\.latitude))))
+          + cos(radians(\(location.latitude)))
+          * cos(radians(\($0.jsonExtract(\.latitude))))
+          * cos(radians(\($0.jsonExtract(\.longitude)) - \(location.longitude)))
+      )
+      """
+    )
   }
 ```
--->
+
+### [Episode 376: WWDC26: SQLiteData Advanced Domain Modeling](/episodes/ep376-wwdc26-sqlitedata-advanced-domain-modeling)
+
+We flex the powers of SQLite by exploring some advanced topics. This includes using JSONB to store
+custom data types, which allows for more efficient storage and querying:
+
+```swift:3
+@Table struct Trip: Identifiable {
+  // ...
+  @Column(as: [Location].JSONBRepresentation.self)
+  var geofence: [Location] = []
+}
+```
+
+As well as an alternate way to store custom data types by using grouped columns:
+
+```swift:9
+@Selection
+struct Location: Codable, Hashable {
+  var latitude = 0.0
+  var longitude = 0.0
+}
+
+@Table struct Trip: Identifiable {
+  // ...
+  var location: Location
+}
+```
 
 ### [Episode 377: WWDC26: SQLiteData Observation](/episodes/ep377-wwdc26-sqlitedata-observation)
 
-<!--
-SwiftData's new `ResultsObserver` observes queries outside SwiftUI views. We compare it with
-SQLiteData by building a geofence map editor whose observed queries drive real behavior, and then
-cover the feature with tests.
+SwiftData's new `ResultsObserver` observes queries outside SwiftUI views. SQLiteData also allows
+for using queries outside of views, but you can continue using the exact same tools:
 
 ```swift
-@FetchAll
-var trips: [Trip]
+@Observable
+final class TripsModel {
+  @ObservationIgnored
+  @FetchAll var trips: [Trip]
 
-init(database: any DatabaseWriter) {
-  _trips = FetchAll(Trip.all, database: database)
+  init() {
+    _trips = FetchAll(Trip.order(by: \.name))
+  }
 }
 ```
--->
+
+We reaped the benefits of moving complex logic out of the view and into an observable model by
+writing tests. By leveraging our [DebugSnapshots] library we were able to write exhaustive tests
+on the model, including computed properties:
+
+```swift
+try await expect(model) {
+  model.mapTapped(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: 1))
+  model.mapTapped(coordinate: CLLocationCoordinate2D(latitude: -1, longitude: 1))
+  model.mapTapped(coordinate: CLLocationCoordinate2D(latitude: -1, longitude: -1))
+  model.mapTapped(coordinate: CLLocationCoordinate2D(latitude: 1, longitude: -1))
+  try await model.$trip.load()
+} changes: {
+  $0.trip.geofence = [
+    Location(latitude: 1, longitude: 1),
+    Location(latitude: -1, longitude: 1),
+    Location(latitude: -1, longitude: -1),
+    Location(latitude: 1, longitude: -1),
+  ]
+  $0.tripInsideGeofence = true
+  $0.geofenceColor = .blue
+}
+```
+
+[DebugSnapshots]: https://github.com/pointfreeco/swift-debug-snapshots
 
 ### [Episode 378: WWDC26: The @State Macro](/episodes/ep378-wwdc26-the-state-macro)
 
-<!--
 SwiftUI's `@State` is now a macro, which lets state with an inline default be initialized lazily
-and only once per view lifetime. We expand the macro, remove the noise, and find a small, powerful
-core hiding underneath.
+and only once per view lifetime. We expand the macro and slowly remove all of the noise until we
+find a small, powerful tool hiding in plain sight:
 
 ```swift
-@State private var model = Model()
+struct FeatureView: View {
+  @State private var model = Model()
 
-// At its core:
-private var model: Model { _model.wrappedValue }
-private var _model: SwiftUI.LazyState<Model>
-private var $model: Binding<Model> { _model.projectedValue }
+  // At its core:
+  private var model: Model { _model.wrappedValue }
+  private var _model: SwiftUI.LazyState<Model>
+  private var $model: Binding<Model> { _model.projectedValue }
+  
+  …
+}
 ```
--->
 
 ### [Episode 379: WWDC26: The @LazyState Macro](/episodes/ep379-wwdc26-the-lazystate-macro)
 
-<!--
 The new `@State` macro still does not solve dynamic initialization from parent data. We introduce
 `@LazyState`, which preserves SwiftUI's laziness without optionals, `onAppear`, or ad hoc
 bindings.
@@ -349,11 +439,10 @@ struct LocationSearchSheet: View {
   }
 }
 ```
--->
 
 ## Watch for free
 
-Every episode in the series is free, so now is a great time to catch up. And if you want to go 
+Every episode in the series is free! So now is a great time to catch up. And if you want to go 
 deeper with the libraries featured throughout the series, check out
 [SwiftNavigation], [SQLiteData], [StructuredQueries], and [LazyState].
 
