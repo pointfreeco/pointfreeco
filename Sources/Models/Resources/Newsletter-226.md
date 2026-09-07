@@ -16,21 +16,21 @@ reverse-engineering SwiftUI's new `@State` macro in order to close a gap it stil
 
 Here's what we covered.
 
-* [Episode 370: Alerts](#episode-370-wwdc26-alerts)
-* [Episode 371: UIKit](#episode-371-wwdc26-uikit)
-* [Episode 372: SwiftData](#episode-372-wwdc26-swiftdata)
-* [Episode 373: SQLiteData Domain Modeling](#episode-373-wwdc26-sqlitedata-domain-modeling)
-* [Episode 374: SQLiteData Sectioning](#episode-374-wwdc26-sqlitedata-sectioning)
-* [Episode 375: SQLiteData Codability](#episode-375-wwdc26-sqlitedata-codability)
-* [Episode 376: SQLiteData Advanced Domain Modeling](#episode-376-wwdc26-sqlitedata-advanced-domain-modeling)
-* [Episode 377: SQLiteData Observation](#episode-377-wwdc26-sqlitedata-observation)
-* [Episode 378: The @State Macro](#episode-378-wwdc26-the-state-macro)
-* [Episode 379: The @LazyState Macro](#episode-379-wwdc26-the-lazystate-macro)
+* [Alerts](#alerts)
+* [UIKit](#uikit)
+* [SwiftData](#swiftdata)
+* [SQLiteData Domain Modeling](#sqlitedata-domain-modeling)
+* [SQLiteData Sectioning](#sqlitedata-sectioning)
+* [SQLiteData Codability](#sqlitedata-codability)
+* [SQLiteData Advanced Domain Modeling](#sqlitedata-advanced-domain-modeling)
+* [SQLiteData Observation](#sqlitedata-observation)
+* [The @State Macro](#the-state-macro)
+* [The @LazyState Macro](#the-lazystate-macro)
 * [Watch for free](#watch-for-free)
 
 ## Episode-by-episode
 
-### [Episode 370: WWDC26: Alerts](/episodes/ep370-wwdc26-alerts)
+### [Alerts](/episodes/ep370-wwdc26-alerts)
 
 Apple's new SwiftUI alert API is a welcome move toward modeling presentation as data, but the idea
 can be pushed much further. We show how SwiftNavigation lets a delete-confirmation alert's text
@@ -90,7 +90,7 @@ Now we have one single piece of optional state to simultaneously represent the a
 displayed as well as the text field in the alert. No additional clean up is necessary and the 
 text field state is naturally unavailable when the alert is not presented.
 
-### [Episode 371: WWDC26: UIKit](/episodes/ep371-wwdc26-uikit)
+### [UIKit](/episodes/ep371-wwdc26-uikit)
 
 UIKit gets improvements each WWDC, and we feel it is far from dead. This year UIKit got a little
 bit more support for the Observation framework, but we feel things could be pushed much further.
@@ -157,7 +157,7 @@ observe { [unowned self] in
 }
 ```
 
-### [Episode 372: WWDC26: SwiftData](/episodes/ep372-wwdc26-swiftdata)
+### [SwiftData](/episodes/ep372-wwdc26-swiftdata)
 
 We tour SwiftData's newest tools by poking around Apple's Trips sample app. This includes
 model inheritance for sharing data amongst multiple similar models, storing custom data types
@@ -166,7 +166,7 @@ of SwiftUI views. All of these tools are welcomed and help improve SwiftData, bu
 feel that many of these tools can be pushed further and improved, which is what the following
 episodes focus on.
 
-### [Episode 373: WWDC26: SQLiteData Domain Modeling](/episodes/ep373-wwdc26-sqlitedata-domain-modeling)
+### [SQLiteData Domain Modeling](/episodes/ep373-wwdc26-sqlitedata-domain-modeling)
 
 We begin by exploring how SwiftData allows sharing data amongst multiple models by using 
 inheritance. For example, a `Trip` model can share its schema with a `PersonalTrip` and
@@ -246,7 +246,7 @@ switch over all known types of trips. The "base" table is not constructible, and
 be either a personal or business trip. And it's trivial to convert a personal trip to a business
 trip (and vice-versa).
 
-### [Episode 374: WWDC26: SQLiteData Sectioning](/episodes/ep374-wwdc26-sqlitedata-sectioning)
+### [SQLiteData Sectioning](/episodes/ep374-wwdc26-sqlitedata-sectioning)
 
 SwiftData released all new tools for sectioning results into groups, such as grouping trips by 
 destination, but it's quite limited. It does not allow sectioning by computed values, controlling
@@ -294,7 +294,7 @@ And you can even section results using data from joined tables:
 var items
 ```
 
-### [Episode 375: WWDC26: SQLiteData Codability](/episodes/ep375-wwdc26-sqlitedata-codability)
+### [SQLiteData Codability](/episodes/ep375-wwdc26-sqlitedata-codability)
 
 SwiftData allows storing custom data types in models via `Codable`, which can be handy, but also
 it's a bit magical. Sometimes the custom type's fields will be stored as individual columns in the
@@ -331,7 +331,7 @@ Trip
   }
 ```
 
-### [Episode 376: WWDC26: SQLiteData Advanced Domain Modeling](/episodes/ep376-wwdc26-sqlitedata-advanced-domain-modeling)
+### [SQLiteData Advanced Domain Modeling](/episodes/ep376-wwdc26-sqlitedata-advanced-domain-modeling)
 
 We flex the powers of SQLite by exploring some advanced topics. This includes using JSONB to store
 custom data types, which allows for more efficient storage and querying:
@@ -359,7 +359,7 @@ struct Location: Codable, Hashable {
 }
 ```
 
-### [Episode 377: WWDC26: SQLiteData Observation](/episodes/ep377-wwdc26-sqlitedata-observation)
+### [SQLiteData Observation](/episodes/ep377-wwdc26-sqlitedata-observation)
 
 SwiftData's new `ResultsObserver` observes queries outside SwiftUI views. SQLiteData also allows
 for using queries outside of views, but you can continue using the exact same tools:
@@ -401,7 +401,7 @@ try await expect(model) {
 
 [DebugSnapshots]: https://github.com/pointfreeco/swift-debug-snapshots
 
-### [Episode 378: WWDC26: The @State Macro](/episodes/ep378-wwdc26-the-state-macro)
+### [The @State Macro](/episodes/ep378-wwdc26-the-state-macro)
 
 SwiftUI's `@State` is now a macro, which lets state with an inline default be initialized lazily
 and only once per view lifetime. We expand the macro and slowly remove all of the noise until we
@@ -420,7 +420,7 @@ struct FeatureView: View {
 }
 ```
 
-### [Episode 379: WWDC26: The @LazyState Macro](/episodes/ep379-wwdc26-the-lazystate-macro)
+### [The @LazyState Macro](/episodes/ep379-wwdc26-the-lazystate-macro)
 
 The new `@State` macro still does not solve dynamic initialization from parent data. We introduce
 `@LazyState`, which preserves SwiftUI's laziness without optionals, `onAppear`, or ad hoc
