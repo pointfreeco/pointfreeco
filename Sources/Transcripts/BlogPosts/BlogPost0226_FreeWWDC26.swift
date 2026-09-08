@@ -8,8 +8,7 @@ extension BlogPost {
       covering SwiftUI's new alert and @State APIs, UIKit navigation, and a deep comparison of \
       SwiftData's new tools with SQLiteData.
       """,
-    coverImage:
-      "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/7903112b-fc0b-41d8-4322-c19334bc2b00/public",
+    coverImage: nil,
     hidden: .no,
     hideFromSlackRSS: false,
     id: 226,
