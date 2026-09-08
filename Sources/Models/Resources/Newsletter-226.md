@@ -28,9 +28,9 @@ Here's what we covered.
 * [The @LazyState Macro](#the-lazystate-macro)
 * [Watch for free](#watch-for-free)
 
-## Episode-by-episode
+# Episode-by-episode
 
-### [Alerts](/episodes/ep370-wwdc26-alerts)
+## [Alerts](/episodes/ep370-wwdc26-alerts)
 
 Apple's new SwiftUI alert API is a welcome move toward modeling presentation as data, but the idea
 can be pushed much further. We show how SwiftNavigation lets a delete-confirmation alert's text
@@ -61,8 +61,8 @@ Button("Delete") {
 ```
 
 Notice the improperly modeled domain leaks throughout the feature. We need two pieces of state to
-model the domain, we need to clean up state when confirming and cancelling, and the confirmation
-state is always available even when the alert is being displayed.
+model the domain (a boolean and string), we need to clean up state when confirming and cancelling, 
+and the confirmation state is always available even when the alert is being displayed.
 
 Compare this to using the tools in our [SwiftNavigation] library:
 
@@ -90,16 +90,18 @@ Now we have one single piece of optional state to simultaneously represent the a
 displayed as well as the text field in the alert. No additional clean up is necessary and the 
 text field state is naturally unavailable when the alert is not presented.
 
-### [UIKit](/episodes/ep371-wwdc26-uikit)
+## [UIKit](/episodes/ep371-wwdc26-uikit)
 
 UIKit gets improvements each WWDC, and we feel it is far from dead. This year UIKit got a little
-bit more support for the Observation framework, but we feel things could be pushed much further.
+bit more support for the Observation framework, but there's still room for improvement.
 
 Our [SwiftNavigation] library brings tools to UIKit that behave like SwiftUI's state-driven 
 navigation APIs, including bindings and even animations. For example, driving navigation to an alert
 in UIKit is as simple as this:
 
-```swift
+```swift:12-29
+import UIKitNavigation
+
 @Observable
 final class AlertsViewController: UIViewController {
   var deleteConfirmation: String?
@@ -157,7 +159,7 @@ observe { [unowned self] in
 }
 ```
 
-### [SwiftData](/episodes/ep372-wwdc26-swiftdata)
+## [SwiftData](/episodes/ep372-wwdc26-swiftdata)
 
 We tour SwiftData's newest tools by poking around Apple's Trips sample app. This includes
 model inheritance for sharing data amongst multiple similar models, storing custom data types
@@ -166,7 +168,7 @@ of SwiftUI views. All of these tools are welcomed and help improve SwiftData, bu
 feel that many of these tools can be pushed further and improved, which is what the following
 episodes focus on.
 
-### [SQLiteData Domain Modeling](/episodes/ep373-wwdc26-sqlitedata-domain-modeling)
+## [SQLiteData Domain Modeling](/episodes/ep373-wwdc26-sqlitedata-domain-modeling)
 
 We begin by exploring how SwiftData allows sharing data amongst multiple models by using 
 inheritance. For example, a `Trip` model can share its schema with a `PersonalTrip` and
@@ -199,7 +201,7 @@ inheritance. For example, a `Trip` model can share its schema with a `PersonalTr
 However, there are some downsides to this. Inheritance is open-ended, which means we can never have
 a definitive list of all subclasses and so we are forced into defensive programming for code
 paths that should not be possible but cannot be proven to the compiler. Further, the base class,
-`Trip` can be constructed even though it does not make sense for the app to be able to do so. And
+`Trip`, can be constructed even though it does not make sense for the app to be able to do so. And
 it's not possible to convert a personal trip to a business trip, or vice-versa, and instead are 
 forced into a dance of deleting data and recreating it from scratch, which means also recreating
 all associations.
@@ -246,7 +248,7 @@ switch over all known types of trips. The "base" table is not constructible, and
 be either a personal or business trip. And it's trivial to convert a personal trip to a business
 trip (and vice-versa).
 
-### [SQLiteData Sectioning](/episodes/ep374-wwdc26-sqlitedata-sectioning)
+## [SQLiteData Sectioning](/episodes/ep374-wwdc26-sqlitedata-sectioning)
 
 SwiftData released all new tools for sectioning results into groups, such as grouping trips by 
 destination, but it's quite limited. It does not allow sectioning by computed values, controlling
@@ -294,7 +296,7 @@ And you can even section results using data from joined tables:
 var items
 ```
 
-### [SQLiteData Codability](/episodes/ep375-wwdc26-sqlitedata-codability)
+## [SQLiteData Codability](/episodes/ep375-wwdc26-sqlitedata-codability)
 
 SwiftData allows storing custom data types in models via `Codable`, which can be handy, but also
 it's a bit magical. Sometimes the custom type's fields will be stored as individual columns in the
@@ -309,6 +311,10 @@ Trip
   .where {
     $0.location.jsonExtract(\.longitude) < 0
   }
+/*
+ SELECT … FROM "trips"
+ WHERE json_extract("trips"."location", '$."longitude"') < 0
+ */
 ```
 
 You can construct some seriously complex queries with these tools, such as ordering trips by
@@ -331,7 +337,7 @@ Trip
   }
 ```
 
-### [SQLiteData Advanced Domain Modeling](/episodes/ep376-wwdc26-sqlitedata-advanced-domain-modeling)
+## [SQLiteData Advanced Domain Modeling](/episodes/ep376-wwdc26-sqlitedata-advanced-domain-modeling)
 
 We flex the powers of SQLite by exploring some advanced topics. This includes using JSONB to store
 custom data types, which allows for more efficient storage and querying:
@@ -348,7 +354,7 @@ As well as an alternate way to store custom data types by using grouped columns:
 
 ```swift:9
 @Selection
-struct Location: Codable, Hashable {
+struct Location {
   var latitude = 0.0
   var longitude = 0.0
 }
@@ -359,7 +365,7 @@ struct Location: Codable, Hashable {
 }
 ```
 
-### [SQLiteData Observation](/episodes/ep377-wwdc26-sqlitedata-observation)
+## [SQLiteData Observation](/episodes/ep377-wwdc26-sqlitedata-observation)
 
 SwiftData's new `ResultsObserver` observes queries outside SwiftUI views. SQLiteData also allows
 for using queries outside of views, but you can continue using the exact same tools:
@@ -401,13 +407,13 @@ try await expect(model) {
 
 [DebugSnapshots]: https://github.com/pointfreeco/swift-debug-snapshots
 
-### [The @State Macro](/episodes/ep378-wwdc26-the-state-macro)
+## [The @State Macro](/episodes/ep378-wwdc26-the-state-macro)
 
 SwiftUI's `@State` is now a macro, which lets state with an inline default be initialized lazily
 and only once per view lifetime. We expand the macro and slowly remove all of the noise until we
 find a small, powerful tool hiding in plain sight:
 
-```swift
+```swift:5,6,7
 struct FeatureView: View {
   @State private var model = Model()
 
@@ -420,7 +426,7 @@ struct FeatureView: View {
 }
 ```
 
-### [The @LazyState Macro](/episodes/ep379-wwdc26-the-lazystate-macro)
+## [The @LazyState Macro](/episodes/ep379-wwdc26-the-lazystate-macro)
 
 The new `@State` macro still does not solve dynamic initialization from parent data. We introduce
 `@LazyState`, which preserves SwiftUI's laziness without optionals, `onAppear`, or ad hoc

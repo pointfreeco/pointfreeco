@@ -243,5 +243,6 @@ extension BlogPost {
     .post0224_firstOfficeHours,
     .post0225_augustRecap,
     .post0226_freeWWDC26,
+    .post0227_officeHoursReminder,
   ]
 }
