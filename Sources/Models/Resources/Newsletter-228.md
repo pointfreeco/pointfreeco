@@ -65,7 +65,7 @@ struct LocationSearchSheet: View {
 }
 ```
 
-This preserves laziness, but at a cost:
+This preserves laziness, but the following downsides:
 
 * The model becomes optional even when the view cannot meaningfully render without it.
 * The initialization inputs have to be stored as extra properties just so they can be used later.
@@ -74,7 +74,8 @@ This preserves laziness, but at a cost:
   important SwiftUI behavior such as transaction and animation context.
 * Views can need extra containers merely to have somewhere to attach lifecycle modifiers.
 
-That is a lot of incidental complexity just to create a piece of state dynamically and lazily.
+That is a lot of incidental complexity just to create a piece of state dynamically based on data
+passed in from the parent.
 
 ## The solution
 
