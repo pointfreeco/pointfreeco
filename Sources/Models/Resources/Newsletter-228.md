@@ -107,7 +107,7 @@ that is known at initialization time but should not be rebuilt every time the vi
 ## Vanilla SwiftUI
 
 LazyState does not rely on private APIs, runtime tricks, or fragile reflection. The library is a
-macro that expands to the same basic shape used by SwiftUI's own `@State` macro, but it exposes the
+macro that expands to essentially the same code as SwiftUI's own `@State` macro, but it exposes the
 initializer form that `@State` does not:
 
 ```swift
