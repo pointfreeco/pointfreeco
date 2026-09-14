@@ -28,21 +28,21 @@ public struct Beta {
       repo: "TCA26",
       skillName: "composable-architecture-2"
     ),
+  ]
+
+  public static let graduated: [Beta] = [
     Beta(
       title: "LazyState",
       blurb: """
         A macro for dynamically and lazily creating SwiftUI state based on parameters passed from \
-        the outside, a much needed tool still not provided by Apple. \
-        [Read more →](/blog/posts/222-beta-preview-lazystate)      
+        the outside, a much needed tool still not provided by Apple.
         """,
       imageURL:
         "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/b1189a85-a5ed-49bc-5b6f-5a2394b7d800/public",
+      publicURL: "https://github.com/pointfreeco/swiftui-lazy-state",
       repo: "swiftui-lazy-state",
       skillName: "lazy-state"
     ),
-  ]
-
-  public static let graduated: [Beta] = [
     Beta(
       title: "DebugSnapshots",
       blurb: """
