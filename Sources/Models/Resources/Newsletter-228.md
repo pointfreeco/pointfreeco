@@ -12,9 +12,9 @@ remaining hole. Thanks to the feedback from our [Max members] it is now ready fo
 
 ## The problem
 
-SwiftUI views are value types. They can be initialized again and again while SwiftUI preserves the
-identity and storage of their state behind the scenes. This means the following innocent-looking
-code used to perform more work than expected:
+SwiftUI views are value types, and so they can be initialized again and again while SwiftUI 
+preserves the identity and storage of their state behind the scenes. This means the following
+innocent-looking code used to perform more work than expected:
 
 ```swift
 struct LocationSearchSheet: View {
