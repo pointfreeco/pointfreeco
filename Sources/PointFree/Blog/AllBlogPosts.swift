@@ -244,5 +244,6 @@ extension BlogPost {
     .post0225_augustRecap,
     .post0226_freeWWDC26,
     .post0227_officeHoursReminder,
+    .post0228_lazyStateRelease,
   ]
 }
