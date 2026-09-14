@@ -25,8 +25,8 @@ struct LocationSearchSheet: View {
 
 Before the new `@State` macro, the `LocationSearchCompleter` would be created every time the view
 was re-initialized, only for SwiftUI to discard the new value and keep using the original state.
-The macro fixes this for inline defaults by making the state lazy, so the initial value is created
-only once per view lifetime.
+The macro fixes this for inline, private defaults by making the state lazy, so the initial value is
+created only once per view lifetime.
 
 But many real models cannot be created with a static inline default. They need data from the parent
 view, such as the map region to search:
@@ -69,7 +69,7 @@ This preserves laziness, but at a cost:
 
 * The model becomes optional even when the view cannot meaningfully render without it.
 * The initialization inputs have to be stored as extra properties just so they can be used later.
-* Optional chaining, `if let`, and nil coalescing spread through the body.
+* Optional chaining, `if let`, and nil coalescing muddy the body of the view.
 * Bindings become harder to derive, often pushing you toward `Binding(get:set:)`, which can lose
   important SwiftUI behavior such as transaction and animation context.
 * Views can need extra containers merely to have somewhere to attach lifecycle modifiers.
@@ -105,7 +105,7 @@ that is known at initialization time but should not be rebuilt every time the vi
 
 ## Vanilla SwiftUI
 
-LazyState does not rely on private API, runtime tricks, or fragile reflection. The library is a
+LazyState does not rely on private APIs, runtime tricks, or fragile reflection. The library is a
 macro that expands to the same basic shape used by SwiftUI's own `@State` macro, but it exposes the
 initializer form that `@State` does not:
 
