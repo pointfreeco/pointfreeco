@@ -245,5 +245,6 @@ extension BlogPost {
     .post0226_freeWWDC26,
     .post0227_officeHoursReminder,
     .post0228_lazyStateRelease,
+    .post0229_officeHoursInOneHour,
   ]
 }
