@@ -134,8 +134,10 @@ struct OfficeHourTranscriptModule: HTML {
             TranscriptSectionView(section: section)
           }
         } else {
-          HTMLMarkdown(untrusted: previewText)
+          HTMLMarkdown(trusted: previewText)
             .color(.gray150.dark(.gray850))
+            .linkColor(.black.dark(.white))
+            .linkUnderline(true)
             .inlineStyle(
               "mask-image",
               "linear-gradient(to bottom, black 30%, transparent 100%)"
@@ -191,8 +193,10 @@ private struct TranscriptSectionView: HTML {
       }
 
       if !section.body.isEmpty {
-        HTMLMarkdown(untrusted: section.body)
+        HTMLMarkdown(trusted: section.body)
           .color(.gray150.dark(.gray850))
+          .linkColor(.black.dark(.white))
+          .linkUnderline(true)
       }
     }
   }
