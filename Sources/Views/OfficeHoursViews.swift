@@ -280,25 +280,26 @@ private struct AnsweredQuestionsModule: HTML {
       VStack(spacing: 1) {
         HTMLForEach(questions) { question in
           HStack(alignment: .firstTextBaseline, spacing: 1) {
-            if let seconds = question.answeredAtSeconds {
-              if isViewable {
-                a {
+            span {
+              if let seconds = question.answeredAtSeconds {
+                if isViewable {
+                  a {
+                    HTMLText(timestampLabel(seconds: seconds))
+                  }
+                  .attribute("href", "#t\(seconds.rawValue)")
+                  .attribute("data-timestamp", "\(seconds.rawValue)")
+                  .inlineStyle("color", "#974dff")
+                  .inlineStyle("text-decoration", "none")
+                  .inlineStyle("text-decoration", "underline", pseudo: .hover)
+                } else {
                   HTMLText(timestampLabel(seconds: seconds))
+                    .color(.gray400.dark(.gray650))
                 }
-                .attribute("href", "#t\(seconds.rawValue)")
-                .attribute("data-timestamp", "\(seconds.rawValue)")
-                .inlineStyle("color", "#974dff")
-                .inlineStyle("font-variant-numeric", "tabular-nums")
-                .inlineStyle("text-decoration", "none")
-                .inlineStyle("text-decoration", "underline", pseudo: .hover)
-              } else {
-                span {
-                  HTMLText(timestampLabel(seconds: seconds))
-                }
-                .color(.gray400.dark(.gray650))
-                .inlineStyle("font-variant-numeric", "tabular-nums")
               }
             }
+            .inlineStyle("flex", "0 0 4rem")
+            .inlineStyle("font-variant-numeric", "tabular-nums")
+            .inlineStyle("text-align", "right")
 
             HTMLMarkdown(untrusted: question.question)
               .color(.gray150.dark(.gray850))
@@ -651,35 +652,51 @@ private struct AnsweredQuestionRow: HTML {
   @Dependency(\.siteRouter) var siteRouter
 
   var body: some HTML {
-    VStack(spacing: 0.5) {
-      span {
-        "Answered in "
-        if let cloudflareVideoID = officeHour.cloudflareVideoID {
-          Link(href: detailPath(cloudflareVideoID: cloudflareVideoID)) {
+    HStack(alignment: .top, spacing: 1) {
+      ReadOnlyVoteCount(voteCount: question.voteCount)
+
+      VStack(spacing: 0.5) {
+        span {
+          "Answered in "
+          if let cloudflareVideoID = officeHour.cloudflareVideoID {
+            Link(href: detailPath(cloudflareVideoID: cloudflareVideoID)) {
+              HTMLText(officeHour.title)
+            }
+            .linkColor(.purple)
+          } else {
             HTMLText(officeHour.title)
           }
-          .linkColor(.purple)
-        } else {
-          HTMLText(officeHour.title)
+          if let seconds = question.answeredAtSeconds {
+            " at "
+            if let cloudflareVideoID = officeHour.cloudflareVideoID {
+              Link(
+                timestampLabel(seconds: seconds),
+                href: questionPath(cloudflareVideoID: cloudflareVideoID)
+              )
+              .linkColor(.purple)
+            } else {
+              HTMLText(timestampLabel(seconds: seconds))
+            }
+          }
         }
-        if let seconds = question.answeredAtSeconds {
-          " at \(timestampLabel(seconds: seconds))"
-        }
-      }
-      .fontStyle(.body(.small))
-      .color(.gray400.dark(.gray650))
+        .fontStyle(.body(.small))
+        .color(.gray400.dark(.gray650))
 
-      ExpandableQuestionMarkdown(question: question)
+        ExpandableQuestionMarkdown(question: question)
+      }
+      .grow()
     }
     .questionCard(isOwnQuestion: false)
   }
 
   func detailPath(cloudflareVideoID: Cloudflare.Video.ID) -> String {
-    let path = siteRouter.path(
+    siteRouter.path(
       for: .officeHours(.officeHour(cloudflareVideoID: cloudflareVideoID))
     )
-    guard let seconds = question.answeredAtSeconds else { return path }
-    return "\(path)#t\(seconds.rawValue)"
+  }
+
+  func questionPath(cloudflareVideoID: Cloudflare.Video.ID) -> String {
+    "\(detailPath(cloudflareVideoID: cloudflareVideoID))#\(officeHourQuestionAnchorID(question))"
   }
 }
 
@@ -795,21 +812,34 @@ private struct AnsweredQuestionsList: HTML {
           let questionText = HTMLMarkdown.plainText(question.question, limit: 280)
           li {
             a {
-              if let seconds = question.answeredAtSeconds {
-                HTMLText("\(timestampLabel(seconds: seconds)) — ")
+              span {
+                if let seconds = question.answeredAtSeconds {
+                  HTMLText("\(timestampLabel(seconds: seconds)) —")
+                }
               }
-              HTMLText(questionText)
+              .inlineStyle("flex", "0 0 4rem")
+              .inlineStyle("font-variant-numeric", "tabular-nums")
+              .inlineStyle("text-align", "right")
+
+              span {
+                HTMLText(questionText)
+              }
+              .grow()
+              .inlineStyle("min-width", "0")
+              .inlineStyle("overflow", "hidden")
+              .inlineStyle("text-overflow", "ellipsis")
+              .inlineStyle("white-space", "nowrap")
             }
             .href(detailPath(question: question))
             .attribute("title", questionText)
+            .inlineStyle("align-items", "baseline")
             .inlineStyle("color", "inherit")
-            .inlineStyle("display", "block")
+            .inlineStyle("column-gap", "0.5rem")
+            .inlineStyle("display", "flex")
             .inlineStyle("max-width", "100%")
             .inlineStyle("overflow", "hidden")
             .inlineStyle("text-decoration", "none")
             .inlineStyle("text-decoration", "underline", pseudo: .hover)
-            .inlineStyle("text-overflow", "ellipsis")
-            .inlineStyle("white-space", "nowrap")
           }
         }
       }
@@ -1210,6 +1240,20 @@ private struct VotePillContent: HTML {
       .inlineStyle("font-size", "0.875rem")
       .inlineStyle("font-weight", "600")
       .inlineStyle("line-height", "1.2")
+  }
+}
+
+private struct ReadOnlyVoteCount: HTML {
+  let voteCount: Int
+
+  var body: some HTML {
+    span {
+      VotePillContent(voteCount: voteCount)
+    }
+    .attribute("aria-label", "\(voteCount) \(voteCount == 1 ? "vote" : "votes")")
+    .votePill()
+    .color(.gray400.dark(.gray650))
+    .inlineStyle("background-color", "transparent")
   }
 }
 
