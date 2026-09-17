@@ -134,8 +134,10 @@ struct OfficeHourTranscriptModule: HTML {
             TranscriptSectionView(section: section)
           }
         } else {
-          HTMLMarkdown(untrusted: previewText)
+          HTMLMarkdown(trusted: previewText)
             .color(.gray150.dark(.gray850))
+            .linkColor(.black.dark(.white))
+            .linkUnderline(true)
             .inlineStyle(
               "mask-image",
               "linear-gradient(to bottom, black 30%, transparent 100%)"
@@ -183,6 +185,7 @@ private struct TranscriptSectionView: HTML {
             .color(.black.dark(.white))
             .inlineStyle("margin-top", "0.5rem")
         }
+        .attribute("id", officeHourQuestionAnchorID(question))
         .inlineStyle("background-color", "color-mix(in oklab, #974dff 6%, transparent)")
         .inlineStyle("border-left", "3px solid #974dff")
         .inlineStyle("border-radius", "0 0.5rem 0.5rem 0")
@@ -190,8 +193,10 @@ private struct TranscriptSectionView: HTML {
       }
 
       if !section.body.isEmpty {
-        HTMLMarkdown(untrusted: section.body)
+        HTMLMarkdown(trusted: section.body)
           .color(.gray150.dark(.gray850))
+          .linkColor(.black.dark(.white))
+          .linkUnderline(true)
       }
     }
   }
@@ -227,4 +232,8 @@ private struct TranscriptTimestampLink: HTML {
     .inlineStyle("text-decoration", "none")
     .inlineStyle("text-decoration", "underline", pseudo: .hover)
   }
+}
+
+func officeHourQuestionAnchorID(_ question: Models.OfficeHourQuestion) -> String {
+  "question-\(question.id.rawValue.uuidString.lowercased())"
 }

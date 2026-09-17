@@ -124,6 +124,7 @@ private func officeHoursIndexMiddleware(
           description: """
             Periodic livestreams exclusively for Point-Free Max members.
             """,
+          image: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/201401ab-857a-4425-60cf-165480d8db00/public",
           title: "Point-Free Office Hours",
           usePrismJs: true
         )
