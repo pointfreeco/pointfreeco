@@ -183,6 +183,7 @@ private struct TranscriptSectionView: HTML {
             .color(.black.dark(.white))
             .inlineStyle("margin-top", "0.5rem")
         }
+        .attribute("id", officeHourQuestionAnchorID(question))
         .inlineStyle("background-color", "color-mix(in oklab, #974dff 6%, transparent)")
         .inlineStyle("border-left", "3px solid #974dff")
         .inlineStyle("border-radius", "0 0.5rem 0.5rem 0")
@@ -227,4 +228,8 @@ private struct TranscriptTimestampLink: HTML {
     .inlineStyle("text-decoration", "none")
     .inlineStyle("text-decoration", "underline", pseudo: .hover)
   }
+}
+
+func officeHourQuestionAnchorID(_ question: Models.OfficeHourQuestion) -> String {
+  "question-\(question.id.rawValue.uuidString.lowercased())"
 }
