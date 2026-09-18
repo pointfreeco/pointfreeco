@@ -246,5 +246,6 @@ extension BlogPost {
     .post0227_officeHoursReminder,
     .post0228_lazyStateRelease,
     .post0229_officeHoursInOneHour,
+    .post0230_officeHoursRecording,
   ]
 }
