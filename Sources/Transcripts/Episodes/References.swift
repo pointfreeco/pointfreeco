@@ -304,6 +304,22 @@ extension Episode.Reference {
     title: "Fruta: Building a Feature-Rich App with SwiftUI"
   )
 
+  public static var functionalCoreImperativeShell: Self {
+    Self(
+      author: "Gary Bernhardt",
+      blurb: """
+        > Note: Purely functional code makes some things easier to understand: because values don't change, you can call functions and know that only their return value matters—they don't change anything outside themselves. But this makes many real-world applications difficult: how do you write to a database, or to the screen?
+        >
+        > In this screencast we look at one method for crossing this divide. We review a Twitter client whose core is functional: managing tweets, syncing timelines to incoming Twitter API data, remembering cursor positions within the tweet list, and rendering tweets to text for display. This functional core is surrounded by a shell of imperative code: it manipulates stdin, stdout, the database, and the network, all based on values produced by the functional core.
+        >
+        > This design has many nice side effects. For example, testing the functional pieces is very easy, and it often naturally allows isolated testing with no test doubles. It also leads to an imperative shell with few conditionals, making reasoning about the program's state over time much easier.
+        """,
+      link: "https://www.destroyallsoftware.com/screencasts/catalog/functional-core-imperative-shell",
+      publishedAt: yearMonthDayFormatter.date(from: "2012-07-12"),
+      title: "Functional Core, Imperative Shell"
+    )
+  }
+
   public static let fusionPrimer = Self(
     author: "Jasdev Singh",
     blurb: """
@@ -568,6 +584,18 @@ extension Episode.Reference {
     publishedAt: yearMonthDayFormatter.date(from: "2019-01-21"),
     title: "rename ELF.then to ELF.flatMap"
   )
+
+  public static var nonSendableCoreSendableShell: Self {
+    Self(
+      author: "Matthew Hayes",
+      blurb: """
+        > How to push Swift Concurrency to the edge, and make the rest of your code simpler.
+        """,
+      link: "https://whypeople.xyz/non-sendable-core-sendable-shell",
+      publishedAt: yearMonthDayFormatter.date(from: "2026-02-25"),
+      title: "Non-Sendable Core, Sendable Shell"
+    )
+  }
 
   public static let nsOperationNsHipster = Self(
     author: "Mattt",
