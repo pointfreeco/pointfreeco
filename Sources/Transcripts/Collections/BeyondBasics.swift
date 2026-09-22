@@ -10,12 +10,33 @@ extension Episode.Collection {
       """#,
     sections: [
       .isolation,
+      .designingForIsolation,
     ],
     title: "Beyond Basics"
   )
 }
 
 extension Episode.Collection.Section {
+  static let designingForIsolation = Self(
+    alternateSlug: nil,
+    blurb: #"""
+      It is time to take everything we have learned about isolation and put it into practice in a
+      real-world code base. We will build the reimagined [ComposableArchitecture] `Store` from
+      scratch and show the benefits that come from strictly controlling isolation through every
+      layer of the library.
+      
+      [ComposableArchitecture]: https://github.com/pointfreeco/swift-composable-architecture
+      """#,
+    coreLessons: [
+      .init(episode: .ep380_isolationDesign),
+    ],
+    isFinished: false,
+    isHidden: false,
+    related: [],
+    title: "Designing for Isolation",
+    whereToGoFromHere: nil
+  )
+
   static let isolation = Self(
     alternateSlug: nil,
     blurb: #"""
