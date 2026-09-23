@@ -247,5 +247,6 @@ extension BlogPost {
     .post0228_lazyStateRelease,
     .post0229_officeHoursInOneHour,
     .post0230_officeHoursRecording,
+    .post0231_MacroTypes,
   ]
 }
