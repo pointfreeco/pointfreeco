@@ -590,6 +590,8 @@ extension Episode.Reference {
       author: "Matthew Hayes",
       blurb: """
         > How to push Swift Concurrency to the edge, and make the rest of your code simpler.
+
+        A post that aligns nicely with our "nonisolated core, isolated shell" pattern.
         """,
       link: "https://whypeople.xyz/non-sendable-core-sendable-shell",
       publishedAt: yearMonthDayFormatter.date(from: "2026-02-25"),
