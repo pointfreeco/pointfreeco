@@ -1,67 +1,56 @@
-This is the first part of our 3-part series exploring advanced topics in Swift macros. As discussed
-in the [introduction] to this series, Swift macros are one of the most powerful features added to 
-the language in recent years, allowing libraries to generate boilerplate automatically to unlock
-capabilities that were previously impossible without direct support in the compiler.
+Swift macros are one of the most powerful features added to the language in recent years. They make it possible for libraries to generate boilerplate automatically and unlock capabilities that once required direct support from the compiler. We use them throughout the Point-Free ecosystem: [`@Table`][sq] for type-safe SQL queries, [`@CasePathable`][cp] for generating key paths for cases of enums, [`@DependencyClient`][dc] for designing controllable dependencies, [`@DebugSnapshot`][ds] for exhaustively testing reference types, and much, much more.
 
-[introduction]: TODO
+[cp]: https://github.com/pointfreeco/swift-case-paths
+[dc]: https://github.com/pointfreeco/swift-dependencies
+[sq]: https://github.com/pointfreeco/swift-structured-queries
+[ds]: https://github.com/pointfreeco/swift-debug-snapshots
 
-But macros have a major limitation. They can only see the underlying syntax of Swift code but do not
-get access to the static type information. Macros essentially only see the stringy parts of the 
-code.
+But anyone who has written a macro has quickly run into its fundamental limitation: macros only have access to the _syntax_ of the code they are attached to. They do not have access to the compiler's type checker, and they cannot directly ask seemingly simple questions, such as:
 
-However, some amount of type checking does occur before macros are expanded, and it's just enough 
-for us to exploit and get access to a small amount of static type information in our macros. It 
-may sound surprising, but it's totally possible and we now employ this technique in our `@Table` 
-and `@DebugSnapshot` macros (and more) to provide better type inference and diagnostics.
+  * Does this type conform to `Equatable`?
+  * What type did the compiler infer for this expression?
+  * Is this target using default main actor isolation?
 
-Join us for a quick overview of this technique!
+This means that most macros are stumbling through the syntax in the dark, and it is very easy for a macro to generate code that is syntactically valid but will not compile due to static errors. Such errors are buried in the guts of the generated macro code, far from the true source of the problem, and so are difficult to understand and diagnose.
 
-## The problem
+These are the limitations of macros, and these facts are undisputed.
 
-One of the prototypical use cases of macros is that of deriving `Equatable` conformances for types. Swift has compiler magic for automatically synthesizing such conformances for structs when every field in the type is `Equatable`, and has done so for the last 8 years. But wouldn't it be nicer if a macro could implement that functionality outside of the compiler?
+Or are they?
 
-It is easy to imagine a kind of `@DeriveEquatable` macro that when applied to a struct:
+Over the years we have developed a collection of techniques that allow macros to coax the Swift compiler into revealing more information than one may think is possible. None of these techniques gives a macro general access to the type checker. Instead, they take advantage of the work the compiler performs _around_ macro expansion: overload resolution, isolation inference, associated type inference, source-location directives, and more.
 
-```swift
+In a new 3-part series we will explore some of our favorite advanced macro techniques, each motivated by a real problem we encountered in our open source libraries. Below is a short recap of each technique we will be covering, and be on the look out for the full blog post on each technique in the coming days.
+
+## Part 1: Accessing static type information
+
+<!--- [ ] mention that https://github.com/ordo-one/equatable has these problems-->
+<!--    - [ ] or just mention broadly-->
+
+We will begin with what is perhaps the most surprising claim of the series: macros can access a small amount of static type information. For example, suppose we were creating a `@DeriveEquatable` macro to synthesize `Equatable` conformances for structs (ignore for a moment that the Swift compiler does this for us automatically):
+
+```swift:13:fail
+struct Address {
+  var street = ""
+}
+
 @DeriveEquatable
 struct User {
-  let id: UUID 
+  let id: UUID
+  var address: Address
   var name = ""
-} 
+  
+  // Macro expands:
+  static func == (lhs: Self, rhs: Self) -> Bool {
+    lhs.id == rhs.id && lhs.address == rhs.address && lhs.name == rhs.name
+  }
+}
 ```
 
-…automatically expands to the following code:
+Because `@DerivateEquatable` only sees the raw syntax of `User`, and cannot see that `Address` is not `Equatable`, it has no choice but to generate an `==` implementation that is incorrect. That causes an unhelpful compiler error:
 
-```diff
- struct User {
-   let id: UUID 
-   var name = ""
- } 
-+extension User: Equatable {
-+  static func == (lhs: Self, rhs: Self) -> Bool {
-+    lhs.id == rhs.id && lhs.name == rhs.name
-+  }
-+}
-```
+> 🛑 Binary operator '\=\=' cannot be applied to two 'Address' operands
 
-Such a macro is straightforward to write, but giving it a good developer experience is surprisingly tricky.
-
-If your type includes another type that is not yet `Equatable`:
-
-```diff
- @DeriveEquatable
- struct User {
-   let id: UUID 
-+  var address: Address
-   var name = ""
- }
-+struct Address {
-+  var street: String
-+  var city: String
-+}
-```
-
-…then the generated `==` function is no longer correct. But the error for this is hidden inside the generated macro code, and it does not explain exactly what is wrong:
+The message says that `==` can't be applied, but it doesn't say _why_ it can't be applied. And the error is hidden inside the macro generated code, which takes time to uncover:
 
 <div style="position: relative; padding-top: 43.54215003866976%;">
   <iframe
@@ -73,360 +62,181 @@ If your type includes another type that is not yet `Equatable`:
   ></iframe>
 </div>
 
-It tells you that `==` cannot be applied, but why? It's because `Address` is not yet `Equatable`.
-
-Wouldn't it be better if the macro could emit a warning directly inline, right on the field that is causing the problem:
-
-<div style="position: relative; padding-top: 43.54215003866976%;">
-  <iframe
-    src="https://customer-1wj3kl26hvlz1r1i.cloudflarestream.com/db9dd04f075fb98adefc3f798d1cd6b3/iframe?muted=true&preload=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-1wj3kl26hvlz1r1i.cloudflarestream.com%2Fdb9dd04f075fb98adefc3f798d1cd6b3%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-    loading="lazy"
-    style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
-    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-    allowfullscreen="true"
-  ></iframe>
-</div>
-
-This would be a much better experience for users of our macro, but unfortunately the macro does not get access to this kind of type information. When `@DeriveEquatable` expands it does not get to check if `Address` conforms to `Equatable`.
-
-Well, what if we were to tell you it is possible to employ some clever tricks with macros that do give us access to static type information before expanding the macros?
-
-## The solution
-
-We want to localize the diagnostics for `@DeriveEquatable` to call out the non-`Equatable` fields
-rather than hide the error message deep in the expanded macro code:
+We will show how one can leverage a few macro tricks to greatly improve the developer experience of this macro by surfacing the error directly on the line of the struct that caused the issue, and correctly describe exactly what went wrong:
 
 ```swift:4:fail
 @DeriveEquatable
 struct User {
-  let id: UUID 
+  let id: UUID
   var address: Address
-  var name: String
-}
-```
-
-> Failed: 'Address' is not Equatable
-
-It is true that we cannot do this with `@DeriveEquatable` alone because it does not see any static
-type information on `address`. In SwiftSyntax we only get access to a `String` with the value 
-"Address".
-
-However, the extension macro `@DeriveEquatable` can apply an attached macro to the `var address: Address` declaration, and attached macros _do_ get some type information. In the [proposal] for attached macros the following is stated:
-
-[proposal]: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0389-attached-macros.md#proposed-solution
-
-> SE-0389 Excerpt: As with expression macros, attached declaration macros are declared with `macro`, and have [type-checked macro arguments](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0382-expression-macros.md#type-checked-macro-arguments-and-results) that allow their behavior to be customized.
-
-And this comment links to the proposal for [expression macros], in particular the section
-"Type-checked macro arguments and results", and it has the following to say:
-
-[expression macros]: https://github.com/swiftlang/swift-evolution/blob/main/proposals/0382-expression-macros.md
-
-> SE-0382 Excerpt: Macro arguments are type-checked against the parameter types of the macro prior to instantiating the macro.
-
-This clearly states that Swift does perform a bit of type checking before macros are expanded, and that type checking can influence the macros' behavior.
-
-To see this concretely, suppose we had an attached peer macro called `@EquatableCheck` that took a generic type as an argument:
-
-```swift
-@attached(peer) 
-public macro EquatableCheck<T>(_: T.Type) = 
-  #externalMacro(…)
-```
-
-Then when the `@DeriveEquatable` macro expands it will apply the `@EquatableCheck` macro to each stored property, and pass the type of the field to the macro:
-
-```diff
- @DeriveEquatable
- struct User {
-+  @EquatableCheck(UUID.self)
-   let id: UUID 
-+  @EquatableCheck(Address.self)
-   var address: Address
-+  @EquatableCheck(String.self)
-   var name: String
- }
-```
-
-And now for a fun little trick! Just like functions and methods in Swift, macros are capable of being overloaded. We can define an overload of `@EquatableCheck` that works with `Equatable` types:
-
-```swift
-@attached(peer) 
-public macro EquatableCheck<T: Equatable>(_: T.Type) =
-  #externalMacro(module: …, type: "EquatableCheckPassMacro")
-
-@attached(peer) 
-public macro EquatableCheck<T>(_: T.Type) =
-  #externalMacro(module: …, type: "EquatableCheckFailMacro")
-```
-
-Swift will correctly choose between these two versions of the macro depending on whether the 
-argument is `Equatable` or not. This means that although the macro does not get access to static 
-type information we can _choose_ between two macros based on static type information.
-
-So, if we implement the fully generic `@EquatableCheck` macro by having it expand a diagnostic 
-failure _always_:
-
-```swift
-enum EquatableCheckFailMacro: PeerMacro {
-  static func expansion(
-    of node: AttributeSyntax,
-    providingPeersOf declaration: some DeclSyntaxProtocol,
-    in context: some MacroExpansionContext
-  ) throws -> [DeclSyntax] {
-    context.diagnose(
-      Diagnostic(
-        node: Syntax(declaration),
-        message: MacroExpansionErrorMessage(
-          "Type is not Equatable"
-        ),
-      )
-    )
-    return []
-  }
-}
-```
-
-And if we implement the `Equatable` constrained macro by having it expand nothing at all:
-
-```swift
-enum EquatableCheckPassMacro: PeerMacro {
-  static func expansion(
-    of node: AttributeSyntax,
-    providingPeersOf declaration: some DeclSyntaxProtocol,
-    in context: some MacroExpansionContext
-  ) throws -> [DeclSyntax] {
-    []
-  }
-}
-```
-
-Then we will have the desired behavior:
-
-```swift:6:fail
-@DeriveEquatable
-struct User {
-  @EquatableCheck(UUID.self)
-  let id: UUID 
-  @EquatableCheck(Address.self)
-  var address: Address
-  @EquatableCheck(String.self)
-  var name: String
-}
-```
-
-> Failed: Type is not Equatable
-
-And best of all, this failure appears directly inline on the type instead of hidden away in the 
-expanded `==` implementation from the macro:
-
-![[Daily/attachments/derive-equatable-good.mov]]
-
-We can improve this a bit more too. Right now `@EquatableCheck` takes only a type as an argument,
-which means if you elide the type and provide a default:
-
-```swift:4-5:fail
-@DeriveEquatable
-struct User {
-  let id: UUID 
-  var address = Address()
   var name = ""
 }
 ```
 
-…then we don't know what type to pass to `@EquatableCheck`. The Swift compiler can infer the types 
-of the fields to be `Address` and `String`, but that information is not available to the macro.
+> 🛑 'Address' is not 'Equatable'
 
-Well, this is nothing that another overload can't fix. We can provide two more overloads that take generic values and `Equatable` values as arguments:
+It may seem impossible to do, given the fact that macros cannot possible see `Address`'s definition, let alone see what protocols it conforms to, but it is indeed possible!
 
-```swift
-@attached(peer) 
-public macro EquatableCheck<T: Equatable>(_: T) =
-  #externalMacro(module: …, type: "EquatableCheckValuePassMacro")
+## Part 2: Improving type inference
 
-@attached(peer) 
-public macro EquatableCheck<T>(_: T) =
-  #externalMacro(module: …, type: "EquatableCheckValueFailMacro")
-```
+In part 2 we will tackle another problem that sounds impossible: how can a macro generate type-safe code involving a type annotation the user has entirely omitted?
 
-These macros differ from the previous macros in that they take values, not types, as arguments. And
-again, the generic macro will expand with a diagnostic failure whereas the `Equatable` constrained
-macro will expand nothing at all.
+For example, a `@Memberwise` macro that wants to generate a memberwise initializer for public types cannot do so unless all types are provided:
 
-This allows the `name` field to type check as `Equatable`, while the `address` field gets caught as
-not being `Equatable`:
-
-```swift:4:fail
-@DeriveEquatable
-struct User {
-  let id: UUID 
-  var address = Address()
-  var name = ""
-}
-```
-
-> Failed: Type is not Equatable
-
-So we have now been able to access a modest amount of type information in our macros via overloading!
-
-## A more advanced example
-
-Suppose we wanted to build some extra smarts into this `@DeriveEquatable` macro. As we discussed in 
-our [Equatable & Hashable] series, `Equatable` classes are fraught. 99.9% of the time classes should 
-use their object identity for `==` and `hash(into:)`, and they should almost never use the data 
-they hold.
-
-[Equatable & Hashable]: https://www.pointfree.co/collections/back-to-basics/equatable-and-hashable
-
-What if we wanted `@DeriveEquatable` to allow types to hold onto non-`Equatable` objects and it 
-would automatically use object identity `===` for such objects? The canonical example of this is a
-SwiftUI view that holds onto an observable model:
-
-```swift
-struct SearchView: View {
-  let query: String
-  let model: SearchModel
-  …
-}
-```
-
-Giving `SearchView` an `Equatable` conformance allows SwiftUI to [skip unnecessary re-computations] 
-of the `body` of the view. So, this sounds like a good use case for the `@DeriveEquatable` macro:
-
-[skip unnecessary re-computations]: https://medium.com/airbnb-engineering/understanding-and-improving-swiftui-performance-37b77ac61896
-
-```swift:4:fail
-@DeriveEquatable
-struct SearchView: View {
-  let query: String
-  let model: SearchModel
-  …
-}
-```
-
-> Failed: 'SearchModel' is not Equatable
-
-…however the `SearchModel` class is not `Equatable`. We could take the time to conform it using 
-object identity (or a bit of [library code] makes it a one liner), but wouldn't it be nicer if
-`@DeriveEquatable` could see that `SearchModel` is a non-`Equatable` class and decide to implement
-equality with `===` on its own?
-
-[library code]: https://github.com/pointfreeco/swift-navigation/blob/2.10.3/Sources/SwiftNavigation/HashableObject.swift
-
-Well, again `@DeriveEquatable` cannot do this because it only sees syntax. It is not able to see 
-that `SearchModel` is a class, nor can it see what protocols it conforms to. But there is another
-trick we can employ to make this possible.
-
-We can start with the previous trick by defining a new `@EquatableCheck` overload that is 
-constrained to `AnyObject`:
-
-```swift
-@attached(peer) 
-public macro EquatableCheck<T: AnyObject>(_: T.Type) =
-  #externalMacro(module: …, type: "EquatableCheckObjectIdentityMacro")
-```
-
-…and its implementation will expand nothing. That will prevent non-`Equatable` objects from being
-flagged by the `@EquatableCheck` macro.
-
-Next, the `@DeriveEquatable` macro will expand two private static methods inside the type it is
-attached to. A method for checking the equality of `Equatable` types, and a method for checking the
-equality of object types:
-
-```swift
-private static func _$isEqual<T: Equatable>(_ lhs: T, _ rhs: T) -> Bool {
-  lhs == rhs
-}
-private static func _$isEqual<T: AnyObject>(_ lhs: T, _ rhs: T) -> Bool {
-  lhs === rhs
-}
-```
-
-And finally, these methods will be used by `@DeriveEquatable` when implementing `==` instead of 
-using `==` directly:
-
-```swift
-extension SearchView: Equatable {
-  static func == (lhs: Self, rhs: Self) -> Bool {
-    _$isEqual(lhs.query, rhs.query) 
-      && _$isEqual(lhs.model, rhs.model)
+```swift:11:fail
+@Memberwise
+public struct User {
+  public let id: Int
+  public var name: String
+  public var createdAt = Date()
+  
+  // Macro expands
+  public init(
+    id: Int, 
+    name: String,
+    createdAt: <#???#> = Date()
+  ) {
+    self.id = id
+    self.name = name 
+    self.createdAt = createdAt
   }
 }
 ```
 
-This allows regular `Equatable` types to check for equality using `==`, and objects will use `===`.
+The `@Memberwise` macro does not know the type of `createdAt`, and so cannot properly write the `init`.
 
-## How we are using these techniques in the Point-Free ecosystem
+Similarly, a "builder" kind of macro that wants to unlock Kotlin-like syntax for making a copy of an existing value with some fields updated:
 
-We are using this trick in a number of places in the Point-Free ecosystem to improve the developer experience when using our tools.
+```swift:10:fail
+@Builder
+struct User {
+  let id: Int
+  var name: String
+  var createdAt = Date()
+  
+  // Macro expands
+  func copy(
+    name: String? = nil, 
+    createdAt: <#???#> = nil
+  ) -> User {
+    var result = self
+    if let name { result.name = name }
+    if let createdAt { result.createdAt = createdAt }
+    return result
+  }
+}
 
-### @Table macro
+let newUser = existingUser.copy(createdAt: Date())
+```
 
-The `@Table` macro in [StructuredQueries] is responsible for generating enough static information about a type to make it possible to construct type-safe and schema-safe SQL queries. By default, one can only store simple data types in a table that are recognized by SQLite, such as strings, integers, doubles, and data blobs. But often one needs to store more complex types (raw representables, JSON, nested columns, etc.), and to do so one must take a few extra steps.
+…again cannot properly implement `copy` because the type of `createdAt` is not known.
+
+Even in our own libraries we have come across this problem, such as in [StructuredQueries] where the `@Table` macro wants to generate a "draft" type that is the same as the user's type, except where all fields are optionalized:
 
 [StructuredQueries]: https://github.com/pointfreeco/swift-structured-queries
 
-And now the `@Table` macro can guide you to do this correctly! For example, if you try to hold onto a type in a table that is not compatible with SQLite, you get a clear error message letting you know that you need to add a representation for converting the value back-and-forth to a SQLite-compatible type:
-
-![](https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/30813f8b-eed0-480b-bfef-cdef768b9600/public)
-
-If the `@Table` macro detects that `location` is `Codable`, then it can suggest you store the value as JSON text or JSONB binary:
-
-![](https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/05875b66-5bc2-4962-9b19-d4d6c2a11300/public)
-
-And if the `@Table` macro detects that the value you are storing is `RawRepresentable`, it can suggest that you conform that type to `QueryBindable`, or you can provide an explicit representation:
-
-![](https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/659bfb16-56b8-4f4a-1929-82fd96be8600/public)
-
-Prior to the techniques discussed in this post, storing an unsupported type in a `@Table` type meant you would get a cryptic error message hidden deep in dozens of lines of macro generated code.
-### @DebugSnapshot macro
-
-The `@DebugSnapshot` macro in our [DebugSnapshots] library gives testing superpowers to reference types, which are typically quite difficult to test. It does this by performing a static snapshot of a type's data at various points in time so that one can exhaustively assert on how the state changes.
-
-However, in order to snapshot deeply nested reference types, one must apply additional macros to determine how the snapshotting is performed. For example, if you have an observable model that can present a form for creating or editing a record (such as a reminder), then it could be modeled like so:
-
-```swift
-@DebugSnapshot
-@Observable
-class RemindersListModel {
-  var reminders: [Reminder] = []
-  var reminderForm: ReminderFormModel?
-  …
-}
-
-@DebugSnapshot
-@Observable
-class ReminderFormModel {
-  var reminder: Reminder.Draft
-  …
+```swift:11:fail
+@Table
+struct User {
+  let id: Int
+  var name: String
+  var createdAt = Date()
+  
+  // Macro expands
+  struct Draft {
+    let id: Int?
+    var name: String?
+    var createdAt: <#???#> = Date()
+  }
 }
 ```
 
-In the first release of DebugSnapshots this code would compile without any warning even though technically changes to the `reminderForm` property could not be properly snapshotted. The fix is to apply the `@DebugSnapshotConvertible` macro:
+Again this cannot be done without knowing the type of `createdAt`.
+
+In all of these situations the macro author must provide an unpleasant developer experience on their users by forcing them to explicitly annotate all fields with a type:
 
 ```diff
- @DebugSnapshot
- @Observable
- class RemindersListModel {
-   var reminders: [Reminder] = []
-+  @DebugSnapshotConvertible
-   var reminderForm: ReminderFormModel?
-   …
+ @Table
+ struct User {
+   let id: Int
+   var name: String
+-  var createdAt = Date()
++  var createdAt: Date = Date()
  }
 ```
 
-…but there is no reason for our users to know to do this.
+Well, luckily this does not have to be the case. Thanks to a novel use of protocols with associated types, it is possible for the macro to generate macro code that has access to the type that Swift infers for each field. Sounds too good to be true, but we promise it is not!
 
-Well, thanks to the type inference tricks described in this article, we can now detect when a property held in a `@DebugSnapshot` class is itself `@DebugSnapshot`, and prompt the user to apply the `@DebugSnapshotConvertible`:
+## Part 3: Detecting default main actor isolation
 
-[DebugSnapshots]: https://github.com/pointfreeco/swift-debug-snapshots
+Swift's default isolation setting allows an entire target to implicitly isolate its declarations to `@MainActor`. This setting has far-reaching consequences on how one writes code in such targets, and it can make it very difficult to write macros that work just as well in `@MainActor` modules as they do in nonisolated modules. 
 
-![](https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/47ae5082-f3d1-40e1-56ad-56b2f48c7e00/public)
+For example, when using the macros from our [Dependencies] library in a `@MainActor` module, it is necessary to mark certain things as nonisolated. This is due to the fact that Dependencies requires sendable key paths and key paths derived from main actor types are _not_ sendable.
 
-Let's let the user know that the code they have written is not quite right, and there's a bit more to do.
+This causes an unfortunate situation where naive use of the macro seems to work at first:
 
-## Conclusion
+```swift
+@DependencyClient
+struct APIClient {
+  var fetchUser: @Sendable (Int) async throws -> User
+}
+```
 
-We hope that you can see how much potential there is in this technique. It is not true that macros have zero visibility into the static types of the code they are attached to. Under certain circumstances you are able to detect what protocols a type conforms to, as well as the inferred type of a value. 
+This compiles with no errors. But the moment you go to register this dependency:
 
-Further, the more you provide these kinds of diagnostics for your macros, the better AI agents will be able to write code using your library in the correct manner. Agents can easily consume these diagnostics and fix-its and determine the next best action to take. This technique can be incredibly powerful, and it's something we are using to great effect in our libraries and will continue using.
+```swift
+extension DependencyValues {
+  @DependencyEntry
+  var apiClient = APIClient()
+}
+```
+
+…you get two error messages hidden in the macro generated code:
+
+> Failed: Main actor-isolated default value in a nonisolated context
+
+> Failed: Call to main actor-isolated initializer 'init()' in a synchronous nonisolated context
+
+The fix is to make the `APIClient` type and `apiClient` property nonisolated, so that the generated key path is sendable:
+
+```diff
+ @DependencyClient
+-struct APIClient {
++nonisolated struct APIClient {
+   var fetchUser: @Sendable (Int) async throws -> User
+ }
+ extension DependencyValues {
+   @DependencyEntry
+-  var apiClient = APIClient()
++  nonisolated var apiClient = APIClient()
+ }
+```
+
+But of course there is no way for our users (or AI agents) to know that this is what needs to done. Whether or not a module is built with main actor isolation is not something made available to macros, and so you may assume we just have to live with this subpar developer experience.
+
+Well, that's not the case! In the second post in this series we will demonstrate a technique to detect `@MainActor` isolation from macros so that proper diagnostics can be emitted directly on the lines that are causing the problem:
+
+```swift:1,5:fail
+@DependencyClient struct APIClient {
+  var fetchUser: @Sendable (Int) async throws -> User
+}
+extension DependencyValues {
+  @DependencyEntry var apiClient = APIClient()
+}
+```
+
+> Failed: Client must be 'nonisolated struct' when default isolation is '@MainActor'
+
+> Failed: Entry must be 'nonisolated var' when default isolation is '@MainActor'
+
+Now it is obvious what the problem is, and how to fix it.
+
+[Dependencies]: https://github.com/pointfreeco/swift-dependencies
+
+## Tomorrow the fun begins…
+
+Macros may only get access to the syntax of user code, but macro expansions are able to participate in more of the compilation process. With a little bit of creativity we can recover type information, detect compiler settings, and preserve type inference.
+
+And we use each and every one of these tricks in production libraries that improve diagnostics, unlock concise APIs, and make code written by both humans and AI agents easier to get right.
+
+Be sure to catch the first post tomorrow!

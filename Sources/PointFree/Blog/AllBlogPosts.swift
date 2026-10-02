@@ -248,5 +248,7 @@ extension BlogPost {
     .post0229_officeHoursInOneHour,
     .post0230_officeHoursRecording,
     .post0231_MacroTypes,
+    .post0232_MacroTypes,
+    .post0233_MacroTypes,
   ]
 }

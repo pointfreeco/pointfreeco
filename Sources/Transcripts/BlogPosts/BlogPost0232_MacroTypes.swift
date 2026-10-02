@@ -1,7 +1,7 @@
 import Foundation
 
 extension BlogPost {
-  public static let post0231_MacroTypes = Self(
+  public static let post0232_MacroTypes = Self(
     author: .pointfree,
     blurb: """
       TODO
@@ -9,8 +9,8 @@ extension BlogPost {
     coverImage: "TODO",
     hidden: .no,
     hideFromSlackRSS: false,
-    id: 231,
+    id: 232,
     publishedAt: yearMonthDayFormatter.date(from: "2026-09-29")!,
-    title: "Advanced techniques in Swift macros"
+    title: "Advanced macro technique #1: Static type information"
   )
 }
