@@ -29,6 +29,8 @@ extension Episode.Collection.Section {
       """#,
     coreLessons: [
       .init(episode: .ep380_isolationDesign),
+      .init(episode: .ep381_isolationDesign),
+      .init(episode: .ep382_isolationDesign),
     ],
     isFinished: false,
     isHidden: false,
