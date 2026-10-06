@@ -5,26 +5,19 @@ Swift macros are one of the most powerful features added to the language in rece
 [sq]: https://github.com/pointfreeco/swift-structured-queries
 [ds]: https://github.com/pointfreeco/swift-debug-snapshots
 
-But anyone who has written a macro has quickly run into a fundamental limitation: macros only have access to the _syntax_ of the code they are attached to. They do not have access to the compiler's type checker, and they cannot directly ask seemingly simple questions, such as:
-
-  * Does this type conform to `Equatable`?
-  * What type did the compiler infer for this expression?
-  * Is this target using default main actor isolation?
+But anyone who has written a macro has quickly run into a fundamental limitation: macros only have access to the _syntax_ of the code they are attached to. They do not have access to the compiler's type checker, and they cannot directly ask seemingly simple questions, such as: "does this type conform to `Equatable`?" Or, "what type did the compiler infer for this expression?" 
 
 This means that most macros are stumbling through syntax in the dark, and it is very easy for a macro to generate code that is syntactically valid but will not compile due to other static errors. And these errors are buried in the guts of the generated macro code, far from the true source of the problem, and so they can be difficult to understand and diagnose.
 
-These limitations of macros are undisputed.
+These are the limitations of Swift macros, and they are undisputed.
 
 Or are they?
 
 Over the years we have developed a collection of techniques that allow macros to coax the Swift compiler into revealing more information than one may think is possible. None of these techniques gives a macro general access to the type checker. Instead, they take advantage of the work the compiler performs _around_ macro expansion: overload resolution, isolation inference, associated type inference, source-location directives, and more.
 
-In a new 3-part series we will explore some of our favorite advanced macro techniques, each motivated by a real problem we encountered in our open source libraries. Below is a short recap of each technique we will be covering, and be on the look out for the full blog post on each technique in the coming days.
+In a new 2-part blog series we will explore some of our favorite advanced macro techniques, each motivated by a real problem we encountered in our open source libraries. Below is a short recap of each technique we will be covering, and be on the look out for the full blog post on each technique in the coming days.
 
 ## Part 1: Accessing static type information
-
-<!--- [ ] mention that https://github.com/ordo-one/equatable has these problems-->
-<!--    - [ ] or just mention broadly-->
 
 We will begin with what is perhaps the most surprising claim of the series: macros can access a small amount of static type information. For example, suppose we were creating a `@DeriveEquatable` macro to synthesize `Equatable` conformances for structs (ignore for a moment that the Swift compiler does this for us automatically):
 
@@ -153,7 +146,7 @@ struct User {
 
 Again this cannot be done without knowing the type of `createdAt`.
 
-In all of these situations the macro author must provide an unpleasant developer experience on their users by forcing them to explicitly annotate all fields with a type:
+In all of these situations the macro author must provide an unpleasant developer experience to their users by forcing them to explicitly annotate all fields with a type:
 
 ```diff
  @Table
@@ -167,6 +160,7 @@ In all of these situations the macro author must provide an unpleasant developer
 
 Well, luckily this does not have to be the case. Thanks to a novel use of protocols with associated types, it is possible for the macro to generate macro code that has access to the type that Swift infers for each field. Sounds too good to be true, but we promise it is not!
 
+<!--
 ## Part 3: Detecting default main actor isolation
 
 Swift's default isolation setting allows an entire target to implicitly isolate its declarations to `@MainActor`. This setting has far-reaching consequences on how one writes code in such targets, and it can make it very difficult to write macros that work just as well in `@MainActor` modules as they do in nonisolated modules. 
@@ -232,6 +226,7 @@ extension DependencyValues {
 Now it is obvious what the problem is, and how to fix it.
 
 [Dependencies]: https://github.com/pointfreeco/swift-dependencies
+-->
 
 ## Tomorrow the fun begins…
 
