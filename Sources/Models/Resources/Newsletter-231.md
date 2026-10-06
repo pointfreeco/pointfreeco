@@ -1,19 +1,19 @@
-Swift macros are one of the most powerful features added to the language in recent years. They make it possible for libraries to generate boilerplate automatically and unlock capabilities that once required direct support from the compiler. We use them throughout the Point-Free ecosystem: [`@Table`][sq] for type-safe SQL queries, [`@CasePathable`][cp] for generating key paths for cases of enums, [`@DependencyClient`][dc] for designing controllable dependencies, [`@DebugSnapshot`][ds] for exhaustively testing reference types, and much, much more.
+Swift macros are one of the most powerful features added to the language in recent years. They make it possible for libraries to generate boilerplate automatically and unlock capabilities that once required direct support from the compiler. We use them throughout the Point-Free ecosystem: [`@Table`][sq] for type-safe SQL queries, [`@CasePathable`][cp] for generating key paths to cases of enums, [`@DependencyClient`][dc] for designing controllable dependencies, [`@DebugSnapshot`][ds] for debugging changes to reference types and exhaustively testing them, and much, much more.
 
 [cp]: https://github.com/pointfreeco/swift-case-paths
 [dc]: https://github.com/pointfreeco/swift-dependencies
 [sq]: https://github.com/pointfreeco/swift-structured-queries
 [ds]: https://github.com/pointfreeco/swift-debug-snapshots
 
-But anyone who has written a macro has quickly run into its fundamental limitation: macros only have access to the _syntax_ of the code they are attached to. They do not have access to the compiler's type checker, and they cannot directly ask seemingly simple questions, such as:
+But anyone who has written a macro has quickly run into a fundamental limitation: macros only have access to the _syntax_ of the code they are attached to. They do not have access to the compiler's type checker, and they cannot directly ask seemingly simple questions, such as:
 
   * Does this type conform to `Equatable`?
   * What type did the compiler infer for this expression?
   * Is this target using default main actor isolation?
 
-This means that most macros are stumbling through the syntax in the dark, and it is very easy for a macro to generate code that is syntactically valid but will not compile due to static errors. Such errors are buried in the guts of the generated macro code, far from the true source of the problem, and so are difficult to understand and diagnose.
+This means that most macros are stumbling through syntax in the dark, and it is very easy for a macro to generate code that is syntactically valid but will not compile due to other static errors. And these errors are buried in the guts of the generated macro code, far from the true source of the problem, and so they can be difficult to understand and diagnose.
 
-These are the limitations of macros, and these facts are undisputed.
+These limitations of macros are undisputed.
 
 Or are they?
 
