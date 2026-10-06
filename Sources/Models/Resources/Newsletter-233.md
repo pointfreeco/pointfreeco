@@ -10,12 +10,6 @@ let createdAt = Date()
 let createdAt: Date = Date()
 ```
 
-In contrast, Objective-C requires explicit types on every declaration, even when the type should be clear from context:
-
-```objc
-NSDate *createdAt = [NSDate date];
-```
-
 Most people who write Swift code want to elide types where possible, and would be put off if they were forced to add types to code that otherwise would not need them. But that is exactly what happens when using macros. A missing type annotation often means the macro cannot write correct code, and so will lead to cryptic compile time errors burried in the guts of the expanded macro code.
 
 Well, it doesn't have to be that way. Join us for an advanced technique in Swift macros that allows your macros to get access to static type information even when the type is completely omitted. 

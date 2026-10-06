@@ -4,7 +4,9 @@ extension BlogPost {
   public static let post0233_MacroTypes = Self(
     author: .pointfree,
     blurb: """
-      TODO
+      The final advanced Swift macro technique we will discuss is how macros can determine the
+      static type of an expression whose type must be inferred by the compiler. This is particularly
+      useful for macros that need to build initializers or "builders" for users' types.
       """,
     coverImage: "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/3c477077-8de9-4ae2-186e-5be32ef8b100/public",
     hidden: .no,

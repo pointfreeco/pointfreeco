@@ -9,7 +9,9 @@ But anyone who has written a macro has quickly run into a fundamental limitation
 
 This means that most macros are stumbling through syntax in the dark, and it is very easy for a macro to generate code that is syntactically valid but will not compile due to other static errors. And these errors are buried in the guts of the generated macro code, far from the true source of the problem, and so they can be difficult to understand and diagnose.
 
-These are the limitations of Swift macros, and they are undisputed.
+**These are the limitations of Swift macros, and they are undisputed.**
+
+---
 
 Or are they?
 
@@ -45,10 +47,9 @@ Because `@DerivateEquatable` only sees the raw syntax of `User`, and cannot see 
 
 The message says that `==` can't be applied, but it doesn't say _why_ it can't be applied. And the error is hidden inside the macro generated code, which takes time to uncover:
 
-<div style="position: relative; padding-top: 43.54215003866976%;">
+<div style="position: relative; padding-top: 66.88907422852377%;">
   <iframe
-    src="https://customer-1wj3kl26hvlz1r1i.cloudflarestream.com/795757acd5cb2886bfeb9c03069b38e2/iframe?muted=true&preload=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-1wj3kl26hvlz1r1i.cloudflarestream.com%2F795757acd5cb2886bfeb9c03069b38e2%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-    loading="lazy"
+    src="https://customer-1wj3kl26hvlz1r1i.cloudflarestream.com/539124498104560fe490a57ad6fac771/iframe?muted=true&preload=true&poster=https%3A%2F%2Fcustomer-1wj3kl26hvlz1r1i.cloudflarestream.com%2F539124498104560fe490a57ad6fac771%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
     style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
     allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
     allowfullscreen="true"
@@ -124,7 +125,7 @@ let newUser = existingUser.copy(createdAt: Date())
 
 …again cannot properly implement `copy` because the type of `createdAt` is not known.
 
-Even in our own libraries we have come across this problem, such as in [StructuredQueries] where the `@Table` macro wants to generate a "draft" type that is the same as the user's type, except where all fields are optionalized:
+Even in our own libraries we have come across this problem, such as in [StructuredQueries], where the `@Table` macro wants to generate a "draft" type that is the same as the user's type, except where all fields are optionalized:
 
 [StructuredQueries]: https://github.com/pointfreeco/swift-structured-queries
 

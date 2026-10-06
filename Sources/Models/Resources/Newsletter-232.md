@@ -3,7 +3,7 @@ in the [introduction] to this series, Swift macros are one of the most powerful 
 the language in recent years, allowing libraries to generate boilerplate automatically to unlock
 capabilities that were previously impossible without direct support in the compiler.
 
-[introduction]: TODO
+[introduction]: /blog/posts/231-advanced-techniques-in-swift-macros
 
 But macros have a major limitation. They can only see the underlying syntax of Swift code but do not
 get access to the static type information. Macros essentially only see the stringy parts of the 
@@ -63,10 +63,9 @@ If your type includes another type that is not yet `Equatable`:
 
 …then the generated `==` function is no longer correct. But the error for this is hidden inside the generated macro code, and it does not explain exactly what is wrong:
 
-<div style="position: relative; padding-top: 43.54215003866976%;">
+<div style="position: relative; padding-top: 66.88907422852377%;">
   <iframe
-    src="https://customer-1wj3kl26hvlz1r1i.cloudflarestream.com/795757acd5cb2886bfeb9c03069b38e2/iframe?muted=true&preload=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-1wj3kl26hvlz1r1i.cloudflarestream.com%2F795757acd5cb2886bfeb9c03069b38e2%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-    loading="lazy"
+    src="https://customer-1wj3kl26hvlz1r1i.cloudflarestream.com/539124498104560fe490a57ad6fac771/iframe?muted=true&preload=true&poster=https%3A%2F%2Fcustomer-1wj3kl26hvlz1r1i.cloudflarestream.com%2F539124498104560fe490a57ad6fac771%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
     style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
     allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
     allowfullscreen="true"
