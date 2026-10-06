@@ -1,4 +1,4 @@
-This is the first part of our 3-part series exploring advanced topics in Swift macros. As discussed
+This is the first of our 2-part series exploring advanced topics in Swift macros. As discussed
 in the [introduction] to this series, Swift macros are one of the most powerful features added to 
 the language in recent years, allowing libraries to generate boilerplate automatically to unlock
 capabilities that were previously impossible without direct support in the compiler.
@@ -49,23 +49,23 @@ Such a macro is straightforward to write, but giving it a good developer experie
 If your type includes another type that is not yet `Equatable`:
 
 ```diff
++struct Address {
++  var street: String
++}
+
  @DeriveEquatable
  struct User {
    let id: UUID 
 +  var address: Address
    var name = ""
  }
-+struct Address {
-+  var street: String
-+  var city: String
-+}
 ```
 
 …then the generated `==` function is no longer correct. But the error for this is hidden inside the generated macro code, and it does not explain exactly what is wrong:
 
 <div style="position: relative; padding-top: 66.88907422852377%;">
   <iframe
-    src="https://customer-1wj3kl26hvlz1r1i.cloudflarestream.com/539124498104560fe490a57ad6fac771/iframe?muted=true&preload=true&poster=https%3A%2F%2Fcustomer-1wj3kl26hvlz1r1i.cloudflarestream.com%2F539124498104560fe490a57ad6fac771%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+    src="https://customer-1wj3kl26hvlz1r1i.cloudflarestream.com/be5b9539658603713ae3b408e76118a3/iframe?muted=true&preload=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-1wj3kl26hvlz1r1i.cloudflarestream.com%2Fbe5b9539658603713ae3b408e76118a3%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
     style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
     allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
     allowfullscreen="true"
@@ -76,10 +76,9 @@ It tells you that `==` cannot be applied, but why? It's because `Address` is not
 
 Wouldn't it be better if the macro could emit a warning directly inline, right on the field that is causing the problem:
 
-<div style="position: relative; padding-top: 43.54215003866976%;">
+<div style="position: relative; padding-top: 66.88907422852377%;">
   <iframe
-    src="https://customer-1wj3kl26hvlz1r1i.cloudflarestream.com/db9dd04f075fb98adefc3f798d1cd6b3/iframe?muted=true&preload=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-1wj3kl26hvlz1r1i.cloudflarestream.com%2Fdb9dd04f075fb98adefc3f798d1cd6b3%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-    loading="lazy"
+    src="https://customer-1wj3kl26hvlz1r1i.cloudflarestream.com/ccc9fcc7e8646c955de69b6b01f9122c/iframe?muted=true&preload=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-1wj3kl26hvlz1r1i.cloudflarestream.com%2Fccc9fcc7e8646c955de69b6b01f9122c%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
     style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
     allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
     allowfullscreen="true"

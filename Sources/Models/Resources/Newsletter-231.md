@@ -49,7 +49,7 @@ The message says that `==` can't be applied, but it doesn't say _why_ it can't b
 
 <div style="position: relative; padding-top: 66.88907422852377%;">
   <iframe
-    src="https://customer-1wj3kl26hvlz1r1i.cloudflarestream.com/539124498104560fe490a57ad6fac771/iframe?muted=true&preload=true&poster=https%3A%2F%2Fcustomer-1wj3kl26hvlz1r1i.cloudflarestream.com%2F539124498104560fe490a57ad6fac771%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+    src="https://customer-1wj3kl26hvlz1r1i.cloudflarestream.com/be5b9539658603713ae3b408e76118a3/iframe?muted=true&preload=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-1wj3kl26hvlz1r1i.cloudflarestream.com%2Fbe5b9539658603713ae3b408e76118a3%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
     style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
     allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
     allowfullscreen="true"
@@ -160,74 +160,6 @@ In all of these situations the macro author must provide an unpleasant developer
 ```
 
 Well, luckily this does not have to be the case. Thanks to a novel use of protocols with associated types, it is possible for the macro to generate macro code that has access to the type that Swift infers for each field. Sounds too good to be true, but we promise it is not!
-
-<!--
-## Part 3: Detecting default main actor isolation
-
-Swift's default isolation setting allows an entire target to implicitly isolate its declarations to `@MainActor`. This setting has far-reaching consequences on how one writes code in such targets, and it can make it very difficult to write macros that work just as well in `@MainActor` modules as they do in nonisolated modules. 
-
-For example, when using the macros from our [Dependencies] library in a `@MainActor` module, it is necessary to mark certain things as nonisolated. This is due to the fact that Dependencies requires sendable key paths and key paths derived from main actor types are _not_ sendable.
-
-This causes an unfortunate situation where naive use of the macro seems to work at first:
-
-```swift
-@DependencyClient
-struct APIClient {
-  var fetchUser: @Sendable (Int) async throws -> User
-}
-```
-
-This compiles with no errors. But the moment you go to register this dependency:
-
-```swift
-extension DependencyValues {
-  @DependencyEntry
-  var apiClient = APIClient()
-}
-```
-
-…you get two error messages hidden in the macro generated code:
-
-> Failed: Main actor-isolated default value in a nonisolated context
-
-> Failed: Call to main actor-isolated initializer 'init()' in a synchronous nonisolated context
-
-The fix is to make the `APIClient` type and `apiClient` property nonisolated, so that the generated key path is sendable:
-
-```diff
- @DependencyClient
--struct APIClient {
-+nonisolated struct APIClient {
-   var fetchUser: @Sendable (Int) async throws -> User
- }
- extension DependencyValues {
-   @DependencyEntry
--  var apiClient = APIClient()
-+  nonisolated var apiClient = APIClient()
- }
-```
-
-But of course there is no way for our users (or AI agents) to know that this is what needs to done. Whether or not a module is built with main actor isolation is not something made available to macros, and so you may assume we just have to live with this subpar developer experience.
-
-Well, that's not the case! In the second post in this series we will demonstrate a technique to detect `@MainActor` isolation from macros so that proper diagnostics can be emitted directly on the lines that are causing the problem:
-
-```swift:1,5:fail
-@DependencyClient struct APIClient {
-  var fetchUser: @Sendable (Int) async throws -> User
-}
-extension DependencyValues {
-  @DependencyEntry var apiClient = APIClient()
-}
-```
-
-> Failed: Client must be 'nonisolated struct' when default isolation is '@MainActor'
-
-> Failed: Entry must be 'nonisolated var' when default isolation is '@MainActor'
-
-Now it is obvious what the problem is, and how to fix it.
-
-[Dependencies]: https://github.com/pointfreeco/swift-dependencies
--->
 
 ## Tomorrow the fun begins…
 

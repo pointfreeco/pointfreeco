@@ -1,3 +1,14 @@
+This is the second of our 2-part series exploring advanced topics in Swift macros. As discussed
+in the [introduction] to this series, Swift macros are one of the most powerful features added to 
+the language in recent years, allowing libraries to generate boilerplate automatically to unlock
+capabilities that were previously impossible without direct support in the compiler.
+
+[introduction]: /blog/posts/231-advanced-techniques-in-swift-macros
+
+But macros have a major limitation. They can only see the underlying syntax of Swift code but do not
+get access to the static type information. Macros essentially only see the stringy parts of the 
+code. And this complicates one of the most celebrated features of Swift: type inference.
+
 Type inference is one of the most idiomatic patterns in the Swift language. It's what allows us to define a variable like this:
 
 ```swift
