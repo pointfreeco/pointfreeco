@@ -43,7 +43,7 @@ struct User {
 
 Because `@DerivateEquatable` only sees the raw syntax of `User`, and cannot see that `Address` is not `Equatable`, it has no choice but to generate an `==` implementation that is incorrect. That causes an unhelpful compiler error:
 
-> 🛑 Binary operator '\=\=' cannot be applied to two 'Address' operands
+> Failed: Binary operator '\=\=' cannot be applied to two 'Address' operands
 
 The message says that `==` can't be applied, but it doesn't say _why_ it can't be applied. And the error is hidden inside the macro generated code, which takes time to uncover:
 
@@ -67,7 +67,7 @@ struct User {
 }
 ```
 
-> 🛑 'Address' is not 'Equatable'
+> Failed: 'Address' is not 'Equatable'
 
 It may seem impossible to do, given the fact that macros cannot possible see `Address`'s definition, let alone see what protocols it conforms to, but it is indeed possible!
 
