@@ -203,15 +203,6 @@ public struct User {
   public var createdAt = Date()
 
   // Macro expands
-  public protocol _$FieldTypes {
-    associatedtype createdAt
-    static var createdAtDefault: createdAt { get }
-  }
-  
-  public enum _$FieldWitness: _$FieldTypes {
-    public static let createdAtDefault = Date()
-  }
-  
   public init(
     id: Int, 
     name: String,
@@ -221,12 +212,19 @@ public struct User {
     self.name = name 
     self.createdAt = createdAt
   }
+  
+  public protocol _$FieldTypes {
+    associatedtype createdAt
+    static var createdAtDefault: createdAt { get }
+  }
+  
+  public enum _$FieldWitness: _$FieldTypes {
+    public static let createdAtDefault = Date()
+  }
 }
 ```
 
-And this code is 100% valid Swift and compiles.
-
-Again, this code may look strange, but it's all macro generated code. We've had to ping pong through a few layers, first a protocol with an associated type, to a concrete conformance, and finally to accessing the concrete type's associated type. But this is now fully compiling Swift code that any macro can write.
+This code may look strange, but it's also code the user will never directly see. We've had to ping pong through a few layers, first a protocol with an associated type, to a concrete conformance, and finally to accessing the concrete type's associated type. But this is now 100% valid Swift code that fully compiles, and this is the kind of code a macro can easily expand without directly knowing about any of the static type information of the code it is attached to.
 
 And this trick works no matter how complex the default value is for a field. Take for example a default that is determined by an immediately invoked closure that references environment values:
 
@@ -243,7 +241,7 @@ public struct User {
 
 The macro code can follow the same pattern as for `createdAt`. A new associated type and static requirement is added to `_$FieldTypes`, a new static property is added to `_$FieldWitness`, and then the initializer can use that associated type for the type:
 
-```swift:5-7,13,14,19-21,28-30,35
+```swift:5-7,14-16,21,27-28,33-35
 public struct User {
   public let id: Int
   public var name: String
@@ -253,20 +251,6 @@ public struct User {
   }()
 
   // Macro expands
-  public protocol _$FieldTypes {
-    associatedtype createdAt
-    static var createdAtDefault: createdAt { get }
-    associatedtype isDebugging
-    static var isDebuggingDefault: isDebugging { get }
-  }
-  
-  public enum _$FieldWitness: _$FieldTypes {
-    public static let createdAtDefault = Date()
-    public static let isDebuggingDefault = {
-      ProcessInfo.processInfo.environment["DEBUGGING"] != nil
-    }()
-  }
-  
   public init(
     id: Int, 
     name: String,
@@ -279,6 +263,20 @@ public struct User {
     self.name = name 
     self.createdAt = createdAt
     self.isDebugging = isDebugging
+  }
+  
+  public protocol _$FieldTypes {
+    associatedtype createdAt
+    static var createdAtDefault: createdAt { get }
+    associatedtype isDebugging
+    static var isDebuggingDefault: isDebugging { get }
+  }
+  
+  public enum _$FieldWitness: _$FieldTypes {
+    public static let createdAtDefault = Date()
+    public static let isDebuggingDefault = {
+      ProcessInfo.processInfo.environment["DEBUGGING"] != nil
+    }()
   }
 }
 ```
