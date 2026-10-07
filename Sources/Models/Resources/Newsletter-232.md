@@ -122,7 +122,7 @@ And this comment links to the proposal for [expression macros], in particular th
 
 > SE-0382 Excerpt: Macro arguments are type-checked against the parameter types of the macro prior to instantiating the macro.
 
-This clearly states that Swift does perform a bit of type checking before macros are expanded, and that type checking can influence the macros' behavior.
+This clearly states that Swift does perform a bit of type checking before macros are expanded, and that type checking can influence the macro's behavior.
 
 To see this concretely, suppose we had an attached peer macro called `@EquatableCheck` that took a generic type as an argument:
 
