@@ -148,7 +148,7 @@ Then when the `@DeriveEquatable` macro expands it will apply the `@EquatableChec
 
 And now for a fun little trick! Just like functions and methods in Swift, macros are capable of being overloaded. We can define an overload of `@EquatableCheck` that works with `Equatable` types:
 
-```swift
+```swift:1-3
 @attached(peer) 
 public macro EquatableCheck<T: Equatable>(_: T.Type) =
   #externalMacro(module: …, type: "EquatableCheckPassMacro")
