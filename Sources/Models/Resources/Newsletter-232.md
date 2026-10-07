@@ -218,7 +218,14 @@ struct User {
 And best of all, this failure appears directly inline on the type instead of hidden away in the 
 expanded `==` implementation from the macro:
 
-![[Daily/attachments/derive-equatable-good.mov]]
+<div style="position: relative; padding-top: 66.88907422852377%;">
+  <iframe
+    src="https://customer-1wj3kl26hvlz1r1i.cloudflarestream.com/ccc9fcc7e8646c955de69b6b01f9122c/iframe?muted=true&preload=true&loop=true&autoplay=true&poster=https%3A%2F%2Fcustomer-1wj3kl26hvlz1r1i.cloudflarestream.com%2Fccc9fcc7e8646c955de69b6b01f9122c%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
+    style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;"
+    allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+    allowfullscreen="true"
+  ></iframe>
+</div>
 
 We can improve this a bit more too. Right now `@EquatableCheck` takes only a type as an argument,
 which means if you elide the type and provide a default:
