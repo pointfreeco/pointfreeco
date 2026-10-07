@@ -11,8 +11,8 @@ code.
 
 However, some amount of type checking does occur before macros are expanded, and it's just enough 
 for us to exploit and get access to a small amount of static type information in our macros. It 
-may sound surprising, but it's totally possible and we now employ this technique in our `@Table` 
-and `@DebugSnapshot` macros (and more) to provide better type inference and diagnostics.
+may sound surprising, but it's totally possible and we now employ this technique in our [`@Table`][StructuredQueries] 
+and [`@DebugSnapshot`][DebugSnapshots] macros (and more) to provide better type inference and diagnostics.
 
 Join us for a quick overview of this technique!
 
