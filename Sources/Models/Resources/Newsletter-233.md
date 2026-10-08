@@ -207,7 +207,7 @@ The only reason such a simple conformance satisfies the `_$FieldTypes` protocol 
 
 And now for the wonderful trick! The `_$FieldWitness` is a bonafide static type, and it has an associated type `_$FieldWitness.createdAt`  that is also a bonafide static type, and can be used just as any other type (such as `Date`):
 
-```swift:19
+```swift:10
 public struct User {
   public let id: Int
   public var name: String
