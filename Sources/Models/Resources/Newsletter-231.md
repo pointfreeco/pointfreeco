@@ -41,7 +41,7 @@ struct User {
 }
 ```
 
-Because `@DerivateEquatable` only sees the raw syntax of `User`, and cannot see that `Address` is not `Equatable`, it has no choice but to generate an `==` implementation that is incorrect. That causes an unhelpful compiler error:
+Because `@DeriveEquatable` only sees the raw syntax of `User`, and cannot see that `Address` is not `Equatable`, it has no choice but to generate an `==` implementation that is incorrect. That causes an unhelpful compiler error:
 
 > Failed: Binary operator '\=\=' cannot be applied to two 'Address' operands
 

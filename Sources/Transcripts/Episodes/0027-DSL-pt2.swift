@@ -62,7 +62,7 @@ private let _exercises: [Episode.Exercise] = [
       the cases unimplemented.
 
       * Derivatives have the simple property that they _annihilate_ constants: `D(1) = 0`, `D(-1) = 0`, `D(2) = 0`,
-      i.e. the derivate of any constant is zero. Use this fact to implement the `.lit` case in the `switch` you
+      i.e. the derivative of any constant is zero. Use this fact to implement the `.lit` case in the `switch` you
       defined above.
 
       * Derivatives also have a simple property for variables. The derivative of a variable with respect to that
