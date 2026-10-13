@@ -31,6 +31,7 @@ extension Episode.Collection.Section {
       .init(episode: .ep380_isolationDesign),
       .init(episode: .ep381_isolationDesign),
       .init(episode: .ep382_isolationDesign),
+      .init(episode: .ep383_isolationDesign),
     ],
     isFinished: false,
     isHidden: false,
