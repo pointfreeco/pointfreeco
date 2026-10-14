@@ -28,6 +28,18 @@ public struct Beta {
       repo: "TCA26",
       skillName: "composable-architecture-2"
     ),
+    Beta(
+      title: "CompilationTesting",
+      blurb: """
+        Test the Swift compiler's diagnostics on snippets of Swift code. Snapshot errors, \
+        warnings, and fix-its inline to protect your library's compile-time guarantees. \
+        [Read more →](/blog/posts/234-beta-preview-compilationtesting)
+        """,
+      imageURL:
+        "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/15b20685-fa27-4d54-d02e-d58cd92f3600/public",
+      repo: "swift-compilation-testing",
+      skillName: "compilation-testing"
+    ),
   ]
 
   public static let graduated: [Beta] = [

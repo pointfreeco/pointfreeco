@@ -178,9 +178,10 @@ private func verifyBetaRepoAccess() async {
       print("    ⚠️ \(beta.repo) access denied")
       reportIssue(
         """
-        Beta repo access check failed for "\(beta.repo)". \
-        Update the token permissions on GitHub to include \
-        the pointfreeco/\(beta.repo) repository.
+        Beta repo access check failed for "\(beta.repo)". Update the token permissions on GitHub to 
+        include the pointfreeco/\(beta.repo) repository:
+        
+        https://github.com/settings/personal-access-tokens/12842199
         """
       )
     }

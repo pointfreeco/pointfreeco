@@ -250,5 +250,6 @@ extension BlogPost {
     .post0231_MacroTypes,
     .post0232_MacroTypes,
     .post0233_MacroTypes,
+    .post0234_compilationTesting,
   ]
 }
