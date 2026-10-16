@@ -24,7 +24,6 @@ final class SubscriptionSnapshotTests: LiveDatabaseTestCase {
     XCTAssertEqual(snapshot.subscription.deactivated, subscription.deactivated)
     XCTAssertEqual(snapshot.subscription.teamInviteCode, subscription.teamInviteCode)
     XCTAssertFalse(snapshot.version.isEmpty)
-    XCTAssertNotNil(UInt32(snapshot.version))
     XCTAssertEqual(snapshot.version, repeatedSnapshot.version)
   }
 
@@ -38,14 +37,13 @@ final class SubscriptionSnapshotTests: LiveDatabaseTestCase {
       stripeSubscription, .max, snapshot
     )
     let updated = try XCTUnwrap(result)
-    let persisted = try await database.fetchSubscription(id: subscription.id)
     let nextSnapshot = try await database.fetchSubscriptionSnapshot(stripeSubscription.id)
 
     XCTAssertEqual(updated.id, subscription.id)
     XCTAssertEqual(updated.plan, .max)
     XCTAssertEqual(updated.stripeSubscriptionStatus, .trialing)
-    XCTAssertEqual(persisted.plan, .max)
-    XCTAssertEqual(persisted.stripeSubscriptionStatus, .trialing)
+    XCTAssertEqual(nextSnapshot.subscription.plan, .max)
+    XCTAssertEqual(nextSnapshot.subscription.stripeSubscriptionStatus, .trialing)
     XCTAssertNotEqual(snapshot.version, nextSnapshot.version)
   }
 

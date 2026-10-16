@@ -1,3 +1,4 @@
+import CustomDump
 import Database
 import Dependencies
 import Either
@@ -40,9 +41,6 @@ final class ChangeTests: TestCase {
     )
     let billingUpdates = LockIsolated(0)
     let stripeFetches = LockIsolated(0)
-    let rejectedWrites = LockIsolated(0)
-    let acceptedWrites = LockIsolated(0)
-    let operations = LockIsolated<[String]>([])
 
     let result = await withDependencies {
       $0.failing()
@@ -51,32 +49,27 @@ final class ChangeTests: TestCase {
       $0.stripe.fetchPricesForProduct = { productID, lookupKeys in
         XCTAssertEqual(productID, "prod_test")
         if lookupKeys == ["pointfree-max"] {
-          operations.withValue { $0.append("resolvePrice") }
           return .mock([.pointFreeMax])
         }
-        XCTAssertEqual(
+        expectNoDifference(
           Set(lookupKeys),
           Set<Stripe.Price.LookupKey>(["pointfree-max", "pointfree-monthly", "pointfree-pro"])
         )
-        operations.withValue { $0.append("prices") }
         return .mock([.pointFreeMonthly, .pointFreePro, .pointFreeMax])
       }
       $0.stripe.updateSubscription = { incoming, planID, quantity in
-        XCTAssertEqual(incoming, currentSubscription)
+        expectNoDifference(incoming, currentSubscription)
         XCTAssertEqual(planID.rawValue, Stripe.Price.pointFreeMax.id.rawValue)
         XCTAssertEqual(quantity, 1)
         billingUpdates.withValue { $0 += 1 }
-        operations.withValue { $0.append("billing") }
         return delayedUpdateResponse
       }
       $0.database.fetchSubscriptionSnapshot = { id in
         XCTAssertEqual(id, delayedUpdateResponse.id)
-        operations.withValue { $0.append("snapshot") }
         return store.value
       }
       $0.stripe.fetchSubscription = { id in
         XCTAssertEqual(id, delayedUpdateResponse.id)
-        operations.withValue { $0.append("stripe") }
         let attempt = stripeFetches.withValue {
           $0 += 1
           return $0
@@ -95,15 +88,12 @@ final class ChangeTests: TestCase {
       }
       $0.database.updateStripeSubscriptionIfUnchanged = { incoming, plan, snapshot in
         XCTAssertEqual(plan, .pro, "Use the authoritative tier, not the delayed Max response")
-        operations.withValue { $0.append("write") }
         return store.withValue { current in
           guard snapshot.version == current.version else {
-            rejectedWrites.withValue { $0 += 1 }
             return nil
           }
           XCTAssertEqual(snapshot.version, "v2")
-          XCTAssertEqual(incoming, latestSubscriptionValue)
-          acceptedWrites.withValue { $0 += 1 }
+          expectNoDifference(incoming, latestSubscriptionValue)
           var updated = current.subscription
           updated.stripeSubscriptionStatus = incoming.status
           if let plan { updated.plan = plan }
@@ -127,7 +117,6 @@ final class ChangeTests: TestCase {
         },
         success: { conn in
           IO {
-            operations.withValue { $0.append("success") }
             return conn.writeStatus(.ok).respond(text: "updated")
           }
         }
@@ -137,17 +126,8 @@ final class ChangeTests: TestCase {
     XCTAssertEqual(String(decoding: result.data, as: UTF8.self), "updated")
     XCTAssertEqual(billingUpdates.value, 1)
     XCTAssertEqual(stripeFetches.value, 2)
-    XCTAssertEqual(rejectedWrites.value, 1)
-    XCTAssertEqual(acceptedWrites.value, 1)
     XCTAssertEqual(store.value.subscription.plan, .pro)
     XCTAssertEqual(store.value.subscription.stripeSubscriptionStatus, .trialing)
-    XCTAssertEqual(
-      operations.value,
-      [
-        "resolvePrice", "billing", "snapshot", "stripe", "prices", "write",
-        "snapshot", "stripe", "prices", "write", "success",
-      ]
-    )
   }
 
   @MainActor

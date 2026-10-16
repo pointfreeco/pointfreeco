@@ -1,3 +1,4 @@
+import CustomDump
 import Either
 import Foundation
 import PointFreeTestSupport
@@ -33,6 +34,6 @@ final class SubscriptionUpdatedEventTests: TestCase {
     guard case let .right(decodedSubscription) = decoded.data.object else {
       return XCTFail("Expected a subscription payload")
     }
-    XCTAssertEqual(decodedSubscription, subscription)
+    expectNoDifference(decodedSubscription, subscription)
   }
 }
