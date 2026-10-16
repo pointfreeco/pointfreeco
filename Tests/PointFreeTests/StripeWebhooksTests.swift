@@ -464,12 +464,8 @@ final class StripeWebhooksTests: TestCase {
 
   @MainActor
   func testIncompleteSubscriptionWithoutLocalRowSkipsSnapshotAndAdminNotification() async throws {
-    struct MissingLocalSubscription: Error {}
-
     let stripeSubscription = update(Stripe.Subscription.mock) { $0.status = .incomplete }
     let stripeFetches = LockIsolated(0)
-    let snapshotFetches = LockIsolated(0)
-    let adminNotifications = LockIsolated(0)
 
     try await withDependencies {
       $0.failing()
@@ -477,15 +473,6 @@ final class StripeWebhooksTests: TestCase {
         XCTAssertEqual(id, stripeSubscription.id)
         stripeFetches.withValue { $0 += 1 }
         return stripeSubscription
-      }
-      $0.database.fetchSubscriptionSnapshot = { _ in
-        snapshotFetches.withValue { $0 += 1 }
-        XCTFail("Incomplete checkout must be skipped before looking for its missing local row")
-        throw MissingLocalSubscription()
-      }
-      $0.mailgun.sendEmail = { _ in
-        adminNotifications.withValue { $0 += 1 }
-        return SendEmailResponse(id: "", message: "")
       }
     } operation: {
       let event = Event<Either<Invoice, Stripe.Subscription>>(
@@ -516,8 +503,6 @@ final class StripeWebhooksTests: TestCase {
         """
       }
       XCTAssertEqual(stripeFetches.value, 1)
-      XCTAssertEqual(snapshotFetches.value, 0)
-      XCTAssertEqual(adminNotifications.value, 0)
     }
   }
 
@@ -598,8 +583,9 @@ final class StripeWebhooksTests: TestCase {
           var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
           try self.addStripeSignature(
             to: &hook, payload: String(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self))
-          _ = await stripeSubscriptionsWebhookMiddleware(
+          let result = await stripeSubscriptionsWebhookMiddleware(
             connection(from: hook).map { _ in () }, event: event)
+          expectNoDifference(result.response.status.rawValue, 200)
         }
       } changes: {
         $0.plans.append(contentsOf: expectedEffects.plans)
