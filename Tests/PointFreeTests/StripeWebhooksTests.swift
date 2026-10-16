@@ -1,3 +1,4 @@
+import CustomDump
 import Dependencies
 import Either
 import Html
@@ -5,6 +6,7 @@ import HtmlPlainTextPrint
 import HttpPipeline
 import InlineSnapshotTesting
 import Mailgun
+import Models
 import PointFreePrelude
 import PointFreeTestSupport
 import Prelude
@@ -364,7 +366,7 @@ final class StripeWebhooksTests: TestCase {
     #if !os(Linux)
       var invoice = Invoice.mock(charge: .left("ch_test"))
       invoice.subscription = nil
-      let event = Event<Either<Invoice, Subscription>>(
+      let event = Event<Either<Invoice, Stripe.Subscription>>(
         data: .init(object: .left(invoice)),
         id: "evt_test",
         type: .invoicePaymentFailed
@@ -390,7 +392,7 @@ final class StripeWebhooksTests: TestCase {
       var line = LineItem.mock
       line.subscription = nil
       invoice.lines.data = [line]
-      let event = Event<Either<Invoice, Subscription>>(
+      let event = Event<Either<Invoice, Stripe.Subscription>>(
         data: .init(object: .left(invoice)),
         id: "evt_test",
         type: .invoicePaymentFailed
@@ -413,7 +415,7 @@ final class StripeWebhooksTests: TestCase {
     #if !os(Linux)
       var invoice = Invoice.mock(charge: .left("ch_test"))
       invoice.number = nil
-      let event = Event<Either<Invoice, Subscription>>(
+      let event = Event<Either<Invoice, Stripe.Subscription>>(
         data: .init(object: .left(invoice)),
         id: "evt_test",
         type: .invoicePaymentFailed
@@ -441,7 +443,7 @@ final class StripeWebhooksTests: TestCase {
       } operation: {
         var invoice = Invoice.mock(charge: .left("ch_test"))
         invoice.number = nil
-        let event = Event<Either<Invoice, Subscription>>(
+        let event = Event<Either<Invoice, Stripe.Subscription>>(
           data: .init(object: .left(invoice)),
           id: "evt_test",
           type: .invoicePaymentFailed
@@ -458,6 +460,143 @@ final class StripeWebhooksTests: TestCase {
         await assertSnapshot(matching: await siteMiddleware(conn), as: .conn)
       }
     #endif
+  }
+
+  @MainActor
+  func testIncompleteSubscriptionWithoutLocalRowSkipsSnapshotAndAdminNotification() async throws {
+    let stripeSubscription = update(Stripe.Subscription.mock) { $0.status = .incomplete }
+    let stripeFetches = LockIsolated(0)
+
+    try await withDependencies {
+      $0.failing()
+      $0.stripe.fetchSubscription = { id in
+        XCTAssertEqual(id, stripeSubscription.id)
+        stripeFetches.withValue { $0 += 1 }
+        return stripeSubscription
+      }
+    } operation: {
+      let event = Event<Either<Invoice, Stripe.Subscription>>(
+        data: .init(object: .right(stripeSubscription)),
+        id: "evt_incomplete_subscription_updated",
+        type: .customerSubscriptionUpdated
+      )
+      var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
+      try self.addStripeSignature(
+        to: &hook,
+        payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
+      )
+
+      let result = await stripeSubscriptionsWebhookMiddleware(
+        connection(from: hook).map { _ in () },
+        event: event
+      )
+
+      await assertInlineSnapshot(of: result.response, as: .response) {
+        """
+        200 OK
+        Referrer-Policy: strict-origin-when-cross-origin
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+        """
+      }
+      XCTAssertEqual(stripeFetches.value, 1)
+    }
+  }
+
+  @MainActor
+  func testSubscriptionUpdatesReconcileTierWithoutRepeatingPastDueNotifications() async {
+    await assertPastDueWebhook(
+      eventType: .customerSubscriptionUpdated, deliveries: 2,
+      expectedEffects: NotificationEffects(plans: [.max, .max])
+    )
+  }
+
+  @MainActor
+  func testFailedInvoiceStillSendsPastDueAndChurnNotifications() async {
+    await assertPastDueWebhook(
+      eventType: .invoicePaymentFailed, deliveries: 1,
+      expectedEffects: NotificationEffects(
+        plans: [.max],
+        emailSubjects: [
+          "[testing] Your membership is past-due",
+          "[testing] [PointFree Warning] Churning Membership",
+        ]
+      )
+    )
+  }
+
+  @MainActor
+  private func assertPastDueWebhook(
+    eventType: Event<Either<Invoice, Stripe.Subscription>>.`Type`,
+    deliveries: Int,
+    expectedEffects: NotificationEffects
+  ) async {
+    let stripeSubscription = update(Stripe.Subscription.mock) {
+      $0.status = .pastDue
+      $0.quantity = 3
+      $0.plan = .modernMaxYearly
+      $0.items.data[0].plan = .modernMaxYearly
+      $0.items.data[0].quantity = 3
+    }
+    let localSubscription = update(Models.Subscription.mock) {
+      $0.stripeSubscriptionStatus = .pastDue
+    }
+    let owner = update(Models.User.mock) { $0.gitHub = nil }
+    let effects = LockIsolated(NotificationEffects())
+
+    await withDependencies {
+      $0.failing()
+      $0.envVars.stripe.productId = "prod_test"
+      $0.database.fetchSubscriptionSnapshot = { _ in
+        .init(subscription: localSubscription, version: "v1")
+      }
+      $0.database.updateStripeSubscriptionIfUnchanged = { incoming, plan, snapshot in
+        expectNoDifference(incoming, stripeSubscription)
+        effects.withValue { $0.plans.append(plan) }
+        return update(snapshot.subscription) {
+          $0.stripeSubscriptionStatus = incoming.status
+          $0.plan = plan ?? $0.plan
+        }
+      }
+      $0.database.fetchUserById = { _ in owner }
+      $0.database.fetchSubscriptionTeammatesByOwnerId = { _ in [] }
+      $0.stripe.fetchSubscription = { _ in stripeSubscription }
+      $0.stripe.fetchPricesForProduct = { _, _ in .mock([.pointFreeMax]) }
+      $0.mailgun.sendEmail = { email in
+        effects.withValue { $0.emailSubjects.append(email.subject) }
+        return SendEmailResponse(id: "mock-email", message: "mocked")
+      }
+    } operation: {
+      await expectDifference(effects.value) {
+        for index in 1...deliveries {
+          var invoice = Invoice.mock(charge: .left("ch_test"))
+          invoice.subscription = stripeSubscription.id
+          let event = Event<Either<Invoice, Stripe.Subscription>>(
+            data: .init(
+              object: eventType == .invoicePaymentFailed
+                ? .left(invoice) : .right(stripeSubscription)),
+            id: .init(rawValue: "evt_notification_\(index)"), type: eventType
+          )
+          var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
+          try self.addStripeSignature(
+            to: &hook, payload: String(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self))
+          let result = await stripeSubscriptionsWebhookMiddleware(
+            connection(from: hook).map { _ in () }, event: event)
+          expectNoDifference(result.response.status.rawValue, 200)
+        }
+      } changes: {
+        $0.plans.append(contentsOf: expectedEffects.plans)
+        $0.emailSubjects.append(contentsOf: expectedEffects.emailSubjects)
+      }
+    }
+  }
+
+  private struct NotificationEffects: Equatable {
+    var plans: [Pricing.Plan?] = []
+    var emailSubjects: [String] = []
   }
 
   @MainActor

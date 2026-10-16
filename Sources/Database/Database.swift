@@ -103,6 +103,8 @@ public struct Client {
   @DependencyEndpoint(method: "fetchSubscription")
   public var fetchSubscriptionByTeamInviteCode:
     (_ teamInviteCode: Models.Subscription.TeamInviteCode) async throws -> Models.Subscription
+  public var fetchSubscriptionSnapshot:
+    (_ stripeSubscriptionID: Stripe.Subscription.ID) async throws -> SubscriptionSnapshot
   @DependencyEndpoint(method: "fetchSubscriptionTeammates")
   public var fetchSubscriptionTeammatesByOwnerId:
     (_ ownerID: Models.User.ID) async throws -> [Models.User]
@@ -167,6 +169,12 @@ public struct Client {
   public var updateGiftStatus:
     (_ id: Gift.ID, _ status: Stripe.PaymentIntent.Status, _ delivered: Bool) async throws -> Gift
   public var updateStripeSubscription: (Stripe.Subscription) async throws -> Models.Subscription
+  public var updateStripeSubscriptionIfUnchanged:
+    (
+      _ stripeSubscription: Stripe.Subscription,
+      _ plan: Pricing.Plan?,
+      _ snapshot: SubscriptionSnapshot
+    ) async throws -> Models.Subscription?
   public var updateSubscriptionPlan:
     (_ subscriptionId: Models.Subscription.ID, _ plan: Pricing.Plan) async throws -> Void
   public var updateUser:
