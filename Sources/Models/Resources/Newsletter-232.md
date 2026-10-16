@@ -1,3 +1,9 @@
+> Preamble: This blog post is one of a series. Be sure to read all parts!
+>
+> * [Advanced techniques in Swift macros](/blog/posts/231-advanced-techniques-in-swift-macros)
+> * **[Advanced macro technique #1: Static type information](/blog/posts/232-advanced-macro-technique-1-static-type-information)**
+> * [Advanced macro technique #2: Type inference](/blog/posts/233-advanced-macro-technique-2-type-inference)
+
 This is the first of our 2-part series exploring advanced topics in Swift macros. As discussed
 in the [introduction] to this series, Swift macros are one of the most powerful features added to 
 the language in recent years, allowing libraries to generate boilerplate automatically to unlock
