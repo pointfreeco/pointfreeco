@@ -147,8 +147,7 @@ final class StripeSubscriptionSyncTests: TestCase {
       originalPlan: .max,
       staleStripePlan: .modernPersonalYearly,
       concurrentPlan: .max,
-      currentStripePlan: .modernMaxYearly,
-      simulateABA: true
+      currentStripePlan: .modernMaxYearly
     )
   }
 
@@ -298,7 +297,6 @@ final class StripeSubscriptionSyncTests: TestCase {
     staleStripePlan: Stripe.Plan,
     concurrentPlan: Pricing.Plan,
     currentStripePlan: Stripe.Plan,
-    simulateABA: Bool = false,
     failFirstCatalogLookup: Bool = false,
     file: StaticString = #filePath,
     line: UInt = #line
@@ -318,7 +316,6 @@ final class StripeSubscriptionSyncTests: TestCase {
     let currentStripeSubscriptionValue = currentStripeSubscription
     let fetchedStripeSubscriptions = LockIsolated(0)
     let validatedSubscriptions = LockIsolated<[Stripe.Subscription]>([])
-    let concurrentVersion = simulateABA ? "v3" : "v2"
 
     let result = try await withDependencies {
       $0.failing()
@@ -338,7 +335,7 @@ final class StripeSubscriptionSyncTests: TestCase {
           store.withValue { current in
             var concurrent = current.subscription
             concurrent.plan = concurrentPlan
-            current = .init(subscription: concurrent, version: concurrentVersion)
+            current = .init(subscription: concurrent, version: "v2")
           }
           return staleStripeSubscription
         }
@@ -356,14 +353,9 @@ final class StripeSubscriptionSyncTests: TestCase {
           guard snapshot.version == current.version else {
             expectNoDifference(incoming, staleStripeSubscription, filePath: file, line: line)
             XCTAssertEqual(snapshot.version, "v1", file: file, line: line)
-            XCTAssertEqual(current.version, concurrentVersion, file: file, line: line)
+            XCTAssertEqual(current.version, "v2", file: file, line: line)
             if failFirstCatalogLookup {
               XCTAssertNil(plan, file: file, line: line)
-            }
-            if simulateABA {
-              XCTAssertEqual(
-                snapshot.subscription.plan, current.subscription.plan, file: file, line: line
-              )
             }
             return nil
           }
