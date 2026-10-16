@@ -52,21 +52,23 @@ private func handleFailedPayment(
   @Dependency(\.date.now) var now
   @Dependency(\.stripe) var stripe
 
-  do {
-    let stripeSubscription = try await stripe.fetchSubscription(subscriptionID)
-    guard !stripeSubscription.status.isIncomplete else { return conn.head(.ok) }
-
-    guard stripeSubscription.status.isActive || event != .invoicePaymentSucceeded
-    else {
-      return conn.writeStatus(.badRequest).respond(
-        text: """
-          Invoice-subscription mismatch: invoice.payment_succeeded but subscription.status is \
-          inactive
-          """
-      )
+  func validateSubscription(_ subscription: Stripe.Subscription) throws {
+    guard !subscription.status.isIncomplete else { throw SubscriptionWebhookSkip.incomplete }
+    guard subscription.status.isActive || event != .invoicePaymentSucceeded else {
+      throw SubscriptionWebhookSkip.invoiceSubscriptionMismatch
     }
+  }
 
-    let subscription = try await database.updateStripeSubscription(stripeSubscription)
+  do {
+    // Incomplete checkout subscriptions may not have a local row yet. Preserve
+    // the preflight skip before looking up a snapshot, then validate each fresh
+    // authoritative response again inside the optimistic retry loop.
+    try validateSubscription(try await stripe.fetchSubscription(subscriptionID))
+    let synchronized = try await synchronizeStripeSubscription(
+      id: subscriptionID, validate: validateSubscription
+    )
+    let stripeSubscription = synchronized.stripeSubscription
+    let subscription = synchronized.subscription
 
     if subscription.stripeSubscriptionStatus == .canceled
       || subscription.stripeSubscriptionStatus == .pastDue
@@ -102,6 +104,15 @@ private func handleFailedPayment(
       }
     }
     return conn.head(.ok)
+  } catch SubscriptionWebhookSkip.incomplete {
+    return conn.head(.ok)
+  } catch SubscriptionWebhookSkip.invoiceSubscriptionMismatch {
+    return conn.writeStatus(.badRequest).respond(
+      text: """
+        Invoice-subscription mismatch: invoice.payment_succeeded but subscription.status is \
+        inactive
+        """
+    )
   } catch {
     await fireAndForget {
       try await sendEmail(
@@ -112,6 +123,11 @@ private func handleFailedPayment(
     }
     return conn.writeStatus(.badRequest).empty()
   }
+}
+
+private enum SubscriptionWebhookSkip: Error {
+  case incomplete
+  case invoiceSubscriptionMismatch
 }
 
 func removeBetaAccess(for subscription: Models.Subscription) async {

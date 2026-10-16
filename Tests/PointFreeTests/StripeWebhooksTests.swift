@@ -461,6 +461,66 @@ final class StripeWebhooksTests: TestCase {
   }
 
   @MainActor
+  func testIncompleteSubscriptionWithoutLocalRowSkipsSnapshotAndAdminNotification() async throws {
+    struct MissingLocalSubscription: Error {}
+
+    let stripeSubscription = update(Stripe.Subscription.mock) { $0.status = .incomplete }
+    let stripeFetches = LockIsolated(0)
+    let snapshotFetches = LockIsolated(0)
+    let adminNotification = expectation(description: "No admin notification for incomplete checkout")
+    adminNotification.isInverted = true
+
+    try await withDependencies {
+      $0.failing()
+      $0.stripe.fetchSubscription = { id in
+        XCTAssertEqual(id, stripeSubscription.id)
+        stripeFetches.withValue { $0 += 1 }
+        return stripeSubscription
+      }
+      $0.database.fetchSubscriptionSnapshot = { _ in
+        snapshotFetches.withValue { $0 += 1 }
+        XCTFail("Incomplete checkout must be skipped before looking for its missing local row")
+        throw MissingLocalSubscription()
+      }
+      $0.mailgun.sendEmail = { _ in
+        adminNotification.fulfill()
+        return SendEmailResponse(id: "", message: "")
+      }
+    } operation: {
+      let event = Event<Either<Invoice, Stripe.Subscription>>(
+        data: .init(object: .right(stripeSubscription)),
+        id: "evt_incomplete_subscription_updated",
+        type: .customerSubscriptionUpdated
+      )
+      var hook = request(to: .webhooks(.stripe(.subscriptions(event))))
+      try self.addStripeSignature(
+        to: &hook,
+        payload: .init(decoding: Stripe.jsonEncoder.encode(event), as: UTF8.self)
+      )
+
+      let result = await stripeSubscriptionsWebhookMiddleware(
+        connection(from: hook).map { _ in () },
+        event: event
+      )
+
+      await assertInlineSnapshot(of: result.response, as: .response) {
+        """
+        200 OK
+        Referrer-Policy: strict-origin-when-cross-origin
+        X-Content-Type-Options: nosniff
+        X-Download-Options: noopen
+        X-Frame-Options: SAMEORIGIN
+        X-Permitted-Cross-Domain-Policies: none
+        X-XSS-Protection: 1; mode=block
+        """
+      }
+      XCTAssertEqual(stripeFetches.value, 1)
+      XCTAssertEqual(snapshotFetches.value, 0)
+      await fulfillment(of: [adminNotification], timeout: 0.1)
+    }
+  }
+
+  @MainActor
   func testPastDueEmail() async throws {
     let doc = pastDueEmailView(unit)
 

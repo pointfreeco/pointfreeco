@@ -45,6 +45,12 @@ extension Client {
     fetchSubscriptionByTeamInviteCode: { teamInviteCode in
       update(.mock) { $0.teamInviteCode = teamInviteCode }
     },
+    fetchSubscriptionSnapshot: { stripeSubscriptionID in
+      SubscriptionSnapshot(
+        subscription: update(.mock) { $0.stripeSubscriptionId = stripeSubscriptionID },
+        version: "mock"
+      )
+    },
     fetchSubscriptionTeammatesByOwnerId: { _ in [.mock] },
     fetchTeamInvite: { _ in .mock },
     fetchTeamInvites: { _ in [] },
@@ -82,6 +88,12 @@ extension Client {
     updateGift: { _, _ in .fulfilled },
     updateGiftStatus: { _, _, _ in .fulfilled },
     updateStripeSubscription: { _ in .mock },
+    updateStripeSubscriptionIfUnchanged: { stripeSubscription, plan, snapshot in
+      update(snapshot.subscription) {
+        $0.stripeSubscriptionStatus = stripeSubscription.status
+        $0.plan = plan ?? $0.plan
+      }
+    },
     updateSubscriptionPlan: { _, _ in },
     updateUser: { _, _, _, _, _, _, _ in },
     upsertTheWayAccess: { $0 },
