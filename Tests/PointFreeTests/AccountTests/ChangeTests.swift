@@ -25,6 +25,57 @@ final class ChangeTests: TestCase {
   }
 
   @MainActor
+  func testAppliedChangeWithRefreshFailureDoesNotSuggestRetryingBilling() async throws {
+    struct RefreshFailure: Error {}
+
+    let pricing = Pricing(plan: .max, billing: .yearly, quantity: 1)
+    let billingUpdates = LockIsolated(0)
+    let result = await withDependencies {
+      $0.failing()
+      $0.envVars.stripe.productId = "prod_test"
+      $0.stripe.fetchPricesForProduct = { _, _ in .mock([.pointFreeMax]) }
+      $0.stripe.updateSubscription = { _, _, _ in
+        billingUpdates.withValue { $0 += 1 }
+        return .mock
+      }
+      $0.database.fetchSubscriptionSnapshot = { _ in throw RefreshFailure() }
+    } operation: {
+      let conn = connection(
+        from: request(to: .account(.subscription(.change(.update(pricing)))), session: .loggedIn)
+      ).map { _ in (Stripe.Subscription.mock, pricing) }
+
+      return await changeSubscription(
+        error: subscriptionModificationErrorMiddleware,
+        success: { conn in
+          IO {
+            XCTFail("A failed access refresh must use the error response")
+            return conn.writeStatus(.ok).respond(text: "updated")
+          }
+        }
+      )(conn).performAsync()
+    }
+
+    XCTAssertEqual(billingUpdates.value, 1)
+    expectNoDifference(result.response.status.rawValue, 302)
+    expectNoDifference(result.response.headers.first { $0.name == "Location" }?.value, "/account")
+    let cookie = try XCTUnwrap(
+      result.response.headers.first { $0.name == "Set-Cookie" }?.value
+    )
+    var nextRequest = result.request
+    nextRequest.setValue(cookie, forHTTPHeaderField: "Cookie")
+    expectNoDifference(
+      nextRequest.session.flash,
+      Flash(
+        .error,
+        """
+        Your membership change was applied, but we couldn’t refresh your account access. \
+        Please reload your account or contact <support@pointfree.co>. Do not submit the change again.
+        """
+      )
+    )
+  }
+
+  @MainActor
   func testDelayedChangeResponsePreservesNewestTierAndBillsOnlyOnceAcrossRetries() async throws {
     var currentSubscription = Stripe.Subscription.mock
     currentSubscription.plan = .modernPersonalYearly
