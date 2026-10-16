@@ -1,3 +1,4 @@
+import CustomDump
 import Models
 import PointFreeTestSupport
 import StripeTestSupport
@@ -8,54 +9,34 @@ import XCTest
 
 final class StripeMembershipPlanTests: TestCase {
   func testRecognizesCurrentMembershipPriceIDs() {
-    let cases: [(Stripe.Plan, Pricing.Plan)] = [
-      (.modernMaxYearly, .max),
-      (.modernPersonalYearly, .pro),
-      (.modernTeamYearly, .pro),
-      (.modernPersonalMonthly, .pro),
-    ]
-    for (plan, expected) in cases {
-      XCTAssertEqual(
-        membershipPlan(for: subscription(plan: plan), prices: prices, productID: "prod_test"),
-        expected
-      )
+    for plan in [Stripe.Plan.modernPersonalYearly, .modernTeamYearly, .modernPersonalMonthly] {
+      assertPlan(.pro, for: subscription(plan: plan))
     }
+    assertPlan(.max, for: subscription(plan: .modernMaxYearly))
   }
 
   func testCanonicalLookupKeysCoverAllSupportedMembershipPrices() {
-    XCTAssertEqual(
-      Set(membershipPlanLookupKeys),
-      Set<Stripe.Price.LookupKey>(["pointfree-max", "pointfree-pro", "pointfree-monthly"])
-    )
-    XCTAssertEqual(membershipPlanLookupKeys.count, 3)
+    expectNoDifference(
+      membershipPlanLookupKeys, ["pointfree-max", "pointfree-monthly", "pointfree-pro"])
   }
 
   func testCouponAndTrialDoNotChangeMembershipTier() {
-    let cases: [(Stripe.Plan, Pricing.Plan)] = [
-      (.modernMaxYearly, .max), (.modernPersonalYearly, .pro),
-    ]
-    for (plan, expected) in cases {
+    for (plan, expected) in [
+      (Stripe.Plan.modernMaxYearly, Pricing.Plan.max), (.modernPersonalYearly, .pro),
+    ] {
       var subscription = subscription(plan: plan)
       subscription.status = .trialing
       subscription.discount = .mock
       subscription.discount?.coupon.rate = .percentOff(100)
       subscription.discount?.coupon.name = "Free first year of Max"
-
-      XCTAssertEqual(
-        membershipPlan(for: subscription, prices: prices, productID: "prod_test"),
-        expected
-      )
+      assertPlan(expected, for: subscription)
     }
   }
 
   func testUsesItemsInsteadOfStaleTopLevelPlan() {
     var subscription = subscription(plan: .modernMaxYearly)
     subscription.plan = .modernPersonalYearly
-
-    XCTAssertEqual(
-      membershipPlan(for: subscription, prices: prices, productID: "prod_test"),
-      .max
-    )
+    assertPlan(.max, for: subscription)
   }
 
   func testRejectsNameMetadataAndPriceIDHeuristics() {
@@ -63,65 +44,39 @@ final class StripeMembershipPlanTests: TestCase {
     plan.id = "price_unrecognized_max"
     plan.nickname = "Point-Free Max"
     plan.metadata = ["plan": "max", "lookup_key": "pointfree-max"]
-
-    XCTAssertNil(
-      membershipPlan(for: subscription(plan: plan), prices: prices, productID: "prod_test")
-    )
+    assertPlan(nil, for: subscription(plan: plan))
   }
 
   func testRejectsUnknownAndLegacyPriceIDs() {
     for plan in [Stripe.Plan.mock, .individualYearly] {
-      XCTAssertNil(
-        membershipPlan(for: subscription(plan: plan), prices: prices, productID: "prod_test")
-      )
+      assertPlan(nil, for: subscription(plan: plan))
     }
   }
 
   func testRejectsUnknownAndMissingLookupKeysEvenWhenPriceIDMatches() {
-    let lookupKeys: [Stripe.Price.LookupKey?] = [nil, "pointfree-max-preview"]
-    for lookupKey in lookupKeys {
+    for lookupKey: Stripe.Price.LookupKey? in [nil, "pointfree-max-preview"] {
       var price = Stripe.Price.pointFreeMax
       price.lookupKey = lookupKey
-
-      XCTAssertNil(
-        membershipPlan(
-          for: subscription(plan: .modernMaxYearly),
-          prices: .mock([price]),
-          productID: "prod_test"
-        )
-      )
+      assertPlan(nil, for: subscription(plan: .modernMaxYearly), prices: .mock([price]))
     }
   }
 
   func testRejectsForeignProductOnSubscriptionItem() {
     var plan = Stripe.Plan.modernMaxYearly
     plan.product = "prod_unrelated"
-
-    XCTAssertNil(
-      membershipPlan(for: subscription(plan: plan), prices: prices, productID: "prod_test")
-    )
+    assertPlan(nil, for: subscription(plan: plan))
   }
 
   func testRejectsMissingProductOnSubscriptionItem() {
     var plan = Stripe.Plan.modernMaxYearly
     plan.product = nil
-
-    XCTAssertNil(
-      membershipPlan(for: subscription(plan: plan), prices: prices, productID: "prod_test")
-    )
+    assertPlan(nil, for: subscription(plan: plan))
   }
 
   func testRejectsForeignProductInPriceCatalog() {
     var price = Stripe.Price.pointFreeMax
     price.product = "prod_unrelated"
-
-    XCTAssertNil(
-      membershipPlan(
-        for: subscription(plan: .modernMaxYearly),
-        prices: .mock([price]),
-        productID: "prod_test"
-      )
-    )
+    assertPlan(nil, for: subscription(plan: .modernMaxYearly), prices: .mock([price]))
   }
 
   func testRejectsMixedMembershipItems() {
@@ -130,8 +85,7 @@ final class StripeMembershipPlanTests: TestCase {
     secondItem.id = "si_pro"
     secondItem.plan = .modernPersonalYearly
     subscription.items.data.append(secondItem)
-
-    XCTAssertNil(membershipPlan(for: subscription, prices: prices, productID: "prod_test"))
+    assertPlan(nil, for: subscription)
   }
 
   func testRejectsUnknownAdditionalPositiveQuantityItem() {
@@ -139,8 +93,7 @@ final class StripeMembershipPlanTests: TestCase {
     var secondItem = Stripe.Subscription.Item.mock
     secondItem.id = "si_unknown"
     subscription.items.data.append(secondItem)
-
-    XCTAssertNil(membershipPlan(for: subscription, prices: prices, productID: "prod_test"))
+    assertPlan(nil, for: subscription)
   }
 
   func testAcceptsMultipleItemsOfTheSameMembershipTier() {
@@ -150,60 +103,51 @@ final class StripeMembershipPlanTests: TestCase {
     secondItem.plan = .modernPersonalMonthly
     secondItem.quantity = 3
     subscription.items.data.append(secondItem)
-
-    XCTAssertEqual(
-      membershipPlan(for: subscription, prices: prices, productID: "prod_test"),
-      .pro
-    )
+    assertPlan(.pro, for: subscription)
   }
 
   func testIgnoresZeroQuantityItems() {
     var subscription = subscription(plan: .modernMaxYearly)
     var secondItem = Stripe.Subscription.Item.mock
-    secondItem.id = "si_unused"
     secondItem.quantity = 0
     subscription.items.data.append(secondItem)
-
-    XCTAssertEqual(
-      membershipPlan(for: subscription, prices: prices, productID: "prod_test"),
-      .max
-    )
+    assertPlan(.max, for: subscription)
   }
 
   func testRejectsSubscriptionsWithoutPositiveQuantityItems() {
     var subscription = subscription(plan: .modernMaxYearly)
     subscription.items.data[0].quantity = 0
-
-    XCTAssertNil(membershipPlan(for: subscription, prices: prices, productID: "prod_test"))
-
+    assertPlan(nil, for: subscription)
     subscription.items.data = []
-
-    XCTAssertNil(membershipPlan(for: subscription, prices: prices, productID: "prod_test"))
+    assertPlan(nil, for: subscription)
   }
 
   func testRejectsTruncatedSubscriptionItems() {
     var subscription = subscription(plan: .modernMaxYearly)
     subscription.items.hasMore = true
-
-    XCTAssertNil(membershipPlan(for: subscription, prices: prices, productID: "prod_test"))
+    assertPlan(nil, for: subscription)
   }
 
   func testRejectsTruncatedPriceCatalog() {
     var prices = self.prices
     prices.hasMore = true
-
-    XCTAssertNil(
-      membershipPlan(
-        for: subscription(plan: .modernMaxYearly), prices: prices, productID: "prod_test"
-      )
-    )
+    assertPlan(nil, for: subscription(plan: .modernMaxYearly), prices: prices)
   }
 
   func testRejectsEmptyPriceCatalog() {
-    XCTAssertNil(
-      membershipPlan(
-        for: subscription(plan: .modernMaxYearly), prices: .mock([]), productID: "prod_test"
-      )
+    assertPlan(nil, for: subscription(plan: .modernMaxYearly), prices: .mock([]))
+  }
+
+  private func assertPlan(
+    _ expected: Pricing.Plan?,
+    for subscription: Stripe.Subscription,
+    prices: Stripe.ListEnvelope<Stripe.Price>? = nil,
+    file: StaticString = #filePath,
+    line: UInt = #line
+  ) {
+    expectNoDifference(
+      membershipPlan(for: subscription, prices: prices ?? self.prices, productID: "prod_test"),
+      expected, filePath: file, line: line
     )
   }
 

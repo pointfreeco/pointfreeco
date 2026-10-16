@@ -78,7 +78,7 @@ private func handleFailedPayment(
       }
     }
 
-    if subscription.stripeSubscriptionStatus == .pastDue {
+    if event == .invoicePaymentFailed, subscription.stripeSubscriptionStatus == .pastDue {
       let user = try await database.fetchUser(id: subscription.userId)
 
       await fireAndForget {
