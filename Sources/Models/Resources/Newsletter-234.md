@@ -1,7 +1,7 @@
 We are excited to announce **CompilationTesting**, the newest addition to our
 [Beta Previews](/beta-previews). It lets you write unit tests for Swift code that should
-_not_ compile, and snapshot the compiler's errors, warnings, notes, and fix-its directly
-in your test file.
+_not_ compile, and snapshots the compiler's errors directly in your test file. It also snapshots
+warnings, fix-its, and notes.
 
 Some of the most important guarantees a library makes are enforced by the compiler.
 An unavailable overload can steer someone toward the correct API. An isolation annotation
@@ -10,11 +10,11 @@ depends on the compiler's type checker.
 
 But how do you test these guarantees? If you put an invalid use of your library in a test,
 the test target itself won't compile. And if in the future one of your guarantees accidentally
-regresses, you won't have any way of knowning until someone reports an issue. 
+regresses, you won't have any way of knowing until someone reports an issue. 
 
-CompilationTesting allows you to unit test things kinds of things by compiling the Swift snippets
-directly in your test suite, and performing an inline snapshot of any diagnostics. This technique
-uses our powerful [InlineSnapshotTesting] library, which also powers our [MacroTesting] library.
+CompilationTesting compiles the Swift snippets you hand it directly in your test suite, and
+records an inline snapshot of any diagnostics. This technique uses our powerful
+[InlineSnapshotTesting] library, which also powers our [MacroTesting] library.
 
 [InlineSnapshotTesting]: https://github.com/pointfreeco/swift-snapshot-testing
 [MacroTesting]: https://github.com/pointfreeco/swift-macro-testing
@@ -144,7 +144,7 @@ because it is compiled in Swift 5 language mode:
 }
 ```
 
-In Swift 6 model, globals must be `Sendable`, which `Model` is not, and so the only reason this
+In Swift 6 mode, globals must be `Sendable`, which `Model` is not, and so the only reason this
 can compile is specifically because we are compiling in Swift 5 mode. 
 
 You can also apply configuration to an entire suite with the `.compilation` trait:
@@ -157,7 +157,7 @@ struct Swift6Tests {
 ```
 
 If you want to take a little trip down memory lane, you can even write tests on how your code
-compiles in Swift 4 language mode, and in that mode `try?` on a throwing function that returns an
+compiles in Swift 4 language mode. In that mode `try?` on a throwing function that returns an
 optional does not squash the double optionality:
 
 ```swift
