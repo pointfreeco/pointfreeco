@@ -60,13 +60,15 @@ Review the recorded output and run the test again to verify it. From then on, a 
 the diagnostics fails the test with a diff. If the code unexpectedly starts compiling,
 the test fails too.
 
-And when you want to prove that a snippet compiles cleanly, leave off the `diagnostics`
-closure:
+And when you want to prove that a snippet compiles cleanly, the diagnostics trailing closure
+can be just an empty string:
 
 ```swift
 @Test func validCode() async {
   await assertCompilation {
     "let count: Int = 42"
+  } diagnostics: {
+    ""
   }
 }
 ```
@@ -90,9 +92,8 @@ inside a snippet:
 }
 ```
 
-Here, `MyLibrary` and `useDeprecatedSymbol` stand in for a module and API from your own
-package. Run the test to record the warning you expect callers to see. You can then catch
-changes to that warning, including accidentally removing the deprecation entirely.
+Run the test to record the warning you expect callers to see. You can then catch changes to that 
+warning, including accidentally removing the deprecation entirely.
 
 The library also automatically loads macro plugins built by your package. This lets you
 test aspects of macros that [MacroTesting] alone cannot, such as how the type checker interacts
@@ -137,6 +138,8 @@ because it is compiled in Swift 5 language mode:
       static let shared = Model()
     }
     """
+  } diagnostics: {
+    ""
   }
 }
 ```
