@@ -385,5 +385,7 @@ extension Episode {
     .ep380_isolationDesign,
     .ep381_isolationDesign,
     .ep382_isolationDesign,
+    .ep383_isolationDesign,
+    .ep384_isolationDesign,
   ]
 }

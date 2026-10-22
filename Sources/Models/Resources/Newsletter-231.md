@@ -1,3 +1,9 @@
+> Preamble: This blog post is one of a series. Be sure to read all parts!
+>
+> * **[Advanced techniques in Swift macros](/blog/posts/231-advanced-techniques-in-swift-macros)**
+> * [Advanced macro technique #1: Static type information](/blog/posts/232-advanced-macro-technique-1-static-type-information)
+> * [Advanced macro technique #2: Type inference](/blog/posts/233-advanced-macro-technique-2-type-inference)
+
 Swift macros are one of the most powerful features added to the language in recent years. They make it possible for libraries to generate boilerplate automatically and unlock capabilities that once required direct support from the compiler. We use them throughout the Point-Free ecosystem: [`@Table`][sq] for type-safe SQL queries, [`@CasePathable`][cp] for generating key paths to cases of enums, [`@DependencyClient`][dc] for designing controllable dependencies, [`@DebugSnapshot`][ds] for debugging changes to reference types and exhaustively testing them, and much, much more.
 
 [cp]: https://github.com/pointfreeco/swift-case-paths
