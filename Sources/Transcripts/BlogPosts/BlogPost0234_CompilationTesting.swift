@@ -11,7 +11,7 @@ extension BlogPost {
     coverImage:
       "https://imagedelivery.net/6_EEbfI_pxOPJCtc6OUKCg/15b20685-fa27-4d54-d02e-d58cd92f3600/public",
     id: 234,
-    publishedAt: yearMonthDayFormatter.date(from: "2026-10-13")!,
+    publishedAt: yearMonthDayFormatter.date(from: "2026-10-26")!,
     title: "Beta Preview: CompilationTesting"
   )
 }
