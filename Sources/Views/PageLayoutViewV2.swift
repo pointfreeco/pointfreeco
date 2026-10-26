@@ -1316,6 +1316,7 @@ public struct PrismJSHead: HTML {
         /\b((iOS|macOS|tvOS|watchOS|visionOS)(|ApplicationExtension)|swift)\b/,
         Prism.languages.swift.keyword
       ];
+      Prism.languages.swift['function-definition'].pattern = /(\bfunc\s+)(?:\w+|`[^`\r\n]+`)/;
       Prism.languages.swift.comment.inside = {
         todo: {
           pattern: /(TODO:)/
