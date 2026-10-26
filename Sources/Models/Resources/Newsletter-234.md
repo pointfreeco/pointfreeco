@@ -100,7 +100,7 @@ test aspects of macros that [MacroTesting] alone cannot, such as how the type ch
 with macros: 
 
 ```swift
-@Test func `diagnost non-Equatable fields`() async {
+@Test func `diagnose non-Equatable fields`() async {
   await assertCompilation {
     """
     import Equatable
@@ -129,9 +129,11 @@ You can customize compilation with flags, including the Swift language mode, def
 actor isolation, and upcoming or experimental features. For example, this snippet compiles only
 because it is compiled in Swift 5 language mode:
 
-```swift
+```swift:3
 @Test func `default main actor isolation`() async {
-  await assertCompilation(flags: [.languageMode(.v5)]) {
+  await assertCompilation(
+    flags: [.languageMode(.v5)]
+  ) {
     """
     class Model {
       var count = 0
@@ -149,8 +151,10 @@ can compile is specifically because we are compiling in Swift 5 mode.
 
 You can also apply configuration to an entire suite with the `.compilation` trait:
 
-```swift
-@Suite(.compilation(flags: [.languageMode(.v6)]))
+```swift:2
+@Suite(
+  .compilation(flags: [.languageMode(.v6)])
+)
 struct Swift6Tests {
   …
 }
@@ -160,9 +164,11 @@ If you want to take a little trip down memory lane, you can even write tests on 
 compiles in Swift 4 language mode. In that mode `try?` on a throwing function that returns an
 optional does not squash the double optionality:
 
-```swift
+```swift:3
 @Test func `swift 4 language mode`() async {
-  await assertCompilation(flags: [.languageMode(.v4)]) {
+  await assertCompilation(
+    flags: [.languageMode(.v4)]
+  ) {
     """
     func get() throws -> Int? { return 42 }
     let value: Int? = try? get()
