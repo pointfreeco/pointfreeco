@@ -130,7 +130,7 @@ actor isolation, and upcoming or experimental features. For example, this snippe
 because it is compiled in Swift 5 language mode:
 
 ```swift:3
-@Test func `default main actor isolation`() async {
+@Test func `non-sendable singletons are OK in Swift 5 mode`() async {
   await assertCompilation(
     flags: [.languageMode(.v5)]
   ) {
@@ -165,7 +165,7 @@ compiles in Swift 4 language mode. In that mode `try?` on a throwing function th
 optional does not squash the double optionality:
 
 ```swift:3
-@Test func `swift 4 language mode`() async {
+@Test func `'try?' does not squash double optionals in Swift 4 mode`() async {
   await assertCompilation(
     flags: [.languageMode(.v4)]
   ) {
