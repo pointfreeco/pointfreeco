@@ -377,6 +377,16 @@ extension Client {
           """
         )
       },
+      fetchSubscriptionSnapshot: { stripeSubscriptionID in
+        try await pool.sqlDatabase.first(
+          """
+          SELECT "subscriptions".*, xmin::text AS "version"
+          FROM "subscriptions"
+          WHERE "stripe_subscription_id" = \(bind: stripeSubscriptionID)
+          LIMIT 1
+          """
+        )
+      },
       fetchSubscriptionTeammatesByOwnerId: { ownerId in
         try await pool.sqlDatabase.all(
           """
@@ -1637,6 +1647,21 @@ extension Client {
           RETURNING *
           """
         )
+      },
+      updateStripeSubscriptionIfUnchanged: { stripeSubscription, plan, snapshot in
+        try await pool.sqlDatabase.raw(
+          """
+          UPDATE "subscriptions"
+          SET "stripe_subscription_status" = \(bind: stripeSubscription.status),
+              "plan" = COALESCE(\(bind: plan), "plan")
+          WHERE "id" = \(bind: snapshot.subscription.id)
+            AND "stripe_subscription_id" = \(bind: stripeSubscription.id)
+            AND xmin::text = \(bind: snapshot.version)
+          RETURNING *
+          """
+        )
+        .first()?
+        .decode(model: Models.Subscription.self, keyDecodingStrategy: .convertFromSnakeCase)
       },
       updateSubscriptionPlan: { subscriptionId, plan in
         try await pool.sqlDatabase.run(
