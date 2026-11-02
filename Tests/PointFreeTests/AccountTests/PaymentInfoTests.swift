@@ -67,7 +67,13 @@ class PaymentInfoTests: TestCase {
       $0.database.fetchSubscriptionByOwnerId = { _ in .mock }
       $0.database.fetchSubscriptionById = { _ in .mock }
       $0.database.fetchUserById = { _ in .mock }
-      $0.database.updateStripeSubscription = { _ in .mock }
+      $0.database.fetchSubscriptionSnapshot = { _ in
+        .init(subscription: .mock, version: "1")
+      }
+      $0.database.updateStripeSubscriptionIfUnchanged = { incoming, _, snapshot in
+        update(snapshot.subscription) { $0.stripeSubscriptionStatus = incoming.status }
+      }
+      $0.stripe.fetchPricesForProduct = { _, _ in .mock([]) }
       $0.stripe.attachPaymentMethod = { _, _ in .mock }
       $0.stripe.fetchInvoices = { _, _ in .mock([]) }
       $0.stripe.fetchSubscription = { _ in .individualMonthly }
@@ -91,7 +97,13 @@ class PaymentInfoTests: TestCase {
       $0.database.fetchSubscriptionByOwnerId = { _ in .pastDue }
       $0.database.fetchSubscriptionById = { _ in .pastDue }
       $0.database.fetchUserById = { _ in .mock }
-      $0.database.updateStripeSubscription = { _ in .mock }
+      $0.database.fetchSubscriptionSnapshot = { _ in
+        .init(subscription: .pastDue, version: "1")
+      }
+      $0.database.updateStripeSubscriptionIfUnchanged = { incoming, _, snapshot in
+        update(snapshot.subscription) { $0.stripeSubscriptionStatus = incoming.status }
+      }
+      $0.stripe.fetchPricesForProduct = { _, _ in .mock([]) }
       $0.stripe.attachPaymentMethod = { _, _ in .mock }
       $0.stripe.fetchInvoices = { _, _ in .mock([.pastDue]) }
       $0.stripe.payInvoice = { _ in .mock(charge: .right(.mock)) }
