@@ -11,6 +11,7 @@ extension Episode.Collection {
     sections: [
       .isolation,
       .designingForIsolation,
+      .designingForIsolationNotifications,
     ],
     title: "Beyond Basics"
   )
@@ -18,7 +19,7 @@ extension Episode.Collection {
 
 extension Episode.Collection.Section {
   static let designingForIsolation = Self(
-    alternateSlug: nil,
+    alternateSlug: "designing-for-isolation",
     blurb: #"""
       It is time to take everything we have learned about isolation and put it into practice in a
       real-world code base. We will build the reimagined [ComposableArchitecture] `Store` from
@@ -37,7 +38,25 @@ extension Episode.Collection.Section {
     isFinished: true,
     isHidden: false,
     related: [],
-    title: "Designing for Isolation",
+    title: "Nonisolated core, isolated shell",
+    whereToGoFromHere: nil
+  )
+
+  static let designingForIsolationNotifications = Self(
+    alternateSlug: nil,
+    blurb: #"""
+      We take a look at `NotificationCenter` on Apple platforms, which is decades old, as well \
+      as the revamped notifications API in Swift 6.2. Each set of tools has their pros and cons, \
+      and we will show that through a clever use of isolation in Swift we can build an alternative \
+      API that has most of the pros with almost none of the cons.
+      """#,
+    coreLessons: [
+      .init(episode: .ep385_notifications),
+    ],
+    isFinished: false,
+    isHidden: false,
+    related: [],
+    title: "Designing for Isolation: Notifications",
     whereToGoFromHere: nil
   )
 
