@@ -656,15 +656,11 @@ private func gitHubAuthTokenMiddleware(
 
 func refreshStripeSubscription(for user: Models.User) async throws {
   @Dependency(\.database) var database
-  @Dependency(\.stripe) var stripe
 
   guard let subscriptionId = user.subscriptionId else { return }
 
   let subscription = try await database.fetchSubscription(id: subscriptionId)
-  let stripeSubscription =
-    try await stripe
-    .fetchSubscription(subscription.stripeSubscriptionId)
-  _ = try await database.updateStripeSubscription(stripeSubscription)
+  _ = try await synchronizeStripeSubscription(id: subscription.stripeSubscriptionId)
 }
 
 struct LoginCodeEmail: EmailDocument {

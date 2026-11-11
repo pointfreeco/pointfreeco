@@ -1,3 +1,4 @@
+import CustomDump
 import Either
 import InlineSnapshotTesting
 import PointFreeTestSupport
@@ -11,6 +12,29 @@ final class StripeTests: TestCase {
   override func setUp() async throws {
     try await super.setUp()
     //SnapshotTesting.isRecording=true
+  }
+
+  func testDecodingCustomerSubscriptionUpdated() throws {
+    let json = """
+      {
+        "id": "evt_test",
+        "type": "customer.subscription.updated",
+        "data": {
+          "object": \(String(decoding: try Stripe.jsonEncoder.encode(Subscription.mock), as: UTF8.self))
+        }
+      }
+      """
+    let event = try Stripe.jsonDecoder.decode(
+      Event<Either<Invoice, Subscription>>.self, from: Data(json.utf8)
+    )
+    expectNoDifference(
+      event,
+      Event(
+        data: .init(object: .right(Subscription.mock)),
+        id: "evt_test",
+        type: .customerSubscriptionUpdated
+      )
+    )
   }
 
   @MainActor

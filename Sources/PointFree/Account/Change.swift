@@ -41,7 +41,6 @@ func changeSubscription(
   -> IO<Conn<ResponseEnded, Data>>
 {
   @Dependency(\.currentUser) var currentUser
-  @Dependency(\.database) var database
   @Dependency(\.stripe) var stripe
 
   return { conn in
@@ -58,16 +57,22 @@ func changeSubscription(
           planID: planID,
           quantity: newPricing.quantity
         )
-      let localSubscription = try await database.updateStripeSubscription(updatedSubscription)
-      try await database.updateSubscriptionPlan(localSubscription.id, newPricing.plan)
+      // Refetch authoritative state instead of persisting this mutation's
+      // response after a newer concurrent website or Stripe-side change.
+      let synchronized: SynchronizedStripeSubscription
+      do {
+        synchronized = try await synchronizeStripeSubscription(id: updatedSubscription.id)
+      } catch {
+        throw SubscriptionChangeError.membershipUpdatedButSynchronizationFailed(error)
+      }
 
-      switch newPricing.plan {
+      switch synchronized.subscription.plan {
       case .max:
-        guard let currentUser
+        guard newPricing.plan == .max, let currentUser
         else { break }
         await sendWelcomeEmail(to: currentUser, plan: .max)
       case .pro:
-        await removeBetaAccess(for: localSubscription)
+        break  // Downgrade cleanup is handled by reconciliation.
       }
     }
     .run
@@ -106,6 +111,12 @@ func subscriptionModificationErrorMiddleware<A>(_ error: Error)
 {
   let message: String
   switch error {
+  case SubscriptionChangeError.membershipUpdatedButSynchronizationFailed:
+    message =
+      """
+      Your membership change was applied, but we couldn’t refresh your account access. \
+      Please reload your account or contact <support@pointfree.co>. Do not submit the change again.
+      """
   case let PricingResolutionError.missingModernPrice(pricing)
     where pricing.isTeam && pricing.billing == .monthly:
     message = "Team monthly memberships are no longer available."
@@ -128,6 +139,10 @@ func subscriptionModificationErrorMiddleware<A>(_ error: Error)
         )
       )
   }
+}
+
+enum SubscriptionChangeError: Error {
+  case membershipUpdatedButSynchronizationFailed(any Error)
 }
 
 private func requireValidSeating(
