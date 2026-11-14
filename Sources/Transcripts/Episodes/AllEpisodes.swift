@@ -389,5 +389,7 @@ extension Episode {
     .ep384_isolationDesign,
     .ep385_notifications,
     .ep386_notifications,
+    .ep387_notifications,
+    .ep388_notifications,
   ]
 }
