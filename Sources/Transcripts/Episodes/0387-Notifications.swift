@@ -10,7 +10,7 @@ extension Episode {
     codeSampleDirectory: "0387-notifications-pt3",
     exercises: _exercises,
     id: 387,
-    length: 0 * 60 + 0,
+    length: 32 * 60 + 39,
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2026-11-16")!,
     references: [
@@ -20,7 +20,7 @@ extension Episode {
     subtitle: "Modern Notifications",
     title: "Designing for Isolation 2",
     trailerVideo: Video(
-      bytesLength: 0,
+      bytesLength: 79_135_524,
       downloadUrls: .s3(
         hd1080: "0387-trailer-1080p-aa9502e529514ca7a3ca3433ee989e9e",
         hd720: "0387-trailer-1080p-aa9502e529514ca7a3ca3433ee989e9e",
