@@ -60,3 +60,46 @@ private func modernLookupKey(for pricing: Pricing) throws -> Stripe.Price.Lookup
     "pointfree-pro"
   }
 }
+
+private let membershipPlansByLookupKey: [Stripe.Price.LookupKey: Pricing.Plan] = Dictionary(
+  uniqueKeysWithValues: Pricing.Plan.allCases.flatMap { plan in
+    Pricing.Billing.allCases.compactMap { billing -> (Stripe.Price.LookupKey, Pricing.Plan)? in
+      guard let lookupKey = try? modernLookupKey(
+        for: Pricing(plan: plan, billing: billing, quantity: 1)
+      ) else { return nil }
+      return (lookupKey, plan)
+    }
+  }
+)
+
+let membershipPlanLookupKeys = membershipPlansByLookupKey.keys.sorted {
+  $0.rawValue < $1.rawValue
+}
+
+func membershipPlan(
+  for subscription: Stripe.Subscription,
+  prices: Stripe.ListEnvelope<Stripe.Price>,
+  productID: Stripe.Product.ID
+) -> Pricing.Plan? {
+  guard !subscription.items.hasMore, !prices.hasMore else { return nil }
+  let items = subscription.items.data.filter { $0.quantity > 0 }
+  guard !items.isEmpty else { return nil }
+
+  var resolvedPlan: Pricing.Plan?
+  for item in items {
+    guard
+      item.plan.product == productID,
+      let price = prices.data.first(where: {
+        $0.id.rawValue == item.plan.id.rawValue && $0.product == productID
+      }),
+      let lookupKey = price.lookupKey,
+      let plan = membershipPlansByLookupKey[lookupKey]
+    else { return nil }
+
+    // A subscription has one shared entitlement. Do not guess how mixed tiers
+    // should apply to its owner and teammates.
+    guard resolvedPlan == nil || resolvedPlan == plan else { return nil }
+    resolvedPlan = plan
+  }
+  return resolvedPlan
+}

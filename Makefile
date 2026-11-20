@@ -42,7 +42,7 @@ db-drop:
 
 stripe-listen: /usr/local/bin/stripe
 	stripe listen \
-		--events invoice.payment_failed,invoice.payment_succeeded,customer.subscription.deleted \
+		--events invoice.payment_failed,invoice.payment_succeeded,customer.subscription.deleted,customer.subscription.updated \
 		--forward-to localhost:8080/webhooks/stripe \
 		--latest \
 		--print-json
