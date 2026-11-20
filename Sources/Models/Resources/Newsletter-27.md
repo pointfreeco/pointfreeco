@@ -119,7 +119,7 @@ a few small, simple pieces.
 
 In order to show just how powerful composable randomness is, we wrote a
 [blog post](https://www.pointfree.co/blog/posts/19-random-zalgo-generator) demonstrating how to
-create a [Zalgo text](http://www.eeemo.net) generator. This consisted of defining small generators
+create a [Zalgo text](https://en.wikipedia.org/wiki/Zalgo_text) generator. This consisted of defining small generators
 that do a specific thing, such as generating special unicode characters, and the piecing them
 together to finally give us the generator that allows us to create bizarre strings such as:
 P̵̙̬̬̝̹̰̜ͧ̿o̎ĩͪͪ͗n͓̪̝̓t̊̏̾̊̆-̦̲̥͉F̠͖͈̮̾́ͨ͐͝r̸͋̆̅̅ͪ̚ë̝͑ͣ̒̏̈́̉e̟̺̪͕̹͆ͩͯ̑ͣ͂̉.
