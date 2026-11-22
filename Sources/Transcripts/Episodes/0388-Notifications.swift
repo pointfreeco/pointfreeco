@@ -10,7 +10,7 @@ extension Episode {
     codeSampleDirectory: "0388-notifications-pt4",
     exercises: _exercises,
     id: 388,
-    length: 0 * 60 + 0,
+    length: 25 * 60 + 48,
     permission: .subscriberOnly,
     publishedAt: yearMonthDayFormatter.date(from: "2026-11-23")!,
     references: [
@@ -20,13 +20,13 @@ extension Episode {
     subtitle: "Async Notifications",
     title: "Designing for Isolation 2",
     trailerVideo: Video(
-      bytesLength: 0,
+      bytesLength: 42_319_173,
       downloadUrls: .s3(
         hd1080: "0388-trailer-1080p-4e9dcc430d0442a1beeed87a96910857",
         hd720: "0388-trailer-1080p-4e9dcc430d0442a1beeed87a96910857",
         sd540: "0388-trailer-1080p-4e9dcc430d0442a1beeed87a96910857"
       ),
-      id: "TODO"
+      id: "187e35eec8a81162ff1930d11a62471f"
     )
   )
 }
