@@ -252,6 +252,10 @@ extension BlogPost {
     .post0233_MacroTypes,
     .post0234_compilationTesting,
     .post0235_BlackFriday,
-    .post0236_CyberMonday,
+    .post0236_BlackFriday,
+    .post0237_BlackFriday,
+    .post0238_CyberMonday,
+    .post0239_CyberMonday,
+    .post0240_CyberMonday,
   ]
 }
