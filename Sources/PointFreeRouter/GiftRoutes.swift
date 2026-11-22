@@ -32,9 +32,9 @@ public enum Gifts: Equatable {
       case .sixMonthsPro:
         return 144_00
       case .yearlyPro:
-        return 216_00
+        return 151_20
       case .yearlyMax:
-        return 349_00
+        return 244_30
       }
     }
 

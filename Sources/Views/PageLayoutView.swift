@@ -189,7 +189,7 @@ struct Banner {
     @Dependency(\.subscriberState) var subscriberState
     @Dependency(\.envVars.appEnv) var appEnv
 
-    let banners: [Self] = []
+    let banners: [Self] = [.saleBanner]
 
     return banners.filter { banner in
       return
@@ -201,12 +201,12 @@ struct Banner {
   }
 
   static let saleBanner = Self(
-    endAt: yearMonthDayFormatter.date(from: "2026-06-16")!,
+    endAt: yearMonthDayFormatter.date(from: "2026-12-07")!,
     markdownContent: ###"""
-      **🎉 WWDC 2026 Sale!** Save 30% when you [become a member today](/discounts/WWDC-26).
+      **🎉 BLACK FRIDAY SALE!** Save 30% when you [become a member today](/discounts/black-friday-2026).
       """###,
     shouldShow: { route in !route.is(\.subscribeConfirmation) && !route.is(\.teamInviteCode) },
-    startAt: yearMonthDayFormatter.date(from: "2026-06-02")!
+    startAt: yearMonthDayFormatter.date(from: "2026-11-17")!
   )
 }
 

@@ -124,7 +124,7 @@ private func redeemGift(
             )
           ),
           quantity: 1,
-          coupon: nil
+          coupon: gift.monthsFree < 12 ? nil : "black-friday-2026"
         )
       _ =
         try await database.createSubscription(

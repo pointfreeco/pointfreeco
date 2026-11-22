@@ -97,8 +97,8 @@ extension Gifts.Plan {
     switch self {
     case .threeMonthsPro: "3 Months Pro"
     case .sixMonthsPro: "6 Months Pro"
-    case .yearlyPro: "1 Year Pro"
-    case .yearlyMax: "1 Year Max"
+    case .yearlyPro: "1 Year Pro (Black Friday Sale)"
+    case .yearlyMax: "1 Year Max (Black Friday Sale)"
     }
   }
 
@@ -129,8 +129,18 @@ extension Gifts.Plan {
       li { "Full Pro access for 6 months" }
     case .yearlyPro:
       li { "Full Pro access for 1 year" }
+      li { "30% off for Black Friday" }
+        .color(.black)
+        .backgroundColor(.yellow)
+        .inlineStyle("margin", "-2px")
+        .inlineStyle("padding", "2px")
     case .yearlyMax:
       li { "Full Max access for 1 year" }
+      li { "30% off for Black Friday" }
+        .color(.black)
+        .backgroundColor(.yellow)
+        .inlineStyle("margin", "-2px")
+        .inlineStyle("padding", "2px")
     }
     li { "All \(stats.allEpisodes) videos with transcripts" }
     if self == .yearlyMax {
