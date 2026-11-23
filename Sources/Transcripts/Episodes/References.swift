@@ -87,7 +87,7 @@ extension Episode.Reference {
     additionalBlurb: """
       We previously did a deep-dive into all things Combine schedulers. We showed what they \
       are used for, how to use them in generic contexts, and how to write tests that make the \
-      passage of time controllable and determinstic.
+      passage of time controllable and deterministic.
       """,
     sectionUrl: "https://www.pointfree.co/collections/combine/schedulers"
   )

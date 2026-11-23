@@ -14,7 +14,7 @@ This discount also works for [Point-Free Max](/discounts/cyber-monday-2026?plan=
 
 Once you join you'll get instant access to all [389+ episodes](/) of original
 Point-Free content. This includes the 41 episodes we have released so far in 2026, where we went
-deeper into Swift concurrency than we ever have before, disected some of WWDC's biggest 
+deeper into Swift concurrency than we ever have before, dissected some of WWDC's biggest 
 announcements, and built real-world tools from scratch along the way.
 
 This year we also shipped many new features for our members and shepherded hundreds of open source
@@ -99,7 +99,7 @@ tool Swift gives us to fix it:
 * **Actors**: We demonstrate how actors work behind the scenes by digging into their enqueueing 
   mechanism, which allows us to understand re-entrancy at a deeper level, as well as how to squash
   unwanted suspension points.
-* **Performance**: Let's just say, reports of locks being more performant than actors are over exagerated. 🙂
+* **Performance**: Let's just say, reports of locks being more performant than actors are over exaggerated. 🙂
 * **Approachable concurrency**: We show how `nonisolated(nonsending)` allows us to squash
   unwanted suspension points, and this will be a critical tool we use in many upcoming episodes.
 * **Region-based isolation**: A deep analysis of how region-based isolation works with many 
@@ -108,7 +108,7 @@ tool Swift gives us to fix it:
 
 By the end of the series you will understand how actors work and how they can help you write
 safe, synchronous, lock-free code, and why it's a good thing to embrace non-`Sendable` types
-whereever possible.
+wherever possible.
 
 [beyond-basics]: /collections/beyond-basics
 [isolation]: /collections/beyond-basics/isolation
@@ -139,10 +139,6 @@ series is now [free for everyone to watch][wwdc26].
 [wwdc26]: /collections/wwdc/wwdc-2026
 [SwiftNavigation]: https://github.com/pointfreeco/swift-navigation
 
-
-
-
-
 ### Designing for Isolation
 
 We can talk about the theory of Swift isolation for weeks on end, but at the end of the day it's 
@@ -166,10 +162,6 @@ testable alternative from scratch that keeps the pros of each with none of the c
 
 [designing-for-isolation]: /collections/beyond-basics/designing-for-isolation
 [designing-for-isolation-notifications]: /collections/beyond-basics/designing-for-isolation-notifications
-
-
-
-
 
 ## More in the Point-Free ecosystem
 
@@ -319,7 +311,7 @@ Your membership directly supports the development and maintenance of our open so
 and this year was a busy one:
 
 * [Sectioned queries] in SQLiteData and [type-safe JSON and JSONB] in StructuredQueries
-* An [`@DependencyEntry` macro] for registering dependencies with far less boilerplate
+* A [`@DependencyEntry` macro] for registering dependencies with far less boilerplate
 * [New macros for SwiftNavigation]: `@CaseBindable` and `@UITransactionEntry`
 * [Task-local test traits] for Swift Testing, which we have also [proposed] for Swift Testing
   itself
@@ -358,7 +350,7 @@ debouncing, timeouts, and more. We even codified all of these ideas into our ope
 certain concurrency tools in Swift.
 
 It turns out that the very same technique that powers our notification center can finally provide
-a 100% determinstic test clock in Swift. By capturing the surrounding isolation of the code 
+a 100% deterministic test clock in Swift. By capturing the surrounding isolation of the code 
 interacting with the clock, we can finally build test clocks the right way, and it is yet another
 demonstration of the power that comes from strictly controlling isolation in Swift.
 
@@ -386,8 +378,6 @@ We are working on a new SQLite driver for Swift that brings an unparalleled suit
 debugging tools to applications. It will take advantage of everything we learn about isolation,
 `~Copyable` types and `~Escapable` types, and we think it is going to raise the bar for what Swift
 developers should expect from persistence tooling.
-
-
 
 ## Become a member today
 

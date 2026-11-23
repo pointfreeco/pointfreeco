@@ -171,7 +171,7 @@ and not doing anything. Likewise, the expected output has a discrete set of even
 being caught, the terminal state of receiving a nil value from the iterator, or advancing in time 
 and not doing anything.
 
-Just as async sequences can often be described with a determinstic sequences of inputs that lead to
+Just as async sequences can often be described with a deterministic sequences of inputs that lead to
 a deterministic sequence of outputs, the same is true of user actions in an application. And so we
 too feel that many of the tests we write on a daily basis can be run inside `withMainSerialExecutor`
 and that we are not weakening the strength of those tests in the least.
