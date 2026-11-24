@@ -306,6 +306,7 @@ public struct Event<T: Codable & Equatable>: Equatable, Codable, Identifiable {
 
   public enum `Type`: String, Codable, Equatable {
     case customerSubscriptionDeleted = "customer.subscription.deleted"
+    case customerSubscriptionUpdated = "customer.subscription.updated"
     case invoicePaymentFailed = "invoice.payment_failed"
     case invoicePaymentSucceeded = "invoice.payment_succeeded"
     case paymentIntentPaymentFailed = "payment_intent.payment_failed"
