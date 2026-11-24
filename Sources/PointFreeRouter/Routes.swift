@@ -104,15 +104,18 @@ public indirect enum SiteRoute: Equatable {
     public static func show(_ post: BlogPost) -> Blog { .show(slug: post.slug) }
   }
 
+  @CasePathable
   public enum Collections: Equatable {
     case index
     case collection(Episode.Collection.Slug, Collection = .show)
 
+    @CasePathable
     public enum Collection: Equatable {
       case show
       case section(Episode.Collection.Section.Slug, Section = .show)
     }
 
+    @CasePathable
     public enum Section: Equatable {
       case episode(Either<String, Episode.ID>)
       case progress(param: Either<String, Episode.ID>, percent: Int)
@@ -120,6 +123,7 @@ public indirect enum SiteRoute: Equatable {
     }
   }
 
+  @CasePathable
   public enum Enterprise: Equatable {
     case acceptInvite(email: Encrypted<String>, userId: Encrypted<String>)
     case landing
@@ -142,6 +146,7 @@ public indirect enum SiteRoute: Equatable {
     case oldest
   }
 
+  @CasePathable
   public enum EpisodesRoute: Equatable {
     case list(ListType)
     case episode(param: Either<String, Episode.ID>, EpisodeRoute)
@@ -150,12 +155,14 @@ public indirect enum SiteRoute: Equatable {
       .episode(param: .left(episode.slug), .show())
     }
 
+    @CasePathable
     public enum ListType: Equatable {
       case all
       case free
       case history
     }
 
+    @CasePathable
     public enum EpisodeRoute: Equatable {
       case progress(percent: Int)
       case show(collection: Episode.Collection.Slug? = nil)
@@ -163,17 +170,20 @@ public indirect enum SiteRoute: Equatable {
     }
   }
 
+  @CasePathable
   public enum Feed: Equatable {
     case atom
     case episodes
     case slack
   }
 
+  @CasePathable
   public enum Invite: Equatable {
     case addTeammate(EmailAddress?)
     case invitation(TeamInvite.ID, Invitation = .show)
     case send(EmailAddress?)
 
+    @CasePathable
     public enum Invitation: Equatable {
       case accept
       case resend
@@ -182,20 +192,24 @@ public indirect enum SiteRoute: Equatable {
     }
   }
 
+  @CasePathable
   public enum Team: Equatable {
     case join(Models.Subscription.TeamInviteCode, Join = .landing)
     case leave
     case remove(User.ID)
 
+    @CasePathable
     public enum Join: Equatable {
       case confirm
       case landing
     }
   }
 
+  @CasePathable
   public enum Webhooks: Equatable {
     case stripe(_Stripe)
 
+    @CasePathable
     public enum _Stripe: Equatable {
       case paymentIntents(Event<PaymentIntent>)
       case subscriptions(Event<Either<Invoice, Stripe.Subscription>>)
@@ -204,6 +218,7 @@ public indirect enum SiteRoute: Equatable {
     }
   }
 
+  @CasePathable
   public enum WellKnown {
     case appleDeveloperMerchantIdDomainAssociation
     case atProto
@@ -224,24 +239,24 @@ struct SlugOrID<ID: RawRepresentable>: ParserPrinter where ID.RawValue == Int {
 
 struct BlogRouter: ParserPrinter {
   var body: some Router<SiteRoute.Blog> {
-    OneOf {
-      Route(.case(SiteRoute.Blog.index))
+    OneOf(output: SiteRoute.Blog.self) {
+      Route(.case(\.index))
 
-      Route(.case(SiteRoute.Blog.feed)) {
+      Route(.case(\.feed)) {
         Path {
           "feed"
           "atom.xml"
         }
       }
 
-      Route(.case(SiteRoute.Blog.slackFeed)) {
+      Route(.case(\.slackFeed)) {
         Path {
           "feed"
           "slack-atom.xml"
         }
       }
 
-      Route(.case(SiteRoute.Blog.show)) {
+      Route(.case(\.show)) {
         Path {
           "posts"
           SlugOrID<BlogPost.ID>()
@@ -253,22 +268,22 @@ struct BlogRouter: ParserPrinter {
 
 struct CollectionsRouter: ParserPrinter {
   var body: some Router<SiteRoute.Collections> {
-    OneOf {
-      Route(.case(SiteRoute.Collections.index))
+    OneOf(output: SiteRoute.Collections.self) {
+      Route(.case(\.index))
 
       Route(.case(SiteRoute.Collections.collection)) {
         Path { Parse(.string.representing(Episode.Collection.Slug.self)) }
 
-        OneOf {
-          Route(.case(SiteRoute.Collections.Collection.show))
+        OneOf(output: SiteRoute.Collections.Collection.self) {
+          Route(.case(\.show))
 
           Route(.case(SiteRoute.Collections.Collection.section)) {
             Path { Parse(.string.representing(Episode.Collection.Section.Slug.self)) }
 
-            OneOf {
-              Route(.case(SiteRoute.Collections.Section.show))
+            OneOf(output: SiteRoute.Collections.Section.self) {
+              Route(.case(\.show))
 
-              Route(.case(SiteRoute.Collections.Section.episode)) {
+              Route(.case(\.episode)) {
                 Path { SlugOrID<Episode.ID>() }
               }
               Route(.case(SiteRoute.Collections.Section.progress(param:percent:))) {
@@ -289,14 +304,14 @@ struct CollectionsRouter: ParserPrinter {
 
 struct EpisodesRouter: ParserPrinter {
   var body: some Router<SiteRoute.EpisodesRoute> {
-    OneOf {
-      Route(.case(SiteRoute.EpisodesRoute.list)) {
-        OneOf {
-          Route(.case(SiteRoute.EpisodesRoute.ListType.all))
-          Route(.case(SiteRoute.EpisodesRoute.ListType.free)) {
+    OneOf(output: SiteRoute.EpisodesRoute.self) {
+      Route(.case(\.list)) {
+        OneOf(output: SiteRoute.EpisodesRoute.ListType.self) {
+          Route(.case(\.all))
+          Route(.case(\.free)) {
             Path { "free" }
           }
-          Route(.case(SiteRoute.EpisodesRoute.ListType.history)) {
+          Route(.case(\.history)) {
             Path { "history" }
           }
         }
@@ -305,12 +320,12 @@ struct EpisodesRouter: ParserPrinter {
       Route(.case(SiteRoute.EpisodesRoute.episode)) {
         Path { SlugOrID<Episode.ID>() }
 
-        OneOf {
-          Route(.case(SiteRoute.EpisodesRoute.EpisodeRoute.show)) {
+        OneOf(output: SiteRoute.EpisodesRoute.EpisodeRoute.self) {
+          Route(.case(\.show)) {
             Always(Episode.Collection.Slug?.none)
           }
 
-          Route(.case(SiteRoute.EpisodesRoute.EpisodeRoute.progress)) {
+          Route(.case(\.progress)) {
             Method.post
             Path { "progress" }
             Query {
@@ -318,7 +333,7 @@ struct EpisodesRouter: ParserPrinter {
             }
           }
 
-          Route(.case(SiteRoute.EpisodesRoute.EpisodeRoute.useCredit)) {
+          Route(.case(\.useCredit)) {
             Method.post
             Path { "credit" }
           }
@@ -330,10 +345,10 @@ struct EpisodesRouter: ParserPrinter {
 
 struct EnterpriseRouter: ParserPrinter {
   var body: some Router<SiteRoute.Enterprise> {
-    OneOf {
-      Route(.case(SiteRoute.Enterprise.landing))
+    OneOf(output: SiteRoute.Enterprise.self) {
+      Route(.case(\.landing))
 
-      Route(.case(SiteRoute.Enterprise.requestInvite)) {
+      Route(.case(\.requestInvite)) {
         Method.post
         Path { "request" }
         Body(.form(EnterpriseRequestFormData.self, decoder: formDecoder))
@@ -352,16 +367,16 @@ struct EnterpriseRouter: ParserPrinter {
 
 struct FeedRouter: ParserPrinter {
   var body: some Router<SiteRoute.Feed> {
-    OneOf {
-      Route(.case(SiteRoute.Feed.atom)) {
+    OneOf(output: SiteRoute.Feed.self) {
+      Route(.case(\.atom)) {
         Path { "atom.xml" }
       }
 
-      Route(.case(SiteRoute.Feed.episodes)) {
+      Route(.case(\.episodes)) {
         Path { "episodes.xml" }
       }
 
-      Route(.case(SiteRoute.Feed.slack)) {
+      Route(.case(\.slack)) {
         Path { "slack.xml" }
       }
     }
@@ -370,8 +385,8 @@ struct FeedRouter: ParserPrinter {
 
 struct InviteRouter: ParserPrinter {
   var body: some Router<SiteRoute.Invite> {
-    OneOf {
-      Route(.case(SiteRoute.Invite.addTeammate)) {
+    OneOf(output: SiteRoute.Invite.self) {
+      Route(.case(\.addTeammate)) {
         Method.post
         Path { "add" }
         Body {
@@ -383,30 +398,30 @@ struct InviteRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.Invite.invitation)) {
+      Route(.case(\.invitation)) {
         Path { UUID.parser().map(.representing(TeamInvite.ID.self)) }
 
-        OneOf {
-          Route(.case(SiteRoute.Invite.Invitation.show))
+        OneOf(output: SiteRoute.Invite.Invitation.self) {
+          Route(.case(\.show))
 
-          Route(.case(SiteRoute.Invite.Invitation.accept)) {
+          Route(.case(\.accept)) {
             Method.post
             Path { "accept" }
           }
 
-          Route(.case(SiteRoute.Invite.Invitation.resend)) {
+          Route(.case(\.resend)) {
             Method.post
             Path { "resend" }
           }
 
-          Route(.case(SiteRoute.Invite.Invitation.revoke)) {
+          Route(.case(\.revoke)) {
             Method.post
             Path { "revoke" }
           }
         }
       }
 
-      Route(.case(SiteRoute.Invite.send)) {
+      Route(.case(\.send)) {
         Method.post
         Body {
           FormData {
@@ -430,10 +445,10 @@ struct TeamRouter: ParserPrinter {
           "join"
         }
 
-        OneOf {
-          Route(.case(SiteRoute.Team.Join.landing))
+        OneOf(output: SiteRoute.Team.Join.self) {
+          Route(.case(\.landing))
 
-          Route(.case(SiteRoute.Team.Join.confirm)) {
+          Route(.case(\.confirm)) {
             Method.post
           }
         }
@@ -445,13 +460,13 @@ struct TeamRouter: ParserPrinter {
           "team"
         }
 
-        OneOf {
-          Route(.case(SiteRoute.Team.leave)) {
+        OneOf(output: SiteRoute.Team.self) {
+          Route(.case(\.leave)) {
             Method.post
             Path { "leave" }
           }
 
-          Route(.case(SiteRoute.Team.remove)) {
+          Route(.case(\.remove)) {
             Method.post
             Path {
               "members"
@@ -467,56 +482,58 @@ struct TeamRouter: ParserPrinter {
 
 struct WebhooksRouter: ParserPrinter {
   var body: some Router<SiteRoute.Webhooks> {
-    Route(.case(SiteRoute.Webhooks.stripe)) {
-      Method.post
-      Path { "stripe" }
+    OneOf(output: SiteRoute.Webhooks.self) {
+      Route(.case(\.stripe)) {
+        Method.post
+        Path { "stripe" }
 
-      OneOf {
-        Route(.case(SiteRoute.Webhooks._Stripe.paymentIntents)) {
-          Body(
-            .json(
-              Stripe.Event<PaymentIntent>.self,
-              decoder: Stripe.jsonDecoder,
-              encoder: Stripe.jsonEncoder
+        OneOf(output: SiteRoute.Webhooks._Stripe.self) {
+          Route(.case(\.paymentIntents)) {
+            Body(
+              .json(
+                Stripe.Event<PaymentIntent>.self,
+                decoder: Stripe.jsonDecoder,
+                encoder: Stripe.jsonEncoder
+              )
             )
-          )
-        }
+          }
 
-        Route(.case(SiteRoute.Webhooks._Stripe.subscriptions)) {
-          Body(
-            .json(
-              Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
-              decoder: Stripe.jsonDecoder,
-              encoder: Stripe.jsonEncoder
+          Route(.case(\.subscriptions)) {
+            Body(
+              .json(
+                Stripe.Event<Either<Stripe.Invoice, Stripe.Subscription>>.self,
+                decoder: Stripe.jsonDecoder,
+                encoder: Stripe.jsonEncoder
+              )
             )
-          )
-        }
+          }
 
-        Route(.case(SiteRoute.Webhooks._Stripe.unknown)) {
-          Body(
-            .json(
-              Stripe.Event<Prelude.Unit>.self,
-              decoder: Stripe.jsonDecoder,
-              encoder: Stripe.jsonEncoder
+          Route(.case(\.unknown)) {
+            Body(
+              .json(
+                Stripe.Event<Prelude.Unit>.self,
+                decoder: Stripe.jsonDecoder,
+                encoder: Stripe.jsonEncoder
+              )
             )
-          )
+          }
         }
+        .replaceError(with: .fatal)
       }
-      .replaceError(with: .fatal)
     }
   }
 }
 
 struct SiteRouter: ParserPrinter {
   var body: some Router<SiteRoute> {
-    OneOf {
-      Route(.case(SiteRoute.home))
+    OneOf(output: SiteRoute.self) {
+      Route(.case(\.home))
 
-      Route(.case(SiteRoute.about)) {
+      Route(.case(\.about)) {
         Path { "about" }
       }
 
-      Route(.case(SiteRoute.betas)) {
+      Route(.case(\.betas)) {
         Path { "beta-previews" }
         OneOf {
           Route(.case(SiteRoute.Betas.landing))
@@ -530,34 +547,34 @@ struct SiteRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.theWay)) {
+      Route(.case(\.theWay)) {
         Path { "the-way" }
       }
 
-      Route(.case(SiteRoute.account)) {
+      Route(.case(\.account)) {
         Path { "account" }
         AccountRouter()
       }
 
-      Route(.case(SiteRoute.admin)) {
+      Route(.case(\.admin)) {
         Path { "admin" }
         AdminRouter()
       }
 
-      Route(.case(SiteRoute.api)) {
+      Route(.case(\.api)) {
         Path { "api" }
         APIRouter()
       }
 
-      Route(.case(SiteRoute.wellKnown)) {
+      Route(.case(\.wellKnown)) {
         Path { ".well-known" }
-        OneOf {
-          Route(.case(SiteRoute.WellKnown.appleDeveloperMerchantIdDomainAssociation)) {
+        OneOf(output: SiteRoute.WellKnown.self) {
+          Route(.case(\.appleDeveloperMerchantIdDomainAssociation)) {
             Path {
               "apple-developer-merchantid-domain-association"
             }
           }
-          Route(.case(SiteRoute.WellKnown.atProto)) {
+          Route(.case(\.atProto)) {
             Path {
               "atproto-did"
             }
@@ -565,20 +582,20 @@ struct SiteRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.auth)) {
+      Route(.case(\.auth)) {
         AuthRouter()
       }
 
-      Route(.case(SiteRoute.blog)) {
+      Route(.case(\.blog)) {
         Path { "blog" }
         BlogRouter()
       }
 
-      Route(.case(SiteRoute.resume)) {
+      Route(.case(\.resume)) {
         Path { "resume" }
       }
 
-      Route(.case(SiteRoute.robots)) {
+      Route(.case(\.robots)) {
         Path { "robots.txt" }
       }
 
@@ -600,29 +617,29 @@ struct SiteRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.slackInvite)) {
+      Route(.case(\.slackInvite)) {
         OneOf {
           Path { "slack-invite" }
           Path { "slack" }
         }
       }
 
-      Route(.case(SiteRoute.clips)) {
+      Route(.case(\.clips)) {
         Path { "clips" }
         ClipsRouter()
       }
 
-      Route(.case(SiteRoute.collections)) {
+      Route(.case(\.collections)) {
         Path { "collections" }
         CollectionsRouter()
       }
 
-      Route(.case(SiteRoute.episodes)) {
+      Route(.case(\.episodes)) {
         Path { "episodes" }
         EpisodesRouter()
       }
 
-      Route(.case(SiteRoute.enterprise)) {
+      Route(.case(\.enterprise)) {
         Path {
           "enterprise"
           Parse(.string.representing(EnterpriseAccount.Domain.self))
@@ -630,12 +647,12 @@ struct SiteRouter: ParserPrinter {
         EnterpriseRouter()
       }
 
-      Route(.case(SiteRoute.feed)) {
+      Route(.case(\.feed)) {
         Path { "feed" }
         FeedRouter()
       }
 
-      Route(.case(SiteRoute.gifts)) {
+      Route(.case(\.gifts)) {
         Path { "gifts" }
         GiftsRouter()
       }
@@ -657,7 +674,7 @@ struct SiteRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.endGhosting)) {
+      Route(.case(\.endGhosting)) {
         Path {
           "ghosting"
           "end"
@@ -667,15 +684,15 @@ struct SiteRouter: ParserPrinter {
       Parse {
         Path { "newsletters" }
 
-        OneOf {
-          Route(.case(SiteRoute.expressUnsubscribe)) {
+        OneOf(output: SiteRoute.self) {
+          Route(.case(\.expressUnsubscribe)) {
             Path { "express-unsubscribe" }
             Query {
               Field("payload", .string.representing(Encrypted.self))
             }
           }
 
-          Route(.case(SiteRoute.expressUnsubscribeReply)) {
+          Route(.case(\.expressUnsubscribeReply)) {
             Method.post
             Path { "express-unsubscribe-reply" }
             Body(.form(MailgunForwardPayload.self, decoder: formDecoder))
@@ -683,34 +700,34 @@ struct SiteRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.invite)) {
+      Route(.case(\.invite)) {
         Path { "invites" }
         InviteRouter()
       }
 
-      Route(.case(SiteRoute.live)) {
+      Route(.case(\.live)) {
         Path { "live" }
         LiveRouter()
       }
 
-      Route(.case(SiteRoute.officeHours)) {
+      Route(.case(\.officeHours)) {
         Path { "office-hours" }
         OfficeHoursRouter()
       }
 
-      Route(.case(SiteRoute.pricingLanding)) {
+      Route(.case(\.pricingLanding)) {
         Path { "pricing" }
       }
 
-      Route(.case(SiteRoute.privacy)) {
+      Route(.case(\.privacy)) {
         Path { "privacy" }
       }
 
-      Route(.case(SiteRoute.resume)) {
+      Route(.case(\.resume)) {
         Path { "resume" }
       }
 
-      Route(.case(SiteRoute.subscribe)) {
+      Route(.case(\.subscribe)) {
         Method.post
         Path { "subscribe" }
         SubscribeDataParser()
@@ -756,14 +773,14 @@ struct SiteRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.team)) { TeamRouter() }
+      Route(.case(\.team)) { TeamRouter() }
 
-      Route(.case(SiteRoute.teamInviteCode)) {
+      Route(.case(\.teamInviteCode)) {
         Path { "join" }
         JoinRouter()
       }
 
-      Route(.case(SiteRoute.webhooks)) {
+      Route(.case(\.webhooks)) {
         Path { "webhooks" }
         WebhooksRouter()
       }
@@ -859,7 +876,7 @@ struct FilterConversion<Base: Conversion>: Conversion {
 
 private struct AuthRouter: ParserPrinter {
   var body: some Router<SiteRoute.Auth> {
-    OneOf {
+    OneOf(output: SiteRoute.Auth.self) {
       Route(.case(SiteRoute.Auth.codeLanding)) {
         Path { "email-auth" }
         Query {
@@ -870,7 +887,7 @@ private struct AuthRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.Auth.connectGitHub)) {
+      Route(.case(\.connectGitHub)) {
         Method.post
         Path { "connect-github" }
         Query {
@@ -880,7 +897,7 @@ private struct AuthRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.Auth.connectGitHubLanding)) {
+      Route(.case(\.connectGitHubLanding)) {
         Path { "connect-github" }
         Query {
           Optionally {
@@ -904,7 +921,7 @@ private struct AuthRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.Auth.failureLanding)) {
+      Route(.case(\.failureLanding)) {
         Path { "github-failure" }
         Query {
           Optionally {
@@ -912,7 +929,7 @@ private struct AuthRouter: ParserPrinter {
           }
         }
       }
-      Route(.case(SiteRoute.Auth.gitHubAuth)) {
+      Route(.case(\.gitHubAuth)) {
         Path { "authenticate" }
         Query {
           Optionally {
@@ -936,7 +953,7 @@ private struct AuthRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.Auth.linkGitHubLanding)) {
+      Route(.case(\.linkGitHubLanding)) {
         Path { "link-github" }
         Query {
           Optionally {
@@ -971,11 +988,11 @@ private struct AuthRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.Auth.logout)) {
+      Route(.case(\.logout)) {
         Path { "logout" }
       }
 
-      Route(.case(SiteRoute.Auth.updateGitHub)) {
+      Route(.case(\.updateGitHub)) {
         Method.post
         Path { "update-github" }
         Query {

@@ -1,8 +1,10 @@
+import CasePaths
 import Cloudflare
 import Foundation
 import Models
 import URLRouting
 
+@CasePathable
 public enum OfficeHoursRoute: Equatable {
   case deleteQuestion(id: OfficeHourQuestion.ID, questionsSort: QuestionsSort? = nil)
   case index(tab: Tab = .recordings, questionsSort: QuestionsSort? = nil)
@@ -10,6 +12,7 @@ public enum OfficeHoursRoute: Equatable {
   case submitQuestion(question: String)
   case voteQuestion(id: OfficeHourQuestion.ID, questionsSort: QuestionsSort? = nil)
 
+  @CasePathable
   public enum Tab: CaseIterable, Equatable {
     case recordings
     case openQuestions
@@ -32,8 +35,8 @@ struct OfficeHoursRouter: ParserPrinter {
   }
 
   var body: some Router<OfficeHoursRoute> {
-    OneOf {
-      Route(.case(OfficeHoursRoute.submitQuestion(question:))) {
+    OneOf(output: OfficeHoursRoute.self) {
+      Route(.case(\.submitQuestion)) {
         Method.post
         Path { "questions" }
         Body {
@@ -61,18 +64,18 @@ struct OfficeHoursRouter: ParserPrinter {
         questionsSortQuery
       }
       Route(.case(OfficeHoursRoute.index(tab:questionsSort:))) {
-        OneOf {
-          Route(.case(OfficeHoursRoute.Tab.recordings))
-          Route(.case(OfficeHoursRoute.Tab.openQuestions)) {
+        OneOf(output: OfficeHoursRoute.Tab.self) {
+          Route(.case(\.recordings))
+          Route(.case(\.openQuestions)) {
             Path { "open-questions" }
           }
-          Route(.case(OfficeHoursRoute.Tab.answeredQuestions)) {
+          Route(.case(\.answeredQuestions)) {
             Path { "answered-questions" }
           }
         }
         questionsSortQuery
       }
-      Route(.case(OfficeHoursRoute.officeHour(cloudflareVideoID:))) {
+      Route(.case(\.officeHour)) {
         Path {
           Rest().map(.string.representing(Cloudflare.Video.ID.self))
         }

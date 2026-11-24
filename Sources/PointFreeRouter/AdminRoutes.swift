@@ -1,3 +1,4 @@
+import CasePaths
 import Foundation
 import Models
 import URLRouting
@@ -17,6 +18,7 @@ public enum EmailTemplate: String, CaseIterable {
   case welcomeEmail3
 }
 
+@CasePathable
 public enum Admin: Equatable {
   case emailPreview(EmailPreview = .show(template: nil))
   case episodeCredits(EpisodeCredit = .show)
@@ -26,31 +28,37 @@ public enum Admin: Equatable {
   case newBlogPostEmail(NewBlogPostEmail = .index)
   case newEpisodeEmail(NewEpisodeEmail = .show)
 
+  @CasePathable
   public enum EmailPreview: Equatable {
     case send(template: EmailTemplate, email: String)
     case show(template: EmailTemplate?)
   }
 
+  @CasePathable
   public enum EpisodeCredit: Equatable {
     case add(userId: User.ID?, episodeSequence: Episode.Sequence?)
     case show
   }
 
+  @CasePathable
   public enum FreeEpisodeEmail: Equatable {
     case send(Episode.ID)
     case index
   }
 
+  @CasePathable
   public enum Ghost: Equatable {
     case index
     case start(User.ID?)
   }
 
+  @CasePathable
   public enum NewBlogPostEmail: Equatable {
     case send(BlogPost.ID, formData: NewBlogPostFormData? = nil, isTest: Bool = false)
     case index
   }
 
+  @CasePathable
   public enum NewEpisodeEmail: Equatable {
     case send(
       Episode.ID,
@@ -64,11 +72,11 @@ public enum Admin: Equatable {
 
 struct AdminRouter: ParserPrinter {
   var body: some Router<Admin> {
-    OneOf {
-      Route(.case(Admin.emailPreview)) {
+    OneOf(output: Admin.self) {
+      Route(.case(\.emailPreview)) {
         Path { "email-preview" }
 
-        OneOf {
+        OneOf(output: Admin.EmailPreview.self) {
           Route(.case(Admin.EmailPreview.send(template:email:))) {
             Method.post
             Body {
@@ -79,7 +87,7 @@ struct AdminRouter: ParserPrinter {
             }
           }
 
-          Route(.case(Admin.EmailPreview.show(template:))) {
+          Route(.case(\.show)) {
             Optionally {
               Method.post
               Body {
@@ -92,13 +100,13 @@ struct AdminRouter: ParserPrinter {
         }
       }
 
-      Route(.case(Admin.index))
+      Route(.case(\.index))
 
-      Route(.case(Admin.episodeCredits)) {
+      Route(.case(\.episodeCredits)) {
         Path { "episode-credits" }
 
-        OneOf {
-          Route(.case(Admin.EpisodeCredit.show))
+        OneOf(output: Admin.EpisodeCredit.self) {
+          Route(.case(\.show))
 
           Route(.case(Admin.EpisodeCredit.add(userId:episodeSequence:))) {
             Method.post
@@ -116,13 +124,13 @@ struct AdminRouter: ParserPrinter {
         }
       }
 
-      Route(.case(Admin.freeEpisodeEmail)) {
+      Route(.case(\.freeEpisodeEmail)) {
         Path { "free-episode-email" }
 
-        OneOf {
-          Route(.case(Admin.FreeEpisodeEmail.index))
+        OneOf(output: Admin.FreeEpisodeEmail.self) {
+          Route(.case(\.index))
 
-          Route(.case(Admin.FreeEpisodeEmail.send)) {
+          Route(.case(\.send)) {
             Method.post
             Path {
               Digits().map(.representing(Episode.ID.self))
@@ -132,13 +140,13 @@ struct AdminRouter: ParserPrinter {
         }
       }
 
-      Route(.case(Admin.ghost)) {
+      Route(.case(\.ghost)) {
         Path { "ghost" }
 
-        OneOf {
-          Route(.case(Admin.Ghost.index))
+        OneOf(output: Admin.Ghost.self) {
+          Route(.case(\.index))
 
-          Route(.case(Admin.Ghost.start)) {
+          Route(.case(\.start)) {
             Method.post
             Path { "start" }
             Body {
@@ -152,11 +160,11 @@ struct AdminRouter: ParserPrinter {
         }
       }
 
-      Route(.case(Admin.newBlogPostEmail)) {
+      Route(.case(\.newBlogPostEmail)) {
         Path { "new-blog-post-email" }
 
-        OneOf {
-          Route(.case(Admin.NewBlogPostEmail.index))
+        OneOf(output: Admin.NewBlogPostEmail.self) {
+          Route(.case(\.index))
 
           Route(.case(Admin.NewBlogPostEmail.send)) {
             Parse(
@@ -207,11 +215,11 @@ struct AdminRouter: ParserPrinter {
         }
       }
 
-      Route(.case(Admin.newEpisodeEmail)) {
+      Route(.case(\.newEpisodeEmail)) {
         Path { "new-episode-email" }
 
-        OneOf {
-          Route(.case(Admin.NewEpisodeEmail.show))
+        OneOf(output: Admin.NewEpisodeEmail.self) {
+          Route(.case(\.show))
 
           Route(.case(Admin.NewEpisodeEmail.send)) {
             Parse(
