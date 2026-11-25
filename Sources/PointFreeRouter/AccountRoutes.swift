@@ -1,9 +1,11 @@
+import CasePaths
 import Foundation
 import GitHub
 import Models
 import Stripe
 import URLRouting
 
+@CasePathable
 public enum Account: Equatable {
   case confirmEmailChange(payload: Encrypted<String>)
   case index
@@ -16,27 +18,32 @@ public enum Account: Equatable {
   case theWay(TheWay)
   case update(ProfileData? = nil)
 
+  @CasePathable
   public enum Invoices: Equatable {
     case index
     case show(Stripe.Invoice.ID)
   }
 
+  @CasePathable
   public enum PaymentInfo: Equatable {
     case show
     case update(Stripe.PaymentMethod.ID? = nil)
   }
 
+  @CasePathable
   public enum Subscription: Equatable {
     case cancel
     case change(Change = .show)
     case reactivate
 
+    @CasePathable
     public enum Change: Equatable {
       case show
       case update(Pricing? = nil)
     }
   }
 
+  @CasePathable
   public enum TheWay: Equatable {
     case login(redirect: String, whoami: String, machine: UUID)
     case download(
@@ -51,35 +58,35 @@ public enum Account: Equatable {
 
 struct AccountRouter: ParserPrinter {
   var body: some Router<Account> {
-    OneOf {
-      Route(.case(Account.index))
+    OneOf(output: Account.self) {
+      Route(.case(\.index))
 
-      Route(.case(Account.confirmEmailChange)) {
+      Route(.case(\.confirmEmailChange)) {
         Path { "confirm-email-change" }
         Query {
           Field("payload", .string.representing(Encrypted.self))
         }
       }
 
-      Route(.case(Account.invoices)) {
+      Route(.case(\.invoices)) {
         Path { "invoices" }
 
-        OneOf {
-          Route(.case(Account.Invoices.index))
+        OneOf(output: Account.Invoices.self) {
+          Route(.case(\.index))
 
-          Route(.case(Account.Invoices.show)) {
+          Route(.case(\.show)) {
             Path { Parse(.string.representing(Invoice.ID.self)) }
           }
         }
       }
 
-      Route(.case(Account.paymentInfo)) {
+      Route(.case(\.paymentInfo)) {
         Path { "payment-info" }
 
-        OneOf {
-          Route(.case(Account.PaymentInfo.show))
+        OneOf(output: Account.PaymentInfo.self) {
+          Route(.case(\.show))
 
-          Route(.case(Account.PaymentInfo.update)) {
+          Route(.case(\.update)) {
             Method.post
             Optionally {
               Body {
@@ -92,7 +99,7 @@ struct AccountRouter: ParserPrinter {
         }
       }
 
-      Route(.case(Account.regenerateTeamInviteCode)) {
+      Route(.case(\.regenerateTeamInviteCode)) {
         Method.post
         Path { "regenerate-team-invite-code" }
       }
@@ -100,12 +107,12 @@ struct AccountRouter: ParserPrinter {
       Parse {
         Path { "rss" }
 
-        OneOf {
-          Route(.case(Account.rss)) {
+        OneOf(output: Account.self) {
+          Route(.case(\.rss)) {
             Path { Parse(.string.representing(User.RssSalt.self)) }
           }
 
-          Route(.case(Account.rssLegacy)) {
+          Route(.case(\.rssLegacy)) {
             Path {
               Parse(.string)
               Parse(.string)
@@ -114,22 +121,22 @@ struct AccountRouter: ParserPrinter {
         }
       }
 
-      Route(.case(Account.subscription)) {
+      Route(.case(\.subscription)) {
         Path { "subscription" }
 
-        OneOf {
-          Route(.case(Account.Subscription.cancel)) {
+        OneOf(output: Account.Subscription.self) {
+          Route(.case(\.cancel)) {
             Method.post
             Path { "cancel" }
           }
 
-          Route(.case(Account.Subscription.change)) {
+          Route(.case(\.change)) {
             Path { "change" }
 
-            OneOf {
-              Route(.case(Account.Subscription.Change.show))
+            OneOf(output: Account.Subscription.Change.self) {
+              Route(.case(\.show))
 
-              Route(.case(Account.Subscription.Change.update)) {
+              Route(.case(\.update)) {
                 Method.post
                 Optionally {
                   Body(.form(Pricing.self, decoder: formDecoder))
@@ -138,17 +145,17 @@ struct AccountRouter: ParserPrinter {
             }
           }
 
-          Route(.case(Account.Subscription.reactivate)) {
+          Route(.case(\.reactivate)) {
             Method.post
             Path { "reactivate" }
           }
         }
       }
 
-      Route(.case(Account.theWay)) {
+      Route(.case(\.theWay)) {
         Path { "the-way" }
-        OneOf {
-          Route(.case(Account.TheWay.login)) {
+        OneOf(output: Account.TheWay.self) {
+          Route(.case(\.login)) {
             Path { "login" }
             Query {
               Field("redirect", .string)
@@ -156,7 +163,7 @@ struct AccountRouter: ParserPrinter {
               Field("machine") { UUID.parser() }
             }
           }
-          Route(.case(Account.TheWay.download)) {
+          Route(.case(\.download)) {
             Path { "download" }
             Query {
               Field("token") { UUID.parser().map(.representing(TheWayAccess.ID.self)) }
@@ -177,7 +184,7 @@ struct AccountRouter: ParserPrinter {
         }
       }
 
-      Route(.case(Account.update)) {
+      Route(.case(\.update)) {
         Method.post
         Optionally {
           Body(.form(ProfileData.self, decoder: formDecoder))

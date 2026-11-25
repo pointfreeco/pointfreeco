@@ -267,7 +267,7 @@ private func sendEnterpriseInvitation<Z>(
       request.email.rawValue, with: appSecret),
       let encryptedUserId = Encrypted(currentUser.id.rawValue.uuidString, with: appSecret)
     {
-      Task {
+      _ = Task {
         _ = try await sendEmail(
           to: [request.email],
           subject: "You’re invited to join the \(account.companyName) team on Point-Free",

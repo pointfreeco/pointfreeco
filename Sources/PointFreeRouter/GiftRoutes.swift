@@ -1,15 +1,18 @@
+import CasePaths
 import Foundation
 import Models
 import Stripe
 import TaggedMoney
 import URLRouting
 
+@CasePathable
 public enum Gifts: Equatable {
   case create(GiftFormData)
   case index
   case plan(Plan)
   case redeem(Gift.ID, Redeem = .landing)
 
+  @CasePathable
   public enum Redeem: Equatable {
     case confirm
     case landing
@@ -72,25 +75,25 @@ public enum Gifts: Equatable {
 
 struct GiftsRouter: ParserPrinter {
   var body: some Router<Gifts> {
-    OneOf {
-      Route(.case(Gifts.index))
+    OneOf(output: Gifts.self) {
+      Route(.case(\.index))
 
-      Route(.case(Gifts.create)) {
+      Route(.case(\.create)) {
         Method.post
         Body(.form(GiftFormData.self, decoder: formDecoder))
       }
 
-      Route(.case(Gifts.plan)) {
+      Route(.case(\.plan)) {
         Path { Gifts.Plan.parser() }
       }
 
-      Route(.case(Gifts.redeem)) {
+      Route(.case(\.redeem)) {
         Path { UUID.parser().map(.representing(Gift.ID.self)) }
 
-        OneOf {
-          Route(.case(Gifts.Redeem.landing))
+        OneOf(output: Gifts.Redeem.self) {
+          Route(.case(\.landing))
 
-          Route(.case(Gifts.Redeem.confirm)) {
+          Route(.case(\.confirm)) {
             Method.post
           }
         }

@@ -1,8 +1,10 @@
+import CasePaths
 import Foundation
 import GitHub
 import Tagged
 import URLRouting
 
+@CasePathable
 public enum GitHubRoute {
   case authorize(clientId: GitHub.Client.ID, redirectUri: String?, scope: String, state: UUID? = nil)
   case episodeCodeSample(directory: String)
@@ -33,8 +35,8 @@ public struct GitHubRouter: ParserPrinter {
   public init() {}
 
   public var body: some Router<GitHubRoute> {
-    OneOf {
-      Route(.case(GitHubRoute.authorize)) {
+    OneOf(output: GitHubRoute.self) {
+      Route(.case(\.authorize)) {
         Path {
           "login"
           "oauth"
@@ -55,10 +57,10 @@ public struct GitHubRouter: ParserPrinter {
       Parse {
         Path { "pointfreeco" }
 
-        OneOf {
-          Route(.case(GitHubRoute.organization))
+        OneOf(output: GitHubRoute.self) {
+          Route(.case(\.organization))
 
-          Route(.case(GitHubRoute.episodeCodeSample)) {
+          Route(.case(\.episodeCodeSample)) {
             Path {
               "episode-code-samples"
               "tree"
@@ -67,7 +69,7 @@ public struct GitHubRouter: ParserPrinter {
             }
           }
 
-          Route(.case(GitHubRoute.license)) {
+          Route(.case(\.license)) {
             Path {
               "pointfreeco"
               "blob"
@@ -76,7 +78,7 @@ public struct GitHubRouter: ParserPrinter {
             }
           }
 
-          Route(.case(GitHubRoute.repo)) {
+          Route(.case(\.repo)) {
             Path { GitHubRoute.Repo.parser() }
           }
         }

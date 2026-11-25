@@ -1,7 +1,9 @@
+import CasePaths
 import EmailAddress
 import Models
 import URLRouting
 
+@CasePathable
 public enum TeamInviteCode: Equatable {
   case confirm(code: Subscription.TeamInviteCode, secret: Encrypted<String>)
   case join(code: Subscription.TeamInviteCode, email: EmailAddress?)
@@ -10,8 +12,8 @@ public enum TeamInviteCode: Equatable {
 
 struct JoinRouter: ParserPrinter {
   var body: some Router<TeamInviteCode> {
-    OneOf {
-      Route(.case(TeamInviteCode.confirm)) {
+    OneOf(output: TeamInviteCode.self) {
+      Route(.case(\.confirm)) {
         Path {
           Parse(.string.representing(Subscription.TeamInviteCode.self))
           "confirm"
@@ -19,7 +21,7 @@ struct JoinRouter: ParserPrinter {
         }
       }
 
-      Route(.case(TeamInviteCode.join)) {
+      Route(.case(\.join)) {
         Method.post
         Path {
           Parse(.string.representing(Subscription.TeamInviteCode.self))
@@ -33,7 +35,7 @@ struct JoinRouter: ParserPrinter {
         }
       }
 
-      Route(.case(TeamInviteCode.landing)) {
+      Route(.case(\.landing)) {
         Path {
           Parse(.string.representing(Subscription.TeamInviteCode.self))
         }

@@ -1,8 +1,10 @@
+import CasePaths
 import Cloudflare
 import IssueReporting
 import Models
 import URLRouting
 
+@CasePathable
 public enum ClipsRoute: Equatable {
   case clip(cloudflareVideoID: Cloudflare.Video.ID)
   case clips
@@ -10,13 +12,13 @@ public enum ClipsRoute: Equatable {
 
 struct ClipsRouter: ParserPrinter {
   var body: some Router<ClipsRoute> {
-    OneOf {
-      Route(.case(ClipsRoute.clip(cloudflareVideoID:))) {
+    OneOf(output: ClipsRoute.self) {
+      Route(.case(\.clip)) {
         Path {
           Rest().map(.string.representing(Cloudflare.Video.ID.self))
         }
       }
-      Route(.case(ClipsRoute.clips))
+      Route(.case(\.clips))
     }
   }
 }
