@@ -13,7 +13,7 @@ public enum TeamInviteCode: Equatable {
 struct JoinRouter: ParserPrinter {
   var body: some Router<TeamInviteCode> {
     OneOf(output: TeamInviteCode.self) {
-      Route(.case(TeamInviteCode.confirm)) {
+      Route(.case(\.confirm)) {
         Path {
           Parse(.string.representing(Subscription.TeamInviteCode.self))
           "confirm"
@@ -21,7 +21,7 @@ struct JoinRouter: ParserPrinter {
         }
       }
 
-      Route(.case(TeamInviteCode.join)) {
+      Route(.case(\.join)) {
         Method.post
         Path {
           Parse(.string.representing(Subscription.TeamInviteCode.self))

@@ -35,8 +35,8 @@ public struct GitHubRouter: ParserPrinter {
   public init() {}
 
   public var body: some Router<GitHubRoute> {
-    OneOf {
-      Route(.case(GitHubRoute.authorize)) {
+    OneOf(output: GitHubRoute.self) {
+      Route(.case(\.authorize)) {
         Path {
           "login"
           "oauth"

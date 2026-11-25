@@ -77,7 +77,7 @@ struct AdminRouter: ParserPrinter {
         Path { "email-preview" }
 
         OneOf(output: Admin.EmailPreview.self) {
-          Route(.case(Admin.EmailPreview.send(template:email:))) {
+          Route(.case(\.send)) {
             Method.post
             Body {
               FormData {
@@ -108,7 +108,7 @@ struct AdminRouter: ParserPrinter {
         OneOf(output: Admin.EpisodeCredit.self) {
           Route(.case(\.show))
 
-          Route(.case(Admin.EpisodeCredit.add(userId:episodeSequence:))) {
+          Route(.case(\.add)) {
             Method.post
             Body {
               FormData {
@@ -166,7 +166,7 @@ struct AdminRouter: ParserPrinter {
         OneOf(output: Admin.NewBlogPostEmail.self) {
           Route(.case(\.index))
 
-          Route(.case(Admin.NewBlogPostEmail.send)) {
+          Route(.case(\.send)) {
             Parse(
               .convert(
                 apply: { ($0, $1.0, $1.1) },
@@ -221,7 +221,7 @@ struct AdminRouter: ParserPrinter {
         OneOf(output: Admin.NewEpisodeEmail.self) {
           Route(.case(\.show))
 
-          Route(.case(Admin.NewEpisodeEmail.send)) {
+          Route(.case(\.send)) {
             Parse(
               .convert(
                 apply: { ($0, $1.0, $1.1, $1.2) },

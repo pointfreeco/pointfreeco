@@ -112,7 +112,7 @@ struct AccountRouter: ParserPrinter {
             Path { Parse(.string.representing(User.RssSalt.self)) }
           }
 
-          Route(.case(Account.rssLegacy)) {
+          Route(.case(\.rssLegacy)) {
             Path {
               Parse(.string)
               Parse(.string)
@@ -155,7 +155,7 @@ struct AccountRouter: ParserPrinter {
       Route(.case(\.theWay)) {
         Path { "the-way" }
         OneOf(output: Account.TheWay.self) {
-          Route(.case(Account.TheWay.login)) {
+          Route(.case(\.login)) {
             Path { "login" }
             Query {
               Field("redirect", .string)
@@ -163,7 +163,7 @@ struct AccountRouter: ParserPrinter {
               Field("machine") { UUID.parser() }
             }
           }
-          Route(.case(Account.TheWay.download)) {
+          Route(.case(\.download)) {
             Path { "download" }
             Query {
               Field("token") { UUID.parser().map(.representing(TheWayAccess.ID.self)) }

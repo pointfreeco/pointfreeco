@@ -45,7 +45,7 @@ struct OfficeHoursRouter: ParserPrinter {
           }
         }
       }
-      Route(.case(OfficeHoursRoute.voteQuestion(id:questionsSort:))) {
+      Route(.case(\.voteQuestion)) {
         Method.post
         Path {
           "questions"
@@ -54,7 +54,7 @@ struct OfficeHoursRouter: ParserPrinter {
         }
         questionsSortQuery
       }
-      Route(.case(OfficeHoursRoute.deleteQuestion(id:questionsSort:))) {
+      Route(.case(\.deleteQuestion)) {
         Method.post
         Path {
           "questions"
@@ -63,7 +63,7 @@ struct OfficeHoursRouter: ParserPrinter {
         }
         questionsSortQuery
       }
-      Route(.case(OfficeHoursRoute.index(tab:questionsSort:))) {
+      Route(.case(\.index)) {
         OneOf(output: OfficeHoursRoute.Tab.self) {
           Route(.case(\.recordings))
           Route(.case(\.openQuestions)) {

@@ -49,7 +49,8 @@ var package = Package(
     .package(url: "https://github.com/swift-server/async-http-client", from: "1.19.0"),
     .package(url: "https://github.com/vapor/postgres-kit", from: "2.12.0"),
     .package(url: "https://github.com/vapor/sql-kit", exact: "3.28.0"),
-    .package(url: "https://github.com/pointfreeco/swift-case-paths", from: "1.9.1"),
+    .package(url: "https://github.com/pointfreeco/swift-case-paths", branch: "unlabeled-values"),
+    .package(url: "https://github.com/pointfreeco/swift-parsing", branch: "unlabeled-values"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.7.0"),
     .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.15.0"),
     .package(url: "https://github.com/pointfreeco/swift-html", revision: "14d01d1"),
@@ -366,6 +367,7 @@ var package = Package(
       name: "PointFreePrelude",
       dependencies: [
         "FoundationPrelude",
+        .product(name: "CasePaths", package: "swift-case-paths"),
         .product(name: "Either", package: "swift-prelude"),
         .product(name: "Logging", package: "swift-log"),
         .product(name: "Prelude", package: "swift-prelude"),
@@ -381,6 +383,7 @@ var package = Package(
       dependencies: [
         "EmailAddress",
         "Models",
+        "PointFreePrelude",
         .product(name: "Dependencies", package: "swift-dependencies"),
         .product(name: "Prelude", package: "swift-prelude"),
         .product(name: "Tagged", package: "swift-tagged"),

@@ -87,7 +87,7 @@ struct GiftsRouter: ParserPrinter {
         Path { Gifts.Plan.parser() }
       }
 
-      Route(.case(Gifts.redeem)) {
+      Route(.case(\.redeem)) {
         Path { UUID.parser().map(.representing(Gift.ID.self)) }
 
         OneOf(output: Gifts.Redeem.self) {

@@ -4,6 +4,7 @@ import EmailAddress
 import Foundation
 import GitHub
 import Models
+import PointFreePrelude
 import Prelude
 import Stripe
 import Tagged
@@ -227,12 +228,12 @@ public indirect enum SiteRoute: Equatable {
 
 struct SlugOrID<ID: RawRepresentable>: ParserPrinter where ID.RawValue == Int {
   var body: some ParserPrinter<Substring, Either<String, ID>> {
-    OneOf {
-      Parse {
-        Digits().map(.representing(ID.self).map(.case(Either<String, ID>.right)))
+    OneOf(output: Either<String, ID>.self) {
+      Parse(.case(\.right)) {
+        Digits().map(.representing(ID.self))
         End()
       }
-      Parse(.string.map(.case(Either<String, ID>.left)))
+      Parse(.string.map(.case(\.left)))
     }
   }
 }
@@ -271,13 +272,13 @@ struct CollectionsRouter: ParserPrinter {
     OneOf(output: SiteRoute.Collections.self) {
       Route(.case(\.index))
 
-      Route(.case(SiteRoute.Collections.collection)) {
+      Route(.case(\.collection)) {
         Path { Parse(.string.representing(Episode.Collection.Slug.self)) }
 
         OneOf(output: SiteRoute.Collections.Collection.self) {
           Route(.case(\.show))
 
-          Route(.case(SiteRoute.Collections.Collection.section)) {
+          Route(.case(\.section)) {
             Path { Parse(.string.representing(Episode.Collection.Section.Slug.self)) }
 
             OneOf(output: SiteRoute.Collections.Section.self) {
@@ -286,7 +287,7 @@ struct CollectionsRouter: ParserPrinter {
               Route(.case(\.episode)) {
                 Path { SlugOrID<Episode.ID>() }
               }
-              Route(.case(SiteRoute.Collections.Section.progress(param:percent:))) {
+              Route(.case(\.progress)) {
                 Method.post
                 Path {
                   SlugOrID<Episode.ID>()
@@ -317,7 +318,7 @@ struct EpisodesRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.EpisodesRoute.episode)) {
+      Route(.case(\.episode)) {
         Path { SlugOrID<Episode.ID>() }
 
         OneOf(output: SiteRoute.EpisodesRoute.EpisodeRoute.self) {
@@ -354,7 +355,7 @@ struct EnterpriseRouter: ParserPrinter {
         Body(.form(EnterpriseRequestFormData.self, decoder: formDecoder))
       }
 
-      Route(.case(SiteRoute.Enterprise.acceptInvite)) {
+      Route(.case(\.acceptInvite)) {
         Path { "accept" }
         Query {
           Field("email", .string.representing(Encrypted.self))
@@ -437,8 +438,8 @@ struct InviteRouter: ParserPrinter {
 
 struct TeamRouter: ParserPrinter {
   var body: some Router<SiteRoute.Team> {
-    OneOf {
-      Route(.case(SiteRoute.Team.join)) {
+    OneOf(output: SiteRoute.Team.self) {
+      Route(.case(\.join)) {
         Path {
           "team"
           Parse(.string.representing(Subscription.TeamInviteCode.self))
@@ -535,9 +536,9 @@ struct SiteRouter: ParserPrinter {
 
       Route(.case(\.betas)) {
         Path { "beta-previews" }
-        OneOf {
-          Route(.case(SiteRoute.Betas.landing))
-          Route(.case(SiteRoute.Betas.join)) {
+        OneOf(output: SiteRoute.Betas.self) {
+          Route(.case(\.landing))
+          Route(.case(\.join)) {
             Method.post
             Path {
               "join"
@@ -599,7 +600,7 @@ struct SiteRouter: ParserPrinter {
         Path { "robots.txt" }
       }
 
-      Route(.case(SiteRoute.search)) {
+      Route(.case(\.search)) {
         Path { "search" }
         Query {
           Optionally {
@@ -657,7 +658,7 @@ struct SiteRouter: ParserPrinter {
         GiftsRouter()
       }
 
-      Route(.case(SiteRoute.discounts)) {
+      Route(.case(\.discounts)) {
         Path {
           "discounts"
           Parse(.string.representing(Stripe.Coupon.ID.self))
@@ -733,7 +734,7 @@ struct SiteRouter: ParserPrinter {
         SubscribeDataParser()
       }
 
-      Route(.case(SiteRoute.subscribeConfirmation)) {
+      Route(.case(\.subscribeConfirmation)) {
         Parse(
           .convert(
             apply: { ($0, $1.0, $1.1, $1.2, $1.3, $1.4, $1.5) },
@@ -877,7 +878,7 @@ struct FilterConversion<Base: Conversion>: Conversion {
 private struct AuthRouter: ParserPrinter {
   var body: some Router<SiteRoute.Auth> {
     OneOf(output: SiteRoute.Auth.self) {
-      Route(.case(SiteRoute.Auth.codeLanding)) {
+      Route(.case(\.codeLanding)) {
         Path { "email-auth" }
         Query {
           Field("email", .string.representing(EmailAddress.self))
@@ -906,7 +907,7 @@ private struct AuthRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.Auth.emailAuth)) {
+      Route(.case(\.emailAuth)) {
         Method.post
         Path { "email-auth" }
         Body {
@@ -938,7 +939,7 @@ private struct AuthRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.Auth.gitHubCallback)) {
+      Route(.case(\.gitHubCallback)) {
         Path { "github-auth" }
         Query {
           Optionally {
@@ -962,7 +963,7 @@ private struct AuthRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.Auth.authLanding)) {
+      Route(.case(\.authLanding)) {
         OneOf {
           Parse {
             Path { "login" }
@@ -1002,7 +1003,7 @@ private struct AuthRouter: ParserPrinter {
         }
       }
 
-      Route(.case(SiteRoute.Auth.verifyLoginCode)) {
+      Route(.case(\.verifyLoginCode)) {
         Method.post
         Path {
           "email-auth"
